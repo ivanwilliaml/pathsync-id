@@ -1,0 +1,40 @@
+# Monthly market update (paper III.A.6, trigger 2): scrape new postings and commit the raw snapshot.
+# The demand map itself is rebuilt by the backend (Admin -> "Jalankan sekarang", or
+# `python -m pipeline.build_market`), so the 6-vs-6-month trend fills in as snapshots accumulate.
+name: Scraping bulanan
+
+on:
+  schedule:
+    - cron: "0 1 1 * *"        # 08:00 WIB on the 1st of every month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install "httpx>=0.27" "beautifulsoup4>=4.12" "lxml>=5.0"
+      - name: Karirhub Kemnaker
+        run: python -m scrapers.karirhub
+      - name: ATS publik
+        run: python -m scrapers.ats
+      - name: Commit snapshot
+        run: |
+          git config user.name "pathsync-bot"
+          git config user.email "pathsync-bot@users.noreply.github.com"
+          git add data/raw
+          if git diff --cached --quiet; then
+            echo "tidak ada lowongan baru"
+          else
+            git commit -m "data: snapshot lowongan $(date -u +%Y-%m-%d)"
+            git push
+          fi

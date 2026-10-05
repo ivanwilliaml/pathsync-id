@@ -1,0 +1,135 @@
+{
+ "n_postings": 88,
+ "mean_jaccard": 0.3375,
+ "spearman_skill_frequency": 0.6064,
+ "mentions_per_posting": {
+  "lexicon": 10.99,
+  "llm": 5.0
+ },
+ "top_only_lexicon": [
+  [
+   "Pelaporan & Dashboard BI",
+   45
+  ],
+  [
+   "Komunikasi Lisan & Interpersonal",
+   43
+  ],
+  [
+   "Kolaborasi Tim",
+   41
+  ],
+  [
+   "Manajemen Pemangku Kepentingan",
+   39
+  ],
+  [
+   "Berpikir Kritis & Pemecahan Masalah",
+   34
+  ],
+  [
+   "Pengujian Sistem & UAT",
+   21
+  ],
+  [
+   "Dokumentasi Kebutuhan (BRD/FSD/User Story)",
+   18
+  ],
+  [
+   "Sistem ERP & CRM",
+   18
+  ],
+  [
+   "Analisis Strategis Bisnis",
+   18
+  ],
+  [
+   "Analisis & Perbaikan Proses",
+   18
+  ]
+ ],
+ "top_only_llm": [
+  [
+   "Persiapan & Kualitas Data",
+   13
+  ],
+  [
+   "Visualisasi Data",
+   12
+  ],
+  [
+   "Penulisan Bisnis",
+   5
+  ],
+  [
+   "Analisis Data",
+   5
+  ],
+  [
+   "Agile & Scrum",
+   4
+  ],
+  [
+   "Manajemen Proyek",
+   4
+  ],
+  [
+   "Business Case & Analisis Biaya-Manfaat",
+   4
+  ],
+  [
+   "Dokumentasi Kebutuhan (BRD/FSD/User Story)",
+   4
+  ],
+  [
+   "Elisitasi Kebutuhan",
+   4
+  ],
+  [
+   "Pemodelan Sistem (UML/Use Case)",
+   4
+  ]
+ ],
+ "top_agreed": [
+  [
+   "Analisis Data",
+   35
+  ],
+  [
+   "Elisitasi Kebutuhan",
+   34
+  ],
+  [
+   "Pemodelan Proses Bisnis (BPMN/Flowchart)",
+   32
+  ],
+  [
+   "Dokumentasi Kebutuhan (BRD/FSD/User Story)",
+   26
+  ],
+  [
+   "SQL & Kueri Basis Data",
+   20
+  ],
+  [
+   "Berpikir Kritis & Pemecahan Masalah",
+   20
+  ],
+  [
+   "Microsoft Excel & Spreadsheet",
+   18
+  ],
+  [
+   "Siklus Pengembangan Sistem (SDLC)",
+   16
+  ],
+  [
+   "Persiapan & Kualitas Data",
+   15
+  ],
+  [
+   "Manajemen Pemangku Kepentingan",
+   12
+  ]
+ ]
+}

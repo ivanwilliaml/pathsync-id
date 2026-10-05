@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import json
+import os
 import threading
+from contextlib import asynccontextmanager
 from datetime import date, datetime
 
 from fastapi import BackgroundTasks, Depends, FastAPI, File, Form, HTTPException, UploadFile
@@ -12,7 +14,7 @@ from sqlalchemy import func, select, update
 from sqlalchemy.orm import Session
 
 from pathsync.assessment import diagnostic_plan, grade, item_bank, public_item, reassessment_items
-from pathsync.config import MODELS_DIR, PROCESSED_DIR, ROLES
+from pathsync.config import GRADE_SCORES, MODELS_DIR, PROCESSED_DIR, ROLES
 from pathsync.db import (Annotation, AssessmentResponse, EdgeVote, Evidence, Expert, GraphEdge, MarketSnapshot, Posting,
                          PostingMention, RankerModel, RecommendationHistory, Scenario, ScenarioRanking, Student,
                          active_snapshot, get_session, init_db, utcnow)
@@ -24,7 +26,29 @@ from pathsync.intake import (academic_evidence, certificate_evidence, cv_evidenc
                              project_evidence)
 from pathsync.taxonomy import CycleError, Edge, SkillGraph, cluster_names, load_skills, load_taxonomy
 
-app = FastAPI(title="PathSync API", version="0.1.0")
+
+def _warmup():
+    """Load the embedding model and skill index in the background so the first upload is not slow."""
+    from pathsync.extraction import skill_index
+    from pathsync.intake import map_course
+    try:
+        skill_index()
+        map_course("Basis Data")
+    except Exception as e:  # pragma: no cover - warmup is best effort
+        print(f"[warmup] gagal: {e}")
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    init_db()
+    with get_session() as s:
+        ensure_seed(s)
+    if os.getenv("PATHSYNC_WARMUP", "1") != "0":
+        threading.Thread(target=_warmup, daemon=True).start()
+    yield
+
+
+app = FastAPI(title="PathSync API", version="0.1.0", lifespan=lifespan)
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 
@@ -34,13 +58,6 @@ def db():
         yield s
     finally:
         s.close()
-
-
-@app.on_event("startup")
-def _startup():
-    init_db()
-    with get_session() as s:
-        ensure_seed(s)
 
 
 def _student(s: Session, sid: str) -> Student:
@@ -68,6 +85,16 @@ def meta(s: Session = Depends(db)):
             "market_versions": snaps, "model": {"name": model.name, "weights": model.weights} if model else None,
             "n_postings": s.scalar(select(func.count(Posting.id)).where(Posting.duplicate_of.is_(None))),
             "n_items": len(item_bank())}
+
+
+@app.get("/api/catalog")
+def catalog():
+    """Course and certificate names for autocomplete in the evidence forms."""
+    from pathsync.intake import _certs, _courses
+    return {"courses": [{"name": c["name"], "programs": c.get("programs", [])} for c in _courses()],
+            "certificates": [{"name": c["name"], "level": c["level"], "score_scale": c.get("score_scale")}
+                             for c in _certs()["certificates"]],
+            "grades": list(GRADE_SCORES)}
 
 
 # --------------------------------------------------------------- students
@@ -609,6 +636,15 @@ def activate_model(mid: int, s: Session = Depends(db)):
     m.active = True
     s.commit()
     return {"ok": True}
+
+
+@app.get("/api/evaluation/extractors")
+def extractor_comparison():
+    """Lexicon vs offline-LLM agreement on the same postings (python -m pipeline.llm_jobs compare)."""
+    p = MODELS_DIR / "extractor_comparison.json"
+    if not p.exists():
+        raise HTTPException(404, "jalankan python -m pipeline.llm_jobs compare")
+    return json.loads(p.read_text(encoding="utf-8"))
 
 
 @app.get("/api/evaluation")

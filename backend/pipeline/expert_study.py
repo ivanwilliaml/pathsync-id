@@ -43,23 +43,35 @@ def simulate(scenarios, styles, seed):
     return per_expert, refs, float(np.mean(ws))
 
 
-def llm_orders(scenarios, names) -> dict[str, list[str]] | None:
-    if not llm_configured():
-        return None
-    from pathsync.extraction import llm_extractor
+def scenario_prompt(s: dict, names: dict[str, str]) -> str:
+    """The text a generic LLM sees for one scenario (baseline 4: no taxonomy weights, no graph)."""
+    lines = [f"Peran target: Business Analyst. Profil: {s['title']}.", "Kandidat keterampilan:"]
+    for c in s["candidates"]:
+        st = s["student"][c]
+        lines.append(f"- {c} ({names[c]}): penguasaan {st['p']:.2f}, dibutuhkan {st['r']:.2f}, "
+                     f"muncul di {s['market'][c]['D']:.0%} lowongan")
+    return "\n".join(lines)
 
-    out = {}
-    try:
-        for s in scenarios:
-            lines = [f"Peran target: Business Analyst. Profil: {s['title']}.", "Kandidat keterampilan:"]
-            for c in s["candidates"]:
-                st = s["student"][c]
-                lines.append(f"- {c} ({names[c]}): penguasaan {st['p']:.2f}, dibutuhkan {st['r']:.2f}, "
-                             f"muncul di {s['market'][c]['D']:.0%} lowongan")
-            out[s["id"]] = llm_extractor().generic_ranking("\n".join(lines), s["candidates"])
-    except LLMUnavailable:
-        return None
-    return out
+
+def llm_orders(scenarios, names) -> tuple[dict[str, list[str]] | None, str]:
+    """Generic-LLM orders: live from Claude when configured, else imported from an offline GPU run."""
+    if llm_configured():
+        from pathsync.extraction import llm_extractor
+
+        try:
+            return {s["id"]: llm_extractor().generic_ranking(scenario_prompt(s, names), s["candidates"])
+                    for s in scenarios}, "dijalankan (Claude)"
+        except LLMUnavailable:
+            pass
+    from pipeline.llm_jobs import LLM_ORDERS, _scenario_fingerprint
+
+    if LLM_ORDERS.exists():
+        data = json.loads(LLM_ORDERS.read_text(encoding="utf-8"))
+        orders, fps = data["orders"], data.get("fingerprints", {})
+        if all(s["id"] in orders and fps.get(s["id"]) == _scenario_fingerprint(s) for s in scenarios):
+            return {s["id"]: orders[s["id"]] for s in scenarios}, f"dijalankan ({data.get('model')}, luring)"
+        return None, "tidak dijalankan (urutan LLM luring tidak lengkap/kedaluwarsa; ekspor ulang skenario)"
+    return None, "tidak dijalankan (butuh kredensial Anthropic API atau hasil LLM luring)"
 
 
 def main():
@@ -91,8 +103,7 @@ def main():
                 s.add(Expert(id=f"sim{i + 1}", name=name, affiliation="simulasi kelayakan", kind=kind, validates_graph=False))
         s.flush()
 
-        llm = llm_orders(scenarios, ctx.names)
-        report["llm_baseline"] = "dijalankan" if llm else "tidak dijalankan (butuh kredensial Anthropic API)"
+        llm, report["llm_baseline"] = llm_orders(scenarios, ctx.names)
         final = None
         for cond, styles in CONDITIONS.items():
             per_expert, refs, mean_w = simulate(scenarios, styles, seed=11)

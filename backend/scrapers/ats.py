@@ -52,9 +52,10 @@ COMPANY_SLUGS = [
     "artefactlinkedin", "Qraved", "FLOW1", "kpler", "getwingapp",
 ]
 
-# Workday career sites (public CXS endpoint behind <tenant>.<dc>.myworkdayjobs.com/<site>)
+# Workday career sites (public CXS endpoint behind <tenant>.<dc>.myworkdayjobs.com/<site>).
+# Traveloka was dropped (Oct 2026): every site name on wd1/wd3/wd5/wd10/wd12/wd103 returns 422, i.e. no Workday tenant.
 WORKDAY_SITES = [
-    ("traveloka", "wd3", "Traveloka"), ("aia", "wd3", "External"), ("samudera", "wd3", "Careers"),
+    ("aia", "wd3", "External"), ("samudera", "wd3", "Careers"),
     ("sunlife", "wd3", "Experienced"), ("binus", "wd3", "lifeatbinus"), ("kbr", "wd5", "KBR_Careers"),
     ("prysmiangroup", "wd3", "Careers"), ("cloudera", "wd5", "External_Career"), ("csgi", "wd5", "csgcareers"),
     ("hsbc", "wd3", "external"), ("manulife", "wd3", "MFCJH_Jobs"), ("pg", "wd5", "1000"),

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-02T02:27:20",
+ "generated_at": "2026-10-06T01:14:06",
  "role": "business_analyst",
  "note": "Simulasi kelayakan dengan pakar tersimulasi (bukan kinerja pada pakar nyata). Peringkat pakar nyata dikumpulkan melalui Panel Pakar dan dilatih dengan pipeline yang sama.",
  "conditions": {
@@ -112,6 +112,32 @@
        "ci95": [
         0.837,
         0.9185
+       ],
+       "n": 45
+      }
+     },
+     "llm_umum": {
+      "ndcg5": {
+       "mean": 0.6365,
+       "ci95": [
+        0.5905,
+        0.6811
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.3698,
+       "ci95": [
+        0.2698,
+        0.4635
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.5407,
+       "ci95": [
+        0.4889,
+        0.5926
        ],
        "n": 45
       }
@@ -307,6 +333,32 @@
        ],
        "n": 45
       }
+     },
+     "llm_umum": {
+      "ndcg5": {
+       "mean": 0.7395,
+       "ci95": [
+        0.6403,
+        0.8337
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.481,
+       "ci95": [
+        0.3254,
+        0.6286
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.7185,
+       "ci95": [
+        0.6444,
+        0.8
+       ],
+       "n": 45
+      }
      }
     },
     "fold_weights_mean": {
@@ -499,6 +551,32 @@
        ],
        "n": 45
       }
+     },
+     "llm_umum": {
+      "ndcg5": {
+       "mean": 0.6528,
+       "ci95": [
+        0.5931,
+        0.7189
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.381,
+       "ci95": [
+        0.2667,
+        0.5
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.637,
+       "ci95": [
+        0.5704,
+        0.7185
+       ],
+       "n": 45
+      }
      }
     },
     "fold_weights_mean": {
@@ -583,7 +661,7 @@
  "n_scenarios": 45,
  "n_base": 15,
  "market_version": "2026-10-01-lexicon",
- "llm_baseline": "tidak dijalankan (butuh kredensial Anthropic API)",
+ "llm_baseline": "dijalankan (qwen3-8b, luring)",
  "registered_model": {
   "weights": {
    "G": 1.1742,
