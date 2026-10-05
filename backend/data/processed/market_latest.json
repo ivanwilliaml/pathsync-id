@@ -1,0 +1,132 @@
+{
+ "version": "2026-10-01-lexicon",
+ "reference_date": "2026-10-01",
+ "mention_status": {
+  "auto": 2172,
+  "review": 77,
+  "new": 134,
+  "rejected": 0
+ },
+ "roles": {
+  "business_analyst": {
+   "n_postings": 43,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 37,
+    "workable": 3,
+    "workday": 1,
+    "lever": 2
+   },
+   "top": [
+    [
+     "requirements_elicitation",
+     0.752
+    ],
+    [
+     "requirements_documentation",
+     0.7205
+    ],
+    [
+     "verbal_communication",
+     0.6985
+    ],
+    [
+     "critical_thinking",
+     0.6669
+    ],
+    [
+     "collaboration",
+     0.6596
+    ],
+    [
+     "business_process_modeling",
+     0.6188
+    ],
+    [
+     "stakeholder_management",
+     0.6165
+    ],
+    [
+     "testing_uat",
+     0.5466
+    ],
+    [
+     "sdlc",
+     0.5006
+    ],
+    [
+     "excel",
+     0.3411
+    ],
+    [
+     "project_management",
+     0.3362
+    ],
+    [
+     "sql",
+     0.3112
+    ]
+   ]
+  },
+  "data_analyst": {
+   "n_postings": 29,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 15,
+    "workable": 6,
+    "workday": 3,
+    "lever": 5
+   },
+   "top": [
+    [
+     "dashboard_reporting",
+     0.9005
+    ],
+    [
+     "data_analysis",
+     0.8948
+    ],
+    [
+     "critical_thinking",
+     0.5872
+    ],
+    [
+     "excel",
+     0.5612
+    ],
+    [
+     "stakeholder_management",
+     0.5217
+    ],
+    [
+     "statistics",
+     0.5034
+    ],
+    [
+     "sql",
+     0.4554
+    ],
+    [
+     "collaboration",
+     0.38
+    ],
+    [
+     "data_cleaning",
+     0.3761
+    ],
+    [
+     "data_modeling",
+     0.3727
+    ],
+    [
+     "data_visualization",
+     0.3633
+    ],
+    [
+     "verbal_communication",
+     0.3275
+    ]
+   ]
+  }
+ }
+}

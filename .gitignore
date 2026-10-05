@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# local runtime state (regenerate with the pipelines)
+backend/data/pathsync.db*
+backend/data/processed/embedding_cache.sqlite
+backend/data/processed/extraction_cache.json
+backend/data/raw/karirhub_listing_snapshot.json
+
+# Node / Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/next-env.d.ts
+*.tsbuildinfo
+
+# secrets
+.env
+.env.*

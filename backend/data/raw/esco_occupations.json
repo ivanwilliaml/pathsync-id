@@ -1,0 +1,2163 @@
+{
+ "occupations": {
+  "business_analyst": {
+   "uri": "http://data.europa.eu/esco/occupation/60082a99-d8ef-4e84-9290-78902681b6ed",
+   "title": "business analyst",
+   "isco_code": "2421.1",
+   "description": "Business analysts research and understand the strategic position of businesses and companies in relation to their markets and their stakeholders. They analyse and present their views on how the company, from many perspectives, can improve its strategic position and internal corporate structure. They assess needs for change, communication methods, technology, IT tools, new standards and certifications.",
+   "alt_labels": [
+    "standardisation expert",
+    "business strategy analyst",
+    "standardization expert",
+    "business development analyst",
+    "business strategy consultant",
+    "management consultant",
+    "standardisation manager",
+    "organisational developer"
+   ],
+   "essential": [
+    "http://data.europa.eu/esco/skill/ee7f90cc-922e-4da7-a7ae-83c2688fed10",
+    "http://data.europa.eu/esco/skill/ed3f3dba-3a35-4ed5-b113-67f4d10ef4c8",
+    "http://data.europa.eu/esco/skill/91816e1a-d026-4d21-9b1c-59ca5cf488de",
+    "http://data.europa.eu/esco/skill/27ed854c-15b8-4ba2-90e9-ae888a219703",
+    "http://data.europa.eu/esco/skill/633a3637-2c6b-40ae-ac38-289eb2a62aa6",
+    "http://data.europa.eu/esco/skill/8770350e-746f-4adb-9556-18ca68104be6",
+    "http://data.europa.eu/esco/skill/5f1d1319-7954-4a9b-90c7-57668e3a0d4b",
+    "http://data.europa.eu/esco/skill/43d1d56b-ce62-4fe8-8f18-35d92ec73023",
+    "http://data.europa.eu/esco/skill/f60c9e52-95fc-4ca1-a73c-18a491153b63",
+    "http://data.europa.eu/esco/skill/f14ff4b7-be1e-4b55-b39b-520005f8a97e",
+    "http://data.europa.eu/esco/skill/8a43795b-bb38-4f29-91df-a6c92ad4643c",
+    "http://data.europa.eu/esco/skill/5da3c765-10a3-49eb-934c-ec401ceb1a34",
+    "http://data.europa.eu/esco/skill/8316979b-df5a-4dc7-98ef-61ec6a10df84",
+    "http://data.europa.eu/esco/skill/ce5b1446-b5e3-4f05-a5ac-83f2ee142a44",
+    "http://data.europa.eu/esco/skill/6eff134b-e34f-4d6e-a6e8-5e47cf2228d0",
+    "http://data.europa.eu/esco/skill/fa465db3-56e8-4b5d-a781-e2a313a4ed2d",
+    "http://data.europa.eu/esco/skill/8bc75dce-beba-40f9-93fc-66c9708ed74b",
+    "http://data.europa.eu/esco/skill/dc72ad0a-c5dc-4abd-bc0d-ca43e82162e1"
+   ],
+   "optional": [
+    "http://data.europa.eu/esco/skill/1212ac42-2564-4fce-80e1-6ce4ea4d9bf5",
+    "http://data.europa.eu/esco/skill/d53b04fb-1bbb-4a25-92f8-8ceb308d276f",
+    "http://data.europa.eu/esco/skill/98301d4a-2cc3-439d-8d7f-0b6ac76302bb",
+    "http://data.europa.eu/esco/skill/143769cb-b61e-47d8-a61e-eedfbec1016c",
+    "http://data.europa.eu/esco/skill/d77d7685-04fb-43a4-a1ac-09a10811f646",
+    "http://data.europa.eu/esco/skill/ccbd0898-e225-4abc-8992-57a23b0e2eec",
+    "http://data.europa.eu/esco/skill/62bf2e21-2613-47f1-a624-fe0fc925e671",
+    "http://data.europa.eu/esco/skill/d2dc31f1-720c-4757-bc1b-9e563d264dcf",
+    "http://data.europa.eu/esco/skill/79c36c91-28a5-44b7-ab9b-7093b2d4b21e",
+    "http://data.europa.eu/esco/skill/f975091a-e5a5-4472-ac17-11680e53e98f",
+    "http://data.europa.eu/esco/skill/bd698bbe-7003-4508-b422-46c2ff4d5e95",
+    "http://data.europa.eu/esco/skill/66d47084-9437-48b2-819b-c4c8214ed650",
+    "http://data.europa.eu/esco/skill/8d4271ca-c9fd-40b3-875f-15f78332a49e",
+    "http://data.europa.eu/esco/skill/4a460161-eaea-4fe2-bd0e-164ccc635be1",
+    "http://data.europa.eu/esco/skill/c544a9f3-5945-4b54-afed-de0697852817",
+    "http://data.europa.eu/esco/skill/812590e4-7108-4016-baba-957dcf8213ae",
+    "http://data.europa.eu/esco/skill/0efbe2dc-2770-47ec-b8f4-d1bdff6ac0a4",
+    "http://data.europa.eu/esco/skill/f1155d3f-fbca-4298-a31c-f6955653bacf",
+    "http://data.europa.eu/esco/skill/69f36674-440a-4fa0-89f9-1b70172ebb9d",
+    "http://data.europa.eu/esco/skill/07e51c60-763a-4335-b4ec-70a15f66d328",
+    "http://data.europa.eu/esco/skill/3a5231a0-8c30-48ee-b671-08e2debd4441",
+    "http://data.europa.eu/esco/skill/341c4478-c976-4ff0-a102-cfd92174d873",
+    "http://data.europa.eu/esco/skill/7b3abd38-61ae-42a4-88bb-0884784f9ee1"
+   ]
+  },
+  "ict_business_analyst": {
+   "uri": "http://data.europa.eu/esco/occupation/fe0fa514-b48d-4a53-9757-a283c0baacf0",
+   "title": "ICT business analyst",
+   "isco_code": "2511.8",
+   "description": "ICT business analysts are in charge of analysing and designing an organisation's processes and systems, assessing the business model and its integration with technology. They also identify change needs, assess the impact of the change, capture and document requirements and then ensure that these requirements are delivered whilst supporting the business through the implementation process.",
+   "alt_labels": [
+    "ICT business analysts",
+    "business process specialist",
+    "IT business analyst"
+   ],
+   "essential": [
+    "http://data.europa.eu/esco/skill/3c03ee71-4a23-448f-b79e-81fd75d27dca",
+    "http://data.europa.eu/esco/skill/4913d0c0-133a-4c46-aac3-f5d4989a982e",
+    "http://data.europa.eu/esco/skill/b04f377b-ee80-4b38-aca1-19d266a23b17",
+    "http://data.europa.eu/esco/skill/0e0c9c11-b39e-43cf-ba95-2fe646f5de64",
+    "http://data.europa.eu/esco/skill/a8797f21-1af0-4c5e-98ca-bf1442929363",
+    "http://data.europa.eu/esco/skill/f7b5d916-52f0-4865-b6a6-e1a3b711cb5e",
+    "http://data.europa.eu/esco/skill/a846cb9e-c152-41e7-bd34-45e7ff941e3b",
+    "http://data.europa.eu/esco/skill/6a7792a9-888a-46ad-afc9-2c0d94c8fde6",
+    "http://data.europa.eu/esco/skill/07e51c60-763a-4335-b4ec-70a15f66d328",
+    "http://data.europa.eu/esco/skill/98301d4a-2cc3-439d-8d7f-0b6ac76302bb",
+    "http://data.europa.eu/esco/skill/56042303-972b-41be-9310-58467599ff7e",
+    "http://data.europa.eu/esco/skill/b9bf9e17-ae47-417b-bbb1-e8b7c263ccac",
+    "http://data.europa.eu/esco/skill/9714735d-6f60-440b-bdbc-aaf45ebcbe78",
+    "http://data.europa.eu/esco/skill/2d6d4784-0992-48e7-b100-22d7229b3f0a",
+    "http://data.europa.eu/esco/skill/48b68726-0fd6-4e03-a5eb-82236516ee7a",
+    "http://data.europa.eu/esco/skill/0ee94c0a-3716-494a-95a2-dcbab9e58be2",
+    "http://data.europa.eu/esco/skill/d9e5349e-8791-49c2-8ba4-839fdd1606c2"
+   ],
+   "optional": [
+    "http://data.europa.eu/esco/skill/93aaf65c-5aad-4e6f-a7ba-ce9bf7c0e6e6",
+    "http://data.europa.eu/esco/skill/1bba98a7-92b9-450b-9235-e0c905f8f3c4",
+    "http://data.europa.eu/esco/skill/e5609f89-0daf-40bb-bd6b-94f5d7498131",
+    "http://data.europa.eu/esco/skill/385479b7-5da5-4367-9763-0d15b41bb65b",
+    "http://data.europa.eu/esco/skill/31c69100-b612-4a61-8db5-fd314318854c",
+    "http://data.europa.eu/esco/skill/ccdbd9bb-4faf-403c-a968-e8bf487f8a53",
+    "http://data.europa.eu/esco/skill/143769cb-b61e-47d8-a61e-eedfbec1016c",
+    "http://data.europa.eu/esco/skill/3ce1fe19-7f9e-4070-941d-651673a5693b",
+    "http://data.europa.eu/esco/skill/3c76296d-4bbd-44ba-8eaa-95bf275f79b7",
+    "http://data.europa.eu/esco/skill/696e3b5b-8b61-45af-ae4c-3ab700f197ec",
+    "http://data.europa.eu/esco/skill/348b74cd-49ce-4844-8bdf-ec188b497213",
+    "http://data.europa.eu/esco/skill/2fb8480e-de3c-462b-b169-e8bbb344da68",
+    "http://data.europa.eu/esco/skill/2c28fc20-8a60-4311-8899-5ef8729c05b3",
+    "http://data.europa.eu/esco/skill/bd698bbe-7003-4508-b422-46c2ff4d5e95",
+    "http://data.europa.eu/esco/skill/bd14968e-e409-45af-b362-3495ed7b10e0",
+    "http://data.europa.eu/esco/skill/c5e8abde-d2ba-4e8e-a65e-720b71180666",
+    "http://data.europa.eu/esco/skill/0daaf096-1639-461c-bf1a-bbeea77e6b67",
+    "http://data.europa.eu/esco/skill/79f24a62-7718-46e1-9b41-37be0560a5ca",
+    "http://data.europa.eu/esco/skill/09f2f811-a3fb-4de3-a70f-6420a6935575"
+   ]
+  },
+  "data_analyst": {
+   "uri": "http://data.europa.eu/esco/occupation/d3edb8f8-3a06-47a0-8fb9-9b212c006aa2",
+   "title": "data analyst",
+   "isco_code": "2511.2",
+   "description": "Data analysts import, inspect, clean, transform, validate, model, or interpret collections of data with regard to the business goals of the company. They ensure that the data sources and repositories provide consistent and reliable data. Data analysts use different algorithms and IT tools as demanded by the situation and the current data. They might prepare reports in the form of visualisations such as graphs, charts, and dashboards.",
+   "alt_labels": [
+    "data warehousing analyst",
+    "data analysts",
+    "data warehouse analyst",
+    "data storage analyst"
+   ],
+   "essential": [
+    "http://data.europa.eu/esco/skill/4216e465-7baa-4884-a241-54b197bb9278",
+    "http://data.europa.eu/esco/skill/9ff9db9d-d14b-426e-83f3-e7449af6c79f",
+    "http://data.europa.eu/esco/skill/1e77e42a-181f-4b48-8e74-201ce50ffc29",
+    "http://data.europa.eu/esco/skill/31c69100-b612-4a61-8db5-fd314318854c",
+    "http://data.europa.eu/esco/skill/50b100ea-74fd-4706-99db-3e4ca55e51b8",
+    "http://data.europa.eu/esco/skill/4a193795-fa63-414e-9f2e-bfdb3924571e",
+    "http://data.europa.eu/esco/skill/348b74cd-49ce-4844-8bdf-ec188b497213",
+    "http://data.europa.eu/esco/skill/54c9c155-9293-4329-8ed2-2e76e8b519d4",
+    "http://data.europa.eu/esco/skill/327d15c8-29ff-4ad4-a4fe-6536d777a45f",
+    "http://data.europa.eu/esco/skill/c5e8abde-d2ba-4e8e-a65e-720b71180666",
+    "http://data.europa.eu/esco/skill/46ec0033-3c71-415e-bcff-b065675ba2dc",
+    "http://data.europa.eu/esco/skill/7ee4c2ea-b349-4bd2-81a3-ec31475d4833",
+    "http://data.europa.eu/esco/skill/fecf8a0d-62c4-4e71-9b03-0f4fc2ad7bf5",
+    "http://data.europa.eu/esco/skill/25f0ea33-b4a2-4f31-b7b4-7d20e827b180",
+    "http://data.europa.eu/esco/skill/713fb616-118e-40bc-9366-4a69879a49d5",
+    "http://data.europa.eu/esco/skill/79e29b8b-47d1-470d-b7b1-32506bfe7d9a",
+    "http://data.europa.eu/esco/skill/382c11ed-20d5-4ae7-b60e-15fec527fa6c",
+    "http://data.europa.eu/esco/skill/07889c08-7220-47c8-96f7-6068fbea00dc",
+    "http://data.europa.eu/esco/skill/696e3b5b-8b61-45af-ae4c-3ab700f197ec",
+    "http://data.europa.eu/esco/skill/a56dec32-05ef-45de-a256-ee6741f356db",
+    "http://data.europa.eu/esco/skill/93aaf65c-5aad-4e6f-a7ba-ce9bf7c0e6e6",
+    "http://data.europa.eu/esco/skill/9cf681c7-89ec-470c-b651-7fe03786f586",
+    "http://data.europa.eu/esco/skill/47a49cd6-097d-457a-9f7b-c290c14930d5",
+    "http://data.europa.eu/esco/skill/2daec0e6-f0c1-43e8-8178-aedba99130ec",
+    "http://data.europa.eu/esco/skill/99207709-d076-4cce-ba38-e90d3bb28806",
+    "http://data.europa.eu/esco/skill/143769cb-b61e-47d8-a61e-eedfbec1016c",
+    "http://data.europa.eu/esco/skill/03ff0d53-573a-47a0-a0ad-1995815a4339",
+    "http://data.europa.eu/esco/skill/cc7370dd-69fa-4c67-a96f-d4d135d38700"
+   ],
+   "optional": [
+    "http://data.europa.eu/esco/skill/c3e36d05-8ae8-447f-bb2b-6f9409f85389",
+    "http://data.europa.eu/esco/skill/43ae58b9-5e56-4524-b45a-b422777a0576",
+    "http://data.europa.eu/esco/skill/1b7c716e-af95-4cda-a42f-6479c8b139f5",
+    "http://data.europa.eu/esco/skill/c544a9f3-5945-4b54-afed-de0697852817",
+    "http://data.europa.eu/esco/skill/f597f772-24d3-4cec-813c-cf5a7027c794",
+    "http://data.europa.eu/esco/skill/a80fb090-63f4-4b05-83a5-2f090deb7757",
+    "http://data.europa.eu/esco/skill/a57a54b6-2f2e-43e4-9621-b52f4a63cb08",
+    "http://data.europa.eu/esco/skill/1605025e-a179-421f-8f35-5b07d182a6b2",
+    "http://data.europa.eu/esco/skill/c7d24594-0c11-4b27-9039-fe0bb903da8e",
+    "http://data.europa.eu/esco/skill/3f4dab51-572b-4e2c-85ef-3b4c3f7094e1",
+    "http://data.europa.eu/esco/skill/a7f0fbe0-c546-4f30-8e41-34a58c64567e",
+    "http://data.europa.eu/esco/skill/5da8018b-ae85-4cde-ad93-0394369018f3",
+    "http://data.europa.eu/esco/skill/0c766ca3-9364-4203-916b-fed16e4814c1",
+    "http://data.europa.eu/esco/skill/1bba98a7-92b9-450b-9235-e0c905f8f3c4",
+    "http://data.europa.eu/esco/skill/fbafa41f-cd05-4109-a649-8b44d306d779",
+    "http://data.europa.eu/esco/skill/bd14968e-e409-45af-b362-3495ed7b10e0",
+    "http://data.europa.eu/esco/skill/b0a3bb25-a02f-43ed-ab1f-994fa66a424a"
+   ]
+  }
+ },
+ "skills": {
+  "http://data.europa.eu/esco/skill/ee7f90cc-922e-4da7-a7ae-83c2688fed10": {
+   "uri": "http://data.europa.eu/esco/skill/ee7f90cc-922e-4da7-a7ae-83c2688fed10",
+   "title": "align efforts towards business development",
+   "skill_type": "skill",
+   "description": "Synchronise the efforts, plans, strategies, and actions carried out in departments of companies towards the growth of business and its turnover. Keep business development as the ultimate outcome of any effort of the company.",
+   "alt_labels": [
+    "align business development efforts",
+    "aligning efforts towards business development",
+    "align effort towards business development",
+    "coordinate efforts towards business development",
+    "align efforts towards business growth"
+   ],
+   "broader": [
+    "coordinating activities with others"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/ed3f3dba-3a35-4ed5-b113-67f4d10ef4c8": {
+   "uri": "http://data.europa.eu/esco/skill/ed3f3dba-3a35-4ed5-b113-67f4d10ef4c8",
+   "title": "scientific research methodology",
+   "skill_type": "knowledge",
+   "description": "The theoretical methodology used in scientific research involving doing background research, constructing an hypothesis, testing it, analysing data and concluding the results.",
+   "alt_labels": [
+    "process of scientific research",
+    "theoretical methodology in scientific research",
+    "methods of research",
+    "scientific methods",
+    "research methodology"
+   ],
+   "broader": [
+    "education science"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "conduct scholarly research",
+    "plan research process"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/91816e1a-d026-4d21-9b1c-59ca5cf488de": {
+   "uri": "http://data.europa.eu/esco/skill/91816e1a-d026-4d21-9b1c-59ca5cf488de",
+   "title": "analyse internal factors of companies",
+   "skill_type": "skill",
+   "description": "Research and understand various internal factors that influence the operation of companies such as its culture, strategic foundation, products, prices, and available resources.",
+   "alt_labels": [
+    "analysing internal factors of companies",
+    "analyse internal factors of company",
+    "analyse companies' internal factors",
+    "evaluate internal factors of companies",
+    "examine internal factors of companies",
+    "review internal factors of companies",
+    "study internal factors of companies"
+   ],
+   "broader": [
+    "analysing business operations"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/27ed854c-15b8-4ba2-90e9-ae888a219703": {
+   "uri": "http://data.europa.eu/esco/skill/27ed854c-15b8-4ba2-90e9-ae888a219703",
+   "title": "perform business analysis",
+   "skill_type": "skill",
+   "description": "Evaluate the condition of a business on its own and in relation to the competitive business domain, performing research, placing data in context of the business' needs and determining areas of opportunity.",
+   "alt_labels": [
+    "performing business analysis",
+    "implement business analysis",
+    "undertake business analysis",
+    "perform analysis of a business",
+    "complete business analysis",
+    "perform a business analysis"
+   ],
+   "broader": [
+    "analysing business operations"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "business analysis"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/633a3637-2c6b-40ae-ac38-289eb2a62aa6": {
+   "uri": "http://data.europa.eu/esco/skill/633a3637-2c6b-40ae-ac38-289eb2a62aa6",
+   "title": "business analysis",
+   "skill_type": "knowledge",
+   "description": "The research field which addresses the identification of business needs and problems and the determination of the solutions that would mitigate or prevent the smooth functioning of a business. Business analysis comprises IT solutions, market challenges, policy development and strategic matters.",
+   "alt_labels": [
+    "business analyses",
+    "analysis of businesses",
+    "company analysis",
+    "enterprise analysis"
+   ],
+   "broader": [
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "analyse business processes"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/8770350e-746f-4adb-9556-18ca68104be6": {
+   "uri": "http://data.europa.eu/esco/skill/8770350e-746f-4adb-9556-18ca68104be6",
+   "title": "market research",
+   "skill_type": "knowledge",
+   "description": "The processes, techniques, and purposes comprised in the first step for developing marketing strategies such as the collection of information about customers and the definition of segments and targets.",
+   "alt_labels": [
+    "market studies",
+    "market analysis"
+   ],
+   "broader": [
+    "marketing and advertising"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/5f1d1319-7954-4a9b-90c7-57668e3a0d4b": {
+   "uri": "http://data.europa.eu/esco/skill/5f1d1319-7954-4a9b-90c7-57668e3a0d4b",
+   "title": "interpret financial statements",
+   "skill_type": "skill",
+   "description": "Read, understand, and interpret the key lines and indicators in financial statements. Extract the most important information from financial statements depending on the needs and integrate this information in the development of the department's plans.",
+   "alt_labels": [
+    "interpreting financial statements",
+    "interpret finance statements",
+    "interpret financial statement",
+    "read and understand financial statements",
+    "review financial statements"
+   ],
+   "broader": [
+    "analysing financial and economic data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "financial statements"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/43d1d56b-ce62-4fe8-8f18-35d92ec73023": {
+   "uri": "http://data.europa.eu/esco/skill/43d1d56b-ce62-4fe8-8f18-35d92ec73023",
+   "title": "identify undetected organisational needs",
+   "skill_type": "skill",
+   "description": "Use the collected input and information from interviewing stakeholders and analysing organisational documents in order to detect unseen needs and improvements that would support the development of the organisation. Identify the needs of the organisation in terms of staff, equipment, and improvement of operations.",
+   "alt_labels": [
+    "spot undetected organisational needs",
+    "recognize undetected organisational needs",
+    "detect unidentified organisational needs",
+    "identify undetected organisational need",
+    "identifying undetected organisational needs",
+    "discover undetected organisational needs"
+   ],
+   "broader": [
+    "identify needs and technological responses",
+    "monitoring and evaluating the performance of individuals"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/f60c9e52-95fc-4ca1-a73c-18a491153b63": {
+   "uri": "http://data.europa.eu/esco/skill/f60c9e52-95fc-4ca1-a73c-18a491153b63",
+   "title": "make strategic business decisions",
+   "skill_type": "skill",
+   "description": "Analyse business information and consult directors for decision making purposes in a varied array of aspects affecting the prospect, productivity and sustainable operation of a company. Consider the options and alternatives to a challenge and make sound rational decisions based on analysis and experience.",
+   "alt_labels": [
+    "make tactical business decisions",
+    "PPC",
+    "make strategic business choices",
+    "pay per click"
+   ],
+   "broader": [
+    "make decisions",
+    "apply strategic thinking",
+    "making decisions"
+   ],
+   "has_essential_skill": [
+    "business strategy concepts"
+   ],
+   "has_optional_skill": [
+    "decision support systems"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/f14ff4b7-be1e-4b55-b39b-520005f8a97e": {
+   "uri": "http://data.europa.eu/esco/skill/f14ff4b7-be1e-4b55-b39b-520005f8a97e",
+   "title": "liaise with managers",
+   "skill_type": "skill",
+   "description": "Liaise with managers of other departments ensuring effective service and communication, i.e. sales, planning, purchasing, trading, distribution and technical.",
+   "alt_labels": [
+    "liaise with a manager",
+    "cooperate with managers",
+    "liaising with managers",
+    "collaborate with managers",
+    "work together with managers",
+    "work with managers"
+   ],
+   "broader": [
+    "interact with others",
+    "coordinating activities with others"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/8a43795b-bb38-4f29-91df-a6c92ad4643c": {
+   "uri": "http://data.europa.eu/esco/skill/8a43795b-bb38-4f29-91df-a6c92ad4643c",
+   "title": "analyse financial performance of a company",
+   "skill_type": "skill",
+   "description": "Based on accounts, records, financial statements and external information of the market, analyse the performance of the company in financial matters in order to identify improvement actions that could increase profit.",
+   "alt_labels": [
+    "analyse financial performance of companies",
+    "study financial performance of a company",
+    "examine financial performance of a company",
+    "analysing financial performance of company",
+    "review financial performance of a company",
+    "evaluate financial performance of a company",
+    "investigate financial performance of a company",
+    "analyse company financial performance"
+   ],
+   "broader": [
+    "analyse external factors of companies",
+    "analyse internal factors of companies",
+    "analysing financial and economic data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "financial analysis"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/5da3c765-10a3-49eb-934c-ec401ceb1a34": {
+   "uri": "http://data.europa.eu/esco/skill/5da3c765-10a3-49eb-934c-ec401ceb1a34",
+   "title": "analyse business plans",
+   "skill_type": "skill",
+   "description": "Analyse the formal statements from businesses which outline their business goals and the strategies they set in place to meet them, in order to assess the feasibility of the plan and verify the business' ability to meet external requirements such as the repayment of a loan or return of investments.",
+   "alt_labels": [
+    "analyse business plan",
+    "evaluate business plans",
+    "analyse business plan feasibility",
+    "gauge business plans",
+    "analyse business formal statements"
+   ],
+   "broader": [
+    "evaluate information",
+    "analysing business operations"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/8316979b-df5a-4dc7-98ef-61ec6a10df84": {
+   "uri": "http://data.europa.eu/esco/skill/8316979b-df5a-4dc7-98ef-61ec6a10df84",
+   "title": "conduct quantitative research",
+   "skill_type": "skill",
+   "description": "Execute a systematic empirical investigation of observable phenomena via statistical, mathematical or computational techniques.",
+   "alt_labels": [],
+   "broader": [
+    "conducting investigations"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "manage quantitative data"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/ce5b1446-b5e3-4f05-a5ac-83f2ee142a44": {
+   "uri": "http://data.europa.eu/esco/skill/ce5b1446-b5e3-4f05-a5ac-83f2ee142a44",
+   "title": "analyse external factors of companies",
+   "skill_type": "skill",
+   "description": "Perform research and analysis of the external factor pertaining to companies such as consumers, position in the market, competitors, and political situation.",
+   "alt_labels": [
+    "study external factors of companies",
+    "examine external factors of companies",
+    "review external factors of companies",
+    "analyse external factors of company",
+    "analysing external factors of companies",
+    "evaluate external factors of companies",
+    "scrutinize"
+   ],
+   "broader": [
+    "analysing financial and economic data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/6eff134b-e34f-4d6e-a6e8-5e47cf2228d0": {
+   "uri": "http://data.europa.eu/esco/skill/6eff134b-e34f-4d6e-a6e8-5e47cf2228d0",
+   "title": "risk management",
+   "skill_type": "knowledge",
+   "description": "The process of identifying, assessing, and prioritising of all types of risks and where they could come from, such as natural causes, legal changes, or uncertainty in any given context, and the methods on dealing with risks effectively.",
+   "alt_labels": [
+    "hazard manamagent",
+    "risk assessment",
+    "risk administration",
+    "risk governance"
+   ],
+   "broader": [
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/fa465db3-56e8-4b5d-a781-e2a313a4ed2d": {
+   "uri": "http://data.europa.eu/esco/skill/fa465db3-56e8-4b5d-a781-e2a313a4ed2d",
+   "title": "conduct qualitative research",
+   "skill_type": "skill",
+   "description": "Gather relevant information by applying systematic methods, such as interviews, focus groups, text analysis, observations and case studies.",
+   "alt_labels": [],
+   "broader": [
+    "process qualitative information",
+    "gathering information from physical or electronic sources"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/8bc75dce-beba-40f9-93fc-66c9708ed74b": {
+   "uri": "http://data.europa.eu/esco/skill/8bc75dce-beba-40f9-93fc-66c9708ed74b",
+   "title": "advise on efficiency improvements",
+   "skill_type": "skill",
+   "description": "Analyse information and details of processes and products in order to advise on possible efficiency improvements that could be implemented and would signify a better use of resources.",
+   "alt_labels": [
+    "offer suggestions on efficiency improvements",
+    "advise on improving efficiency",
+    "advise on efficiency improvement",
+    "counsel on efficiency improvements",
+    "give recommendations on efficiency improvements",
+    "advising on efficiency improvements"
+   ],
+   "broader": [
+    "give advice to others",
+    "advising on business or operational matters"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/dc72ad0a-c5dc-4abd-bc0d-ca43e82162e1": {
+   "uri": "http://data.europa.eu/esco/skill/dc72ad0a-c5dc-4abd-bc0d-ca43e82162e1",
+   "title": "build business relationships",
+   "skill_type": "skill",
+   "description": "Establish a positive, long-term relationship between organisations and interested third parties such as suppliers, distributors, shareholders and other stakeholders in order to inform them of the organisation and its objectives.",
+   "alt_labels": [
+    "construct business relationships",
+    "produce business relationships",
+    "build a business relationship",
+    "set up business relationships",
+    "devise business relationships",
+    "assemble business relationships",
+    "building business relationships"
+   ],
+   "broader": [
+    "interact with others",
+    "developing professional relationships or networks"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/1212ac42-2564-4fce-80e1-6ce4ea4d9bf5": {
+   "uri": "http://data.europa.eu/esco/skill/1212ac42-2564-4fce-80e1-6ce4ea4d9bf5",
+   "title": "advise on personnel management",
+   "skill_type": "skill",
+   "description": "Advise senior staff in an organisation on methods to improve relations with employees, on improved methods for hiring and training employees and increasing employee satisfaction.",
+   "alt_labels": [
+    "recommend personnel management",
+    "suggestions on personnel management",
+    "provide personnel management support",
+    "instruct on personnel management",
+    "provide personnel management advice",
+    "give personnel management advice and support"
+   ],
+   "broader": [
+    "give advice to others",
+    "advising on business or operational matters"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "personnel management"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/d53b04fb-1bbb-4a25-92f8-8ceb308d276f": {
+   "uri": "http://data.europa.eu/esco/skill/d53b04fb-1bbb-4a25-92f8-8ceb308d276f",
+   "title": "define organisational standards",
+   "skill_type": "skill",
+   "description": "Write, implement and foster the internal standards of the company as part of the business plans for the operations and levels of performance that the company intends to achieve.",
+   "alt_labels": [
+    "set organisational standards",
+    "defining organisational standards",
+    "define standards for the organisation",
+    "define organisational standard",
+    "write up organisational standards"
+   ],
+   "broader": [
+    "support company plan",
+    "developing operational policies and procedures"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "organisational policies"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/98301d4a-2cc3-439d-8d7f-0b6ac76302bb": {
+   "uri": "http://data.europa.eu/esco/skill/98301d4a-2cc3-439d-8d7f-0b6ac76302bb",
+   "title": "business process modelling",
+   "skill_type": "knowledge",
+   "description": "The tools, methods and notations such as Business Process Model and Notation (BPMN) and Business Process Execution Language (BPEL), used to describe and analyse the characteristics of a business process and model its further development.",
+   "alt_labels": [
+    "BPMN",
+    "process modelling"
+   ],
+   "broader": [
+    "business model",
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/143769cb-b61e-47d8-a61e-eedfbec1016c": {
+   "uri": "http://data.europa.eu/esco/skill/143769cb-b61e-47d8-a61e-eedfbec1016c",
+   "title": "business intelligence",
+   "skill_type": "knowledge",
+   "description": "The tools used to transform large amounts of raw data into relevant and helpful business information.",
+   "alt_labels": [],
+   "broader": [
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/d77d7685-04fb-43a4-a1ac-09a10811f646": {
+   "uri": "http://data.europa.eu/esco/skill/d77d7685-04fb-43a4-a1ac-09a10811f646",
+   "title": "corporate law",
+   "skill_type": "knowledge",
+   "description": "The legal rules that govern how corporate stakeholders (such as shareholders, employees, directors, consumers, etc) interact with one another, and the responsibilities corporations have to their stakeholders.",
+   "alt_labels": [
+    "corporate regulation",
+    "corporate statutes",
+    "corporation law",
+    "corporate rules",
+    "corporation regulation",
+    "corporate law",
+    "corporation statutes",
+    "corporation rules"
+   ],
+   "broader": [
+    "law"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/ccbd0898-e225-4abc-8992-57a23b0e2eec": {
+   "uri": "http://data.europa.eu/esco/skill/ccbd0898-e225-4abc-8992-57a23b0e2eec",
+   "title": "support implementation of quality management systems",
+   "skill_type": "skill",
+   "description": "Advocate the introduction of new business processes to help achieve quality standards, such as the improvement of the organisational structure or the development of new procedures in case of quality defects.",
+   "alt_labels": [
+    "assist implementation of quality management systems",
+    "quality management systems implementation support",
+    "help implementation of quality management systems",
+    "facilitate implementation of quality management systems",
+    "implementation support for quality management systems",
+    "supporting quality management systems implementation",
+    "aid implementation of quality management systems"
+   ],
+   "broader": [
+    "manage quality",
+    "apply quality standards",
+    "apply quality standards"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/62bf2e21-2613-47f1-a624-fe0fc925e671": {
+   "uri": "http://data.europa.eu/esco/skill/62bf2e21-2613-47f1-a624-fe0fc925e671",
+   "title": "market entry strategies",
+   "skill_type": "knowledge",
+   "description": "The ways to enter a new market and their implications, namely; exporting via representatives, franchising to third parties, collaborating joint ventures, and opening of fully-owned subsidiaries and flagships.",
+   "alt_labels": [
+    "market entry tactics",
+    "market entrance strategies",
+    "market entry strategy",
+    "market entry plans"
+   ],
+   "broader": [
+    "marketing and advertising"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/d2dc31f1-720c-4757-bc1b-9e563d264dcf": {
+   "uri": "http://data.europa.eu/esco/skill/d2dc31f1-720c-4757-bc1b-9e563d264dcf",
+   "title": "advise on organisation climate",
+   "skill_type": "skill",
+   "description": "Advise organisations on their internal culture and work environment as experienced by employees, and the factors which may influence the behaviour of employees.",
+   "alt_labels": [
+    "help with organisational culture",
+    "help with organisational climate",
+    "comment on organisational culture",
+    "recommend organisational  climate policy",
+    "comment on organisational climate",
+    "recommend organisational  culture policy"
+   ],
+   "broader": [
+    "give advice to others",
+    "advising on business or operational matters"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/79c36c91-28a5-44b7-ab9b-7093b2d4b21e": {
+   "uri": "http://data.europa.eu/esco/skill/79c36c91-28a5-44b7-ab9b-7093b2d4b21e",
+   "title": "advise on financial matters",
+   "skill_type": "skill",
+   "description": "Consult, advise, and propose solutions with regards to financial management such as acquiring new assets, incurring in investments, and tax efficiency methods.",
+   "alt_labels": [
+    "give recommendations on financial matters",
+    "advising on financial matters",
+    "advise on matters of finance",
+    "offer suggestions on financial matters",
+    "counsel on financial matters",
+    "advise on financial matter"
+   ],
+   "broader": [
+    "give advice to others",
+    "providing financial advice"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/f975091a-e5a5-4472-ac17-11680e53e98f": {
+   "uri": "http://data.europa.eu/esco/skill/f975091a-e5a5-4472-ac17-11680e53e98f",
+   "title": "seek innovation in current practices",
+   "skill_type": "skill",
+   "description": "Search for improvements and present innovative solutions, creativity and alternative thinking to develop new technologies, methods or ideas for and answers to work-related problems.",
+   "alt_labels": [
+    "identify innovation",
+    "seek innovative current practices",
+    "innovate",
+    "seek an innovative current practice"
+   ],
+   "broader": [
+    "think creatively",
+    "creatively use digital technologies",
+    "monitoring developments in area of expertise"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "innovation in nursing",
+    "innovation processes"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/bd698bbe-7003-4508-b422-46c2ff4d5e95": {
+   "uri": "http://data.europa.eu/esco/skill/bd698bbe-7003-4508-b422-46c2ff4d5e95",
+   "title": "business strategy concepts",
+   "skill_type": "knowledge",
+   "description": "The terminology related to the design and implementation of major trends and aims which are taken by an organisation's executives, while keeping in mind its resources, competition and environments.",
+   "alt_labels": [],
+   "broader": [
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "make strategic business decisions"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/66d47084-9437-48b2-819b-c4c8214ed650": {
+   "uri": "http://data.europa.eu/esco/skill/66d47084-9437-48b2-819b-c4c8214ed650",
+   "title": "interview people",
+   "skill_type": "skill",
+   "description": "Interview people in a range of different circumstances.",
+   "alt_labels": [
+    "ask questions and keep record of answers",
+    "interview individuals",
+    "interview groups of people",
+    "do interviews",
+    "ask questions and evaluate answers"
+   ],
+   "broader": [
+    "use questioning techniques",
+    "interviewing"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "interview techniques"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/8d4271ca-c9fd-40b3-875f-15f78332a49e": {
+   "uri": "http://data.europa.eu/esco/skill/8d4271ca-c9fd-40b3-875f-15f78332a49e",
+   "title": "quality standards",
+   "skill_type": "knowledge",
+   "description": "The national and international requirements, specifications and guidelines to ensure that products, services and processes are of good quality and fit for purpose.",
+   "alt_labels": [],
+   "broader": [
+    "wholesale and retail sales"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/4a460161-eaea-4fe2-bd0e-164ccc635be1": {
+   "uri": "http://data.europa.eu/esco/skill/4a460161-eaea-4fe2-bd0e-164ccc635be1",
+   "title": "financial statements",
+   "skill_type": "knowledge",
+   "description": "The set of financial records disclosing the financial position of a company at the end of a set period or of the accounting year. The financial statements consisting of five parts which are the statement of financial position, the statement of comprehensive income, the statement of changes in equity (SOCE), the statement of cash flows and notes.",
+   "alt_labels": [
+    "records of financial activities",
+    "statements on finances",
+    "financial statement"
+   ],
+   "broader": [
+    "finance, banking and insurance"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/c544a9f3-5945-4b54-afed-de0697852817": {
+   "uri": "http://data.europa.eu/esco/skill/c544a9f3-5945-4b54-afed-de0697852817",
+   "title": "report analysis results",
+   "skill_type": "skill",
+   "description": "Produce research documents or give presentations to report the results of a conducted research and analysis project, indicating the analysis procedures and methods which led to the results, as well as potential interpretations of the results.",
+   "alt_labels": [
+    "use data reporting"
+   ],
+   "broader": [
+    "perform data analysis",
+    "inspect data",
+    "report facts",
+    "documenting technical designs, procedures, problems or activities"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "financial analysis",
+    "scientific research methodology"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/812590e4-7108-4016-baba-957dcf8213ae": {
+   "uri": "http://data.europa.eu/esco/skill/812590e4-7108-4016-baba-957dcf8213ae",
+   "title": "keep updated on the political landscape",
+   "skill_type": "skill",
+   "description": "Read, search, and analyse the political situation of a region as a source of information applicable for different purposes such as information, decision-making, and management, and investments.",
+   "alt_labels": [
+    "keep updated on the political landscape",
+    "keeping updated on the political landscape",
+    "keep abreast of the political landscape",
+    "stay current on the political landscape",
+    "keep updated on political landscapes"
+   ],
+   "broader": [
+    "monitoring developments in area of expertise"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "political ideologies",
+    "politics"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/0efbe2dc-2770-47ec-b8f4-d1bdff6ac0a4": {
+   "uri": "http://data.europa.eu/esco/skill/0efbe2dc-2770-47ec-b8f4-d1bdff6ac0a4",
+   "title": "advise on risk management",
+   "skill_type": "skill",
+   "description": "Provide advice on risk management policies and prevention strategies and their implementation, being aware of different kinds of risks to a specific organisation.",
+   "alt_labels": [
+    "recommend on risk management",
+    "propose on accident management",
+    "strategise on accident management",
+    "strategise on risk management",
+    "recommend on accident management",
+    "propose on risk management",
+    "suggest on risk management",
+    "suggest on accident management"
+   ],
+   "broader": [
+    "performing risk analysis and management"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "internal risk management policy",
+    "risk management"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/f1155d3f-fbca-4298-a31c-f6955653bacf": {
+   "uri": "http://data.europa.eu/esco/skill/f1155d3f-fbca-4298-a31c-f6955653bacf",
+   "title": "shape organisational teams based on competencies",
+   "skill_type": "skill",
+   "description": "Study the profiles of collaborators and decide the best place for directors and collaborators following an strategic mindset and serving to the goals of the company.",
+   "alt_labels": [
+    "shaping organisational teams based on competencies",
+    "put organisational teams together based on competencies",
+    "shape competency-based organisational teams",
+    "shape organisational teams based on competency",
+    "form organisational teams based on competencies",
+    "shape organisational team based on competencies"
+   ],
+   "broader": [
+    "building and developing teams"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/69f36674-440a-4fa0-89f9-1b70172ebb9d": {
+   "uri": "http://data.europa.eu/esco/skill/69f36674-440a-4fa0-89f9-1b70172ebb9d",
+   "title": "advise on communication strategies",
+   "skill_type": "skill",
+   "description": "Provide companies and organisations with consulting services concerning their internal and external communication plans and their representation, including their presence online. Recommend improvements in communication and make sure that important information reaches all employees and that their questions are answered.",
+   "alt_labels": [
+    "advise on communications strategies",
+    "offer suggestions on communication strategies",
+    "advise on communication strategy",
+    "advising on communication strategies",
+    "counsel on communication strategies",
+    "give recommendations on communication strategies"
+   ],
+   "broader": [
+    "give advice to others",
+    "advising and consulting"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "communication"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/07e51c60-763a-4335-b4ec-70a15f66d328": {
+   "uri": "http://data.europa.eu/esco/skill/07e51c60-763a-4335-b4ec-70a15f66d328",
+   "title": "propose ICT solutions to business problems",
+   "skill_type": "skill",
+   "description": "Suggest how to solve business issues, using ICT means, so that business processes are improved.",
+   "alt_labels": [
+    "propose technical solutions to business problems"
+   ],
+   "broader": [
+    "develop strategy to solve problems",
+    "solve technical problems",
+    "create solutions to problems",
+    "designing ict systems or applications"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "business ICT systems"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/3a5231a0-8c30-48ee-b671-08e2debd4441": {
+   "uri": "http://data.europa.eu/esco/skill/3a5231a0-8c30-48ee-b671-08e2debd4441",
+   "title": "organisational policies",
+   "skill_type": "knowledge",
+   "description": "The policies to achieve set of goals and targets regarding the development and maintenance of an organisation.",
+   "alt_labels": [],
+   "broader": [
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/341c4478-c976-4ff0-a102-cfd92174d873": {
+   "uri": "http://data.europa.eu/esco/skill/341c4478-c976-4ff0-a102-cfd92174d873",
+   "title": "business law",
+   "skill_type": "knowledge",
+   "description": "The field of law concerned with the trade and commerce activities of businesses and private persons and their legal interactions. This relates to numerous legal disciplines, including tax and employment law.",
+   "alt_labels": [
+    "the law of business",
+    "business laws",
+    "business norms",
+    "business regulation",
+    "business legislation"
+   ],
+   "broader": [
+    "law"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/7b3abd38-61ae-42a4-88bb-0884784f9ee1": {
+   "uri": "http://data.europa.eu/esco/skill/7b3abd38-61ae-42a4-88bb-0884784f9ee1",
+   "title": "advise client on technical possibilities",
+   "skill_type": "skill",
+   "description": "Recommend technical solutions, including systems, to the client within the framework of a project.",
+   "alt_labels": [
+    "counsel client on technical possibilities",
+    "advising client on technical possibilities",
+    "advise clients on technical possibilities",
+    "offer suggestions to client on technical possibilities",
+    "advise client on technical possibility",
+    "give client recommendations on technical possibilities"
+   ],
+   "broader": [
+    "give advice to others",
+    "advising on design or use of technologies"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/3c03ee71-4a23-448f-b79e-81fd75d27dca": {
+   "uri": "http://data.europa.eu/esco/skill/3c03ee71-4a23-448f-b79e-81fd75d27dca",
+   "title": "apply change management",
+   "skill_type": "skill",
+   "description": "Manage development within an organisation by anticipating changes and making managerial decisions to ensure that the members involved are as less disturbed as possible.",
+   "alt_labels": [
+    "utilise change management",
+    "apply changing management",
+    "implement change management",
+    "employ change management",
+    "administer change management",
+    "change management application",
+    "applying change management"
+   ],
+   "broader": [
+    "adapt to change",
+    "management skills"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/4913d0c0-133a-4c46-aac3-f5d4989a982e": {
+   "uri": "http://data.europa.eu/esco/skill/4913d0c0-133a-4c46-aac3-f5d4989a982e",
+   "title": "product usage risks analysis",
+   "skill_type": "knowledge",
+   "description": "The methods to analyse product associated risks, in possible customer environment, their magnitude, consequences and likely outcomes in order to mitigate them by warning messages, safety instructions and maintenance support.",
+   "alt_labels": [
+    "customer product risks analysis",
+    "product risks analysis"
+   ],
+   "broader": [
+    "protect ICT devices",
+    "protection of persons and property"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/b04f377b-ee80-4b38-aca1-19d266a23b17": {
+   "uri": "http://data.europa.eu/esco/skill/b04f377b-ee80-4b38-aca1-19d266a23b17",
+   "title": "analyse business requirements",
+   "skill_type": "skill",
+   "description": "Study clients' needs and expectations for a product or service in order to identify and resolve inconsistencies and possible disagreements of involved stakeholders.",
+   "alt_labels": [
+    "analyse customer product risks",
+    "business requirements analysis"
+   ],
+   "broader": [
+    "perform business analysis",
+    "analysing business operations"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "business requirements techniques"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/0e0c9c11-b39e-43cf-ba95-2fe646f5de64": {
+   "uri": "http://data.europa.eu/esco/skill/0e0c9c11-b39e-43cf-ba95-2fe646f5de64",
+   "title": "identify customer requirements",
+   "skill_type": "skill",
+   "description": "Apply techniques and tools, such as surveys, questionnaires, ICT applications, for eliciting, defining, analysing, documenting and maintaining user requirements from system, service or product.",
+   "alt_labels": [],
+   "broader": [
+    "perform customers’ needs analysis",
+    "conducting studies, investigations and examinations"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "ICT system user requirements"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/a8797f21-1af0-4c5e-98ca-bf1442929363": {
+   "uri": "http://data.europa.eu/esco/skill/a8797f21-1af0-4c5e-98ca-bf1442929363",
+   "title": "interact with users to gather requirements",
+   "skill_type": "skill",
+   "description": "Communicate with users to identify their requirements and collect them. Define all relevant user requirements and document them in an understandable and logical way for further analysis and specification.",
+   "alt_labels": [],
+   "broader": [
+    "use questioning techniques",
+    "engaging with others to identify needs"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "ICT system user requirements"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/f7b5d916-52f0-4865-b6a6-e1a3b711cb5e": {
+   "uri": "http://data.europa.eu/esco/skill/f7b5d916-52f0-4865-b6a6-e1a3b711cb5e",
+   "title": "implement strategic planning",
+   "skill_type": "skill",
+   "description": "Take action on the goals and procedures defined at a strategic level in order to mobilise resources and pursue the established strategies.",
+   "alt_labels": [
+    "administer strategic planning",
+    "strategic planning implementation",
+    "implementing strategic planning",
+    "implementing a  strategic plan",
+    "utilise strategic planning",
+    "introduce strategic planning",
+    "execute strategic planning"
+   ],
+   "broader": [
+    "implement strategic management",
+    "implementing new procedures or processes"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "strategic planning"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/a846cb9e-c152-41e7-bd34-45e7ff941e3b": {
+   "uri": "http://data.europa.eu/esco/skill/a846cb9e-c152-41e7-bd34-45e7ff941e3b",
+   "title": "legal requirements of ICT products",
+   "skill_type": "knowledge",
+   "description": "The international regulations related to the development and use of ICT products.",
+   "alt_labels": [],
+   "broader": [
+    "law"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/6a7792a9-888a-46ad-afc9-2c0d94c8fde6": {
+   "uri": "http://data.europa.eu/esco/skill/6a7792a9-888a-46ad-afc9-2c0d94c8fde6",
+   "title": "create business process models",
+   "skill_type": "skill",
+   "description": "Develop formal and informal descriptions of the business processes and the organisational structure by using business process models, notations and tools.",
+   "alt_labels": [],
+   "broader": [
+    "developing financial, business or marketing plans"
+   ],
+   "has_essential_skill": [
+    "organisational structure"
+   ],
+   "has_optional_skill": [
+    "business model",
+    "business process modelling",
+    "business processes"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/56042303-972b-41be-9310-58467599ff7e": {
+   "uri": "http://data.europa.eu/esco/skill/56042303-972b-41be-9310-58467599ff7e",
+   "title": "analyse business processes",
+   "skill_type": "skill",
+   "description": "Study the contribution of the work processes to the business goals and monitor their efficiency and productivity.",
+   "alt_labels": [],
+   "broader": [
+    "perform business analysis",
+    "analysing business operations"
+   ],
+   "has_essential_skill": [
+    "business analysis"
+   ],
+   "has_optional_skill": [
+    "business process modelling",
+    "business processes"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/b9bf9e17-ae47-417b-bbb1-e8b7c263ccac": {
+   "uri": "http://data.europa.eu/esco/skill/b9bf9e17-ae47-417b-bbb1-e8b7c263ccac",
+   "title": "identify legal requirements",
+   "skill_type": "skill",
+   "description": "Conduct research for applicable legal and normative procedures and standards, analyse and derive legal requirements that apply to the organisation, its policies and products.",
+   "alt_labels": [
+    "identify legal and normative requirements and standards"
+   ],
+   "broader": [
+    "conducting investigations"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "legal requirements for operating in the automotive retail sector"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/9714735d-6f60-440b-bdbc-aaf45ebcbe78": {
+   "uri": "http://data.europa.eu/esco/skill/9714735d-6f60-440b-bdbc-aaf45ebcbe78",
+   "title": "analyse the context of an organisation",
+   "skill_type": "skill",
+   "description": "Study the external and internal environment of an organisation by identifying its strengths and weaknesses in order to provide a base for company strategies and further planning.",
+   "alt_labels": [
+    "analyse context of a business"
+   ],
+   "broader": [
+    "perform business analysis",
+    "analysing business operations"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "business requirements techniques"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/2d6d4784-0992-48e7-b100-22d7229b3f0a": {
+   "uri": "http://data.europa.eu/esco/skill/2d6d4784-0992-48e7-b100-22d7229b3f0a",
+   "title": "translate requirement concepts into visual design",
+   "skill_type": "skill",
+   "description": "Develop visual design from given specifications and requirements, based on the analysis of the scope and target audience. Create a visual representation of ideas such as logos, website graphics, digital games and layouts.",
+   "alt_labels": [],
+   "broader": [
+    "design graphics",
+    "creating artistic designs or performances"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "graphic design"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/48b68726-0fd6-4e03-a5eb-82236516ee7a": {
+   "uri": "http://data.europa.eu/esco/skill/48b68726-0fd6-4e03-a5eb-82236516ee7a",
+   "title": "provide cost benefit analysis reports",
+   "skill_type": "skill",
+   "description": "Prepare, compile and communicate reports with broken down cost analysis on the proposal and budget plans of the company. Analyse the financial or social costs and benefits of a project or investment in advance over a given period of time.",
+   "alt_labels": [
+    "providing cost benefit analysis reports",
+    "provide reports on cost benefit analysis",
+    "provide cost benefit analysis report",
+    "provide cost-benefit analysis reports",
+    "generate cost benefit analysis reports",
+    "produce cost benefit analysis reports",
+    "create cost benefit analysis reports"
+   ],
+   "broader": [
+    "report analysis results",
+    "preparing financial documents, records, reports, or budgets"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/0ee94c0a-3716-494a-95a2-dcbab9e58be2": {
+   "uri": "http://data.europa.eu/esco/skill/0ee94c0a-3716-494a-95a2-dcbab9e58be2",
+   "title": "business requirements techniques",
+   "skill_type": "knowledge",
+   "description": "The procedures required to identify and analyse business and organisational needs.",
+   "alt_labels": [],
+   "broader": [
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/d9e5349e-8791-49c2-8ba4-839fdd1606c2": {
+   "uri": "http://data.europa.eu/esco/skill/d9e5349e-8791-49c2-8ba4-839fdd1606c2",
+   "title": "define technical requirements",
+   "skill_type": "skill",
+   "description": "Specify technical properties of goods, materials, methods, processes, services, systems, software and functionalities by identifying and responding to the particular needs that are to be satisfied according to customer requirements.",
+   "alt_labels": [
+    "write technical specifications",
+    "gather technical requirements"
+   ],
+   "broader": [
+    "developing operational policies and procedures"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "biomechanics of sport performance"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/93aaf65c-5aad-4e6f-a7ba-ce9bf7c0e6e6": {
+   "uri": "http://data.europa.eu/esco/skill/93aaf65c-5aad-4e6f-a7ba-ce9bf7c0e6e6",
+   "title": "information categorisation",
+   "skill_type": "knowledge",
+   "description": "The process of classifying the information into categories and showing relationships between the data for some clearly defined purposes.",
+   "alt_labels": [],
+   "broader": [
+    "library, information and archival studies"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "structure information"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/1bba98a7-92b9-450b-9235-e0c905f8f3c4": {
+   "uri": "http://data.europa.eu/esco/skill/1bba98a7-92b9-450b-9235-e0c905f8f3c4",
+   "title": "information architecture",
+   "skill_type": "knowledge",
+   "description": "The methods through which information is generated, structured, stored, maintained, linked, exchanged and used.",
+   "alt_labels": [],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/e5609f89-0daf-40bb-bd6b-94f5d7498131": {
+   "uri": "http://data.europa.eu/esco/skill/e5609f89-0daf-40bb-bd6b-94f5d7498131",
+   "title": "ICT market",
+   "skill_type": "knowledge",
+   "description": "The processes, stakeholders and the dynamics of the chain of goods and services in the ICT market sector.",
+   "alt_labels": [],
+   "broader": [
+    "marketing and advertising"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/385479b7-5da5-4367-9763-0d15b41bb65b": {
+   "uri": "http://data.europa.eu/esco/skill/385479b7-5da5-4367-9763-0d15b41bb65b",
+   "title": "provide user documentation",
+   "skill_type": "skill",
+   "description": "Develop and organise the distribution of structured documents to assist people using a particular product or system, such as written or visual information about an application system and how to use it.",
+   "alt_labels": [],
+   "broader": [
+    "provide documentation",
+    "technical or academic writing"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/31c69100-b612-4a61-8db5-fd314318854c": {
+   "uri": "http://data.europa.eu/esco/skill/31c69100-b612-4a61-8db5-fd314318854c",
+   "title": "execute analytical mathematical calculations",
+   "skill_type": "skill",
+   "description": "Apply mathematical methods and make use of calculation technologies in order to perform analyses and devise solutions to specific problems.",
+   "alt_labels": [],
+   "broader": [
+    "think analytically",
+    "carry out work-related calculations",
+    "performing calculations"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "mathematics"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/ccdbd9bb-4faf-403c-a968-e8bf487f8a53": {
+   "uri": "http://data.europa.eu/esco/skill/ccdbd9bb-4faf-403c-a968-e8bf487f8a53",
+   "title": "business ICT systems",
+   "skill_type": "knowledge",
+   "description": "The software packages, hardware devices and new technologies used in supporting business processes such as enterprise resource planning (ERP), customer relationship management (CRM), mobile devices and network solutions.",
+   "alt_labels": [
+    "business IT systems"
+   ],
+   "broader": [
+    "computer use"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/3ce1fe19-7f9e-4070-941d-651673a5693b": {
+   "uri": "http://data.europa.eu/esco/skill/3ce1fe19-7f9e-4070-941d-651673a5693b",
+   "title": "decision support systems",
+   "skill_type": "knowledge",
+   "description": "The ICT systems that can be used to support business or organisational decision making.",
+   "alt_labels": [
+    "decision support matrix",
+    "decision-making tools",
+    "decision support software"
+   ],
+   "broader": [
+    "computer use"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/3c76296d-4bbd-44ba-8eaa-95bf275f79b7": {
+   "uri": "http://data.europa.eu/esco/skill/3c76296d-4bbd-44ba-8eaa-95bf275f79b7",
+   "title": "manage ICT project",
+   "skill_type": "skill",
+   "description": "Plan, organize, control and document procedures and resources, such as human capital, equipment and mastery, in order to achieve specific goals and objectives related to ICT systems, services or products, within specific constraints, such as scope, time, quality and budget.",
+   "alt_labels": [],
+   "broader": [
+    "perform project management",
+    "directing operational activities"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "project management principles",
+    "ICT project management",
+    "project management"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/696e3b5b-8b61-45af-ae4c-3ab700f197ec": {
+   "uri": "http://data.europa.eu/esco/skill/696e3b5b-8b61-45af-ae4c-3ab700f197ec",
+   "title": "information extraction",
+   "skill_type": "knowledge",
+   "description": "The techniques and methods used for eliciting and extracting information from unstructured or semi-structured digital documents and sources.",
+   "alt_labels": [],
+   "broader": [
+    "data extraction, transformation and loading tools",
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/348b74cd-49ce-4844-8bdf-ec188b497213": {
+   "uri": "http://data.europa.eu/esco/skill/348b74cd-49ce-4844-8bdf-ec188b497213",
+   "title": "visual presentation techniques",
+   "skill_type": "knowledge",
+   "description": "The visual representation and interaction techniques, such as histograms, scatter plots, surface plots, tree maps and parallel coordinate plots, that can be used to present abstract numerical and non-numerical data, in order to reinforce the human understanding of this information.",
+   "alt_labels": [
+    "visualization interface",
+    "Infoviz",
+    "information visualization",
+    "information visualisation",
+    "Infovis"
+   ],
+   "broader": [
+    "audio-visual techniques and media production"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/2fb8480e-de3c-462b-b169-e8bbb344da68": {
+   "uri": "http://data.europa.eu/esco/skill/2fb8480e-de3c-462b-b169-e8bbb344da68",
+   "title": "innovation processes",
+   "skill_type": "knowledge",
+   "description": "The techniques, models, methods and strategies which contribute to the promotion of steps towards innovation.",
+   "alt_labels": [],
+   "broader": [
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "emergent technologies"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/2c28fc20-8a60-4311-8899-5ef8729c05b3": {
+   "uri": "http://data.europa.eu/esco/skill/2c28fc20-8a60-4311-8899-5ef8729c05b3",
+   "title": "design process",
+   "skill_type": "skill",
+   "description": "Identify the workflow and resource requirements for a particular process, using a variety of tools such as process simulation software, flowcharting and scale models.",
+   "alt_labels": [
+    "process design"
+   ],
+   "broader": [
+    "designing systems and products"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "forging processes",
+    "deburring processes",
+    "anodising process",
+    "electroplating processes"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/bd14968e-e409-45af-b362-3495ed7b10e0": {
+   "uri": "http://data.europa.eu/esco/skill/bd14968e-e409-45af-b362-3495ed7b10e0",
+   "title": "cloud technologies",
+   "skill_type": "knowledge",
+   "description": "The technologies which enable access to hardware, software, data and services through remote servers and software networks irrespective of their location and architecture.",
+   "alt_labels": [
+    "cloud computing"
+   ],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/c5e8abde-d2ba-4e8e-a65e-720b71180666": {
+   "uri": "http://data.europa.eu/esco/skill/c5e8abde-d2ba-4e8e-a65e-720b71180666",
+   "title": "unstructured data",
+   "skill_type": "knowledge",
+   "description": "The information that is not arranged in a pre-defined manner or does not have a pre-defined data model and is difficult to understand and find patterns in without using techniques such as data mining.",
+   "alt_labels": [
+    "data analytics"
+   ],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "structure information"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/0daaf096-1639-461c-bf1a-bbeea77e6b67": {
+   "uri": "http://data.europa.eu/esco/skill/0daaf096-1639-461c-bf1a-bbeea77e6b67",
+   "title": "internal risk management policy",
+   "skill_type": "knowledge",
+   "description": "The internal risk management policies that identify, assess and prioritise risks in an IT environment. The methods used to minimise, monitor and control the possibility and the impact of disastrous events that affect the reaching of business goals.",
+   "alt_labels": [
+    "risk management internal policy"
+   ],
+   "broader": [
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/79f24a62-7718-46e1-9b41-37be0560a5ca": {
+   "uri": "http://data.europa.eu/esco/skill/79f24a62-7718-46e1-9b41-37be0560a5ca",
+   "title": "organisational resilience",
+   "skill_type": "knowledge",
+   "description": "The strategies, methods and techniques that increase the organisation's capacity to protect and sustain the services and operations that fulfil the organisational mission and create lasting values by effectively addressing the combined issues of security, preparedness, risk and disaster recovery.",
+   "alt_labels": [
+    "operational resilience",
+    "business resilience"
+   ],
+   "broader": [
+    "management and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/09f2f811-a3fb-4de3-a70f-6420a6935575": {
+   "uri": "http://data.europa.eu/esco/skill/09f2f811-a3fb-4de3-a70f-6420a6935575",
+   "title": "systems development life-cycle",
+   "skill_type": "knowledge",
+   "description": "The sequence of steps, such as planning, creating, testing and deploying and the models for the development and life-cycle management of a system.",
+   "alt_labels": [
+    "application development life-cycle"
+   ],
+   "broader": [
+    "software and applications development and analysis"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/4216e465-7baa-4884-a241-54b197bb9278": {
+   "uri": "http://data.europa.eu/esco/skill/4216e465-7baa-4884-a241-54b197bb9278",
+   "title": "perform data mining",
+   "skill_type": "skill",
+   "description": "Explore large datasets to reveal patterns using statistics, database systems or artificial intelligence and present the information in a comprehensible way.",
+   "alt_labels": [
+    "mine data",
+    "use model data"
+   ],
+   "broader": [
+    "use databases",
+    "managing and analysing digital data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "unstructured data",
+    "data mining",
+    "data mining methods"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/9ff9db9d-d14b-426e-83f3-e7449af6c79f": {
+   "uri": "http://data.europa.eu/esco/skill/9ff9db9d-d14b-426e-83f3-e7449af6c79f",
+   "title": "manage data",
+   "skill_type": "skill",
+   "description": "Administer all types of data resources through their lifecycle by performing data profiling, parsing, standardisation, identity resolution, cleansing, enhancement and auditing. Ensure the data is fit for purpose, using specialised ICT tools to fulfil the data quality criteria.",
+   "alt_labels": [
+    "administer data",
+    "manage data lifecycle",
+    "operate data quality tools",
+    "data resource management",
+    "data administration"
+   ],
+   "broader": [
+    "managing information"
+   ],
+   "has_essential_skill": [
+    "audit techniques"
+   ],
+   "has_optional_skill": [
+    "product data management"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/1e77e42a-181f-4b48-8e74-201ce50ffc29": {
+   "uri": "http://data.europa.eu/esco/skill/1e77e42a-181f-4b48-8e74-201ce50ffc29",
+   "title": "interpret current data",
+   "skill_type": "skill",
+   "description": "Analyse data gathered from sources such as market data, scientific papers, customer requirements and questionnaires which are current and up-to-date in order to assess development and innovation in areas of expertise.",
+   "alt_labels": [],
+   "broader": [
+    "monitoring developments in area of expertise"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "data models"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/50b100ea-74fd-4706-99db-3e4ca55e51b8": {
+   "uri": "http://data.europa.eu/esco/skill/50b100ea-74fd-4706-99db-3e4ca55e51b8",
+   "title": "perform data cleansing",
+   "skill_type": "skill",
+   "description": "Detect and correct corrupt records from data sets, ensure that the data become and remain structured according to guidelines.",
+   "alt_labels": [
+    "performing data cleansing",
+    "perform a data cleanse",
+    "complete data cleansing",
+    "data cleansing performance",
+    "undertake data cleansing",
+    "implement data cleansing"
+   ],
+   "broader": [
+    "managing and analysing digital data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "unstructured data"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/4a193795-fa63-414e-9f2e-bfdb3924571e": {
+   "uri": "http://data.europa.eu/esco/skill/4a193795-fa63-414e-9f2e-bfdb3924571e",
+   "title": "handle data samples",
+   "skill_type": "skill",
+   "description": "Collect and select a set of data from a population by a statistical or other defined procedure.",
+   "alt_labels": [],
+   "broader": [
+    "evaluate data, information and digital content",
+    "gathering information from physical or electronic sources"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "manage quantitative data"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/54c9c155-9293-4329-8ed2-2e76e8b519d4": {
+   "uri": "http://data.europa.eu/esco/skill/54c9c155-9293-4329-8ed2-2e76e8b519d4",
+   "title": "define data quality criteria",
+   "skill_type": "skill",
+   "description": "Specify the criteria by which data quality is measured for business purposes, such as inconsistencies, incompleteness, usability for purpose and accuracy.",
+   "alt_labels": [],
+   "broader": [
+    "set quality assurance objectives",
+    "assure quality of processes and products"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "data quality assessment"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/327d15c8-29ff-4ad4-a4fe-6536d777a45f": {
+   "uri": "http://data.europa.eu/esco/skill/327d15c8-29ff-4ad4-a4fe-6536d777a45f",
+   "title": "documentation types",
+   "skill_type": "knowledge",
+   "description": "The characteristics of internal and external documentation types aligned with the product life cycle and their specific content types.",
+   "alt_labels": [],
+   "broader": [
+    "library, information and archival studies"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "interpret technical texts",
+    "prepare technical reports"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/46ec0033-3c71-415e-bcff-b065675ba2dc": {
+   "uri": "http://data.europa.eu/esco/skill/46ec0033-3c71-415e-bcff-b065675ba2dc",
+   "title": "integrate ICT data",
+   "skill_type": "skill",
+   "description": "Combine data from sources to provide unified view of the set of these data.",
+   "alt_labels": [],
+   "broader": [
+    "managing and analysing digital data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/7ee4c2ea-b349-4bd2-81a3-ec31475d4833": {
+   "uri": "http://data.europa.eu/esco/skill/7ee4c2ea-b349-4bd2-81a3-ec31475d4833",
+   "title": "statistics",
+   "skill_type": "knowledge",
+   "description": "The study of statistical theory, methods and practices such as collection, organisation, analysis, interpretation and presentation of data. It deals with all aspects of data including the planning of data collection in terms of the design of surveys and experiments in order to forecast and plan work-related activities.",
+   "alt_labels": [
+    "use of statistics in performance of work",
+    "data analysis",
+    "data",
+    "stats",
+    "use of data",
+    "use of data in performance of work",
+    "statistical analysis",
+    "use of statistics"
+   ],
+   "broader": [
+    "statistics"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/fecf8a0d-62c4-4e71-9b03-0f4fc2ad7bf5": {
+   "uri": "http://data.europa.eu/esco/skill/fecf8a0d-62c4-4e71-9b03-0f4fc2ad7bf5",
+   "title": "data models",
+   "skill_type": "knowledge",
+   "description": "The techniques and existing systems used for structuring data elements and showing relationships between them, as well as methods for interpreting the data structures and relationships.",
+   "alt_labels": [],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "structure information",
+    "manage ICT semantic integration"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/25f0ea33-b4a2-4f31-b7b4-7d20e827b180": {
+   "uri": "http://data.europa.eu/esco/skill/25f0ea33-b4a2-4f31-b7b4-7d20e827b180",
+   "title": "data mining",
+   "skill_type": "knowledge",
+   "description": "The methods of artificial intelligence, machine learning, statistics and databases used to extract content from a dataset.",
+   "alt_labels": [],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/713fb616-118e-40bc-9366-4a69879a49d5": {
+   "uri": "http://data.europa.eu/esco/skill/713fb616-118e-40bc-9366-4a69879a49d5",
+   "title": "implement data quality processes",
+   "skill_type": "skill",
+   "description": "Apply quality analysis, validation and verification techniques on data to check data quality integrity.",
+   "alt_labels": [
+    "verify data"
+   ],
+   "broader": [
+    "apply quality standards",
+    "use databases",
+    "apply quality standards"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "unstructured data"
+   ],
+   "is_essential_for_skill": [
+    "data quality assessment"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/79e29b8b-47d1-470d-b7b1-32506bfe7d9a": {
+   "uri": "http://data.europa.eu/esco/skill/79e29b8b-47d1-470d-b7b1-32506bfe7d9a",
+   "title": "collect ICT data",
+   "skill_type": "skill",
+   "description": "Gather data by designing and applying search and sampling methods.",
+   "alt_labels": [],
+   "broader": [
+    "gather data",
+    "gathering information from physical or electronic sources"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/382c11ed-20d5-4ae7-b60e-15fec527fa6c": {
+   "uri": "http://data.europa.eu/esco/skill/382c11ed-20d5-4ae7-b60e-15fec527fa6c",
+   "title": "apply statistical analysis techniques",
+   "skill_type": "skill",
+   "description": "Use models (descriptive or inferential statistics) and techniques (data mining or machine learning) for statistical analysis and ICT tools to analyse data, uncover correlations and forecast trends.",
+   "alt_labels": [
+    "apply numerical analysis to data"
+   ],
+   "broader": [
+    "carry out work-related calculations",
+    "analysing and evaluating information and data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "ICT performance analysis methods",
+    "statistics",
+    "task algorithmisation",
+    "statistical analysis system software"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/07889c08-7220-47c8-96f7-6068fbea00dc": {
+   "uri": "http://data.europa.eu/esco/skill/07889c08-7220-47c8-96f7-6068fbea00dc",
+   "title": "normalise data",
+   "skill_type": "skill",
+   "description": "Reduce data to their accurate core form (normal forms) in order to achieve such results as minimisation of dependency, elimination of redundancy, increase of consistency.",
+   "alt_labels": [
+    "perform data pre-processing",
+    "prepare data"
+   ],
+   "broader": [
+    "establish data processes",
+    "managing and analysing digital data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "unstructured data"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/a56dec32-05ef-45de-a256-ee6741f356db": {
+   "uri": "http://data.europa.eu/esco/skill/a56dec32-05ef-45de-a256-ee6741f356db",
+   "title": "information confidentiality",
+   "skill_type": "knowledge",
+   "description": "The mechanisms and regulations which allow for selective access control and guarantee that only authorised parties (people, processes, systems and devices) have access to data, the way to comply with confidential information and the risks of non-compliance.",
+   "alt_labels": [
+    "consumer data privacy",
+    "data confidentiality",
+    "data access control"
+   ],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/9cf681c7-89ec-470c-b651-7fe03786f586": {
+   "uri": "http://data.europa.eu/esco/skill/9cf681c7-89ec-470c-b651-7fe03786f586",
+   "title": "query languages",
+   "skill_type": "knowledge",
+   "description": "The field of standardised computer languages for retrieval of information from a database and of documents containing the needed information.",
+   "alt_labels": [],
+   "broader": [
+    "software and applications development and analysis"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/47a49cd6-097d-457a-9f7b-c290c14930d5": {
+   "uri": "http://data.europa.eu/esco/skill/47a49cd6-097d-457a-9f7b-c290c14930d5",
+   "title": "analyse big data",
+   "skill_type": "skill",
+   "description": "Collect and evaluate numerical data in large quantities, especially for the purpose of identifying patterns between the data.",
+   "alt_labels": [
+    "investigate big data",
+    "test big data",
+    "analysing big data",
+    "scrutinise big data",
+    "search big data",
+    "big data analysing",
+    "big data analysis"
+   ],
+   "broader": [
+    "perform data analysis",
+    "evaluate information",
+    "analyse test data",
+    "evaluate data, information and digital content",
+    "use data processing techniques",
+    "managing and analysing digital data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "manage quantitative data"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/2daec0e6-f0c1-43e8-8178-aedba99130ec": {
+   "uri": "http://data.europa.eu/esco/skill/2daec0e6-f0c1-43e8-8178-aedba99130ec",
+   "title": "establish data processes",
+   "skill_type": "skill",
+   "description": "Use ICT tools to apply mathematical, algorithmic or other data manipulation processes in order to create information.",
+   "alt_labels": [
+    "implement data processes",
+    "develop data processes"
+   ],
+   "broader": [
+    "managing and analysing digital data"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/99207709-d076-4cce-ba38-e90d3bb28806": {
+   "uri": "http://data.europa.eu/esco/skill/99207709-d076-4cce-ba38-e90d3bb28806",
+   "title": "resource description framework query language",
+   "skill_type": "knowledge",
+   "description": "The query languages such as SPARQL which are used to retrieve and manipulate data stored in Resource Description Framework format (RDF).",
+   "alt_labels": [
+    "SPARQL",
+    "RDF query language"
+   ],
+   "broader": [
+    "query languages",
+    "software and applications development and analysis"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "query languages"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/03ff0d53-573a-47a0-a0ad-1995815a4339": {
+   "uri": "http://data.europa.eu/esco/skill/03ff0d53-573a-47a0-a0ad-1995815a4339",
+   "title": "information structure",
+   "skill_type": "knowledge",
+   "description": "The type of infrastructure which defines the format of data: semi-structured, unstructured and structured.",
+   "alt_labels": [],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": [
+    "structure information",
+    "manage ICT semantic integration"
+   ]
+  },
+  "http://data.europa.eu/esco/skill/cc7370dd-69fa-4c67-a96f-d4d135d38700": {
+   "uri": "http://data.europa.eu/esco/skill/cc7370dd-69fa-4c67-a96f-d4d135d38700",
+   "title": "data quality assessment",
+   "skill_type": "knowledge",
+   "description": "The process of revealing data issues using ​quality indicators, measures and metrics in order to plan data cleansing and data enrichment strategies according to data quality criteria.",
+   "alt_labels": [
+    "analyse data quality",
+    "data quality analysis"
+   ],
+   "broader": [
+    "quality assurance methodologies",
+    "work skills"
+   ],
+   "has_essential_skill": [
+    "conduct content quality assurance",
+    "implement data quality processes",
+    "define data quality criteria"
+   ],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/c3e36d05-8ae8-447f-bb2b-6f9409f85389": {
+   "uri": "http://data.europa.eu/esco/skill/c3e36d05-8ae8-447f-bb2b-6f9409f85389",
+   "title": "deliver visual presentation of data",
+   "skill_type": "skill",
+   "description": "Create visual representations of data such as charts or diagrams for easier understanding.",
+   "alt_labels": [
+    "create data visualisation",
+    "visualise data"
+   ],
+   "broader": [
+    "presenting research or technical information"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "visual presentation techniques"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/43ae58b9-5e56-4524-b45a-b422777a0576": {
+   "uri": "http://data.europa.eu/esco/skill/43ae58b9-5e56-4524-b45a-b422777a0576",
+   "title": "database",
+   "skill_type": "knowledge",
+   "description": "The classification of databases, that includes their purpose, characteristics, terminology, models and use such as XML databases, document-oriented databases and full text databases.",
+   "alt_labels": [
+    "types of databases"
+   ],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/1b7c716e-af95-4cda-a42f-6479c8b139f5": {
+   "uri": "http://data.europa.eu/esco/skill/1b7c716e-af95-4cda-a42f-6479c8b139f5",
+   "title": "MDX",
+   "skill_type": "knowledge",
+   "description": "The computer language MDX is a query language for retrieval of information from a database and of documents containing the needed information. It is developed by the software company Microsoft.",
+   "alt_labels": [
+    "MultiDimensional eXpressions"
+   ],
+   "broader": [
+    "query languages",
+    "software and applications development and analysis"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/f597f772-24d3-4cec-813c-cf5a7027c794": {
+   "uri": "http://data.europa.eu/esco/skill/f597f772-24d3-4cec-813c-cf5a7027c794",
+   "title": "N1QL",
+   "skill_type": "knowledge",
+   "description": "The computer language N1QL is a query language for retrieval of information from a database and of documents containing the needed information. It is developed by the software company Couchbase.",
+   "alt_labels": [
+    "Couchbase Query Language",
+    "Non-first Normal Form Query Language"
+   ],
+   "broader": [
+    "query languages",
+    "resource description framework query language",
+    "software and applications development and analysis"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/a80fb090-63f4-4b05-83a5-2f090deb7757": {
+   "uri": "http://data.europa.eu/esco/skill/a80fb090-63f4-4b05-83a5-2f090deb7757",
+   "title": "manage data collection systems",
+   "skill_type": "skill",
+   "description": "Develop and manage methods and strategies used to maximise data quality and statistical efficiency in the collection of data, in order to ensure the gathered data are optimised for further processing.",
+   "alt_labels": [],
+   "broader": [
+    "manage data",
+    "collect ICT data",
+    "managing information"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "collection management"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/a57a54b6-2f2e-43e4-9621-b52f4a63cb08": {
+   "uri": "http://data.europa.eu/esco/skill/a57a54b6-2f2e-43e4-9621-b52f4a63cb08",
+   "title": "LDAP",
+   "skill_type": "knowledge",
+   "description": "The computer language LDAP is a query language for retrieval of information from a database and of documents containing the needed information.",
+   "alt_labels": [
+    "Lightweight Directory Access Protocol",
+    "LDAP 2",
+    "LDAP 3"
+   ],
+   "broader": [
+    "query languages",
+    "software and applications development and analysis"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/1605025e-a179-421f-8f35-5b07d182a6b2": {
+   "uri": "http://data.europa.eu/esco/skill/1605025e-a179-421f-8f35-5b07d182a6b2",
+   "title": "web analytics",
+   "skill_type": "knowledge",
+   "description": "The characteristics, tools and techniques for measurement, collection, analysis and reporting of web data to get information on the users' behaviour and to improve the performance of a website.",
+   "alt_labels": [],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/c7d24594-0c11-4b27-9039-fe0bb903da8e": {
+   "uri": "http://data.europa.eu/esco/skill/c7d24594-0c11-4b27-9039-fe0bb903da8e",
+   "title": "LINQ",
+   "skill_type": "knowledge",
+   "description": "The computer language LINQ is a query language for retrieval of information from a database and of documents containing the needed information. It is developed by the software company Microsoft.",
+   "alt_labels": [
+    "Language Integrated Query"
+   ],
+   "broader": [
+    "resource description framework query language",
+    "query languages",
+    "software and applications development and analysis"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/3f4dab51-572b-4e2c-85ef-3b4c3f7094e1": {
+   "uri": "http://data.europa.eu/esco/skill/3f4dab51-572b-4e2c-85ef-3b4c3f7094e1",
+   "title": "XQuery",
+   "skill_type": "knowledge",
+   "description": "The computer language XQuery is a query language for retrieval of information from a database and of documents containing the needed information. It is developed by the international standards organisation World Wide Web Consortium.",
+   "alt_labels": [
+    "XQuery 3.0",
+    "XQuery 1.0"
+   ],
+   "broader": [
+    "query languages",
+    "software and applications development and analysis"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/a7f0fbe0-c546-4f30-8e41-34a58c64567e": {
+   "uri": "http://data.europa.eu/esco/skill/a7f0fbe0-c546-4f30-8e41-34a58c64567e",
+   "title": "data storage",
+   "skill_type": "knowledge",
+   "description": "The physical and technical concepts of how digital data storage is organised in specific schemes both locally, such as hard-drives and random-access memories (RAM) and remotely, via network, internet or cloud.",
+   "alt_labels": [],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/5da8018b-ae85-4cde-ad93-0394369018f3": {
+   "uri": "http://data.europa.eu/esco/skill/5da8018b-ae85-4cde-ad93-0394369018f3",
+   "title": "SPARQL",
+   "skill_type": "knowledge",
+   "description": "The computer language SPARQL is a query language for retrieval of information from a database and of documents containing the needed information. It is developed by the international standards organisation World Wide Web Consortium.",
+   "alt_labels": [
+    "SPARQL Protocol and RDF Query Language"
+   ],
+   "broader": [
+    "resource description framework query language",
+    "query languages",
+    "software and applications development and analysis"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/0c766ca3-9364-4203-916b-fed16e4814c1": {
+   "uri": "http://data.europa.eu/esco/skill/0c766ca3-9364-4203-916b-fed16e4814c1",
+   "title": "gather data for forensic purposes",
+   "skill_type": "skill",
+   "description": "Collect protected, fragmented or corrupted data and other online communication. Document and present findings from this process.",
+   "alt_labels": [],
+   "broader": [
+    "gather data",
+    "use data processing techniques",
+    "gathering information from physical or electronic sources"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "forensic intelligence"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/fbafa41f-cd05-4109-a649-8b44d306d779": {
+   "uri": "http://data.europa.eu/esco/skill/fbafa41f-cd05-4109-a649-8b44d306d779",
+   "title": "create data models",
+   "skill_type": "skill",
+   "description": "Use specific techniques and methodologies to analyse the data requirements of an organisation's business processes in order to create models for these data, such as conceptual, logical and physical models. These models have a specific structure and format.",
+   "alt_labels": [
+    "manage data models"
+   ],
+   "broader": [
+    "manage data",
+    "managing information"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [
+    "data models"
+   ],
+   "is_essential_for_skill": []
+  },
+  "http://data.europa.eu/esco/skill/b0a3bb25-a02f-43ed-ab1f-994fa66a424a": {
+   "uri": "http://data.europa.eu/esco/skill/b0a3bb25-a02f-43ed-ab1f-994fa66a424a",
+   "title": "online analytical processing",
+   "skill_type": "knowledge",
+   "description": "The online tools which analyse, aggregate and present multi-dimensional data enabling users to interactively and selectively extract and view data from specific points of view.",
+   "alt_labels": [
+    "OLAP databases",
+    "OLAP",
+    "Cube databases"
+   ],
+   "broader": [
+    "database and network design and administration"
+   ],
+   "has_essential_skill": [],
+   "has_optional_skill": [],
+   "is_essential_for_skill": []
+  }
+ }
+}

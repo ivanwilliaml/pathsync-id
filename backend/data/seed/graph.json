@@ -1,0 +1,307 @@
+{
+  "version": "2026.10-draft",
+  "status_note": "Draf sisi prasyarat dari relasi ESCO dan penilaian tim. Setiap sisi divalidasi tiga pakar di Panel Pakar; sisi dipertahankan bila disetujui sedikitnya 2 dari 3 pakar (paper III.A.3). Sebelum validasi selesai, mesin memakai seluruh sisi draf.",
+  "readiness_threshold": 0.6,
+  "edges": [
+    {
+      "from": "excel",
+      "to": "data_cleaning",
+      "source": "tim",
+      "rationale": "Pembersihan data tingkat awal umumnya dilakukan di spreadsheet."
+    },
+    {
+      "from": "sql",
+      "to": "data_cleaning",
+      "source": "tim",
+      "rationale": "Data perlu diambil dan difilter dengan kueri sebelum dapat dibersihkan dalam skala besar."
+    },
+    {
+      "from": "excel",
+      "to": "data_analysis",
+      "source": "tim",
+      "rationale": "Analisis data awal di lingkungan kerja BA hampir selalu memakai spreadsheet."
+    },
+    {
+      "from": "sql",
+      "to": "data_analysis",
+      "source": "tim",
+      "rationale": "Analisis membutuhkan kemampuan menarik dan menggabungkan data dari basis data."
+    },
+    {
+      "from": "statistics",
+      "to": "data_analysis",
+      "source": "esco",
+      "rationale": "ESCO: 'apply statistical analysis techniques' memuat 'statistics' sebagai keterampilan pendukung."
+    },
+    {
+      "from": "data_cleaning",
+      "to": "data_analysis",
+      "source": "esco",
+      "rationale": "ESCO: kualitas data ('implement data quality processes') mendahului penafsiran data."
+    },
+    {
+      "from": "sql",
+      "to": "data_visualization",
+      "source": "tim",
+      "rationale": "Data untuk visual harus disiapkan dengan kueri (contoh paper Gambar 6)."
+    },
+    {
+      "from": "excel",
+      "to": "data_visualization",
+      "source": "tim",
+      "rationale": "Grafik dasar pertama kali dipelajari di spreadsheet."
+    },
+    {
+      "from": "data_visualization",
+      "to": "dashboard_reporting",
+      "source": "esco",
+      "rationale": "ESCO: 'deliver visual presentation of data' bertumpu pada 'visual presentation techniques'."
+    },
+    {
+      "from": "data_analysis",
+      "to": "dashboard_reporting",
+      "source": "esco",
+      "rationale": "ESCO: 'report analysis results' memiliki konsep induk 'perform data analysis'."
+    },
+    {
+      "from": "kpi_metrics",
+      "to": "dashboard_reporting",
+      "source": "tim",
+      "rationale": "Dashboard yang berguna dimulai dari pemilihan metrik yang tepat."
+    },
+    {
+      "from": "sql",
+      "to": "data_modeling",
+      "source": "tim",
+      "rationale": "Pengalaman menulis kueri membuat konsep relasi dan skema bermakna."
+    },
+    {
+      "from": "data_analysis",
+      "to": "python_analytics",
+      "source": "tim",
+      "rationale": "Python dipakai untuk memperbesar skala analisis yang alurnya sudah dipahami."
+    },
+    {
+      "from": "excel",
+      "to": "financial_analysis",
+      "source": "tim",
+      "rationale": "Analisis keuangan sehari-hari dilakukan dengan model spreadsheet."
+    },
+    {
+      "from": "statistics",
+      "to": "research_methods",
+      "source": "esco",
+      "rationale": "ESCO: 'conduct quantitative research' terkait 'manage quantitative data' dan metode statistik."
+    },
+    {
+      "from": "data_visualization",
+      "to": "power_bi",
+      "source": "tim",
+      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI."
+    },
+    {
+      "from": "excel",
+      "to": "power_bi",
+      "source": "tim",
+      "rationale": "Power Query dan model data Power BI berangkat dari logika spreadsheet."
+    },
+    {
+      "from": "data_visualization",
+      "to": "tableau",
+      "source": "tim",
+      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI."
+    },
+    {
+      "from": "data_visualization",
+      "to": "bi_tools_other",
+      "source": "tim",
+      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI."
+    },
+    {
+      "from": "sql",
+      "to": "bi_tools_other",
+      "source": "tim",
+      "rationale": "Looker Studio/Metabase umumnya dibangun di atas kueri SQL."
+    },
+    {
+      "from": "sql",
+      "to": "cloud_data_platform",
+      "source": "tim",
+      "rationale": "BigQuery/Snowflake diakses dengan SQL."
+    },
+    {
+      "from": "verbal_communication",
+      "to": "stakeholder_management",
+      "source": "tim",
+      "rationale": "Mengelola pemangku kepentingan menuntut komunikasi lisan yang baik."
+    },
+    {
+      "from": "verbal_communication",
+      "to": "requirements_elicitation",
+      "source": "esco",
+      "rationale": "ESCO: 'interact with users to gather requirements' memiliki konsep induk 'use questioning techniques'."
+    },
+    {
+      "from": "stakeholder_management",
+      "to": "requirements_elicitation",
+      "source": "tim",
+      "rationale": "Identifikasi pemangku kepentingan mendahului penggalian kebutuhan."
+    },
+    {
+      "from": "requirements_elicitation",
+      "to": "requirements_documentation",
+      "source": "esco",
+      "rationale": "ESCO: 'analyse business requirements' memuat 'business requirements techniques'."
+    },
+    {
+      "from": "business_writing",
+      "to": "requirements_documentation",
+      "source": "tim",
+      "rationale": "Dokumen kebutuhan menuntut penulisan yang jelas dan terstruktur."
+    },
+    {
+      "from": "business_process_modeling",
+      "to": "process_improvement",
+      "source": "esco",
+      "rationale": "ESCO: 'analyse business processes' memuat 'business process modelling'."
+    },
+    {
+      "from": "data_analysis",
+      "to": "process_improvement",
+      "source": "tim",
+      "rationale": "Perbaikan proses perlu diukur dengan data sebelum dan sesudah."
+    },
+    {
+      "from": "business_process_modeling",
+      "to": "system_modeling_uml",
+      "source": "tim",
+      "rationale": "Activity diagram dan use case berangkat dari pemahaman alur proses."
+    },
+    {
+      "from": "requirements_elicitation",
+      "to": "system_modeling_uml",
+      "source": "esco",
+      "rationale": "ESCO: 'translate requirement concepts into visual design' menerjemahkan kebutuhan yang sudah digali."
+    },
+    {
+      "from": "sdlc",
+      "to": "agile_scrum",
+      "source": "tim",
+      "rationale": "Agile dipahami sebagai salah satu pendekatan dalam siklus pengembangan."
+    },
+    {
+      "from": "requirements_documentation",
+      "to": "testing_uat",
+      "source": "tim",
+      "rationale": "Test case dan UAT diturunkan dari kebutuhan dan acceptance criteria."
+    },
+    {
+      "from": "sdlc",
+      "to": "testing_uat",
+      "source": "tim",
+      "rationale": "Pengujian adalah tahap dalam siklus pengembangan."
+    },
+    {
+      "from": "stakeholder_management",
+      "to": "project_management",
+      "source": "esco",
+      "rationale": "ESCO: 'manage ICT project' bertumpu pada koordinasi pemangku kepentingan."
+    },
+    {
+      "from": "financial_analysis",
+      "to": "business_case",
+      "source": "esco",
+      "rationale": "ESCO: 'provide cost benefit analysis reports' membutuhkan analisis keuangan."
+    },
+    {
+      "from": "kpi_metrics",
+      "to": "business_case",
+      "source": "tim",
+      "rationale": "Manfaat dalam business case dinyatakan dalam metrik yang terukur."
+    },
+    {
+      "from": "stakeholder_management",
+      "to": "change_management",
+      "source": "tim",
+      "rationale": "Manajemen perubahan bergantung pada dukungan pemangku kepentingan."
+    },
+    {
+      "from": "research_methods",
+      "to": "strategic_analysis",
+      "source": "esco",
+      "rationale": "ESCO: analisis faktor eksternal bertumpu pada 'market research'."
+    },
+    {
+      "from": "critical_thinking",
+      "to": "strategic_analysis",
+      "source": "esco",
+      "rationale": "ESCO: 'make strategic business decisions' memiliki konsep induk 'apply strategic thinking'."
+    },
+    {
+      "from": "critical_thinking",
+      "to": "risk_management",
+      "source": "tim",
+      "rationale": "Penilaian risiko menuntut penalaran sistematis atas kemungkinan dan dampak."
+    },
+    {
+      "from": "agile_scrum",
+      "to": "jira_confluence",
+      "source": "tim",
+      "rationale": "Jira dipakai untuk menjalankan alur kerja agile."
+    },
+    {
+      "from": "business_process_modeling",
+      "to": "diagramming_tools",
+      "source": "tim",
+      "rationale": "Notasi proses dipelajari sebelum alat penggambarnya."
+    },
+    {
+      "from": "requirements_elicitation",
+      "to": "wireframing",
+      "source": "esco",
+      "rationale": "ESCO: 'translate requirement concepts into visual design'."
+    },
+    {
+      "from": "business_process_modeling",
+      "to": "erp_crm",
+      "source": "tim",
+      "rationale": "Modul ERP mengotomasi proses bisnis yang harus dipahami lebih dahulu."
+    },
+    {
+      "from": "data_visualization",
+      "to": "presentation_storytelling",
+      "source": "esco",
+      "rationale": "ESCO: 'deliver visual presentation of data' memuat 'visual presentation techniques'."
+    },
+    {
+      "from": "verbal_communication",
+      "to": "presentation_storytelling",
+      "source": "tim",
+      "rationale": "Presentasi adalah bentuk komunikasi lisan terstruktur."
+    },
+    {
+      "from": "verbal_communication",
+      "to": "facilitation_negotiation",
+      "source": "tim",
+      "rationale": "Fasilitasi dan negosiasi bertumpu pada komunikasi lisan."
+    },
+    {
+      "from": "stakeholder_management",
+      "to": "facilitation_negotiation",
+      "source": "tim",
+      "rationale": "Negosiasi prioritas menuntut pemahaman kepentingan setiap pihak."
+    },
+    {
+      "from": "sdlc",
+      "to": "api_integration",
+      "source": "tim",
+      "rationale": "Kebutuhan integrasi dirumuskan dalam konteks siklus pengembangan sistem."
+    },
+    {
+      "from": "data_modeling",
+      "to": "api_integration",
+      "source": "esco",
+      "rationale": "ESCO: 'integrate ICT data' bertumpu pada pemahaman struktur data."
+    }
+  ]
+}
