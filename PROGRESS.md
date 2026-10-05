@@ -27,6 +27,9 @@ Backend sudah berupa produk yang berjalan end-to-end di atas **data lowongan nya
 | Bahasa | ✅ | UI dan seluruh teks backend (nama & deskripsi 42 skill, penjelasan, riwayat, peringatan, 210 soal asesmen, alasan 50 sisi graf) dalam bahasa Inggris lewat `PATHSYNC_LANG=en`; teks Indonesia asli tetap di seed untuk prompt ekstraksi (prompt Kaggle identik byte per byte) |
 | Operasional | ✅ | `docker compose up` (DB kosong → bangun peta pasar & studi pakar otomatis), GitHub Actions scraping bulanan (`.github/workflows/monthly-scrape.yml`), uji API end-to-end |
 
+### Catatan data
+Repo memuat dua snapshot Karirhub: 1 Oktober (dasar semua angka evaluasi dan ekstraksi LLM di dokumen ini) dan 6 Oktober (60 lowongan, hasil pembaruan pasar dari halaman Admin). Menjalankan `pipeline.build_market` sekarang memakai keduanya (45 lowongan BA dalam jendela), sehingga angka permintaan sedikit berbeda dari tabel di bawah. Lowongan baru di snapshot 6 Oktober belum diekstrak LLM; jalankan `pipeline.llm_jobs export-postings` → kernel Kaggle → `import-postings` bila perlu.
+
 ### Uji kesetiaan ke paper
 `tests/test_paper_fidelity.py` — 7/7 lulus, termasuk **reproduksi persis Tabel 4** (SQL 0,95 → 0,17; Analisis data naik ke #1 setelah asesmen ulang SQL).
 `tests/test_api.py` — 14 uji alur API (persetujuan, bukti, klaim CV tidak menaikkan penguasaan, kunci jawaban tidak dikirim ke klien, 3 pemicu adaptif, kutipan dapat ditelusuri, panel pakar 2-dari-3 + tolak siklus, F1 anotasi) pada salinan DB sementara. `tests/test_llm_jobs.py` — hasil LLM luring melewati gerbang yang sama (kutipan halusinasi ditolak). Tombol Stop pembaruan pasar diuji dengan proses tiruan. **Total 23/23 lulus.**
