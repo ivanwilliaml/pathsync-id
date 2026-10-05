@@ -7,301 +7,351 @@
       "from": "excel",
       "to": "data_cleaning",
       "source": "tim",
-      "rationale": "Pembersihan data tingkat awal umumnya dilakukan di spreadsheet."
+      "rationale": "Pembersihan data tingkat awal umumnya dilakukan di spreadsheet.",
+      "rationale_en": "Early-stage data cleaning is usually done in a spreadsheet."
     },
     {
       "from": "sql",
       "to": "data_cleaning",
       "source": "tim",
-      "rationale": "Data perlu diambil dan difilter dengan kueri sebelum dapat dibersihkan dalam skala besar."
+      "rationale": "Data perlu diambil dan difilter dengan kueri sebelum dapat dibersihkan dalam skala besar.",
+      "rationale_en": "Data has to be pulled and filtered with queries before it can be cleaned at scale."
     },
     {
       "from": "excel",
       "to": "data_analysis",
       "source": "tim",
-      "rationale": "Analisis data awal di lingkungan kerja BA hampir selalu memakai spreadsheet."
+      "rationale": "Analisis data awal di lingkungan kerja BA hampir selalu memakai spreadsheet.",
+      "rationale_en": "Early data analysis in BA work almost always happens in a spreadsheet."
     },
     {
       "from": "sql",
       "to": "data_analysis",
       "source": "tim",
-      "rationale": "Analisis membutuhkan kemampuan menarik dan menggabungkan data dari basis data."
+      "rationale": "Analisis membutuhkan kemampuan menarik dan menggabungkan data dari basis data.",
+      "rationale_en": "Analysis requires pulling and joining data from databases."
     },
     {
       "from": "statistics",
       "to": "data_analysis",
       "source": "esco",
-      "rationale": "ESCO: 'apply statistical analysis techniques' memuat 'statistics' sebagai keterampilan pendukung."
+      "rationale": "ESCO: 'apply statistical analysis techniques' memuat 'statistics' sebagai keterampilan pendukung.",
+      "rationale_en": "ESCO: 'apply statistical analysis techniques' lists 'statistics' as a supporting skill."
     },
     {
       "from": "data_cleaning",
       "to": "data_analysis",
       "source": "esco",
-      "rationale": "ESCO: kualitas data ('implement data quality processes') mendahului penafsiran data."
+      "rationale": "ESCO: kualitas data ('implement data quality processes') mendahului penafsiran data.",
+      "rationale_en": "ESCO: data quality ('implement data quality processes') comes before interpreting data."
     },
     {
       "from": "sql",
       "to": "data_visualization",
       "source": "tim",
-      "rationale": "Data untuk visual harus disiapkan dengan kueri (contoh paper Gambar 6)."
+      "rationale": "Data untuk visual harus disiapkan dengan kueri (contoh paper Gambar 6).",
+      "rationale_en": "Data for visuals has to be prepared with queries (paper example, Figure 6)."
     },
     {
       "from": "excel",
       "to": "data_visualization",
       "source": "tim",
-      "rationale": "Grafik dasar pertama kali dipelajari di spreadsheet."
+      "rationale": "Grafik dasar pertama kali dipelajari di spreadsheet.",
+      "rationale_en": "Basic charts are first learned in a spreadsheet."
     },
     {
       "from": "data_visualization",
       "to": "dashboard_reporting",
       "source": "esco",
-      "rationale": "ESCO: 'deliver visual presentation of data' bertumpu pada 'visual presentation techniques'."
+      "rationale": "ESCO: 'deliver visual presentation of data' bertumpu pada 'visual presentation techniques'.",
+      "rationale_en": "ESCO: 'deliver visual presentation of data' builds on 'visual presentation techniques'."
     },
     {
       "from": "data_analysis",
       "to": "dashboard_reporting",
       "source": "esco",
-      "rationale": "ESCO: 'report analysis results' memiliki konsep induk 'perform data analysis'."
+      "rationale": "ESCO: 'report analysis results' memiliki konsep induk 'perform data analysis'.",
+      "rationale_en": "ESCO: 'report analysis results' has 'perform data analysis' as its parent concept."
     },
     {
       "from": "kpi_metrics",
       "to": "dashboard_reporting",
       "source": "tim",
-      "rationale": "Dashboard yang berguna dimulai dari pemilihan metrik yang tepat."
+      "rationale": "Dashboard yang berguna dimulai dari pemilihan metrik yang tepat.",
+      "rationale_en": "A useful dashboard starts with choosing the right metrics."
     },
     {
       "from": "sql",
       "to": "data_modeling",
       "source": "tim",
-      "rationale": "Pengalaman menulis kueri membuat konsep relasi dan skema bermakna."
+      "rationale": "Pengalaman menulis kueri membuat konsep relasi dan skema bermakna.",
+      "rationale_en": "Writing queries makes relational and schema concepts meaningful."
     },
     {
       "from": "data_analysis",
       "to": "python_analytics",
       "source": "tim",
-      "rationale": "Python dipakai untuk memperbesar skala analisis yang alurnya sudah dipahami."
+      "rationale": "Python dipakai untuk memperbesar skala analisis yang alurnya sudah dipahami.",
+      "rationale_en": "Python scales up an analysis flow you already understand."
     },
     {
       "from": "excel",
       "to": "financial_analysis",
       "source": "tim",
-      "rationale": "Analisis keuangan sehari-hari dilakukan dengan model spreadsheet."
+      "rationale": "Analisis keuangan sehari-hari dilakukan dengan model spreadsheet.",
+      "rationale_en": "Day-to-day financial analysis is done with spreadsheet models."
     },
     {
       "from": "statistics",
       "to": "research_methods",
       "source": "esco",
-      "rationale": "ESCO: 'conduct quantitative research' terkait 'manage quantitative data' dan metode statistik."
+      "rationale": "ESCO: 'conduct quantitative research' terkait 'manage quantitative data' dan metode statistik.",
+      "rationale_en": "ESCO: 'conduct quantitative research' relates to 'manage quantitative data' and statistical methods."
     },
     {
       "from": "data_visualization",
       "to": "power_bi",
       "source": "tim",
-      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI."
+      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI.",
+      "rationale_en": "Visualisation principles come before mastering a BI tool."
     },
     {
       "from": "excel",
       "to": "power_bi",
       "source": "tim",
-      "rationale": "Power Query dan model data Power BI berangkat dari logika spreadsheet."
+      "rationale": "Power Query dan model data Power BI berangkat dari logika spreadsheet.",
+      "rationale_en": "Power Query and Power BI data models build on spreadsheet logic."
     },
     {
       "from": "data_visualization",
       "to": "tableau",
       "source": "tim",
-      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI."
+      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI.",
+      "rationale_en": "Visualisation principles come before mastering a BI tool."
     },
     {
       "from": "data_visualization",
       "to": "bi_tools_other",
       "source": "tim",
-      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI."
+      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI.",
+      "rationale_en": "Visualisation principles come before mastering a BI tool."
     },
     {
       "from": "sql",
       "to": "bi_tools_other",
       "source": "tim",
-      "rationale": "Looker Studio/Metabase umumnya dibangun di atas kueri SQL."
+      "rationale": "Looker Studio/Metabase umumnya dibangun di atas kueri SQL.",
+      "rationale_en": "Looker Studio and Metabase are usually built on SQL queries."
     },
     {
       "from": "sql",
       "to": "cloud_data_platform",
       "source": "tim",
-      "rationale": "BigQuery/Snowflake diakses dengan SQL."
+      "rationale": "BigQuery/Snowflake diakses dengan SQL.",
+      "rationale_en": "BigQuery and Snowflake are accessed with SQL."
     },
     {
       "from": "verbal_communication",
       "to": "stakeholder_management",
       "source": "tim",
-      "rationale": "Mengelola pemangku kepentingan menuntut komunikasi lisan yang baik."
+      "rationale": "Mengelola pemangku kepentingan menuntut komunikasi lisan yang baik.",
+      "rationale_en": "Managing stakeholders requires good spoken communication."
     },
     {
       "from": "verbal_communication",
       "to": "requirements_elicitation",
       "source": "esco",
-      "rationale": "ESCO: 'interact with users to gather requirements' memiliki konsep induk 'use questioning techniques'."
+      "rationale": "ESCO: 'interact with users to gather requirements' memiliki konsep induk 'use questioning techniques'.",
+      "rationale_en": "ESCO: 'interact with users to gather requirements' has 'use questioning techniques' as its parent concept."
     },
     {
       "from": "stakeholder_management",
       "to": "requirements_elicitation",
       "source": "tim",
-      "rationale": "Identifikasi pemangku kepentingan mendahului penggalian kebutuhan."
+      "rationale": "Identifikasi pemangku kepentingan mendahului penggalian kebutuhan.",
+      "rationale_en": "Identifying stakeholders comes before gathering requirements."
     },
     {
       "from": "requirements_elicitation",
       "to": "requirements_documentation",
       "source": "esco",
-      "rationale": "ESCO: 'analyse business requirements' memuat 'business requirements techniques'."
+      "rationale": "ESCO: 'analyse business requirements' memuat 'business requirements techniques'.",
+      "rationale_en": "ESCO: 'analyse business requirements' includes 'business requirements techniques'."
     },
     {
       "from": "business_writing",
       "to": "requirements_documentation",
       "source": "tim",
-      "rationale": "Dokumen kebutuhan menuntut penulisan yang jelas dan terstruktur."
+      "rationale": "Dokumen kebutuhan menuntut penulisan yang jelas dan terstruktur.",
+      "rationale_en": "Requirements documents need clear, structured writing."
     },
     {
       "from": "business_process_modeling",
       "to": "process_improvement",
       "source": "esco",
-      "rationale": "ESCO: 'analyse business processes' memuat 'business process modelling'."
+      "rationale": "ESCO: 'analyse business processes' memuat 'business process modelling'.",
+      "rationale_en": "ESCO: 'analyse business processes' includes 'business process modelling'."
     },
     {
       "from": "data_analysis",
       "to": "process_improvement",
       "source": "tim",
-      "rationale": "Perbaikan proses perlu diukur dengan data sebelum dan sesudah."
+      "rationale": "Perbaikan proses perlu diukur dengan data sebelum dan sesudah.",
+      "rationale_en": "Process improvements need to be measured with before-and-after data."
     },
     {
       "from": "business_process_modeling",
       "to": "system_modeling_uml",
       "source": "tim",
-      "rationale": "Activity diagram dan use case berangkat dari pemahaman alur proses."
+      "rationale": "Activity diagram dan use case berangkat dari pemahaman alur proses.",
+      "rationale_en": "Activity diagrams and use cases start from understanding the process flow."
     },
     {
       "from": "requirements_elicitation",
       "to": "system_modeling_uml",
       "source": "esco",
-      "rationale": "ESCO: 'translate requirement concepts into visual design' menerjemahkan kebutuhan yang sudah digali."
+      "rationale": "ESCO: 'translate requirement concepts into visual design' menerjemahkan kebutuhan yang sudah digali.",
+      "rationale_en": "ESCO: 'translate requirement concepts into visual design' builds on requirements already gathered."
     },
     {
       "from": "sdlc",
       "to": "agile_scrum",
       "source": "tim",
-      "rationale": "Agile dipahami sebagai salah satu pendekatan dalam siklus pengembangan."
+      "rationale": "Agile dipahami sebagai salah satu pendekatan dalam siklus pengembangan.",
+      "rationale_en": "Agile is understood as one approach within the development life cycle."
     },
     {
       "from": "requirements_documentation",
       "to": "testing_uat",
       "source": "tim",
-      "rationale": "Test case dan UAT diturunkan dari kebutuhan dan acceptance criteria."
+      "rationale": "Test case dan UAT diturunkan dari kebutuhan dan acceptance criteria.",
+      "rationale_en": "Test cases and UAT are derived from requirements and acceptance criteria."
     },
     {
       "from": "sdlc",
       "to": "testing_uat",
       "source": "tim",
-      "rationale": "Pengujian adalah tahap dalam siklus pengembangan."
+      "rationale": "Pengujian adalah tahap dalam siklus pengembangan.",
+      "rationale_en": "Testing is a stage in the development life cycle."
     },
     {
       "from": "stakeholder_management",
       "to": "project_management",
       "source": "esco",
-      "rationale": "ESCO: 'manage ICT project' bertumpu pada koordinasi pemangku kepentingan."
+      "rationale": "ESCO: 'manage ICT project' bertumpu pada koordinasi pemangku kepentingan.",
+      "rationale_en": "ESCO: 'manage ICT project' relies on coordinating stakeholders."
     },
     {
       "from": "financial_analysis",
       "to": "business_case",
       "source": "esco",
-      "rationale": "ESCO: 'provide cost benefit analysis reports' membutuhkan analisis keuangan."
+      "rationale": "ESCO: 'provide cost benefit analysis reports' membutuhkan analisis keuangan.",
+      "rationale_en": "ESCO: 'provide cost benefit analysis reports' requires financial analysis."
     },
     {
       "from": "kpi_metrics",
       "to": "business_case",
       "source": "tim",
-      "rationale": "Manfaat dalam business case dinyatakan dalam metrik yang terukur."
+      "rationale": "Manfaat dalam business case dinyatakan dalam metrik yang terukur.",
+      "rationale_en": "Benefits in a business case are expressed as measurable metrics."
     },
     {
       "from": "stakeholder_management",
       "to": "change_management",
       "source": "tim",
-      "rationale": "Manajemen perubahan bergantung pada dukungan pemangku kepentingan."
+      "rationale": "Manajemen perubahan bergantung pada dukungan pemangku kepentingan.",
+      "rationale_en": "Change management depends on stakeholder support."
     },
     {
       "from": "research_methods",
       "to": "strategic_analysis",
       "source": "esco",
-      "rationale": "ESCO: analisis faktor eksternal bertumpu pada 'market research'."
+      "rationale": "ESCO: analisis faktor eksternal bertumpu pada 'market research'.",
+      "rationale_en": "ESCO: analysing external factors relies on 'market research'."
     },
     {
       "from": "critical_thinking",
       "to": "strategic_analysis",
       "source": "esco",
-      "rationale": "ESCO: 'make strategic business decisions' memiliki konsep induk 'apply strategic thinking'."
+      "rationale": "ESCO: 'make strategic business decisions' memiliki konsep induk 'apply strategic thinking'.",
+      "rationale_en": "ESCO: 'make strategic business decisions' has 'apply strategic thinking' as its parent concept."
     },
     {
       "from": "critical_thinking",
       "to": "risk_management",
       "source": "tim",
-      "rationale": "Penilaian risiko menuntut penalaran sistematis atas kemungkinan dan dampak."
+      "rationale": "Penilaian risiko menuntut penalaran sistematis atas kemungkinan dan dampak.",
+      "rationale_en": "Assessing risk requires systematic reasoning about likelihood and impact."
     },
     {
       "from": "agile_scrum",
       "to": "jira_confluence",
       "source": "tim",
-      "rationale": "Jira dipakai untuk menjalankan alur kerja agile."
+      "rationale": "Jira dipakai untuk menjalankan alur kerja agile.",
+      "rationale_en": "Jira is used to run agile workflows."
     },
     {
       "from": "business_process_modeling",
       "to": "diagramming_tools",
       "source": "tim",
-      "rationale": "Notasi proses dipelajari sebelum alat penggambarnya."
+      "rationale": "Notasi proses dipelajari sebelum alat penggambarnya.",
+      "rationale_en": "Process notation is learned before the tool used to draw it."
     },
     {
       "from": "requirements_elicitation",
       "to": "wireframing",
       "source": "esco",
-      "rationale": "ESCO: 'translate requirement concepts into visual design'."
+      "rationale": "ESCO: 'translate requirement concepts into visual design'.",
+      "rationale_en": "ESCO: 'translate requirement concepts into visual design'."
     },
     {
       "from": "business_process_modeling",
       "to": "erp_crm",
       "source": "tim",
-      "rationale": "Modul ERP mengotomasi proses bisnis yang harus dipahami lebih dahulu."
+      "rationale": "Modul ERP mengotomasi proses bisnis yang harus dipahami lebih dahulu.",
+      "rationale_en": "ERP modules automate business processes that must be understood first."
     },
     {
       "from": "data_visualization",
       "to": "presentation_storytelling",
       "source": "esco",
-      "rationale": "ESCO: 'deliver visual presentation of data' memuat 'visual presentation techniques'."
+      "rationale": "ESCO: 'deliver visual presentation of data' memuat 'visual presentation techniques'.",
+      "rationale_en": "ESCO: 'deliver visual presentation of data' includes 'visual presentation techniques'."
     },
     {
       "from": "verbal_communication",
       "to": "presentation_storytelling",
       "source": "tim",
-      "rationale": "Presentasi adalah bentuk komunikasi lisan terstruktur."
+      "rationale": "Presentasi adalah bentuk komunikasi lisan terstruktur.",
+      "rationale_en": "A presentation is a structured form of spoken communication."
     },
     {
       "from": "verbal_communication",
       "to": "facilitation_negotiation",
       "source": "tim",
-      "rationale": "Fasilitasi dan negosiasi bertumpu pada komunikasi lisan."
+      "rationale": "Fasilitasi dan negosiasi bertumpu pada komunikasi lisan.",
+      "rationale_en": "Facilitation and negotiation rely on spoken communication."
     },
     {
       "from": "stakeholder_management",
       "to": "facilitation_negotiation",
       "source": "tim",
-      "rationale": "Negosiasi prioritas menuntut pemahaman kepentingan setiap pihak."
+      "rationale": "Negosiasi prioritas menuntut pemahaman kepentingan setiap pihak.",
+      "rationale_en": "Negotiating priorities requires understanding every party's interests."
     },
     {
       "from": "sdlc",
       "to": "api_integration",
       "source": "tim",
-      "rationale": "Kebutuhan integrasi dirumuskan dalam konteks siklus pengembangan sistem."
+      "rationale": "Kebutuhan integrasi dirumuskan dalam konteks siklus pengembangan sistem.",
+      "rationale_en": "Integration requirements are defined within the system development life cycle."
     },
     {
       "from": "data_modeling",
       "to": "api_integration",
       "source": "esco",
-      "rationale": "ESCO: 'integrate ICT data' bertumpu pada pemahaman struktur data."
+      "rationale": "ESCO: 'integrate ICT data' bertumpu pada pemahaman struktur data.",
+      "rationale_en": "ESCO: 'integrate ICT data' relies on understanding data structures."
     }
   ]
 }

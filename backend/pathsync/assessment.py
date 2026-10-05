@@ -11,7 +11,7 @@ import json
 import random
 from functools import lru_cache
 
-from .config import SEED_DIR
+from .config import LANG, SEED_DIR
 from .demand import MarketMap
 from .evidence import SkillState
 
@@ -21,7 +21,16 @@ def item_bank() -> dict[str, dict]:
     """Load all items; the correct option is written first in the seed and shuffled deterministically here."""
     bank = {}
     for f in sorted((SEED_DIR / "items").glob("*.json")):
+        overlay = {}
+        tr = SEED_DIR / "items_en" / f.name
+        if LANG == "en" and tr.exists():
+            overlay = json.loads(tr.read_text(encoding="utf-8"))
         for it in json.loads(f.read_text(encoding="utf-8")):
+            if it["id"] in overlay:
+                # same option order as the original (correct option first), so the shuffle and answer key match
+                t = overlay[it["id"]]
+                assert len(t["options"]) == len(it["options"]), it["id"]
+                it = {**it, "stem": t["stem"], "options": t["options"], "explanation": t["explanation"]}
             opts = list(it["options"])
             correct = opts[0]
             rng = random.Random(int(hashlib.sha1(it["id"].encode()).hexdigest(), 16))

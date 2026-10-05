@@ -16,9 +16,14 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
     init.body = JSON.stringify(body);
     (init.headers as Record<string, string>)["content-type"] = "application/json";
   }
-  const res = await fetch(`/api${path}`, init);
+  let res: Response;
+  try {
+    res = await fetch(`/api${path}`, init);
+  } catch {
+    throw new ApiError(0, "Can't reach the PathSync server. Check that the backend is running.");
+  }
   if (!res.ok) {
-    let msg = `${res.status} ${res.statusText}`;
+    let msg = res.status >= 500 ? "Something went wrong on the server. Try again in a moment." : `${res.status} ${res.statusText}`;
     try {
       const j = await res.json();
       if (typeof j.detail === "string") msg = j.detail;
@@ -185,14 +190,11 @@ export interface Student {
 }
 
 export const FEATURE_LABELS: Record<string, string> = {
-  G: "Kesenjangan",
-  R: "Kesiapan prasyarat",
-  K: "Keyakinan bukti",
-  D: "Permintaan pasar",
-  T: "Tren",
-  U: "Membuka skill lain",
-  B: "Titik hambat",
+  G: "Skill Gap",
+  R: "Prerequisites Ready",
+  K: "Evidence Confidence",
+  D: "Market Demand",
+  T: "Demand Trend",
+  U: "Unlocks Other Skills",
+  B: "Bottleneck",
 };
-
-export const pct = (x: number | null | undefined, d = 0) => (x == null ? "–" : `${(x * 100).toFixed(d)}%`);
-export const num = (x: number | null | undefined, d = 2) => (x == null ? "–" : x.toFixed(d).replace(".", ","));

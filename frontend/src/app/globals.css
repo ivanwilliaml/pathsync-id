@@ -1,27 +1,163 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-@theme {
-  --color-brand: #0f766e;
-  --color-brand-strong: #115e59;
-  --color-brand-soft: #e6f4f2;
-  --color-ink: #17212b;
-  --color-muted: #5b6672;
-  --color-line: #e3e7ec;
-  --color-subtle: #f2f4f7;
-  --color-surface: #ffffff;
-  --color-canvas: #f7f8fa;
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * PathSync design system (docs/UI_AUDIT.md)
+ *   Ink #1B1740 · Indigo #4338CA · Iris #7C6CF6 · Ember #F2711C · Mint #0E9F8A · Paper #F6F6FB
+ * The "route" gradient (indigo → iris → ember) is the one signature element: it is reserved for the
+ * learning path, the readiness ring, assessment progress and hero panels. Everything else stays quiet.
+ */
+:root {
+  --ink: #1b1740;
+  --indigo: #4338ca;
+  --iris: #7c6cf6;
+  --ember: #f2711c;
+  --ember-ink: #9a3412;
+  --mint: #0e9f8a;
+  --mint-ink: #0b6e60;
+  --paper: #f6f6fb;
+  --route: linear-gradient(90deg, #4338ca 0%, #7c6cf6 55%, #f2711c 100%);
+  --route-soft: linear-gradient(135deg, #eef0ff 0%, #f3efff 55%, #fff1e8 100%);
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --card-foreground: var(--ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink);
+  --primary: var(--indigo);
+  --primary-foreground: #ffffff;
+  --secondary: #eceaff;
+  --secondary-foreground: #2e2a8a;
+  --muted: #efeff6;
+  --muted-foreground: #5a5878;
+  --accent: #eceaff;
+  --accent-foreground: #2e2a8a;
+  --destructive: #c81e1e;
+  --border: #e2e1ee;
+  --input: #d8d6e8;
+  --ring: #4338ca;
+  --chart-1: #4338ca;
+  --chart-2: #7c6cf6;
+  --chart-3: #f2711c;
+  --chart-4: #0e9f8a;
+  --chart-5: #a9a6c4;
+  --radius: 0.75rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--indigo);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eceaff;
+  --sidebar-accent-foreground: #2e2a8a;
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
+  color-scheme: light;
 }
 
-/* base styles live in the base layer so Tailwind utilities (e.g. text-white on a link) still win */
-@layer base {
-  html,
-  body {
-    background: var(--color-canvas);
-    color: var(--color-ink);
-  }
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-heading: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --color-ink: var(--ink);
+  --color-indigo: var(--indigo);
+  --color-iris: var(--iris);
+  --color-ember: var(--ember);
+  --color-ember-ink: var(--ember-ink);
+  --color-mint: var(--mint);
+  --color-mint-ink: var(--mint-ink);
+  --color-paper: var(--paper);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
 
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
   a {
     color: inherit;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  button,
+  a,
+  [role="button"] {
+    touch-action: manipulation;
+  }
+}
+
+@utility bg-route {
+  background-image: var(--route);
+}
+@utility bg-route-v {
+  background-image: linear-gradient(180deg, #4338ca 0%, #7c6cf6 55%, #f2711c 100%);
+}
+@utility bg-route-soft {
+  background-image: var(--route-soft);
+}
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

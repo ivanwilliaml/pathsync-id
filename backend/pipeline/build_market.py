@@ -115,7 +115,7 @@ def main():
 
         export = {"version": version, "reference_date": ref.isoformat(), "mention_status": stats, "roles": {}}
         for role in ROLES:
-            snap = build_snapshot(s, role, version, ref, note=f"{len(rows)} lowongan mentah, ekstraktor={args.extractor or 'auto'}")
+            snap = build_snapshot(s, role, version, ref, note=f"{len(rows)} raw postings, extractor={args.extractor or 'auto'}")
             export["roles"][role] = {"n_postings": snap.data["n_postings"], "trend_status": snap.data["trend_status"],
                                      "sources": snap.sources,
                                      "top": sorted(((k, v["demand"]) for k, v in snap.data["skills"].items()),

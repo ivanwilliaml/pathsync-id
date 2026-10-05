@@ -14,6 +14,10 @@ MODELS_DIR = DATA_DIR / "models"
 for _d in (RAW_DIR, SEED_DIR, PROCESSED_DIR, MODELS_DIR):
     _d.mkdir(parents=True, exist_ok=True)
 
+# Display language of everything the API returns (skill names, explanations, assessment items).
+# Seed data keeps the Indonesian originals; extraction prompts always use them.
+LANG = os.getenv("PATHSYNC_LANG", "en")
+
 DATABASE_URL = os.getenv("PATHSYNC_DATABASE_URL", f"sqlite:///{(DATA_DIR / 'pathsync.db').as_posix()}")
 
 # ---------------------------------------------------------------- embeddings

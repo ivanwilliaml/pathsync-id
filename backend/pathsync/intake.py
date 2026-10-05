@@ -151,7 +151,7 @@ def academic_evidence(courses: list[dict]) -> tuple[EvidenceItem, list[dict]]:
             scores[s] = max(scores.get(s, 0.0), e)
             strength[s] = max(strength.get(s, 0.0), st)
         detail.append({**m, "grade": grade, "grade_score": gs, "contribution": contrib})
-    return EvidenceItem("academic", "Transkrip", {k: round(v, 4) for k, v in scores.items()}, strength), detail
+    return EvidenceItem("academic", "Transcript", {k: round(v, 4) for k, v in scores.items()}, strength), detail
 
 
 def _english_score(scale: str | None, score: float | None) -> float:
@@ -189,7 +189,7 @@ def certificate_evidence(certs: list[dict]) -> tuple[EvidenceItem, list[dict]]:
             strength[s] = max(strength.get(s, 0.0), st)
         detail.append({"input": c["name"], "matched": entry["name"] if entry else None, "similarity": round(sim, 3),
                        "method": method, "level": entry["level"] if entry else "kursus", "contribution": contrib})
-    return EvidenceItem("certificate", "Sertifikat", {k: round(v, 4) for k, v in scores.items()}, strength), detail
+    return EvidenceItem("certificate", "Certificates", {k: round(v, 4) for k, v in scores.items()}, strength), detail
 
 
 def cv_evidence(text: str) -> tuple[EvidenceItem, dict]:
@@ -222,13 +222,13 @@ def _heuristic_rubric(text: str) -> list[dict]:
         n_quotes = len({m.quote for m in ms})
         level = 1 if n_quotes == 1 else 2 if n_quotes <= 3 else 3
         quote = max(ms, key=lambda m: len(m.quote)).quote
-        rationale = f"{n_quotes} bagian artefak menunjukkan keterampilan ini."
+        rationale = f"{n_quotes} part{'s' if n_quotes > 1 else ''} of the artifact show{'' if n_quotes > 1 else 's'} this skill."
         if s == "sql":
             level = 3 if _SQL_L3.search(text) else 2 if _SQL_L2.search(text) else 1 if _SQL_L1.search(text) else min(level, 1)
             m = _SQL_L3.search(text) or _SQL_L2.search(text) or _SQL_L1.search(text)
             if m:
                 quote = _line_at(text, m.start())
-            rationale = "Kedalaman kueri: " + {1: "SELECT dasar", 2: "JOIN/agregasi", 3: "window function/CTE"}.get(level, "-")
+            rationale = "Query depth: " + {1: "basic SELECT", 2: "JOIN/aggregation", 3: "window functions/CTEs"}.get(level, "-")
         elif s == "python_analytics":
             level = 3 if _PY_L3.search(text) else 2 if _PY_L2.search(text) else 1 if _PY_L1.search(text) else min(level, 1)
             m = _PY_L3.search(text) or _PY_L2.search(text) or _PY_L1.search(text)
@@ -240,7 +240,7 @@ def _heuristic_rubric(text: str) -> list[dict]:
         lvl = 3 if _SQL_L3.search(text) else 2 if _SQL_L2.search(text) else 1
         m = _SQL_L3.search(text) or _SQL_L2.search(text) or _SQL_L1.search(text)
         ratings.append({"skill_id": "sql", "level": lvl, "quote": _line_at(text, m.start()),
-                        "rationale": "Kedalaman kueri: " + {1: "SELECT dasar", 2: "JOIN/agregasi", 3: "window function/CTE"}[lvl]})
+                        "rationale": "Query depth: " + {1: "basic SELECT", 2: "JOIN/aggregation", 3: "window functions/CTEs"}[lvl]})
     if "python_analytics" not in rated and _PY_L1.search(text):
         lvl = 3 if _PY_L3.search(text) else 2 if _PY_L2.search(text) else 1
         m = _PY_L3.search(text) or _PY_L2.search(text) or _PY_L1.search(text)
@@ -249,7 +249,7 @@ def _heuristic_rubric(text: str) -> list[dict]:
     if _VIZ.search(text) and "data_visualization" not in by_skill:
         m = _VIZ.search(text)
         ratings.append({"skill_id": "data_visualization", "level": 1, "quote": _line_at(text, m.start()),
-                        "rationale": "Artefak memuat pembuatan grafik."})
+                        "rationale": "The artifact builds charts."})
     return ratings
 
 
@@ -281,7 +281,7 @@ def project_evidence(text: str, title: str, candidate_ids: list[str] | None = No
         if r["skill_id"] not in skills or int(r["level"]) <= 0:
             continue
         if not verify_quote(r.get("quote", ""), text):        # quote must come from the artifact
-            rejected.append({**r, "reason": "kutipan tidak ditemukan di artefak"})
+            rejected.append({**r, "reason": "quote not found in the artifact"})
             continue
         e = rubric_score(int(r["level"]))
         scores[r["skill_id"]] = max(scores.get(r["skill_id"], 0.0), e)
@@ -290,4 +290,4 @@ def project_evidence(text: str, title: str, candidate_ids: list[str] | None = No
     # paper: human re-check on a 20% sample of rubric ratings
     digest = int(hashlib.sha1((title + text[:500]).encode("utf-8")).hexdigest(), 16)
     detail = {"method": method, "ratings": accepted, "rejected": rejected, "needs_human_review": digest % 5 == 0}
-    return EvidenceItem("project", title or "Proyek", scores, strength), detail
+    return EvidenceItem("project", title or "Project", scores, strength), detail

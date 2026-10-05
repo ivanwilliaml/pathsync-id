@@ -35,7 +35,7 @@ def _warmup():
         skill_index()
         map_course("Basis Data")
     except Exception as e:  # pragma: no cover - warmup is best effort
-        print(f"[warmup] gagal: {e}")
+        print(f"[warmup] failed: {e}")
 
 
 @asynccontextmanager
@@ -63,7 +63,7 @@ def db():
 def _student(s: Session, sid: str) -> Student:
     st = s.get(Student, sid)
     if not st:
-        raise HTTPException(404, "mahasiswa tidak ditemukan")
+        raise HTTPException(404, "Student not found.")
     return st
 
 
@@ -78,9 +78,11 @@ def meta(s: Session = Depends(db)):
     tax = load_taxonomy()
     model = s.scalars(select(RankerModel).where(RankerModel.active.is_(True))).first()
     snaps = {r: (active_snapshot(s, r).version if active_snapshot(s, r) else None) for r in ROLES}
-    return {"roles": [{"id": k, "name": v["name"]} for k, v in ROLES.items()], "clusters": tax["clusters"],
+    skills = load_skills()
+    return {"roles": [{"id": k, "name": v["name"]} for k, v in ROLES.items()], "clusters": cluster_names(),
             "taxonomy_version": tax["version"],
-            "skills": [{k: sk[k] for k in ("id", "name", "name_en", "cluster", "kind", "description", "learn_what")} for sk in tax["skills"]],
+            "skills": [{"id": sk.id, "name": sk.name, "name_en": sk.name_en, "cluster": sk.cluster, "kind": sk.kind,
+                        "description": sk.description, "learn_what": sk.learn_what} for sk in skills.values()],
             "extractor": "llm" if llm_configured() else "lexicon",
             "market_versions": snaps, "model": {"name": model.name, "weights": model.weights} if model else None,
             "n_postings": s.scalar(select(func.count(Posting.id)).where(Posting.duplicate_of.is_(None))),
@@ -99,7 +101,7 @@ def catalog():
 
 # --------------------------------------------------------------- students
 class StudentIn(BaseModel):
-    display_name: str = "Mahasiswa"
+    display_name: str = "Student"
     program: str = ""
     target_role: str = "business_analyst"
     consent: bool = False
@@ -116,10 +118,10 @@ class StudentPatch(BaseModel):
 @app.post("/api/students")
 def create_student(body: StudentIn, s: Session = Depends(db)):
     if not body.consent:
-        raise HTTPException(400, "persetujuan penggunaan data diperlukan")
+        raise HTTPException(400, "Please accept the data consent to continue.")
     if body.target_role not in ROLES:
         raise HTTPException(400, "peran tidak dikenal")
-    st = Student(display_name=body.display_name or "Mahasiswa", program=body.program, target_role=body.target_role,
+    st = Student(display_name=body.display_name or "Student", program=body.program, target_role=body.target_role,
                  consent_at=utcnow(), preferences={"weekly_hours": 6, "language": "id"})
     s.add(st)
     s.commit()
@@ -151,7 +153,7 @@ def patch_student(sid: str, body: StudentPatch, s: Session = Depends(db)):
         st.self_ratings = {k: int(v) for k, v in body.self_ratings.items()}
     s.commit()
     if role_changed and s.scalar(select(RecommendationHistory.id).where(RecommendationHistory.student_id == sid)):
-        record_history(s, st, "role", note=f"peran baru {ROLES[st.target_role]['name']}", force=True)
+        record_history(s, st, "role", note=f"new role {ROLES[st.target_role]['name']}", force=True)
     return {"ok": True}
 
 
@@ -179,10 +181,10 @@ def add_academic(sid: str, body: CoursesIn, s: Session = Depends(db)):
     item, detail = academic_evidence(body.courses)
     for e in [e for e in st.evidence if e.kind == "academic"]:
         s.delete(e)
-    s.add(Evidence(student_id=sid, kind="academic", title="Transkrip", scores=item.scores,
+    s.add(Evidence(student_id=sid, kind="academic", title="Transcript", scores=item.scores,
                    details={"strength": item.strength, "courses": detail}))
     s.commit()
-    _after_evidence(s, st, "transkrip diperbarui")
+    _after_evidence(s, st, "transcript updated")
     return {"scores": item.scores, "courses": detail}
 
 
@@ -197,7 +199,7 @@ def add_cert(sid: str, body: CertsIn, s: Session = Depends(db)):
     s.add(Evidence(student_id=sid, kind="certificate", title=", ".join(c["name"] for c in body.certificates)[:290],
                    scores=item.scores, details={"strength": item.strength, "certificates": detail}))
     s.commit()
-    _after_evidence(s, st, "sertifikat baru")
+    _after_evidence(s, st, "new certificate")
     return {"scores": item.scores, "certificates": detail}
 
 
@@ -207,30 +209,30 @@ async def add_cv(sid: str, text: str = Form(""), file: UploadFile | None = File(
     if file is not None:
         text = document_to_text(await file.read(), file.filename or "cv.txt")
     if len(text.strip()) < 20:
-        raise HTTPException(400, "teks CV terlalu pendek")
+        raise HTTPException(400, "The CV text is too short. Paste the full CV or upload the file.")
     item, detail = cv_evidence(text)
     for e in [e for e in st.evidence if e.kind == "cv"]:
         s.delete(e)
     s.add(Evidence(student_id=sid, kind="cv", title=file.filename if file else "CV", scores={},
                    details={"claim_ids": item.claims, **detail}))
     s.commit()
-    _after_evidence(s, st, "CV diperbarui")
+    _after_evidence(s, st, "CV updated")
     return detail
 
 
 @app.post("/api/students/{sid}/evidence/project")
-async def add_project(sid: str, title: str = Form("Proyek"), text: str = Form(""), file: UploadFile | None = File(None),
+async def add_project(sid: str, title: str = Form("Project"), text: str = Form(""), file: UploadFile | None = File(None),
                       s: Session = Depends(db)):
     st = _student(s, sid)
     if file is not None:
         text = document_to_text(await file.read(), file.filename or "proyek.txt")
     if len(text.strip()) < 30:
-        raise HTTPException(400, "artefak proyek terlalu pendek")
+        raise HTTPException(400, "The project text is too short. Paste more of it or upload the file.")
     item, detail = project_evidence(text, title)
     s.add(Evidence(student_id=sid, kind="project", title=title[:290], scores=item.scores,
                    details={"strength": item.strength, **detail}))
     s.commit()
-    _after_evidence(s, st, f"proyek '{title}'")
+    _after_evidence(s, st, f"project '{title}'")
     return {"scores": item.scores, **detail}
 
 
@@ -242,7 +244,7 @@ def delete_evidence(sid: str, eid: int, s: Session = Depends(db)):
         raise HTTPException(404)
     s.delete(e)
     s.commit()
-    _after_evidence(s, st, "bukti dihapus")
+    _after_evidence(s, st, "evidence removed")
     return {"ok": True}
 
 
@@ -278,7 +280,7 @@ class SubmitIn(BaseModel):
 def submit(sid: str, body: SubmitIn, s: Session = Depends(db)):
     st = _student(s, sid)
     if body.phase not in ("diagnostic", "reassessment"):
-        raise HTTPException(400, "fase tidak dikenal")
+        raise HTTPException(400, "Unknown assessment phase.")
     ctx = load_context(s, st.target_role)
     before = student_states(s, st, ctx)
     graded = grade(body.answers)
@@ -297,7 +299,7 @@ def submit(sid: str, body: SubmitIn, s: Session = Depends(db)):
     if body.phase == "diagnostic" and not s.scalar(select(RecommendationHistory.id).where(RecommendationHistory.student_id == sid)):
         record_history(s, st, "initial")
     else:
-        record_history(s, st, "evidence", note=("asesmen ulang " + ", ".join(v["name"] for v in changed.values()))[:200])
+        record_history(s, st, "evidence", note=("skill check: " + ", ".join(v["name"] for v in changed.values()))[:200])
     return {"results": graded, "skills": changed, "correct": sum(g["correct"] for g in graded), "total": len(graded)}
 
 
@@ -337,7 +339,7 @@ def market(role: str, s: Session = Depends(db)):
         raise HTTPException(404)
     snap = active_snapshot(s, role)
     if not snap:
-        raise HTTPException(404, "belum ada snapshot pasar")
+        raise HTTPException(404, "No market snapshot yet. Run a market update first.")
     skills = load_skills()
     data = snap.data
     rows = []
@@ -406,13 +408,13 @@ def _graph_payload(s: Session, role: str, rec: dict | None = None) -> dict:
     D = {k: v["demand"] for k, v in snap.data["skills"].items()} if snap else {}
     comp = {c["skill_id"]: c for c in (rec or {}).get("competencies", [])}
     rank = {r["skill_id"]: r for r in (rec or {}).get("ranking", [])}
-    path = {p["skill_id"] for p in (rec or {}).get("path", [])}
+    path = {p["skill_id"]: i for i, p in enumerate((rec or {}).get("path", []))}
     nodes = []
     for k, sk in skills.items():
         c = comp.get(k, {})
         nodes.append({"id": k, "name": sk.name, "cluster": sk.cluster, "depth": depth[k], "demand": D.get(k, 0.0),
                       "p": c.get("p"), "required": c.get("required"), "rank": rank.get(k, {}).get("rank"),
-                      "in_path": k in path, "bottleneck": bool(rank.get(k, {}).get("explanation", {}) and
+                      "in_path": k in path, "path_index": path.get(k), "bottleneck": bool(rank.get(k, {}).get("explanation", {}) and
                                                                rank[k]["explanation"].get("bottleneck"))})
     rows = s.scalars(select(GraphEdge)).all()
     edges = [{"id": e.id, "from": e.src, "to": e.dst, "source": e.source, "rationale": e.rationale, "status": e.status,
@@ -490,12 +492,12 @@ class EdgeIn(BaseModel):
 def propose_edge(body: EdgeIn, s: Session = Depends(db)):
     skills = load_skills()
     if body.src not in skills or body.dst not in skills or body.src == body.dst:
-        raise HTTPException(400, "keterampilan tidak valid")
+        raise HTTPException(400, "Pick two different skills.")
     edges = [Edge(r.src, r.dst) for r in s.scalars(select(GraphEdge)).all()] + [Edge(body.src, body.dst)]
     try:
         SkillGraph(skills, edges)
     except CycleError:
-        raise HTTPException(400, "sisi ini membuat siklus pada graf")
+        raise HTTPException(400, "This link would create a loop in the prerequisite map.")
     s.add(GraphEdge(src=body.src, dst=body.dst, source="pakar", rationale=body.rationale, status="draft"))
     s.commit()
     return {"ok": True}
@@ -515,7 +517,7 @@ def finalize_edges(s: Session = Depends(db)):
         g.check_acyclic()
     except CycleError:
         s.rollback()
-        raise HTTPException(400, "graf hasil validasi memiliki siklus")
+        raise HTTPException(400, "The approved links form a loop. Reject one of them and try again.")
     s.commit()
     return summary
 
@@ -562,7 +564,7 @@ def rank_scenario(scid: str, body: RankIn, s: Session = Depends(db)):
     if not r or not s.get(Expert, body.expert_id):
         raise HTTPException(404)
     if sorted(body.order) != sorted(r.payload["candidates"]):
-        raise HTTPException(400, "urutan harus memuat seluruh kandidat tepat satu kali")
+        raise HTTPException(400, "Rank every skill exactly once.")
     old = s.scalars(select(ScenarioRanking).where(ScenarioRanking.scenario_id == scid,
                                                   ScenarioRanking.expert_id == body.expert_id)).first()
     if old:
@@ -603,7 +605,7 @@ def train(body: TrainIn, s: Session = Depends(db)):
     scen = {r.id: r.payload for r in s.scalars(select(Scenario)).all()}
     data = [scen[k] for k in by if k in scen]
     if len({d["base_id"] for d in data}) < 3:
-        raise HTTPException(400, "butuh peringkat pakar untuk minimal 3 skenario dasar")
+        raise HTTPException(400, "Expert rankings are needed for at least 3 base scenarios before training.")
     refs = {k: aggregate_orders(v) for k, v in by.items() if k in scen}
     cv = cross_validate(data, refs, k=min(5, len({d["base_id"] for d in data})))
     w, lam = train_full(data, refs)
@@ -611,7 +613,7 @@ def train(body: TrainIn, s: Session = Depends(db)):
     activate = ok and body.activate_if_passes
     if activate:
         s.execute(update(RankerModel).values(active=False))
-    m = RankerModel(name=f"LTR {'simulasi' if body.use_simulated else 'pakar'} {datetime.now():%Y-%m-%d %H:%M}",
+    m = RankerModel(name=f"LTR {'simulated' if body.use_simulated else 'expert'} {datetime.now():%Y-%m-%d %H:%M}",
                     source="simulated" if body.use_simulated else "expert", weights=w, active=activate,
                     metrics={"cv": cv["methods"], "l2": lam, "passes_rule": ok, "margin": NON_INFERIORITY,
                              "adaptivity": adaptivity(data, refs, w)})
@@ -643,7 +645,7 @@ def extractor_comparison():
     """Lexicon vs offline-LLM agreement on the same postings (python -m pipeline.llm_jobs compare)."""
     p = MODELS_DIR / "extractor_comparison.json"
     if not p.exists():
-        raise HTTPException(404, "jalankan python -m pipeline.llm_jobs compare")
+        raise HTTPException(404, "Run python -m pipeline.llm_jobs compare first.")
     return json.loads(p.read_text(encoding="utf-8"))
 
 
@@ -651,38 +653,74 @@ def extractor_comparison():
 def evaluation():
     p = MODELS_DIR / "evaluation_report.json"
     if not p.exists():
-        raise HTTPException(404, "jalankan python -m pipeline.expert_study")
+        raise HTTPException(404, "Run python -m pipeline.expert_study first.")
     return json.loads(p.read_text(encoding="utf-8"))
 
 
 # -------------------------------------------------------------------- admin
-_job = {"running": False, "log": [], "started": None, "finished": None, "ok": None}
+_REFRESH_STEPS = [("scrapers.karirhub", "Collecting Karirhub postings"), ("scrapers.ats", "Collecting company career-site postings"),
+                  ("pipeline.build_market", "Rebuilding the market map")]
+_job = {"running": False, "log": [], "started": None, "finished": None, "ok": None, "cancelled": False,
+        "step": None, "step_index": None, "n_steps": len(_REFRESH_STEPS)}
+_proc = {"p": None}
+_job_lock = threading.Lock()
 
 
 def _run_refresh():
     import subprocess
     import sys
     from pathsync.config import BACKEND_DIR
-    _job.update(running=True, log=[], started=datetime.now().isoformat(timespec="seconds"), finished=None, ok=None)
     ok = True
-    for mod in ("scrapers.karirhub", "scrapers.ats", "pipeline.build_market"):
+    for i, (mod, label) in enumerate(_REFRESH_STEPS):
+        if _job["cancelled"]:
+            ok = False
+            break
+        _job.update(step=label, step_index=i)
         _job["log"].append(f"$ python -m {mod}")
-        proc = subprocess.run([sys.executable, "-m", mod] + (["--extractor", "lexicon"] if mod == "pipeline.build_market" and not llm_configured() else []),
-                              cwd=BACKEND_DIR, capture_output=True, text=True, encoding="utf-8", errors="replace")
-        _job["log"] += [ln for ln in (proc.stdout + proc.stderr).splitlines() if ln.startswith("[")][-15:]
+        args = [sys.executable, "-m", mod]
+        if mod == "pipeline.build_market" and not llm_configured():
+            args += ["--extractor", "lexicon"]
+        proc = subprocess.Popen(args, cwd=BACKEND_DIR, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                                encoding="utf-8", errors="replace", env={**os.environ, "PYTHONIOENCODING": "utf-8"})
+        _proc["p"] = proc
+        for line in proc.stdout:                     # stream progress lines so the admin page shows live status
+            if line.startswith("["):
+                _job["log"] = (_job["log"] + [line.rstrip()])[-40:]
+        proc.wait()
+        _proc["p"] = None
+        if _job["cancelled"]:
+            _job["log"].append(f"stopped during: {label}")
+            ok = False
+            break
         if proc.returncode != 0:
             ok = False
-            _job["log"].append(f"gagal: {mod} (kode {proc.returncode})")
+            _job["log"].append(f"failed: {mod} (exit code {proc.returncode})")
             break
-    _job.update(running=False, finished=datetime.now().isoformat(timespec="seconds"), ok=ok)
+    _job.update(running=False, finished=datetime.now().isoformat(timespec="seconds"), ok=ok, step=None)
 
 
 @app.post("/api/admin/market/refresh")
 def refresh_market():
-    if _job["running"]:
-        raise HTTPException(409, "pembaruan sedang berjalan")
+    with _job_lock:
+        if _job["running"]:
+            raise HTTPException(409, "A market update is already running.")
+        _job.update(running=True, log=[], started=datetime.now().isoformat(timespec="seconds"), finished=None, ok=None,
+                    cancelled=False, step=_REFRESH_STEPS[0][1], step_index=0)
     threading.Thread(target=_run_refresh, daemon=True).start()
     return {"started": True}
+
+
+@app.post("/api/admin/market/refresh/cancel")
+def cancel_refresh():
+    """Stop a running market update. Data already written by finished steps is kept; the active map is unchanged
+    unless the final rebuild step had completed."""
+    if not _job["running"]:
+        raise HTTPException(409, "No market update is running.")
+    _job["cancelled"] = True
+    p = _proc["p"]
+    if p is not None and p.poll() is None:
+        p.terminate()
+    return {"cancelled": True}
 
 
 @app.get("/api/admin/market/refresh")
@@ -710,7 +748,7 @@ def simulate_market(body: ShiftIn, s: Session = Depends(db)):
     name = load_skills()[body.skill_id].name
     new = MarketSnapshot(version=f"{snap.version.split('+')[0]}+sim{datetime.now():%H%M%S}", role=body.role,
                          reference_date=snap.reference_date, data=m.to_dict(), required=snap.required, sources=snap.sources,
-                         note=f"SIMULASI: permintaan {name} {body.demand_delta:+.0%}", simulated=True, active=True)
+                         note=f"SIMULATION: demand for {name} {body.demand_delta:+.0%}", simulated=True, active=True)
     s.add(new)
     s.commit()
     return {"version": new.version}

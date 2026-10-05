@@ -1,130 +1,130 @@
 {
- "version": "2026-10-01-lexicon",
- "reference_date": "2026-10-01",
+ "version": "2026-10-06-lexicon",
+ "reference_date": "2026-10-06",
  "mention_status": {
-  "auto": 2172,
-  "review": 77,
-  "new": 134,
+  "auto": 2239,
+  "review": 83,
+  "new": 157,
   "rejected": 0
  },
  "roles": {
   "business_analyst": {
-   "n_postings": 43,
+   "n_postings": 45,
    "trend_status": "insufficient",
    "sources": {
-    "karirhub": 37,
+    "karirhub": 38,
     "workable": 3,
     "workday": 1,
-    "lever": 2
+    "lever": 3
    },
    "top": [
     [
      "requirements_elicitation",
-     0.752
-    ],
-    [
-     "requirements_documentation",
-     0.7205
+     0.7391
     ],
     [
      "verbal_communication",
-     0.6985
+     0.7141
+    ],
+    [
+     "requirements_documentation",
+     0.6833
     ],
     [
      "critical_thinking",
-     0.6669
+     0.6584
     ],
     [
      "collaboration",
-     0.6596
+     0.6512
     ],
     [
      "business_process_modeling",
-     0.6188
+     0.6128
     ],
     [
      "stakeholder_management",
-     0.6165
+     0.6106
     ],
     [
      "testing_uat",
-     0.5466
+     0.5444
     ],
     [
      "sdlc",
-     0.5006
+     0.4748
     ],
     [
      "excel",
-     0.3411
-    ],
-    [
-     "project_management",
-     0.3362
+     0.3492
     ],
     [
      "sql",
-     0.3112
+     0.3211
+    ],
+    [
+     "project_management",
+     0.3189
     ]
    ]
   },
   "data_analyst": {
-   "n_postings": 29,
+   "n_postings": 30,
    "trend_status": "insufficient",
    "sources": {
-    "karirhub": 15,
+    "karirhub": 16,
     "workable": 6,
     "workday": 3,
     "lever": 5
    },
    "top": [
     [
-     "dashboard_reporting",
-     0.9005
+     "data_analysis",
+     0.899
     ],
     [
-     "data_analysis",
-     0.8948
+     "dashboard_reporting",
+     0.8649
     ],
     [
      "critical_thinking",
-     0.5872
+     0.6035
     ],
     [
      "excel",
-     0.5612
+     0.5786
     ],
     [
      "stakeholder_management",
-     0.5217
+     0.5011
     ],
     [
      "statistics",
-     0.5034
+     0.4835
     ],
     [
      "sql",
-     0.4554
-    ],
-    [
-     "collaboration",
-     0.38
-    ],
-    [
-     "data_cleaning",
-     0.3761
-    ],
-    [
-     "data_modeling",
-     0.3727
+     0.477
     ],
     [
      "data_visualization",
-     0.3633
+     0.3884
     ],
     [
-     "verbal_communication",
-     0.3275
+     "collaboration",
+     0.365
+    ],
+    [
+     "data_cleaning",
+     0.3613
+    ],
+    [
+     "data_modeling",
+     0.358
+    ],
+    [
+     "kpi_metrics",
+     0.334
     ]
    ]
   }

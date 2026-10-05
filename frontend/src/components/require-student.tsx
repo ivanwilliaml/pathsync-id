@@ -2,18 +2,21 @@
 
 import type { ReactNode } from "react";
 import { useStudentId } from "@/lib/student";
-import { Button, Empty, Spinner } from "./ui";
+import { EmptyState, LinkButton, Loading } from "./kit";
 
-/** Renders children with the current student id, or a prompt to create a profile first. */
+/** Renders children with the current student id, or an invitation to create a profile first. */
 export function RequireStudent({ children }: { children: (id: string) => ReactNode }) {
   const { id, ready } = useStudentId();
-  if (!ready) return <Spinner />;
+  if (!ready) return <Loading />;
   if (!id)
     return (
-      <Empty>
-        <p className="mb-3">Halaman ini membutuhkan profil mahasiswa.</p>
-        <Button href="/">Buat profil</Button>
-      </Empty>
+      <EmptyState
+        title="Create Your Profile First"
+        image="/images/hero.webp"
+        action={<LinkButton href="/" size="lg">Start Your Path</LinkButton>}
+      >
+        This page shows your personal learning path. It takes about two minutes to set up.
+      </EmptyState>
     );
   return <>{children(id)}</>;
 }

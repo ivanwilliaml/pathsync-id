@@ -22,11 +22,11 @@ from .ranker import build_candidates
 from .taxonomy import SkillGraph
 
 ARCHETYPES = [
-    ("Mahasiswa Manajemen semester 5", {"business_process": 0.45, "data_analytics": 0.25, "tools": 0.30, "communication": 0.55}),
-    ("Mahasiswa Sistem Informasi semester 7", {"business_process": 0.50, "data_analytics": 0.40, "tools": 0.45, "communication": 0.50}),
-    ("Mahasiswa Akuntansi semester 6", {"business_process": 0.35, "data_analytics": 0.40, "tools": 0.40, "communication": 0.50}),
-    ("Mahasiswa Teknik Informatika semester 7", {"business_process": 0.30, "data_analytics": 0.50, "tools": 0.55, "communication": 0.40}),
-    ("Lulusan bootcamp analitik data", {"business_process": 0.30, "data_analytics": 0.60, "tools": 0.55, "communication": 0.45}),
+    ("Management student, semester 5", {"business_process": 0.45, "data_analytics": 0.25, "tools": 0.30, "communication": 0.55}),
+    ("Information Systems student, semester 7", {"business_process": 0.50, "data_analytics": 0.40, "tools": 0.45, "communication": 0.50}),
+    ("Accounting student, semester 6", {"business_process": 0.35, "data_analytics": 0.40, "tools": 0.40, "communication": 0.50}),
+    ("Computer Science student, semester 7", {"business_process": 0.30, "data_analytics": 0.50, "tools": 0.55, "communication": 0.40}),
+    ("Data analytics bootcamp graduate", {"business_process": 0.30, "data_analytics": 0.60, "tools": 0.55, "communication": 0.45}),
 ]
 SKILL_BIAS = {   # archetype-specific nudges so profiles are not cluster-uniform
     0: {"strategic_analysis": 0.2, "financial_analysis": 0.15, "sql": -0.15, "presentation_storytelling": 0.15},
@@ -98,7 +98,7 @@ def build_scenarios(graph: SkillGraph, market: MarketMap, req: dict[str, float],
         feats2 = _features(graph, st2, req, cands)
         c2 = [c for c in cands if c in feats2]
         out.append(_pack(f"{bid}-comp", bid, "competency",
-                         f"{label} - setelah belajar {graph.skills[bott].name} ({p[bott]:.2f} -> {p2[bott]:.2f})",
+                         f"{label}, after learning {graph.skills[bott].name} ({p[bott]:.2f} to {p2[bott]:.2f})",
                          st2, req, feats2, c2, graph, changed={"skill_id": bott, "p_from": p[bott], "p_to": p2[bott]}))
         # derivative 2: market demand for a lower-ranked candidate rises
         ordered = sorted(cands, key=lambda s: -(feats[s].G * feats[s].D * feats[s].U * feats[s].R))
@@ -110,7 +110,7 @@ def build_scenarios(graph: SkillGraph, market: MarketMap, req: dict[str, float],
         st3 = ScenarioState(p, K, D3, T3)
         feats3 = _features(graph, st3, req, cands)
         out.append(_pack(f"{bid}-market", bid, "market",
-                         f"{label} - permintaan {graph.skills[target].name} naik {D[target]:.0%} -> {D3[target]:.0%}",
+                         f"{label}, demand for {graph.skills[target].name} up {D[target]:.0%} to {D3[target]:.0%}",
                          st3, req, feats3, cands, graph, changed={"skill_id": target, "D_from": D[target], "D_to": D3[target]}))
     return out
 

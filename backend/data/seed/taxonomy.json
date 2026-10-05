@@ -48,7 +48,9 @@
         "query languages",
         "database",
         "resource description framework query language"
-      ]
+      ],
+      "description_en": "Write SQL queries to retrieve, join, and summarise data from relational databases.",
+      "learn_what_en": "basic queries to aggregation: SELECT-WHERE, JOIN, GROUP BY-HAVING, subqueries"
     },
     {
       "id": "statistics",
@@ -85,7 +87,9 @@
         "apply statistical analysis techniques",
         "execute analytical mathematical calculations",
         "handle data samples"
-      ]
+      ],
+      "description_en": "Use descriptive and inferential statistics (distributions, correlation, hypothesis tests, regression) to draw conclusions from data.",
+      "learn_what_en": "descriptive statistics, distributions, correlation, hypothesis testing, simple regression"
     },
     {
       "id": "data_analysis",
@@ -130,7 +134,9 @@
         "analyse big data",
         "conduct quantitative research",
         "manage data"
-      ]
+      ],
+      "description_en": "Process and interpret data to find patterns, answer business questions, and form insights.",
+      "learn_what_en": "the analysis flow from business question and data exploration to segmentation and insight"
     },
     {
       "id": "data_visualization",
@@ -160,7 +166,9 @@
       "esco": [
         "visual presentation techniques",
         "deliver visual presentation of data"
-      ]
+      ],
+      "description_en": "Choose and build the right charts so decision-makers understand the data quickly.",
+      "learn_what_en": "chart types, visual design principles, avoiding misleading charts, visuals for KPIs"
     },
     {
       "id": "dashboard_reporting",
@@ -194,7 +202,9 @@
         "report analysis results",
         "decision support systems",
         "online analytical processing"
-      ]
+      ],
+      "description_en": "Design recurring reports and business intelligence dashboards that track business performance.",
+      "learn_what_en": "dashboard design, recurring reports, report automation, choosing metrics per audience"
     },
     {
       "id": "data_cleaning",
@@ -233,7 +243,9 @@
         "unstructured data",
         "integrate ICT data",
         "collect ICT data"
-      ]
+      ],
+      "description_en": "Clean, validate, and prepare data so it is accurate and ready for analysis.",
+      "learn_what_en": "handling missing and duplicate data, validation, standardising formats, data quality criteria"
     },
     {
       "id": "data_modeling",
@@ -282,7 +294,9 @@
         "data storage",
         "information architecture",
         "information categorisation"
-      ]
+      ],
+      "description_en": "Understand relational database structure and model data (ERDs, data dictionaries, data mapping).",
+      "learn_what_en": "relational database concepts, ERDs, normalisation, star schema, data mapping and dictionaries"
     },
     {
       "id": "python_analytics",
@@ -309,7 +323,9 @@
         "pyspark",
         "programming language"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Use Python (pandas) or R to process and analyse data at a larger scale.",
+      "learn_what_en": "Python basics, pandas for data manipulation, notebooks, plotting with matplotlib/seaborn"
     },
     {
       "id": "kpi_metrics",
@@ -341,7 +357,9 @@
       ],
       "esco": [
         "ICT performance analysis methods"
-      ]
+      ],
+      "description_en": "Define, calculate, and monitor performance indicators that reflect business goals.",
+      "learn_what_en": "types of metrics, metric trees, KPIs vs OKRs, funnel and retention metrics"
     },
     {
       "id": "financial_analysis",
@@ -380,7 +398,9 @@
         "interpret financial statements",
         "financial statements",
         "advise on financial matters"
-      ]
+      ],
+      "description_en": "Read financial statements and analyse financial performance, budgets, and profitability.",
+      "learn_what_en": "reading income statements and balance sheets, financial ratios, budgeting, profitability analysis"
     },
     {
       "id": "research_methods",
@@ -418,7 +438,9 @@
         "conduct qualitative research",
         "scientific research methodology",
         "interview people"
-      ]
+      ],
+      "description_en": "Design surveys, interviews, and market research to gather evidence for business decisions.",
+      "learn_what_en": "research design, surveys and questionnaires, interviews, market and competitor research"
     },
     {
       "id": "requirements_elicitation",
@@ -464,7 +486,9 @@
         "analyse business requirements",
         "identify undetected organisational needs",
         "interview people"
-      ]
+      ],
+      "description_en": "Uncover business and user needs through interviews, workshops, and observation.",
+      "learn_what_en": "interview techniques, requirements workshops, observation, separating business from user needs"
     },
     {
       "id": "requirements_documentation",
@@ -507,7 +531,9 @@
         "define technical requirements",
         "documentation types",
         "analyse business requirements"
-      ]
+      ],
+      "description_en": "Turn requirements into documents the technical team can act on: BRDs, FSDs, user stories, acceptance criteria.",
+      "learn_what_en": "BRD/FSD structure, user stories and acceptance criteria, functional specs, traceability"
     },
     {
       "id": "business_process_modeling",
@@ -549,7 +575,9 @@
         "create business process models",
         "business processes",
         "organisational structure"
-      ]
+      ],
+      "description_en": "Map current and proposed (as-is/to-be) business processes with flowcharts or BPMN.",
+      "learn_what_en": "flowchart and BPMN notation, swimlanes, as-is and to-be mapping"
     },
     {
       "id": "process_improvement",
@@ -591,7 +619,9 @@
         "advise on efficiency improvements",
         "seek innovation in current practices",
         "innovation processes"
-      ]
+      ],
+      "description_en": "Analyse processes to find inefficiencies and propose improvements or automation.",
+      "learn_what_en": "root-cause analysis, lean and waste, process metrics, automation proposals"
     },
     {
       "id": "system_modeling_uml",
@@ -623,7 +653,9 @@
       "esco": [
         "translate requirement concepts into visual design",
         "design process"
-      ]
+      ],
+      "description_en": "Model system behaviour and structure with UML diagrams such as use case, activity, and sequence diagrams.",
+      "learn_what_en": "use case diagrams and scenarios, activity diagrams, sequence diagrams, DFDs"
     },
     {
       "id": "sdlc",
@@ -654,7 +686,9 @@
       "esco": [
         "systems development life-cycle",
         "business ICT systems"
-      ]
+      ],
+      "description_en": "Understand the stages of software development and the analyst's role in each.",
+      "learn_what_en": "SDLC stages, waterfall vs iterative, the BA's role at each stage, managing change requests"
     },
     {
       "id": "agile_scrum",
@@ -682,7 +716,9 @@
         "agile methodology",
         "metodologi agile"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Work within agile: sprints, backlogs, refinement, and cross-functional collaboration.",
+      "learn_what_en": "agile values, Scrum roles and events, product backlog, refinement, kanban"
     },
     {
       "id": "testing_uat",
@@ -715,7 +751,9 @@
         "system integration testing",
         "sit"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Write test scenarios and cases, and coordinate user acceptance testing.",
+      "learn_what_en": "test scenarios and cases, UAT, defect tracking, testing against acceptance criteria"
     },
     {
       "id": "stakeholder_management",
@@ -752,7 +790,9 @@
         "liaise with managers",
         "build business relationships",
         "align efforts towards business development"
-      ]
+      ],
+      "description_en": "Identify, communicate with, and align the expectations of stakeholders across functions.",
+      "learn_what_en": "stakeholder analysis, power-interest mapping, aligning expectations, escalation"
     },
     {
       "id": "project_management",
@@ -785,7 +825,9 @@
       "esco": [
         "manage ICT project",
         "project management"
-      ]
+      ],
+      "description_en": "Plan, monitor, and control project scope, schedule, and risk.",
+      "learn_what_en": "scope and WBS, schedules and milestones, progress tracking, project risk management"
     },
     {
       "id": "business_case",
@@ -814,7 +856,9 @@
       "esco": [
         "provide cost benefit analysis reports",
         "analyse business plans"
-      ]
+      ],
+      "description_en": "Build the justification for an initiative: cost-benefit analysis, ROI, and feasibility.",
+      "learn_what_en": "business case structure, cost-benefit analysis, ROI and payback, assumptions and sensitivity"
     },
     {
       "id": "change_management",
@@ -847,7 +891,9 @@
       "esco": [
         "apply change management",
         "organisational resilience"
-      ]
+      ],
+      "description_en": "Help organisations and users adopt new processes or systems.",
+      "learn_what_en": "change models (ADKAR), communication and training plans, managing resistance"
     },
     {
       "id": "strategic_analysis",
@@ -890,7 +936,9 @@
         "implement strategic planning",
         "analyse the context of an organisation",
         "market entry strategies"
-      ]
+      ],
+      "description_en": "Analyse internal and external factors to support strategic decisions.",
+      "learn_what_en": "SWOT, PESTEL, five forces, market analysis, turning strategy into initiatives"
     },
     {
       "id": "risk_management",
@@ -940,7 +988,9 @@
         "legal requirements of ICT products",
         "product usage risks analysis",
         "quality standards"
-      ]
+      ],
+      "description_en": "Identify, assess, and mitigate risks, and ensure regulatory compliance.",
+      "learn_what_en": "risk identification and assessment, risk matrices, mitigation, regulatory compliance"
     },
     {
       "id": "excel",
@@ -973,7 +1023,9 @@
         "lookup",
         "lookup functions"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Work with data in spreadsheets: formulas, lookups, pivot tables, and charts.",
+      "learn_what_en": "formulas and cell references, lookups (VLOOKUP/XLOOKUP), pivot tables, basic charts"
     },
     {
       "id": "power_bi",
@@ -991,7 +1043,9 @@
         "dax",
         "microsoft power bi"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Build data models and interactive dashboards in Microsoft Power BI.",
+      "learn_what_en": "importing and transforming data, model relationships, basic DAX, publishing dashboards"
     },
     {
       "id": "tableau",
@@ -1007,7 +1061,9 @@
         "tableau desktop",
         "tableau public"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Create interactive visualisations and dashboards in Tableau.",
+      "learn_what_en": "data connections, dimensions vs measures, calculated fields, dashboards and stories"
     },
     {
       "id": "bi_tools_other",
@@ -1033,7 +1089,9 @@
         "grafana",
         "microstrategy"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Use SQL-based web BI tools such as Looker Studio, Looker, Metabase, or Superset.",
+      "learn_what_en": "connecting data sources, building SQL-based charts, sharing dashboards"
     },
     {
       "id": "jira_confluence",
@@ -1056,7 +1114,9 @@
         "redmine",
         "atlassian"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Manage backlogs, tickets, and team documentation with Jira, Confluence, or similar tools.",
+      "learn_what_en": "Jira issues and workflows, scrum/kanban boards, Confluence documentation pages"
     },
     {
       "id": "diagramming_tools",
@@ -1080,7 +1140,9 @@
         "enterprise architect",
         "whimsical"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Draw process and system diagrams with tools such as Visio, Lucidchart, draw.io, or Miro.",
+      "learn_what_en": "clean flowcharts/BPMN, templates, collaborative diagramming"
     },
     {
       "id": "wireframing",
@@ -1110,7 +1172,9 @@
       ],
       "esco": [
         "translate requirement concepts into visual design"
-      ]
+      ],
+      "description_en": "Turn requirements into simple wireframes or mockups that users can validate.",
+      "learn_what_en": "low-fidelity wireframes, screen flows, clickable prototypes in Figma"
     },
     {
       "id": "erp_crm",
@@ -1142,7 +1206,9 @@
       ],
       "esco": [
         "business ICT systems"
-      ]
+      ],
+      "description_en": "Understand the modules and flows of enterprise systems such as SAP, Oracle, Odoo, Dynamics, or Salesforce.",
+      "learn_what_en": "ERP module concepts (finance, procurement, inventory), order-to-cash flow, CRM basics"
     },
     {
       "id": "cloud_data_platform",
@@ -1173,7 +1239,9 @@
       ],
       "esco": [
         "cloud technologies"
-      ]
+      ],
+      "description_en": "Access and process data in cloud data warehouses such as BigQuery, Snowflake, or Redshift.",
+      "learn_what_en": "cloud data warehouse concepts, querying in BigQuery, query cost, sharing datasets"
     },
     {
       "id": "api_integration",
@@ -1214,7 +1282,9 @@
         "integrate ICT data",
         "business ICT systems"
       ],
-      "added_from_extraction": true
+      "added_from_extraction": true,
+      "description_en": "Understand how systems exchange data through APIs (REST, JSON/XML) and specify integration requirements.",
+      "learn_what_en": "REST API concepts, JSON/XML formats, reading API specs (Swagger/OpenAPI), integration flows"
     },
     {
       "id": "presentation_storytelling",
@@ -1247,7 +1317,9 @@
         "report analysis results",
         "deliver visual presentation of data",
         "advise on communication strategies"
-      ]
+      ],
+      "description_en": "Present findings and recommendations concisely, clearly, and persuasively.",
+      "learn_what_en": "message structure (pyramid principle), data narratives, clear slides, handling questions"
     },
     {
       "id": "business_writing",
@@ -1277,7 +1349,9 @@
       "esco": [
         "provide user documentation",
         "documentation types"
-      ]
+      ],
+      "description_en": "Write documents, reports, memos, and user manuals that are clear and actionable.",
+      "learn_what_en": "concise structured writing, executive reports, user manuals, professional email"
     },
     {
       "id": "verbal_communication",
@@ -1308,7 +1382,9 @@
       "esco": [
         "interview people",
         "build business relationships"
-      ]
+      ],
+      "description_en": "Speak clearly, listen actively, and build working relationships.",
+      "learn_what_en": "active listening, effective questioning, adapting the message to the audience"
     },
     {
       "id": "facilitation_negotiation",
@@ -1341,7 +1417,9 @@
       ],
       "esco": [
         "advise client on technical possibilities"
-      ]
+      ],
+      "description_en": "Facilitate meetings and workshops, and negotiate priorities and scope.",
+      "learn_what_en": "designing workshop agendas, facilitation techniques, negotiating priorities, building consensus"
     },
     {
       "id": "english_proficiency",
@@ -1365,7 +1443,9 @@
         "written and spoken english",
         "bilingual"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Read, write, and speak English in a work context.",
+      "learn_what_en": "work email and documents, presentations and meetings in English"
     },
     {
       "id": "critical_thinking",
@@ -1405,7 +1485,9 @@
       "esco": [
         "identify undetected organisational needs",
         "make strategic business decisions"
-      ]
+      ],
+      "description_en": "Break problems down, weigh evidence, and reason towards solutions.",
+      "learn_what_en": "problem decomposition, issue trees, root-cause analysis, weighing evidence"
     },
     {
       "id": "collaboration",
@@ -1433,7 +1515,15 @@
         "work in a team",
         "team-oriented"
       ],
-      "esco": []
+      "esco": [],
+      "description_en": "Work effectively in cross-functional teams, share information, and support others.",
+      "learn_what_en": "cross-functional teamwork, sharing information, giving and receiving feedback"
     }
-  ]
+  ],
+  "clusters_en": {
+    "data_analytics": "Data & Analytics",
+    "business_process": "Business Process",
+    "tools": "Tools",
+    "communication": "Professional Communication"
+  }
 }

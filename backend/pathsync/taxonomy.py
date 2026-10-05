@@ -6,7 +6,7 @@ from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from functools import lru_cache
 
-from .config import SEED_DIR
+from .config import LANG, SEED_DIR
 
 
 @dataclass(frozen=True)
@@ -21,6 +21,9 @@ class Skill:
     hours: int
     aliases: tuple[str, ...]
     esco: tuple[str, ...]
+    # Indonesian originals: used for matching and extraction prompts whatever the display language
+    name_id: str = ""
+    description_id: str = ""
 
 
 @dataclass
@@ -132,17 +135,28 @@ def load_skills() -> dict[str, Skill]:
     tax = load_taxonomy()
     out = {}
     for s in tax["skills"]:
+        en = LANG == "en"
         out[s["id"]] = Skill(
-            id=s["id"], name=s["name"], name_en=s["name_en"], cluster=s["cluster"], kind=s["kind"],
-            description=s["description"], learn_what=s["learn_what"], hours=int(s.get("hours", 10)),
+            id=s["id"], name=s["name_en"] if en else s["name"], name_en=s["name_en"], cluster=s["cluster"], kind=s["kind"],
+            description=s.get("description_en", s["description"]) if en else s["description"],
+            learn_what=s.get("learn_what_en", s["learn_what"]) if en else s["learn_what"], hours=int(s.get("hours", 10)),
             aliases=tuple(a.lower() for a in s.get("aliases", [])), esco=tuple(s.get("esco", [])),
+            name_id=s["name"], description_id=s["description"],
         )
     return out
 
 
 def load_draft_edges() -> list[Edge]:
     g = _load_json("graph.json")
-    return [Edge(e["from"], e["to"], e.get("source", "tim"), e.get("rationale", "")) for e in g["edges"]]
+    key = "rationale_en" if LANG == "en" else "rationale"
+    return [Edge(e["from"], e["to"], e.get("source", "tim"), e.get(key) or e.get("rationale", "")) for e in g["edges"]]
+
+
+def seed_rationales() -> dict[tuple[str, str], tuple[str, str]]:
+    """(src, dst) -> (Indonesian rationale, display rationale) for edges that came from the seed graph."""
+    key = "rationale_en" if LANG == "en" else "rationale"
+    return {(e["from"], e["to"]): (e.get("rationale", ""), e.get(key) or e.get("rationale", ""))
+            for e in _load_json("graph.json")["edges"]}
 
 
 def load_graph(edges: list[Edge] | None = None) -> SkillGraph:
@@ -150,4 +164,5 @@ def load_graph(edges: list[Edge] | None = None) -> SkillGraph:
 
 
 def cluster_names() -> dict[str, str]:
-    return load_taxonomy()["clusters"]
+    tax = load_taxonomy()
+    return tax.get("clusters_en", tax["clusters"]) if LANG == "en" else tax["clusters"]

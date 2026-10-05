@@ -1,19 +1,35 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { api, num, type Meta } from "@/lib/api";
+import { CircleCheck, CircleDashed, Loader2, Play, Square, XCircle } from "lucide-react";
+import { toast } from "sonner";
+import { api, FEATURE_LABELS, type Features, type Meta } from "@/lib/api";
+import { fmtDateTime, int, num, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
-import { Badge, Button, Card, Empty, ErrorBox, Field, inputCls, PageHeader, Spinner, Stat, Tabs } from "@/components/ui";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { EmptyState, ErrorNote, Loading, NativeSelect, PageHeader, Panel, Tag } from "@/components/kit";
 
 interface Stats {
   postings_total: number;
   duplicates: number;
-  by_source: Record<string, number>;
   in_window_by_role: Record<string, number>;
   mentions_by_status: Record<string, number>;
   students: number;
   experts: number;
-  scenarios: number;
   annotations: number;
   extractor: string;
   last_build: string | null;
@@ -24,10 +40,250 @@ interface Job {
   started: string | null;
   finished: string | null;
   ok: boolean | null;
+  cancelled: boolean;
+  step: string | null;
+  step_index: number | null;
+  n_steps: number;
 }
+
+const STEPS = ["Collecting Karirhub postings", "Collecting company career-site postings", "Rebuilding the market map"];
+
+export default function AdminPage() {
+  const stats = useApi<Stats>("/admin/stats");
+  const meta = useApi<Meta>("/meta");
+  const names = useMemo(() => Object.fromEntries((meta.data?.skills ?? []).map((s) => [s.id, titleCase(s.name)])), [meta.data]);
+  const s = stats.data;
+  return (
+    <div>
+      <PageHeader title="Admin" description="Keep the job market data fresh, review uncertain skill matches, and check how well the models perform." />
+      {s ? (
+        <dl className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <Fact label="Unique Postings" value={int(s.postings_total - s.duplicates)} note={`Business Analyst ${s.in_window_by_role.business_analyst ?? 0}, Data Analyst ${s.in_window_by_role.data_analyst ?? 0}`} />
+          <Fact label="Skill Matches" value={int(s.mentions_by_status.auto ?? 0)} note={`${s.mentions_by_status.review ?? 0} waiting for review`} />
+          <Fact label="Students" value={int(s.students)} note={`${s.experts} experts, ${s.annotations} annotations`} />
+          <Fact label="Last Market Build" value={s.last_build ?? "–"} note={`Extractor: ${s.extractor === "llm" ? "LLM" : "lexicon"}`} small />
+        </dl>
+      ) : null}
+      <Tabs defaultValue="market">
+        <TabsList className="mb-5 flex-wrap">
+          <TabsTrigger value="market">Market Data</TabsTrigger>
+          <TabsTrigger value="review">Review Queue</TabsTrigger>
+          <TabsTrigger value="annotate">Annotation</TabsTrigger>
+          <TabsTrigger value="models">Models &amp; Evaluation</TabsTrigger>
+        </TabsList>
+        <TabsContent value="market">
+          <MarketData meta={meta.data} onChange={stats.reload} />
+        </TabsContent>
+        <TabsContent value="review">
+          <ReviewQueue names={names} meta={meta.data} />
+        </TabsContent>
+        <TabsContent value="annotate">
+          <Annotation meta={meta.data} onChange={stats.reload} />
+        </TabsContent>
+        <TabsContent value="models">
+          <Models />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
+function Fact({ label, value, note, small }: { label: string; value: string; note: string; small?: boolean }) {
+  return (
+    <div className="rounded-2xl border bg-card p-4">
+      <dt className="text-sm text-ink/70">{label}</dt>
+      <dd className={cn("mt-1 font-bold text-ink", small ? "text-base" : "tabular text-2xl")}>{value}</dd>
+      <dd className="mt-0.5 text-xs text-muted-foreground">{note}</dd>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------ market data
+function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => void }) {
+  const job = useApi<Job>("/admin/market/refresh");
+  const [confirm, setConfirm] = useState(false);
+  const [err, setErr] = useState<unknown>(null);
+  const [role, setRole] = useState("business_analyst");
+  const [skill, setSkill] = useState("sql");
+  const [delta, setDelta] = useState("0.2");
+
+  useEffect(() => {
+    if (!job.data?.running) return;
+    const t = setInterval(job.reload, 2000);
+    return () => clearInterval(t);
+  }, [job.data?.running, job.reload]);
+  const finished = job.data?.finished;
+  useEffect(() => {
+    if (finished) onChange();
+  }, [finished, onChange]);
+
+  async function start() {
+    setConfirm(false);
+    setErr(null);
+    try {
+      await api.post("/admin/market/refresh");
+      job.reload();
+    } catch (e) {
+      setErr(e);
+    }
+  }
+  async function stop() {
+    try {
+      await api.post("/admin/market/refresh/cancel");
+      toast("Stopping the update…");
+      job.reload();
+    } catch (e) {
+      setErr(e);
+    }
+  }
+  async function simulate() {
+    setErr(null);
+    try {
+      const r = await api.post<{ version: string }>("/admin/market/simulate", { role, skill_id: skill, demand_delta: Number(delta), trend: 0.5 });
+      toast.success("Simulated market is now active", { description: r.version });
+      onChange();
+    } catch (e) {
+      setErr(e);
+    }
+  }
+  async function reset() {
+    try {
+      const r = await api.post<{ version: string }>(`/admin/market/reset?role=${role}`);
+      toast.success("Back to real market data", { description: r.version });
+      onChange();
+    } catch (e) {
+      setErr(e);
+    }
+  }
+
+  const j = job.data;
+  const stepState = (i: number) => {
+    if (!j) return "todo";
+    const at = j.step_index ?? 0;
+    if (j.running) return i < at ? "done" : i === at ? "active" : "todo";
+    if (j.ok) return "done";
+    return i < at ? "done" : i === at ? "failed" : "todo";
+  };
+  return (
+    <div className="grid gap-6 lg:grid-cols-2">
+      <Panel>
+        <h2 className="text-lg font-semibold text-ink">Monthly Market Update</h2>
+        <p className="mt-1 text-sm text-ink/70">Collects new postings, finds the skills they ask for, and rebuilds the market map. Students whose route changes get a history entry.</p>
+        {j && (j.running || j.finished) ? (
+          <ol className="mt-5 space-y-2.5" aria-live="polite">
+            {STEPS.map((label, i) => {
+              const state = stepState(i);
+              return (
+                <li key={label} className="flex items-center gap-3 text-sm">
+                  {state === "done" ? (
+                    <CircleCheck className="size-5 text-mint" aria-hidden="true" />
+                  ) : state === "active" ? (
+                    <Loader2 className="size-5 animate-spin text-indigo" aria-hidden="true" />
+                  ) : state === "failed" ? (
+                    <XCircle className="size-5 text-destructive" aria-hidden="true" />
+                  ) : (
+                    <CircleDashed className="size-5 text-ink/30" aria-hidden="true" />
+                  )}
+                  <span className={state === "todo" ? "text-ink/60" : "text-ink"}>{label}</span>
+                </li>
+              );
+            })}
+          </ol>
+        ) : null}
+        {j && !j.running && j.finished ? (
+          <p className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+            {j.ok ? <Tag tone="mint">Finished</Tag> : j.cancelled ? <Tag tone="ember">Stopped</Tag> : <Tag tone="red">Failed</Tag>}
+            <span className="text-ink/70">{fmtDateTime(j.finished)}</span>
+          </p>
+        ) : null}
+        <div className="mt-5 flex flex-wrap gap-2">
+          {j?.running ? (
+            <Button variant="destructive" size="lg" className="h-10" onClick={stop} disabled={j.cancelled}>
+              <Square /> {j.cancelled ? "Stopping…" : "Stop Update"}
+            </Button>
+          ) : (
+            <Button size="lg" className="h-10" onClick={() => setConfirm(true)}>
+              <Play /> Run Update Now
+            </Button>
+          )}
+        </div>
+        {j?.log.length ? (
+          <details className="mt-4">
+            <summary className="cursor-pointer text-sm font-medium text-ink/80">Technical Log</summary>
+            <pre className="mt-2 max-h-56 overflow-auto rounded-xl bg-ink p-3 text-[11px] leading-relaxed text-white/90">{j.log.join("\n")}</pre>
+          </details>
+        ) : null}
+        <AlertDialog open={confirm} onOpenChange={setConfirm}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Run the Market Update?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This collects new postings from the web and replaces the active market map. It usually takes 5 to 15 minutes, and you can stop it at any time.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={start}>Run Update</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </Panel>
+
+      <Panel>
+        <h2 className="text-lg font-semibold text-ink">Simulate a Market Change</h2>
+        <p className="mt-1 text-sm text-ink/70">Test how student routes react when demand for a skill shifts. The simulated map stays labelled until you switch back.</p>
+        <div className="mt-5 grid gap-4">
+          <div className="space-y-1.5">
+            <Label htmlFor="srole">Role</Label>
+            <NativeSelect id="srole" value={role} onChange={(e) => setRole(e.target.value)}>
+              {meta?.roles.map((r) => (
+                <option key={r.id} value={r.id}>
+                  {r.name}
+                </option>
+              ))}
+            </NativeSelect>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="sskill">Skill</Label>
+            <NativeSelect id="sskill" value={skill} onChange={(e) => setSkill(e.target.value)}>
+              {meta?.skills.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {titleCase(s.name)}
+                </option>
+              ))}
+            </NativeSelect>
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="sdelta">Demand Change</Label>
+            <NativeSelect id="sdelta" value={delta} onChange={(e) => setDelta(e.target.value)}>
+              {["0.4", "0.2", "0.1", "-0.1", "-0.2", "-0.4"].map((v) => (
+                <option key={v} value={v}>
+                  {Number(v) > 0 ? "+" : ""}
+                  {Math.round(Number(v) * 100)} points
+                </option>
+              ))}
+            </NativeSelect>
+          </div>
+        </div>
+        <div className="mt-5 flex flex-wrap gap-2">
+          <Button size="lg" className="h-10" onClick={simulate}>
+            Apply Simulation
+          </Button>
+          <Button variant="outline" size="lg" className="h-10" onClick={reset}>
+            Switch Back to Real Data
+          </Button>
+        </div>
+      </Panel>
+      <div className="lg:col-span-2">
+        <ErrorNote error={err} />
+      </div>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------ review queue
 interface ReviewRow {
   id: number;
-  posting_id: string;
   title: string;
   surface: string;
   quote: string;
@@ -35,145 +291,6 @@ interface ReviewRow {
   similarity: number;
 }
 
-type Tab = "pasar" | "tinjauan" | "anotasi";
-
-export default function AdminPage() {
-  const [tab, setTab] = useState<Tab>("pasar");
-  const stats = useApi<Stats>("/admin/stats");
-  const meta = useApi<Meta>("/meta");
-  const names = useMemo(() => Object.fromEntries((meta.data?.skills ?? []).map((s) => [s.id, s.name])), [meta.data]);
-  const s = stats.data;
-  return (
-    <div>
-      <PageHeader title="Admin" subtitle="Pembaruan pasar bulanan, simulasi perubahan pasar (uji pemicu adaptif #2), antrean tinjauan normalisasi, dan anotasi emas untuk F1 ekstraksi." />
-      {!s ? (
-        <Spinner />
-      ) : (
-        <div className="mb-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Stat label="Lowongan" value={s.postings_total} sub={`${s.duplicates} duplikat · BA ${s.in_window_by_role.business_analyst ?? 0} · DA ${s.in_window_by_role.data_analyst ?? 0} dalam jendela`} />
-          <Stat
-            label="Sebutan skill"
-            value={Object.values(s.mentions_by_status).reduce((a, b) => a + b, 0)}
-            sub={Object.entries(s.mentions_by_status)
-              .map(([k, v]) => `${k} ${v}`)
-              .join(" · ")}
-          />
-          <Stat label="Ekstraktor" value={s.extractor} sub={`build terakhir ${s.last_build ?? "–"}`} />
-          <Stat label="Pengguna" value={`${s.students} mhs`} sub={`${s.experts} pakar · ${s.annotations} anotasi · ${s.scenarios} skenario`} />
-        </div>
-      )}
-      <Tabs<Tab>
-        value={tab}
-        onChange={setTab}
-        tabs={[
-          { id: "pasar", label: "Pasar" },
-          { id: "tinjauan", label: "Antrean tinjauan" },
-          { id: "anotasi", label: "Anotasi & F1" },
-        ]}
-      />
-      {tab === "pasar" && <MarketAdmin meta={meta.data} onChange={stats.reload} />}
-      {tab === "tinjauan" && <ReviewQueue names={names} meta={meta.data} />}
-      {tab === "anotasi" && <Annotation meta={meta.data} onChange={stats.reload} />}
-    </div>
-  );
-}
-
-// ------------------------------------------------------------------ market
-function MarketAdmin({ meta, onChange }: { meta: Meta | null; onChange: () => void }) {
-  const job = useApi<Job>("/admin/market/refresh");
-  const [role, setRole] = useState("business_analyst");
-  const [skill, setSkill] = useState("sql");
-  const [delta, setDelta] = useState("0.2");
-  const [trend, setTrend] = useState("0.5");
-  const [msg, setMsg] = useState<string | null>(null);
-  const [err, setErr] = useState<unknown>(null);
-
-  useEffect(() => {
-    if (!job.data?.running) return;
-    const t = setInterval(job.reload, 2000);
-    return () => clearInterval(t);
-  }, [job.data?.running, job.reload]);
-
-  async function run<T>(fn: () => Promise<T>, ok: (r: T) => string) {
-    setErr(null);
-    setMsg(null);
-    try {
-      setMsg(ok(await fn()));
-      onChange();
-    } catch (e) {
-      setErr(e);
-    }
-  }
-
-  return (
-    <div className="grid gap-4 lg:grid-cols-2">
-      <Card title="Pembaruan pasar bulanan">
-        <p className="mb-3 text-sm text-muted">Scraping Karirhub + ATS, lalu ekstraksi, deduplikasi, dan snapshot peta permintaan baru. Mahasiswa yang jalurnya berubah mendapat entri riwayat &ldquo;Pembaruan pasar&rdquo;.</p>
-        <Button onClick={() => run(() => api.post("/admin/market/refresh"), () => "Pembaruan dimulai.").then(job.reload)} loading={job.data?.running}>
-          {job.data?.running ? "Sedang berjalan…" : "Jalankan sekarang"}
-        </Button>
-        {job.data?.started && (
-          <div className="mt-3">
-            <div className="mb-1 text-xs text-muted">
-              Mulai {job.data.started}
-              {job.data.finished && ` · selesai ${job.data.finished}`} {job.data.ok === true && <Badge tone="good">berhasil</Badge>}
-              {job.data.ok === false && <Badge tone="bad">gagal</Badge>}
-            </div>
-            <pre className="max-h-64 overflow-auto rounded-lg bg-ink p-3 text-[11px] leading-relaxed text-white">{job.data.log.join("\n")}</pre>
-          </div>
-        )}
-      </Card>
-      <Card title="Simulasi perubahan pasar">
-        <p className="mb-3 text-sm text-muted">Membuat snapshot bertanda SIMULASI untuk menguji apakah jalur mahasiswa beradaptasi. Kembalikan ke data nyata setelah selesai.</p>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Field label="Peran">
-            <select className={inputCls} value={role} onChange={(e) => setRole(e.target.value)}>
-              {meta?.roles.map((r) => (
-                <option key={r.id} value={r.id}>
-                  {r.name}
-                </option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Skill">
-            <select className={inputCls} value={skill} onChange={(e) => setSkill(e.target.value)}>
-              {meta?.skills.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.name}
-                </option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Perubahan permintaan (−1…1)">
-            <input className={inputCls} type="number" step="0.05" value={delta} onChange={(e) => setDelta(e.target.value)} />
-          </Field>
-          <Field label="Tren g (−0,5…0,5)">
-            <input className={inputCls} type="number" step="0.1" value={trend} onChange={(e) => setTrend(e.target.value)} />
-          </Field>
-        </div>
-        <div className="mt-3 flex gap-2">
-          <Button
-            onClick={() =>
-              run(
-                () => api.post<{ version: string }>("/admin/market/simulate", { role, skill_id: skill, demand_delta: Number(delta), trend: Number(trend) }),
-                (r) => `Snapshot simulasi ${r.version} aktif.`,
-              )
-            }
-          >
-            Terapkan simulasi
-          </Button>
-          <Button variant="secondary" onClick={() => run(() => api.post<{ version: string }>(`/admin/market/reset?role=${role}`), (r) => `Kembali ke data nyata ${r.version}.`)}>
-            Kembalikan ke data nyata
-          </Button>
-        </div>
-        {msg && <p className="mt-3 text-sm text-emerald-700">{msg}</p>}
-        <ErrorBox error={err} />
-      </Card>
-    </div>
-  );
-}
-
-// ------------------------------------------------------------------ review queue
 function ReviewQueue({ names, meta }: { names: Record<string, string>; meta: Meta | null }) {
   const [status, setStatus] = useState("review");
   const q = useApi<ReviewRow[]>(`/admin/review-queue?status=${status}&limit=100`);
@@ -182,56 +299,61 @@ function ReviewQueue({ names, meta }: { names: Record<string, string>; meta: Met
     q.setData((q.data ?? []).filter((r) => r.id !== id));
   }
   return (
-    <Card
-      title="Normalisasi skill yang perlu ditinjau"
-      action={
-        <select className="rounded border border-line px-2 py-1 text-xs" value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="review">Kemiripan 0,70–0,85 (tinjau)</option>
-          <option value="new">Kandidat skill baru (&lt; 0,70)</option>
-        </select>
-      }
-    >
+    <Panel className="p-0 sm:p-0">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b p-5">
+        <div>
+          <h2 className="text-lg font-semibold text-ink">Uncertain Skill Matches</h2>
+          <p className="text-sm text-ink/70">Phrases from postings that look like a known skill, but not clearly enough to count automatically.</p>
+        </div>
+        <NativeSelect aria-label="Queue" value={status} onChange={(e) => setStatus(e.target.value)} className="w-auto">
+          <option value="review">Close Matches</option>
+          <option value="new">Possible New Skills</option>
+        </NativeSelect>
+      </div>
       {!q.data ? (
-        <Spinner />
+        <Loading />
       ) : q.data.length === 0 ? (
-        <Empty>Antrean kosong.</Empty>
+        <div className="p-5">
+          <EmptyState title="Queue Is Empty">Nothing needs a decision right now.</EmptyState>
+        </div>
       ) : (
-        <ul className="divide-y divide-line">
+        <ul className="divide-y">
           {q.data.map((r) => (
-            <li key={r.id} className="py-3 text-sm">
-              <div className="flex flex-wrap items-center gap-2">
-                <b>&ldquo;{r.surface}&rdquo;</b>
-                {r.skill_id && (
-                  <span className="text-muted">
-                    → {names[r.skill_id] ?? r.skill_id} ({num(r.similarity)})
+            <li key={r.id} className="p-5">
+              <p className="text-sm">
+                <span className="font-semibold text-ink">&ldquo;{r.surface}&rdquo;</span>
+                {r.skill_id ? (
+                  <span className="text-ink/70">
+                    {" "}
+                    looks like <span className="font-medium text-ink">{names[r.skill_id] ?? r.skill_id}</span> ({num(r.similarity)})
                   </span>
-                )}
-              </div>
-              <blockquote className="mt-1 border-l-2 border-line pl-3 text-xs text-muted">{r.quote}</blockquote>
-              <div className="mt-1 text-xs text-muted">{r.title}</div>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {r.skill_id && (
-                  <Button variant="secondary" onClick={() => decide(r.id, "accept")}>
-                    Terima
+                ) : null}
+              </p>
+              <p className="mt-1.5 border-l-2 border-iris pl-3 text-sm text-ink/70">{r.quote}</p>
+              <p className="mt-1 text-xs text-muted-foreground">{r.title}</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {r.skill_id ? (
+                  <Button variant="outline" onClick={() => decide(r.id, "accept")}>
+                    Accept Match
                   </Button>
-                )}
-                <select className="rounded-lg border border-line px-2 text-xs" defaultValue="" onChange={(e) => e.target.value && decide(r.id, e.target.value)}>
-                  <option value="">Petakan ke skill lain…</option>
+                ) : null}
+                <NativeSelect aria-label="Map to another skill" defaultValue="" onChange={(e) => e.target.value && decide(r.id, e.target.value)} className="h-8 w-auto text-xs">
+                  <option value="">Map to another skill…</option>
                   {meta?.skills.map((s) => (
                     <option key={s.id} value={s.id}>
-                      {s.name}
+                      {titleCase(s.name)}
                     </option>
                   ))}
-                </select>
-                <Button variant="danger" onClick={() => decide(r.id, "reject")}>
-                  Tolak
+                </NativeSelect>
+                <Button variant="ghost" onClick={() => decide(r.id, "reject")}>
+                  Reject
                 </Button>
               </div>
             </li>
           ))}
         </ul>
       )}
-    </Card>
+    </Panel>
   );
 }
 
@@ -249,11 +371,7 @@ interface F1 {
   recall: number;
   f1: number;
   target_f1: number;
-  tp: number;
-  fp: number;
-  fn: number;
 }
-
 interface Comparison {
   n_postings: number;
   mean_jaccard: number;
@@ -261,39 +379,6 @@ interface Comparison {
   mentions_per_posting: { lexicon: number; llm: number };
   top_only_lexicon: [string, number][];
   top_only_llm: [string, number][];
-  top_agreed: [string, number][];
-}
-
-function ExtractorComparison({ c }: { c: Comparison }) {
-  const list = (title: string, rows: [string, number][]) => (
-    <div>
-      <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">{title}</div>
-      <ul className="space-y-0.5 text-sm">
-        {rows.slice(0, 6).map(([n, k]) => (
-          <li key={n} className="flex justify-between gap-2">
-            <span className="truncate">{n}</span>
-            <span className="tabular-nums text-muted">{k}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-  return (
-    <Card title="Leksikon vs LLM luring (tanpa anotasi emas)">
-      <div className="mb-4 grid gap-4 sm:grid-cols-4">
-        <Stat label="Lowongan" value={c.n_postings} />
-        <Stat label="Jaccard rata-rata" value={num(c.mean_jaccard)} sub="himpunan skill per lowongan" />
-        <Stat label="Spearman" value={num(c.spearman_skill_frequency)} sub="frekuensi skill antar-ekstraktor" />
-        <Stat label="Skill / lowongan" value={`${num(c.mentions_per_posting.lexicon, 1)} vs ${num(c.mentions_per_posting.llm, 1)}`} sub="leksikon vs LLM" />
-      </div>
-      <div className="grid gap-4 sm:grid-cols-3">
-        {list("Sepakat", c.top_agreed)}
-        {list("Hanya leksikon", c.top_only_lexicon)}
-        {list("Hanya LLM", c.top_only_llm)}
-      </div>
-      <p className="mt-3 text-xs text-muted">Mana yang lebih benar hanya bisa diputuskan dengan F1 terhadap anotasi emas di atas.</p>
-    </Card>
-  );
 }
 
 function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => void }) {
@@ -307,8 +392,7 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
 
   useEffect(() => {
     try {
-      const a = localStorage.getItem("pathsync.annotator") ?? "";
-      setAnnotator(a);
+      setAnnotator(localStorage.getItem("pathsync.annotator") ?? "");
     } catch {}
   }, []);
   useEffect(() => setPicked(new Set()), [next.data?.posting_id]);
@@ -326,88 +410,302 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
     }
   }
 
-  const clusters = meta ? Object.entries(meta.clusters) : [];
   return (
-    <div className="space-y-4">
-      <Card title="Kinerja ekstraksi vs anotasi emas">
-        {!f1.data ? (
-          <Spinner />
+    <div className="space-y-6">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Panel>
+          <h2 className="text-lg font-semibold text-ink">Extraction Quality</h2>
+          <p className="mt-1 text-sm text-ink/70">Compared with human annotations. The target is an F1 of {num(f1.data?.target_f1 ?? 0.75)} on 150 postings.</p>
+          {f1.data ? (
+            <dl className="mt-4 grid grid-cols-4 gap-3 text-center">
+              {[
+                ["F1", num(f1.data.f1)],
+                ["Precision", num(f1.data.precision)],
+                ["Recall", num(f1.data.recall)],
+                ["Postings", int(f1.data.n_postings)],
+              ].map(([l, v]) => (
+                <div key={l} className="rounded-xl bg-muted/70 p-3">
+                  <dt className="text-xs text-ink/60">{l}</dt>
+                  <dd className="tabular mt-0.5 text-lg font-bold text-ink">{v}</dd>
+                </div>
+              ))}
+            </dl>
+          ) : (
+            <Loading />
+          )}
+        </Panel>
+        {cmp.data ? (
+          <Panel>
+            <h2 className="text-lg font-semibold text-ink">Lexicon vs LLM Extractor</h2>
+            <p className="mt-1 text-sm text-ink/70">
+              Agreement on {cmp.data.n_postings} postings: overlap {num(cmp.data.mean_jaccard)}, rank agreement {num(cmp.data.spearman_skill_frequency)}. The lexicon finds{" "}
+              {num(cmp.data.mentions_per_posting.lexicon, 1)} skills per posting and the LLM {num(cmp.data.mentions_per_posting.llm, 1)}.
+            </p>
+            <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
+              {(
+                [
+                  ["Only the Lexicon Found", cmp.data.top_only_lexicon],
+                  ["Only the LLM Found", cmp.data.top_only_llm],
+                ] as const
+              ).map(([title, rows]) => (
+                <div key={title}>
+                  <p className="font-medium text-ink">{title}</p>
+                  <ul className="mt-1 space-y-0.5 text-ink/70">
+                    {rows.slice(0, 4).map(([n, k]) => (
+                      <li key={n}>
+                        {titleCase(n)} <span className="tabular text-ink/60">{k}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Panel>
+        ) : null}
+      </div>
+
+      <Panel>
+        <h2 className="text-lg font-semibold text-ink">Annotate Postings</h2>
+        {!active ? (
+          <form
+            className="mt-4 flex max-w-md flex-wrap items-end gap-2"
+            onSubmit={(e) => {
+              e.preventDefault();
+              setActive(annotator.trim());
+              try {
+                localStorage.setItem("pathsync.annotator", annotator.trim());
+              } catch {}
+            }}
+          >
+            <div className="min-w-0 flex-1 space-y-1.5">
+              <Label htmlFor="ann">Your Name</Label>
+              <Input id="ann" autoComplete="name" value={annotator} onChange={(e) => setAnnotator(e.target.value)} className="h-10" />
+            </div>
+            <Button type="submit" size="lg" className="h-10" disabled={!annotator.trim()}>
+              Start Annotating
+            </Button>
+          </form>
+        ) : !next.data ? (
+          <Loading />
+        ) : !next.data.posting_id ? (
+          <EmptyState title="All Done">You&rsquo;ve annotated every posting.</EmptyState>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-4">
-            <Stat label="F1" value={num(f1.data.f1, 3)} sub={`target ≥ ${num(f1.data.target_f1)}`} />
-            <Stat label="Presisi" value={num(f1.data.precision, 3)} sub={`TP ${f1.data.tp} · FP ${f1.data.fp}`} />
-            <Stat label="Recall" value={num(f1.data.recall, 3)} sub={`FN ${f1.data.fn}`} />
-            <Stat label="Lowongan teranotasi" value={f1.data.n_postings} sub="target 150 (2 anotator)" />
+          <div className="mt-4 grid gap-6 lg:grid-cols-2">
+            <div className="min-w-0">
+              <p className="text-xs text-muted-foreground">{next.data.remaining} postings left</p>
+              <h3 className="mt-1 font-semibold text-ink">{next.data.title}</h3>
+              <p className="text-sm text-ink/70">{next.data.company}</p>
+              <div className="mt-3 max-h-[60vh] overflow-y-auto whitespace-pre-wrap rounded-xl bg-muted/70 p-4 text-sm leading-relaxed text-ink/85">{next.data.description}</div>
+            </div>
+            <div>
+              <p className="text-sm text-ink/70">Tick every skill this posting asks for, without looking at the extractor&rsquo;s answer.</p>
+              <div className="mt-3 max-h-[60vh] space-y-4 overflow-y-auto pr-1">
+                {meta
+                  ? Object.entries(meta.clusters).map(([cid, label]) => (
+                      <fieldset key={cid}>
+                        <legend className="mb-1.5 text-sm font-semibold text-ink">{label}</legend>
+                        <div className="grid gap-1 sm:grid-cols-2">
+                          {meta.skills
+                            .filter((s) => s.cluster === cid)
+                            .map((s) => (
+                              <label key={s.id} className="flex min-h-9 cursor-pointer items-center gap-2 rounded-lg px-2 text-sm hover:bg-muted">
+                                <input
+                                  type="checkbox"
+                                  className="size-4 accent-[#4338ca]"
+                                  checked={picked.has(s.id)}
+                                  onChange={(e) => {
+                                    const n = new Set(picked);
+                                    if (e.target.checked) n.add(s.id);
+                                    else n.delete(s.id);
+                                    setPicked(n);
+                                  }}
+                                />
+                                {titleCase(s.name)}
+                              </label>
+                            ))}
+                        </div>
+                      </fieldset>
+                    ))
+                  : null}
+              </div>
+              <Button size="lg" className="mt-4 h-10" onClick={submit}>
+                Save and Next ({picked.size} skills)
+              </Button>
+              <div className="mt-3">
+                <ErrorNote error={err} />
+              </div>
+            </div>
           </div>
         )}
-      </Card>
-      {cmp.data && <ExtractorComparison c={cmp.data} />}
-      <Card title="Anotasi lowongan">
-        {!active ? (
-          <div className="flex max-w-md gap-2">
-            <input className={inputCls} placeholder="Nama anotator" value={annotator} onChange={(e) => setAnnotator(e.target.value)} />
-            <Button
-              disabled={!annotator.trim()}
-              onClick={() => {
-                setActive(annotator.trim());
-                try {
-                  localStorage.setItem("pathsync.annotator", annotator.trim());
-                } catch {}
-              }}
-            >
-              Mulai
+      </Panel>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------------ models & evaluation
+type Stat95 = { mean: number; ci95: [number, number] };
+interface ModelRow {
+  id: number;
+  name: string;
+  weights: Features;
+  active: boolean;
+}
+interface EvalCondition {
+  cv: { methods: Record<string, { ndcg5: Stat95 }> };
+  ablation: Record<string, Stat95>;
+}
+interface EvalReport {
+  n_scenarios: number;
+  conditions: Record<string, EvalCondition>;
+}
+
+const METHOD: Record<string, string> = {
+  model: "PathSync Model",
+  formula5: "Formula (5)",
+  kesenjangan_terbesar: "Biggest Gap First",
+  kesenjangan_x_permintaan: "Gap × Demand",
+  llm_umum: "Generic LLM",
+};
+const CONDITION: Record<string, string> = {
+  titik_hambat: "Experts Favour Bottlenecks",
+  kesenjangan_permintaan: "Experts Favour Gap × Demand",
+  campuran: "Mixed Expert Styles",
+};
+
+function Models() {
+  const [simulated, setSimulated] = useState(false);
+  const agree = useApi<{ mean_w: number | null; n_scenarios_ranked: number; n_with_2plus: number }>(`/expert/agreement?simulated=${simulated}`);
+  const models = useApi<ModelRow[]>("/models");
+  const report = useApi<EvalReport>("/evaluation");
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<unknown>(null);
+
+  async function train() {
+    setBusy(true);
+    setErr(null);
+    try {
+      const r = await api.post<{ active: boolean; passes_rule: boolean }>("/expert/train", { use_simulated: simulated, activate_if_passes: true });
+      toast.success(r.active ? "New model trained and activated" : "Model trained, not activated", {
+        description: r.passes_rule ? "It matches or beats Formula (5)." : "It didn't beat Formula (5), so the current model stays.",
+      });
+      models.reload();
+    } catch (e) {
+      setErr(e);
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function finalize() {
+    try {
+      const r = await api.post<Record<string, number>>("/expert/edges/finalize");
+      toast.success("Prerequisite map updated", { description: `${r.approved} approved, ${r.rejected} rejected, ${r.draft} still open` });
+    } catch (e) {
+      setErr(e);
+    }
+  }
+  async function activate(id: number) {
+    await api.post(`/models/${id}/activate`);
+    models.reload();
+  }
+
+  const conds = report.data ? Object.entries(report.data.conditions) : [];
+  return (
+    <div className="space-y-6">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Panel>
+          <h2 className="text-lg font-semibold text-ink">Expert Agreement</h2>
+          <label className="mt-2 flex items-center gap-2 text-sm text-ink/80">
+            <input type="checkbox" className="size-4 accent-[#4338ca]" checked={simulated} onChange={(e) => setSimulated(e.target.checked)} />
+            Use simulated experts
+          </label>
+          {agree.data ? (
+            <p className="mt-3 text-sm text-ink/75">
+              Kendall&rsquo;s W is <span className="font-semibold text-ink">{agree.data.mean_w != null ? num(agree.data.mean_w) : "not available yet"}</span> across{" "}
+              {agree.data.n_with_2plus} scenarios ranked by 2 or more experts. A value of 0.7 or higher means strong agreement.
+            </p>
+          ) : null}
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Button size="lg" className="h-10" onClick={train} disabled={busy}>
+              {busy ? "Training…" : `Train From ${simulated ? "Simulated" : "Expert"} Rankings`}
+            </Button>
+            <Button variant="outline" size="lg" className="h-10" onClick={finalize}>
+              Apply the 2-of-3 Rule to Links
             </Button>
           </div>
-        ) : !next.data ? (
-          <Spinner />
-        ) : !next.data.posting_id ? (
-          <Empty>Semua lowongan sudah kamu anotasi.</Empty>
-        ) : (
-          <div className="grid gap-4 lg:grid-cols-2">
-            <div>
-              <div className="mb-1 text-xs text-muted">
-                Anotator {active} · sisa {next.data.remaining} lowongan
-              </div>
-              <h3 className="font-semibold">{next.data.title}</h3>
-              <div className="mb-2 text-xs text-muted">{next.data.company}</div>
-              <div className="max-h-[60vh] overflow-y-auto whitespace-pre-wrap rounded-lg bg-subtle p-3 text-xs leading-relaxed">{next.data.description}</div>
-            </div>
-            <div>
-              <p className="mb-2 text-sm text-muted">Centang semua skill yang dituntut lowongan ini (tanpa melihat hasil ekstraktor).</p>
-              <div className="max-h-[60vh] space-y-3 overflow-y-auto">
-                {clusters.map(([cid, label]) => (
-                  <div key={cid}>
-                    <div className="mb-1 text-xs font-semibold uppercase text-muted">{label}</div>
-                    <div className="grid grid-cols-1 gap-1 sm:grid-cols-2">
-                      {meta!.skills
-                        .filter((s) => s.cluster === cid)
-                        .map((s) => (
-                          <label key={s.id} className="flex items-center gap-2 text-sm">
-                            <input
-                              type="checkbox"
-                              checked={picked.has(s.id)}
-                              onChange={(e) => {
-                                const n = new Set(picked);
-                                if (e.target.checked) n.add(s.id);
-                                else n.delete(s.id);
-                                setPicked(n);
-                              }}
-                            />
-                            {s.name}
-                          </label>
-                        ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-3 flex items-center gap-2">
-                <Button onClick={submit}>Simpan & berikutnya ({picked.size} skill)</Button>
-                <ErrorBox error={err} />
-              </div>
-            </div>
+          <div className="mt-3">
+            <ErrorNote error={err} />
           </div>
-        )}
-      </Card>
+        </Panel>
+        <Panel>
+          <h2 className="text-lg font-semibold text-ink">Ranking Models</h2>
+          {!models.data ? (
+            <Loading />
+          ) : (
+            <ul className="mt-3 max-h-72 divide-y overflow-y-auto">
+              {models.data.map((m) => (
+                <li key={m.id} className="flex items-center justify-between gap-3 py-2.5">
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-ink">{m.name}</p>
+                    <p className="text-xs text-ink/60">{(["G", "D", "U", "R"] as const).map((k) => `${FEATURE_LABELS[k]} ${num(m.weights[k])}`).join(", ")}</p>
+                  </div>
+                  {m.active ? (
+                    <Tag tone="mint">Active</Tag>
+                  ) : (
+                    <Button variant="outline" size="sm" onClick={() => activate(m.id)}>
+                      Activate
+                    </Button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </Panel>
+      </div>
+
+      {report.data ? (
+        <Panel>
+          <h2 className="text-lg font-semibold text-ink">Ranking Quality (Simulation)</h2>
+          <p className="mt-1 max-w-3xl text-sm text-ink/70">
+            NDCG@5 against simulated expert rankings over {report.data.n_scenarios} scenarios, where 1.00 is a perfect match. These are feasibility results, not real expert performance.
+          </p>
+          <div className="mt-5 overflow-x-auto">
+            <table className="w-full min-w-[640px] text-left text-sm">
+              <thead className="text-xs text-ink/60">
+                <tr>
+                  <th className="py-2 pr-3 font-medium">Method</th>
+                  {conds.map(([c]) => (
+                    <th key={c} className="py-2 pr-3 text-right font-medium">
+                      {CONDITION[c] ?? c}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="tabular">
+                {Object.keys(METHOD)
+                  .filter((m) => conds.some(([, c]) => c.cv.methods[m]))
+                  .map((m) => (
+                    <tr key={m} className={cn("border-t", m === "model" && "font-semibold")}>
+                      <td className="py-2 pr-3 text-ink">{METHOD[m]}</td>
+                      {conds.map(([k, c]) => (
+                        <td key={k} className="py-2 pr-3 text-right text-ink/80">
+                          {c.cv.methods[m] ? num(c.cv.methods[m].ndcg5.mean, 3) : "–"}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                <tr className="border-t text-ink/60">
+                  <td className="py-2 pr-3">Model Without Prerequisite Signals</td>
+                  {conds.map(([k, c]) => (
+                    <td key={k} className="py-2 pr-3 text-right">
+                      {num(c.ablation.tanpa_fitur_graf?.mean, 3)}
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </Panel>
+      ) : null}
     </div>
   );
 }

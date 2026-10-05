@@ -1,21 +1,27 @@
-import type { Metadata } from "next";
-import { Nav } from "@/components/nav";
+import type { Metadata, Viewport } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { AppShell } from "@/components/app-shell";
+import { Toaster } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./globals.css";
 
+const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", display: "swap" });
+
 export const metadata: Metadata = {
-  title: "PathSync — Navigator Belajar Adaptif",
-  description: "Jalur belajar adaptif berbasis bukti kompetensi dan data lowongan kerja nyata.",
+  title: { default: "PathSync", template: "%s · PathSync" },
+  description: "Know which skill to learn next for your target role, based on real Indonesian job postings and your own evidence.",
 };
+
+export const viewport: Viewport = { themeColor: "#f6f6fb" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id">
-      <body className="min-h-screen font-sans antialiased">
-        <Nav />
-        <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">{children}</main>
-        <footer className="mx-auto max-w-6xl px-4 pb-10 text-xs text-muted sm:px-6">
-          PathSync · ICC 2026 · Tim cupuu — purwarupa riset. Data pasar dari lowongan publik (Karirhub Kemnaker, ATS perusahaan).
-        </footer>
+    <html lang="en" className={jakarta.variable}>
+      <body className="min-h-screen antialiased">
+        <TooltipProvider>
+          <AppShell>{children}</AppShell>
+          <Toaster position="bottom-right" />
+        </TooltipProvider>
       </body>
     </html>
   );

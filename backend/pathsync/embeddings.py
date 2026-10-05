@@ -65,7 +65,7 @@ class SkillIndex:
         self.forms: list[str] = []
         self.owner: list[str] = []
         for sid, sk in skills.items():
-            for f in {sk.name, sk.name_en, *sk.aliases}:
+            for f in {sk.name_id or sk.name, sk.name_en, *sk.aliases}:
                 if f and len(f) > 1:
                     self.forms.append(f)
                     self.owner.append(sid)

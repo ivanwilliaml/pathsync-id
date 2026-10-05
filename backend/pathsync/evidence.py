@@ -121,7 +121,7 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
         d = diag.get(s, [])
         if d:
             st.components["assessment"] = smoothed_accuracy(sum(d), len(d))
-            st.sources.setdefault("assessment", []).append(f"Asesmen diagnostik ({sum(d)}/{len(d)} benar)")
+            st.sources.setdefault("assessment", []).append(f"Diagnostic assessment ({sum(d)}/{len(d)} correct)")
         # eq. (2): weighted mean over the evidence that exists
         if st.components:
             num = sum(EVIDENCE_WEIGHTS[k] * v for k, v in st.components.items())

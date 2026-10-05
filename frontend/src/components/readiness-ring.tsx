@@ -1,0 +1,37 @@
+import { useId } from "react";
+
+/** Circular progress with the route gradient. */
+export function ReadinessRing({ value, size = 148, stroke = 14, label }: { value: number; size?: number; stroke?: number; label?: string }) {
+  const id = useId();
+  const r = (size - stroke) / 2;
+  const c = 2 * Math.PI * r;
+  const v = Math.max(0, Math.min(1, value));
+  return (
+    <div className="relative inline-flex shrink-0" style={{ width: size, height: size }} role="img" aria-label={`${label ?? "Progress"}: ${Math.round(v * 100)}%`}>
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
+        <defs>
+          <linearGradient id={`ring-${id}`} x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stopColor="#4338ca" />
+            <stop offset="0.55" stopColor="#7c6cf6" />
+            <stop offset="1" stopColor="#f2711c" />
+          </linearGradient>
+        </defs>
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e7e5f3" strokeWidth={stroke} />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          fill="none"
+          stroke={`url(#ring-${id})`}
+          strokeWidth={stroke}
+          strokeLinecap="round"
+          strokeDasharray={`${c * v} ${c}`}
+        />
+      </svg>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <span className="tabular text-[32px] font-extrabold leading-none text-ink">{Math.round(v * 100)}%</span>
+        {label ? <span className="mt-1 text-xs text-muted-foreground">{label}</span> : null}
+      </div>
+    </div>
+  );
+}

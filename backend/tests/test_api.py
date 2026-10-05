@@ -166,3 +166,27 @@ def test_annotation_f1(client):
     client.post("/api/annotation", json={"posting_id": p["posting_id"], "annotator": "uji", "skill_ids": skills})
     ev = client.get("/api/annotation/eval").json()
     assert ev["n_postings"] >= 1 and ev["f1"] == pytest.approx(1.0)
+
+
+def test_market_update_can_be_stopped(client, monkeypatch):
+    import time
+
+    import api.main as m
+
+    assert client.post("/api/admin/market/refresh/cancel").status_code == 409     # nothing running yet
+    monkeypatch.setattr(m, "_REFRESH_STEPS", [("tests._sleeper", "Sleeping"), ("tests._sleeper", "Never reached")])
+    assert client.post("/api/admin/market/refresh").json() == {"started": True}
+    assert client.post("/api/admin/market/refresh").status_code == 409           # no second run in parallel
+    for _ in range(50):
+        if m._proc["p"] is not None:
+            break
+        time.sleep(0.1)
+    t0 = time.time()
+    assert client.post("/api/admin/market/refresh/cancel").json() == {"cancelled": True}
+    for _ in range(100):
+        job = client.get("/api/admin/market/refresh").json()
+        if not job["running"]:
+            break
+        time.sleep(0.1)
+    assert not job["running"] and job["cancelled"] and job["ok"] is False
+    assert job["step_index"] == 0 and time.time() - t0 < 10                       # stopped in the first step

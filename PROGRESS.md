@@ -4,7 +4,7 @@ Terakhir diperbarui: 6 Oktober 2026. Acuan: paper semifinal ICC 2026 (Tim cupuu)
 
 ## Ringkasan
 
-Backend sudah berupa produk yang berjalan end-to-end di atas **data lowongan nyata**: scraping → ekstraksi skill dengan kutipan terverifikasi → peta permintaan → diagnosis kompetensi berbasis bukti → model peringkat titik hambat → jalur belajar + penjelasan + kontrafaktual → siklus adaptif dengan riwayat. Semua lewat REST API **dan antarmuka web Next.js** (10 halaman), sudah diuji integrasi (22 tes), dan bisa di-deploy dengan `docker compose` (teruji di PostgreSQL). Ekstraksi LLM dan pembanding "LLM generik" sudah dijalankan dengan model open-weight (Qwen3-8B) di GPU Kaggle. **Yang tersisa terutama validasi dengan manusia** (anotasi emas, pakar, uji pengguna) dan hosting publik.
+Backend sudah berupa produk yang berjalan end-to-end di atas **data lowongan nyata**: scraping → ekstraksi skill dengan kutipan terverifikasi → peta permintaan → diagnosis kompetensi berbasis bukti → model peringkat titik hambat → jalur belajar + penjelasan + kontrafaktual → siklus adaptif dengan riwayat. Semua lewat REST API **dan antarmuka web Next.js berbahasa Inggris** (10 halaman, didesain ulang setelah audit UI/UX, lihat [docs/UI_AUDIT.md](docs/UI_AUDIT.md)), sudah diuji integrasi (23 tes), dan bisa di-deploy dengan `docker compose` (teruji di PostgreSQL). Ekstraksi LLM dan pembanding "LLM generik" sudah dijalankan dengan model open-weight (Qwen3-8B) di GPU Kaggle. **Yang tersisa terutama validasi dengan manusia** (anotasi emas, pakar, uji pengguna) dan hosting publik.
 
 ## Yang sudah selesai (dipetakan ke paper)
 
@@ -23,12 +23,13 @@ Backend sudah berupa produk yang berjalan end-to-end di atas **data lowongan nya
 | III.A.6 Siklus adaptif | ✅ | 3 pemicu teruji: bukti baru, pembaruan pasar (snapshot baru / simulasi), ganti peran. Setiap perubahan jalur disimpan beserta alasannya |
 | III.B Arsitektur | ✅ | Python + FastAPI + SQLAlchemy (SQLite default; **PostgreSQL 16 + pgvector teruji** lewat `docker-compose.yml`), embedding open-source multibahasa, **Next.js 16 + Tailwind 4** |
 | III.D Evaluasi | ✅ alat, ⏳ data nyata | Harness P/R/F1 vs anotasi, NDCG@5 / Kendall τ / top-3 vs **4 pembanding (termasuk LLM generik, kini dijalankan)**, CV berkelompok, bootstrap CI 95%, ablasi, uji adaptivitas, Kendall W, kesepakatan leksikon vs LLM |
-| Antarmuka (Gbr. 7) | ✅ | `frontend/`: onboarding + persetujuan, profil & bukti (transkrip/sertifikat/CV/proyek/kuesioner), asesmen diagnostik & ulang, dasbor, graf prasyarat, peta pasar + kutipan, riwayat, panel pakar, admin. Responsif sampai lebar 375 px |
+| Antarmuka (Gbr. 7) | ✅ | `frontend/` (bahasa Inggris, shadcn/ui + Tailwind 4, design system di `docs/UI_AUDIT.md`): landing + pendaftaran, wizard bukti bertahap, cek cepat satu soal per layar (pintasan keyboard), dasbor dengan rute belajar bergradasi dan panel detail 4 pertanyaan, peta skill terfokus, pasar kerja, riwayat, panel pakar (validasi prasyarat satu per satu, peringkat dengan klik berurutan), admin (pembaruan pasar bisa dihentikan). Responsif sampai 375 px, kontras AA, `prefers-reduced-motion` |
+| Bahasa | ✅ | UI dan seluruh teks backend (nama & deskripsi 42 skill, penjelasan, riwayat, peringatan, 210 soal asesmen, alasan 50 sisi graf) dalam bahasa Inggris lewat `PATHSYNC_LANG=en`; teks Indonesia asli tetap di seed untuk prompt ekstraksi (prompt Kaggle identik byte per byte) |
 | Operasional | ✅ | `docker compose up` (DB kosong → bangun peta pasar & studi pakar otomatis), GitHub Actions scraping bulanan (`.github/workflows/monthly-scrape.yml`), uji API end-to-end |
 
 ### Uji kesetiaan ke paper
 `tests/test_paper_fidelity.py` — 7/7 lulus, termasuk **reproduksi persis Tabel 4** (SQL 0,95 → 0,17; Analisis data naik ke #1 setelah asesmen ulang SQL).
-`tests/test_api.py` — 14 uji alur API (persetujuan, bukti, klaim CV tidak menaikkan penguasaan, kunci jawaban tidak dikirim ke klien, 3 pemicu adaptif, kutipan dapat ditelusuri, panel pakar 2-dari-3 + tolak siklus, F1 anotasi) pada salinan DB sementara. `tests/test_llm_jobs.py` — hasil LLM luring melewati gerbang yang sama (kutipan halusinasi ditolak). **Total 22/22 lulus.**
+`tests/test_api.py` — 14 uji alur API (persetujuan, bukti, klaim CV tidak menaikkan penguasaan, kunci jawaban tidak dikirim ke klien, 3 pemicu adaptif, kutipan dapat ditelusuri, panel pakar 2-dari-3 + tolak siklus, F1 anotasi) pada salinan DB sementara. `tests/test_llm_jobs.py` — hasil LLM luring melewati gerbang yang sama (kutipan halusinasi ditolak). Tombol Stop pembaruan pasar diuji dengan proses tiruan. **Total 23/23 lulus.**
 
 ### Hasil simulasi kelayakan (pakar tersimulasi, 15 skenario dasar × 3 = 45 skenario, 8 kandidat)
 

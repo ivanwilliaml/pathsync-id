@@ -71,7 +71,7 @@ class ClaudeClient:
 
 
 def _taxonomy_block(skills: dict[str, Skill]) -> str:
-    lines = [f"- {s.id}: {s.name} ({s.name_en}) - {s.description}" for s in skills.values()]
+    lines = [f"- {s.id}: {s.name_id or s.name} ({s.name_en}) - {s.description_id or s.description}" for s in skills.values()]
     return "\n".join(lines)
 
 

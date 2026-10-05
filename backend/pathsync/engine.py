@@ -21,13 +21,13 @@ from .evidence import EvidenceItem, Response, SkillState, diagnose, recommendati
 from .market import esco_status, load_market
 from .pathing import blocked_steps, build_path, counterfactuals, coverage, explain, level_label
 from .ranker import RankingModel, build_candidates
-from .taxonomy import Edge, Skill, SkillGraph, cluster_names, load_draft_edges, load_skills
+from .taxonomy import Edge, Skill, SkillGraph, cluster_names, load_draft_edges, load_skills, seed_rationales
 
 FLAG_TEXT = {
-    "paparan_akademik_tanpa_bukti_langsung": "Nilai mata kuliah tinggi, tetapi belum ada bukti proyek atau asesmen.",
-    "klaim_cv_belum_terbukti": "Disebut di CV, tetapi belum ada bukti yang dapat diperiksa.",
-    "bukti_bertentangan": "Nilai akademik jauh lebih tinggi daripada hasil asesmen.",
-    "persepsi_lebih_tinggi_dari_bukti": "Penilaian dirimu lebih tinggi daripada bukti yang terkumpul.",
+    "paparan_akademik_tanpa_bukti_langsung": "Strong course grades, but no project or assessment evidence yet.",
+    "klaim_cv_belum_terbukti": "Mentioned on your CV, but there is no evidence we can check yet.",
+    "bukti_bertentangan": "Your course grades are much higher than your assessment result.",
+    "persepsi_lebih_tinggi_dari_bukti": "You rated yourself higher than your evidence shows.",
 }
 
 
@@ -60,9 +60,16 @@ def ensure_seed(s: Session) -> None:
     if s.scalar(select(GraphEdge.id).limit(1)) is None:
         for e in load_draft_edges():
             s.add(GraphEdge(src=e.src, dst=e.dst, source=e.source, rationale=e.rationale, status="draft"))
+    else:
+        # databases seeded before the display language existed still hold the original rationale
+        seed = seed_rationales()
+        for row in s.scalars(select(GraphEdge)).all():
+            orig, shown = seed.get((row.src, row.dst), (None, None))
+            if orig is not None and row.rationale == orig and shown != orig:
+                row.rationale = shown
     if s.scalar(select(RankerModel.id).limit(1)) is None:
         s.add(RankerModel(name="Formula (5)", source="formula5", weights=dict(FORMULA5_WEIGHTS), active=True,
-                          metrics={"note": "G x D x T x U x R, titik awal sebelum peringkat pakar"}))
+                          metrics={"note": "G x D x T x U x R, starting point before expert rankings"}))
     s.commit()
 
 
@@ -203,7 +210,7 @@ def recommend(s: Session, student: Student, ctx: Context | None = None) -> dict:
             "rec_type": recommendation_type(st), "hours": hours, "materials": _pick_materials(sid, st.p, prefs),
             "waiting_for": waiting, "learn_what": ctx.skills[sid].learn_what,
             "why_prereq": None if stp.role_in_path == "prioritas" else
-            f"Prasyarat untuk {', '.join(ctx.names[t] for t in ctx.graph.dependents.get(sid, []) if t in order)}.",
+            f"Needed before {', '.join(ctx.names[t] for t in ctx.graph.dependents.get(sid, []) if t in order)}.",
             "explanation": rank_of.get(sid, {}).get("explanation"),
         })
 
@@ -265,36 +272,38 @@ def _reasons(prev: list[dict], cur: list[dict], rec: dict, names: dict[str, str]
         a, b = pm.get(sid), cm.get(sid)
         nm = names.get(sid, sid)
         if a and not b:
-            reasons.append(f"{nm} keluar dari daftar prioritas: kesenjangannya sudah tertutup (penguasaan {comp.get(sid, {}).get('p', 0):.2f}).")
+            reasons.append(f"{nm} left your priorities: the gap is closed (mastery {comp.get(sid, {}).get('p', 0):.2f}).")
             continue
         if b and not a:
-            reasons.append(f"{nm} masuk daftar prioritas di peringkat #{b['rank']}.")
+            reasons.append(f"{nm} joined your priorities at #{b['rank']}.")
             continue
         if a["rank"] == b["rank"] and abs(a["priority"] - b["priority"]) < 0.01:
             continue
         causes = []
         if abs(a["G"] - b["G"]) >= 0.02:
-            causes.append(f"kesenjangan {'mengecil' if b['G'] < a['G'] else 'membesar'} {a['G']:.2f}->{b['G']:.2f}")
+            causes.append(f"gap {'narrowed' if b['G'] < a['G'] else 'widened'} {a['G']:.2f} to {b['G']:.2f}")
         if a["R"] != b["R"]:
-            causes.append("prasyaratnya kini terpenuhi" if b["R"] > a["R"] else "prasyaratnya belum terpenuhi")
+            causes.append("prerequisites now met" if b["R"] > a["R"] else "prerequisites not met yet")
         if abs(a["D"] - b["D"]) >= 0.01:
-            causes.append(f"permintaan pasar {'naik' if b['D'] > a['D'] else 'turun'} {a['D']:.0%}->{b['D']:.0%}")
+            causes.append(f"market demand {'rose' if b['D'] > a['D'] else 'fell'} {a['D']:.0%} to {b['D']:.0%}")
         if abs(a["T"] - b["T"]) >= 0.01:
-            causes.append(f"tren {'menguat' if b['T'] > a['T'] else 'melemah'}")
+            causes.append(f"trend {'strengthened' if b['T'] > a['T'] else 'weakened'}")
         if not causes:
-            causes.append("perubahan keterampilan lain yang bergantung padanya")
-        move = "naik" if b["rank"] < a["rank"] else "turun" if b["rank"] > a["rank"] else "tetap"
-        reasons.append(f"{nm} {move} #{a['rank']}->#{b['rank']}: {', '.join(causes)}.")
+            causes.append("changes in skills that depend on it")
+        move = "moved up" if b["rank"] < a["rank"] else "moved down" if b["rank"] > a["rank"] else "stayed"
+        reasons.append(f"{nm} {move} #{a['rank']} to #{b['rank']}: {', '.join(causes)}.")
     top_prev = prev[0]["skill_id"] if prev else None
     top_cur = cur[0]["skill_id"] if cur else None
-    label = {"initial": "Jalur awal disusun", "evidence": "Bukti baru diterima", "market": "Peta permintaan diperbarui",
-             "role": "Target peran diganti", "manual": "Pembaruan manual"}[trigger]
-    if top_prev and top_cur and top_prev != top_cur:
-        summary = f"{label}: prioritas utama berpindah dari {names[top_prev]} ke {names[top_cur]}."
+    label = {"initial": "First path created", "evidence": "New evidence added", "market": "Job market updated",
+             "role": "Target role changed", "manual": "Manual update"}[trigger]
+    if top_cur and not top_prev:
+        summary = f"{label}: your top priority is {names[top_cur]}."
+    elif top_prev and top_cur and top_prev != top_cur:
+        summary = f"{label}: your top priority moved from {names[top_prev]} to {names[top_cur]}."
     elif top_cur:
-        summary = f"{label}: prioritas utama tetap {names[top_cur]}."
+        summary = f"{label}: {names[top_cur]} is still your top priority."
     else:
-        summary = f"{label}: tidak ada kesenjangan tersisa untuk peran ini."
+        summary = f"{label}: no gaps left for this role."
     if note:
         summary += f" ({note})"
     return summary, reasons[:8]
@@ -310,7 +319,7 @@ def record_history(s: Session, student: Student, trigger: str, note: str = "", r
     if last is None:
         trigger = "initial"
         summary, reasons = _reasons([], cur, rec, names, trigger, note)
-        reasons = [f"{r['name']} di peringkat #{r['rank']}." for r in rec["ranking"][:3]]
+        reasons = [f"{r['name']} is priority #{r['rank']}." for r in rec["ranking"][:3]]
     else:
         same = [r["skill_id"] for r in last.ranking[:5]] == [r["skill_id"] for r in cur[:5]] and \
             all(abs(a["priority"] - b["priority"]) < 0.005 for a, b in zip(last.ranking[:5], cur[:5]))
@@ -330,4 +339,4 @@ def check_market_trigger(s: Session, student: Student, rec: dict) -> None:
     last = s.scalars(select(RecommendationHistory).where(RecommendationHistory.student_id == student.id)
                      .order_by(RecommendationHistory.id.desc())).first()
     if last is not None and last.market_version != rec["market_version"]:
-        record_history(s, student, "market", note=f"versi pasar {rec['market_version']}", rec=rec, force=True)
+        record_history(s, student, "market", note=f"market version {rec['market_version']}", rec=rec, force=True)
