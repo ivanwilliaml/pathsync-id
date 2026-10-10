@@ -10,7 +10,7 @@ Backend sudah berupa produk yang berjalan end-to-end di atas **data lowongan nya
 
 | Bagian paper | Status | Implementasi |
 |---|---|---|
-| III.C.1 Akuisisi data | ✅ | `scrapers/`: Karirhub Kemnaker (API publik portal pemerintah), Workable public search, Workday (BINUS dll.), Lever (GoTo, Amar Bank, ATI), SmartRecruiters (Qraved, FLOW, BukuWarung), Dataset Pasar Kerja Kemnaker 2022–2024, ESCO API v1.2 |
+| III.C.1 Akuisisi data | ✅ | `scrapers/`: Karirhub Kemnaker (API publik portal pemerintah), Workable public search, Workday (BINUS dll.), Lever (GoTo, Amar Bank, ATI), SmartRecruiters (Qraved, FLOW, BukuWarung), ESCO API v1.2. Pengunduh Dataset Pasar Kerja Kemnaker 2022–2024 diarsipkan di `dump/` karena tidak dipakai sistem |
 | Data terkumpul | ✅ | 94 lowongan berteks (ID+EN) → 17 duplikat dibuang (TF-IDF ≥ 0,90) → **43 lowongan BA + 29 DA** dalam jendela 12 bulan |
 | III.A.1 Taksonomi | ✅ | 42 skill, 4 rumpun, alias ID/EN, pemetaan ESCO. v2 menambah "API & Integrasi Sistem" karena muncul sebagai kandidat skill baru dari ekstraksi (mekanisme ekspansi di paper) |
 | III.A.1 Ekstraksi | ✅ | Ekstraktor LLM (Claude, structured output, terbatas taksonomi) + **jalur LLM luring** (Qwen3-8B di GPU Kaggle, prompt/taksonomi/skema identik, `pipeline/llm_jobs.py` + `kaggle/`) + ekstraktor leksikon offline; **verifikasi kutipan** (kutipan wajib ada di teks asli) + **normalisasi embedding** multibahasa dengan ambang 0,85 / 0,70 → otomatis / antrean tinjauan / kandidat baru |

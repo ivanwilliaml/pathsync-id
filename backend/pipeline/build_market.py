@@ -14,7 +14,7 @@ from datetime import date, datetime
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from sqlalchemy import delete, select
+from sqlalchemy import delete
 
 from pathsync.config import PROCESSED_DIR, RAW_DIR, ROLES
 from pathsync.db import Posting, PostingMention, get_session, init_db

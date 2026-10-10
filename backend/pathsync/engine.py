@@ -15,7 +15,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from .config import FORMULA5_WEIGHTS, READINESS_THRESHOLD, ROLES, SEED_DIR
-from .db import AssessmentResponse, Evidence, GraphEdge, Posting, PostingMention, RankerModel, RecommendationHistory, Student
+from .db import AssessmentResponse, GraphEdge, Posting, PostingMention, RankerModel, RecommendationHistory, Student
 from .demand import MarketMap
 from .evidence import EvidenceItem, Response, SkillState, diagnose, recommendation_type
 from .market import esco_status, load_market

@@ -8,7 +8,7 @@ Status lengkap dan langkah berikutnya: lihat **[PROGRESS.md](PROGRESS.md)**.
 
 ```
 backend/
-  scrapers/      Karirhub Kemnaker, ATS publik (Workable, Workday, Lever, Greenhouse, SmartRecruiters, Ashby, Recruitee), ESCO API, Dataset Pasar Kerja Kemnaker
+  scrapers/      Karirhub Kemnaker, ATS publik (Workable, Workday, Lever, Greenhouse, SmartRecruiters, Ashby, Recruitee), ESCO API
   pathsync/      inti: taksonomi+graf, ekstraksi (LLM/leksikon) + verifikasi kutipan + normalisasi embedding,
                  peta permintaan (pers. 1), model bukti (pers. 2) + BKT (pers. 3), fitur Tabel 3 + LTR (pers. 4-5),
                  jalur + penjelasan + kontrafaktual + cakupan (pers. 6), siklus adaptif + riwayat, evaluasi
@@ -20,6 +20,7 @@ backend/
   tests/         uji kesetiaan terhadap contoh paper (Tabel 4 direproduksi persis) + uji API end-to-end
 docs/            audit UI/UX dan design system
 frontend/        Next.js 16 + Tailwind 4 + shadcn/ui: landing, bukti, asesmen, dasbor, peta skill, pasar, riwayat, panel pakar, admin (bahasa Inggris)
+dump/            arsip file yang tidak dipakai sistem (lihat dump/README.md)
 kaggle/          kernel LLM open-weight (Qwen3) untuk ekstraksi lowongan & pembanding "LLM generik"; results/ = keluaran mentah
 ```
 
@@ -46,7 +47,7 @@ npm run dev          # http://localhost:3000, /api/* diteruskan ke backend (ubah
 
 Antarmuka berbahasa Inggris (desain dan alasan perubahan: [docs/UI_AUDIT.md](docs/UI_AUDIT.md)). Halaman: `/` landing + pendaftaran, `/evidence` wizard bukti (transkrip, sertifikat, proyek, CV, preferensi), `/assessment` cek cepat dan `/assessment/<skill>` cek per skill, `/dashboard` (langkah berikutnya, kesiapan, rute belajar, prioritas, detail per skill), `/skill-map` (prasyarat dan yang dibuka per skill), `/history`, `/market`, `/experts` (validasi prasyarat satu per satu, peringkat skenario), `/admin` (pembaruan pasar dengan tombol Stop, simulasi, antrean tinjauan, anotasi, model & evaluasi). URL lama berbahasa Indonesia diarahkan otomatis.
 
-Komponen: shadcn/ui (Base UI) + Tailwind 4, font Plus Jakarta Sans, foto dari Unsplash. Bahasa tampilan backend diatur `PATHSYNC_LANG` (bawaan `en`); data seed menyimpan teks Indonesia aslinya (dipakai prompt ekstraksi dan pencocokan) beserta terjemahan Inggris (`pipeline/seed_en.py`, `data/seed/items_en/`).
+Komponen: shadcn/ui (Base UI) + Tailwind 4, font Plus Jakarta Sans, foto dari Unsplash. Bahasa tampilan backend diatur `PATHSYNC_LANG` (bawaan `en`); data seed menyimpan teks Indonesia aslinya (dipakai prompt ekstraksi dan pencocokan) beserta terjemahan Inggris (field `*_en` di `taxonomy.json` dan `graph.json`, soal di `data/seed/items_en/`).
 
 ## Ekstraksi LLM
 

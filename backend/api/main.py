@@ -5,9 +5,9 @@ import json
 import os
 import threading
 from contextlib import asynccontextmanager
-from datetime import date, datetime
+from datetime import datetime
 
-from fastapi import BackgroundTasks, Depends, FastAPI, File, Form, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from sqlalchemy import func, select, update
