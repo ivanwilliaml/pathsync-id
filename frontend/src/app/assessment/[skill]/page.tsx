@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import type { Item } from "@/lib/api";
+import { ApiError, type Item } from "@/lib/api";
 import { LEVEL, num, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { RequireStudent } from "@/components/require-student";
@@ -18,7 +18,13 @@ function level(p: number) {
 }
 
 function SkillCheck({ sid, skill }: { sid: string; skill: string }) {
-  const r = useApi<{ skill_id: string; skill_name: string; p: number; items: Item[] }>(`/students/${sid}/assessment/reassess/${skill}`);
+  const r = useApi<{ session_id: string; skill_id: string; skill_name: string; p: number; items: Item[] }>(`/students/${sid}/assessment/reassess/${skill}`);
+  if (r.error instanceof ApiError && r.error.status === 409)
+    return (
+      <EmptyState title="No Questions Left for This Skill" action={<LinkButton href="/evidence?step=projects">Add a Project</LinkButton>}>
+        {r.error.message}
+      </EmptyState>
+    );
   if (r.error) return <ErrorNote error={r.error} />;
   if (!r.data) return <Loading />;
   const name = titleCase(r.data.skill_name);
@@ -35,7 +41,7 @@ function SkillCheck({ sid, skill }: { sid: string; skill: string }) {
           You&rsquo;ve answered every question we have for {name}. A project that shows this skill is the next best proof.
         </EmptyState>
       ) : (
-        <Quiz sid={sid} items={r.data.items} phase="reassessment" />
+        <Quiz sid={sid} sessionId={r.data.session_id} items={r.data.items} />
       )}
     </div>
   );

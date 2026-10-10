@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { CircleCheck, Clock, Scale } from "lucide-react";
-import type { Item } from "@/lib/api";
+import { ApiError, type Item } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
 import { RequireStudent } from "@/components/require-student";
@@ -15,7 +15,7 @@ export default function AssessmentPage() {
 
 function Assessment({ sid }: { sid: string }) {
   const [started, setStarted] = useState(false);
-  const plan = useApi<{ items: Item[] }>(started ? `/students/${sid}/assessment/diagnostic` : null);
+  const plan = useApi<{ session_id: string; items: Item[] }>(started ? `/students/${sid}/assessment/diagnostic` : null);
 
   if (!started) {
     return (
@@ -48,6 +48,12 @@ function Assessment({ sid }: { sid: string }) {
       </div>
     );
   }
+  if (plan.error instanceof ApiError && plan.error.status === 409)
+    return (
+      <EmptyState title="You've Answered Every Question" action={<LinkButton href="/dashboard">Back to Dashboard</LinkButton>}>
+        To show progress on one skill, add a project from one of your courses: it is the next best proof.
+      </EmptyState>
+    );
   if (plan.error) return <ErrorNote error={plan.error} />;
   if (!plan.data) return <Loading label="Picking your questions…" />;
   if (plan.data.items.length === 0)
@@ -56,5 +62,5 @@ function Assessment({ sid }: { sid: string }) {
         To show progress on one skill, open it from your dashboard and choose &ldquo;Prove You Know It&rdquo;, or add a project.
       </EmptyState>
     );
-  return <Quiz sid={sid} items={plan.data.items} phase="diagnostic" />;
+  return <Quiz sid={sid} sessionId={plan.data.session_id} items={plan.data.items} />;
 }

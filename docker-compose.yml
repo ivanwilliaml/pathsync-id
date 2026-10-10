@@ -1,34 +1,40 @@
 # Local / single-host deployment: PostgreSQL + FastAPI backend + Next.js frontend.
-#   docker compose up --build      -> http://localhost:3000
+#   cp .env.example .env   (set real secrets)   then   docker compose up --build   -> http://localhost:3000
 services:
   db:
     image: pgvector/pgvector:pg16
     environment:
-      POSTGRES_USER: pathsync
-      POSTGRES_PASSWORD: pathsync
-      POSTGRES_DB: pathsync
+      POSTGRES_USER: ${POSTGRES_USER:-pathsync}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      POSTGRES_DB: ${POSTGRES_DB:-pathsync}
     volumes: [pgdata:/var/lib/postgresql/data]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U pathsync"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pathsync}"]
       interval: 5s
       retries: 20
+    restart: unless-stopped
 
   backend:
     build: ./backend
     environment:
-      PATHSYNC_DATABASE_URL: postgresql+psycopg://pathsync:pathsync@db:5432/pathsync
+      PATHSYNC_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-pathsync}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-pathsync}
+      PATHSYNC_ADMIN_TOKEN: ${PATHSYNC_ADMIN_TOKEN:?set PATHSYNC_ADMIN_TOKEN in .env}
+      PATHSYNC_CORS_ORIGINS: ${PATHSYNC_CORS_ORIGINS:-http://localhost:3000}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     volumes: [hf:/app/.hf]
     depends_on:
       db: {condition: service_healthy}
     ports: ["8000:8000"]
+    restart: unless-stopped
 
   frontend:
     build:
       context: ./frontend
       args: {PATHSYNC_API: "http://backend:8000"}
-    depends_on: [backend]
+    depends_on:
+      backend: {condition: service_healthy}
     ports: ["3000:3000"]
+    restart: unless-stopped
 
 volumes:
   pgdata:

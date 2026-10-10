@@ -5,6 +5,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BarChart3,
+  BookOpen,
+  Cpu,
+  GraduationCap,
   ClipboardCheck,
   FolderOpen,
   History,
@@ -13,12 +16,13 @@ import {
   Menu,
   Network,
   Settings2,
+  ShieldCheck,
   Users,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { setStudentId, useStudentId } from "@/lib/student";
+import { setStudent, useStudentId } from "@/lib/student";
 import { LinkButton } from "./kit";
 import { Logo } from "./logo";
 
@@ -26,13 +30,19 @@ type NavItem = { href: string; label: string; icon: typeof LayoutDashboard };
 
 const JOURNEY: NavItem[] = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/classroom", label: "My Classes", icon: BookOpen },
   { href: "/evidence", label: "My Evidence", icon: FolderOpen },
   { href: "/assessment", label: "Assessment", icon: ClipboardCheck },
   { href: "/skill-map", label: "Skill Map", icon: Network },
   { href: "/history", label: "Path History", icon: History },
+  { href: "/settings", label: "Settings & Data", icon: ShieldCheck },
 ];
-const EXPLORE: NavItem[] = [{ href: "/market", label: "Job Market", icon: BarChart3 }];
+const EXPLORE: NavItem[] = [
+  { href: "/market", label: "Job Market", icon: BarChart3 },
+  { href: "/how-it-works", label: "How the AI Works", icon: Cpu },
+];
 const TEAM: NavItem[] = [
+  { href: "/advisor", label: "Lecturer View", icon: GraduationCap },
   { href: "/experts", label: "Expert Panel", icon: Users },
   { href: "/admin", label: "Admin", icon: Settings2 },
 ];
@@ -117,7 +127,7 @@ function ProfileChip({ onNavigate }: { onNavigate?: () => void }) {
       <button
         type="button"
         onClick={() => {
-          setStudentId(null);
+          setStudent(null);
           window.location.href = "/";
         }}
         className="mt-2 inline-flex items-center gap-1.5 text-xs font-medium text-ink/70 hover:text-ink focus-visible:outline-none focus-visible:underline"

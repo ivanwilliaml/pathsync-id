@@ -23,3 +23,8 @@ frontend/next-env.d.ts
 # Kaggle LLM runs: generated kernel folders and exported jobs (rebuild with pipeline.llm_jobs / kaggle/build_kernel.py)
 kaggle/build/
 kaggle/jobs/
+
+# generated first admin key (backend writes it when PATHSYNC_ADMIN_TOKEN is unset)
+backend/data/admin_token.txt
+.claude/
+!.env.example

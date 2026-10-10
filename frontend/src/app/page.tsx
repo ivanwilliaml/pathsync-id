@@ -7,7 +7,7 @@ import { BadgeCheck, Briefcase, ClipboardCheck, Route as RouteIcon, ShieldCheck 
 import { toast } from "sonner";
 import { api, type Meta } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
-import { setStudentId, useStudentId } from "@/lib/student";
+import { parseAccessKey, setStudent, useStudentId } from "@/lib/student";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -272,9 +272,9 @@ function StartDialog({ role, onClose, roles }: { role: string | null; onClose: (
     setBusy(true);
     setErr(null);
     try {
-      const r = await api.post<{ id: string }>("/students", { display_name: name.trim() || "Student", program, target_role: target, consent });
-      setStudentId(r.id);
-      toast.success("Profile created", { description: "Next, add what you already have." });
+      const r = await api.post<{ id: string; token: string }>("/students", { display_name: name.trim() || "Student", program, target_role: target, consent });
+      setStudent({ id: r.id, token: r.token });
+      toast.success("Profile created", { description: "Your access key is in Settings: save it to continue on another device." });
       router.push("/evidence");
     } catch (e) {
       setErr(e);
@@ -288,7 +288,7 @@ function StartDialog({ role, onClose, roles }: { role: string | null; onClose: (
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl">Create Your Profile</DialogTitle>
-          <DialogDescription>No email or password. You&rsquo;ll get a profile ID to come back later.</DialogDescription>
+          <DialogDescription>No email or password. You&rsquo;ll get a private access key to come back later.</DialogDescription>
         </DialogHeader>
         <form onSubmit={create} className="space-y-4">
           <div className="space-y-1.5">
@@ -343,11 +343,14 @@ function ResumeDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
     e.preventDefault();
     setErr(null);
     try {
-      await api.get(`/students/${value.trim()}`);
-      setStudentId(value.trim());
+      const auth = parseAccessKey(value);
+      if (!auth) throw new Error("bad key");
+      setStudent(auth);
+      await api.get(`/students/${auth.id}`);
       router.push("/dashboard");
     } catch {
-      setErr(new Error("We couldn't find that profile ID. Check for typos and try again."));
+      setStudent(null);
+      setErr(new Error("That access key doesn't match a profile. Copy it again from Settings on your other device."));
     }
   }
   return (
@@ -355,12 +358,12 @@ function ResumeDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>Resume Your Profile</DialogTitle>
-          <DialogDescription>Enter the profile ID shown in your sidebar.</DialogDescription>
+          <DialogDescription>Paste the access key from Settings. It works like a password, so keep it private.</DialogDescription>
         </DialogHeader>
         <form onSubmit={resume} className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="pid">Profile ID</Label>
-            <Input id="pid" name="profile-id" autoComplete="off" spellCheck={false} value={value} onChange={(e) => setValue(e.target.value)} placeholder="e.g. ef99fb3e22b5…" className="h-10 font-mono" />
+            <Label htmlFor="pid">Access Key</Label>
+            <Input id="pid" name="access-key" type="password" autoComplete="off" spellCheck={false} value={value} onChange={(e) => setValue(e.target.value)} placeholder="e.g. ef99fb3e22b5.Xk3…" className="h-10 font-mono" />
           </div>
           <ErrorNote error={err} />
           <Button type="submit" size="lg" className="h-11 w-full" disabled={!value.trim()}>

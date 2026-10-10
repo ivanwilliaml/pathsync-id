@@ -39,7 +39,8 @@ def me(tok: ApiToken = Depends(require_expert), s: Session = Depends(db_session)
 
 
 @router.get("/edges")
-def edges(tok: ApiToken = Depends(require_expert), s: Session = Depends(db_session)):
+def edges(expert_id: str | None = None, tok: ApiToken = Depends(require_expert), s: Session = Depends(db_session)):
+    who = tok.subject_id if tok.role == "expert" else expert_id
     skills = load_skills()
     out = []
     for e in s.scalars(select(GraphEdge).order_by(GraphEdge.id)).all():
@@ -47,7 +48,7 @@ def edges(tok: ApiToken = Depends(require_expert), s: Session = Depends(db_sessi
         out.append({"id": e.id, "from": e.src, "to": e.dst, "from_name": skills[e.src].name, "to_name": skills[e.dst].name,
                     "source": e.source, "rationale": e.rationale, "status": e.status,
                     "approve": sum(v.approve for v in votes), "reject": sum(not v.approve for v in votes),
-                    "my_vote": next((v.approve for v in votes if v.expert_id == tok.subject_id), None)})
+                    "my_vote": next((v.approve for v in votes if v.expert_id == who), None)})
     return out
 
 

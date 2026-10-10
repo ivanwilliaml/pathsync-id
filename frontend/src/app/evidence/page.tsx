@@ -484,15 +484,18 @@ function Projects({ sid, names, onSaved }: { sid: string; names: Record<string, 
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [result, setResult] = useState<{ ratings: Rating[]; rejected: Rating[] } | null>(null);
+  const [result, setResult] = useState<{ ratings: Rating[]; rejected: Rating[]; review_status?: string; review_reason?: string } | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
+  const [course, setCourse] = useState("");
+  const courses = useApi<{ id: number; name: string }[]>(`/students/${sid}/courses`);
   async function save() {
     setBusy(true);
     setErr(null);
     try {
       const fd = new FormData();
       fd.append("title", title || file?.name || "Project");
+      if (course) fd.append("course", course);
       if (file) fd.append("file", file);
       else fd.append("text", text);
       setResult(await api.post(`/students/${sid}/evidence/project`, fd));
@@ -510,6 +513,19 @@ function Projects({ sid, names, onSaved }: { sid: string; names: Record<string, 
           <Label htmlFor="ptitle">Project Title</Label>
           <Input id="ptitle" name="project-title" autoComplete="off" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Customer Churn Analysis…" className="h-10" />
         </div>
+        {courses.data?.length ? (
+          <div className="space-y-1.5">
+            <Label htmlFor="pcourse">From a course? (optional)</Label>
+            <NativeSelect id="pcourse" value={course} onChange={(e) => setCourse(e.target.value)}>
+              <option value="">Personal or other project</option>
+              {courses.data.map((c) => (
+                <option key={c.id} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </NativeSelect>
+          </div>
+        ) : null}
         <PasteOrUpload id="ptext" label="Project Content" text={text} setText={setText} file={file} setFile={setFile} accept=".pdf,.docx,.txt,.ipynb,.sql,.md,.py" placeholder="Paste the content of your project…" />
       </div>
       <Button size="lg" className="mt-5 h-10" onClick={save} disabled={busy || (!file && text.trim().length < 30)}>
@@ -531,6 +547,11 @@ function Projects({ sid, names, onSaved }: { sid: string; names: Record<string, 
             ))}
           </ul>
           {result.rejected.length ? <p className="mt-3 text-xs text-ink/70">{result.rejected.length} rating(s) dropped because their quote wasn't in your project.</p> : null}
+          {result.review_status === "pending" ? (
+            <p className="mt-3 text-xs text-ember-ink">
+              A reviewer will check this rating ({result.review_reason}). Until then it counts at half weight.
+            </p>
+          ) : null}
         </ResultPanel>
       ) : null}
     </StepPanel>

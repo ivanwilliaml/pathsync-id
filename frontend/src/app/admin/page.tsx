@@ -6,6 +6,9 @@ import { toast } from "sonner";
 import { api, FEATURE_LABELS, type Features, type Meta } from "@/lib/api";
 import { fmtDateTime, int, num, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
+import { useStaffToken } from "@/lib/staff";
+import { StaffLogin } from "@/components/staff-login";
+import { ProjectReviews, Studies, TeamAndClasses } from "./admin-extra";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -31,6 +34,8 @@ interface Stats {
   students: number;
   experts: number;
   annotations: number;
+  cohorts?: number;
+  pending_project_reviews?: number;
   extractor: string;
   last_build: string | null;
 }
@@ -49,6 +54,23 @@ interface Job {
 const STEPS = ["Collecting Karirhub postings", "Collecting company career-site postings", "Rebuilding the market map"];
 
 export default function AdminPage() {
+  const { token, ready } = useStaffToken("admin");
+  const who = useApi<{ role: string }>(token ? "/admin/whoami" : null);
+  if (!ready) return <Loading />;
+  if (!token || who.error)
+    return (
+      <div className="mx-auto max-w-md">
+        <PageHeader title="Admin" description="Team-only console for market data, reviews, models, experts, classes and studies." />
+        <Panel>
+          <StaffLogin role="admin" error={who.error} hint="The first admin key is set with PATHSYNC_ADMIN_TOKEN, or written to backend/data/admin_token.txt on first start." />
+        </Panel>
+      </div>
+    );
+  if (!who.data) return <Loading />;
+  return <AdminConsole />;
+}
+
+function AdminConsole() {
   const stats = useApi<Stats>("/admin/stats");
   const meta = useApi<Meta>("/meta");
   const names = useMemo(() => Object.fromEntries((meta.data?.skills ?? []).map((s) => [s.id, titleCase(s.name)])), [meta.data]);
@@ -60,7 +82,7 @@ export default function AdminPage() {
         <dl className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <Fact label="Unique Postings" value={int(s.postings_total - s.duplicates)} note={`Business Analyst ${s.in_window_by_role.business_analyst ?? 0}, Data Analyst ${s.in_window_by_role.data_analyst ?? 0}`} />
           <Fact label="Skill Matches" value={int(s.mentions_by_status.auto ?? 0)} note={`${s.mentions_by_status.review ?? 0} waiting for review`} />
-          <Fact label="Students" value={int(s.students)} note={`${s.experts} experts, ${s.annotations} annotations`} />
+          <Fact label="Students" value={int(s.students)} note={`${s.experts} experts, ${s.cohorts ?? 0} classes, ${s.pending_project_reviews ?? 0} projects to review`} />
           <Fact label="Last Market Build" value={s.last_build ?? "–"} note={`Extractor: ${s.extractor === "llm" ? "LLM" : "lexicon"}`} small />
         </dl>
       ) : null}
@@ -70,6 +92,9 @@ export default function AdminPage() {
           <TabsTrigger value="review">Review Queue</TabsTrigger>
           <TabsTrigger value="annotate">Annotation</TabsTrigger>
           <TabsTrigger value="models">Models &amp; Evaluation</TabsTrigger>
+          <TabsTrigger value="projects">Project Reviews</TabsTrigger>
+          <TabsTrigger value="team">Team &amp; Classes</TabsTrigger>
+          <TabsTrigger value="studies">User Studies</TabsTrigger>
         </TabsList>
         <TabsContent value="market">
           <MarketData meta={meta.data} onChange={stats.reload} />
@@ -82,6 +107,15 @@ export default function AdminPage() {
         </TabsContent>
         <TabsContent value="models">
           <Models />
+        </TabsContent>
+        <TabsContent value="projects">
+          <ProjectReviews names={names} onChange={stats.reload} />
+        </TabsContent>
+        <TabsContent value="team">
+          <TeamAndClasses />
+        </TabsContent>
+        <TabsContent value="studies">
+          <Studies />
         </TabsContent>
       </Tabs>
     </div>
@@ -384,8 +418,8 @@ interface Comparison {
 function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => void }) {
   const [annotator, setAnnotator] = useState("");
   const [active, setActive] = useState("");
-  const next = useApi<NextPosting>(active ? `/annotation/next?annotator=${encodeURIComponent(active)}` : null);
-  const f1 = useApi<F1>("/annotation/eval");
+  const next = useApi<NextPosting>(active ? `/admin/annotation/next?annotator=${encodeURIComponent(active)}` : null);
+  const f1 = useApi<F1>("/admin/annotation/eval");
   const cmp = useApi<Comparison>("/evaluation/extractors");
   const [picked, setPicked] = useState<Set<string>>(new Set());
   const [err, setErr] = useState<unknown>(null);
@@ -401,7 +435,7 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
     if (!next.data?.posting_id) return;
     setErr(null);
     try {
-      await api.post("/annotation", { posting_id: next.data.posting_id, annotator: active, skill_ids: [...picked] });
+      await api.post("/admin/annotation", { posting_id: next.data.posting_id, annotator: active, skill_ids: [...picked] });
       next.reload();
       f1.reload();
       onChange();
@@ -574,8 +608,8 @@ const CONDITION: Record<string, string> = {
 
 function Models() {
   const [simulated, setSimulated] = useState(false);
-  const agree = useApi<{ mean_w: number | null; n_scenarios_ranked: number; n_with_2plus: number }>(`/expert/agreement?simulated=${simulated}`);
-  const models = useApi<ModelRow[]>("/models");
+  const agree = useApi<{ mean_w: number | null; n_scenarios_ranked: number; n_with_2plus: number }>(`/admin/expert-agreement?simulated=${simulated}`);
+  const models = useApi<ModelRow[]>("/admin/models");
   const report = useApi<EvalReport>("/evaluation");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
@@ -584,7 +618,7 @@ function Models() {
     setBusy(true);
     setErr(null);
     try {
-      const r = await api.post<{ active: boolean; passes_rule: boolean }>("/expert/train", { use_simulated: simulated, activate_if_passes: true });
+      const r = await api.post<{ active: boolean; passes_rule: boolean }>("/admin/train", { use_simulated: simulated, activate_if_passes: true });
       toast.success(r.active ? "New model trained and activated" : "Model trained, not activated", {
         description: r.passes_rule ? "It matches or beats Formula (5)." : "It didn't beat Formula (5), so the current model stays.",
       });
@@ -597,14 +631,14 @@ function Models() {
   }
   async function finalize() {
     try {
-      const r = await api.post<Record<string, number>>("/expert/edges/finalize");
+      const r = await api.post<Record<string, number>>("/admin/edges/finalize");
       toast.success("Prerequisite map updated", { description: `${r.approved} approved, ${r.rejected} rejected, ${r.draft} still open` });
     } catch (e) {
       setErr(e);
     }
   }
   async function activate(id: number) {
-    await api.post(`/models/${id}/activate`);
+    await api.post(`/admin/models/${id}/activate`);
     models.reload();
   }
 

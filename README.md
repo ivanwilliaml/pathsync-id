@@ -71,3 +71,11 @@ kaggle kernels push -p ../kaggle/build/scenarios   # lalu kernels output -> impo
 ```
 
 Tanpa keduanya, sistem memakai ekstraktor leksikon offline dengan kontrak keluaran dan gerbang verifikasi yang sama.
+
+## Platform v1 (final round)
+
+- **Audit:** [docs/AUDIT.md](docs/AUDIT.md). Ada 4 temuan kritis dan 9 temuan tinggi, semuanya sudah diperbaiki dan punya tes regresi.
+- **Jawaban juri:** [docs/JURY_RESPONSE.md](docs/JURY_RESPONSE.md) · [Mesin keputusan](docs/DECISION_ENGINE.md) · [Protokol studi](docs/STUDY_PROTOCOL.md) · [Roadmap](docs/ROADMAP.md)
+- **Fitur baru:** Course Companion & rencana mingguan (`/classroom`), tampilan dosen (`/advisor`), `/how-it-works` (model card, governance taksonomi, bobot), panel "How was this decided?", ekspor/hapus data (UU PDP), studi 4 lengan.
+- **Auth:** pendaftaran mahasiswa menghasilkan kunci akses (`id.token`). Token admin diambil dari env `PATHSYNC_ADMIN_TOKEN`; kalau tidak diset, token dibuat otomatis ke `backend/data/admin_token.txt`. Token pakar dan dosen dibuat dari halaman Admin.
+- **Migrasi DB:** Alembic dijalankan otomatis saat startup.

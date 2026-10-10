@@ -1,4 +1,6 @@
 // Thin client for the FastAPI backend. Requests go to /api/* which next.config.mjs proxies.
+import { staffTokenFor } from "./staff";
+import { getStudentToken } from "./student";
 
 export class ApiError extends Error {
   status: number;
@@ -8,8 +10,17 @@ export class ApiError extends Error {
   }
 }
 
+/** Bearer token for a route: the student's own token for /students/*, a staff token for staff routes. */
+function tokenFor(path: string): string | null {
+  if (path.startsWith("/students/")) return getStudentToken();
+  return staffTokenFor(path);
+}
+
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
-  const init: RequestInit = { method, headers: {} };
+  const headers: Record<string, string> = {};
+  const token = tokenFor(path);
+  if (token) headers.authorization = `Bearer ${token}`;
+  const init: RequestInit = { method, headers };
   if (body instanceof FormData) {
     init.body = body;
   } else if (body !== undefined) {
@@ -28,6 +39,11 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
       const j = await res.json();
       if (typeof j.detail === "string") msg = j.detail;
     } catch {}
+    if ((res.status === 401 || res.status === 403) && path.startsWith("/students/")) {
+      // the stored profile token is missing or stale: sign out so the app offers sign-up / resume
+      const { setStudent } = await import("./student");
+      setStudent(null);
+    }
     throw new ApiError(res.status, msg);
   }
   return res.json() as Promise<T>;
@@ -155,6 +171,8 @@ export interface Dashboard {
   evidence_summary: Record<string, number>;
   diagnostic_done: boolean;
   blocked_in_path: number;
+  features?: { evidence: boolean; graph: boolean; adaptive: boolean; explanations: boolean; path: boolean };
+  study_arm?: string | null;
 }
 
 export interface Meta {

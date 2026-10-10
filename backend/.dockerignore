@@ -3,3 +3,8 @@ __pycache__/
 data/pathsync.db*
 data/processed/embedding_cache.sqlite
 data/processed/extraction_cache.json
+data/admin_token.txt
+.env
+ruff.toml
+tests/
+.ruff_cache/

@@ -28,7 +28,7 @@ interface SubmitResult {
 
 const LETTERS = ["A", "B", "C", "D"];
 
-export function Quiz({ sid, items, phase }: { sid: string; items: Item[]; phase: "diagnostic" | "reassessment" }) {
+export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string; items: Item[] }) {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [idx, setIdx] = useState(0);
   const [result, setResult] = useState<SubmitResult | null>(null);
@@ -46,7 +46,7 @@ export function Quiz({ sid, items, phase }: { sid: string; items: Item[]; phase:
     setErr(null);
     try {
       const r = await api.post<SubmitResult>(`/students/${sid}/assessment/submit`, {
-        phase,
+        session_id: sessionId,
         answers: items.map((i) => ({ item_id: i.id, choice: answers[i.id] ?? null })),
       });
       setResult(r);
@@ -56,7 +56,7 @@ export function Quiz({ sid, items, phase }: { sid: string; items: Item[]; phase:
     } finally {
       setBusy(false);
     }
-  }, [answers, items, phase, sid]);
+  }, [answers, items, sessionId, sid]);
 
   const finish = useCallback(() => {
     if (answered < items.length) setConfirm(true);

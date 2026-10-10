@@ -7,6 +7,8 @@ import { toast } from "sonner";
 import { api, type Meta } from "@/lib/api";
 import { num, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
+import { setStaffToken, useStaffToken } from "@/lib/staff";
+import { StaffLogin } from "@/components/staff-login";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -18,8 +20,12 @@ import { ErrorNote, Loading, MasteryBar, NativeSelect, Panel, Tag } from "@/comp
 interface Expert {
   id: string;
   name: string;
-  affiliation: string;
-  kind: string;
+  affiliation?: string;
+}
+interface WhoAmI {
+  role: "admin" | "expert";
+  expert?: Expert;
+  experts?: Expert[];
 }
 interface EdgeRow {
   id: number;
@@ -28,7 +34,7 @@ interface EdgeRow {
   from_name: string;
   to_name: string;
   rationale: string;
-  votes: { expert_id: string; approve: boolean }[];
+  my_vote: boolean | null;
 }
 interface ScenarioRow {
   id: string;
@@ -42,7 +48,6 @@ interface ScenarioDetail {
   candidates: { skill_id: string; name: string; p: number; r: number; D: number; prereqs: { skill_id: string; name: string; p: number | null }[] }[];
 }
 
-const EXPERT_KEY = "pathsync.expert";
 const VARIANT: Record<string, string> = { base: "Base Profile", competency: "After Learning a Skill", market: "After a Market Change" };
 const KIND: Record<string, string> = { dosen: "Lecturer", praktisi: "Practitioner", rekruter: "Recruiter" };
 
@@ -58,23 +63,14 @@ function Experts() {
   const router = useRouter();
   const pathname = usePathname();
   const task = useSearchParams().get("task");
-  const experts = useApi<Expert[]>("/experts");
-  const [eid, setEid] = useState("");
-  const [addOpen, setAddOpen] = useState(false);
-  useEffect(() => {
-    try {
-      setEid(localStorage.getItem(EXPERT_KEY) ?? "");
-    } catch {}
-  }, []);
-  const pick = (id: string) => {
-    setEid(id);
-    try {
-      localStorage.setItem(EXPERT_KEY, id);
-    } catch {}
-  };
-  const me = experts.data?.find((e) => e.id === eid);
+  const { token, ready } = useStaffToken("expert");
+  const who = useApi<WhoAmI>(token ? "/expert/me" : null);
+  const [actingFor, setActingFor] = useState("");
   const go = (t: string | null) => router.replace(t ? `${pathname}?task=${t}` : pathname, { scroll: false });
+  const me: Expert | undefined =
+    who.data?.role === "expert" ? who.data.expert : who.data?.experts?.find((e) => e.id === actingFor);
 
+  if (!ready) return <Loading />;
   if (me && task === "edges") return <EdgeReview me={me} onBack={() => go(null)} />;
   if (me && task === "scenarios") return <ScenarioRanking me={me} onBack={() => go(null)} />;
 
@@ -87,39 +83,49 @@ function Experts() {
             Lecturers, practitioners, and recruiters check the prerequisite map and rank example students. Your judgement trains how PathSync orders skills.
           </p>
           <Panel className="mt-6">
-            <Label htmlFor="who" className="mb-1.5 block">
-              Who&rsquo;s Reviewing?
-            </Label>
-            <div className="flex flex-wrap gap-2">
-              <NativeSelect id="who" value={eid} onChange={(e) => pick(e.target.value)} className="min-w-0 flex-1">
-                <option value="">Select your name…</option>
-                {experts.data?.map((e) => (
-                  <option key={e.id} value={e.id}>
-                    {e.name} ({KIND[e.kind] ?? e.kind}
-                    {e.affiliation ? `, ${e.affiliation}` : ""})
-                  </option>
-                ))}
-              </NativeSelect>
-              <Button variant="outline" size="lg" className="h-10" onClick={() => setAddOpen(true)}>
-                <Plus /> Add Me
-              </Button>
-            </div>
+            {!token || who.error ? (
+              <StaffLogin role="expert" error={who.error} hint="Use the personal sign-in key the PathSync team sent you." />
+            ) : who.data?.role === "admin" ? (
+              <div className="space-y-1.5">
+                <Label htmlFor="who">Facilitating for</Label>
+                <NativeSelect id="who" value={actingFor} onChange={(e) => setActingFor(e.target.value)}>
+                  <option value="">Select an expert…</option>
+                  {who.data.experts?.map((e) => (
+                    <option key={e.id} value={e.id}>
+                      {e.name}
+                    </option>
+                  ))}
+                </NativeSelect>
+                <p className="text-xs text-muted-foreground">Add experts and send them their keys from Admin, Team.</p>
+              </div>
+            ) : me ? (
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-ink/80">
+                  Signed in as <span className="font-semibold text-ink">{me.name}</span>
+                  {me.affiliation ? `, ${me.affiliation}` : ""}
+                </p>
+                <Button variant="outline" onClick={() => setStaffToken("expert", null)}>
+                  Sign Out
+                </Button>
+              </div>
+            ) : (
+              <Loading />
+            )}
           </Panel>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/experts.webp" alt="Two people mapping ideas on a whiteboard" width={1600} height={1067} className="aspect-[16/10] w-full rounded-3xl object-cover" />
       </section>
 
-      {me ? <Tasks me={me} onStart={go} /> : <p className="text-sm text-muted-foreground">Select your name or add yourself to see your tasks.</p>}
-      <AddExpertDialog open={addOpen} onOpenChange={setAddOpen} onAdded={(id) => { pick(id); experts.reload(); }} />
+      {me ? <Tasks me={me} onStart={go} /> : null}
     </div>
   );
 }
 
 function Tasks({ me, onStart }: { me: Expert; onStart: (t: string) => void }) {
-  const edges = useApi<EdgeRow[]>("/expert/edges");
+  const edges = useApi<EdgeRow[]>(`/expert/edges?expert_id=${me.id}`);
   const scen = useApi<ScenarioRow[]>(`/expert/scenarios?expert_id=${me.id}`);
-  const voted = edges.data?.filter((e) => e.votes.some((v) => v.expert_id === me.id)).length ?? 0;
+  const voted = edges.data?.filter((e) => e.my_vote !== null).length ?? 0;
   const ranked = scen.data?.filter((s) => s.done).length ?? 0;
   const card = (icon: React.ReactNode, title: string, body: string, done: number, total: number | undefined, time: string, onClick: () => void) => (
     <Panel className="flex flex-col">
@@ -153,57 +159,6 @@ function Tasks({ me, onStart }: { me: Expert; onStart: (t: string) => void }) {
   );
 }
 
-function AddExpertDialog({ open, onOpenChange, onAdded }: { open: boolean; onOpenChange: (o: boolean) => void; onAdded: (id: string) => void }) {
-  const [name, setName] = useState("");
-  const [aff, setAff] = useState("");
-  const [kind, setKind] = useState("dosen");
-  const [err, setErr] = useState<unknown>(null);
-  async function add(e: React.FormEvent) {
-    e.preventDefault();
-    setErr(null);
-    try {
-      const r = await api.post<{ id: string }>("/experts", { name: name.trim(), affiliation: aff.trim(), kind, validates_graph: true });
-      onAdded(r.id);
-      onOpenChange(false);
-      toast.success(`Welcome, ${name.trim().split(" ")[0]}`);
-    } catch (x) {
-      setErr(x);
-    }
-  }
-  return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle>Join the Expert Panel</DialogTitle>
-          <DialogDescription>Your name is only shown to the PathSync team.</DialogDescription>
-        </DialogHeader>
-        <form onSubmit={add} className="space-y-4">
-          <div className="space-y-1.5">
-            <Label htmlFor="ename">Full Name</Label>
-            <Input id="ename" name="name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} className="h-10" required />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="eaff">Institution or Company</Label>
-            <Input id="eaff" name="organization" autoComplete="organization" value={aff} onChange={(e) => setAff(e.target.value)} placeholder="e.g. Universitas Indonesia…" className="h-10" />
-          </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="ekind">Your Role</Label>
-            <NativeSelect id="ekind" value={kind} onChange={(e) => setKind(e.target.value)}>
-              <option value="dosen">Lecturer</option>
-              <option value="praktisi">Practitioner</option>
-              <option value="rekruter">Recruiter</option>
-            </NativeSelect>
-          </div>
-          <ErrorNote error={err} />
-          <Button type="submit" size="lg" className="h-11 w-full" disabled={!name.trim()}>
-            Join the Panel
-          </Button>
-        </form>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
 function TaskHeader({ title, onBack, done, total }: { title: string; onBack: () => void; done: number; total: number }) {
   return (
     <div className="mb-6">
@@ -225,10 +180,10 @@ function TaskHeader({ title, onBack, done, total }: { title: string; onBack: () 
 
 // ------------------------------------------------------------------ prerequisite review
 function EdgeReview({ me, onBack }: { me: Expert; onBack: () => void }) {
-  const edges = useApi<EdgeRow[]>("/expert/edges");
+  const edges = useApi<EdgeRow[]>(`/expert/edges?expert_id=${me.id}`);
   const [skipped, setSkipped] = useState<number[]>([]);
   const [suggest, setSuggest] = useState(false);
-  const mine = useCallback((e: EdgeRow) => e.votes.find((v) => v.expert_id === me.id), [me.id]);
+  const mine = useCallback((e: EdgeRow) => (e.my_vote === null ? undefined : { approve: e.my_vote }), []);
   const queue = useMemo(() => (edges.data ?? []).filter((e) => !mine(e) && !skipped.includes(e.id)), [edges.data, mine, skipped]);
   const current = queue[0];
   const done = (edges.data ?? []).filter((e) => mine(e)).length;

@@ -5,6 +5,7 @@ import type { Competency, Explanation, PathStep } from "@/lib/api";
 import { DIFFICULTY, FORMAT, LEVEL, REC, hours, num, titleCase } from "@/lib/format";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { DecisionTrace } from "./decision-trace";
 import { LinkButton, MasteryBar, Tag } from "./kit";
 
 export interface SkillDetail {
@@ -110,6 +111,7 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
                     </ul>
                   </div>
                 ) : null}
+                {d.rank ? <DecisionTrace skillId={d.skill_id} /> : null}
                 {comp && Object.values(comp.sources).flat().length ? (
                   <div>
                     <h3 className="text-sm font-semibold text-ink">Evidence So Far</h3>

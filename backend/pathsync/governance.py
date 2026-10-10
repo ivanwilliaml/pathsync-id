@@ -114,7 +114,7 @@ def report(s: Session, role: str = "business_analyst") -> dict:
     core = [r["skill_id"] for r in per_skill if r["status"] == "core"]
     criteria = {
         "C1_coverage": {"value": round(coverage, 4), "target": COVERAGE_TARGET, "pass": coverage >= COVERAGE_TARGET},
-        "C2_no_frequent_candidate": {"value": worst, "target": f"< {CANDIDATE_MAX_SHARE}", "pass": worst < CANDIDATE_MAX_SHARE},
+        "C2_no_frequent_candidate": {"value": worst, "target": f"< {CANDIDATE_MAX_SHARE:.0%}", "pass": worst < CANDIDATE_MAX_SHARE},
         "C3_grounding": {"value": f"{len(skills) - len(ungrounded)}/{len(skills)} grounded in at least one role",
                          "ungrounded": ungrounded, "pass": not ungrounded},
     }

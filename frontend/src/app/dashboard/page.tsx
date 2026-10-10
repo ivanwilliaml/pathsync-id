@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { AlertTriangle, ChevronRight, Clock, Lock } from "lucide-react";
-import { FEATURE_LABELS, type Competency, type Dashboard, type PathStep, type RankRow } from "@/lib/api";
+import { api, FEATURE_LABELS, type Competency, type Dashboard, type PathStep, type RankRow } from "@/lib/api";
 import { CLUSTER_ORDER, LEVEL, REC, firstSentence, hours, num, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { Button } from "@/components/ui/button";
@@ -43,6 +43,8 @@ function DashboardView({ sid }: { sid: string }) {
   };
   const top = d.ranking[0];
   const weekly = Number(d.student.preferences.weekly_hours ?? 6);
+  const f = d.features ?? { evidence: true, graph: true, adaptive: true, explanations: true, path: true };
+  if (!f.path) return <ControlListView d={d} sid={sid} />;
 
   return (
     <div className="space-y-10">
@@ -87,12 +89,14 @@ function DashboardView({ sid }: { sid: string }) {
           )}
         </div>
         <div className="flex items-center gap-5 lg:flex-col lg:text-center">
-          <ReadinessRing value={d.coverage} label="Role Readiness" />
+          {f.evidence ? <ReadinessRing value={d.coverage} label="Role Readiness" /> : null}
           <p className="max-w-[220px] text-sm text-ink/70">How much of what employers ask for you can already show.</p>
         </div>
       </section>
 
-      {d.confirmations.length > 0 ? <Attention items={d.confirmations} onOpen={open} /> : null}
+      {d.study_arm ? <StudyPlanCard sid={sid} /> : null}
+      <ClarityPulse sid={sid} />
+      {f.evidence && d.confirmations.length > 0 ? <Attention items={d.confirmations} onOpen={open} /> : null}
 
       <LearningRoute steps={d.path} names={names} onOpen={open} totalHours={d.path_hours} weekly={weekly} />
 
@@ -356,6 +360,124 @@ function HowRanked({ ranking }: { ranking: RankRow[] }) {
           ))}
         </tbody>
       </table>
+    </Panel>
+  );
+}
+
+
+// ------------------------------------------------------------- study arm A (control: skill list only)
+function ControlListView({ d, sid }: { d: Dashboard; sid: string }) {
+  const rows = [...d.competencies].sort((a, b) => b.demand - a.demand).slice(0, 15);
+  return (
+    <div className="space-y-8">
+      <section className="rounded-3xl bg-route-soft p-6 sm:p-8">
+        <h1 className="text-[30px] font-extrabold leading-tight text-ink">Hi, {d.student.display_name}</h1>
+        <p className="mt-1 text-ink/70">
+          Skills employers ask for in {d.role.n_postings} real <span className="font-semibold text-ink">{d.role.name}</span> job postings. Use this list to plan
+          your own learning.
+        </p>
+      </section>
+      {d.study_arm ? <StudyPlanCard sid={sid} /> : null}
+      <ClarityPulse sid={sid} />
+      <section>
+        <SectionTitle>Most Requested Skills</SectionTitle>
+        <ul className="divide-y rounded-2xl border bg-card">
+          {rows.map((c) => (
+            <li key={c.skill_id} className="flex items-center justify-between gap-3 p-4">
+              <span className="font-medium text-ink">{titleCase(c.name)}</span>
+              <span className="tabular text-sm text-ink/70">in {pct(c.demand)} of postings</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
+}
+
+// ------------------------------------------------------------- learning-experience instruments
+function ClarityPulse({ sid }: { sid: string }) {
+  const week = (() => {
+    const d = new Date();
+    const onejan = new Date(d.getFullYear(), 0, 1);
+    return `${d.getFullYear()}-${Math.ceil(((d.getTime() - onejan.getTime()) / 86400000 + onejan.getDay() + 1) / 7)}`;
+  })();
+  const key = `pathsync.pulse.${sid}.${week}`;
+  const [done, setDone] = useState(() => {
+    try {
+      return localStorage.getItem(key) === "1";
+    } catch {
+      return false;
+    }
+  });
+  if (done) return null;
+  async function answer(v: number) {
+    await api.post(`/students/${sid}/pulse`, { item: "clarity", value: v, context: "dashboard" });
+    try {
+      localStorage.setItem(key, "1");
+    } catch {}
+    setDone(true);
+  }
+  return (
+    <section aria-label="Quick question" className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-4">
+      <p className="text-sm text-ink/85">
+        <span className="font-medium text-ink">Quick question:</span> &ldquo;I know which skill to learn next and why.&rdquo;
+      </p>
+      <div role="group" aria-label="1 strongly disagree, 5 strongly agree" className="flex gap-1">
+        {[1, 2, 3, 4, 5].map((v) => (
+          <button key={v} type="button" onClick={() => answer(v)} className="size-9 rounded-lg border text-sm font-medium hover:border-indigo hover:bg-secondary">
+            {v}
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function StudyPlanCard({ sid }: { sid: string }) {
+  const [started, setStarted] = useState<string | null>(null);
+  const [text, setText] = useState("");
+  const [sent, setSent] = useState(false);
+  const [err, setErr] = useState<unknown>(null);
+  if (sent) return null;
+  async function start() {
+    const r = await api.post<{ started_at: string }>(`/students/${sid}/study/plan/start`);
+    setStarted(r.started_at);
+  }
+  async function submit() {
+    setErr(null);
+    try {
+      await api.post(`/students/${sid}/study/plan`, { plan_text: text, started_at: started });
+      setSent(true);
+    } catch (x) {
+      setErr(x);
+    }
+  }
+  return (
+    <Panel>
+      <h2 className="font-semibold text-ink">Study Task: Write Your Learning Plan</h2>
+      <p className="mt-1 text-sm text-ink/70">
+        Write what you will learn over the next four weeks, in what order and why. Experts rate plans without knowing who wrote them.
+      </p>
+      {!started ? (
+        <Button className="mt-3" onClick={start}>
+          Start Writing
+        </Button>
+      ) : (
+        <div className="mt-3 space-y-2">
+          <textarea
+            aria-label="Your learning plan"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            rows={6}
+            maxLength={8000}
+            className="w-full rounded-lg border bg-background p-3 text-sm"
+          />
+          <ErrorNote error={err} />
+          <Button onClick={submit} disabled={text.trim().length < 40}>
+            Submit Plan
+          </Button>
+        </div>
+      )}
     </Panel>
   );
 }

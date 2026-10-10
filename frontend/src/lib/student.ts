@@ -2,35 +2,65 @@
 
 import { useEffect, useState } from "react";
 
+// The student's profile id and bearer token. The token is returned once at sign-up; the server keeps only its hash.
 const KEY = "pathsync.student";
+const EVENT = "pathsync-student";
 
-export function getStudentId(): string | null {
+export interface StudentAuth {
+  id: string;
+  token: string;
+}
+
+function read(): StudentAuth | null {
   try {
-    return localStorage.getItem(KEY);
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return null;
+    const v = JSON.parse(raw);
+    return v && typeof v.id === "string" && typeof v.token === "string" ? v : null;
   } catch {
-    return null;
+    return null; // older builds stored a bare id with no token: treat as signed out
   }
 }
 
-export function setStudentId(id: string | null) {
+export function getStudentId(): string | null {
+  return read()?.id ?? null;
+}
+
+export function getStudentToken(): string | null {
+  return read()?.token ?? null;
+}
+
+export function setStudent(auth: StudentAuth | null) {
   try {
-    if (id) localStorage.setItem(KEY, id);
+    if (auth) localStorage.setItem(KEY, JSON.stringify(auth));
     else localStorage.removeItem(KEY);
-    window.dispatchEvent(new Event("pathsync-student"));
+    window.dispatchEvent(new Event(EVENT));
   } catch {}
 }
 
-/** Current student id from localStorage; `ready` is false until the first client render. */
+/** One copyable string that restores the profile on another device: "<id>.<token>". */
+export function accessKey(auth: StudentAuth | null = read()): string | null {
+  return auth ? `${auth.id}.${auth.token}` : null;
+}
+
+export function parseAccessKey(key: string): StudentAuth | null {
+  const k = key.trim();
+  const dot = k.indexOf(".");
+  if (dot < 4 || dot === k.length - 1) return null;
+  return { id: k.slice(0, dot), token: k.slice(dot + 1) };
+}
+
+/** Current student id; `ready` is false until the first client render. */
 export function useStudentId(): { id: string | null; ready: boolean } {
   const [state, setState] = useState<{ id: string | null; ready: boolean }>({ id: null, ready: false });
   useEffect(() => {
-    const read = () => setState({ id: getStudentId(), ready: true });
-    read();
-    window.addEventListener("pathsync-student", read);
-    window.addEventListener("storage", read);
+    const update = () => setState({ id: getStudentId(), ready: true });
+    update();
+    window.addEventListener(EVENT, update);
+    window.addEventListener("storage", update);
     return () => {
-      window.removeEventListener("pathsync-student", read);
-      window.removeEventListener("storage", read);
+      window.removeEventListener(EVENT, update);
+      window.removeEventListener("storage", update);
     };
   }, []);
   return state;
