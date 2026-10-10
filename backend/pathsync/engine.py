@@ -8,14 +8,26 @@ trigger (new evidence, market update, role change) and a human-readable reason.
 from __future__ import annotations
 
 import json
+import threading
 from dataclasses import dataclass
 from functools import lru_cache
 
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from .calibration import active_evidence_weights
 from .config import FORMULA5_WEIGHTS, READINESS_THRESHOLD, ROLES, SEED_DIR
-from .db import AssessmentResponse, GraphEdge, Posting, PostingMention, RankerModel, RecommendationHistory, Student
+from .db import (
+    AssessmentResponse,
+    GraphEdge,
+    Posting,
+    PostingMention,
+    RankerModel,
+    RecommendationHistory,
+    Student,
+    active_snapshot,
+    cache_epoch,
+)
 from .demand import MarketMap
 from .evidence import EvidenceItem, Response, SkillState, diagnose, recommendation_type
 from .market import esco_status, load_market
@@ -106,24 +118,54 @@ def skill_quotes(s: Session, role: str, per_skill: int = 3) -> dict[str, list[di
     return out
 
 
+_CTX_CACHE: dict[tuple, Context] = {}
+_CTX_LOCK = threading.Lock()
+
+
 def load_context(s: Session, role: str) -> Context:
-    ensure_seed(s)
+    """Shared, read-only decision context for a role.
+
+    Built once per (role, active snapshot, active model, cache epoch) and reused by every student:
+    the paper notes the demand map is computed once per update and shared, so adding users does not
+    add proportional compute (III.B). Any change to snapshot, model or graph bumps the epoch.
+    """
+    snap = active_snapshot(s, role)
+    model_row = s.scalars(select(RankerModel.id).where(RankerModel.active.is_(True)).order_by(RankerModel.id.desc())).first()
+    key = (role, snap.id if snap else None, model_row, cache_epoch(s))
+    with _CTX_LOCK:
+        hit = _CTX_CACHE.get(key)
+    if hit is not None:
+        return hit
     skills = load_skills()
     market, req, version = load_market(s, role)
     model, model_id = active_model(s)
-    return Context(role=role, role_name=ROLES[role]["name"], skills=skills, names={k: v.name for k, v in skills.items()},
-                   graph=graph_from_db(s), market=market, req=req, market_version=version, model=model, model_id=model_id,
-                   esco=esco_status().get(role, {}), quotes=skill_quotes(s, role))
+    ctx = Context(role=role, role_name=ROLES[role]["name"], skills=skills, names={k: v.name for k, v in skills.items()},
+                  graph=graph_from_db(s), market=market, req=req, market_version=version, model=model, model_id=model_id,
+                  esco=esco_status().get(role, {}), quotes=skill_quotes(s, role))
+    with _CTX_LOCK:
+        if len(_CTX_CACHE) > 16:
+            _CTX_CACHE.clear()
+        _CTX_CACHE[key] = ctx
+    return ctx
+
+
+def clear_context_cache() -> None:
+    with _CTX_LOCK:
+        _CTX_CACHE.clear()
 
 
 # ---------------------------------------------------------------- diagnosis
+REVIEW_RELIABILITY = {"auto": 1.0, "approved": 1.0, "pending": 0.5}
+
+
 def evidence_items(student: Student) -> list[EvidenceItem]:
     items = []
     for ev in sorted(student.evidence, key=lambda e: (e.created_at, e.id)):
         if ev.kind == "cv":
             items.append(EvidenceItem("cv", ev.title, {}, {}, claims=list(ev.details.get("claim_ids", []))))
-        else:
-            items.append(EvidenceItem(ev.kind, ev.title, dict(ev.scores), dict(ev.details.get("strength", {}))))
+        elif ev.review_status in REVIEW_RELIABILITY:     # rejected uploads never count
+            items.append(EvidenceItem(ev.kind, ev.title, dict(ev.scores), dict(ev.details.get("strength", {})),
+                                      reliability=REVIEW_RELIABILITY[ev.review_status]))
     return items
 
 
@@ -133,9 +175,13 @@ def responses(s: Session, student_id: str) -> list[Response]:
     return [Response(r.skill_id, r.correct, r.phase) for r in rows]
 
 
-def student_states(s: Session, student: Student, ctx: Context) -> dict[str, SkillState]:
-    return diagnose(list(ctx.skills), evidence_items(student), responses(s, student.id),
-                    {k: int(v) for k, v in (student.self_ratings or {}).items()})
+def student_states(s: Session, student: Student, ctx: Context, resp: list[Response] | None = None) -> dict[str, SkillState]:
+    return diagnose(list(ctx.skills), evidence_items(student), resp if resp is not None else responses(s, student.id),
+                    {k: int(v) for k, v in (student.self_ratings or {}).items()}, weights=active_evidence_weights())
+
+
+# Study arms switch parts of the engine off so each component's contribution can be measured (paper III.D.3).
+FULL_FEATURES = {"evidence": True, "graph": True, "adaptive": True, "explanations": True, "path": True}
 
 
 # ----------------------------------------------------------------- recommend
@@ -160,18 +206,36 @@ def _pick_materials(skill_id: str, p: float, prefs: dict) -> list[dict]:
     return picked
 
 
-def recommend(s: Session, student: Student, ctx: Context | None = None) -> dict:
+def frozen_order(s: Session, student: Student) -> list[str] | None:
+    first = s.scalars(select(RecommendationHistory).where(RecommendationHistory.student_id == student.id)
+                      .order_by(RecommendationHistory.id)).first()
+    return [r["skill_id"] for r in first.ranking] if first else None
+
+
+def recommend(s: Session, student: Student, ctx: Context | None = None, features: dict | None = None) -> dict:
     ctx = ctx or load_context(s, student.target_role)
-    states = student_states(s, student, ctx)
+    feats = {**FULL_FEATURES, **(features or {})}
+    resp = responses(s, student.id)
+    if feats["evidence"]:
+        states = student_states(s, student, ctx, resp)
+    else:   # control arms: no diagnosis, every skill sits at the no-evidence prior
+        states = diagnose(list(ctx.skills), [], [], {})
     p = {k: st.p for k, st in states.items()}
     conf = {k: st.confidence for k, st in states.items()}
     demand = {k: ctx.market.D(k) for k in ctx.skills}
     trend = {k: ctx.market.T(k) for k in ctx.skills}
     role_skills = [k for k in ctx.skills if demand.get(k, 0) > 0 or ctx.esco.get(k)]
 
-    cands = build_candidates(ctx.graph, p, ctx.req, demand, trend, conf, role_skills)
+    graph = ctx.graph if feats["graph"] else SkillGraph(ctx.skills, [])
+    cands = build_candidates(graph, p, ctx.req, demand, trend, conf, role_skills)
     ranked = ctx.model.rank(cands)
-    path = build_path(ctx.graph, ranked, p)
+    if not feats["adaptive"]:
+        # static arm: keep the first path's order; skills only drop out once their gap closes
+        frozen = frozen_order(s, student)
+        if frozen:
+            pos = {sid: i for i, sid in enumerate(frozen)}
+            ranked = sorted(ranked, key=lambda t: (pos.get(t[0].skill_id, len(pos)), -t[1]))
+    path = build_path(graph, ranked, p) if feats["path"] else []
     order = [st.skill_id for st in path]
     next_step = {order[i]: order[i + 1] for i in range(len(order) - 1)}
     prefs = student.preferences or {}
@@ -188,7 +252,7 @@ def recommend(s: Session, student: Student, ctx: Context | None = None) -> dict:
             "features": {k: round(v, 4) for k, v in c.x().items()},
             "contributions": ctx.model.contributions(c), "rec_type": recommendation_type(st),
             "blocked_by": c.blocked_by, "unlocks": c.unlocks[:6],
-            "explanation": explain(c, i + 1, ctx.model.contributions(c), ectx) if i < 6 else None,
+            "explanation": explain(c, i + 1, ctx.model.contributions(c), ectx) if i < 6 and feats["explanations"] else None,
         })
     rank_of = {r["skill_id"]: r for r in ranking}
 
@@ -202,7 +266,7 @@ def recommend(s: Session, student: Student, ctx: Context | None = None) -> dict:
         gap = max(0.0, target - st.p)
         hours = round(ctx.skills[sid].hours * gap / max(target, 0.1), 1)
         total_hours += hours
-        waiting = [q for q in ctx.graph.prereqs.get(sid, []) if p.get(q, 0) < READINESS_THRESHOLD and q not in learned]
+        waiting = [q for q in graph.prereqs.get(sid, []) if p.get(q, 0) < READINESS_THRESHOLD and q not in learned]
         learned.add(sid)
         path_out.append({
             "skill_id": sid, "name": ctx.names[sid], "role_in_path": stp.role_in_path, "rank": stp.rank,
@@ -210,11 +274,11 @@ def recommend(s: Session, student: Student, ctx: Context | None = None) -> dict:
             "rec_type": recommendation_type(st), "hours": hours, "materials": _pick_materials(sid, st.p, prefs),
             "waiting_for": waiting, "learn_what": ctx.skills[sid].learn_what,
             "why_prereq": None if stp.role_in_path == "prioritas" else
-            f"Needed before {', '.join(ctx.names[t] for t in ctx.graph.dependents.get(sid, []) if t in order)}.",
+            f"Needed before {', '.join(ctx.names[t] for t in graph.dependents.get(sid, []) if t in order)}.",
             "explanation": rank_of.get(sid, {}).get("explanation"),
         })
 
-    cf = counterfactuals(path, ranked, ctx.graph, p, ctx.names)
+    cf = counterfactuals(path, ranked, graph, p, ctx.names)
     cov = coverage(p, {k: v for k, v in ctx.req.items() if demand.get(k, 0) > 0}, demand)
     by_cluster = {}
     for cl, label in cluster_names().items():
@@ -238,7 +302,7 @@ def recommend(s: Session, student: Student, ctx: Context | None = None) -> dict:
     ev_count: dict[str, int] = {}
     for e in student.evidence:
         ev_count[e.kind] = ev_count.get(e.kind, 0) + 1
-    n_diag = sum(1 for r in responses(s, student.id) if r.phase == "diagnostic")
+    n_diag = sum(1 for r in resp if r.phase == "diagnostic")
 
     return {
         "student": {"id": student.id, "display_name": student.display_name, "program": student.program,
@@ -253,13 +317,15 @@ def recommend(s: Session, student: Student, ctx: Context | None = None) -> dict:
         "counterfactual": cf, "competencies": competencies, "confirmations": confirmations[:8], "perception": perception,
         "evidence_summary": {**ev_count, "assessment_items": n_diag},
         "diagnostic_done": n_diag > 0,
-        "blocked_in_path": len(blocked_steps(order, ctx.graph, p)),
+        "blocked_in_path": len(blocked_steps(order, graph, p)),
+        "features": feats,
     }
 
 
 # ------------------------------------------------------------ adaptive cycle
 def _snapshot(rec: dict) -> list[dict]:
-    return [{"skill_id": r["skill_id"], "rank": r["rank"], "priority": r["priority"], "p": None, **{
+    p = {c["skill_id"]: c["p"] for c in rec["competencies"]}
+    return [{"skill_id": r["skill_id"], "rank": r["rank"], "priority": r["priority"], "p": p.get(r["skill_id"]), **{
         k: r["features"][k] for k in ("G", "R", "D", "T")}} for r in rec["ranking"][:10]]
 
 
@@ -280,7 +346,9 @@ def _reasons(prev: list[dict], cur: list[dict], rec: dict, names: dict[str, str]
         if a["rank"] == b["rank"] and abs(a["priority"] - b["priority"]) < 0.01:
             continue
         causes = []
-        if abs(a["G"] - b["G"]) >= 0.02:
+        if a.get("p") is not None and b.get("p") is not None and abs(a["p"] - b["p"]) >= 0.02:
+            causes.append(f"your mastery {'rose' if b['p'] > a['p'] else 'fell'} {a['p']:.2f} to {b['p']:.2f}")
+        elif abs(a["G"] - b["G"]) >= 0.02:
             causes.append(f"gap {'narrowed' if b['G'] < a['G'] else 'widened'} {a['G']:.2f} to {b['G']:.2f}")
         if a["R"] != b["R"]:
             causes.append("prerequisites now met" if b["R"] > a["R"] else "prerequisites not met yet")
@@ -322,7 +390,7 @@ def record_history(s: Session, student: Student, trigger: str, note: str = "", r
         reasons = [f"{r['name']} is priority #{r['rank']}." for r in rec["ranking"][:3]]
     else:
         same = [r["skill_id"] for r in last.ranking[:5]] == [r["skill_id"] for r in cur[:5]] and \
-            all(abs(a["priority"] - b["priority"]) < 0.005 for a, b in zip(last.ranking[:5], cur[:5]))
+            all(abs(a["priority"] - b["priority"]) < 0.005 for a, b in zip(last.ranking[:5], cur[:5], strict=False))
         if same and not force and last.market_version == rec["market_version"]:
             return None
         summary, reasons = _reasons(last.ranking, cur, rec, names, trigger, note)
@@ -340,3 +408,94 @@ def check_market_trigger(s: Session, student: Student, rec: dict) -> None:
                      .order_by(RecommendationHistory.id.desc())).first()
     if last is not None and last.market_version != rec["market_version"]:
         record_history(s, student, "market", note=f"market version {rec['market_version']}", rec=rec, force=True)
+
+
+# ------------------------------------------------------------ decision trace
+FEATURE_DEFS = {
+    "G": "Gap = max(0, required level r_s - mastery p_s)",
+    "R": "Readiness = 1 if every prerequisite has p >= 0.6, else 0.5",
+    "K": "Evidence confidence (floored at 0.03)",
+    "D": "Demand = recency-weighted share of target-role postings mentioning the skill (floored at 0.03)",
+    "T": "Trend = 1 + 0.5 x relative change in share, last 6 vs previous 6 months",
+    "U": "Unlock value = 1 + sum of D over skills this one is a direct prerequisite for that still have a gap",
+    "B": "Downstream block = 1 + sum of D x G over those same skills",
+}
+
+
+def decision_trace(s: Session, student: Student, skill_id: str) -> dict:
+    """Every number behind one recommendation, in the order the engine computes it (paper III.A.2-A.5)."""
+    import math
+
+    from .calibration import implied_error_ratios
+
+    ctx = load_context(s, student.target_role)
+    if skill_id not in ctx.skills:
+        raise KeyError(skill_id)
+    rec = recommend(s, student, ctx)
+    resp = responses(s, student.id)
+    st = student_states(s, student, ctx, resp)[skill_id]
+    w = active_evidence_weights()
+    comps = st.components
+    used = {k: w[k] for k in comps}
+    row = next((r for r in rec["ranking"] if r["skill_id"] == skill_id), None)
+    step = next((p for p in rec["path"] if p["skill_id"] == skill_id), None)
+    weights = ctx.model.weights
+
+    stages = [
+        {"stage": "1. Evidence -> starting mastery p0 (eq. 2)",
+         "formula": "p0 = sum_k w_k e_k / sum_k w_k over the evidence types that exist",
+         "inputs": [{"evidence": k, "score_e": round(v, 3), "weight_w": used[k], "sources": st.sources.get(k, [])}
+                    for k, v in comps.items()],
+         "result": round(st.p0, 4),
+         "note": "No evidence yet: prior 0.10." if not comps else
+                 "CV claims and self-ratings are shown for confirmation only and never enter this sum."},
+        {"stage": "2. New answers -> mastery p (eq. 3, Bayesian knowledge tracing)",
+         "formula": "correct: p' = p(1-S)/(p(1-S)+(1-p)G); wrong: p' = pS/(pS+(1-p)(1-G)); then p = p' + (1-p')T",
+         "inputs": {"S_slip": 0.10, "G_guess": 0.25, "T_learn": 0.10, "trace": [round(x, 4) for x in st.bkt_trace]},
+         "result": round(st.p, 4)},
+    ]
+    if row:
+        x = row["features"]
+        stages.append({"stage": "3. Features (paper Table 3)",
+                       "inputs": [{"feature": f, "value": x[f], "definition": FEATURE_DEFS[f]} for f in x],
+                       "result": {"required_level_r": ctx.req.get(skill_id), "blocked_by": row["blocked_by"],
+                                  "unlocks": row["unlocks"]}})
+        stages.append({"stage": "4. Ranking model score (eq. 4)",
+                       "formula": "f_s = sum_i w_i log x_i  (formula 5 = all w_i = 1 for G, D, T, U, R)",
+                       "inputs": [{"feature": f, "weight": weights.get(f, 0.0), "log_value": round(math.log(max(x[f], 1e-9)), 4),
+                                   "contribution": row["contributions"][f]} for f in x],
+                       "result": {"score": row["score"], "priority_exp_score": row["priority"], "rank": row["rank"],
+                                  "of_candidates": len(rec["ranking"]), "model": ctx.model.name}})
+    else:
+        stages.append({"stage": "3. Ranking", "result": "Not ranked: no gap left for this role (p >= required level)."})
+    stages.append({"stage": "5. Learning path rule (III.A.5)",
+                   "formula": "top-3 ranked skills + their prerequisites with p < 0.6, in topological order",
+                   "result": {"in_path": step is not None, "position": rec["path"].index(step) + 1 if step else None,
+                              "role_in_path": step["role_in_path"] if step else None,
+                              "waiting_for": step["waiting_for"] if step else []}})
+    return {"skill_id": skill_id, "name": ctx.names[skill_id], "market_version": ctx.market_version,
+            "evidence_weights": w, "implied_error_ratio_vs_assessment": implied_error_ratios(w), "stages": stages}
+
+
+def propagate_market_change(s: Session, role: str, note: str = "") -> int:
+    """Adaptive trigger 2: when the active market snapshot changes, re-rank every student of that role
+    and store the change with its reasons (written once at update time, not on page views)."""
+    from .db import Study
+    from .study import arm_features
+
+    ctx = load_context(s, role)
+    n = 0
+    students = s.scalars(select(Student).where(Student.target_role == role)).all()
+    for st in students:
+        if s.scalar(select(RecommendationHistory.id).where(RecommendationHistory.student_id == st.id).limit(1)) is None:
+            continue
+        feats = None
+        if st.study_id and st.study_arm:
+            study = s.get(Study, st.study_id)
+            feats = arm_features(study.arms, st.study_arm) if study else None
+            if feats and not feats.get("adaptive", True):
+                continue
+        rec = recommend(s, st, ctx, features=feats)
+        if record_history(s, st, "market", note=note or f"market version {rec['market_version']}", rec=rec, force=True):
+            n += 1
+    return n

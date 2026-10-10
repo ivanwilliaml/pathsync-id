@@ -67,7 +67,7 @@ def apply_gates(raw: list[Mention], source_text: str, index, valid_ids: set[str]
             free.append(m)
 
     if free and index is not None:
-        for m, (sid, sim, form) in zip(free, index.nearest([m.surface for m in free])):
+        for m, (sid, sim, form) in zip(free, index.nearest([m.surface for m in free]), strict=False):
             m.similarity = round(sim, 4)
             if sim >= SIM_AUTO:
                 m.skill_id, m.status = sid, "auto"

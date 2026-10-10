@@ -119,8 +119,8 @@ def select_l2(groups: list[tuple[dict[str, np.ndarray], list[str]]], group_ids: 
     for lam in L2_GRID:
         scores = []
         for test in folds:
-            train = [g for g, b in zip(groups, group_ids) if b not in test]
-            evalg = [g for g, b in zip(groups, group_ids) if b in test]
+            train = [g for g, b in zip(groups, group_ids, strict=False) if b not in test]
+            evalg = [g for g, b in zip(groups, group_ids, strict=False) if b in test]
             w = fit_pairwise(train, l2=lam, features=features)
             wv = np.array([w[f] for f in FEATURES])
             for feats, order in evalg:
@@ -161,7 +161,7 @@ def fit_pairwise(groups: list[tuple[dict[str, np.ndarray], list[str]]], l2: floa
 
     res = minimize(loss, w0, jac=True, method="L-BFGS-B", bounds=[WEIGHT_BOUNDS[f] for f in active])
     out = {f: 0.0 for f in FEATURES}
-    out.update({f: round(float(v), 4) for f, v in zip(active, res.x)})
+    out.update({f: round(float(v), 4) for f, v in zip(active, res.x, strict=False)})
     return out
 
 

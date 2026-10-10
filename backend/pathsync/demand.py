@@ -12,8 +12,16 @@ import math
 from dataclasses import asdict, dataclass, field
 from datetime import date
 
-from .config import (DEMAND_HALF_LIFE_MONTHS, DEMAND_WINDOW_MONTHS, REQUIRED_MAX, REQUIRED_MIN, TREND_CLIP,
-                     TREND_LAMBDA, TREND_MIN_POSTINGS, TREND_WINDOW_MONTHS)
+from .config import (
+    DEMAND_HALF_LIFE_MONTHS,
+    DEMAND_WINDOW_MONTHS,
+    REQUIRED_MAX,
+    REQUIRED_MIN,
+    TREND_CLIP,
+    TREND_LAMBDA,
+    TREND_MIN_POSTINGS,
+    TREND_WINDOW_MONTHS,
+)
 
 
 def months_between(a: date, b: date) -> float:
@@ -71,7 +79,7 @@ class MarketMap:
         return d
 
     @classmethod
-    def from_dict(cls, d: dict) -> "MarketMap":
+    def from_dict(cls, d: dict) -> MarketMap:
         m = cls(**{k: v for k, v in d.items() if k != "skills"})
         m.skills = {k: SkillDemand(**v) for k, v in d.get("skills", {}).items()}
         return m
@@ -95,7 +103,7 @@ def compute_market(postings: list[PostingSkills], skill_ids: list[str], role: st
                    n_previous=len(previous), trend_status="ok" if trend_ok else "insufficient")
     for s in skill_ids:
         k = sum(1 for p in window if s in p.skills)
-        d = sum(w for p, w in zip(window, weights) if s in p.skills) / wsum if n else 0.0
+        d = sum(w for p, w in zip(window, weights, strict=False) if s in p.skills) / wsum if n else 0.0
         lo, hi = wilson(k, n)
         g, rs, ps = 0.0, None, None
         if recent or previous:

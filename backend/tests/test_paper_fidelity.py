@@ -5,10 +5,10 @@ import math
 
 import pytest
 
+from pathsync.demand import recency_weight
 from pathsync.evidence import EvidenceItem, Response, bkt_update, diagnose
 from pathsync.ranker import RankingModel, build_candidates, kendalls_w, ndcg_at_k
 from pathsync.taxonomy import Edge, SkillGraph, load_skills
-from pathsync.demand import recency_weight
 
 # Fig. 6 sub-graph: SQL is a prerequisite of data analysis and data visualisation.
 EDGES = [Edge("sql", "data_analysis"), Edge("statistics", "data_analysis"), Edge("excel", "data_analysis"),
@@ -80,7 +80,7 @@ def test_equation2_weighted_average_and_self_rating_excluded():
           EvidenceItem("project", "Analisis penjualan", {"sql": 0.70})]
     resp = [Response("sql", True, "diagnostic"), Response("sql", False, "diagnostic")]
     st = diagnose(["sql"], ev, resp, self_ratings={"sql": 5})["sql"]
-    e_assess = (1 + 1) / (2 + 2)
+    e_assess = ((1 + 1) / (2 + 2) - 0.25) / 0.75          # guess-corrected accuracy
     expected = (0.2 * 1.0 + 0.3 * 0.7 + 0.5 * e_assess) / (0.2 + 0.3 + 0.5)
     assert st.p0 == pytest.approx(expected)
     assert st.self_rating == 5 and "self" not in st.components

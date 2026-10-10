@@ -20,3 +20,8 @@ os.environ.setdefault("PATHSYNC_EXTRACTOR", "lexicon")
 
 def pytest_sessionfinish(session, exitstatus):
     shutil.rmtree(_TMP_DIR, ignore_errors=True)
+
+# fixed admin token for the API tests; rate limiting off so the suite can create many profiles
+ADMIN_TOKEN = "test-admin-token-0123456789"
+os.environ["PATHSYNC_ADMIN_TOKEN"] = ADMIN_TOKEN
+os.environ["PATHSYNC_RATE_LIMIT"] = "0"

@@ -63,10 +63,11 @@ def export_postings():
 
 
 def export_scenarios():
-    from pipeline.expert_study import scenario_prompt
+    from sqlalchemy import select
+
     from pathsync.db import Scenario, get_session
     from pathsync.engine import load_context
-    from sqlalchemy import select
+    from pipeline.expert_study import scenario_prompt
 
     with get_session() as s:
         names = load_context(s, "business_analyst").names
@@ -126,8 +127,9 @@ def import_postings(path: str):
 
 
 def import_scenarios(path: str):
-    from pathsync.db import Scenario, get_session
     from sqlalchemy import select
+
+    from pathsync.db import Scenario, get_session
 
     res = json.loads(Path(path).read_text(encoding="utf-8"))
     with get_session() as s:

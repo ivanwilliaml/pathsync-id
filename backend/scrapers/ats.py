@@ -18,8 +18,17 @@ import argparse
 import ast
 from datetime import datetime
 
-from .common import (RAW_DIR, PoliteClient, Posting, classify_role, detect_language, html_to_text,
-                     is_indonesia, ts_to_date, write_jsonl)
+from .common import (
+    RAW_DIR,
+    PoliteClient,
+    Posting,
+    classify_role,
+    detect_language,
+    html_to_text,
+    is_indonesia,
+    ts_to_date,
+    write_jsonl,
+)
 
 WORKABLE_QUERIES = [
     "business analyst", "system analyst", "business process analyst", "functional analyst",

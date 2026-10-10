@@ -66,7 +66,7 @@ class SkillGraph:
             return [e for e in self.edges if e.status == "approved"]
         return [e for e in self.edges if e.status != "rejected"]
 
-    def with_edges(self, edges: list[Edge]) -> "SkillGraph":
+    def with_edges(self, edges: list[Edge]) -> SkillGraph:
         return SkillGraph(self.skills, edges)
 
     # ------------------------------------------------------------- structure
@@ -131,7 +131,9 @@ def load_taxonomy() -> dict:
     return _load_json("taxonomy.json")
 
 
+@lru_cache(maxsize=1)
 def load_skills() -> dict[str, Skill]:
+    """Frozen taxonomy as Skill objects (cached; treat the returned dict as read-only)."""
     tax = load_taxonomy()
     out = {}
     for s in tax["skills"]:

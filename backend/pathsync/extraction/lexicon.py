@@ -36,7 +36,7 @@ WEAK_ALIASES = {
     "metrics", "metrik", "chart", "charts", "grafik", "survey", "survei", "sprint", "workshop", "workshops",
     "milestone", "milestones", "deliverables", "automation", "otomasi", "prototype", "mockup", "english",
     "communication", "komunikasi", "stakeholder", "stakeholders", "proses bisnis", "business process",
-    "business processes", "client", "pitch", "slides", "logika", "teliti", "retention", "anggaran", "budgeting",
+    "business processes", "pitch", "slides", "logika", "teliti", "retention", "anggaran", "budgeting",
     "compliance", "kepatuhan", "crm", "erp", "sap", "visualization", "visualisasi", "presentation", "presentasi",
     "pengujian", "menguji", "qa", "bilingual", "pengembangan sistem", "software development", "system development",
 }

@@ -11,10 +11,10 @@ import html
 import json
 import re
 import time
+from collections.abc import Iterable
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Iterable
 
 import httpx
 from bs4 import BeautifulSoup
@@ -157,7 +157,7 @@ class Posting:
     role: str | None = None
     language: str | None = None
     raw_meta: dict = field(default_factory=dict)
-    fetched_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat(timespec="seconds"))
+    fetched_at: str = field(default_factory=lambda: datetime.now(UTC).isoformat(timespec="seconds"))
 
     @property
     def fingerprint(self) -> str:
@@ -215,7 +215,7 @@ def ts_to_date(value) -> str | None:
             v = float(value)
             if v > 1e12:
                 v /= 1000.0
-            return datetime.fromtimestamp(v, tz=timezone.utc).date().isoformat()
+            return datetime.fromtimestamp(v, tz=UTC).date().isoformat()
         s = str(value).strip()
         if s.isdigit():
             return ts_to_date(int(s))

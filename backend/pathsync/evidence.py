@@ -17,8 +17,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from .config import (BKT_GUESS, BKT_SLIP, BKT_TRANSIT, EVIDENCE_WEIGHTS, LOW_CONFIDENCE, PRIOR_NO_EVIDENCE,
-                     RUBRIC_SCORES)
+from .config import BKT_GUESS, BKT_SLIP, BKT_TRANSIT, EVIDENCE_WEIGHTS, LOW_CONFIDENCE, PRIOR_NO_EVIDENCE, RUBRIC_SCORES
 
 # confidence contribution of one piece of evidence of each kind (scaled by mapping strength)
 CONFIDENCE_STRENGTH = {"academic": 0.20, "certificate": 0.30, "project": 0.45}
@@ -34,9 +33,15 @@ def bkt_update(p: float, correct: bool, slip: float = BKT_SLIP, guess: float = B
     return post + (1 - post) * transit
 
 
-def smoothed_accuracy(correct: int, total: int) -> float:
-    """Laplace-smoothed share of correct answers so 1/1 is not read as full mastery."""
-    return (correct + 1) / (total + 2)
+def smoothed_accuracy(correct: int, total: int, guess: float = BKT_GUESS) -> float:
+    """Guess-corrected, Laplace-smoothed accuracy.
+
+    With four options a student who knows nothing still scores ~25%, so raw accuracy overstates
+    mastery (0/2 correct used to give 0.25, above the 0.10 no-evidence prior). The classical
+    correction for guessing maps chance level to 0: e = (acc - g) / (1 - g), acc = (c + 1) / (n + 2).
+    """
+    acc = (correct + 1) / (total + 2)
+    return max(0.0, (acc - guess) / (1 - guess))
 
 
 @dataclass
@@ -79,6 +84,7 @@ class EvidenceItem:
     scores: dict[str, float]      # skill -> e in [0,1] (strength already applied)
     strength: dict[str, float] = field(default_factory=dict)   # mapping strength per skill (for confidence)
     claims: list[str] = field(default_factory=list)            # cv only
+    reliability: float = 1.0      # 0.5 while a flagged project rubric waits for human review
 
 
 @dataclass
@@ -89,9 +95,15 @@ class Response:
 
 
 def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list[Response],
-             self_ratings: dict[str, int] | None = None) -> dict[str, SkillState]:
-    """Replay evidence (chronological order) into a competency state per skill."""
+             self_ratings: dict[str, int] | None = None, weights: dict[str, float] | None = None) -> dict[str, SkillState]:
+    """Replay evidence (chronological order) into a competency state per skill.
+
+    weights: evidence-type weights w_k of eq. (2); defaults to config.EVIDENCE_WEIGHTS, or the
+    calibrated weights when pathsync.calibration has produced an active set.
+    """
+    w = weights or EVIDENCE_WEIGHTS
     states = {s: SkillState(s) for s in skill_ids}
+    factor: dict[tuple[str, str], float] = {}
     conf_terms: dict[str, list[float]] = {s: [] for s in skill_ids}
 
     for ev in evidence:
@@ -106,9 +118,11 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
                 continue
             st = states[s]
             # the strongest piece of evidence of each kind counts (re-uploading never double counts)
-            st.components[ev.kind] = max(st.components.get(ev.kind, 0.0), float(e))
+            if float(e) >= st.components.get(ev.kind, -1.0):
+                st.components[ev.kind] = float(e)
+                factor[(s, ev.kind)] = ev.reliability
             st.sources.setdefault(ev.kind, []).append(ev.title)
-            conf_terms[s].append(CONFIDENCE_STRENGTH.get(ev.kind, 0.2) * ev.strength.get(s, 1.0))
+            conf_terms[s].append(CONFIDENCE_STRENGTH.get(ev.kind, 0.2) * ev.strength.get(s, 1.0) * ev.reliability)
 
     diag: dict[str, list[bool]] = {}
     reassess: dict[str, list[bool]] = {}
@@ -124,9 +138,8 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
             st.sources.setdefault("assessment", []).append(f"Diagnostic assessment ({sum(d)}/{len(d)} correct)")
         # eq. (2): weighted mean over the evidence that exists
         if st.components:
-            num = sum(EVIDENCE_WEIGHTS[k] * v for k, v in st.components.items())
-            den = sum(EVIDENCE_WEIGHTS[k] for k in st.components)
-            st.p0 = num / den
+            wk = {k: w[k] * factor.get((s, k), 1.0) for k in st.components}
+            st.p0 = sum(wk[k] * v for k, v in st.components.items()) / sum(wk.values())
         st.p = st.p0
         st.bkt_trace = [st.p]
         for correct in reassess.get(s, []):              # eq. (3) for every new answer

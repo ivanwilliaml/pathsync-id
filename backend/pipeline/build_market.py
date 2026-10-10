@@ -121,6 +121,10 @@ def main():
                                      "top": sorted(((k, v["demand"]) for k, v in snap.data["skills"].items()),
                                                    key=lambda x: -x[1])[:12]}
         s.commit()
+        from pathsync.engine import propagate_market_change
+        for role in ROLES:
+            n = propagate_market_change(s, role, note=f"market update {version}")
+            print(f"[market] {role}: {n} student paths re-ranked")
     (PROCESSED_DIR / "market_latest.json").write_text(json.dumps(export, indent=1, ensure_ascii=False), encoding="utf-8")
     print(json.dumps(export, indent=1, ensure_ascii=False))
 

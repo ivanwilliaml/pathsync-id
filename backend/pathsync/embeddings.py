@@ -31,7 +31,7 @@ def encode(texts: list[str], batch_size: int = 64) -> np.ndarray:
     """L2-normalised embeddings with a persistent cache keyed by (model, text)."""
     if not texts:
         return np.zeros((0, 384), dtype=np.float32)
-    keys = [hashlib.sha1(f"{EMBEDDING_MODEL}|{t}".encode("utf-8")).hexdigest() for t in texts]
+    keys = [hashlib.sha1(f"{EMBEDDING_MODEL}|{t}".encode()).hexdigest() for t in texts]
     out: list[np.ndarray | None] = [None] * len(texts)
     with _lock:
         conn = _cache_conn()
@@ -44,7 +44,7 @@ def encode(texts: list[str], batch_size: int = 64) -> np.ndarray:
             if missing:
                 vecs = get_model().encode([texts[i] for i in missing], batch_size=batch_size,
                                           normalize_embeddings=True, show_progress_bar=False)
-                for i, v in zip(missing, vecs):
+                for i, v in zip(missing, vecs, strict=False):
                     v = np.asarray(v, dtype=np.float32)
                     out[i] = v
                     conn.execute("INSERT OR REPLACE INTO emb VALUES (?, ?)", (keys[i], v.tobytes()))

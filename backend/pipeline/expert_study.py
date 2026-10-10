@@ -18,7 +18,7 @@ import numpy as np
 from sqlalchemy import delete, select, update
 
 from pathsync.config import FEATURES, MODELS_DIR
-from pathsync.db import Expert, RankerModel, Scenario, ScenarioRanking, get_session, init_db
+from pathsync.db import Expert, RankerModel, Scenario, ScenarioRanking, bump_epoch, get_session, init_db
 from pathsync.engine import load_context
 from pathsync.evaluation import NON_INFERIORITY, adaptivity, cross_validate, passes_rule, train_full
 from pathsync.extraction.llm import LLMUnavailable, llm_configured
@@ -144,7 +144,10 @@ def main():
         activate = passes_rule(cv)
         if activate:
             s.execute(update(RankerModel).values(active=False))
-        s.add(RankerModel(name="LTR v1 (dilatih pada simulasi pakar)", source="simulated", weights=w_full,
+        # replace the previous simulated model instead of piling up one per run
+        s.execute(delete(RankerModel).where(RankerModel.source == "simulated", RankerModel.name.like("LTR v1%")))
+        bump_epoch(s)
+        s.add(RankerModel(name="LTR v1 (trained on simulated experts)", source="simulated", weights=w_full,
                           metrics={"cv_ndcg5": cv["methods"]["model"]["ndcg5"], "cv_formula5_ndcg5": cv["methods"]["formula5"]["ndcg5"],
                                    "condition": "campuran", "rule": f"aktif bila NDCG@5 >= formula (5) - {NON_INFERIORITY}"},
                           active=activate))

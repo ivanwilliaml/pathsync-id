@@ -59,23 +59,48 @@ def diagnostic_plan(market: MarketMap, states: dict[str, SkillState], answered: 
         # skills supported only by claims or academic exposure are tested first (paper III.A.2)
         boost = 1.35 if st is not None and (st.claimed or "paparan_akademik_tanpa_bukti_langsung" in st.flags) else 1.0
         scored.append((sd.demand * (1.0 - 0.7 * conf) * boost, s))
-    chosen = [s for _, s in sorted(scored, reverse=True)[:n_skills]]
+    chosen = [s for _, s in sorted(scored, reverse=True) if any(it["id"] not in answered for it in items_for(s))][:n_skills]
     plan: list[dict] = []
     for rank, s in enumerate(chosen):
-        pool = [it for it in items_for(s) if it["id"] not in answered]
+        pool = sorted((it for it in items_for(s) if it["id"] not in answered), key=lambda it: (it["difficulty"], it["id"]))
         k = 3 if rank < max(0, target_items - 2 * len(chosen)) else 2
-        # one easy + one medium (+ one hard for the top skills) gives a spread for e_assessment
-        by_diff = sorted(pool, key=lambda it: it["difficulty"])
-        picked = by_diff[:1] + [it for it in by_diff if it["difficulty"] >= 2][: k - 1]
+        # one easy + one harder item (+ a third for the top skills) gives a spread for e_assessment
+        picked = pool[:1] + [it for it in pool[1:] if it["difficulty"] >= 2][: k - 1]
+        if len(picked) < k:
+            picked += [it for it in pool if it not in picked][: k - len(picked)]
         plan.extend(picked[:k])
     return plan
 
 
 def reassessment_items(skill_id: str, p: float, answered: set[str], n: int = 3) -> list[dict]:
-    pool = [it for it in items_for(skill_id) if it["id"] not in answered] or items_for(skill_id)
+    """Unseen items only: an item whose answer was revealed can never count as evidence again."""
+    pool = [it for it in items_for(skill_id) if it["id"] not in answered]
     target = 1 if p < 0.35 else 2 if p < 0.65 else 3
     pool.sort(key=lambda it: (abs(it["difficulty"] - target), it["id"]))
     return pool[:n]
+
+
+class SubmissionError(ValueError):
+    pass
+
+
+def validate_submission(issued: list[str], answers: list[dict]) -> list[dict]:
+    """Answers must cover only items issued in this session, each at most once."""
+    issued_set = set(issued)
+    seen: set[str] = set()
+    clean = []
+    for a in answers:
+        iid = str(a.get("item_id", ""))
+        if iid not in issued_set:
+            raise SubmissionError(f"Item {iid!r} was not part of this check.")
+        if iid in seen:
+            raise SubmissionError(f"Item {iid!r} was answered twice.")
+        seen.add(iid)
+        choice = a.get("choice")
+        if choice is not None and not (isinstance(choice, int) and 0 <= choice < 4):
+            raise SubmissionError("Each answer must be one of the four options.")
+        clean.append({"item_id": iid, "choice": choice})
+    return clean
 
 
 def grade(answers: list[dict]) -> list[dict]:

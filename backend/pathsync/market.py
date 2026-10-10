@@ -9,7 +9,7 @@ from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from .config import RAW_DIR, ROLES
-from .db import MarketSnapshot, Posting, active_snapshot
+from .db import MarketSnapshot, Posting, active_snapshot, bump_epoch
 from .demand import MarketMap, PostingSkills, compute_market, required_levels
 from .taxonomy import load_skills
 
@@ -58,6 +58,7 @@ def build_snapshot(s: Session, role: str, version: str, ref: date, note: str = "
     snap = MarketSnapshot(version=version, role=role, reference_date=ref, data=market.to_dict(), required=req,
                           sources=sources, note=note, active=True)
     s.add(snap)
+    bump_epoch(s)
     s.flush()
     return snap
 

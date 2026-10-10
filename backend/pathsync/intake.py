@@ -220,7 +220,8 @@ def _heuristic_rubric(text: str) -> list[dict]:
     ratings = []
     for s, ms in by_skill.items():
         n_quotes = len({m.quote for m in ms})
-        level = 1 if n_quotes == 1 else 2 if n_quotes <= 3 else 3
+        # keyword mentions alone can show at most "mandiri"; "mahir" needs code-level depth or an LLM/human rating
+        level = 1 if n_quotes < 2 else 2
         quote = max(ms, key=lambda m: len(m.quote)).quote
         rationale = f"{n_quotes} part{'s' if n_quotes > 1 else ''} of the artifact show{'' if n_quotes > 1 else 's'} this skill."
         if s == "sql":
@@ -245,7 +246,7 @@ def _heuristic_rubric(text: str) -> list[dict]:
         lvl = 3 if _PY_L3.search(text) else 2 if _PY_L2.search(text) else 1
         m = _PY_L3.search(text) or _PY_L2.search(text) or _PY_L1.search(text)
         ratings.append({"skill_id": "python_analytics", "level": lvl, "quote": _line_at(text, m.start()),
-                        "rationale": "Kode analisis data dengan Python."})
+                        "rationale": "Data-analysis code in Python."})
     if _VIZ.search(text) and "data_visualization" not in by_skill:
         m = _VIZ.search(text)
         ratings.append({"skill_id": "data_visualization", "level": 1, "quote": _line_at(text, m.start()),
@@ -259,7 +260,88 @@ def _line_at(text: str, pos: int) -> str:
     return text[a: b if b != -1 else len(text)].strip()[:220]
 
 
+# ------------------------------------------------------------- artifact integrity
+_POSTING_CUES = re.compile(
+    r"\b(we are looking for|you will|requirements?|qualifications?|kualifikasi|persyaratan|minimal \d|minimum \d|"
+    r"years? of experience|tahun pengalaman|apply now|lamar|benefits?|tanggung jawab|job description|deskripsi pekerjaan|"
+    r"responsibilities|nice to have|preferred|diutamakan|kandidat|candidates?)\b", re.I)
+_WORK_CUES = re.compile(
+    r"\b(saya|kami|aku|i|we|my|our|built|created|designed|analy[sz]ed|wrote|implemented|membuat|merancang|menganalisis|"
+    r"mengolah|menulis|mengembangkan|hasil|result|findings?|temuan|insight|kesimpulan|conclusion)\b|select\s|import\s|def\s",
+    re.I)
+
+
+# lines that state a requirement ("Mampu ...", "Minimal 2 tahun ...", "Experience in ...") - typical of postings,
+# rare in a student's own report, notebook or query file
+_REQ_LINE = re.compile(
+    r"^\s*(?:[-*•\d.)]+\s*)?(mampu|memiliki|minimal|min\.|menguasai|berpengalaman|pengalaman|pendidikan|"
+    r"lulusan|bersedia|diutamakan|familiar|able to|ability to|experience|experienced|strong|proficient|proficiency|"
+    r"bachelor|degree|knowledge of|good|excellent|understanding of|must|willing|at least|fresh graduate|"
+    r"you will|you'll|responsible for|bertanggung jawab|melakukan|menyusun|membantu|support)\b", re.I)
+_POSTING_HEADING = re.compile(
+    r"(^|\n)\s*(kualifikasi|persyaratan|requirements?|qualifications?|responsibilities|tanggung jawab|"
+    r"job description|deskripsi pekerjaan|what you.ll do|who you are|benefits?)\s*:?\s*(\n|$)", re.I)
+
+
+@lru_cache(maxsize=1)
+def _posting_corpus():
+    """TF-IDF index over scraped job postings, to reject a posting pasted as 'my project'."""
+    from sklearn.feature_extraction.text import TfidfVectorizer
+
+    from .config import RAW_DIR
+
+    texts = []
+    for f in sorted(RAW_DIR.glob("*.jsonl")):
+        for line in f.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                texts.append(json.loads(line).get("description_text", "")[:4000])
+    if not texts:
+        return None, None
+    vec = TfidfVectorizer(analyzer="char_wb", ngram_range=(3, 5), min_df=1, sublinear_tf=True)
+    return vec, vec.fit_transform(texts)
+
+
+def artifact_checks(text: str) -> dict:
+    """Signals that an upload is not the student's own work (paper III.A.2 requires quoted, checkable evidence)."""
+    from sklearn.metrics.pairwise import cosine_similarity
+
+    flags, sims = [], 0.0
+    vec, mat = _posting_corpus()
+    if vec is not None:
+        sims = float(cosine_similarity(vec.transform([text[:4000]]), mat).max())
+        if sims >= 0.55:
+            flags.append("copy_of_job_posting")
+    lines = [ln for ln in re.split(r"[\n.;]+", text) if ln.strip()]
+    words = re.findall(r"\w+", text)
+    posting_share = sum(bool(_POSTING_CUES.search(ln)) for ln in lines) / max(1, len(lines))
+    work_share = sum(bool(_WORK_CUES.search(ln)) for ln in lines) / max(1, len(lines))
+    alias_hits = len(lexicon_hits(text))
+    density = alias_hits / max(1, len(words))
+    req_lines = sum(bool(_REQ_LINE.match(ln)) for ln in lines) / max(1, len(lines))
+    heading = bool(_POSTING_HEADING.search(text))
+    if (posting_share >= 0.25 and work_share < 0.15) or req_lines >= 0.3 or (heading and req_lines >= 0.12):
+        flags.append("reads_like_job_requirements")
+    if density >= 0.18 or (len(words) / max(1, len(lines)) < 4 and alias_hits >= 8):
+        flags.append("keyword_list")
+    if len(words) < 60:
+        flags.append("too_short")
+    return {"flags": flags, "posting_similarity": round(sims, 3), "posting_cue_share": round(posting_share, 3),
+            "work_statement_share": round(work_share, 3), "skill_term_density": round(density, 3)}
+
+
+def lexicon_hits(text: str) -> list[str]:
+    from .extraction import lexicon_extractor
+
+    return [m.group(1) for m in lexicon_extractor().alias_re.finditer(text)]
+
+
 def project_evidence(text: str, title: str, candidate_ids: list[str] | None = None) -> tuple[EvidenceItem, dict]:
+    checks = artifact_checks(text)
+    if "copy_of_job_posting" in checks["flags"] or "reads_like_job_requirements" in checks["flags"]:
+        detail = {"method": "rejected", "ratings": [], "rejected": [], "checks": checks, "review_status": "rejected",
+                  "message": "This looks like a job posting or a list of requirements, not work you did. "
+                             "Upload your own report, notebook, query file or document."}
+        return EvidenceItem("project", title or "Project", {}, {}), detail
     method = "heuristik"
     ratings: list[dict] = []
     if llm_configured():
@@ -287,7 +369,12 @@ def project_evidence(text: str, title: str, candidate_ids: list[str] | None = No
         scores[r["skill_id"]] = max(scores.get(r["skill_id"], 0.0), e)
         strength[r["skill_id"]] = 1.0
         accepted.append({**r, "label": RUBRIC_LABELS[int(r["level"])], "score": e})
-    # paper: human re-check on a 20% sample of rubric ratings
+    # paper: human re-check on a 20% sample of rubric ratings; suspicious uploads always go to review
     digest = int(hashlib.sha1((title + text[:500]).encode("utf-8")).hexdigest(), 16)
-    detail = {"method": method, "ratings": accepted, "rejected": rejected, "needs_human_review": digest % 5 == 0}
-    return EvidenceItem("project", title or "Project", scores, strength), detail
+    sampled = digest % 5 == 0
+    status = "pending" if (sampled or checks["flags"]) else "auto"
+    detail = {"method": method, "ratings": accepted, "rejected": rejected, "checks": checks,
+              "needs_human_review": status == "pending", "review_status": status,
+              "review_reason": ", ".join(checks["flags"]) or ("random 20% quality sample" if sampled else "")}
+    item = EvidenceItem("project", title or "Project", scores, strength, reliability=0.5 if status == "pending" else 1.0)
+    return item, detail
