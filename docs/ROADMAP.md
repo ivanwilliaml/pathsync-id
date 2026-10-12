@@ -15,3 +15,28 @@ Pembangunan selesai: backend 88 route, 36 tes, CI, Docker, frontend 15 halaman, 
 - **Model:** B2B2C — kampus/prodi berlangganan (dasbor dosen, laporan kesenjangan kurikulum vs pasar), mahasiswa gratis.
 - **Ekspansi:** peran DA (menunggu C1 ≥ 95%), lalu peran lain dengan mekanisme governance yang sama.
 - **Teknis berikutnya:** rate limiter Redis untuk multi-worker, snapshot pasar bulanan terjadwal, PostgreSQL + pgvector di produksi.
+
+## Future Works
+
+### Ekspansi role bisnis (disepakati 12 Okt 2026)
+Cakupan dibatasi pada bidang **Ekonomi, Manajemen, Akuntansi, dan IT**. Hukum dan Pendidikan sengaja tidak dicakup. Tujuannya menyelaraskan produk dengan argumen Bab 1 (jurusan penyumbang pengangguran sarjana terbesar). Saat ini 14 role: 11 teknis plus Business Analyst, Accountant, Digital Marketing.
+
+| Bidang | Role baru | Contoh hard skill yang diukur |
+|---|---|---|
+| Ekonomi / Manajemen | Financial Analyst | pemodelan keuangan di Excel, forecasting dan budgeting, valuasi, analisis rasio |
+| Akuntansi | Tax Specialist | PPh/PPN, e-Faktur dan e-Bupot, rekonsiliasi fiskal, SPT |
+| Akuntansi / Ekonomi | Internal Auditor & Risk | prosedur audit, sampling, kontrol internal, COSO, manajemen risiko |
+| Manajemen | HR Specialist | HRIS, payroll dan BPJS, hukum ketenagakerjaan, rekrutmen dan ATS, people analytics |
+| Manajemen | Supply Chain & Operations Analyst | perencanaan permintaan, inventory, ERP (SAP/Odoo), procurement |
+| Manajemen | Product / Project Coordinator | roadmap, Jira/Notion, analitik produk, estimasi dan WBS |
+
+Target: 20 role. Langkah: (1) tambah role di katalog dan batas skill, scrape Karirhub dan Kalibrr; (2) tambah sekitar 50-60 skill hard bisnis ke taksonomi, bangun ulang graf, materi, kursus; (3) tulis sekitar 5 soal per skill, soal pajak/audit/payroll perlu ditinjau ahli bidangnya; (4) ukur ulang kualitas soal, ekstraksi, dan peta pasar, role dengan lowongan di bawah 30 ditandai Beta; (5) perbarui teks landing, How It Works, dan dokumen.
+
+### Validasi manusia (ditunda)
+- Panel penilai industri nyata (minimal 3) untuk precision@k rekomendasi dan pelatihan ulang ranker (saat ini ranker dilatih dari data ahli simulasi dan tidak melampaui formula biasa).
+- Uji pengguna 10-20 mahasiswa untuk jalur belajar, dibandingkan dengan saran karier umum.
+- Dua anotator manusia untuk gold set ekstraksi (saat ini 24 lowongan, satu anotator) dan baseline LLM generik.
+
+### Teknis
+- Soal berbahasa Indonesia (soal baru saat ini hanya berbahasa Inggris).
+- Uji deploy produksi (PostgreSQL + pgvector, Redis rate limit, refresh pasar terjadwal).
