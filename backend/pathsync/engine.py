@@ -155,7 +155,8 @@ def clear_context_cache() -> None:
 
 
 # ---------------------------------------------------------------- diagnosis
-REVIEW_RELIABILITY = {"auto": 1.0, "approved": 1.0, "pending": 0.5}
+# pending = waiting for a human reviewer; claimed = certificate typed in without a verification link (counts like a CV claim)
+REVIEW_RELIABILITY = {"auto": 1.0, "approved": 1.0, "pending": 0.5, "claimed": 0.5}
 
 
 def evidence_items(student: Student) -> list[EvidenceItem]:
@@ -172,7 +173,9 @@ def evidence_items(student: Student) -> list[EvidenceItem]:
 def responses(s: Session, student_id: str) -> list[Response]:
     rows = s.scalars(select(AssessmentResponse).where(AssessmentResponse.student_id == student_id)
                      .order_by(AssessmentResponse.created_at, AssessmentResponse.id)).all()
-    return [Response(r.skill_id, r.correct, r.phase) for r in rows]
+    from .item_audit import item_guess
+
+    return [Response(r.skill_id, r.correct, r.phase, item_guess(r.item_id)) for r in rows]
 
 
 def student_states(s: Session, student: Student, ctx: Context, resp: list[Response] | None = None) -> dict[str, SkillState]:
@@ -227,6 +230,11 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
     role_skills = [k for k in ctx.skills if demand.get(k, 0) > 0 or ctx.esco.get(k)]
 
     graph = ctx.graph if feats["graph"] else SkillGraph(ctx.skills, [])
+    # groundwork the role depends on is part of the role's map even if postings rarely name it (e.g. programming basics)
+    needed = set(role_skills)
+    for k in role_skills:
+        needed |= graph.ancestors(k)
+    role_skills = [k for k in ctx.skills if k in needed]
     cands = build_candidates(graph, p, ctx.req, demand, trend, conf, role_skills)
     ranked = ctx.model.rank(cands)
     if not feats["adaptive"]:
@@ -271,7 +279,9 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
         path_out.append({
             "skill_id": sid, "name": ctx.names[sid], "role_in_path": stp.role_in_path, "rank": stp.rank,
             "p": round(st.p, 3), "target": round(target, 3), "level_now": level_label(st.p), "level_target": level_label(target),
-            "rec_type": recommendation_type(st), "hours": hours, "materials": _pick_materials(sid, st.p, prefs),
+            "rec_type": recommendation_type(st), "hours": hours, "materials": (mats := _pick_materials(sid, st.p, prefs)),
+            # the commitment now is the first module, not "beginner to advanced" (PM audit AI-2)
+            "first_module_hours": round(min(hours, mats[0]["hours"]) if mats else min(hours, 2.0), 1),
             "waiting_for": waiting, "learn_what": ctx.skills[sid].learn_what,
             "why_prereq": None if stp.role_in_path == "prioritas" else
             f"Needed before {', '.join(ctx.names[t] for t in graph.dependents.get(sid, []) if t in order)}.",

@@ -25,3 +25,4 @@ def pytest_sessionfinish(session, exitstatus):
 ADMIN_TOKEN = "test-admin-token-0123456789"
 os.environ["PATHSYNC_ADMIN_TOKEN"] = ADMIN_TOKEN
 os.environ["PATHSYNC_RATE_LIMIT"] = "0"
+os.environ["PATHSYNC_MIN_SECONDS_PER_ITEM"] = "0"

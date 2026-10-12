@@ -1,0 +1,15 @@
+# Public entry point: HTTPS (automatic certificates) in front of the Next.js frontend.
+# Caddy replaces any X-Forwarded-For header a client sends with the real client address, so the backend
+# rate limiter (PATHSYNC_TRUSTED_PROXIES = the compose network) cannot be fooled by a forged header.
+{$PATHSYNC_DOMAIN:localhost} {
+	encode zstd gzip
+	reverse_proxy frontend:3000
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+	log {
+		output stdout
+		format json
+	}
+}

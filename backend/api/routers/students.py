@@ -4,11 +4,12 @@ Every route below /students/{sid} requires the student's bearer token (pathsync.
 """
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timedelta
+from typing import Annotated
 
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from pydantic import BaseModel, Field
-from sqlalchemy import delete, select
+from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 from pathsync.config import GRADE_SCORES, ROLES
@@ -27,19 +28,25 @@ from pathsync.db import (
 from pathsync.engine import decision_trace, record_history
 from pathsync.intake import (
     academic_evidence,
+    artifact_signature,
     certificate_evidence,
     cv_evidence,
     document_to_text,
     parse_transcript,
     project_evidence,
+    signature_similarity,
+    verification_link,
 )
 from pathsync.security import clip_text, db_session, hash_token, new_token, rate_limit, read_upload, student_access
+from pathsync.taxonomy import load_skills
 
 from ..common import after_change, has_history, recommend_for
 from .public import graph_payload
 
 router = APIRouter(prefix="/api", tags=["students"])
-CONSENT_VERSION = "2026-10"
+MAX_PROJECTS_PER_DAY = 5
+DUPLICATE_THRESHOLD = 0.9
+CONSENT_VERSION = "2026-10b"
 
 
 class StudentIn(BaseModel):
@@ -56,10 +63,10 @@ class StudentPatch(BaseModel):
     semester: int | None = Field(None, ge=1, le=14)
     target_role: str | None = None
     preferences: dict | None = None
-    self_ratings: dict[str, int] | None = None
+    self_ratings: dict[str, Annotated[int, Field(ge=1, le=5)]] | None = None
 
 
-@router.post("/students", dependencies=[Depends(rate_limit("signup", 10))])
+@router.post("/students", dependencies=[Depends(rate_limit("signup", 20))])
 def create_student(body: StudentIn, s: Session = Depends(db_session)):
     if not body.consent:
         raise HTTPException(400, "Please accept the data consent to continue.")
@@ -80,7 +87,9 @@ def _student_out(s: Session, st: Student) -> dict:
             "target_role": st.target_role, "preferences": st.preferences, "self_ratings": st.self_ratings,
             "cohort_id": st.cohort_id, "study_arm": st.study_arm if st.study_id else None,
             "consent_at": st.consent_at.isoformat() if st.consent_at else None, "consent_version": st.consent_version,
-            "evidence": [{"id": e.id, "kind": e.kind, "title": e.title, "scores": e.scores, "details": e.details,
+            "research_consent_at": st.research_consent_at.isoformat() if st.research_consent_at else None,
+            "evidence": [{"id": e.id, "kind": e.kind, "title": e.title, "scores": e.scores,
+                          "details": {k: v for k, v in (e.details or {}).items() if k != "signature"},
                           "review_status": e.review_status, "created_at": e.created_at.isoformat()} for e in st.evidence],
             "n_responses": len(s.scalars(select(AssessmentResponse.id).where(AssessmentResponse.student_id == st.id)).all())}
 
@@ -105,7 +114,8 @@ def patch_student(body: StudentPatch, st: Student = Depends(student_access), s: 
             allowed["weekly_hours"] = max(1, min(40, float(allowed["weekly_hours"])))
         st.preferences = {**(st.preferences or {}), **allowed}
     if body.self_ratings is not None:
-        st.self_ratings = {k: max(1, min(5, int(v))) for k, v in body.self_ratings.items()}
+        known = load_skills()
+        st.self_ratings = {k: v for k, v in body.self_ratings.items() if k in known}
     s.commit()
     if role_changed and has_history(s, st.id):
         record_history(s, st, "role", note=f"new role {ROLES[st.target_role]['name']}", rec=recommend_for(s, st), force=True)
@@ -176,15 +186,25 @@ def add_academic(body: CoursesIn, st: Student = Depends(student_access), s: Sess
 @router.post("/students/{sid}/evidence/certificate")
 def add_cert(body: CertsIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     st = s.merge(st)
-    certs = [{"name": str(c.get("name", ""))[:200], "score": c.get("score")} for c in body.certificates if c.get("name")]
+    certs = [{"name": str(c.get("name", ""))[:200], "score": c.get("score"), "url": str(c.get("url") or "")[:500]}
+             for c in body.certificates if c.get("name")]
     if not certs:
         raise HTTPException(400, "Add at least one certificate name.")
-    item, detail = certificate_evidence(certs)
-    s.add(Evidence(student_id=st.id, kind="certificate", title=", ".join(c["name"] for c in certs)[:290],
-                   scores=item.scores, details={"strength": item.strength, "certificates": detail}))
+    # a credential link from a known issuer counts fully; a typed name alone is a claim at half weight (PM audit AI-3)
+    groups = {"auto": [c for c in certs if verification_link(c["url"])], "claimed": [c for c in certs if not verification_link(c["url"])]}
+    scores, details = {}, []
+    for status, group in groups.items():
+        if not group:
+            continue
+        item, detail = certificate_evidence(group)
+        s.add(Evidence(student_id=st.id, kind="certificate", title=", ".join(c["name"] for c in group)[:290],
+                       scores=item.scores, details={"strength": item.strength, "certificates": detail}, review_status=status))
+        details += detail
+        for k, v in item.scores.items():
+            scores[k] = max(scores.get(k, 0.0), v)
     s.commit()
     after_change(s, st, "evidence", "new certificate")
-    return {"scores": item.scores, "certificates": detail}
+    return {"scores": scores, "certificates": details, "claimed": len(groups["claimed"])}
 
 
 @router.post("/students/{sid}/evidence/cv", dependencies=[Depends(rate_limit("upload", 30))])
@@ -206,10 +226,22 @@ def add_cv(st: Student = Depends(student_access), text: str = Form(""), file: Up
 def add_project(st: Student = Depends(student_access), title: str = Form("Project"), text: str = Form(""),
                 course: str = Form(""), file: UploadFile | None = File(None), s: Session = Depends(db_session)):
     st = s.merge(st)
+    since = utcnow() - timedelta(days=1)
+    today = s.scalar(select(func.count(Evidence.id)).where(Evidence.student_id == st.id, Evidence.kind == "project",
+                                                           Evidence.created_at >= since))
+    if today >= MAX_PROJECTS_PER_DAY:
+        raise HTTPException(429, f"You can add up to {MAX_PROJECTS_PER_DAY} projects per day. Try again tomorrow.")
     body, _ = _text_from(text, file)
     if len(body.strip()) < 30:
         raise HTTPException(400, "The project text is too short. Paste more of it or upload the file.")
+    sig = artifact_signature(body)
+    for e in s.scalars(select(Evidence).where(Evidence.kind == "project")):
+        if signature_similarity(sig, (e.details or {}).get("signature") or []) >= DUPLICATE_THRESHOLD:
+            mine = e.student_id == st.id
+            raise HTTPException(409, "You already added this project." if mine else
+                                "This document matches one another student already submitted. Upload your own work.")
     item, detail = project_evidence(body, title[:200])
+    detail["signature"] = sig
     if course:
         detail["course"] = course[:200]           # coursework used as evidence (classroom link)
     if detail["review_status"] == "rejected":
@@ -218,7 +250,7 @@ def add_project(st: Student = Depends(student_access), title: str = Form("Projec
                    details={"strength": item.strength, **detail}, review_status=detail["review_status"]))
     s.commit()
     after_change(s, st, "evidence", f"project '{title[:60]}'")
-    return {"scores": item.scores, **detail}
+    return {"scores": item.scores, **{k: v for k, v in detail.items() if k != "signature"}}
 
 
 @router.delete("/students/{sid}/evidence/{eid}")

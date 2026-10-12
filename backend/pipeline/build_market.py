@@ -20,6 +20,7 @@ from pathsync.config import PROCESSED_DIR, RAW_DIR, ROLES
 from pathsync.db import Posting, PostingMention, get_session, init_db
 from pathsync.extraction import extract_skills
 from pathsync.market import build_snapshot
+from pathsync.roles import classify_role
 from pathsync.taxonomy import load_taxonomy
 
 DUP_THRESHOLD = 0.90
@@ -28,12 +29,13 @@ EXTRACTION_CACHE = PROCESSED_DIR / "extraction_cache.json"
 
 def load_raw() -> list[dict]:
     rows: dict[str, dict] = {}
-    files = sorted(RAW_DIR.glob("karirhub_*.jsonl")) + sorted(RAW_DIR.glob("ats_*.jsonl"))
+    files = [f for src in ("karirhub", "ats", "kalibrr") for f in sorted(RAW_DIR.glob(f"{src}_*.jsonl"))]
     for f in files:
         for line in f.read_text(encoding="utf-8").splitlines():
             if not line.strip():
                 continue
             r = json.loads(line)
+            r["role"] = classify_role(r.get("title", ""))  # re-apply the current role catalogue to old files too
             key = f"{r['source']}:{r['source_id']}"
             first_seen = r.get("fetched_at", "")[:10]
             if key in rows:

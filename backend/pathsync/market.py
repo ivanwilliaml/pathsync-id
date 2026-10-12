@@ -11,6 +11,7 @@ from sqlalchemy.orm import Session
 from .config import RAW_DIR, ROLES
 from .db import MarketSnapshot, Posting, active_snapshot, bump_epoch
 from .demand import MarketMap, PostingSkills, compute_market, required_levels
+from .roles import skill_ids_for_role
 from .taxonomy import load_skills
 
 
@@ -48,7 +49,7 @@ def build_snapshot(s: Session, role: str, version: str, ref: date, note: str = "
         published = p.published_at or p.first_seen
         ids = {m.skill_id for m in p.mentions if m.skill_id and m.status == "auto"}
         ps.append(PostingSkills(p.id, published, ids))
-    market = compute_market(ps, list(skills), role, ref)
+    market = compute_market(ps, skill_ids_for_role(role, skills), role, ref)
     for p in rows:
         published = p.published_at or p.first_seen
         if 0 <= (ref - published).days <= 366:

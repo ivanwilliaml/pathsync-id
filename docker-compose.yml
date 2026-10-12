@@ -1,6 +1,53 @@
-# Local / single-host deployment: PostgreSQL + FastAPI backend + Next.js frontend.
-#   cp .env.example .env   (set real secrets)   then   docker compose up --build   -> http://localhost:3000
+# Single-host production deployment (PM audit P0-3, P0-6):
+#   Caddy (HTTPS, real client IP) -> Next.js (production build) -> FastAPI -> PostgreSQL, Redis for shared rate limits,
+#   a daily pg_dump sidecar, and a monthly market refresh.
+#
+#   cp .env.example .env      # set real secrets: openssl rand -base64 48
+#   docker compose up -d --build
+#   -> https://$PATHSYNC_DOMAIN   (localhost works with a self-signed certificate)
 services:
+  caddy:
+    image: caddy:2.8-alpine
+    environment:
+      PATHSYNC_DOMAIN: ${PATHSYNC_DOMAIN:-localhost}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    ports: ["80:80", "443:443"]
+    depends_on: [frontend]
+    networks: [edge]
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      args: {PATHSYNC_API: "http://backend:8000"}
+    environment:
+      NEXT_PUBLIC_SITE_URL: https://${PATHSYNC_DOMAIN:-localhost}
+    depends_on:
+      backend: {condition: service_healthy}
+    networks: [edge]
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    environment:
+      PATHSYNC_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-pathsync}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-pathsync}
+      PATHSYNC_ADMIN_TOKEN: ${PATHSYNC_ADMIN_TOKEN:?set PATHSYNC_ADMIN_TOKEN in .env (32+ random characters)}
+      PATHSYNC_CORS_ORIGINS: https://${PATHSYNC_DOMAIN:-localhost}
+      PATHSYNC_TRUSTED_PROXIES: 172.28.0.0/16
+      PATHSYNC_REDIS_URL: redis://redis:6379/0
+      PATHSYNC_WORKERS: ${PATHSYNC_WORKERS:-2}
+      PATHSYNC_ENV: production
+      SENTRY_DSN: ${SENTRY_DSN:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+    volumes: [hf:/app/.hf]
+    depends_on:
+      db: {condition: service_healthy}
+      redis: {condition: service_started}
+    networks: [edge, data]
+    restart: unless-stopped
+
   db:
     image: pgvector/pgvector:pg16
     environment:
@@ -12,30 +59,52 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pathsync}"]
       interval: 5s
       retries: 20
+    networks: [data]
     restart: unless-stopped
 
-  backend:
-    build: ./backend
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--maxmemory", "64mb", "--maxmemory-policy", "allkeys-lru"]
+    networks: [data]
+    restart: unless-stopped
+
+  backup:
+    image: pgvector/pgvector:pg16
+    entrypoint: ["/bin/sh", "/backup.sh"]
     environment:
-      PATHSYNC_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-pathsync}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-pathsync}
-      PATHSYNC_ADMIN_TOKEN: ${PATHSYNC_ADMIN_TOKEN:?set PATHSYNC_ADMIN_TOKEN in .env}
-      PATHSYNC_CORS_ORIGINS: ${PATHSYNC_CORS_ORIGINS:-http://localhost:3000}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
-    volumes: [hf:/app/.hf]
+      DATABASE_URL: postgresql://${POSTGRES_USER:-pathsync}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-pathsync}
+      BACKUP_KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
+    volumes:
+      - ./deploy/backup.sh:/backup.sh:ro
+      - ./backups:/backups
     depends_on:
       db: {condition: service_healthy}
-    ports: ["8000:8000"]
+    networks: [data]
     restart: unless-stopped
 
-  frontend:
-    build:
-      context: ./frontend
-      args: {PATHSYNC_API: "http://backend:8000"}
+  market-refresh:
+    # Monthly scrape + market rebuild (PM audit BE-8). Failures are logged and visible in Admin -> Activity.
+    build: ./backend
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        while true; do
+          python -m pipeline.scheduled_refresh || echo "[refresh] FAILED $(date)" >&2
+          sleep 2592000
+        done
+    environment:
+      PATHSYNC_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-pathsync}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-pathsync}
     depends_on:
       backend: {condition: service_healthy}
-    ports: ["3000:3000"]
+    networks: [data]
     restart: unless-stopped
+
+networks:
+  edge:
+    ipam: {config: [{subnet: 172.28.0.0/16}]}
+  data: {}
 
 volumes:
   pgdata:
   hf:
+  caddy_data:

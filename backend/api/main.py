@@ -21,10 +21,19 @@ from pathsync.db import get_session, init_db
 from pathsync.engine import ensure_seed
 from pathsync.security import ensure_admin_token
 
-from .routers import admin, advisor, assessment, classroom, experts, public, students
+from .routers import admin, advisor, assessment, classroom, experts, platform, public, students
 
 log = logging.getLogger("pathsync")
 logging.basicConfig(level=os.getenv("PATHSYNC_LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(message)s")
+
+if os.getenv("SENTRY_DSN"):   # optional error tracking (PM audit P0-6); no request bodies or student content are sent
+    try:
+        import sentry_sdk
+
+        sentry_sdk.init(dsn=os.environ["SENTRY_DSN"], traces_sample_rate=0.05, send_default_pii=False,
+                        environment=os.getenv("PATHSYNC_ENV", "development"))
+    except ImportError:
+        log.warning("SENTRY_DSN is set but sentry-sdk is not installed")
 
 
 def _warmup():
@@ -56,8 +65,9 @@ app = FastAPI(title="PathSync API", version="1.0.0", lifespan=lifespan,
               description="Adaptive, evidence-based learning navigator. Student routes need the bearer token returned "
                           "at sign-up; staff routes need an admin, expert or advisor token.")
 origins = [o.strip() for o in os.getenv("PATHSYNC_CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",") if o.strip()]
-app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PATCH", "DELETE"],
-                   allow_headers=["Authorization", "Content-Type"], allow_credentials=False)
+app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+                   allow_headers=["Authorization", "Content-Type", "X-PathSync", "X-Request-ID"],
+                   expose_headers=["X-Request-ID"], allow_credentials=True)
 
 
 @app.middleware("http")
@@ -70,16 +80,22 @@ async def request_context(request: Request, call_next):
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["X-Frame-Options"] = "DENY"
-    if request.url.path.startswith("/api/") and ms > 1500:
-        log.info("slow request %s %s %.0f ms rid=%s", request.method, request.url.path, ms, rid)
+    if request.url.path.startswith("/api/"):
+        # one structured line per request (PM audit BE-7); paths only, never bodies or tokens
+        level = logging.WARNING if response.status_code >= 500 or ms > 1500 else logging.INFO
+        log.log(level, '{"rid":"%s","method":"%s","path":"%s","status":%d,"ms":%.0f}',
+                rid, request.method, request.url.path, response.status_code, ms)
     return response
 
 
 @app.exception_handler(Exception)
 async def unhandled(request: Request, exc: Exception):   # pragma: no cover - last-resort guard
-    log.exception("unhandled error on %s", request.url.path)
-    return JSONResponse(status_code=500, content={"detail": "Something went wrong on the server. Try again in a moment."})
+    rid = request.headers.get("x-request-id") or uuid.uuid4().hex[:12]
+    log.exception("unhandled error on %s rid=%s", request.url.path, rid)
+    return JSONResponse(status_code=500, headers={"X-Request-ID": rid},
+                        content={"detail": f"Something went wrong on the server. Try again in a moment. (ref {rid})"})
 
 
-for r in (public, students, assessment, classroom, experts, advisor, admin):
+for r in (public, students, assessment, classroom, experts, advisor, admin, platform):
     app.include_router(r.router)
+app.include_router(platform.admin)

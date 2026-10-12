@@ -41,11 +41,11 @@ from pathsync.db import (
 from pathsync.demand import MarketMap, apply_market_shift
 from pathsync.engine import graph_from_db, propagate_market_change
 from pathsync.extraction.llm import llm_configured
-from pathsync.security import db_session, issue_token, require_admin, revoke
+from pathsync.security import audit_admin_writes, db_session, issue_token, require_admin, revoke
 from pathsync.study import DEFAULT_ARMS, analyse, join_code
 from pathsync.taxonomy import CycleError, load_skills
 
-router = APIRouter(prefix="/api/admin", tags=["admin"], dependencies=[Depends(require_admin)])
+router = APIRouter(prefix="/api/admin", tags=["admin"], dependencies=[Depends(require_admin), Depends(audit_admin_writes)])
 
 
 @router.get("/whoami")

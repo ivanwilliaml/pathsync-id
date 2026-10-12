@@ -1,0 +1,1262 @@
+{
+"linux_administration-1": {
+"new": {
+"skill_id": "linux_administration",
+"difficulty": 1,
+"stem_en": "Which command lists the files in the current directory with permissions and sizes?",
+"expl_en": "ls -l shows a long listing with permissions, owner and size."
+},
+"en": [
+"ls -l",
+"cd -l",
+"cat -l",
+"pwd -l"
+]
+},
+"linux_administration-2": {
+"new": {
+"skill_id": "linux_administration",
+"difficulty": 1,
+"stem_en": "What does chmod 755 script.sh do?",
+"expl_en": "It sets rwx for the owner and r-x for group and others, making the script executable by everyone."
+},
+"en": [
+"Gives the owner full access and others read and execute",
+"Gives each user full access including write",
+"Removes the execute right from each user",
+"Changes the owner of the file to user 755"
+]
+},
+"linux_administration-3": {
+"new": {
+"skill_id": "linux_administration",
+"difficulty": 2,
+"stem_en": "Which command shows the processes using the most CPU in real time?",
+"expl_en": "top (or htop) displays live process resource usage."
+},
+"en": [
+"top",
+"df",
+"free",
+"uname"
+]
+},
+"linux_administration-4": {
+"new": {
+"skill_id": "linux_administration",
+"difficulty": 2,
+"stem_en": "What does the pipe in grep error app.log | wc -l accomplish?",
+"expl_en": "It sends the output of grep to wc, which counts the matching lines."
+},
+"en": [
+"Counts the lines of app.log that contain error",
+"Deletes the lines of app.log that contain error",
+"Writes the word count of app.log into a new file",
+"Lists the files whose names contain error"
+]
+},
+"linux_administration-5": {
+"new": {
+"skill_id": "linux_administration",
+"difficulty": 3,
+"stem_en": "A service must start at boot and restart on failure on a modern distribution. What is the right tool?",
+"expl_en": "A systemd unit file with Restart= and systemctl enable."
+},
+"en": [
+"A systemd unit enabled with systemctl",
+"An entry added to the user's .bashrc file",
+"A cron job that runs each second for the business",
+"A script placed in the Downloads folder"
+]
+},
+"networking_fundamentals-1": {
+"new": {
+"skill_id": "networking_fundamentals",
+"difficulty": 1,
+"stem_en": "What does DNS do?",
+"expl_en": "DNS translates domain names into IP addresses."
+},
+"en": [
+"Translates domain names into IP addresses from the start",
+"Assigns IP addresses to devices automatically",
+"Encrypts the traffic between two separate networks for the business",
+"Blocks traffic from unknown devices"
+]
+},
+"networking_fundamentals-2": {
+"new": {
+"skill_id": "networking_fundamentals",
+"difficulty": 1,
+"stem_en": "Which port does HTTPS use by default?",
+"expl_en": "HTTPS uses TCP port 443."
+},
+"en": [
+"443",
+"80",
+"22",
+"25"
+]
+},
+"networking_fundamentals-3": {
+"new": {
+"skill_id": "networking_fundamentals",
+"difficulty": 2,
+"stem_en": "How many usable host addresses does the subnet 192.168.1.0/24 provide?",
+"expl_en": "A /24 has 256 addresses, minus the network and broadcast addresses: 254."
+},
+"en": [
+"254",
+"256",
+"255",
+"24"
+]
+},
+"networking_fundamentals-4": {
+"new": {
+"skill_id": "networking_fundamentals",
+"difficulty": 2,
+"stem_en": "Which layer of the OSI model does a router operate at?",
+"expl_en": "Routers forward packets by IP address at the network layer (layer 3)."
+},
+"en": [
+"Network layer (3)",
+"Data link layer (2)",
+"Transport layer (4)",
+"Application layer (7)"
+]
+},
+"networking_fundamentals-5": {
+"new": {
+"skill_id": "networking_fundamentals",
+"difficulty": 3,
+"stem_en": "A server can be pinged by IP address but the website does not open by name. Which is the first thing to check?",
+"expl_en": "Connectivity works, so check name resolution (DNS records or resolver)."
+},
+"en": [
+"DNS resolution of the domain name",
+"The speed of the network cable that is used",
+"The subnet mask of the server in most teams",
+"The battery level of the client laptop"
+]
+},
+"docker_containers-1": {
+"new": {
+"skill_id": "docker_containers",
+"difficulty": 1,
+"stem_en": "What is a Docker image?",
+"expl_en": "A read-only template that contains the application and its dependencies; containers run from images."
+},
+"en": [
+"A read-only template used to start containers",
+"A running instance of an application",
+"A virtual machine with its own kernel",
+"A file that stores just the database"
+]
+},
+"docker_containers-2": {
+"new": {
+"skill_id": "docker_containers",
+"difficulty": 1,
+"stem_en": "Which command starts a container from the image web in the background?",
+"expl_en": "docker run -d runs the container detached."
+},
+"en": [
+"docker run -d web",
+"docker build -d web",
+"docker push web",
+"docker pull -d web"
+]
+},
+"docker_containers-3": {
+"new": {
+"skill_id": "docker_containers",
+"difficulty": 2,
+"stem_en": "A container is deleted and its database files are gone. Which Docker feature keeps data?",
+"expl_en": "Volumes persist data outside the container's writable layer."
+},
+"en": [
+"A volume mounted into the container in a real project",
+"A larger base image for the container",
+"A second container with the same name",
+"An environment variable with the file path from the start"
+]
+},
+"docker_containers-4": {
+"new": {
+"skill_id": "docker_containers",
+"difficulty": 2,
+"stem_en": "What is the purpose of Docker Compose?",
+"expl_en": "Compose defines and runs multi-container applications from one YAML file."
+},
+"en": [
+"Define and run several containers from one YAML file",
+"Compile source code inside a container",
+"Monitor the memory use of the host machine for the business",
+"Convert a container into a virtual machine in practice"
+]
+},
+"docker_containers-5": {
+"new": {
+"skill_id": "docker_containers",
+"difficulty": 3,
+"stem_en": "Which Dockerfile practice produces smaller and more secure final images?",
+"expl_en": "Multi-stage builds copy only the built artefacts into a slim runtime image."
+},
+"en": [
+"A multi-stage build with a slim runtime image in day-to-day work",
+"Installing the build tools in the final image too",
+"Running the application as the root user",
+"Copying the whole project folder including .git"
+]
+},
+"kubernetes-1": {
+"new": {
+"skill_id": "kubernetes",
+"difficulty": 1,
+"stem_en": "What is the smallest deployable unit in Kubernetes?",
+"expl_en": "A pod, which holds one or more containers."
+},
+"en": [
+"Pod",
+"Node",
+"Namespace",
+"Deployment"
+]
+},
+"kubernetes-2": {
+"new": {
+"skill_id": "kubernetes",
+"difficulty": 1,
+"stem_en": "Which command shows the pods in the current namespace?",
+"expl_en": "kubectl get pods lists them."
+},
+"en": [
+"kubectl get pods",
+"kubectl run pods",
+"kubectl apply pods",
+"kubectl describe nodes"
+]
+},
+"kubernetes-3": {
+"new": {
+"skill_id": "kubernetes",
+"difficulty": 2,
+"stem_en": "What does a Deployment manage?",
+"expl_en": "It maintains a desired number of replica pods and handles rolling updates."
+},
+"en": [
+"Replica pods and their rolling updates",
+"The firewall rules that protect the whole cluster",
+"The storage disks of each node in many setups",
+"The DNS records of the domain for the business"
+]
+},
+"kubernetes-4": {
+"new": {
+"skill_id": "kubernetes",
+"difficulty": 2,
+"stem_en": "Pods get new IP addresses when they restart. Which object gives clients a stable address?",
+"expl_en": "A Service provides a stable virtual IP and DNS name in front of a set of pods."
+},
+"en": [
+"Service",
+"ConfigMap",
+"Secret",
+"Job"
+]
+},
+"kubernetes-5": {
+"new": {
+"skill_id": "kubernetes",
+"difficulty": 3,
+"stem_en": "A pod keeps restarting with status CrashLoopBackOff. What is the best first step?",
+"expl_en": "Read the container logs and the pod events (kubectl logs, kubectl describe pod)."
+},
+"en": [
+"Read the logs and events of the pod",
+"Delete the node that runs the pod and wait a while",
+"Increase the number of replicas to ten",
+"Rename the namespace of the pod from the start"
+]
+},
+"ci_cd_pipelines-1": {
+"new": {
+"skill_id": "ci_cd_pipelines",
+"difficulty": 1,
+"stem_en": "What does continuous integration mean?",
+"expl_en": "Developers merge changes often and each merge is built and tested automatically."
+},
+"en": [
+"Merging often with an automatic build and test for each change",
+"Releasing to customers each single hour",
+"Writing most the tests after the release is made",
+"Having one developer review the code each month"
+]
+},
+"ci_cd_pipelines-2": {
+"new": {
+"skill_id": "ci_cd_pipelines",
+"difficulty": 1,
+"stem_en": "Which of these is a CI/CD service built into GitHub?",
+"expl_en": "GitHub Actions runs workflows defined in YAML."
+},
+"en": [
+"GitHub Actions",
+"GitHub Pages",
+"GitHub Sponsors",
+"GitHub Gist"
+]
+},
+"ci_cd_pipelines-3": {
+"new": {
+"skill_id": "ci_cd_pipelines",
+"difficulty": 2,
+"stem_en": "What is the difference between continuous delivery and continuous deployment?",
+"expl_en": "Delivery keeps every change releasable with a manual release step; deployment releases every passing change automatically."
+},
+"en": [
+"Delivery needs a manual release step, deployment releases automatically",
+"Delivery is for web apps, deployment is for mobile apps from the start at that stage",
+"Delivery skips the tests, deployment runs them all",
+"They are two names for the same practice"
+]
+},
+"ci_cd_pipelines-4": {
+"new": {
+"skill_id": "ci_cd_pipelines",
+"difficulty": 2,
+"stem_en": "Where should a pipeline keep the credentials for deployment?",
+"expl_en": "In the CI system's encrypted secret store, injected at run time, never in the repository."
+},
+"en": [
+"In the CI system's encrypted secrets store for the business",
+"In a text file that is committed to the repository",
+"In the name of the branch that is built",
+"In the README of the project"
+]
+},
+"ci_cd_pipelines-5": {
+"new": {
+"skill_id": "ci_cd_pipelines",
+"difficulty": 3,
+"stem_en": "A pipeline takes 40 minutes because it reinstalls dependencies on every run. What helps most?",
+"expl_en": "Cache dependencies between runs and run independent jobs in parallel."
+},
+"en": [
+"Cache dependencies and run independent jobs in parallel",
+"Remove the test stage from the pipeline",
+"Run the pipeline just once a week",
+"Build on the developer laptop instead"
+]
+},
+"infrastructure_as_code-1": {
+"new": {
+"skill_id": "infrastructure_as_code",
+"difficulty": 1,
+"stem_en": "What is infrastructure as code?",
+"expl_en": "Managing infrastructure through versioned, declarative definition files instead of manual clicks."
+},
+"en": [
+"Defining infrastructure in versioned files instead of manual steps",
+"Writing application code that runs faster on servers in many setups",
+"Storing server passwords in a source repository in the long run at that stage",
+"Documenting servers in a shared spreadsheet in practice in most cases"
+]
+},
+"infrastructure_as_code-2": {
+"new": {
+"skill_id": "infrastructure_as_code",
+"difficulty": 1,
+"stem_en": "Which Terraform command previews the changes before they are made?",
+"expl_en": "terraform plan shows what would be created, changed or destroyed."
+},
+"en": [
+"terraform plan",
+"terraform apply",
+"terraform init",
+"terraform fmt"
+]
+},
+"infrastructure_as_code-3": {
+"new": {
+"skill_id": "infrastructure_as_code",
+"difficulty": 2,
+"stem_en": "What is the purpose of the Terraform state file?",
+"expl_en": "It records the mapping between the configuration and the real resources so Terraform can compute changes."
+},
+"en": [
+"It maps the configuration to the real resources",
+"It lists the users who are allowed to run Terraform",
+"It stores the cloud provider's billing data for the project",
+"It holds the logs of each plan that was ever run"
+]
+},
+"infrastructure_as_code-4": {
+"new": {
+"skill_id": "infrastructure_as_code",
+"difficulty": 2,
+"stem_en": "Ansible playbooks are called idempotent. What does that mean?",
+"expl_en": "Running a playbook again leaves the system unchanged if it is already in the desired state."
+},
+"en": [
+"Running it again changes nothing if the state is already correct",
+"It runs just once and then deletes itself",
+"It should be run from the server it configures in a real project in the long run",
+"It repeats each task until one of them fails in many setups in a real project"
+]
+},
+"infrastructure_as_code-5": {
+"new": {
+"skill_id": "infrastructure_as_code",
+"difficulty": 3,
+"stem_en": "Someone changed a security group by hand and now the real infrastructure differs from the Terraform code. What is this called?",
+"expl_en": "Configuration drift."
+},
+"en": [
+"Configuration drift",
+"State locking",
+"Resource tainting",
+"Module versioning"
+]
+},
+"cloud_aws-1": {
+"new": {
+"skill_id": "cloud_aws",
+"difficulty": 1,
+"stem_en": "Which AWS service provides object storage?",
+"expl_en": "Amazon S3 stores objects in buckets."
+},
+"en": [
+"Amazon S3",
+"Amazon EC2",
+"Amazon RDS",
+"Amazon VPC"
+]
+},
+"cloud_aws-2": {
+"new": {
+"skill_id": "cloud_aws",
+"difficulty": 1,
+"stem_en": "What is Amazon EC2?",
+"expl_en": "EC2 provides resizable virtual servers in the cloud."
+},
+"en": [
+"Virtual servers that can be resized on demand in a real project",
+"A managed relational database service",
+"A content delivery network for serving web pages quickly",
+"A queue service for sending messages"
+]
+},
+"cloud_aws-3": {
+"new": {
+"skill_id": "cloud_aws",
+"difficulty": 2,
+"stem_en": "A function must run only when a file is uploaded to a bucket, with no server to manage. Which service fits?",
+"expl_en": "AWS Lambda runs code in response to events such as S3 uploads."
+},
+"en": [
+"AWS Lambda triggered by an S3 event",
+"An EC2 instance running all day long",
+"Amazon RDS with a read replica",
+"AWS Direct Connect to the office network"
+]
+},
+"cloud_aws-4": {
+"new": {
+"skill_id": "cloud_aws",
+"difficulty": 2,
+"stem_en": "What is the best practice when granting permissions through IAM?",
+"expl_en": "Grant the least privilege needed, use roles rather than long-lived keys."
+},
+"en": [
+"Grant only the permissions a task needs, using roles",
+"Give each developer the full administrator policy by default",
+"Share one access key across the whole team during the project",
+"Use the root account for daily work"
+]
+},
+"cloud_aws-5": {
+"new": {
+"skill_id": "cloud_aws",
+"difficulty": 3,
+"stem_en": "A web tier must stay available if one data centre fails. What should you do?",
+"expl_en": "Deploy across multiple Availability Zones behind a load balancer."
+},
+"en": [
+"Run instances in several Availability Zones behind a load balancer",
+"Use a bigger instance type in one zone",
+"Take a snapshot of the instance each month in many setups in a real project",
+"Add a second security group to the instance in practice for the project"
+]
+},
+"cloud_gcp_azure-1": {
+"new": {
+"skill_id": "cloud_gcp_azure",
+"difficulty": 1,
+"stem_en": "Which Google Cloud service provides virtual machines?",
+"expl_en": "Compute Engine."
+},
+"en": [
+"Compute Engine",
+"Cloud Storage",
+"BigQuery",
+"Pub/Sub"
+]
+},
+"cloud_gcp_azure-2": {
+"new": {
+"skill_id": "cloud_gcp_azure",
+"difficulty": 1,
+"stem_en": "In Azure, what is a resource group?",
+"expl_en": "A logical container for related resources that share a lifecycle."
+},
+"en": [
+"A container for related resources that are managed together",
+"A set of users who share one subscription in most teams for the project",
+"A physical data centre in a region",
+"A virtual network that spans the regions"
+]
+},
+"cloud_gcp_azure-3": {
+"new": {
+"skill_id": "cloud_gcp_azure",
+"difficulty": 2,
+"stem_en": "Which Google Cloud service runs stateless containers and scales to zero?",
+"expl_en": "Cloud Run runs containers serverlessly and can scale to zero."
+},
+"en": [
+"Cloud Run",
+"Compute Engine",
+"Cloud SQL",
+"Cloud DNS"
+]
+},
+"cloud_gcp_azure-4": {
+"new": {
+"skill_id": "cloud_gcp_azure",
+"difficulty": 2,
+"stem_en": "Which Azure service manages identities and single sign-on for users and apps?",
+"expl_en": "Microsoft Entra ID (Azure Active Directory)."
+},
+"en": [
+"Microsoft Entra ID",
+"Azure Monitor",
+"Azure Blob Storage",
+"Azure Front Door"
+]
+},
+"cloud_gcp_azure-5": {
+"new": {
+"skill_id": "cloud_gcp_azure",
+"difficulty": 3,
+"stem_en": "An application on a cloud VM must call a storage service without storing keys in code. What should you use?",
+"expl_en": "A managed identity or service account attached to the VM provides credentials automatically."
+},
+"en": [
+"A managed identity or service account attached to the VM",
+"A password written in the source code at that stage during the project",
+"A key emailed to the developers in day-to-day work in most cases",
+"A shared account used by most the services in practice in practice"
+]
+},
+"monitoring_observability-1": {
+"new": {
+"skill_id": "monitoring_observability",
+"difficulty": 1,
+"stem_en": "Which tool is commonly paired with Prometheus to draw dashboards?",
+"expl_en": "Grafana visualises metrics from Prometheus."
+},
+"en": [
+"Grafana",
+"Jenkins",
+"Ansible",
+"Nginx"
+]
+},
+"monitoring_observability-2": {
+"new": {
+"skill_id": "monitoring_observability",
+"difficulty": 1,
+"stem_en": "Which three signals make up observability?",
+"expl_en": "Metrics, logs and traces."
+},
+"en": [
+"Metrics, logs and traces in most cases",
+"Builds, tests and releases",
+"Users, roles and policies",
+"Disks, memory and network cards"
+]
+},
+"monitoring_observability-3": {
+"new": {
+"skill_id": "monitoring_observability",
+"difficulty": 2,
+"stem_en": "What does an SLO describe?",
+"expl_en": "A target level of reliability, such as 99.9% of requests succeeding in a month."
+},
+"en": [
+"A target level of reliability for a service",
+"A contract with penalties for the customer if it fails",
+"A backup schedule for the databases in most teams",
+"A list of all of the servers that run the service"
+]
+},
+"monitoring_observability-4": {
+"new": {
+"skill_id": "monitoring_observability",
+"difficulty": 2,
+"stem_en": "Which alert is better design for an on-call engineer?",
+"expl_en": "Alert on symptoms that affect users, such as error rate, not every CPU spike."
+},
+"en": [
+"Alert on user-facing symptoms such as error rate",
+"Alert on each CPU spike above fifty percent as the work grows",
+"Alert on each log line that contains the word warning",
+"Alert once a day with a long summary email"
+]
+},
+"monitoring_observability-5": {
+"new": {
+"skill_id": "monitoring_observability",
+"difficulty": 3,
+"stem_en": "A request crosses six microservices and is slow. Which signal helps find the slow hop?",
+"expl_en": "Distributed tracing shows the time spent in each service along the request path."
+},
+"en": [
+"Distributed traces",
+"CPU graphs of one server",
+"Disk usage of the log volume",
+"The uptime of the load balancer"
+]
+},
+"web_servers_proxies-1": {
+"new": {
+"skill_id": "web_servers_proxies",
+"difficulty": 1,
+"stem_en": "What is a reverse proxy?",
+"expl_en": "A server that receives client requests and forwards them to back-end servers."
+},
+"en": [
+"A server that forwards client requests to back-end servers",
+"A tool that hides the identity of the client from the websites it visits",
+"A database that caches the pages of a site",
+"A firewall that blocks requests from other countries"
+]
+},
+"web_servers_proxies-2": {
+"new": {
+"skill_id": "web_servers_proxies",
+"difficulty": 1,
+"stem_en": "Which of these is a widely used web server and reverse proxy?",
+"expl_en": "Nginx."
+},
+"en": [
+"Nginx",
+"Postman",
+"Docker",
+"Redis"
+]
+},
+"web_servers_proxies-3": {
+"new": {
+"skill_id": "web_servers_proxies",
+"difficulty": 2,
+"stem_en": "How do you get a free, automatically renewed TLS certificate for a domain?",
+"expl_en": "Let's Encrypt with an ACME client such as certbot or Caddy."
+},
+"en": [
+"Use Let's Encrypt through an ACME client",
+"Generate a self-signed certificate once and reuse it",
+"Buy a certificate and install it by hand each year",
+"Copy the certificate of another website in the long run"
+]
+},
+"web_servers_proxies-4": {
+"new": {
+"skill_id": "web_servers_proxies",
+"difficulty": 2,
+"stem_en": "Which Nginx directive forwards requests to an application running on port 3000?",
+"expl_en": "proxy_pass sends requests to an upstream."
+},
+"en": [
+"proxy_pass http://127.0.0.1:3000;",
+"listen 127.0.0.1:3000;",
+"root /var/www/3000;",
+"return 301 http://3000;"
+]
+},
+"web_servers_proxies-5": {
+"new": {
+"skill_id": "web_servers_proxies",
+"difficulty": 3,
+"stem_en": "Static assets should be served quickly worldwide. Which combination is best?",
+"expl_en": "Serve them through a CDN with long cache lifetimes and compression."
+},
+"en": [
+"A CDN with long cache lifetimes and compression",
+"The application server with caching switched off",
+"A single large server in one country",
+"A database table that stores the files"
+]
+},
+"network_security-1": {
+"new": {
+"skill_id": "network_security",
+"difficulty": 1,
+"stem_en": "What is the main job of a firewall?",
+"expl_en": "It allows or blocks traffic according to rules."
+},
+"en": [
+"Allow or block network traffic according to rules",
+"Scan files for viruses on a laptop in practice as the work grows",
+"Back up the servers each night in practice in most teams",
+"Speed up the connection to the internet in most cases"
+]
+},
+"network_security-2": {
+"new": {
+"skill_id": "network_security",
+"difficulty": 1,
+"stem_en": "Which tool is used to capture and inspect network packets?",
+"expl_en": "Wireshark."
+},
+"en": [
+"Wireshark",
+"Photoshop",
+"Excel",
+"Figma"
+]
+},
+"network_security-3": {
+"new": {
+"skill_id": "network_security",
+"difficulty": 2,
+"stem_en": "What is the difference between an IDS and an IPS?",
+"expl_en": "An IDS detects and alerts; an IPS also blocks the traffic it judges malicious."
+},
+"en": [
+"An IDS only alerts, an IPS can also block the traffic",
+"An IDS blocks most of the traffic, an IPS just sends alerts",
+"An IDS works on laptops, an IPS works on phones in the long run",
+"They are two names for the same device"
+]
+},
+"network_security-4": {
+"new": {
+"skill_id": "network_security",
+"difficulty": 2,
+"stem_en": "Why segment a network into VLANs or zones?",
+"expl_en": "To limit how far an attacker can move and to apply different rules to each zone."
+},
+"en": [
+"To limit lateral movement and apply rules per zone from the start",
+"To increase the speed of the wireless signal in the office",
+"To remove the need for passwords on devices",
+"To give each device a public IP address"
+]
+},
+"network_security-5": {
+"new": {
+"skill_id": "network_security",
+"difficulty": 3,
+"stem_en": "Zero trust architecture is best described as...",
+"expl_en": "Never trust by network location; verify identity and device on every request, with least privilege."
+},
+"en": [
+"Verifying every request and granting least privilege in many setups",
+"Trusting each device inside the office network",
+"Blocking most of the traffic from outside the country",
+"Using one strong password for most the systems"
+]
+},
+"siem_monitoring-1": {
+"new": {
+"skill_id": "siem_monitoring",
+"difficulty": 1,
+"stem_en": "What does a SIEM do?",
+"expl_en": "It collects and correlates logs from many sources and raises alerts."
+},
+"en": [
+"Collects and correlates logs and raises alerts",
+"Encrypts the disks of each laptop",
+"Scans websites for broken links",
+"Manages the passwords of the staff"
+]
+},
+"siem_monitoring-2": {
+"new": {
+"skill_id": "siem_monitoring",
+"difficulty": 1,
+"stem_en": "Which of these is an open-source security monitoring platform?",
+"expl_en": "Wazuh."
+},
+"en": [
+"Wazuh",
+"Canva",
+"Trello",
+"Slack"
+]
+},
+"siem_monitoring-3": {
+"new": {
+"skill_id": "siem_monitoring",
+"difficulty": 2,
+"stem_en": "What is the MITRE ATT&CK framework?",
+"expl_en": "A knowledge base of adversary tactics and techniques used to describe and detect attacks."
+},
+"en": [
+"A knowledge base of attacker tactics and techniques",
+"A tool that blocks malware on endpoints within the team",
+"A standard for encrypting emails",
+"A certification for security managers in a real project"
+]
+},
+"siem_monitoring-4": {
+"new": {
+"skill_id": "siem_monitoring",
+"difficulty": 2,
+"stem_en": "A SIEM shows 50 failed logins for one account within a minute, followed by a success from a new country. What is the most likely event?",
+"expl_en": "Brute force or credential stuffing followed by a compromised account."
+},
+"en": [
+"A brute-force attack that ended in a compromised account",
+"A normal user who forgot the password once during the project",
+"A scheduled backup job that failed to start in a real project",
+"A software update that restarted the server for the project"
+]
+},
+"siem_monitoring-5": {
+"new": {
+"skill_id": "siem_monitoring",
+"difficulty": 3,
+"stem_en": "Analysts are overwhelmed by thousands of low-value alerts. What is the best response?",
+"expl_en": "Tune and prioritise rules (reduce false positives, add context and severity) rather than ignoring alerts."
+},
+"en": [
+"Tune the rules and prioritise alerts by risk in day-to-day work",
+"Switch off each alert that is not marked critical",
+"Hire more analysts to read each alert",
+"Delete the logs older than one day"
+]
+},
+"vulnerability_assessment-1": {
+"new": {
+"skill_id": "vulnerability_assessment",
+"difficulty": 1,
+"stem_en": "What does CVE stand for?",
+"expl_en": "Common Vulnerabilities and Exposures: public identifiers for known vulnerabilities."
+},
+"en": [
+"Common Vulnerabilities and Exposures",
+"Critical Version Evaluation",
+"Centralised Virus Engine",
+"Controlled Verification of Endpoints and Devices"
+]
+},
+"vulnerability_assessment-2": {
+"new": {
+"skill_id": "vulnerability_assessment",
+"difficulty": 1,
+"stem_en": "Which tool is a well-known network vulnerability scanner?",
+"expl_en": "Nessus (and OpenVAS)."
+},
+"en": [
+"Nessus",
+"Notion",
+"Jenkins",
+"Kibana"
+]
+},
+"vulnerability_assessment-3": {
+"new": {
+"skill_id": "vulnerability_assessment",
+"difficulty": 2,
+"stem_en": "What does a CVSS score of 9.8 indicate?",
+"expl_en": "A critical severity vulnerability that should be fixed first."
+},
+"en": [
+"A critical vulnerability to fix first",
+"A low risk that can safely wait for a year",
+"A scan that failed to complete",
+"A server with 98% availability"
+]
+},
+"vulnerability_assessment-4": {
+"new": {
+"skill_id": "vulnerability_assessment",
+"difficulty": 2,
+"stem_en": "Two findings have the same CVSS score. Which should be fixed first?",
+"expl_en": "The one on an internet-facing, business-critical asset with a known exploit."
+},
+"en": [
+"The one on an exposed, critical system with a public exploit",
+"The one that is oldest in the report",
+"The one on the server with the shortest name in a real project",
+"The one that was found by the newest scanner in most teams for the project"
+]
+},
+"vulnerability_assessment-5": {
+"new": {
+"skill_id": "vulnerability_assessment",
+"difficulty": 3,
+"stem_en": "What is the difference between a vulnerability assessment and a penetration test?",
+"expl_en": "An assessment identifies and ranks weaknesses broadly; a pen test actively exploits them to prove impact."
+},
+"en": [
+"An assessment lists weaknesses, a pen test exploits them to show impact",
+"An assessment exploits weaknesses, a pen test just lists them in a real project",
+"An assessment covers apps, a pen test covers hardware in many setups in most cases",
+"They are the same activity with two different names"
+]
+},
+"penetration_testing-1": {
+"new": {
+"skill_id": "penetration_testing",
+"difficulty": 1,
+"stem_en": "What must be agreed before a penetration test starts?",
+"expl_en": "Written authorisation and a defined scope and rules of engagement."
+},
+"en": [
+"Written authorisation, scope and rules of engagement",
+"A copy of the passwords of each user",
+"A date after the system goes live",
+"A public announcement on social media for the business"
+]
+},
+"penetration_testing-2": {
+"new": {
+"skill_id": "penetration_testing",
+"difficulty": 1,
+"stem_en": "Which tool is often used to discover open ports and services on a host?",
+"expl_en": "Nmap."
+},
+"en": [
+"Nmap",
+"Postman",
+"Gimp",
+"Docker"
+]
+},
+"penetration_testing-3": {
+"new": {
+"skill_id": "penetration_testing",
+"difficulty": 2,
+"stem_en": "Which tool is used to intercept and modify web requests during a web application test?",
+"expl_en": "Burp Suite acts as an intercepting proxy."
+},
+"en": [
+"Burp Suite",
+"Wireshark capture filter",
+"Ansible playbook",
+"Grafana dashboard"
+]
+},
+"penetration_testing-4": {
+"new": {
+"skill_id": "penetration_testing",
+"difficulty": 2,
+"stem_en": "After gaining a low-privilege shell on a Linux host, the next goal is usually...",
+"expl_en": "Privilege escalation to gain higher access."
+},
+"en": [
+"Privilege escalation",
+"Log deletion",
+"Port blocking",
+"Patch deployment"
+]
+},
+"penetration_testing-5": {
+"new": {
+"skill_id": "penetration_testing",
+"difficulty": 3,
+"stem_en": "A login form shows a database error when a quote is typed in the username field. What is the likely finding?",
+"expl_en": "Likely SQL injection: input reaches a query unescaped."
+},
+"en": [
+"A possible SQL injection vulnerability from the start",
+"A broken CSS stylesheet on the login page",
+"A misconfigured email server",
+"An expired TLS certificate"
+]
+},
+"incident_response_forensics-1": {
+"new": {
+"skill_id": "incident_response_forensics",
+"difficulty": 1,
+"stem_en": "Which is the first priority when a compromised server is discovered?",
+"expl_en": "Contain the incident to stop it spreading while preserving evidence."
+},
+"en": [
+"Contain the incident while preserving evidence",
+"Reinstall the server immediately",
+"Delete the suspicious files at once",
+"Tell the attacker that they were found"
+]
+},
+"incident_response_forensics-2": {
+"new": {
+"skill_id": "incident_response_forensics",
+"difficulty": 1,
+"stem_en": "What does DFIR stand for?",
+"expl_en": "Digital Forensics and Incident Response."
+},
+"en": [
+"Digital Forensics and Incident Response in practice",
+"Data Filtering and Internal Reporting of events",
+"Distributed Firewall and Intrusion Rules",
+"Device Failure and Immediate Repair"
+]
+},
+"incident_response_forensics-3": {
+"new": {
+"skill_id": "incident_response_forensics",
+"difficulty": 2,
+"stem_en": "Why capture memory (RAM) from a suspect machine before powering it off?",
+"expl_en": "Volatile data such as running processes and keys is lost at shutdown."
+},
+"en": [
+"Volatile evidence is lost when the machine powers off",
+"RAM is the just place where files are stored in day-to-day work",
+"The disk cannot be read once the power is off during the project",
+"It makes the later analysis run faster"
+]
+},
+"incident_response_forensics-4": {
+"new": {
+"skill_id": "incident_response_forensics",
+"difficulty": 2,
+"stem_en": "Why must evidence have a documented chain of custody?",
+"expl_en": "To show who handled it and that it was not altered, so it stays credible."
+},
+"en": [
+"To show who handled it and that it was not altered within the team",
+"To speed up the transfer of the evidence",
+"To reduce the size of the evidence files",
+"To avoid having to write a full incident report later"
+]
+},
+"incident_response_forensics-5": {
+"new": {
+"skill_id": "incident_response_forensics",
+"difficulty": 3,
+"stem_en": "Which step of the incident-response lifecycle comes after containment and eradication?",
+"expl_en": "Recovery, followed by lessons learned."
+},
+"en": [
+"Recovery and then lessons learned in the long run",
+"Preparation of the response plan before an attack",
+"Detection of the first alert",
+"Identification of the attacker's identity"
+]
+},
+"cryptography_basics-1": {
+"new": {
+"skill_id": "cryptography_basics",
+"difficulty": 1,
+"stem_en": "What is the difference between hashing and encryption?",
+"expl_en": "A hash is one-way and cannot be reversed; encryption is two-way with a key."
+},
+"en": [
+"A hash is one-way, encryption can be reversed with a key",
+"A hash can be reversed, encryption cannot within the team",
+"A hash needs a key, encryption does not",
+"They are the same operation with different names at that stage"
+]
+},
+"cryptography_basics-2": {
+"new": {
+"skill_id": "cryptography_basics",
+"difficulty": 1,
+"stem_en": "Which of these is a symmetric encryption algorithm?",
+"expl_en": "AES uses the same key to encrypt and decrypt."
+},
+"en": [
+"AES",
+"RSA",
+"ECDSA",
+"Diffie-Hellman"
+]
+},
+"cryptography_basics-3": {
+"new": {
+"skill_id": "cryptography_basics",
+"difficulty": 2,
+"stem_en": "In public-key cryptography, which key do you use to verify a digital signature?",
+"expl_en": "The signer's public key verifies a signature created with their private key."
+},
+"en": [
+"The signer's public key in most teams",
+"The signer's private key",
+"A shared secret agreed earlier in the long run",
+"The hash of the message alone"
+]
+},
+"cryptography_basics-4": {
+"new": {
+"skill_id": "cryptography_basics",
+"difficulty": 2,
+"stem_en": "What is the role of a certificate authority in PKI?",
+"expl_en": "It vouches for the binding between a public key and an identity by signing certificates."
+},
+"en": [
+"It signs certificates to bind a public key to an identity",
+"It stores the private keys of each website in most teams in the long run",
+"It encrypts most of the traffic between browsers and sites",
+"It generates the passwords of the users in a real project within the team"
+]
+},
+"cryptography_basics-5": {
+"new": {
+"skill_id": "cryptography_basics",
+"difficulty": 3,
+"stem_en": "Why is MD5 unsuitable for storing passwords?",
+"expl_en": "It is fast and has known collisions; passwords need slow, salted algorithms like bcrypt or Argon2."
+},
+"en": [
+"It is too fast and has known weaknesses for the business",
+"It produces hashes that are too long to store",
+"It needs a private key that is hard to manage",
+"It cannot be implemented in most languages"
+]
+},
+"security_frameworks_compliance-1": {
+"new": {
+"skill_id": "security_frameworks_compliance",
+"difficulty": 1,
+"stem_en": "Which standard defines requirements for an information security management system (ISMS)?",
+"expl_en": "ISO/IEC 27001."
+},
+"en": [
+"ISO/IEC 27001",
+"ISO 9001",
+"PCI DSS",
+"HTTP/2"
+]
+},
+"security_frameworks_compliance-2": {
+"new": {
+"skill_id": "security_frameworks_compliance",
+"difficulty": 1,
+"stem_en": "Which law regulates personal data protection in Indonesia?",
+"expl_en": "UU No. 27 of 2022 on Personal Data Protection (UU PDP)."
+},
+"en": [
+"UU No. 27 of 2022 (UU PDP)",
+"UU ITE No. 11 of 2008 alone",
+"GDPR of the European Union",
+"UU Perlindungan Konsumen of 1999"
+]
+},
+"security_frameworks_compliance-3": {
+"new": {
+"skill_id": "security_frameworks_compliance",
+"difficulty": 2,
+"stem_en": "Which standard applies to organisations that store, process or transmit payment card data?",
+"expl_en": "PCI DSS."
+},
+"en": [
+"PCI DSS",
+"ISO 14001",
+"SOC 1 alone",
+"WCAG"
+]
+},
+"security_frameworks_compliance-4": {
+"new": {
+"skill_id": "security_frameworks_compliance",
+"difficulty": 2,
+"stem_en": "The five core functions of the NIST Cybersecurity Framework include Identify, Protect, Detect, Respond and...",
+"expl_en": "Recover (version 2.0 adds Govern)."
+},
+"en": [
+"Recover",
+"Report",
+"Review",
+"Restrict"
+]
+},
+"security_frameworks_compliance-5": {
+"new": {
+"skill_id": "security_frameworks_compliance",
+"difficulty": 3,
+"stem_en": "In a risk assessment, risk is commonly estimated as...",
+"expl_en": "Likelihood multiplied by impact."
+},
+"en": [
+"Likelihood multiplied by impact from the start",
+"Cost divided by number of users",
+"Vulnerabilities added to threats",
+"Impact minus the available budget in most teams"
+]
+},
+"cloud_security-1": {
+"new": {
+"skill_id": "cloud_security",
+"difficulty": 1,
+"stem_en": "What does the shared responsibility model say about the public cloud?",
+"expl_en": "The provider secures the cloud infrastructure; the customer secures what they put in it, such as data and access."
+},
+"en": [
+"The provider secures the infrastructure, you secure your data and access",
+"The provider secures everything including your data",
+"You secure the data centre buildings of the provider",
+"Security is shared equally in each case"
+]
+},
+"cloud_security-2": {
+"new": {
+"skill_id": "cloud_security",
+"difficulty": 1,
+"stem_en": "What does SAST analyse?",
+"expl_en": "Source code (or binaries) without running it, to find vulnerabilities."
+},
+"en": [
+"Source code without running it in day-to-day work",
+"A running application from outside",
+"The network traffic between servers as the work grows",
+"The passwords stored in a database"
+]
+},
+"cloud_security-3": {
+"new": {
+"skill_id": "cloud_security",
+"difficulty": 2,
+"stem_en": "A storage bucket was set to public and leaked customer files. Which control prevents this class of mistake?",
+"expl_en": "Block public access settings, policy-as-code checks and CSPM monitoring."
+},
+"en": [
+"Block public access and policy checks in the pipeline",
+"A longer name for the bucket",
+"A larger storage quota for the account",
+"More frequent manual backups of the bucket during the project"
+]
+},
+"cloud_security-4": {
+"new": {
+"skill_id": "cloud_security",
+"difficulty": 2,
+"stem_en": "What does a dependency scanner such as Snyk or Trivy find?",
+"expl_en": "Known vulnerabilities in third-party libraries and container images."
+},
+"en": [
+"Known vulnerabilities in libraries and images",
+"Syntax errors in the source code in the long run",
+"Slow queries in the database",
+"Unused CSS rules in the styles in day-to-day work"
+]
+},
+"cloud_security-5": {
+"new": {
+"skill_id": "cloud_security",
+"difficulty": 3,
+"stem_en": "Which practice best protects secrets in a CI/CD pipeline?",
+"expl_en": "Use a secrets manager or CI secret store with short-lived credentials and scan commits for leaked secrets."
+},
+"en": [
+"A secrets manager with short-lived credentials and commit scanning",
+"Environment files committed to the repository in most teams as the work grows",
+"Secrets typed into the pipeline's log output",
+"A shared password written in the wiki"
+]
+}
+}

@@ -1,42 +1,815 @@
 {
-  "note": "Pemetaan sertifikat ke keterampilan. Skor penyelesaian = tingkat x kekuatan pemetaan: kursus 0,60; program profesional/spesialisasi 0,75; ujian terawasi 0,90 (paper Gambar 5: sertifikat berbobot 'sedang').",
-  "levels": {"kursus": 0.60, "profesional": 0.75, "ujian": 0.90},
-  "certificates": [
-    {"name": "Google Data Analytics Professional Certificate", "aliases": ["Google Data Analytics", "Sertifikat Google Analitik Data"], "level": "profesional", "skills": {"data_analysis": 0.8, "sql": 0.6, "data_cleaning": 0.6, "data_visualization": 0.6, "tableau": 0.5, "excel": 0.6, "python_analytics": 0.2}},
-    {"name": "Google Business Intelligence Professional Certificate", "aliases": ["Google Business Intelligence"], "level": "profesional", "skills": {"dashboard_reporting": 0.8, "data_modeling": 0.6, "sql": 0.5, "cloud_data_platform": 0.4, "kpi_metrics": 0.4}},
-    {"name": "Google Project Management Professional Certificate", "aliases": ["Google Project Management"], "level": "profesional", "skills": {"project_management": 0.8, "agile_scrum": 0.5, "stakeholder_management": 0.5, "risk_management": 0.3}},
-    {"name": "Google Advanced Data Analytics Professional Certificate", "aliases": ["Google Advanced Data Analytics"], "level": "profesional", "skills": {"python_analytics": 0.8, "statistics": 0.7, "data_analysis": 0.7}},
-    {"name": "Microsoft Certified: Power BI Data Analyst Associate (PL-300)", "aliases": ["PL-300", "Power BI Data Analyst", "DA-100", "Microsoft Power BI Certification"], "level": "ujian", "skills": {"power_bi": 1.0, "dashboard_reporting": 0.7, "data_modeling": 0.6, "data_cleaning": 0.5}},
-    {"name": "Microsoft Office Specialist: Excel Associate", "aliases": ["MOS Excel", "Microsoft Office Specialist Excel", "MOS Excel Associate"], "level": "ujian", "skills": {"excel": 0.9}},
-    {"name": "Microsoft Office Specialist: Excel Expert", "aliases": ["MOS Excel Expert", "Excel Expert"], "level": "ujian", "skills": {"excel": 1.0, "financial_analysis": 0.2}},
-    {"name": "Tableau Desktop Specialist", "aliases": ["Tableau Specialist", "Tableau Certified Data Analyst"], "level": "ujian", "skills": {"tableau": 1.0, "data_visualization": 0.5}},
-    {"name": "IIBA Entry Certificate in Business Analysis (ECBA)", "aliases": ["ECBA", "IIBA ECBA"], "level": "ujian", "skills": {"requirements_elicitation": 0.7, "requirements_documentation": 0.7, "stakeholder_management": 0.5, "business_process_modeling": 0.4, "strategic_analysis": 0.3}},
-    {"name": "IIBA Certification of Capability in Business Analysis (CCBA)", "aliases": ["CCBA", "IIBA CCBA"], "level": "ujian", "skills": {"requirements_elicitation": 0.9, "requirements_documentation": 0.9, "stakeholder_management": 0.7, "business_process_modeling": 0.6, "strategic_analysis": 0.5}},
-    {"name": "IIBA Certified Business Analysis Professional (CBAP)", "aliases": ["CBAP", "IIBA CBAP"], "level": "ujian", "skills": {"requirements_elicitation": 1.0, "requirements_documentation": 1.0, "stakeholder_management": 0.8, "business_process_modeling": 0.7, "strategic_analysis": 0.7, "business_case": 0.5}},
-    {"name": "PMI Professional in Business Analysis (PMI-PBA)", "aliases": ["PMI-PBA", "PBA"], "level": "ujian", "skills": {"requirements_elicitation": 0.8, "requirements_documentation": 0.8, "stakeholder_management": 0.6, "testing_uat": 0.4}},
-    {"name": "Professional Scrum Master I (PSM I)", "aliases": ["PSM I", "PSM 1", "Professional Scrum Master"], "level": "ujian", "skills": {"agile_scrum": 1.0, "facilitation_negotiation": 0.3}},
-    {"name": "Professional Scrum Product Owner I (PSPO I)", "aliases": ["PSPO I", "PSPO 1", "Professional Scrum Product Owner"], "level": "ujian", "skills": {"agile_scrum": 0.9, "requirements_documentation": 0.5, "stakeholder_management": 0.4}},
-    {"name": "Certified ScrumMaster (CSM)", "aliases": ["CSM", "Certified Scrum Master"], "level": "ujian", "skills": {"agile_scrum": 0.9}},
-    {"name": "Certified Associate in Project Management (CAPM)", "aliases": ["CAPM"], "level": "ujian", "skills": {"project_management": 0.8, "risk_management": 0.4}},
-    {"name": "Project Management Professional (PMP)", "aliases": ["PMP"], "level": "ujian", "skills": {"project_management": 1.0, "risk_management": 0.6, "stakeholder_management": 0.6}},
-    {"name": "Lean Six Sigma Yellow Belt", "aliases": ["Six Sigma Yellow Belt", "LSS Yellow Belt"], "level": "profesional", "skills": {"process_improvement": 0.7}},
-    {"name": "Lean Six Sigma Green Belt", "aliases": ["Six Sigma Green Belt", "LSS Green Belt"], "level": "ujian", "skills": {"process_improvement": 0.9, "statistics": 0.5}},
-    {"name": "ISTQB Certified Tester Foundation Level", "aliases": ["ISTQB", "ISTQB Foundation", "CTFL"], "level": "ujian", "skills": {"testing_uat": 0.9}},
-    {"name": "Dicoding: Belajar Dasar Structured Query Language (SQL)", "aliases": ["Dicoding SQL", "Belajar Dasar SQL"], "level": "kursus", "skills": {"sql": 0.8}},
-    {"name": "Dicoding: Belajar Dasar Visualisasi Data", "aliases": ["Dicoding Visualisasi Data"], "level": "kursus", "skills": {"data_visualization": 0.8}},
-    {"name": "Dicoding: Belajar Fundamental Analisis Data", "aliases": ["Dicoding Analisis Data", "Belajar Analisis Data dengan Python"], "level": "kursus", "skills": {"data_analysis": 0.8, "python_analytics": 0.7, "data_cleaning": 0.6, "data_visualization": 0.5}},
-    {"name": "Dicoding: Belajar Dasar Manajemen Proyek", "aliases": ["Dicoding Manajemen Proyek"], "level": "kursus", "skills": {"project_management": 0.8}},
-    {"name": "Dicoding: Belajar Dasar UX Design", "aliases": ["Dicoding UX Design"], "level": "kursus", "skills": {"wireframing": 0.8, "research_methods": 0.3}},
-    {"name": "Kaggle Learn: Intro to SQL", "aliases": ["Kaggle SQL", "Kaggle Intro to SQL"], "level": "kursus", "skills": {"sql": 0.7, "cloud_data_platform": 0.3}},
-    {"name": "Kaggle Learn: Pandas", "aliases": ["Kaggle Pandas"], "level": "kursus", "skills": {"python_analytics": 0.7, "data_cleaning": 0.4}},
-    {"name": "Kaggle Learn: Python", "aliases": ["Kaggle Python"], "level": "kursus", "skills": {"python_analytics": 0.6}},
-    {"name": "Google Cloud Digital Leader", "aliases": ["Cloud Digital Leader"], "level": "ujian", "skills": {"cloud_data_platform": 0.6}},
-    {"name": "Google Cloud Professional Data Engineer", "aliases": ["GCP Data Engineer", "Professional Data Engineer"], "level": "ujian", "skills": {"cloud_data_platform": 1.0, "sql": 0.7, "data_modeling": 0.6}},
-    {"name": "AWS Certified Cloud Practitioner", "aliases": ["AWS Cloud Practitioner", "CLF-C02"], "level": "ujian", "skills": {"cloud_data_platform": 0.5}},
-    {"name": "Salesforce Certified Administrator", "aliases": ["Salesforce Administrator"], "level": "ujian", "skills": {"erp_crm": 0.9}},
-    {"name": "SAP Certified Associate", "aliases": ["SAP Certification", "SAP Certified Application Associate"], "level": "ujian", "skills": {"erp_crm": 0.9, "business_process_modeling": 0.4}},
-    {"name": "TOEFL ITP", "aliases": ["TOEFL", "TOEFL iBT"], "level": "ujian", "skills": {"english_proficiency": 0.8}, "score_scale": "toefl"},
-    {"name": "TOEIC Listening and Reading", "aliases": ["TOEIC"], "level": "ujian", "skills": {"english_proficiency": 0.8}, "score_scale": "toeic"},
-    {"name": "IELTS Academic", "aliases": ["IELTS", "IELTS General"], "level": "ujian", "skills": {"english_proficiency": 0.8}, "score_scale": "ielts"}
-  ]
+ "note": "Pemetaan sertifikat ke keterampilan. Skor penyelesaian = tingkat x kekuatan pemetaan: kursus 0,60; program profesional/spesialisasi 0,75; ujian terawasi 0,90 (paper Gambar 5: sertifikat berbobot 'sedang').",
+ "levels": {
+  "kursus": 0.6,
+  "profesional": 0.75,
+  "ujian": 0.9
+ },
+ "certificates": [
+  {
+   "name": "Google Data Analytics Professional Certificate",
+   "aliases": [
+    "Google Data Analytics",
+    "Sertifikat Google Analitik Data"
+   ],
+   "level": "profesional",
+   "skills": {
+    "data_analysis": 0.8,
+    "sql": 0.6,
+    "data_cleaning": 0.6,
+    "data_visualization": 0.6,
+    "tableau": 0.5,
+    "excel": 0.6,
+    "python_analytics": 0.2
+   }
+  },
+  {
+   "name": "Google Business Intelligence Professional Certificate",
+   "aliases": [
+    "Google Business Intelligence"
+   ],
+   "level": "profesional",
+   "skills": {
+    "dashboard_reporting": 0.8,
+    "data_modeling": 0.6,
+    "sql": 0.5,
+    "cloud_data_platform": 0.4,
+    "kpi_metrics": 0.4
+   }
+  },
+  {
+   "name": "Google Advanced Data Analytics Professional Certificate",
+   "aliases": [
+    "Google Advanced Data Analytics"
+   ],
+   "level": "profesional",
+   "skills": {
+    "python_analytics": 0.8,
+    "statistics": 0.7,
+    "data_analysis": 0.7
+   }
+  },
+  {
+   "name": "Microsoft Certified: Power BI Data Analyst Associate (PL-300)",
+   "aliases": [
+    "PL-300",
+    "Power BI Data Analyst",
+    "DA-100",
+    "Microsoft Power BI Certification"
+   ],
+   "level": "ujian",
+   "skills": {
+    "power_bi": 1.0,
+    "dashboard_reporting": 0.7,
+    "data_modeling": 0.6,
+    "data_cleaning": 0.5
+   }
+  },
+  {
+   "name": "Microsoft Office Specialist: Excel Associate",
+   "aliases": [
+    "MOS Excel",
+    "Microsoft Office Specialist Excel",
+    "MOS Excel Associate"
+   ],
+   "level": "ujian",
+   "skills": {
+    "excel": 0.9
+   }
+  },
+  {
+   "name": "Microsoft Office Specialist: Excel Expert",
+   "aliases": [
+    "MOS Excel Expert",
+    "Excel Expert"
+   ],
+   "level": "ujian",
+   "skills": {
+    "excel": 1.0,
+    "financial_analysis": 0.2
+   }
+  },
+  {
+   "name": "Tableau Desktop Specialist",
+   "aliases": [
+    "Tableau Specialist",
+    "Tableau Certified Data Analyst"
+   ],
+   "level": "ujian",
+   "skills": {
+    "tableau": 1.0,
+    "data_visualization": 0.5
+   }
+  },
+  {
+   "name": "IIBA Entry Certificate in Business Analysis (ECBA)",
+   "aliases": [
+    "ECBA",
+    "IIBA ECBA"
+   ],
+   "level": "ujian",
+   "skills": {
+    "requirements_elicitation": 0.7,
+    "requirements_documentation": 0.7,
+    "business_process_modeling": 0.4
+   }
+  },
+  {
+   "name": "IIBA Certification of Capability in Business Analysis (CCBA)",
+   "aliases": [
+    "CCBA",
+    "IIBA CCBA"
+   ],
+   "level": "ujian",
+   "skills": {
+    "requirements_elicitation": 0.9,
+    "requirements_documentation": 0.9,
+    "business_process_modeling": 0.6
+   }
+  },
+  {
+   "name": "IIBA Certified Business Analysis Professional (CBAP)",
+   "aliases": [
+    "CBAP",
+    "IIBA CBAP"
+   ],
+   "level": "ujian",
+   "skills": {
+    "requirements_elicitation": 1.0,
+    "requirements_documentation": 1.0,
+    "business_process_modeling": 0.7
+   }
+  },
+  {
+   "name": "PMI Professional in Business Analysis (PMI-PBA)",
+   "aliases": [
+    "PMI-PBA",
+    "PBA"
+   ],
+   "level": "ujian",
+   "skills": {
+    "requirements_elicitation": 0.8,
+    "requirements_documentation": 0.8,
+    "testing_uat": 0.4
+   }
+  },
+  {
+   "name": "Professional Scrum Product Owner I (PSPO I)",
+   "aliases": [
+    "PSPO I",
+    "PSPO 1",
+    "Professional Scrum Product Owner"
+   ],
+   "level": "ujian",
+   "skills": {
+    "requirements_documentation": 0.5
+   }
+  },
+  {
+   "name": "Lean Six Sigma Green Belt",
+   "aliases": [
+    "Six Sigma Green Belt",
+    "LSS Green Belt"
+   ],
+   "level": "ujian",
+   "skills": {
+    "statistics": 0.5
+   }
+  },
+  {
+   "name": "ISTQB Certified Tester Foundation Level",
+   "aliases": [
+    "ISTQB",
+    "ISTQB Foundation",
+    "CTFL"
+   ],
+   "level": "ujian",
+   "skills": {
+    "testing_uat": 0.9
+   }
+  },
+  {
+   "name": "Dicoding: Belajar Dasar Structured Query Language (SQL)",
+   "aliases": [
+    "Dicoding SQL",
+    "Belajar Dasar SQL"
+   ],
+   "level": "kursus",
+   "skills": {
+    "sql": 0.8
+   }
+  },
+  {
+   "name": "Dicoding: Belajar Dasar Visualisasi Data",
+   "aliases": [
+    "Dicoding Visualisasi Data"
+   ],
+   "level": "kursus",
+   "skills": {
+    "data_visualization": 0.8
+   }
+  },
+  {
+   "name": "Dicoding: Belajar Fundamental Analisis Data",
+   "aliases": [
+    "Dicoding Analisis Data",
+    "Belajar Analisis Data dengan Python"
+   ],
+   "level": "kursus",
+   "skills": {
+    "data_analysis": 0.8,
+    "python_analytics": 0.7,
+    "data_cleaning": 0.6,
+    "data_visualization": 0.5
+   }
+  },
+  {
+   "name": "Dicoding: Belajar Dasar UX Design",
+   "aliases": [
+    "Dicoding UX Design"
+   ],
+   "level": "kursus",
+   "skills": {
+    "wireframing": 0.8
+   }
+  },
+  {
+   "name": "Kaggle Learn: Intro to SQL",
+   "aliases": [
+    "Kaggle SQL",
+    "Kaggle Intro to SQL"
+   ],
+   "level": "kursus",
+   "skills": {
+    "sql": 0.7,
+    "cloud_data_platform": 0.3
+   }
+  },
+  {
+   "name": "Kaggle Learn: Pandas",
+   "aliases": [
+    "Kaggle Pandas"
+   ],
+   "level": "kursus",
+   "skills": {
+    "python_analytics": 0.7,
+    "data_cleaning": 0.4
+   }
+  },
+  {
+   "name": "Kaggle Learn: Python",
+   "aliases": [
+    "Kaggle Python"
+   ],
+   "level": "kursus",
+   "skills": {
+    "python_analytics": 0.6
+   }
+  },
+  {
+   "name": "Google Cloud Digital Leader",
+   "aliases": [
+    "Cloud Digital Leader"
+   ],
+   "level": "ujian",
+   "skills": {
+    "cloud_data_platform": 0.6
+   }
+  },
+  {
+   "name": "Google Cloud Professional Data Engineer",
+   "aliases": [
+    "GCP Data Engineer",
+    "Professional Data Engineer"
+   ],
+   "level": "ujian",
+   "skills": {
+    "cloud_data_platform": 1.0,
+    "sql": 0.7,
+    "data_modeling": 0.6
+   }
+  },
+  {
+   "name": "AWS Certified Cloud Practitioner",
+   "aliases": [
+    "AWS Cloud Practitioner",
+    "CLF-C02"
+   ],
+   "level": "ujian",
+   "skills": {
+    "cloud_data_platform": 0.5
+   }
+  },
+  {
+   "name": "Salesforce Certified Administrator",
+   "aliases": [
+    "Salesforce Administrator"
+   ],
+   "level": "ujian",
+   "skills": {
+    "erp_crm": 0.9
+   }
+  },
+  {
+   "name": "SAP Certified Associate",
+   "aliases": [
+    "SAP Certification",
+    "SAP Certified Application Associate"
+   ],
+   "level": "ujian",
+   "skills": {
+    "erp_crm": 0.9,
+    "business_process_modeling": 0.4
+   }
+  },
+  {
+   "name": "Meta Front-End Developer Professional Certificate",
+   "aliases": [
+    "Meta Front-End Developer",
+    "Meta Frontend Developer"
+   ],
+   "level": "profesional",
+   "skills": {
+    "html_css": 0.6,
+    "javascript": 0.6,
+    "react": 0.6,
+    "git_version_control": 0.3
+   }
+  },
+  {
+   "name": "Meta Back-End Developer Professional Certificate",
+   "aliases": [
+    "Meta Back-End Developer",
+    "Meta Backend Developer"
+   ],
+   "level": "profesional",
+   "skills": {
+    "python_programming": 0.5,
+    "rest_api_design": 0.5,
+    "sql": 0.4,
+    "git_version_control": 0.3,
+    "python_backend": 0.4
+   }
+  },
+  {
+   "name": "freeCodeCamp Responsive Web Design",
+   "aliases": [
+    "freeCodeCamp Responsive Web Design Certification"
+   ],
+   "level": "kursus",
+   "skills": {
+    "html_css": 0.8,
+    "responsive_accessible_web": 0.5
+   }
+  },
+  {
+   "name": "freeCodeCamp JavaScript Algorithms and Data Structures",
+   "aliases": [
+    "freeCodeCamp JavaScript"
+   ],
+   "level": "kursus",
+   "skills": {
+    "javascript": 0.8,
+    "data_structures_algorithms": 0.4,
+    "programming_fundamentals": 0.4
+   }
+  },
+  {
+   "name": "Dicoding: Belajar Dasar Pemrograman Web",
+   "aliases": [
+    "Belajar Dasar Pemrograman Web",
+    "Dicoding Pemrograman Web"
+   ],
+   "level": "kursus",
+   "skills": {
+    "html_css": 0.6,
+    "javascript": 0.3
+   }
+  },
+  {
+   "name": "Dicoding: Belajar Dasar Pemrograman Python",
+   "aliases": [
+    "Belajar Dasar Python",
+    "Dicoding Python"
+   ],
+   "level": "kursus",
+   "skills": {
+    "python_programming": 0.6,
+    "programming_fundamentals": 0.4
+   }
+  },
+  {
+   "name": "Dicoding: Belajar Fundamental Aplikasi Android",
+   "aliases": [
+    "Belajar Membuat Aplikasi Android",
+    "Dicoding Android"
+   ],
+   "level": "kursus",
+   "skills": {
+    "android_kotlin": 0.6,
+    "mobile_release_quality": 0.2
+   }
+  },
+  {
+   "name": "Dicoding: Belajar Membuat Aplikasi Flutter",
+   "aliases": [
+    "Belajar Flutter",
+    "Dicoding Flutter"
+   ],
+   "level": "kursus",
+   "skills": {
+    "flutter_dart": 0.6
+   }
+  },
+  {
+   "name": "Dicoding: Belajar Dasar Pemrosesan Data / Machine Learning",
+   "aliases": [
+    "Dicoding Machine Learning",
+    "Belajar Machine Learning untuk Pemula"
+   ],
+   "level": "kursus",
+   "skills": {
+    "machine_learning": 0.6,
+    "python_analytics": 0.3
+   }
+  },
+  {
+   "name": "BNSP Junior Web Programmer",
+   "aliases": [
+    "Sertifikasi BNSP Junior Web Programmer",
+    "Junior Web Programmer"
+   ],
+   "level": "ujian",
+   "skills": {
+    "html_css": 0.6,
+    "javascript": 0.5,
+    "programming_fundamentals": 0.5
+   }
+  },
+  {
+   "name": "BNSP Network Administrator",
+   "aliases": [
+    "Sertifikasi BNSP Network Administrator",
+    "Network Administrator"
+   ],
+   "level": "ujian",
+   "skills": {
+    "networking_fundamentals": 0.7,
+    "linux_administration": 0.4,
+    "network_security": 0.3
+   }
+  },
+  {
+   "name": "Google IT Support Professional Certificate",
+   "aliases": [
+    "Google IT Support"
+   ],
+   "level": "profesional",
+   "skills": {
+    "networking_fundamentals": 0.6,
+    "linux_administration": 0.3,
+    "network_security": 0.2
+   }
+  },
+  {
+   "name": "CompTIA Network+",
+   "aliases": [
+    "Network+",
+    "CompTIA Network Plus"
+   ],
+   "level": "ujian",
+   "skills": {
+    "networking_fundamentals": 0.8,
+    "network_security": 0.3
+   }
+  },
+  {
+   "name": "CompTIA Security+",
+   "aliases": [
+    "Security+",
+    "CompTIA Security Plus"
+   ],
+   "level": "ujian",
+   "skills": {
+    "network_security": 0.5,
+    "cryptography_basics": 0.4,
+    "security_frameworks_compliance": 0.4,
+    "vulnerability_assessment": 0.3,
+    "incident_response_forensics": 0.3
+   }
+  },
+  {
+   "name": "Certified Ethical Hacker (CEH)",
+   "aliases": [
+    "CEH",
+    "EC-Council CEH"
+   ],
+   "level": "ujian",
+   "skills": {
+    "penetration_testing": 0.6,
+    "vulnerability_assessment": 0.5,
+    "network_security": 0.4
+   }
+  },
+  {
+   "name": "Offensive Security Certified Professional (OSCP)",
+   "aliases": [
+    "OSCP",
+    "OffSec OSCP"
+   ],
+   "level": "ujian",
+   "skills": {
+    "penetration_testing": 0.9,
+    "linux_administration": 0.5
+   }
+  },
+  {
+   "name": "ISO 27001 Lead Implementer / Lead Auditor",
+   "aliases": [
+    "ISO 27001 LI",
+    "ISO 27001 LA",
+    "ISO 27001 Certification"
+   ],
+   "level": "ujian",
+   "skills": {
+    "security_frameworks_compliance": 0.9
+   }
+  },
+  {
+   "name": "AWS Certified Solutions Architect - Associate",
+   "aliases": [
+    "AWS Solutions Architect Associate",
+    "AWS SAA-C03"
+   ],
+   "level": "ujian",
+   "skills": {
+    "cloud_aws": 0.8,
+    "networking_fundamentals": 0.3,
+    "system_design_architecture": 0.3
+   }
+  },
+  {
+   "name": "Microsoft Azure Fundamentals (AZ-900)",
+   "aliases": [
+    "AZ-900",
+    "Azure Fundamentals"
+   ],
+   "level": "ujian",
+   "skills": {
+    "cloud_gcp_azure": 0.5
+   }
+  },
+  {
+   "name": "Google Associate Cloud Engineer",
+   "aliases": [
+    "Google ACE",
+    "Associate Cloud Engineer"
+   ],
+   "level": "ujian",
+   "skills": {
+    "cloud_gcp_azure": 0.7
+   }
+  },
+  {
+   "name": "Certified Kubernetes Administrator (CKA)",
+   "aliases": [
+    "CKA",
+    "Kubernetes Administrator"
+   ],
+   "level": "ujian",
+   "skills": {
+    "kubernetes": 0.9,
+    "docker_containers": 0.5,
+    "linux_administration": 0.4
+   }
+  },
+  {
+   "name": "HashiCorp Certified: Terraform Associate",
+   "aliases": [
+    "Terraform Associate"
+   ],
+   "level": "ujian",
+   "skills": {
+    "infrastructure_as_code": 0.8
+   }
+  },
+  {
+   "name": "Linux Foundation Certified System Administrator (LFCS)",
+   "aliases": [
+    "LFCS",
+    "RHCSA"
+   ],
+   "level": "ujian",
+   "skills": {
+    "linux_administration": 0.8
+   }
+  },
+  {
+   "name": "TensorFlow Developer Certificate",
+   "aliases": [
+    "TensorFlow Certificate"
+   ],
+   "level": "ujian",
+   "skills": {
+    "deep_learning": 0.7,
+    "machine_learning": 0.5
+   }
+  },
+  {
+   "name": "DeepLearning.AI Machine Learning Specialization",
+   "aliases": [
+    "Machine Learning Specialization",
+    "Andrew Ng Machine Learning"
+   ],
+   "level": "profesional",
+   "skills": {
+    "machine_learning": 0.8,
+    "math_for_ml": 0.4,
+    "python_analytics": 0.3
+   }
+  },
+  {
+   "name": "DeepLearning.AI Deep Learning Specialization",
+   "aliases": [
+    "Deep Learning Specialization"
+   ],
+   "level": "profesional",
+   "skills": {
+    "deep_learning": 0.8,
+    "machine_learning": 0.3
+   }
+  },
+  {
+   "name": "Databricks Certified Data Engineer Associate",
+   "aliases": [
+    "Databricks Data Engineer Associate"
+   ],
+   "level": "ujian",
+   "skills": {
+    "big_data_spark": 0.6,
+    "etl_pipelines": 0.6,
+    "data_warehousing": 0.5,
+    "sql": 0.4
+   }
+  },
+  {
+   "name": "Google Professional Data Engineer",
+   "aliases": [
+    "GCP Data Engineer"
+   ],
+   "level": "ujian",
+   "skills": {
+    "data_warehousing": 0.6,
+    "etl_pipelines": 0.6,
+    "streaming_data": 0.4,
+    "cloud_gcp_azure": 0.4
+   }
+  },
+  {
+   "name": "ISTQB Certified Tester Foundation Level (CTFL)",
+   "aliases": [
+    "ISTQB Foundation",
+    "ISTQB CTFL"
+   ],
+   "level": "ujian",
+   "skills": {
+    "test_design_techniques": 0.8,
+    "testing_uat": 0.4
+   }
+  },
+  {
+   "name": "Google UX Design Professional Certificate",
+   "aliases": [
+    "Google UX Design"
+   ],
+   "level": "profesional",
+   "skills": {
+    "user_research": 0.6,
+    "figma_design_tools": 0.5,
+    "prototyping_interaction": 0.6,
+    "usability_testing": 0.5,
+    "wireframing": 0.6,
+    "visual_design_fundamentals": 0.3
+   }
+  },
+  {
+   "name": "Google Ads Search Certification",
+   "aliases": [
+    "Google Ads Certification",
+    "Google Ads Search"
+   ],
+   "level": "ujian",
+   "skills": {
+    "search_ads": 0.8,
+    "web_analytics": 0.3
+   }
+  },
+  {
+   "name": "Google Analytics Certification (GA4)",
+   "aliases": [
+    "GA4 Certification",
+    "Google Analytics Individual Qualification",
+    "GAIQ"
+   ],
+   "level": "ujian",
+   "skills": {
+    "web_analytics": 0.8
+   }
+  },
+  {
+   "name": "Meta Certified Digital Marketing Associate",
+   "aliases": [
+    "Meta Blueprint Certification",
+    "Meta Digital Marketing Associate"
+   ],
+   "level": "ujian",
+   "skills": {
+    "social_media_ads": 0.7,
+    "web_analytics": 0.3
+   }
+  },
+  {
+   "name": "HubSpot Academy: Email Marketing Certification",
+   "aliases": [
+    "HubSpot Email Marketing"
+   ],
+   "level": "kursus",
+   "skills": {
+    "email_marketing_automation": 0.7
+   }
+  },
+  {
+   "name": "Google Digital Marketing & E-commerce Professional Certificate",
+   "aliases": [
+    "Google Digital Marketing and E-commerce"
+   ],
+   "level": "profesional",
+   "skills": {
+    "seo": 0.5,
+    "search_ads": 0.4,
+    "social_media_ads": 0.4,
+    "web_analytics": 0.5,
+    "email_marketing_automation": 0.4,
+    "conversion_optimization": 0.3,
+    "marketplace_ecommerce": 0.3
+   }
+  },
+  {
+   "name": "Brevet Pajak A dan B",
+   "aliases": [
+    "Brevet A&B",
+    "Brevet Pajak AB"
+   ],
+   "level": "ujian",
+   "skills": {
+    "tax_compliance_id": 0.8
+   }
+  },
+  {
+   "name": "Brevet Pajak C",
+   "aliases": [
+    "Brevet C"
+   ],
+   "level": "ujian",
+   "skills": {
+    "tax_compliance_id": 0.9
+   }
+  },
+  {
+   "name": "Sertifikasi Accurate Online",
+   "aliases": [
+    "Accurate Certified",
+    "Sertifikat Accurate"
+   ],
+   "level": "kursus",
+   "skills": {
+    "accounting_software": 0.7
+   }
+  },
+  {
+   "name": "Certified Internal Auditor (CIA)",
+   "aliases": [
+    "CIA",
+    "IIA CIA"
+   ],
+   "level": "ujian",
+   "skills": {
+    "audit_internal_control": 0.9
+   }
+  },
+  {
+   "name": "ACCA Applied Skills",
+   "aliases": [
+    "ACCA",
+    "ACCA Qualification"
+   ],
+   "level": "ujian",
+   "skills": {
+    "accounting_fundamentals": 0.7,
+    "financial_statements": 0.7,
+    "audit_internal_control": 0.5,
+    "tax_compliance_id": 0.4
+   }
+  }
+ ]
 }

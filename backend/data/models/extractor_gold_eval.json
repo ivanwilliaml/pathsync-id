@@ -1,0 +1,139 @@
+{
+ "n_postings": 24,
+ "overall": {
+  "precision": 0.514,
+  "recall": 0.911,
+  "f1": 0.657
+ },
+ "per_role": {
+  "accountant": {
+   "precision": 1.0,
+   "recall": 0.882,
+   "f1": 0.938
+  },
+  "backend_developer": {
+   "precision": 0.333,
+   "recall": 1.0,
+   "f1": 0.5
+  },
+  "business_analyst": {
+   "precision": 0.762,
+   "recall": 0.727,
+   "f1": 0.744
+  },
+  "cybersecurity_analyst": {
+   "precision": 0.389,
+   "recall": 0.875,
+   "f1": 0.538
+  },
+  "data_analyst": {
+   "precision": 0.405,
+   "recall": 1.0,
+   "f1": 0.577
+  },
+  "data_engineer": {
+   "precision": 0.394,
+   "recall": 1.0,
+   "f1": 0.565
+  },
+  "data_scientist": {
+   "precision": 0.625,
+   "recall": 1.0,
+   "f1": 0.769
+  },
+  "devops_engineer": {
+   "precision": 0.538,
+   "recall": 1.0,
+   "f1": 0.7
+  }
+ },
+ "top_false_positives": [
+  [
+   "git_version_control",
+   4
+  ],
+  [
+   "etl_pipelines",
+   3
+  ],
+  [
+   "ci_cd_pipelines",
+   3
+  ],
+  [
+   "data_warehousing",
+   3
+  ],
+  [
+   "test_design_techniques",
+   3
+  ],
+  [
+   "networking_fundamentals",
+   3
+  ],
+  [
+   "cloud_security",
+   3
+  ],
+  [
+   "kpi_metrics",
+   3
+  ],
+  [
+   "cloud_data_platform",
+   3
+  ],
+  [
+   "sdlc",
+   2
+  ],
+  [
+   "erp_crm",
+   2
+  ],
+  [
+   "nosql_databases",
+   2
+  ]
+ ],
+ "top_misses": [
+  [
+   "cost_accounting",
+   1
+  ],
+  [
+   "accounting_software",
+   1
+  ],
+  [
+   "business_process_modeling",
+   1
+  ],
+  [
+   "data_analysis",
+   1
+  ],
+  [
+   "requirements_elicitation",
+   1
+  ],
+  [
+   "wireframing",
+   1
+  ],
+  [
+   "requirements_documentation",
+   1
+  ],
+  [
+   "testing_uat",
+   1
+  ],
+  [
+   "vulnerability_assessment",
+   1
+  ]
+ ],
+ "extractor": "lexicon"
+}

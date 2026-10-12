@@ -1,73 +1,1160 @@
 {
-  "note": "Draf pemetaan capaian pembelajaran mata kuliah ke keterampilan (kekuatan 0-1) untuk prodi Sistem Informasi, Teknik Informatika, Manajemen, dan Akuntansi berdasarkan nama dan deskripsi umum mata kuliah di katalog kurikulum publik. Divalidasi ulang terhadap silabus rinci setelah izin kampus (paper Tabel 5). Nama mata kuliah yang tidak ada di katalog dipetakan dengan kemiripan embedding.",
-  "courses": [
-    {"name": "Basis Data", "aliases": ["Sistem Basis Data", "Database Systems", "Database", "Pengantar Basis Data"], "programs": ["SI", "TI"], "skills": {"sql": 0.8, "data_modeling": 0.9}},
-    {"name": "Perancangan Basis Data", "aliases": ["Database Design", "Desain Basis Data"], "programs": ["SI", "TI"], "skills": {"data_modeling": 1.0, "sql": 0.5}},
-    {"name": "Basis Data Lanjut", "aliases": ["Advanced Database", "Database Programming"], "programs": ["SI", "TI"], "skills": {"sql": 1.0, "data_modeling": 0.7}},
-    {"name": "Data Warehouse", "aliases": ["Gudang Data", "Data Warehousing"], "programs": ["SI"], "skills": {"data_modeling": 0.8, "sql": 0.5, "cloud_data_platform": 0.3, "dashboard_reporting": 0.4}},
-    {"name": "Analisis dan Perancangan Sistem Informasi", "aliases": ["Systems Analysis and Design", "Analisis Perancangan Sistem", "Analisis dan Desain Sistem", "APSI"], "programs": ["SI", "TI"], "skills": {"requirements_elicitation": 0.7, "requirements_documentation": 0.6, "system_modeling_uml": 0.8, "business_process_modeling": 0.6, "sdlc": 0.7}},
-    {"name": "Rekayasa Perangkat Lunak", "aliases": ["Software Engineering", "RPL"], "programs": ["SI", "TI"], "skills": {"sdlc": 0.9, "testing_uat": 0.6, "agile_scrum": 0.5, "requirements_documentation": 0.5, "system_modeling_uml": 0.5}},
-    {"name": "Rekayasa Kebutuhan", "aliases": ["Requirements Engineering", "Software Requirements", "Analisis Kebutuhan Perangkat Lunak"], "programs": ["SI", "TI"], "skills": {"requirements_elicitation": 0.9, "requirements_documentation": 0.9, "stakeholder_management": 0.4}},
-    {"name": "Manajemen Proses Bisnis", "aliases": ["Business Process Management", "Pemodelan Proses Bisnis", "Business Process Modeling"], "programs": ["SI", "Manajemen"], "skills": {"business_process_modeling": 0.9, "process_improvement": 0.7}},
-    {"name": "Sistem Informasi Manajemen", "aliases": ["Management Information Systems", "SIM"], "programs": ["SI", "Manajemen", "Akuntansi"], "skills": {"erp_crm": 0.4, "strategic_analysis": 0.3, "dashboard_reporting": 0.3, "business_process_modeling": 0.3}},
-    {"name": "Sistem Enterprise", "aliases": ["Enterprise Systems", "Enterprise Resource Planning", "ERP", "Sistem ERP"], "programs": ["SI"], "skills": {"erp_crm": 0.9, "business_process_modeling": 0.5}},
-    {"name": "Customer Relationship Management", "aliases": ["CRM", "Manajemen Hubungan Pelanggan"], "programs": ["SI", "Manajemen"], "skills": {"erp_crm": 0.7, "stakeholder_management": 0.3}},
-    {"name": "Manajemen Proyek Sistem Informasi", "aliases": ["IT Project Management", "Manajemen Proyek TI", "Manajemen Proyek", "Project Management"], "programs": ["SI", "TI", "Manajemen"], "skills": {"project_management": 0.9, "stakeholder_management": 0.5, "risk_management": 0.4}},
-    {"name": "Interaksi Manusia dan Komputer", "aliases": ["Human Computer Interaction", "IMK", "User Experience Design", "Desain UI/UX"], "programs": ["SI", "TI"], "skills": {"wireframing": 0.8, "research_methods": 0.4}},
-    {"name": "Business Intelligence", "aliases": ["Intelijen Bisnis", "Sistem Pendukung Keputusan", "Decision Support Systems"], "programs": ["SI"], "skills": {"dashboard_reporting": 0.9, "data_modeling": 0.6, "data_visualization": 0.6, "kpi_metrics": 0.4}},
-    {"name": "Visualisasi Data", "aliases": ["Data Visualization", "Visualisasi Informasi"], "programs": ["SI", "TI", "Statistika"], "skills": {"data_visualization": 0.9, "dashboard_reporting": 0.5, "presentation_storytelling": 0.3}},
-    {"name": "Data Mining", "aliases": ["Penambangan Data", "Machine Learning", "Pembelajaran Mesin"], "programs": ["SI", "TI"], "skills": {"data_analysis": 0.7, "python_analytics": 0.5, "statistics": 0.5, "data_cleaning": 0.4}},
-    {"name": "Analitik Data", "aliases": ["Data Analytics", "Analisis Data", "Business Analytics", "Analitika Bisnis"], "programs": ["SI", "Manajemen", "Statistika"], "skills": {"data_analysis": 0.9, "statistics": 0.4, "data_cleaning": 0.5, "data_visualization": 0.4}},
-    {"name": "Algoritma dan Pemrograman", "aliases": ["Algorithm and Programming", "Dasar Pemrograman", "Pemrograman Dasar"], "programs": ["SI", "TI"], "skills": {"python_analytics": 0.4, "critical_thinking": 0.4}},
-    {"name": "Pemrograman Python", "aliases": ["Python Programming", "Pemrograman untuk Data Science"], "programs": ["SI", "TI", "Statistika"], "skills": {"python_analytics": 0.9, "data_cleaning": 0.3}},
-    {"name": "Pemrograman Web", "aliases": ["Web Programming", "Pengembangan Aplikasi Web"], "programs": ["SI", "TI"], "skills": {"api_integration": 0.4}},
-    {"name": "Integrasi Sistem", "aliases": ["System Integration", "Pemrograman Berbasis Layanan", "Service Oriented Architecture", "Web Services"], "programs": ["SI", "TI"], "skills": {"api_integration": 0.9, "sdlc": 0.3}},
-    {"name": "Arsitektur Enterprise", "aliases": ["Enterprise Architecture"], "programs": ["SI"], "skills": {"strategic_analysis": 0.4, "business_process_modeling": 0.4, "erp_crm": 0.3}},
-    {"name": "Audit Sistem Informasi", "aliases": ["Information Systems Audit", "Audit TI", "IT Audit"], "programs": ["SI", "Akuntansi"], "skills": {"risk_management": 0.8}},
-    {"name": "Tata Kelola Teknologi Informasi", "aliases": ["IT Governance", "Tata Kelola TI"], "programs": ["SI"], "skills": {"risk_management": 0.7, "strategic_analysis": 0.4}},
-    {"name": "Keamanan Sistem Informasi", "aliases": ["Information Security", "Keamanan Informasi"], "programs": ["SI", "TI"], "skills": {"risk_management": 0.5}},
-    {"name": "Komputasi Awan", "aliases": ["Cloud Computing"], "programs": ["SI", "TI"], "skills": {"cloud_data_platform": 0.7}},
-    {"name": "Pengujian Perangkat Lunak", "aliases": ["Software Testing", "Software Quality Assurance", "Penjaminan Mutu Perangkat Lunak"], "programs": ["TI", "SI"], "skills": {"testing_uat": 0.9, "sdlc": 0.3}},
-    {"name": "Pengembangan Perangkat Lunak Agile", "aliases": ["Agile Software Development", "Agile Methodology", "Scrum"], "programs": ["SI", "TI"], "skills": {"agile_scrum": 0.9, "jira_confluence": 0.3}},
-    {"name": "E-Business", "aliases": ["E-Commerce", "Bisnis Digital", "Digital Business"], "programs": ["SI", "Manajemen"], "skills": {"strategic_analysis": 0.4, "kpi_metrics": 0.3}},
-
-    {"name": "Pengantar Manajemen", "aliases": ["Introduction to Management", "Dasar-dasar Manajemen"], "programs": ["Manajemen", "Akuntansi"], "skills": {"strategic_analysis": 0.3}},
-    {"name": "Manajemen Strategik", "aliases": ["Strategic Management", "Manajemen Strategis"], "programs": ["Manajemen", "Akuntansi"], "skills": {"strategic_analysis": 0.9, "research_methods": 0.3}},
-    {"name": "Manajemen Operasi", "aliases": ["Operations Management", "Manajemen Operasional", "Manajemen Produksi dan Operasi"], "programs": ["Manajemen"], "skills": {"process_improvement": 0.8, "kpi_metrics": 0.5}},
-    {"name": "Manajemen Pemasaran", "aliases": ["Marketing Management", "Pemasaran"], "programs": ["Manajemen"], "skills": {"research_methods": 0.5, "strategic_analysis": 0.4, "kpi_metrics": 0.4}},
-    {"name": "Riset Pemasaran", "aliases": ["Marketing Research", "Riset Pasar"], "programs": ["Manajemen"], "skills": {"research_methods": 0.9, "statistics": 0.5, "data_analysis": 0.5}},
-    {"name": "Metodologi Penelitian", "aliases": ["Research Methodology", "Metode Penelitian", "Metodologi Riset", "Business Research Methods"], "programs": ["SI", "TI", "Manajemen", "Akuntansi"], "skills": {"research_methods": 0.9, "statistics": 0.4, "business_writing": 0.4}},
-    {"name": "Manajemen Keuangan", "aliases": ["Financial Management", "Manajemen Keuangan Perusahaan", "Corporate Finance"], "programs": ["Manajemen", "Akuntansi"], "skills": {"financial_analysis": 0.9, "business_case": 0.5}},
-    {"name": "Perilaku Organisasi", "aliases": ["Organizational Behavior", "Perilaku Keorganisasian"], "programs": ["Manajemen"], "skills": {"collaboration": 0.5, "change_management": 0.4, "verbal_communication": 0.3}},
-    {"name": "Manajemen Perubahan", "aliases": ["Change Management", "Pengembangan Organisasi"], "programs": ["Manajemen"], "skills": {"change_management": 0.9, "stakeholder_management": 0.5}},
-    {"name": "Komunikasi Bisnis", "aliases": ["Business Communication", "Komunikasi Organisasi", "Komunikasi Profesional"], "programs": ["Manajemen", "Akuntansi", "SI"], "skills": {"business_writing": 0.8, "verbal_communication": 0.7, "presentation_storytelling": 0.5}},
-    {"name": "Negosiasi", "aliases": ["Negotiation", "Negosiasi Bisnis", "Teknik Negosiasi"], "programs": ["Manajemen"], "skills": {"facilitation_negotiation": 0.9}},
-    {"name": "Kewirausahaan", "aliases": ["Entrepreneurship", "Technopreneurship"], "programs": ["SI", "TI", "Manajemen", "Akuntansi"], "skills": {"business_case": 0.6, "strategic_analysis": 0.4}},
-    {"name": "Studi Kelayakan Bisnis", "aliases": ["Business Feasibility Study", "Studi Kelayakan", "Feasibility Study"], "programs": ["Manajemen"], "skills": {"business_case": 0.9, "financial_analysis": 0.5}},
-    {"name": "Manajemen Risiko", "aliases": ["Risk Management", "Manajemen Risiko Perusahaan", "Enterprise Risk Management"], "programs": ["Manajemen", "Akuntansi", "SI"], "skills": {"risk_management": 0.9}},
-    {"name": "Manajemen Kualitas", "aliases": ["Total Quality Management", "Manajemen Mutu", "Quality Management"], "programs": ["Manajemen"], "skills": {"process_improvement": 0.8}},
-    {"name": "Analisis Bisnis", "aliases": ["Business Analysis", "Analisis Kebutuhan Bisnis"], "programs": ["SI", "Manajemen"], "skills": {"requirements_elicitation": 0.6, "strategic_analysis": 0.5, "business_process_modeling": 0.5, "business_case": 0.4}},
-    {"name": "Sistem Pengendalian Manajemen", "aliases": ["Management Control Systems"], "programs": ["Manajemen", "Akuntansi"], "skills": {"kpi_metrics": 0.7, "risk_management": 0.4}},
-    {"name": "Kepemimpinan", "aliases": ["Leadership", "Kepemimpinan dan Kerja Tim"], "programs": ["Manajemen"], "skills": {"stakeholder_management": 0.3, "facilitation_negotiation": 0.3, "collaboration": 0.4}},
-
-    {"name": "Pengantar Akuntansi", "aliases": ["Introduction to Accounting", "Akuntansi Dasar", "Dasar Akuntansi", "Akuntansi Keuangan", "Financial Accounting"], "programs": ["Akuntansi", "Manajemen"], "skills": {"financial_analysis": 0.7}},
-    {"name": "Analisis Laporan Keuangan", "aliases": ["Financial Statement Analysis", "Analisis Keuangan"], "programs": ["Akuntansi", "Manajemen"], "skills": {"financial_analysis": 1.0}},
-    {"name": "Sistem Informasi Akuntansi", "aliases": ["Accounting Information Systems", "SIA"], "programs": ["Akuntansi", "SI"], "skills": {"erp_crm": 0.5, "business_process_modeling": 0.5, "risk_management": 0.3}},
-    {"name": "Auditing", "aliases": ["Pengauditan", "Audit", "Auditing dan Asurans"], "programs": ["Akuntansi"], "skills": {"risk_management": 0.7}},
-    {"name": "Akuntansi Manajemen", "aliases": ["Management Accounting", "Akuntansi Biaya", "Cost Accounting"], "programs": ["Akuntansi", "Manajemen"], "skills": {"financial_analysis": 0.6, "kpi_metrics": 0.5, "business_case": 0.4}},
-    {"name": "Penganggaran", "aliases": ["Budgeting", "Anggaran Perusahaan"], "programs": ["Akuntansi", "Manajemen"], "skills": {"financial_analysis": 0.7}},
-
-    {"name": "Statistika Bisnis", "aliases": ["Business Statistics", "Statistika", "Statistik", "Statistics", "Statistika Dasar", "Statistika Ekonomi"], "programs": ["SI", "Manajemen", "Akuntansi", "TI"], "skills": {"statistics": 0.9, "data_analysis": 0.3}},
-    {"name": "Probabilitas dan Statistika", "aliases": ["Probability and Statistics", "Statistika dan Probabilitas"], "programs": ["TI", "SI"], "skills": {"statistics": 0.9}},
-    {"name": "Ekonometrika", "aliases": ["Econometrics", "Statistika Lanjut", "Analisis Regresi", "Statistika Inferensial"], "programs": ["Manajemen", "Statistika"], "skills": {"statistics": 1.0, "data_analysis": 0.5}},
-    {"name": "Riset Operasi", "aliases": ["Operations Research", "Riset Operasional"], "programs": ["Manajemen", "TI"], "skills": {"critical_thinking": 0.5, "process_improvement": 0.3}},
-    {"name": "Matematika Bisnis", "aliases": ["Business Mathematics", "Matematika Ekonomi"], "programs": ["Manajemen", "Akuntansi"], "skills": {"critical_thinking": 0.3, "financial_analysis": 0.2}},
-
-    {"name": "Bahasa Inggris", "aliases": ["English", "Business English", "English for Business", "Bahasa Inggris Bisnis", "English Communication"], "programs": ["SI", "TI", "Manajemen", "Akuntansi"], "skills": {"english_proficiency": 0.8}},
-    {"name": "Aplikasi Komputer", "aliases": ["Computer Applications", "Aplikasi Perkantoran", "Pengantar Teknologi Informasi", "Office Applications"], "programs": ["Manajemen", "Akuntansi"], "skills": {"excel": 0.7}},
-    {"name": "Spreadsheet untuk Bisnis", "aliases": ["Excel untuk Bisnis", "Business Spreadsheet", "Spreadsheet Modeling", "Aplikasi Spreadsheet"], "programs": ["Manajemen", "Akuntansi"], "skills": {"excel": 0.9, "financial_analysis": 0.3}},
-    {"name": "Teknik Presentasi", "aliases": ["Public Speaking", "Presentation Skills", "Keterampilan Presentasi"], "programs": ["Manajemen"], "skills": {"presentation_storytelling": 0.9, "verbal_communication": 0.5}},
-    {"name": "Penulisan Ilmiah", "aliases": ["Scientific Writing", "Academic Writing", "Bahasa Indonesia", "Penulisan Karya Ilmiah"], "programs": ["SI", "TI", "Manajemen", "Akuntansi"], "skills": {"business_writing": 0.6, "research_methods": 0.4}},
-    {"name": "Berpikir Kritis", "aliases": ["Critical Thinking", "Critical Thinking and Problem Solving", "Logika", "Logika Matematika"], "programs": ["SI", "TI", "Manajemen", "Akuntansi"], "skills": {"critical_thinking": 0.9}}
-  ]
+ "note": "Draf pemetaan capaian pembelajaran mata kuliah ke keterampilan teknis (kekuatan 0-1) untuk prodi SI, TI, Statistika, DKV, Manajemen, dan Akuntansi berdasarkan nama dan deskripsi umum mata kuliah di katalog kurikulum publik. Divalidasi ulang terhadap silabus rinci setelah izin kampus (paper Tabel 5).",
+ "courses": [
+  {
+   "name": "Basis Data",
+   "aliases": [
+    "Sistem Basis Data",
+    "Database Systems",
+    "Database",
+    "Pengantar Basis Data"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "sql": 0.8,
+    "data_modeling": 0.9
+   }
+  },
+  {
+   "name": "Perancangan Basis Data",
+   "aliases": [
+    "Database Design",
+    "Desain Basis Data"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "data_modeling": 1.0,
+    "sql": 0.5
+   }
+  },
+  {
+   "name": "Basis Data Lanjut",
+   "aliases": [
+    "Advanced Database",
+    "Database Programming"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "sql": 1.0,
+    "data_modeling": 0.7
+   }
+  },
+  {
+   "name": "Data Warehouse",
+   "aliases": [
+    "Gudang Data",
+    "Data Warehousing"
+   ],
+   "programs": [
+    "SI"
+   ],
+   "skills": {
+    "data_modeling": 0.8,
+    "sql": 0.5,
+    "cloud_data_platform": 0.3,
+    "dashboard_reporting": 0.4
+   }
+  },
+  {
+   "name": "Analisis dan Perancangan Sistem Informasi",
+   "aliases": [
+    "Systems Analysis and Design",
+    "Analisis Perancangan Sistem",
+    "Analisis dan Desain Sistem",
+    "APSI"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "requirements_elicitation": 0.7,
+    "requirements_documentation": 0.6,
+    "system_modeling_uml": 0.8,
+    "business_process_modeling": 0.6,
+    "sdlc": 0.7
+   }
+  },
+  {
+   "name": "Rekayasa Perangkat Lunak",
+   "aliases": [
+    "Software Engineering",
+    "RPL"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "sdlc": 0.9,
+    "testing_uat": 0.6,
+    "requirements_documentation": 0.5,
+    "system_modeling_uml": 0.5
+   }
+  },
+  {
+   "name": "Rekayasa Kebutuhan",
+   "aliases": [
+    "Requirements Engineering",
+    "Software Requirements",
+    "Analisis Kebutuhan Perangkat Lunak"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "requirements_elicitation": 0.9,
+    "requirements_documentation": 0.9
+   }
+  },
+  {
+   "name": "Manajemen Proses Bisnis",
+   "aliases": [
+    "Business Process Management",
+    "Pemodelan Proses Bisnis",
+    "Business Process Modeling"
+   ],
+   "programs": [
+    "SI",
+    "Manajemen"
+   ],
+   "skills": {
+    "business_process_modeling": 0.9
+   }
+  },
+  {
+   "name": "Sistem Informasi Manajemen",
+   "aliases": [
+    "Management Information Systems",
+    "SIM"
+   ],
+   "programs": [
+    "SI",
+    "Manajemen",
+    "Akuntansi"
+   ],
+   "skills": {
+    "erp_crm": 0.4,
+    "dashboard_reporting": 0.3,
+    "business_process_modeling": 0.3
+   }
+  },
+  {
+   "name": "Sistem Enterprise",
+   "aliases": [
+    "Enterprise Systems",
+    "Enterprise Resource Planning",
+    "ERP",
+    "Sistem ERP"
+   ],
+   "programs": [
+    "SI"
+   ],
+   "skills": {
+    "erp_crm": 0.9,
+    "business_process_modeling": 0.5
+   }
+  },
+  {
+   "name": "Customer Relationship Management",
+   "aliases": [
+    "CRM",
+    "Manajemen Hubungan Pelanggan"
+   ],
+   "programs": [
+    "SI",
+    "Manajemen"
+   ],
+   "skills": {
+    "erp_crm": 0.7
+   }
+  },
+  {
+   "name": "Interaksi Manusia dan Komputer",
+   "aliases": [
+    "Desain Interaksi",
+    "Desain UI/UX",
+    "HCI",
+    "Human Computer Interaction",
+    "IMK",
+    "User Experience Design"
+   ],
+   "programs": [
+    "DKV",
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "wireframing": 0.5,
+    "usability_testing": 0.6,
+    "user_research": 0.5,
+    "prototyping_interaction": 0.4,
+    "visual_design_fundamentals": 0.3,
+    "accessibility_design": 0.3
+   }
+  },
+  {
+   "name": "Business Intelligence",
+   "aliases": [
+    "Intelijen Bisnis",
+    "Sistem Pendukung Keputusan",
+    "Decision Support Systems"
+   ],
+   "programs": [
+    "SI"
+   ],
+   "skills": {
+    "dashboard_reporting": 0.9,
+    "data_modeling": 0.6,
+    "data_visualization": 0.6,
+    "kpi_metrics": 0.4
+   }
+  },
+  {
+   "name": "Visualisasi Data",
+   "aliases": [
+    "Data Visualization",
+    "Visualisasi Informasi"
+   ],
+   "programs": [
+    "SI",
+    "TI",
+    "Statistika"
+   ],
+   "skills": {
+    "data_visualization": 0.9,
+    "dashboard_reporting": 0.5
+   }
+  },
+  {
+   "name": "Data Mining",
+   "aliases": [
+    "Data Mining",
+    "Machine Learning",
+    "Pembelajaran Mesin",
+    "Penambangan Data"
+   ],
+   "programs": [
+    "SI",
+    "Statistika",
+    "TI"
+   ],
+   "skills": {
+    "data_analysis": 0.7,
+    "python_analytics": 0.4,
+    "statistics": 0.5,
+    "data_cleaning": 0.4,
+    "machine_learning": 0.9,
+    "math_for_ml": 0.5
+   }
+  },
+  {
+   "name": "Analitik Data",
+   "aliases": [
+    "Data Analytics",
+    "Analisis Data",
+    "Business Analytics",
+    "Analitika Bisnis"
+   ],
+   "programs": [
+    "SI",
+    "Manajemen",
+    "Statistika"
+   ],
+   "skills": {
+    "data_analysis": 0.9,
+    "statistics": 0.4,
+    "data_cleaning": 0.5,
+    "data_visualization": 0.4
+   }
+  },
+  {
+   "name": "Algoritma dan Pemrograman",
+   "aliases": [
+    "Algorithm and Programming",
+    "Dasar Pemrograman",
+    "Pemrograman Dasar",
+    "Programming Fundamentals"
+   ],
+   "programs": [
+    "SI",
+    "Statistika",
+    "TI"
+   ],
+   "skills": {
+    "python_analytics": 0.4,
+    "programming_fundamentals": 0.8,
+    "python_programming": 0.4
+   }
+  },
+  {
+   "name": "Pemrograman Python",
+   "aliases": [
+    "Pemrograman untuk Data Science",
+    "Python",
+    "Python Programming"
+   ],
+   "programs": [
+    "SI",
+    "Statistika",
+    "TI"
+   ],
+   "skills": {
+    "python_analytics": 0.9,
+    "data_cleaning": 0.3,
+    "python_programming": 0.9
+   }
+  },
+  {
+   "name": "Pemrograman Web",
+   "aliases": [
+    "Pemrograman Web Lanjut",
+    "Pengembangan Aplikasi Web",
+    "Web Development",
+    "Web Programming"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "api_integration": 0.4,
+    "html_css": 0.9,
+    "javascript": 0.6,
+    "php_laravel": 0.4,
+    "rest_api_design": 0.3
+   }
+  },
+  {
+   "name": "Integrasi Sistem",
+   "aliases": [
+    "System Integration",
+    "Pemrograman Berbasis Layanan",
+    "Service Oriented Architecture",
+    "Web Services"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "api_integration": 0.9,
+    "sdlc": 0.3
+   }
+  },
+  {
+   "name": "Arsitektur Enterprise",
+   "aliases": [
+    "Enterprise Architecture"
+   ],
+   "programs": [
+    "SI"
+   ],
+   "skills": {
+    "business_process_modeling": 0.4,
+    "erp_crm": 0.3
+   }
+  },
+  {
+   "name": "Komputasi Awan",
+   "aliases": [
+    "Cloud Computing",
+    "Cloud Infrastructure"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "cloud_data_platform": 0.7,
+    "cloud_aws": 0.5,
+    "cloud_gcp_azure": 0.4,
+    "docker_containers": 0.3
+   }
+  },
+  {
+   "name": "Pengujian Perangkat Lunak",
+   "aliases": [
+    "Penjaminan Mutu Perangkat Lunak",
+    "Quality Assurance",
+    "Software Quality",
+    "Software Quality Assurance",
+    "Software Testing"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "testing_uat": 0.9,
+    "sdlc": 0.3,
+    "test_design_techniques": 0.8,
+    "unit_testing_tdd": 0.4,
+    "test_automation_web": 0.3
+   }
+  },
+  {
+   "name": "Pengembangan Perangkat Lunak Agile",
+   "aliases": [
+    "Agile Software Development",
+    "Agile Methodology",
+    "Scrum"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "jira_confluence": 0.3
+   }
+  },
+  {
+   "name": "E-Business",
+   "aliases": [
+    "E-Commerce",
+    "Bisnis Digital",
+    "Digital Business"
+   ],
+   "programs": [
+    "SI",
+    "Manajemen"
+   ],
+   "skills": {
+    "kpi_metrics": 0.3
+   }
+  },
+  {
+   "name": "Manajemen Operasi",
+   "aliases": [
+    "Operations Management",
+    "Manajemen Operasional",
+    "Manajemen Produksi dan Operasi"
+   ],
+   "programs": [
+    "Manajemen"
+   ],
+   "skills": {
+    "kpi_metrics": 0.5
+   }
+  },
+  {
+   "name": "Manajemen Pemasaran",
+   "aliases": [
+    "Marketing Management",
+    "Pemasaran"
+   ],
+   "programs": [
+    "Manajemen"
+   ],
+   "skills": {
+    "kpi_metrics": 0.4
+   }
+  },
+  {
+   "name": "Riset Pemasaran",
+   "aliases": [
+    "Marketing Research",
+    "Riset Pasar"
+   ],
+   "programs": [
+    "Manajemen"
+   ],
+   "skills": {
+    "statistics": 0.5,
+    "data_analysis": 0.5
+   }
+  },
+  {
+   "name": "Metodologi Penelitian",
+   "aliases": [
+    "Research Methodology",
+    "Metode Penelitian",
+    "Metodologi Riset",
+    "Business Research Methods"
+   ],
+   "programs": [
+    "SI",
+    "TI",
+    "Manajemen",
+    "Akuntansi"
+   ],
+   "skills": {
+    "statistics": 0.4
+   }
+  },
+  {
+   "name": "Manajemen Keuangan",
+   "aliases": [
+    "Financial Management",
+    "Manajemen Keuangan Perusahaan",
+    "Corporate Finance"
+   ],
+   "programs": [
+    "Manajemen",
+    "Akuntansi"
+   ],
+   "skills": {
+    "financial_analysis": 0.9
+   }
+  },
+  {
+   "name": "Studi Kelayakan Bisnis",
+   "aliases": [
+    "Business Feasibility Study",
+    "Studi Kelayakan",
+    "Feasibility Study"
+   ],
+   "programs": [
+    "Manajemen"
+   ],
+   "skills": {
+    "financial_analysis": 0.5
+   }
+  },
+  {
+   "name": "Analisis Bisnis",
+   "aliases": [
+    "Business Analysis",
+    "Analisis Kebutuhan Bisnis"
+   ],
+   "programs": [
+    "SI",
+    "Manajemen"
+   ],
+   "skills": {
+    "requirements_elicitation": 0.6,
+    "business_process_modeling": 0.5
+   }
+  },
+  {
+   "name": "Sistem Pengendalian Manajemen",
+   "aliases": [
+    "Management Control Systems"
+   ],
+   "programs": [
+    "Manajemen",
+    "Akuntansi"
+   ],
+   "skills": {
+    "kpi_metrics": 0.7
+   }
+  },
+  {
+   "name": "Pengantar Akuntansi",
+   "aliases": [
+    "Akuntansi Dasar",
+    "Akuntansi Keuangan",
+    "Dasar Akuntansi",
+    "Financial Accounting",
+    "Financial Accounting I",
+    "Introduction to Accounting"
+   ],
+   "programs": [
+    "Akuntansi",
+    "Manajemen"
+   ],
+   "skills": {
+    "financial_analysis": 0.7,
+    "accounting_fundamentals": 0.9
+   }
+  },
+  {
+   "name": "Analisis Laporan Keuangan",
+   "aliases": [
+    "Analisa Laporan Keuangan",
+    "Analisis Keuangan",
+    "Financial Statement Analysis"
+   ],
+   "programs": [
+    "Akuntansi",
+    "Manajemen"
+   ],
+   "skills": {
+    "financial_analysis": 0.8,
+    "financial_statements": 0.6
+   }
+  },
+  {
+   "name": "Sistem Informasi Akuntansi",
+   "aliases": [
+    "Accounting Information Systems",
+    "Praktikum Akuntansi Komputer",
+    "SIA"
+   ],
+   "programs": [
+    "Akuntansi",
+    "SI"
+   ],
+   "skills": {
+    "erp_crm": 0.5,
+    "business_process_modeling": 0.5,
+    "accounting_software": 0.7,
+    "accounting_fundamentals": 0.4
+   }
+  },
+  {
+   "name": "Akuntansi Manajemen",
+   "aliases": [
+    "Akuntansi Biaya",
+    "Akuntansi Manajemen Biaya",
+    "Budgeting",
+    "Cost Accounting",
+    "Management Accounting",
+    "Penganggaran"
+   ],
+   "programs": [
+    "Akuntansi",
+    "Manajemen"
+   ],
+   "skills": {
+    "financial_analysis": 0.6,
+    "kpi_metrics": 0.5,
+    "cost_accounting": 0.5,
+    "budgeting_forecasting": 0.7
+   }
+  },
+  {
+   "name": "Penganggaran",
+   "aliases": [
+    "Budgeting",
+    "Anggaran Perusahaan"
+   ],
+   "programs": [
+    "Akuntansi",
+    "Manajemen"
+   ],
+   "skills": {
+    "financial_analysis": 0.7
+   }
+  },
+  {
+   "name": "Statistika Bisnis",
+   "aliases": [
+    "Business Statistics",
+    "Statistika",
+    "Statistik",
+    "Statistics",
+    "Statistika Dasar",
+    "Statistika Ekonomi"
+   ],
+   "programs": [
+    "SI",
+    "Manajemen",
+    "Akuntansi",
+    "TI"
+   ],
+   "skills": {
+    "statistics": 0.9,
+    "data_analysis": 0.3
+   }
+  },
+  {
+   "name": "Probabilitas dan Statistika",
+   "aliases": [
+    "Probability and Statistics",
+    "Statistika dan Probabilitas"
+   ],
+   "programs": [
+    "TI",
+    "SI"
+   ],
+   "skills": {
+    "statistics": 0.9
+   }
+  },
+  {
+   "name": "Ekonometrika",
+   "aliases": [
+    "Econometrics",
+    "Statistika Lanjut",
+    "Analisis Regresi",
+    "Statistika Inferensial"
+   ],
+   "programs": [
+    "Manajemen",
+    "Statistika"
+   ],
+   "skills": {
+    "statistics": 1.0,
+    "data_analysis": 0.5
+   }
+  },
+  {
+   "name": "Matematika Bisnis",
+   "aliases": [
+    "Business Mathematics",
+    "Matematika Ekonomi"
+   ],
+   "programs": [
+    "Manajemen",
+    "Akuntansi"
+   ],
+   "skills": {
+    "financial_analysis": 0.2
+   }
+  },
+  {
+   "name": "Aplikasi Komputer",
+   "aliases": [
+    "Computer Applications",
+    "Aplikasi Perkantoran",
+    "Pengantar Teknologi Informasi",
+    "Office Applications"
+   ],
+   "programs": [
+    "Manajemen",
+    "Akuntansi"
+   ],
+   "skills": {
+    "excel": 0.7
+   }
+  },
+  {
+   "name": "Spreadsheet untuk Bisnis",
+   "aliases": [
+    "Excel untuk Bisnis",
+    "Business Spreadsheet",
+    "Spreadsheet Modeling",
+    "Aplikasi Spreadsheet"
+   ],
+   "programs": [
+    "Manajemen",
+    "Akuntansi"
+   ],
+   "skills": {
+    "excel": 0.9,
+    "financial_analysis": 0.3
+   }
+  },
+  {
+   "name": "Pemrograman Berorientasi Objek",
+   "aliases": [
+    "Object Oriented Programming",
+    "OOP",
+    "PBO"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "programming_fundamentals": 0.9
+   }
+  },
+  {
+   "name": "Struktur Data",
+   "aliases": [
+    "Algoritma dan Struktur Data",
+    "Data Structures",
+    "Data Structures and Algorithms"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "data_structures_algorithms": 0.9,
+    "programming_fundamentals": 0.4
+   }
+  },
+  {
+   "name": "Pemrograman Mobile",
+   "aliases": [
+    "Mobile Programming",
+    "Pengembangan Aplikasi Mobile",
+    "Mobile Application Development"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "android_kotlin": 0.5,
+    "flutter_dart": 0.4,
+    "mobile_backend_services": 0.3
+   }
+  },
+  {
+   "name": "Pemrograman Java",
+   "aliases": [
+    "Java Programming",
+    "Java"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "java_spring": 0.5,
+    "programming_fundamentals": 0.6
+   }
+  },
+  {
+   "name": "Jaringan Komputer",
+   "aliases": [
+    "Computer Networks",
+    "Komunikasi Data dan Jaringan",
+    "Networking"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "networking_fundamentals": 0.9,
+    "network_security": 0.3
+   }
+  },
+  {
+   "name": "Keamanan Informasi",
+   "aliases": [
+    "Keamanan Siber",
+    "Information Security",
+    "Cyber Security",
+    "Keamanan Jaringan"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "network_security": 0.5,
+    "cryptography_basics": 0.5,
+    "security_frameworks_compliance": 0.4,
+    "auth_security_basics": 0.3
+   }
+  },
+  {
+   "name": "Kriptografi",
+   "aliases": [
+    "Cryptography"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "cryptography_basics": 0.9
+   }
+  },
+  {
+   "name": "Sistem Operasi",
+   "aliases": [
+    "Operating Systems",
+    "Administrasi Sistem Linux",
+    "Linux"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "linux_administration": 0.6
+   }
+  },
+  {
+   "name": "Kecerdasan Buatan",
+   "aliases": [
+    "Artificial Intelligence",
+    "AI"
+   ],
+   "programs": [
+    "SI",
+    "TI",
+    "Statistika"
+   ],
+   "skills": {
+    "machine_learning": 0.5,
+    "math_for_ml": 0.3
+   }
+  },
+  {
+   "name": "Pembelajaran Mendalam",
+   "aliases": [
+    "Deep Learning",
+    "Neural Networks",
+    "Jaringan Syaraf Tiruan"
+   ],
+   "programs": [
+    "TI",
+    "Statistika"
+   ],
+   "skills": {
+    "deep_learning": 0.9
+   }
+  },
+  {
+   "name": "Pengolahan Citra Digital",
+   "aliases": [
+    "Image Processing",
+    "Computer Vision",
+    "Visi Komputer"
+   ],
+   "programs": [
+    "TI"
+   ],
+   "skills": {
+    "nlp_computer_vision": 0.8
+   }
+  },
+  {
+   "name": "Pemrosesan Bahasa Alami",
+   "aliases": [
+    "Natural Language Processing",
+    "NLP",
+    "Text Mining"
+   ],
+   "programs": [
+    "TI"
+   ],
+   "skills": {
+    "nlp_computer_vision": 0.8
+   }
+  },
+  {
+   "name": "Basis Data NoSQL",
+   "aliases": [
+    "NoSQL Databases",
+    "Big Data",
+    "Basis Data Lanjut Non-Relasional"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "nosql_databases": 0.7,
+    "big_data_spark": 0.4
+   }
+  },
+  {
+   "name": "Data Warehouse dan Business Intelligence",
+   "aliases": [
+    "Data Warehouse",
+    "Gudang Data",
+    "Data Warehousing",
+    "Business Intelligence"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "data_warehousing": 0.8,
+    "etl_pipelines": 0.4,
+    "data_modeling": 0.4
+   }
+  },
+  {
+   "name": "Arsitektur Perangkat Lunak",
+   "aliases": [
+    "Software Architecture",
+    "Desain Perangkat Lunak",
+    "Software Design"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "system_design_architecture": 0.6,
+    "programming_fundamentals": 0.4
+   }
+  },
+  {
+   "name": "DevOps",
+   "aliases": [
+    "Manajemen Infrastruktur",
+    "Continuous Integration",
+    "Deployment"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "ci_cd_pipelines": 0.6,
+    "docker_containers": 0.5,
+    "git_version_control": 0.4
+   }
+  },
+  {
+   "name": "Pemrograman Backend",
+   "aliases": [
+    "Backend Development",
+    "Pengembangan Layanan Web",
+    "Web Services"
+   ],
+   "programs": [
+    "SI",
+    "TI"
+   ],
+   "skills": {
+    "rest_api_design": 0.7,
+    "nodejs_backend": 0.3,
+    "python_backend": 0.3,
+    "auth_security_basics": 0.3
+   }
+  },
+  {
+   "name": "Desain Antarmuka Pengguna",
+   "aliases": [
+    "UI/UX Design",
+    "User Interface Design",
+    "Desain UI UX",
+    "User Experience"
+   ],
+   "programs": [
+    "SI",
+    "TI",
+    "DKV"
+   ],
+   "skills": {
+    "figma_design_tools": 0.6,
+    "prototyping_interaction": 0.5,
+    "visual_design_fundamentals": 0.5,
+    "design_systems": 0.3,
+    "wireframing": 0.4
+   }
+  },
+  {
+   "name": "Desain Grafis",
+   "aliases": [
+    "Multimedia",
+    "Desain Komunikasi Visual",
+    "Graphic Design",
+    "Desain Visual"
+   ],
+   "programs": [
+    "DKV",
+    "SI"
+   ],
+   "skills": {
+    "visual_design_fundamentals": 0.7,
+    "figma_design_tools": 0.5,
+    "content_creation_tools": 0.4
+   }
+  },
+  {
+   "name": "Pemasaran Digital",
+   "aliases": [
+    "Digital Marketing",
+    "Social Media Marketing",
+    "Internet Marketing"
+   ],
+   "programs": [
+    "Manajemen",
+    "DKV",
+    "SI"
+   ],
+   "skills": {
+    "seo": 0.5,
+    "search_ads": 0.4,
+    "social_media_ads": 0.4,
+    "web_analytics": 0.4,
+    "email_marketing_automation": 0.3
+   }
+  },
+  {
+   "name": "Bisnis Elektronik",
+   "aliases": [
+    "E-Commerce",
+    "E-Business",
+    "Electronic Commerce"
+   ],
+   "programs": [
+    "Manajemen",
+    "SI"
+   ],
+   "skills": {
+    "marketplace_ecommerce": 0.6,
+    "web_analytics": 0.3
+   }
+  },
+  {
+   "name": "Analitika Web",
+   "aliases": [
+    "Web Analytics",
+    "Marketing Analytics"
+   ],
+   "programs": [
+    "Manajemen",
+    "SI",
+    "Statistika"
+   ],
+   "skills": {
+    "web_analytics": 0.8,
+    "conversion_optimization": 0.3
+   }
+  },
+  {
+   "name": "Akuntansi Keuangan Menengah",
+   "aliases": [
+    "Intermediate Accounting",
+    "Akuntansi Keuangan",
+    "Financial Accounting II"
+   ],
+   "programs": [
+    "Akuntansi"
+   ],
+   "skills": {
+    "accounting_fundamentals": 0.7,
+    "financial_statements": 0.8
+   }
+  },
+  {
+   "name": "Perpajakan",
+   "aliases": [
+    "Taxation",
+    "Pajak",
+    "Tax Accounting"
+   ],
+   "programs": [
+    "Akuntansi",
+    "Manajemen"
+   ],
+   "skills": {
+    "tax_compliance_id": 0.9
+   }
+  },
+  {
+   "name": "Auditing",
+   "aliases": [
+    "Pemeriksaan Akuntansi",
+    "Audit",
+    "Audit Internal",
+    "Internal Audit"
+   ],
+   "programs": [
+    "Akuntansi"
+   ],
+   "skills": {
+    "audit_internal_control": 0.9
+   }
+  },
+  {
+   "name": "Akuntansi Utang dan Piutang",
+   "aliases": [
+    "Accounts Payable and Receivable",
+    "Akuntansi Perusahaan Dagang"
+   ],
+   "programs": [
+    "Akuntansi"
+   ],
+   "skills": {
+    "ap_ar_reconciliation": 0.6,
+    "accounting_fundamentals": 0.5
+   }
+  }
+ ]
 }

@@ -11,6 +11,7 @@ import hashlib
 import io
 import json
 import re
+import secrets
 from functools import lru_cache
 
 from .config import GRADE_SCORES, RUBRIC_LABELS, SEED_DIR
@@ -166,6 +167,28 @@ def _english_score(scale: str | None, score: float | None) -> float:
     return 0.75
 
 
+VERIFY_DOMAINS = ("coursera.org", "credly.com", "dicoding.com", "linkedin.com", "grow.google", "skillshop.exceedlms.com",
+                  "learn.microsoft.com", "aws.amazon.com", "kaggle.com", "datacamp.com", "udemy.com", "hackerrank.com",
+                  "edx.org", "freecodecamp.org", "accredible.com", "bnsp.go.id", "cloudskillsboost.google", "ets.org",
+                  "myskills.id", "revou.co", "skilvul.com", "mysertifikasi.com")
+
+
+def verification_link(url: str | None) -> str | None:
+    """A credential URL on a known issuer's domain, or None. The page itself is not fetched."""
+    from urllib.parse import urlparse
+
+    u = (url or "").strip()
+    if not u:
+        return None
+    if "://" not in u:
+        u = "https://" + u
+    try:
+        host = (urlparse(u).hostname or "").lower()
+    except ValueError:
+        return None
+    return u[:500] if any(host == d or host.endswith("." + d) for d in VERIFY_DOMAINS) else None
+
+
 def certificate_evidence(certs: list[dict]) -> tuple[EvidenceItem, list[dict]]:
     levels = _certs()["levels"]
     scores, strength, detail = {}, {}, []
@@ -188,7 +211,8 @@ def certificate_evidence(certs: list[dict]) -> tuple[EvidenceItem, list[dict]]:
             scores[s] = max(scores.get(s, 0.0), e)
             strength[s] = max(strength.get(s, 0.0), st)
         detail.append({"input": c["name"], "matched": entry["name"] if entry else None, "similarity": round(sim, 3),
-                       "method": method, "level": entry["level"] if entry else "kursus", "contribution": contrib})
+                       "method": method, "level": entry["level"] if entry else "kursus", "contribution": contrib,
+                       "url": verification_link(c.get("url")), "verified_link": bool(verification_link(c.get("url")))})
     return EvidenceItem("certificate", "Certificates", {k: round(v, 4) for k, v in scores.items()}, strength), detail
 
 
@@ -202,6 +226,9 @@ def cv_evidence(text: str) -> tuple[EvidenceItem, dict]:
 
 
 # ---------------------------------------------------------------- project rubric
+# Without an LLM rubric or a human reviewer the heuristic rubric never exceeds "mandiri" (PM audit P0-2):
+# keywords and code snippets can be copied from any tutorial.
+HEURISTIC_MAX_LEVEL = 2
 _SQL_L1 = re.compile(r"\bselect\b[\s\S]{1,200}?\bfrom\b", re.I)
 _SQL_L2 = re.compile(r"\b(join|group\s+by|having)\b", re.I)
 _SQL_L3 = re.compile(r"\bover\s*\(|\bwith\s+\w+\s+as\s*\(|\bpartition\s+by\b|\bcase\s+when\b", re.I)
@@ -220,9 +247,11 @@ def _heuristic_rubric(text: str) -> list[dict]:
     ratings = []
     for s, ms in by_skill.items():
         n_quotes = len({m.quote for m in ms})
-        # keyword mentions alone can show at most "mandiri"; "mahir" needs code-level depth or an LLM/human rating
-        level = 1 if n_quotes < 2 else 2
-        quote = max(ms, key=lambda m: len(m.quote)).quote
+        # keyword mentions alone show "dasar"; repeated mentions, or a mention inside a sentence describing work the
+        # student did, show "mandiri". "mahir" is never given without an LLM rubric, a human reviewer or an assessment.
+        worked = [m for m in ms if _WORK_CUES.search(m.quote)]
+        level = 2 if (n_quotes >= 2 or worked) else 1
+        quote = _focus(text, (worked or ms)[0].quote, (worked or ms)[0].surface)
         rationale = f"{n_quotes} part{'s' if n_quotes > 1 else ''} of the artifact show{'' if n_quotes > 1 else 's'} this skill."
         if s == "sql":
             level = 3 if _SQL_L3.search(text) else 2 if _SQL_L2.search(text) else 1 if _SQL_L1.search(text) else min(level, 1)
@@ -235,17 +264,17 @@ def _heuristic_rubric(text: str) -> list[dict]:
             m = _PY_L3.search(text) or _PY_L2.search(text) or _PY_L1.search(text)
             if m:
                 quote = _line_at(text, m.start())
-        ratings.append({"skill_id": s, "level": min(level, 3), "quote": quote, "rationale": rationale})
+        ratings.append({"skill_id": s, "level": min(level, HEURISTIC_MAX_LEVEL), "quote": quote, "rationale": rationale})
     rated = {r["skill_id"] for r in ratings}
     if "sql" not in rated and _SQL_L1.search(text):
         lvl = 3 if _SQL_L3.search(text) else 2 if _SQL_L2.search(text) else 1
         m = _SQL_L3.search(text) or _SQL_L2.search(text) or _SQL_L1.search(text)
-        ratings.append({"skill_id": "sql", "level": lvl, "quote": _line_at(text, m.start()),
+        ratings.append({"skill_id": "sql", "level": min(lvl, HEURISTIC_MAX_LEVEL), "quote": _line_at(text, m.start()),
                         "rationale": "Query depth: " + {1: "basic SELECT", 2: "JOIN/aggregation", 3: "window functions/CTEs"}[lvl]})
     if "python_analytics" not in rated and _PY_L1.search(text):
         lvl = 3 if _PY_L3.search(text) else 2 if _PY_L2.search(text) else 1
         m = _PY_L3.search(text) or _PY_L2.search(text) or _PY_L1.search(text)
-        ratings.append({"skill_id": "python_analytics", "level": lvl, "quote": _line_at(text, m.start()),
+        ratings.append({"skill_id": "python_analytics", "level": min(lvl, HEURISTIC_MAX_LEVEL), "quote": _line_at(text, m.start()),
                         "rationale": "Data-analysis code in Python."})
     if _VIZ.search(text) and "data_visualization" not in by_skill:
         m = _VIZ.search(text)
@@ -254,10 +283,26 @@ def _heuristic_rubric(text: str) -> list[dict]:
     return ratings
 
 
-def _line_at(text: str, pos: int) -> str:
+def _line_at(text: str, pos: int, width: int = 220) -> str:
+    """The line containing `pos`; for long lines (PDF text often has none) a window around `pos`."""
     a = text.rfind("\n", 0, pos) + 1
     b = text.find("\n", pos)
-    return text[a: b if b != -1 else len(text)].strip()[:220]
+    b = b if b != -1 else len(text)
+    if b - a <= width:
+        return text[a:b].strip()
+    a = max(a, pos - width // 3)
+    return text[a: min(b, a + width)].strip()
+
+
+def _focus(text: str, quote: str, surface: str) -> str:
+    """Shorten a long quote to the part around the matched term, so the evidence points at the relevant line."""
+    if len(quote) <= 220:
+        return quote
+    i = text.find(quote)
+    j = quote.lower().find((surface or "").lower())
+    if i >= 0 and j >= 0:
+        return _line_at(text, i + j)
+    return quote[:220]
 
 
 # ------------------------------------------------------------- artifact integrity
@@ -329,6 +374,29 @@ def artifact_checks(text: str) -> dict:
             "work_statement_share": round(work_share, 3), "skill_term_density": round(density, 3)}
 
 
+# ------------------------------------------------------------- duplicate uploads (PM audit P0-2)
+_SIG_SIZE = 64
+_SIG_PRIME = (1 << 61) - 1
+
+
+def artifact_signature(text: str) -> list[int]:
+    """MinHash over word 5-shingles: two uploads with Jaccard similarity J share about J of their signature values."""
+    words = re.findall(r"\w+", text.lower())
+    shingles = {" ".join(words[i:i + 5]) for i in range(max(1, len(words) - 4))} or {""}
+    hashes = [int.from_bytes(hashlib.blake2b(sh.encode("utf-8"), digest_size=8).digest(), "big") for sh in shingles]
+    sig = []
+    for k in range(_SIG_SIZE):
+        a, b = 2 * k + 1_000_003, 7919 * k + 17
+        sig.append(min((a * h + b) % _SIG_PRIME for h in hashes))
+    return sig
+
+
+def signature_similarity(a: list[int], b: list[int]) -> float:
+    if not a or not b or len(a) != len(b):
+        return 0.0
+    return sum(x == y for x, y in zip(a, b, strict=True)) / len(a)
+
+
 def lexicon_hits(text: str) -> list[str]:
     from .extraction import lexicon_extractor
 
@@ -370,8 +438,7 @@ def project_evidence(text: str, title: str, candidate_ids: list[str] | None = No
         strength[r["skill_id"]] = 1.0
         accepted.append({**r, "label": RUBRIC_LABELS[int(r["level"])], "score": e})
     # paper: human re-check on a 20% sample of rubric ratings; suspicious uploads always go to review
-    digest = int(hashlib.sha1((title + text[:500]).encode("utf-8")).hexdigest(), 16)
-    sampled = digest % 5 == 0
+    sampled = secrets.randbelow(5) == 0      # truly random, so re-titling an upload cannot dodge the sample
     status = "pending" if (sampled or checks["flags"]) else "auto"
     detail = {"method": method, "ratings": accepted, "rejected": rejected, "checks": checks,
               "needs_human_review": status == "pending", "review_status": status,

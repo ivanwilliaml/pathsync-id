@@ -18,6 +18,8 @@ import argparse
 import ast
 from datetime import datetime
 
+from pathsync.roles import all_keywords
+
 from .common import (
     RAW_DIR,
     PoliteClient,
@@ -30,11 +32,8 @@ from .common import (
     write_jsonl,
 )
 
-WORKABLE_QUERIES = [
-    "business analyst", "system analyst", "business process analyst", "functional analyst",
-    "data analyst", "business intelligence", "product analyst", "analyst", "analytics",
-]
-WORKABLE_LOCATIONS = ["Indonesia", "Jakarta", "Surabaya", "Bandung", "Tangerang"]
+WORKABLE_QUERIES = all_keywords()
+WORKABLE_LOCATIONS = ["Indonesia", "Jakarta"]
 
 # Companies with an Indonesian presence; slugs are probed on every ATS and silently
 # skipped when the board does not exist. Extend this list to widen coverage.
@@ -70,7 +69,7 @@ WORKDAY_SITES = [
     ("hsbc", "wd3", "external"), ("manulife", "wd3", "MFCJH_Jobs"), ("pg", "wd5", "1000"),
     ("dbs", "wd3", "DBS_Careers"), ("prudential", "wd3", "prudential"), ("covestro", "wd3", "cov_external"),
 ]
-WORKDAY_QUERIES = ["analyst", "analis", "business analyst", "data analyst", "system analyst", "business intelligence"]
+WORKDAY_QUERIES = ["analyst", "engineer", "developer", "designer", "marketing", "accounting", "security", "devops", "data"]
 
 
 # ------------------------------------------------------------------- workable

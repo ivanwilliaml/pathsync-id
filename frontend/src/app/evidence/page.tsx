@@ -3,6 +3,7 @@
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Award, Check, FileText, FolderKanban, GraduationCap, Plus, SlidersHorizontal, Trash2, Upload, UserRound } from "lucide-react";
+import { track } from "@/lib/track";
 import { toast } from "sonner";
 import { api, type Meta, type Student } from "@/lib/api";
 import { RUBRIC, num, titleCase } from "@/lib/format";
@@ -69,6 +70,7 @@ function Evidence({ sid }: { sid: string }) {
   const done = (s: (typeof STEPS)[number]) =>
     s.kind ? !!student.data?.evidence.some((e) => e.kind === s.kind) : !!student.data && Object.keys(student.data.self_ratings ?? {}).length > 0;
   const saved = (label: string) => {
+    track("evidence_saved", { kind: label });
     student.reload();
     toast.success(`${label} saved`, next ? { action: { label: `Next: ${next.label}`, onClick: () => go(next.id) } } : undefined);
   };
@@ -86,7 +88,7 @@ function Evidence({ sid }: { sid: string }) {
       />
 
       <nav aria-label="Evidence steps" className="mb-8">
-        <ol className="grid grid-cols-5 gap-2">
+        <ol className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
           {STEPS.map((s, i) => {
             const active = s.id === step;
             const isDone = done(s);
@@ -98,7 +100,7 @@ function Evidence({ sid }: { sid: string }) {
                   aria-current={active ? "step" : undefined}
                   aria-label={`${s.label}${isDone ? ", done" : ""}`}
                   className={cn(
-                    "flex w-full min-w-0 flex-col items-center gap-1.5 rounded-xl border p-2 text-center sm:items-start sm:p-3 sm:text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:flex-row sm:items-center",
+                    "flex w-full min-w-0 flex-row items-center gap-2 rounded-xl border p-2 text-left sm:p-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     active ? "border-indigo bg-card shadow-sm" : "bg-card/60 hover:bg-card",
                   )}
                 >
@@ -111,7 +113,7 @@ function Evidence({ sid }: { sid: string }) {
                     {isDone ? <Check className="size-4" aria-label="Done" /> : i + 1}
                   </span>
                   <span className="w-full min-w-0">
-                    <span className="block truncate text-[11px] font-semibold text-ink sm:text-sm">{s.label}</span>
+                    <span className="block text-xs font-semibold text-ink sm:text-sm">{s.label}</span>
                     <span className="hidden truncate text-xs text-muted-foreground md:block">{s.hint}</span>
                   </span>
                 </button>
@@ -399,8 +401,9 @@ function Transcript({ sid, catalog, names, onSaved }: { sid: string; catalog: Ca
 
 // ------------------------------------------------------------------ certificates
 function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: Catalog | null; names: Record<string, string>; onSaved: () => void }) {
-  const [rows, setRows] = useState<{ name: string; score: string }[]>([{ name: "", score: "" }]);
+  const [rows, setRows] = useState<{ name: string; score: string; url: string }[]>([{ name: "", score: "", url: "" }]);
   const [result, setResult] = useState<Record<string, number> | null>(null);
+  const [claimed, setClaimed] = useState(0);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
   const scale = (n: string) => catalog?.certificates.find((c) => c.name === n)?.score_scale;
@@ -409,10 +412,11 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
     setBusy(true);
     setErr(null);
     try {
-      const certificates = rows.filter((r) => r.name.trim()).map((r) => ({ name: r.name.trim(), ...(r.score ? { score: Number(r.score) } : {}) }));
-      const r = await api.post<{ scores: Record<string, number> }>(`/students/${sid}/evidence/certificate`, { certificates });
+      const certificates = rows.filter((r) => r.name.trim()).map((r) => ({ name: r.name.trim(), url: r.url.trim(), ...(r.score ? { score: Number(r.score) } : {}) }));
+      const r = await api.post<{ scores: Record<string, number>; claimed?: number }>(`/students/${sid}/evidence/certificate`, { certificates });
       setResult(r.scores);
-      setRows([{ name: "", score: "" }]);
+      setClaimed(r.claimed ?? 0);
+      setRows([{ name: "", score: "", url: "" }]);
       onSaved();
     } catch (e) {
       setErr(e);
@@ -421,13 +425,13 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
     }
   }
   return (
-    <StepPanel title="Add Certificates" description="Pick from our list or type any course name. Proctored exams count more than online courses.">
+    <StepPanel title="Add Certificates" description="Pick from our list or type any course name, and paste the credential link (Coursera, Dicoding, Credly, Google, Microsoft…). A certificate with a verifiable link counts fully; one without a link counts as a claim, at half weight.">
       <datalist id="certs">
         {catalog?.certificates.map((c) => <option key={c.name} value={c.name} />)}
       </datalist>
       <ul className="space-y-2">
         {rows.map((r, i) => (
-          <li key={i} className="flex gap-2">
+          <li key={i} className="flex flex-wrap gap-2">
             <Input
               list="certs"
               aria-label={`Certificate ${i + 1}`}
@@ -446,6 +450,14 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
                 className="h-10 w-36"
               />
             ) : null}
+            <Input
+              type="url"
+              aria-label={`Credential link ${i + 1}`}
+              placeholder="Credential link, https://…"
+              value={r.url}
+              onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, url: e.target.value } : x)))}
+              className="h-10 min-w-0 flex-1 basis-60"
+            />
             <Button variant="ghost" size="icon-lg" aria-label={`Remove certificate ${i + 1}`} onClick={() => setRows(rows.filter((_, j) => j !== i))}>
               <Trash2 />
             </Button>
@@ -456,7 +468,8 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
         <Button size="lg" className="h-10" onClick={save} disabled={busy || !rows.some((r) => r.name.trim())}>
           {busy ? "Saving…" : "Save Certificates"}
         </Button>
-        <Button variant="ghost" size="lg" className="h-10" onClick={() => setRows([...rows, { name: "", score: "" }])}>
+        {!rows.some((r) => r.name.trim()) ? <span className="self-center text-xs text-ink/60">Type or pick a certificate name first.</span> : null}
+        <Button variant="ghost" size="lg" className="h-10" onClick={() => setRows([...rows, { name: "", score: "", url: "" }])}>
           <Plus /> Add Another
         </Button>
       </div>
@@ -466,6 +479,7 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
       {result ? (
         <ResultPanel title="Saved. These skills now count your certificates:">
           <SkillChips scores={result} names={names} />
+          {claimed ? <p className="mt-2 text-xs text-ink/70">{claimed} certificate(s) have no verifiable link, so they count as claims at half weight. Add the link to count them fully.</p> : null}
         </ResultPanel>
       ) : null}
     </StepPanel>

@@ -22,11 +22,11 @@ from .ranker import build_candidates
 from .taxonomy import SkillGraph
 
 ARCHETYPES = [
-    ("Management student, semester 5", {"business_process": 0.45, "data_analytics": 0.25, "tools": 0.30, "communication": 0.55}),
-    ("Information Systems student, semester 7", {"business_process": 0.50, "data_analytics": 0.40, "tools": 0.45, "communication": 0.50}),
-    ("Accounting student, semester 6", {"business_process": 0.35, "data_analytics": 0.40, "tools": 0.40, "communication": 0.50}),
-    ("Computer Science student, semester 7", {"business_process": 0.30, "data_analytics": 0.50, "tools": 0.55, "communication": 0.40}),
-    ("Data analytics bootcamp graduate", {"business_process": 0.30, "data_analytics": 0.60, "tools": 0.55, "communication": 0.45}),
+    ("Management student, semester 5", {"business_analysis": 0.45, "data_analytics": 0.25, "bi_tools": 0.30}),
+    ("Information Systems student, semester 7", {"business_analysis": 0.50, "data_analytics": 0.40, "bi_tools": 0.45}),
+    ("Accounting student, semester 6", {"business_analysis": 0.35, "data_analytics": 0.40, "bi_tools": 0.40}),
+    ("Computer Science student, semester 7", {"business_analysis": 0.30, "data_analytics": 0.50, "bi_tools": 0.55}),
+    ("Data analytics bootcamp graduate", {"business_analysis": 0.30, "data_analytics": 0.60, "bi_tools": 0.55}),
 ]
 SKILL_BIAS = {   # archetype-specific nudges so profiles are not cluster-uniform
     0: {"strategic_analysis": 0.2, "financial_analysis": 0.15, "sql": -0.15, "presentation_storytelling": 0.15},
@@ -50,7 +50,7 @@ def make_profile(idx: int, graph: SkillGraph, rng: random.Random) -> tuple[str, 
     bias = SKILL_BIAS[idx % len(ARCHETYPES)]
     p, K = {}, {}
     for s, sk in graph.skills.items():
-        v = base[sk.cluster] + bias.get(s, 0.0) + rng.gauss(0, 0.15)
+        v = base.get(sk.cluster, 0.35) + bias.get(s, 0.0) + rng.gauss(0, 0.15)
         p[s] = round(min(0.95, max(0.03, v)), 2)
         K[s] = round(min(0.95, max(0.05, rng.uniform(0.15, 0.85))), 2)
     return label, p, K

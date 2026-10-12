@@ -70,7 +70,8 @@ def test_upload_limits(client, stu):
 # ---------------------------------------------------------------- student flow
 def test_meta_catalog_and_model_card(client):
     m = client.get("/api/meta").json()
-    assert {r["id"] for r in m["roles"]} == {"business_analyst", "data_analyst"}
+    assert {"business_analyst", "data_analyst", "backend_developer", "accountant", "digital_marketing"} <= {r["id"] for r in m["roles"]}
+    assert len(m["roles"]) >= 12 and all(r["family"] for r in m["roles"])
     assert len(m["skills"]) >= 42 and m["n_items"] >= 210
     card = m["models"]
     assert "not an LLM" in card["decision_model"]["type"] and card["embedding_model"]["name"]
@@ -334,3 +335,38 @@ def test_market_update_can_be_stopped(client, monkeypatch):
             break
         time.sleep(0.1)
     assert not job["running"] and job["cancelled"] and job["ok"] is False and time.time() - t0 < 10
+
+
+def test_heuristic_rubric_never_gives_proficient_and_rejects_duplicates(client):
+    """PM audit P0-2: copied CTE/window-function/sklearn snippets used to earn 'mahir' and could be resubmitted."""
+    sid, h = new_student(client)
+    text = ("Proyek analisis churn. Saya menulis kueri berikut:\n"
+            "WITH t AS (SELECT cid, ROW_NUMBER() OVER (PARTITION BY cid ORDER BY dt) rn FROM orders) SELECT * FROM t;\n"
+            "import pandas as pd\nfrom sklearn.linear_model import LogisticRegression\n"
+            "Hasilnya saya sajikan ke manajer dengan rekomendasi retensi untuk pelanggan berisiko tinggi.")
+    r = client.post(f"/api/students/{sid}/evidence/project", headers=h, data={"title": "A", "text": text}).json()
+    assert r["ratings"] and max(x["level"] for x in r["ratings"]) <= 2 and "signature" not in r
+    again = client.post(f"/api/students/{sid}/evidence/project", headers=h, data={"title": "renamed", "text": text})
+    assert again.status_code == 409
+    other, h2 = new_student(client)
+    assert client.post(f"/api/students/{other}/evidence/project", headers=h2, data={"title": "B", "text": text}).status_code == 409
+
+
+def test_project_daily_limit(client):
+    sid, h = new_student(client)
+    codes = []
+    for i in range(6):
+        body = (f"Laporan proyek nomor {i}: saya membuat dashboard penjualan wilayah {i} dengan Power BI dan menulis "
+                f"kueri SQL untuk menghitung omzet bulanan cabang ke-{i}, lalu mempresentasikan temuan {i * 7} poin kepada tim.")
+        codes.append(client.post(f"/api/students/{sid}/evidence/project", headers=h, data={"title": f"P{i}", "text": body}).status_code)
+    assert codes[:5] == [200] * 5 and codes[5] == 429
+
+
+def test_certificate_without_link_is_a_claim(client):
+    sid, h = new_student(client)
+    r = client.post(f"/api/students/{sid}/evidence/certificate", headers=h, json={"certificates": [
+        {"name": "Google Data Analytics", "url": "https://www.coursera.org/account/accomplishments/verify/ABC"},
+        {"name": "Tableau Desktop Specialist"}]}).json()
+    assert r["claimed"] == 1
+    ev = client.get(f"/api/students/{sid}", headers=h).json()["evidence"]
+    assert sorted(e["review_status"] for e in ev if e["kind"] == "certificate") == ["auto", "claimed"]

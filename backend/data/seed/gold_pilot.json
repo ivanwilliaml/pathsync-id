@@ -1,0 +1,226 @@
+{
+ "note": "Pilot gold set: 24 postings, explicit hard-skill requirements only, single annotator (Claude) on 12 Oct 2026. Labels list the skills the posting clearly asks for; unlisted skills may also be present, so precision is understated. To be replaced by two human annotators (see Admin > Annotation, Cohen kappa).",
+ "postings": {
+  "karirhub:b9b79d78-cabb-4a55-8549-e71f049c9f37": {
+   "role": "accountant",
+   "skills": [
+    "accounting_fundamentals",
+    "financial_statements",
+    "ap_ar_reconciliation",
+    "tax_compliance_id",
+    "excel"
+   ]
+  },
+  "workable:bb19534f-5550-48cb-86d5-a3219772d59a": {
+   "role": "accountant",
+   "skills": [
+    "audit_internal_control",
+    "data_analysis",
+    "erp_crm"
+   ]
+  },
+  "karirhub:cc4bdf76-90a2-45ad-adb7-9d77bb061e0a": {
+   "role": "accountant",
+   "skills": [
+    "tax_compliance_id",
+    "accounting_fundamentals",
+    "financial_statements"
+   ]
+  },
+  "karirhub:f3b37e75-cce8-4012-a3e7-cf1a31ceff03": {
+   "role": "accountant",
+   "skills": [
+    "financial_statements",
+    "tax_compliance_id",
+    "cost_accounting",
+    "accounting_software",
+    "excel",
+    "accounting_fundamentals"
+   ]
+  },
+  "kalibrr:272473": {
+   "role": "backend_developer",
+   "skills": [
+    "dotnet_csharp",
+    "system_design_architecture",
+    "sql"
+   ]
+  },
+  "kalibrr:272271": {
+   "role": "backend_developer",
+   "skills": [
+    "java_spring",
+    "rest_api_design",
+    "programming_fundamentals",
+    "system_design_architecture"
+   ]
+  },
+  "karirhub:9a2eee69-51ba-4d66-84ed-ba1faa7f2760": {
+   "role": "business_analyst",
+   "skills": [
+    "requirements_elicitation",
+    "testing_uat",
+    "business_process_modeling"
+   ]
+  },
+  "workable:eeb33cef-3f27-4212-9d95-a4dd99e8e0a8": {
+   "role": "business_analyst",
+   "skills": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "business_process_modeling",
+    "sdlc",
+    "jira_confluence",
+    "diagramming_tools",
+    "figma_design_tools",
+    "sql",
+    "data_visualization"
+   ]
+  },
+  "workable:a1a4a261-401c-43c1-9504-40d3ec0013c0": {
+   "role": "business_analyst",
+   "skills": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "testing_uat",
+    "business_process_modeling",
+    "data_analysis"
+   ]
+  },
+  "kalibrr:273215": {
+   "role": "business_analyst",
+   "skills": [
+    "requirements_elicitation",
+    "wireframing",
+    "requirements_documentation",
+    "testing_uat",
+    "sql"
+   ]
+  },
+  "kalibrr:252391": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "linux_administration",
+    "network_security"
+   ]
+  },
+  "kalibrr:272480": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "siem_monitoring",
+    "network_security",
+    "incident_response_forensics",
+    "vulnerability_assessment"
+   ]
+  },
+  "kalibrr:271511": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "incident_response_forensics",
+    "siem_monitoring"
+   ]
+  },
+  "kalibrr:272359": {
+   "role": "data_analyst",
+   "skills": [
+    "sql",
+    "cloud_data_platform",
+    "python_programming",
+    "dashboard_reporting",
+    "data_cleaning"
+   ]
+  },
+  "workable:3bc37273-1aaa-4288-82bf-52dc3532e426": {
+   "role": "data_analyst",
+   "skills": [
+    "sql",
+    "data_visualization",
+    "statistics"
+   ]
+  },
+  "kalibrr:270033": {
+   "role": "data_analyst",
+   "skills": [
+    "sql",
+    "tableau",
+    "power_bi",
+    "bi_tools_other",
+    "statistics",
+    "data_cleaning",
+    "excel"
+   ]
+  },
+  "karirhub:01a0cdf1-8c64-73b0-a023-ce7d51a6bb99": {
+   "role": "data_engineer",
+   "skills": [
+    "python_programming",
+    "rest_api_design"
+   ]
+  },
+  "karirhub:01a0d9c3-5233-724f-8bda-cda073ae935e": {
+   "role": "data_engineer",
+   "skills": [
+    "etl_pipelines",
+    "sql"
+   ]
+  },
+  "karirhub:f7ef5084-30ec-4192-a54a-cda32d614762": {
+   "role": "data_engineer",
+   "skills": [
+    "etl_pipelines",
+    "sql",
+    "python_programming",
+    "workflow_orchestration",
+    "cloud_aws",
+    "big_data_spark",
+    "streaming_data",
+    "data_warehousing",
+    "cloud_gcp_azure"
+   ]
+  },
+  "workable:57b68cc1-ab88-4df3-9e72-e180b2187d3f": {
+   "role": "data_scientist",
+   "skills": [
+    "machine_learning",
+    "python_programming"
+   ]
+  },
+  "karirhub:01a08abd-d2e2-714f-992c-283cc38ad9da": {
+   "role": "data_scientist",
+   "skills": [
+    "machine_learning",
+    "etl_pipelines",
+    "nlp_computer_vision"
+   ]
+  },
+  "kalibrr:193130": {
+   "role": "devops_engineer",
+   "skills": [
+    "networking_fundamentals"
+   ]
+  },
+  "kalibrr:272644": {
+   "role": "devops_engineer",
+   "skills": [
+    "linux_administration",
+    "ci_cd_pipelines",
+    "monitoring_observability",
+    "networking_fundamentals",
+    "docker_containers",
+    "cloud_security",
+    "sql",
+    "cloud_aws",
+    "cloud_gcp_azure"
+   ]
+  },
+  "kalibrr:272182": {
+   "role": "devops_engineer",
+   "skills": [
+    "ci_cd_pipelines",
+    "kubernetes",
+    "git_version_control",
+    "linux_administration"
+   ]
+  }
+ }
+}

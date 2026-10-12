@@ -1,58 +1,84 @@
 // Thin client for the FastAPI backend. Requests go to /api/* which next.config.mjs proxies.
-import { staffTokenFor } from "./staff";
 import { getStudentToken } from "./student";
 
 export class ApiError extends Error {
   status: number;
-  constructor(status: number, message: string) {
+  requestId?: string;
+  constructor(status: number, message: string, requestId?: string) {
     super(message);
     this.status = status;
+    this.requestId = requestId;
   }
 }
 
-/** Bearer token for a route: the student's own token for /students/*, a staff token for staff routes. */
+/** Student routes use the student's bearer token; staff routes use the HttpOnly session cookie (no token in JS). */
 function tokenFor(path: string): string | null {
-  if (path.startsWith("/students/")) return getStudentToken();
-  return staffTokenFor(path);
+  return path.startsWith("/students/") ? getStudentToken() : null;
 }
+
+let lastRequestId: string | null = null;
+/** Request id of the most recent response, attached to problem reports so the team can trace them. */
+export function getLastRequestId() {
+  return lastRequestId;
+}
+
+const TIMEOUT_MS = 30_000;
+const UPLOAD_TIMEOUT_MS = 90_000;
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
   const headers: Record<string, string> = {};
   const token = tokenFor(path);
   if (token) headers.authorization = `Bearer ${token}`;
-  const init: RequestInit = { method, headers };
+  if (method !== "GET") headers["x-pathsync"] = "1"; // CSRF guard for cookie-authenticated staff writes
+  const init: RequestInit = { method, headers, credentials: "same-origin" };
   if (body instanceof FormData) {
     init.body = body;
   } else if (body !== undefined) {
     init.body = JSON.stringify(body);
-    (init.headers as Record<string, string>)["content-type"] = "application/json";
+    headers["content-type"] = "application/json";
   }
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), body instanceof FormData ? UPLOAD_TIMEOUT_MS : TIMEOUT_MS);
+  init.signal = ctl.signal;
   let res: Response;
   try {
     res = await fetch(`/api${path}`, init);
-  } catch {
-    throw new ApiError(0, "Can't reach the PathSync server. Check that the backend is running.");
+  } catch (e) {
+    if (e instanceof DOMException && e.name === "AbortError") {
+      // the server may still have saved it: tell the user to reload before retrying (PM audit P0-5)
+      throw new ApiError(
+        408,
+        method === "GET"
+          ? "This is taking longer than expected. Check your connection and try again."
+          : "Still processing… your change may already be saved. Reload the page to check before trying again.",
+      );
+    }
+    throw new ApiError(0, "Can't reach PathSync. Check your internet connection and try again.");
+  } finally {
+    clearTimeout(timer);
   }
+  lastRequestId = res.headers.get("x-request-id") ?? lastRequestId;
   if (!res.ok) {
+    const rid = res.headers.get("x-request-id");
     let msg = res.status >= 500 ? "Something went wrong on the server. Try again in a moment." : `${res.status} ${res.statusText}`;
     try {
       const j = await res.json();
       if (typeof j.detail === "string") msg = j.detail;
     } catch {}
     if ((res.status === 401 || res.status === 403) && path.startsWith("/students/")) {
-      // the stored profile token is missing or stale: sign out so the app offers sign-up / resume
-      const { setStudent } = await import("./student");
-      setStudent(null);
+      // never sign out silently: the access-key dialog asks for the key again (PM audit P0-4)
+      window.dispatchEvent(new CustomEvent("pathsync-reauth"));
     }
-    throw new ApiError(res.status, msg);
+    throw new ApiError(res.status, rid && res.status >= 500 && !msg.includes("ref ") ? `${msg} (ref ${rid})` : msg, rid ?? undefined);
   }
-  return res.json() as Promise<T>;
+  return res.status === 204 ? (undefined as T) : (res.json() as Promise<T>);
 }
 
 export const api = {
   get: <T>(p: string) => request<T>("GET", p),
   post: <T>(p: string, b?: unknown) => request<T>("POST", p, b ?? {}),
   patch: <T>(p: string, b: unknown) => request<T>("PATCH", p, b),
+  put: <T>(p: string, b: unknown) => request<T>("PUT", p, b),
   del: <T>(p: string) => request<T>("DELETE", p),
 };
 
@@ -117,6 +143,7 @@ export interface PathStep {
   level_target: string;
   rec_type: string;
   hours: number;
+  first_module_hours?: number;
   materials: Material[];
   waiting_for: string[];
   learn_what: string;
@@ -176,7 +203,9 @@ export interface Dashboard {
 }
 
 export interface Meta {
-  roles: { id: string; name: string }[];
+  models?: { validation?: { real_experts: number; ranker_trained_on: string; status: string }; planned?: string[] };
+  roles: { id: string; name: string; family: string; blurb: string; n_postings: number; limited_data: boolean }[];
+  families: Record<string, string>;
   clusters: Record<string, string>;
   taxonomy_version: string;
   skills: { id: string; name: string; name_en: string; cluster: string; kind: string; description: string; learn_what: string }[];
@@ -203,7 +232,7 @@ export interface Student {
   target_role: string;
   preferences: Record<string, unknown>;
   self_ratings: Record<string, number> | null;
-  evidence: { id: number; kind: string; title: string; scores: Record<string, number>; details: Record<string, unknown>; created_at: string }[];
+  evidence: { id: number; kind: string; title: string; scores: Record<string, number>; details: Record<string, unknown>; review_status?: string; created_at: string }[];
   n_responses: number;
 }
 

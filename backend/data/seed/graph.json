@@ -1,357 +1,966 @@
 {
-  "version": "2026.10-draft",
-  "status_note": "Draf sisi prasyarat dari relasi ESCO dan penilaian tim. Setiap sisi divalidasi tiga pakar di Panel Pakar; sisi dipertahankan bila disetujui sedikitnya 2 dari 3 pakar (paper III.A.3). Sebelum validasi selesai, mesin memakai seluruh sisi draf.",
-  "readiness_threshold": 0.6,
-  "edges": [
-    {
-      "from": "excel",
-      "to": "data_cleaning",
-      "source": "tim",
-      "rationale": "Pembersihan data tingkat awal umumnya dilakukan di spreadsheet.",
-      "rationale_en": "Early-stage data cleaning is usually done in a spreadsheet."
-    },
-    {
-      "from": "sql",
-      "to": "data_cleaning",
-      "source": "tim",
-      "rationale": "Data perlu diambil dan difilter dengan kueri sebelum dapat dibersihkan dalam skala besar.",
-      "rationale_en": "Data has to be pulled and filtered with queries before it can be cleaned at scale."
-    },
-    {
-      "from": "excel",
-      "to": "data_analysis",
-      "source": "tim",
-      "rationale": "Analisis data awal di lingkungan kerja BA hampir selalu memakai spreadsheet.",
-      "rationale_en": "Early data analysis in BA work almost always happens in a spreadsheet."
-    },
-    {
-      "from": "sql",
-      "to": "data_analysis",
-      "source": "tim",
-      "rationale": "Analisis membutuhkan kemampuan menarik dan menggabungkan data dari basis data.",
-      "rationale_en": "Analysis requires pulling and joining data from databases."
-    },
-    {
-      "from": "statistics",
-      "to": "data_analysis",
-      "source": "esco",
-      "rationale": "ESCO: 'apply statistical analysis techniques' memuat 'statistics' sebagai keterampilan pendukung.",
-      "rationale_en": "ESCO: 'apply statistical analysis techniques' lists 'statistics' as a supporting skill."
-    },
-    {
-      "from": "data_cleaning",
-      "to": "data_analysis",
-      "source": "esco",
-      "rationale": "ESCO: kualitas data ('implement data quality processes') mendahului penafsiran data.",
-      "rationale_en": "ESCO: data quality ('implement data quality processes') comes before interpreting data."
-    },
-    {
-      "from": "sql",
-      "to": "data_visualization",
-      "source": "tim",
-      "rationale": "Data untuk visual harus disiapkan dengan kueri (contoh paper Gambar 6).",
-      "rationale_en": "Data for visuals has to be prepared with queries (paper example, Figure 6)."
-    },
-    {
-      "from": "excel",
-      "to": "data_visualization",
-      "source": "tim",
-      "rationale": "Grafik dasar pertama kali dipelajari di spreadsheet.",
-      "rationale_en": "Basic charts are first learned in a spreadsheet."
-    },
-    {
-      "from": "data_visualization",
-      "to": "dashboard_reporting",
-      "source": "esco",
-      "rationale": "ESCO: 'deliver visual presentation of data' bertumpu pada 'visual presentation techniques'.",
-      "rationale_en": "ESCO: 'deliver visual presentation of data' builds on 'visual presentation techniques'."
-    },
-    {
-      "from": "data_analysis",
-      "to": "dashboard_reporting",
-      "source": "esco",
-      "rationale": "ESCO: 'report analysis results' memiliki konsep induk 'perform data analysis'.",
-      "rationale_en": "ESCO: 'report analysis results' has 'perform data analysis' as its parent concept."
-    },
-    {
-      "from": "kpi_metrics",
-      "to": "dashboard_reporting",
-      "source": "tim",
-      "rationale": "Dashboard yang berguna dimulai dari pemilihan metrik yang tepat.",
-      "rationale_en": "A useful dashboard starts with choosing the right metrics."
-    },
-    {
-      "from": "sql",
-      "to": "data_modeling",
-      "source": "tim",
-      "rationale": "Pengalaman menulis kueri membuat konsep relasi dan skema bermakna.",
-      "rationale_en": "Writing queries makes relational and schema concepts meaningful."
-    },
-    {
-      "from": "data_analysis",
-      "to": "python_analytics",
-      "source": "tim",
-      "rationale": "Python dipakai untuk memperbesar skala analisis yang alurnya sudah dipahami.",
-      "rationale_en": "Python scales up an analysis flow you already understand."
-    },
-    {
-      "from": "excel",
-      "to": "financial_analysis",
-      "source": "tim",
-      "rationale": "Analisis keuangan sehari-hari dilakukan dengan model spreadsheet.",
-      "rationale_en": "Day-to-day financial analysis is done with spreadsheet models."
-    },
-    {
-      "from": "statistics",
-      "to": "research_methods",
-      "source": "esco",
-      "rationale": "ESCO: 'conduct quantitative research' terkait 'manage quantitative data' dan metode statistik.",
-      "rationale_en": "ESCO: 'conduct quantitative research' relates to 'manage quantitative data' and statistical methods."
-    },
-    {
-      "from": "data_visualization",
-      "to": "power_bi",
-      "source": "tim",
-      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI.",
-      "rationale_en": "Visualisation principles come before mastering a BI tool."
-    },
-    {
-      "from": "excel",
-      "to": "power_bi",
-      "source": "tim",
-      "rationale": "Power Query dan model data Power BI berangkat dari logika spreadsheet.",
-      "rationale_en": "Power Query and Power BI data models build on spreadsheet logic."
-    },
-    {
-      "from": "data_visualization",
-      "to": "tableau",
-      "source": "tim",
-      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI.",
-      "rationale_en": "Visualisation principles come before mastering a BI tool."
-    },
-    {
-      "from": "data_visualization",
-      "to": "bi_tools_other",
-      "source": "tim",
-      "rationale": "Prinsip visualisasi mendahului penguasaan alat BI.",
-      "rationale_en": "Visualisation principles come before mastering a BI tool."
-    },
-    {
-      "from": "sql",
-      "to": "bi_tools_other",
-      "source": "tim",
-      "rationale": "Looker Studio/Metabase umumnya dibangun di atas kueri SQL.",
-      "rationale_en": "Looker Studio and Metabase are usually built on SQL queries."
-    },
-    {
-      "from": "sql",
-      "to": "cloud_data_platform",
-      "source": "tim",
-      "rationale": "BigQuery/Snowflake diakses dengan SQL.",
-      "rationale_en": "BigQuery and Snowflake are accessed with SQL."
-    },
-    {
-      "from": "verbal_communication",
-      "to": "stakeholder_management",
-      "source": "tim",
-      "rationale": "Mengelola pemangku kepentingan menuntut komunikasi lisan yang baik.",
-      "rationale_en": "Managing stakeholders requires good spoken communication."
-    },
-    {
-      "from": "verbal_communication",
-      "to": "requirements_elicitation",
-      "source": "esco",
-      "rationale": "ESCO: 'interact with users to gather requirements' memiliki konsep induk 'use questioning techniques'.",
-      "rationale_en": "ESCO: 'interact with users to gather requirements' has 'use questioning techniques' as its parent concept."
-    },
-    {
-      "from": "stakeholder_management",
-      "to": "requirements_elicitation",
-      "source": "tim",
-      "rationale": "Identifikasi pemangku kepentingan mendahului penggalian kebutuhan.",
-      "rationale_en": "Identifying stakeholders comes before gathering requirements."
-    },
-    {
-      "from": "requirements_elicitation",
-      "to": "requirements_documentation",
-      "source": "esco",
-      "rationale": "ESCO: 'analyse business requirements' memuat 'business requirements techniques'.",
-      "rationale_en": "ESCO: 'analyse business requirements' includes 'business requirements techniques'."
-    },
-    {
-      "from": "business_writing",
-      "to": "requirements_documentation",
-      "source": "tim",
-      "rationale": "Dokumen kebutuhan menuntut penulisan yang jelas dan terstruktur.",
-      "rationale_en": "Requirements documents need clear, structured writing."
-    },
-    {
-      "from": "business_process_modeling",
-      "to": "process_improvement",
-      "source": "esco",
-      "rationale": "ESCO: 'analyse business processes' memuat 'business process modelling'.",
-      "rationale_en": "ESCO: 'analyse business processes' includes 'business process modelling'."
-    },
-    {
-      "from": "data_analysis",
-      "to": "process_improvement",
-      "source": "tim",
-      "rationale": "Perbaikan proses perlu diukur dengan data sebelum dan sesudah.",
-      "rationale_en": "Process improvements need to be measured with before-and-after data."
-    },
-    {
-      "from": "business_process_modeling",
-      "to": "system_modeling_uml",
-      "source": "tim",
-      "rationale": "Activity diagram dan use case berangkat dari pemahaman alur proses.",
-      "rationale_en": "Activity diagrams and use cases start from understanding the process flow."
-    },
-    {
-      "from": "requirements_elicitation",
-      "to": "system_modeling_uml",
-      "source": "esco",
-      "rationale": "ESCO: 'translate requirement concepts into visual design' menerjemahkan kebutuhan yang sudah digali.",
-      "rationale_en": "ESCO: 'translate requirement concepts into visual design' builds on requirements already gathered."
-    },
-    {
-      "from": "sdlc",
-      "to": "agile_scrum",
-      "source": "tim",
-      "rationale": "Agile dipahami sebagai salah satu pendekatan dalam siklus pengembangan.",
-      "rationale_en": "Agile is understood as one approach within the development life cycle."
-    },
-    {
-      "from": "requirements_documentation",
-      "to": "testing_uat",
-      "source": "tim",
-      "rationale": "Test case dan UAT diturunkan dari kebutuhan dan acceptance criteria.",
-      "rationale_en": "Test cases and UAT are derived from requirements and acceptance criteria."
-    },
-    {
-      "from": "sdlc",
-      "to": "testing_uat",
-      "source": "tim",
-      "rationale": "Pengujian adalah tahap dalam siklus pengembangan.",
-      "rationale_en": "Testing is a stage in the development life cycle."
-    },
-    {
-      "from": "stakeholder_management",
-      "to": "project_management",
-      "source": "esco",
-      "rationale": "ESCO: 'manage ICT project' bertumpu pada koordinasi pemangku kepentingan.",
-      "rationale_en": "ESCO: 'manage ICT project' relies on coordinating stakeholders."
-    },
-    {
-      "from": "financial_analysis",
-      "to": "business_case",
-      "source": "esco",
-      "rationale": "ESCO: 'provide cost benefit analysis reports' membutuhkan analisis keuangan.",
-      "rationale_en": "ESCO: 'provide cost benefit analysis reports' requires financial analysis."
-    },
-    {
-      "from": "kpi_metrics",
-      "to": "business_case",
-      "source": "tim",
-      "rationale": "Manfaat dalam business case dinyatakan dalam metrik yang terukur.",
-      "rationale_en": "Benefits in a business case are expressed as measurable metrics."
-    },
-    {
-      "from": "stakeholder_management",
-      "to": "change_management",
-      "source": "tim",
-      "rationale": "Manajemen perubahan bergantung pada dukungan pemangku kepentingan.",
-      "rationale_en": "Change management depends on stakeholder support."
-    },
-    {
-      "from": "research_methods",
-      "to": "strategic_analysis",
-      "source": "esco",
-      "rationale": "ESCO: analisis faktor eksternal bertumpu pada 'market research'.",
-      "rationale_en": "ESCO: analysing external factors relies on 'market research'."
-    },
-    {
-      "from": "critical_thinking",
-      "to": "strategic_analysis",
-      "source": "esco",
-      "rationale": "ESCO: 'make strategic business decisions' memiliki konsep induk 'apply strategic thinking'.",
-      "rationale_en": "ESCO: 'make strategic business decisions' has 'apply strategic thinking' as its parent concept."
-    },
-    {
-      "from": "critical_thinking",
-      "to": "risk_management",
-      "source": "tim",
-      "rationale": "Penilaian risiko menuntut penalaran sistematis atas kemungkinan dan dampak.",
-      "rationale_en": "Assessing risk requires systematic reasoning about likelihood and impact."
-    },
-    {
-      "from": "agile_scrum",
-      "to": "jira_confluence",
-      "source": "tim",
-      "rationale": "Jira dipakai untuk menjalankan alur kerja agile.",
-      "rationale_en": "Jira is used to run agile workflows."
-    },
-    {
-      "from": "business_process_modeling",
-      "to": "diagramming_tools",
-      "source": "tim",
-      "rationale": "Notasi proses dipelajari sebelum alat penggambarnya.",
-      "rationale_en": "Process notation is learned before the tool used to draw it."
-    },
-    {
-      "from": "requirements_elicitation",
-      "to": "wireframing",
-      "source": "esco",
-      "rationale": "ESCO: 'translate requirement concepts into visual design'.",
-      "rationale_en": "ESCO: 'translate requirement concepts into visual design'."
-    },
-    {
-      "from": "business_process_modeling",
-      "to": "erp_crm",
-      "source": "tim",
-      "rationale": "Modul ERP mengotomasi proses bisnis yang harus dipahami lebih dahulu.",
-      "rationale_en": "ERP modules automate business processes that must be understood first."
-    },
-    {
-      "from": "data_visualization",
-      "to": "presentation_storytelling",
-      "source": "esco",
-      "rationale": "ESCO: 'deliver visual presentation of data' memuat 'visual presentation techniques'.",
-      "rationale_en": "ESCO: 'deliver visual presentation of data' includes 'visual presentation techniques'."
-    },
-    {
-      "from": "verbal_communication",
-      "to": "presentation_storytelling",
-      "source": "tim",
-      "rationale": "Presentasi adalah bentuk komunikasi lisan terstruktur.",
-      "rationale_en": "A presentation is a structured form of spoken communication."
-    },
-    {
-      "from": "verbal_communication",
-      "to": "facilitation_negotiation",
-      "source": "tim",
-      "rationale": "Fasilitasi dan negosiasi bertumpu pada komunikasi lisan.",
-      "rationale_en": "Facilitation and negotiation rely on spoken communication."
-    },
-    {
-      "from": "stakeholder_management",
-      "to": "facilitation_negotiation",
-      "source": "tim",
-      "rationale": "Negosiasi prioritas menuntut pemahaman kepentingan setiap pihak.",
-      "rationale_en": "Negotiating priorities requires understanding every party's interests."
-    },
-    {
-      "from": "sdlc",
-      "to": "api_integration",
-      "source": "tim",
-      "rationale": "Kebutuhan integrasi dirumuskan dalam konteks siklus pengembangan sistem.",
-      "rationale_en": "Integration requirements are defined within the system development life cycle."
-    },
-    {
-      "from": "data_modeling",
-      "to": "api_integration",
-      "source": "esco",
-      "rationale": "ESCO: 'integrate ICT data' bertumpu pada pemahaman struktur data.",
-      "rationale_en": "ESCO: 'integrate ICT data' relies on understanding data structures."
-    }
-  ]
+ "version": "2026.10-v3-draft",
+ "status_note": "Draft prerequisite edges for the hard-skill taxonomy. Each edge is validated by three experts in the Expert Panel; until then the engine uses every draft edge (paper III.A.3).",
+ "readiness_threshold": 0.6,
+ "edges": [
+  {
+   "from": "excel",
+   "to": "data_cleaning",
+   "source": "tim",
+   "rationale": "Pembersihan data tingkat awal umumnya dilakukan di spreadsheet.",
+   "rationale_en": "Early-stage data cleaning is usually done in a spreadsheet."
+  },
+  {
+   "from": "sql",
+   "to": "data_cleaning",
+   "source": "tim",
+   "rationale": "Data perlu diambil dan difilter dengan kueri sebelum dapat dibersihkan dalam skala besar.",
+   "rationale_en": "Data has to be pulled and filtered with queries before it can be cleaned at scale."
+  },
+  {
+   "from": "excel",
+   "to": "data_analysis",
+   "source": "tim",
+   "rationale": "Analisis data awal di lingkungan kerja BA hampir selalu memakai spreadsheet.",
+   "rationale_en": "Early data analysis in BA work almost always happens in a spreadsheet."
+  },
+  {
+   "from": "sql",
+   "to": "data_analysis",
+   "source": "tim",
+   "rationale": "Analisis membutuhkan kemampuan menarik dan menggabungkan data dari basis data.",
+   "rationale_en": "Analysis requires pulling and joining data from databases."
+  },
+  {
+   "from": "statistics",
+   "to": "data_analysis",
+   "source": "esco",
+   "rationale": "ESCO: 'apply statistical analysis techniques' memuat 'statistics' sebagai keterampilan pendukung.",
+   "rationale_en": "ESCO: 'apply statistical analysis techniques' lists 'statistics' as a supporting skill."
+  },
+  {
+   "from": "data_cleaning",
+   "to": "data_analysis",
+   "source": "esco",
+   "rationale": "ESCO: kualitas data ('implement data quality processes') mendahului penafsiran data.",
+   "rationale_en": "ESCO: data quality ('implement data quality processes') comes before interpreting data."
+  },
+  {
+   "from": "sql",
+   "to": "data_visualization",
+   "source": "tim",
+   "rationale": "Data untuk visual harus disiapkan dengan kueri (contoh paper Gambar 6).",
+   "rationale_en": "Data for visuals has to be prepared with queries (paper example, Figure 6)."
+  },
+  {
+   "from": "excel",
+   "to": "data_visualization",
+   "source": "tim",
+   "rationale": "Grafik dasar pertama kali dipelajari di spreadsheet.",
+   "rationale_en": "Basic charts are first learned in a spreadsheet."
+  },
+  {
+   "from": "data_visualization",
+   "to": "dashboard_reporting",
+   "source": "esco",
+   "rationale": "ESCO: 'deliver visual presentation of data' bertumpu pada 'visual presentation techniques'.",
+   "rationale_en": "ESCO: 'deliver visual presentation of data' builds on 'visual presentation techniques'."
+  },
+  {
+   "from": "data_analysis",
+   "to": "dashboard_reporting",
+   "source": "esco",
+   "rationale": "ESCO: 'report analysis results' memiliki konsep induk 'perform data analysis'.",
+   "rationale_en": "ESCO: 'report analysis results' has 'perform data analysis' as its parent concept."
+  },
+  {
+   "from": "kpi_metrics",
+   "to": "dashboard_reporting",
+   "source": "tim",
+   "rationale": "Dashboard yang berguna dimulai dari pemilihan metrik yang tepat.",
+   "rationale_en": "A useful dashboard starts with choosing the right metrics."
+  },
+  {
+   "from": "sql",
+   "to": "data_modeling",
+   "source": "tim",
+   "rationale": "Pengalaman menulis kueri membuat konsep relasi dan skema bermakna.",
+   "rationale_en": "Writing queries makes relational and schema concepts meaningful."
+  },
+  {
+   "from": "data_analysis",
+   "to": "python_analytics",
+   "source": "tim",
+   "rationale": "Python dipakai untuk memperbesar skala analisis yang alurnya sudah dipahami.",
+   "rationale_en": "Python scales up an analysis flow you already understand."
+  },
+  {
+   "from": "excel",
+   "to": "financial_analysis",
+   "source": "tim",
+   "rationale": "Analisis keuangan sehari-hari dilakukan dengan model spreadsheet.",
+   "rationale_en": "Day-to-day financial analysis is done with spreadsheet models."
+  },
+  {
+   "from": "data_visualization",
+   "to": "power_bi",
+   "source": "tim",
+   "rationale": "Prinsip visualisasi mendahului penguasaan alat BI.",
+   "rationale_en": "Visualisation principles come before mastering a BI tool."
+  },
+  {
+   "from": "excel",
+   "to": "power_bi",
+   "source": "tim",
+   "rationale": "Power Query dan model data Power BI berangkat dari logika spreadsheet.",
+   "rationale_en": "Power Query and Power BI data models build on spreadsheet logic."
+  },
+  {
+   "from": "data_visualization",
+   "to": "tableau",
+   "source": "tim",
+   "rationale": "Prinsip visualisasi mendahului penguasaan alat BI.",
+   "rationale_en": "Visualisation principles come before mastering a BI tool."
+  },
+  {
+   "from": "data_visualization",
+   "to": "bi_tools_other",
+   "source": "tim",
+   "rationale": "Prinsip visualisasi mendahului penguasaan alat BI.",
+   "rationale_en": "Visualisation principles come before mastering a BI tool."
+  },
+  {
+   "from": "sql",
+   "to": "bi_tools_other",
+   "source": "tim",
+   "rationale": "Looker Studio/Metabase umumnya dibangun di atas kueri SQL.",
+   "rationale_en": "Looker Studio and Metabase are usually built on SQL queries."
+  },
+  {
+   "from": "sql",
+   "to": "cloud_data_platform",
+   "source": "tim",
+   "rationale": "BigQuery/Snowflake diakses dengan SQL.",
+   "rationale_en": "BigQuery and Snowflake are accessed with SQL."
+  },
+  {
+   "from": "requirements_elicitation",
+   "to": "requirements_documentation",
+   "source": "esco",
+   "rationale": "ESCO: 'analyse business requirements' memuat 'business requirements techniques'.",
+   "rationale_en": "ESCO: 'analyse business requirements' includes 'business requirements techniques'."
+  },
+  {
+   "from": "business_process_modeling",
+   "to": "system_modeling_uml",
+   "source": "tim",
+   "rationale": "Activity diagram dan use case berangkat dari pemahaman alur proses.",
+   "rationale_en": "Activity diagrams and use cases start from understanding the process flow."
+  },
+  {
+   "from": "requirements_elicitation",
+   "to": "system_modeling_uml",
+   "source": "esco",
+   "rationale": "ESCO: 'translate requirement concepts into visual design' menerjemahkan kebutuhan yang sudah digali.",
+   "rationale_en": "ESCO: 'translate requirement concepts into visual design' builds on requirements already gathered."
+  },
+  {
+   "from": "requirements_documentation",
+   "to": "testing_uat",
+   "source": "tim",
+   "rationale": "Test case dan UAT diturunkan dari kebutuhan dan acceptance criteria.",
+   "rationale_en": "Test cases and UAT are derived from requirements and acceptance criteria."
+  },
+  {
+   "from": "sdlc",
+   "to": "testing_uat",
+   "source": "tim",
+   "rationale": "Pengujian adalah tahap dalam siklus pengembangan.",
+   "rationale_en": "Testing is a stage in the development life cycle."
+  },
+  {
+   "from": "business_process_modeling",
+   "to": "diagramming_tools",
+   "source": "tim",
+   "rationale": "Notasi proses dipelajari sebelum alat penggambarnya.",
+   "rationale_en": "Process notation is learned before the tool used to draw it."
+  },
+  {
+   "from": "requirements_elicitation",
+   "to": "wireframing",
+   "source": "esco",
+   "rationale": "ESCO: 'translate requirement concepts into visual design'.",
+   "rationale_en": "ESCO: 'translate requirement concepts into visual design'."
+  },
+  {
+   "from": "business_process_modeling",
+   "to": "erp_crm",
+   "source": "tim",
+   "rationale": "Modul ERP mengotomasi proses bisnis yang harus dipahami lebih dahulu.",
+   "rationale_en": "ERP modules automate business processes that must be understood first."
+  },
+  {
+   "from": "sdlc",
+   "to": "api_integration",
+   "source": "tim",
+   "rationale": "Kebutuhan integrasi dirumuskan dalam konteks siklus pengembangan sistem.",
+   "rationale_en": "Integration requirements are defined within the system development life cycle."
+  },
+  {
+   "from": "data_modeling",
+   "to": "api_integration",
+   "source": "esco",
+   "rationale": "ESCO: 'integrate ICT data' bertumpu pada pemahaman struktur data.",
+   "rationale_en": "ESCO: 'integrate ICT data' relies on understanding data structures."
+  },
+  {
+   "from": "html_css",
+   "to": "javascript",
+   "source": "tim",
+   "rationale": "The DOM that JavaScript manipulates is built from HTML and styled with CSS.",
+   "rationale_en": "The DOM that JavaScript manipulates is built from HTML and styled with CSS."
+  },
+  {
+   "from": "html_css",
+   "to": "responsive_accessible_web",
+   "source": "tim",
+   "rationale": "Responsive and accessible design is applied through HTML structure and CSS.",
+   "rationale_en": "Responsive and accessible design is applied through HTML structure and CSS."
+  },
+  {
+   "from": "html_css",
+   "to": "cms_wordpress",
+   "source": "tim",
+   "rationale": "Themes and page builders assume HTML and CSS knowledge.",
+   "rationale_en": "Themes and page builders assume HTML and CSS knowledge."
+  },
+  {
+   "from": "html_css",
+   "to": "web_performance",
+   "source": "tim",
+   "rationale": "Page speed work starts from how markup, styles and assets are delivered.",
+   "rationale_en": "Page speed work starts from how markup, styles and assets are delivered."
+  },
+  {
+   "from": "javascript",
+   "to": "typescript",
+   "source": "tim",
+   "rationale": "TypeScript is JavaScript with types, so JavaScript comes first.",
+   "rationale_en": "TypeScript is JavaScript with types, so JavaScript comes first."
+  },
+  {
+   "from": "javascript",
+   "to": "react",
+   "source": "tim",
+   "rationale": "React components are written in JavaScript.",
+   "rationale_en": "React components are written in JavaScript."
+  },
+  {
+   "from": "javascript",
+   "to": "frontend_frameworks_other",
+   "source": "tim",
+   "rationale": "Vue, Angular and Svelte are JavaScript or TypeScript frameworks.",
+   "rationale_en": "Vue, Angular and Svelte are JavaScript or TypeScript frameworks."
+  },
+  {
+   "from": "javascript",
+   "to": "nodejs_backend",
+   "source": "tim",
+   "rationale": "Node.js runs JavaScript on the server.",
+   "rationale_en": "Node.js runs JavaScript on the server."
+  },
+  {
+   "from": "javascript",
+   "to": "web_performance",
+   "source": "tim",
+   "rationale": "Bundling, lazy loading and runtime cost are JavaScript topics.",
+   "rationale_en": "Bundling, lazy loading and runtime cost are JavaScript topics."
+  },
+  {
+   "from": "react",
+   "to": "react_native",
+   "source": "tim",
+   "rationale": "React Native reuses React concepts for mobile.",
+   "rationale_en": "React Native reuses React concepts for mobile."
+  },
+  {
+   "from": "react",
+   "to": "frontend_testing",
+   "source": "tim",
+   "rationale": "Component tests target React or similar components.",
+   "rationale_en": "Component tests target React or similar components."
+  },
+  {
+   "from": "javascript",
+   "to": "frontend_testing",
+   "source": "tim",
+   "rationale": "Front-end tests are written in JavaScript.",
+   "rationale_en": "Front-end tests are written in JavaScript."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "data_structures_algorithms",
+   "source": "tim",
+   "rationale": "Data structures are implemented with basic programming constructs.",
+   "rationale_en": "Data structures are implemented with basic programming constructs."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "python_programming",
+   "source": "tim",
+   "rationale": "General programming ideas make a first language easier.",
+   "rationale_en": "General programming ideas make a first language easier."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "java_spring",
+   "source": "tim",
+   "rationale": "Spring builds on Java and object-oriented design.",
+   "rationale_en": "Spring builds on Java and object-oriented design."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "php_laravel",
+   "source": "tim",
+   "rationale": "Laravel builds on PHP and object-oriented design.",
+   "rationale_en": "Laravel builds on PHP and object-oriented design."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "golang_backend",
+   "source": "tim",
+   "rationale": "Go builds on core programming concepts.",
+   "rationale_en": "Go builds on core programming concepts."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "dotnet_csharp",
+   "source": "tim",
+   "rationale": "C# is an object-oriented language.",
+   "rationale_en": "C# is an object-oriented language."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "unit_testing_tdd",
+   "source": "tim",
+   "rationale": "Tests are written against functions and classes.",
+   "rationale_en": "Tests are written against functions and classes."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "rest_api_design",
+   "source": "tim",
+   "rationale": "Building APIs needs working code in some language.",
+   "rationale_en": "Building APIs needs working code in some language."
+  },
+  {
+   "from": "python_programming",
+   "to": "python_backend",
+   "source": "tim",
+   "rationale": "Django, FastAPI and Flask are Python frameworks.",
+   "rationale_en": "Django, FastAPI and Flask are Python frameworks."
+  },
+  {
+   "from": "python_programming",
+   "to": "python_analytics",
+   "source": "tim",
+   "rationale": "pandas and NumPy are Python libraries.",
+   "rationale_en": "pandas and NumPy are Python libraries."
+  },
+  {
+   "from": "rest_api_design",
+   "to": "auth_security_basics",
+   "source": "tim",
+   "rationale": "Authentication protects the endpoints of an API.",
+   "rationale_en": "Authentication protects the endpoints of an API."
+  },
+  {
+   "from": "rest_api_design",
+   "to": "api_testing",
+   "source": "tim",
+   "rationale": "API tests call and check HTTP endpoints.",
+   "rationale_en": "API tests call and check HTTP endpoints."
+  },
+  {
+   "from": "rest_api_design",
+   "to": "mobile_backend_services",
+   "source": "tim",
+   "rationale": "Mobile apps consume back-end APIs.",
+   "rationale_en": "Mobile apps consume back-end APIs."
+  },
+  {
+   "from": "rest_api_design",
+   "to": "system_design_architecture",
+   "source": "tim",
+   "rationale": "Service boundaries are defined through their APIs.",
+   "rationale_en": "Service boundaries are defined through their APIs."
+  },
+  {
+   "from": "sql",
+   "to": "nosql_databases",
+   "source": "tim",
+   "rationale": "Relational concepts make it clear when a NoSQL store fits.",
+   "rationale_en": "Relational concepts make it clear when a NoSQL store fits."
+  },
+  {
+   "from": "nosql_databases",
+   "to": "caching_messaging",
+   "source": "tim",
+   "rationale": "Redis is both a NoSQL store and the most common cache.",
+   "rationale_en": "Redis is both a NoSQL store and the most common cache."
+  },
+  {
+   "from": "rest_api_design",
+   "to": "caching_messaging",
+   "source": "tim",
+   "rationale": "Caching and queues sit behind API endpoints.",
+   "rationale_en": "Caching and queues sit behind API endpoints."
+  },
+  {
+   "from": "caching_messaging",
+   "to": "system_design_architecture",
+   "source": "tim",
+   "rationale": "Caches and queues are core building blocks of scalable systems.",
+   "rationale_en": "Caches and queues are core building blocks of scalable systems."
+  },
+  {
+   "from": "git_version_control",
+   "to": "ci_cd_pipelines",
+   "source": "tim",
+   "rationale": "Pipelines are triggered by commits and merges.",
+   "rationale_en": "Pipelines are triggered by commits and merges."
+  },
+  {
+   "from": "cryptography_basics",
+   "to": "auth_security_basics",
+   "source": "tim",
+   "rationale": "Password hashing, tokens and TLS rely on cryptographic basics.",
+   "rationale_en": "Password hashing, tokens and TLS rely on cryptographic basics."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "flutter_dart",
+   "source": "tim",
+   "rationale": "Dart is an object-oriented language.",
+   "rationale_en": "Dart is an object-oriented language."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "android_kotlin",
+   "source": "tim",
+   "rationale": "Kotlin builds on core programming concepts.",
+   "rationale_en": "Kotlin builds on core programming concepts."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "ios_swift",
+   "source": "tim",
+   "rationale": "Swift builds on core programming concepts.",
+   "rationale_en": "Swift builds on core programming concepts."
+  },
+  {
+   "from": "flutter_dart",
+   "to": "mobile_release_quality",
+   "source": "tim",
+   "rationale": "Release and quality work applies to a finished mobile app.",
+   "rationale_en": "Release and quality work applies to a finished mobile app."
+  },
+  {
+   "from": "android_kotlin",
+   "to": "mobile_release_quality",
+   "source": "tim",
+   "rationale": "Release and quality work applies to a finished mobile app.",
+   "rationale_en": "Release and quality work applies to a finished mobile app."
+  },
+  {
+   "from": "ios_swift",
+   "to": "mobile_release_quality",
+   "source": "tim",
+   "rationale": "Release and quality work applies to a finished mobile app.",
+   "rationale_en": "Release and quality work applies to a finished mobile app."
+  },
+  {
+   "from": "test_design_techniques",
+   "to": "test_automation_web",
+   "source": "tim",
+   "rationale": "Automate test cases only after you know what to test.",
+   "rationale_en": "Automate test cases only after you know what to test."
+  },
+  {
+   "from": "test_design_techniques",
+   "to": "performance_testing",
+   "source": "tim",
+   "rationale": "Performance scenarios come from well-designed test cases.",
+   "rationale_en": "Performance scenarios come from well-designed test cases."
+  },
+  {
+   "from": "test_design_techniques",
+   "to": "testing_uat",
+   "source": "tim",
+   "rationale": "UAT scripts are built from test design techniques.",
+   "rationale_en": "UAT scripts are built from test design techniques."
+  },
+  {
+   "from": "programming_fundamentals",
+   "to": "test_automation_web",
+   "source": "tim",
+   "rationale": "Test automation is written as code.",
+   "rationale_en": "Test automation is written as code."
+  },
+  {
+   "from": "test_automation_web",
+   "to": "ci_for_testing",
+   "source": "tim",
+   "rationale": "Automated tests are what the pipeline runs.",
+   "rationale_en": "Automated tests are what the pipeline runs."
+  },
+  {
+   "from": "ci_cd_pipelines",
+   "to": "ci_for_testing",
+   "source": "tim",
+   "rationale": "Testing in CI needs a pipeline to run in.",
+   "rationale_en": "Testing in CI needs a pipeline to run in."
+  },
+  {
+   "from": "statistics",
+   "to": "math_for_ml",
+   "source": "tim",
+   "rationale": "Probability and distributions underpin machine-learning methods.",
+   "rationale_en": "Probability and distributions underpin machine-learning methods."
+  },
+  {
+   "from": "math_for_ml",
+   "to": "machine_learning",
+   "source": "tim",
+   "rationale": "Models and loss functions rest on linear algebra and probability.",
+   "rationale_en": "Models and loss functions rest on linear algebra and probability."
+  },
+  {
+   "from": "python_analytics",
+   "to": "machine_learning",
+   "source": "tim",
+   "rationale": "scikit-learn workflows start from pandas data.",
+   "rationale_en": "scikit-learn workflows start from pandas data."
+  },
+  {
+   "from": "statistics",
+   "to": "machine_learning",
+   "source": "tim",
+   "rationale": "Model evaluation uses statistical thinking.",
+   "rationale_en": "Model evaluation uses statistical thinking."
+  },
+  {
+   "from": "machine_learning",
+   "to": "deep_learning",
+   "source": "tim",
+   "rationale": "Neural networks build on classical ML ideas.",
+   "rationale_en": "Neural networks build on classical ML ideas."
+  },
+  {
+   "from": "machine_learning",
+   "to": "nlp_computer_vision",
+   "source": "tim",
+   "rationale": "NLP and vision pipelines use ML foundations.",
+   "rationale_en": "NLP and vision pipelines use ML foundations."
+  },
+  {
+   "from": "deep_learning",
+   "to": "nlp_computer_vision",
+   "source": "tim",
+   "rationale": "Modern NLP and vision use neural networks.",
+   "rationale_en": "Modern NLP and vision use neural networks."
+  },
+  {
+   "from": "machine_learning",
+   "to": "mlops_deployment",
+   "source": "tim",
+   "rationale": "There must be a model before it can be deployed.",
+   "rationale_en": "There must be a model before it can be deployed."
+  },
+  {
+   "from": "docker_containers",
+   "to": "mlops_deployment",
+   "source": "tim",
+   "rationale": "Models are usually served from containers.",
+   "rationale_en": "Models are usually served from containers."
+  },
+  {
+   "from": "data_modeling",
+   "to": "data_warehousing",
+   "source": "tim",
+   "rationale": "Warehouse schemas apply dimensional data modelling.",
+   "rationale_en": "Warehouse schemas apply dimensional data modelling."
+  },
+  {
+   "from": "sql",
+   "to": "etl_pipelines",
+   "source": "tim",
+   "rationale": "Transformations are mostly written in SQL.",
+   "rationale_en": "Transformations are mostly written in SQL."
+  },
+  {
+   "from": "python_programming",
+   "to": "etl_pipelines",
+   "source": "tim",
+   "rationale": "Custom pipeline steps are written in Python.",
+   "rationale_en": "Custom pipeline steps are written in Python."
+  },
+  {
+   "from": "etl_pipelines",
+   "to": "workflow_orchestration",
+   "source": "tim",
+   "rationale": "Orchestrators schedule and monitor the pipelines.",
+   "rationale_en": "Orchestrators schedule and monitor the pipelines."
+  },
+  {
+   "from": "python_programming",
+   "to": "workflow_orchestration",
+   "source": "tim",
+   "rationale": "Airflow DAGs are defined in Python.",
+   "rationale_en": "Airflow DAGs are defined in Python."
+  },
+  {
+   "from": "etl_pipelines",
+   "to": "streaming_data",
+   "source": "tim",
+   "rationale": "Streaming extends batch pipelines to continuous data.",
+   "rationale_en": "Streaming extends batch pipelines to continuous data."
+  },
+  {
+   "from": "sql",
+   "to": "big_data_spark",
+   "source": "tim",
+   "rationale": "Spark SQL and DataFrames work like SQL tables.",
+   "rationale_en": "Spark SQL and DataFrames work like SQL tables."
+  },
+  {
+   "from": "python_programming",
+   "to": "big_data_spark",
+   "source": "tim",
+   "rationale": "PySpark is the most common way to write Spark jobs.",
+   "rationale_en": "PySpark is the most common way to write Spark jobs."
+  },
+  {
+   "from": "linux_administration",
+   "to": "docker_containers",
+   "source": "tim",
+   "rationale": "Containers run on Linux primitives and are managed from the shell.",
+   "rationale_en": "Containers run on Linux primitives and are managed from the shell."
+  },
+  {
+   "from": "docker_containers",
+   "to": "kubernetes",
+   "source": "tim",
+   "rationale": "Kubernetes orchestrates containers.",
+   "rationale_en": "Kubernetes orchestrates containers."
+  },
+  {
+   "from": "docker_containers",
+   "to": "ci_cd_pipelines",
+   "source": "tim",
+   "rationale": "Pipelines build and ship container images.",
+   "rationale_en": "Pipelines build and ship container images."
+  },
+  {
+   "from": "linux_administration",
+   "to": "infrastructure_as_code",
+   "source": "tim",
+   "rationale": "Provisioned servers are Linux machines.",
+   "rationale_en": "Provisioned servers are Linux machines."
+  },
+  {
+   "from": "cloud_aws",
+   "to": "infrastructure_as_code",
+   "source": "tim",
+   "rationale": "Terraform and CloudFormation provision cloud resources.",
+   "rationale_en": "Terraform and CloudFormation provision cloud resources."
+  },
+  {
+   "from": "networking_fundamentals",
+   "to": "cloud_aws",
+   "source": "tim",
+   "rationale": "VPCs, subnets and security groups are networking concepts.",
+   "rationale_en": "VPCs, subnets and security groups are networking concepts."
+  },
+  {
+   "from": "linux_administration",
+   "to": "cloud_aws",
+   "source": "tim",
+   "rationale": "EC2 instances are mostly Linux servers.",
+   "rationale_en": "EC2 instances are mostly Linux servers."
+  },
+  {
+   "from": "networking_fundamentals",
+   "to": "cloud_gcp_azure",
+   "source": "tim",
+   "rationale": "Virtual networks work the same way in every cloud.",
+   "rationale_en": "Virtual networks work the same way in every cloud."
+  },
+  {
+   "from": "linux_administration",
+   "to": "cloud_gcp_azure",
+   "source": "tim",
+   "rationale": "Most cloud virtual machines run Linux.",
+   "rationale_en": "Most cloud virtual machines run Linux."
+  },
+  {
+   "from": "linux_administration",
+   "to": "monitoring_observability",
+   "source": "tim",
+   "rationale": "Metrics and logs come from hosts and services.",
+   "rationale_en": "Metrics and logs come from hosts and services."
+  },
+  {
+   "from": "docker_containers",
+   "to": "monitoring_observability",
+   "source": "tim",
+   "rationale": "Container workloads need container-aware monitoring.",
+   "rationale_en": "Container workloads need container-aware monitoring."
+  },
+  {
+   "from": "linux_administration",
+   "to": "web_servers_proxies",
+   "source": "tim",
+   "rationale": "Nginx and Apache run on Linux servers.",
+   "rationale_en": "Nginx and Apache run on Linux servers."
+  },
+  {
+   "from": "networking_fundamentals",
+   "to": "web_servers_proxies",
+   "source": "tim",
+   "rationale": "Proxies and TLS are network concepts.",
+   "rationale_en": "Proxies and TLS are network concepts."
+  },
+  {
+   "from": "networking_fundamentals",
+   "to": "network_security",
+   "source": "tim",
+   "rationale": "Firewalls and segmentation apply networking knowledge.",
+   "rationale_en": "Firewalls and segmentation apply networking knowledge."
+  },
+  {
+   "from": "network_security",
+   "to": "siem_monitoring",
+   "source": "tim",
+   "rationale": "SIEM rules detect the network and host events you know how to read.",
+   "rationale_en": "SIEM rules detect the network and host events you know how to read."
+  },
+  {
+   "from": "networking_fundamentals",
+   "to": "vulnerability_assessment",
+   "source": "tim",
+   "rationale": "Scanning and rating exposures needs network basics.",
+   "rationale_en": "Scanning and rating exposures needs network basics."
+  },
+  {
+   "from": "linux_administration",
+   "to": "vulnerability_assessment",
+   "source": "tim",
+   "rationale": "Most findings are on Linux hosts and services.",
+   "rationale_en": "Most findings are on Linux hosts and services."
+  },
+  {
+   "from": "vulnerability_assessment",
+   "to": "penetration_testing",
+   "source": "tim",
+   "rationale": "Pen tests exploit what an assessment finds.",
+   "rationale_en": "Pen tests exploit what an assessment finds."
+  },
+  {
+   "from": "linux_administration",
+   "to": "penetration_testing",
+   "source": "tim",
+   "rationale": "Exploitation and privilege escalation happen on Linux and Windows hosts.",
+   "rationale_en": "Exploitation and privilege escalation happen on Linux and Windows hosts."
+  },
+  {
+   "from": "network_security",
+   "to": "incident_response_forensics",
+   "source": "tim",
+   "rationale": "Responders investigate network and host evidence.",
+   "rationale_en": "Responders investigate network and host evidence."
+  },
+  {
+   "from": "siem_monitoring",
+   "to": "incident_response_forensics",
+   "source": "tim",
+   "rationale": "Incidents are usually detected through monitoring.",
+   "rationale_en": "Incidents are usually detected through monitoring."
+  },
+  {
+   "from": "vulnerability_assessment",
+   "to": "security_frameworks_compliance",
+   "source": "tim",
+   "rationale": "Frameworks require risk and vulnerability management.",
+   "rationale_en": "Frameworks require risk and vulnerability management."
+  },
+  {
+   "from": "auth_security_basics",
+   "to": "cloud_security",
+   "source": "tim",
+   "rationale": "Cloud security applies identity and application security.",
+   "rationale_en": "Cloud security applies identity and application security."
+  },
+  {
+   "from": "docker_containers",
+   "to": "cloud_security",
+   "source": "tim",
+   "rationale": "Container and image hardening is part of cloud security.",
+   "rationale_en": "Container and image hardening is part of cloud security."
+  },
+  {
+   "from": "cloud_aws",
+   "to": "cloud_security",
+   "source": "tim",
+   "rationale": "Cloud account hardening needs platform knowledge.",
+   "rationale_en": "Cloud account hardening needs platform knowledge."
+  },
+  {
+   "from": "figma_design_tools",
+   "to": "prototyping_interaction",
+   "source": "tim",
+   "rationale": "Prototypes are built in design tools.",
+   "rationale_en": "Prototypes are built in design tools."
+  },
+  {
+   "from": "wireframing",
+   "to": "prototyping_interaction",
+   "source": "tim",
+   "rationale": "Wireframes become interactive prototypes.",
+   "rationale_en": "Wireframes become interactive prototypes."
+  },
+  {
+   "from": "user_research",
+   "to": "usability_testing",
+   "source": "tim",
+   "rationale": "Usability tests use research methods.",
+   "rationale_en": "Usability tests use research methods."
+  },
+  {
+   "from": "prototyping_interaction",
+   "to": "usability_testing",
+   "source": "tim",
+   "rationale": "You test prototypes before building them.",
+   "rationale_en": "You test prototypes before building them."
+  },
+  {
+   "from": "user_research",
+   "to": "information_architecture",
+   "source": "tim",
+   "rationale": "Structure comes from how users think about content.",
+   "rationale_en": "Structure comes from how users think about content."
+  },
+  {
+   "from": "figma_design_tools",
+   "to": "design_systems",
+   "source": "tim",
+   "rationale": "Design systems live in the design tool as components.",
+   "rationale_en": "Design systems live in the design tool as components."
+  },
+  {
+   "from": "visual_design_fundamentals",
+   "to": "design_systems",
+   "source": "tim",
+   "rationale": "Tokens and components encode visual design decisions.",
+   "rationale_en": "Tokens and components encode visual design decisions."
+  },
+  {
+   "from": "visual_design_fundamentals",
+   "to": "accessibility_design",
+   "source": "tim",
+   "rationale": "Contrast, type and spacing are visual design choices.",
+   "rationale_en": "Contrast, type and spacing are visual design choices."
+  },
+  {
+   "from": "web_analytics",
+   "to": "conversion_optimization",
+   "source": "tim",
+   "rationale": "Experiments start from funnel and conversion data.",
+   "rationale_en": "Experiments start from funnel and conversion data."
+  },
+  {
+   "from": "web_analytics",
+   "to": "search_ads",
+   "source": "tim",
+   "rationale": "Campaigns are optimised with conversion tracking.",
+   "rationale_en": "Campaigns are optimised with conversion tracking."
+  },
+  {
+   "from": "web_analytics",
+   "to": "social_media_ads",
+   "source": "tim",
+   "rationale": "Campaigns are optimised with conversion tracking.",
+   "rationale_en": "Campaigns are optimised with conversion tracking."
+  },
+  {
+   "from": "content_creation_tools",
+   "to": "social_media_ads",
+   "source": "tim",
+   "rationale": "Ads need creatives made with content tools.",
+   "rationale_en": "Ads need creatives made with content tools."
+  },
+  {
+   "from": "accounting_fundamentals",
+   "to": "financial_statements",
+   "source": "tim",
+   "rationale": "Statements are built from journals and ledgers.",
+   "rationale_en": "Statements are built from journals and ledgers."
+  },
+  {
+   "from": "accounting_fundamentals",
+   "to": "ap_ar_reconciliation",
+   "source": "tim",
+   "rationale": "Payables, receivables and reconciliations use double entry.",
+   "rationale_en": "Payables, receivables and reconciliations use double entry."
+  },
+  {
+   "from": "accounting_fundamentals",
+   "to": "accounting_software",
+   "source": "tim",
+   "rationale": "Software automates journal and ledger logic.",
+   "rationale_en": "Software automates journal and ledger logic."
+  },
+  {
+   "from": "accounting_fundamentals",
+   "to": "tax_compliance_id",
+   "source": "tim",
+   "rationale": "Tax calculations start from properly recorded transactions.",
+   "rationale_en": "Tax calculations start from properly recorded transactions."
+  },
+  {
+   "from": "accounting_fundamentals",
+   "to": "cost_accounting",
+   "source": "tim",
+   "rationale": "Costing builds on basic accounting concepts.",
+   "rationale_en": "Costing builds on basic accounting concepts."
+  },
+  {
+   "from": "financial_statements",
+   "to": "budgeting_forecasting",
+   "source": "tim",
+   "rationale": "Budgets and forecasts are built from the statements.",
+   "rationale_en": "Budgets and forecasts are built from the statements."
+  },
+  {
+   "from": "excel",
+   "to": "budgeting_forecasting",
+   "source": "tim",
+   "rationale": "Budgets and models are built in spreadsheets.",
+   "rationale_en": "Budgets and models are built in spreadsheets."
+  },
+  {
+   "from": "financial_statements",
+   "to": "audit_internal_control",
+   "source": "tim",
+   "rationale": "Auditors test the numbers in the statements.",
+   "rationale_en": "Auditors test the numbers in the statements."
+  },
+  {
+   "from": "financial_statements",
+   "to": "financial_analysis",
+   "source": "tim",
+   "rationale": "Ratios and analysis are computed from the statements.",
+   "rationale_en": "Ratios and analysis are computed from the statements."
+  }
+ ]
 }

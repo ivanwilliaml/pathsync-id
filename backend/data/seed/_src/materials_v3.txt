@@ -1,0 +1,264 @@
+html_css|Learn web development: structuring content with HTML|https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content|dasar|kursus|en|10
+html_css|Responsive Web Design certification|https://www.freecodecamp.org/learn/2022/responsive-web-design/|dasar|latihan|en|30
+html_css|A complete guide to Flexbox|https://css-tricks.com/snippets/css/a-guide-to-flexbox/|menengah|teks|en|1
+javascript|The Modern JavaScript Tutorial|https://javascript.info/|dasar|kursus|en|30
+javascript|JavaScript guide|https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide|menengah|teks|en|10
+javascript|JavaScript Algorithms and Data Structures|https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures-v8/|dasar|latihan|en|40
+typescript|TypeScript Handbook|https://www.typescriptlang.org/docs/handbook/intro.html|dasar|teks|en|6
+typescript|TypeScript for JavaScript programmers|https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html|dasar|teks|en|1
+typescript|React TypeScript cheatsheet|https://react-typescript-cheatsheet.netlify.app/|menengah|teks|en|3
+react|Learn React|https://react.dev/learn|dasar|kursus|en|15
+react|Tutorial: tic-tac-toe|https://react.dev/learn/tutorial-tic-tac-toe|dasar|latihan|en|2
+react|Managing state|https://react.dev/learn/managing-state|menengah|teks|en|3
+frontend_frameworks_other|Vue.js tutorial|https://vuejs.org/tutorial/|dasar|latihan|en|4
+frontend_frameworks_other|Learn Angular|https://angular.dev/tutorials/learn-angular|dasar|kursus|en|8
+frontend_frameworks_other|Svelte tutorial|https://svelte.dev/tutorial|dasar|latihan|en|4
+responsive_accessible_web|Learn Responsive Design|https://web.dev/learn/design|dasar|kursus|en|6
+responsive_accessible_web|Learn Accessibility|https://web.dev/learn/accessibility|menengah|kursus|en|6
+responsive_accessible_web|Introduction to web accessibility|https://www.w3.org/WAI/fundamentals/accessibility-intro/|dasar|teks|en|1
+web_performance|Learn Core Web Vitals|https://web.dev/learn-core-web-vitals/|dasar|kursus|en|3
+web_performance|Lighthouse overview|https://developer.chrome.com/docs/lighthouse/overview|dasar|teks|en|1
+web_performance|Learn Performance|https://web.dev/learn/performance|menengah|kursus|en|5
+cms_wordpress|Learn WordPress|https://learn.wordpress.org/|dasar|kursus|en|10
+cms_wordpress|Theme developer handbook|https://developer.wordpress.org/themes/getting-started/|menengah|teks|en|5
+cms_wordpress|WooCommerce documentation|https://woocommerce.com/documentation/woocommerce/|menengah|teks|en|4
+frontend_testing|Jest getting started|https://jestjs.io/docs/getting-started|dasar|teks|en|2
+frontend_testing|React Testing Library introduction|https://testing-library.com/docs/react-testing-library/intro/|dasar|teks|en|2
+frontend_testing|Playwright introduction|https://playwright.dev/docs/intro|menengah|teks|en|3
+programming_fundamentals|Design patterns catalogue|https://refactoring.guru/design-patterns|menengah|teks|en|8
+programming_fundamentals|CS50: Introduction to computer science|https://cs50.harvard.edu/x/|dasar|kursus|en|60
+programming_fundamentals|SOLID principles explained|https://www.digitalocean.com/community/conceptual-articles/s-o-l-i-d-the-first-five-principles-of-object-oriented-design|menengah|teks|en|1
+data_structures_algorithms|VisuAlgo: visualising algorithms|https://visualgo.net/en|dasar|latihan|en|8
+data_structures_algorithms|NeetCode roadmap|https://neetcode.io/roadmap|menengah|latihan|en|40
+data_structures_algorithms|Data structures tutorials|https://www.geeksforgeeks.org/data-structures/|dasar|teks|en|10
+git_version_control|Pro Git book|https://git-scm.com/book/en/v2|dasar|teks|en|10
+git_version_control|Learn Git Branching|https://learngitbranching.js.org/|dasar|latihan|en|3
+git_version_control|GitHub: get started|https://docs.github.com/en/get-started/start-your-journey|dasar|kursus|en|3
+rest_api_design|REST API tutorial|https://restfulapi.net/|dasar|teks|en|4
+rest_api_design|Web API design best practices|https://learn.microsoft.com/en-us/azure/architecture/best-practices/api-design|menengah|teks|en|2
+rest_api_design|OpenAPI specification guide|https://swagger.io/docs/specification/about/|menengah|teks|en|2
+python_programming|The Python tutorial|https://docs.python.org/3/tutorial/|dasar|teks|en|10
+python_programming|Scientific Computing with Python|https://www.freecodecamp.org/learn/scientific-computing-with-python/|dasar|latihan|en|30
+python_programming|Real Python tutorials|https://realpython.com/|menengah|teks|en|10
+python_backend|Django tutorial|https://docs.djangoproject.com/en/stable/intro/tutorial01/|dasar|kursus|en|8
+python_backend|FastAPI tutorial|https://fastapi.tiangolo.com/tutorial/|dasar|kursus|en|6
+python_backend|Flask tutorial|https://flask.palletsprojects.com/en/stable/tutorial/|dasar|kursus|en|5
+java_spring|Building an application with Spring Boot|https://spring.io/guides/gs/spring-boot|dasar|latihan|en|2
+java_spring|Learn Java|https://dev.java/learn/|dasar|kursus|en|30
+java_spring|Spring Boot tutorials|https://www.baeldung.com/spring-boot|menengah|teks|en|10
+php_laravel|Laravel Learn|https://laravel.com/learn|dasar|kursus|en|10
+php_laravel|Laravel 8 from scratch|https://laracasts.com/series/laravel-8-from-scratch|dasar|video|en|20
+php_laravel|PHP manual: tutorial|https://www.php.net/manual/en/tutorial.php|dasar|teks|en|4
+nodejs_backend|Introduction to Node.js|https://nodejs.org/en/learn/getting-started/introduction-to-nodejs|dasar|teks|en|2
+nodejs_backend|Express getting started|https://expressjs.com/en/starter/installing.html|dasar|teks|en|3
+nodejs_backend|NestJS first steps|https://docs.nestjs.com/first-steps|menengah|teks|en|3
+golang_backend|A Tour of Go|https://go.dev/tour/|dasar|latihan|en|8
+golang_backend|Go by Example|https://gobyexample.com/|dasar|teks|en|5
+golang_backend|Tutorial: developing a RESTful API with Go and Gin|https://go.dev/doc/tutorial/web-service-gin|menengah|latihan|en|2
+dotnet_csharp|A tour of C#|https://learn.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/|dasar|teks|en|4
+dotnet_csharp|Tutorial: create a web API with ASP.NET Core|https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api|dasar|latihan|en|2
+dotnet_csharp|Get started with Entity Framework Core|https://learn.microsoft.com/en-us/ef/core/get-started/overview/first-app|menengah|latihan|en|2
+nosql_databases|MongoDB University|https://learn.mongodb.com/|dasar|kursus|en|10
+nosql_databases|Redis: get started|https://redis.io/docs/latest/get-started/|dasar|teks|en|3
+nosql_databases|NoSQL explained|https://www.mongodb.com/resources/basics/databases/nosql-explained|dasar|teks|en|1
+auth_security_basics|OWASP Top Ten|https://owasp.org/www-project-top-ten/|dasar|teks|en|3
+auth_security_basics|Authentication cheat sheet|https://cheatsheetseries.owasp.org/cheatsheets/Authentication_Cheat_Sheet.html|menengah|teks|en|2
+auth_security_basics|Web Security Academy|https://portswigger.net/web-security|menengah|kursus|en|20
+caching_messaging|RabbitMQ tutorials|https://www.rabbitmq.com/tutorials|dasar|latihan|en|4
+caching_messaging|Apache Kafka quickstart|https://kafka.apache.org/quickstart|menengah|latihan|en|2
+caching_messaging|Redis caching patterns|https://redis.io/solutions/caching/|dasar|teks|en|1
+system_design_architecture|System Design Primer|https://github.com/donnemartin/system-design-primer|menengah|teks|en|20
+system_design_architecture|Microservices (Martin Fowler)|https://martinfowler.com/articles/microservices.html|menengah|teks|en|2
+system_design_architecture|AWS Well-Architected Framework|https://aws.amazon.com/architecture/well-architected/|lanjut|teks|en|6
+unit_testing_tdd|pytest: get started|https://docs.pytest.org/en/stable/getting-started.html|dasar|teks|en|2
+unit_testing_tdd|JUnit 5 user guide|https://junit.org/junit5/docs/current/user-guide/|menengah|teks|en|4
+unit_testing_tdd|Test-driven development (Martin Fowler)|https://martinfowler.com/bliki/TestDrivenDevelopment.html|dasar|teks|en|1
+flutter_dart|Write your first Flutter app|https://docs.flutter.dev/get-started/codelab|dasar|latihan|en|3
+flutter_dart|Dart overview|https://dart.dev/overview|dasar|teks|en|2
+flutter_dart|Flutter codelabs|https://codelabs.developers.google.com/codelabs/flutter-codelab-first|dasar|latihan|en|2
+android_kotlin|Android Basics with Compose|https://developer.android.com/courses/android-basics-compose/course|dasar|kursus|en|40
+android_kotlin|Kotlin: get started|https://kotlinlang.org/docs/getting-started.html|dasar|teks|en|3
+android_kotlin|Jetpack Compose tutorial|https://developer.android.com/develop/ui/compose/tutorial|menengah|latihan|en|3
+ios_swift|SwiftUI tutorials|https://developer.apple.com/tutorials/swiftui|dasar|latihan|en|15
+ios_swift|The Swift programming language|https://docs.swift.org/swift-book/|dasar|teks|en|10
+ios_swift|App Dev Training|https://developer.apple.com/tutorials/app-dev-training|dasar|kursus|en|20
+react_native|React Native: get started|https://reactnative.dev/docs/getting-started|dasar|teks|en|3
+react_native|Expo tutorial|https://docs.expo.dev/tutorial/introduction/|dasar|latihan|en|3
+react_native|React Navigation: get started|https://reactnavigation.org/docs/getting-started|menengah|teks|en|2
+mobile_backend_services|Firebase Authentication|https://firebase.google.com/docs/auth|dasar|teks|en|2
+mobile_backend_services|Firebase Cloud Messaging|https://firebase.google.com/docs/cloud-messaging|menengah|teks|en|2
+mobile_backend_services|Firebase Crashlytics|https://firebase.google.com/docs/crashlytics|menengah|teks|en|1
+mobile_release_quality|Publish your app (Android)|https://developer.android.com/studio/publish|dasar|teks|en|2
+mobile_release_quality|Submit to the App Store|https://developer.apple.com/app-store/submitting/|dasar|teks|en|2
+mobile_release_quality|fastlane documentation|https://docs.fastlane.tools/|menengah|teks|en|3
+test_design_techniques|ISTQB Foundation Level overview|https://www.istqb.org/certifications/certified-tester-foundation-level|dasar|teks|en|2
+test_design_techniques|Software testing tutorial|https://www.guru99.com/software-testing.html|dasar|teks|en|6
+test_design_techniques|Software testing help|https://www.softwaretestinghelp.com/|dasar|teks|en|6
+test_automation_web|Selenium documentation|https://www.selenium.dev/documentation/|dasar|teks|en|8
+test_automation_web|Cypress: why Cypress|https://docs.cypress.io/app/get-started/why-cypress|dasar|teks|en|2
+test_automation_web|Playwright: writing tests|https://playwright.dev/docs/writing-tests|menengah|teks|en|2
+api_testing|Postman: getting started|https://learning.postman.com/docs/getting-started/introduction/|dasar|kursus|en|3
+api_testing|REST Assured|https://rest-assured.io/|menengah|teks|en|3
+api_testing|Postman Academy|https://academy.postman.com/|dasar|kursus|en|6
+performance_testing|Apache JMeter: get started|https://jmeter.apache.org/usermanual/get-started.html|dasar|teks|en|3
+performance_testing|Grafana k6 documentation|https://grafana.com/docs/k6/latest/|menengah|teks|en|4
+performance_testing|Locust|https://locust.io/|menengah|teks|en|2
+ci_for_testing|Building and testing with GitHub Actions|https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing|dasar|teks|en|2
+ci_for_testing|Jenkins tutorials|https://www.jenkins.io/doc/tutorials/|menengah|latihan|en|4
+ci_for_testing|GitLab CI/CD|https://docs.gitlab.com/ee/ci/|menengah|teks|en|4
+math_for_ml|Linear algebra (Khan Academy)|https://www.khanacademy.org/math/linear-algebra|dasar|kursus|en|30
+math_for_ml|Essence of linear algebra|https://www.3blue1brown.com/topics/linear-algebra|dasar|video|en|3
+math_for_ml|Mathematics for Machine Learning (book)|https://mml-book.github.io/|lanjut|teks|en|40
+machine_learning|Kaggle Learn: intro to machine learning|https://www.kaggle.com/learn/intro-to-machine-learning|dasar|kursus|en|4
+machine_learning|scikit-learn tutorials|https://scikit-learn.org/stable/user_guide.html|menengah|teks|en|10
+machine_learning|Machine Learning Specialization|https://www.coursera.org/specializations/machine-learning-introduction|dasar|kursus|en|60
+deep_learning|Kaggle Learn: intro to deep learning|https://www.kaggle.com/learn/intro-to-deep-learning|dasar|kursus|en|4
+deep_learning|PyTorch tutorials|https://pytorch.org/tutorials/|menengah|teks|en|20
+deep_learning|TensorFlow tutorials|https://www.tensorflow.org/tutorials|menengah|teks|en|20
+nlp_computer_vision|Hugging Face NLP course|https://huggingface.co/learn/nlp-course|menengah|kursus|en|20
+nlp_computer_vision|OpenCV tutorials|https://docs.opencv.org/4.x/d9/df8/tutorial_root.html|menengah|teks|en|10
+nlp_computer_vision|Kaggle Learn: computer vision|https://www.kaggle.com/learn/computer-vision|dasar|kursus|en|4
+mlops_deployment|MLflow getting started|https://mlflow.org/docs/latest/getting-started/index.html|dasar|teks|en|3
+mlops_deployment|MLOps community resources|https://ml-ops.org/|menengah|teks|en|6
+mlops_deployment|Made With ML|https://madewithml.com/|menengah|kursus|en|20
+etl_pipelines|dbt introduction|https://docs.getdbt.com/docs/introduction|dasar|teks|en|2
+etl_pipelines|ETL explained|https://www.databricks.com/glossary/etl|dasar|teks|en|1
+etl_pipelines|Data engineering resources (Airbyte)|https://airbyte.com/data-engineering-resources|menengah|teks|en|4
+data_warehousing|Dimensional modelling techniques (Kimball)|https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/|menengah|teks|en|6
+data_warehousing|BigQuery introduction|https://cloud.google.com/bigquery/docs/introduction|dasar|teks|en|2
+data_warehousing|Snowflake: getting started|https://docs.snowflake.com/en/user-guide-getting-started|dasar|teks|en|3
+big_data_spark|Spark quick start|https://spark.apache.org/docs/latest/quick-start.html|dasar|latihan|en|2
+big_data_spark|Spark SQL guide|https://spark.apache.org/docs/latest/sql-programming-guide.html|menengah|teks|en|4
+big_data_spark|Databricks learning|https://www.databricks.com/learn|dasar|kursus|en|8
+workflow_orchestration|Airflow tutorial|https://airflow.apache.org/docs/apache-airflow/stable/tutorial/index.html|dasar|latihan|en|3
+workflow_orchestration|Dagster getting started|https://docs.dagster.io/getting-started|menengah|teks|en|3
+workflow_orchestration|Prefect get started|https://docs.prefect.io/latest/get-started/|menengah|teks|en|2
+streaming_data|Apache Kafka introduction|https://kafka.apache.org/intro|dasar|teks|en|1
+streaming_data|Confluent developer courses|https://developer.confluent.io/courses/|menengah|kursus|en|8
+streaming_data|Apache Flink architecture|https://flink.apache.org/what-is-flink/flink-architecture/|lanjut|teks|en|2
+linux_administration|Linux Journey|https://linuxjourney.com/|dasar|kursus|en|15
+linux_administration|Linux tutorial for beginners|https://ryanstutorials.net/linuxtutorial/|dasar|kursus|en|10
+linux_administration|Bash reference manual|https://www.gnu.org/software/bash/manual/bash.html|menengah|teks|en|6
+networking_fundamentals|Cloudflare learning center|https://www.cloudflare.com/learning/|dasar|teks|en|8
+networking_fundamentals|Networking Essentials (Cisco)|https://www.netacad.com/courses/networking/networking-essentials|dasar|kursus|en|30
+networking_fundamentals|Network+ training course|https://www.professormesser.com/network-plus/n10-008/n10-008-video/n10-008-training-course/|menengah|video|en|20
+docker_containers|Docker: get started|https://docs.docker.com/get-started/|dasar|kursus|en|4
+docker_containers|Play with Docker|https://labs.play-with-docker.com/|dasar|latihan|en|3
+docker_containers|Docker Compose: get started|https://docs.docker.com/compose/gettingstarted/|menengah|latihan|en|1
+kubernetes|Learn Kubernetes basics|https://kubernetes.io/docs/tutorials/kubernetes-basics/|dasar|latihan|en|4
+kubernetes|Helm quickstart|https://helm.sh/docs/intro/quickstart/|menengah|teks|en|1
+kubernetes|Killercoda interactive labs|https://killercoda.com/|menengah|latihan|en|6
+ci_cd_pipelines|GitHub Actions quickstart|https://docs.github.com/en/actions/quickstart|dasar|latihan|en|1
+ci_cd_pipelines|GitLab CI/CD quick start|https://docs.gitlab.com/ee/ci/quick_start/|dasar|latihan|en|2
+ci_cd_pipelines|Jenkins pipeline|https://www.jenkins.io/doc/book/pipeline/|menengah|teks|en|4
+infrastructure_as_code|Terraform tutorials|https://developer.hashicorp.com/terraform/tutorials|dasar|kursus|en|12
+infrastructure_as_code|Ansible getting started|https://docs.ansible.com/ansible/latest/getting_started/index.html|dasar|teks|en|3
+infrastructure_as_code|Pulumi get started|https://www.pulumi.com/docs/get-started/|menengah|teks|en|2
+cloud_aws|AWS getting started|https://aws.amazon.com/getting-started/|dasar|kursus|en|8
+cloud_aws|AWS Skill Builder|https://explore.skillbuilder.aws/learn|dasar|kursus|en|20
+cloud_aws|AWS documentation|https://docs.aws.amazon.com/|menengah|teks|en|10
+cloud_gcp_azure|Google Cloud learn|https://cloud.google.com/learn|dasar|kursus|en|10
+cloud_gcp_azure|Microsoft Learn: Azure training|https://learn.microsoft.com/en-us/training/azure/|dasar|kursus|en|20
+cloud_gcp_azure|Google Cloud Skills Boost|https://www.cloudskillsboost.google/|dasar|latihan|en|15
+monitoring_observability|Prometheus overview|https://prometheus.io/docs/introduction/overview/|dasar|teks|en|2
+monitoring_observability|Grafana tutorials|https://grafana.com/tutorials/|menengah|latihan|en|4
+monitoring_observability|Site Reliability Engineering book|https://sre.google/sre-book/table-of-contents/|lanjut|teks|en|15
+web_servers_proxies|Nginx beginner's guide|https://nginx.org/en/docs/beginners_guide.html|dasar|teks|en|2
+web_servers_proxies|Apache HTTP Server: getting started|https://httpd.apache.org/docs/2.4/getting-started.html|dasar|teks|en|2
+web_servers_proxies|Let's Encrypt: getting started|https://letsencrypt.org/getting-started/|dasar|teks|en|1
+network_security|Wireshark documentation|https://www.wireshark.org/docs/|dasar|teks|en|4
+network_security|Nmap reference guide|https://nmap.org/book/|menengah|teks|en|6
+network_security|Cloudflare: security learning center|https://www.cloudflare.com/learning/security/|dasar|teks|en|4
+siem_monitoring|Wazuh: getting started|https://documentation.wazuh.com/current/getting-started/index.html|dasar|teks|en|3
+siem_monitoring|MITRE ATT&CK|https://attack.mitre.org/|menengah|teks|en|4
+siem_monitoring|Splunk free courses|https://www.splunk.com/en_us/training/free-courses/overview.html|dasar|kursus|en|10
+vulnerability_assessment|National Vulnerability Database|https://nvd.nist.gov/vuln|dasar|teks|en|1
+vulnerability_assessment|CVSS specification|https://www.first.org/cvss/|menengah|teks|en|2
+vulnerability_assessment|OWASP Web Security Testing Guide|https://owasp.org/www-project-web-security-testing-guide/|menengah|teks|en|8
+penetration_testing|TryHackMe|https://tryhackme.com/|dasar|latihan|en|30
+penetration_testing|Hack The Box|https://www.hackthebox.com/|menengah|latihan|en|40
+penetration_testing|Web Security Academy learning paths|https://portswigger.net/web-security/learning-paths|menengah|kursus|en|25
+incident_response_forensics|NIST SP 800-61: incident handling guide|https://csrc.nist.gov/pubs/sp/800/61/r2/final|menengah|teks|en|4
+incident_response_forensics|SANS cheat sheets|https://www.sans.org/blog/the-ultimate-list-of-sans-cheat-sheets/|menengah|teks|en|3
+incident_response_forensics|CISA: cyber threats and advisories|https://www.cisa.gov/topics/cyber-threats-and-advisories|dasar|teks|en|2
+cryptography_basics|Cryptography I|https://www.coursera.org/learn/crypto|menengah|kursus|en|30
+cryptography_basics|CryptoHack|https://cryptohack.org/|menengah|latihan|en|15
+cryptography_basics|Cryptography (Khan Academy)|https://www.khanacademy.org/computing/computer-science/cryptography|dasar|kursus|en|6
+security_frameworks_compliance|ISO/IEC 27001 overview|https://www.iso.org/standard/27001|dasar|teks|en|2
+security_frameworks_compliance|NIST Cybersecurity Framework|https://www.nist.gov/cyberframework|menengah|teks|en|4
+security_frameworks_compliance|CIS Critical Security Controls|https://www.cisecurity.org/controls|menengah|teks|en|4
+cloud_security|OWASP DevSecOps guideline|https://owasp.org/www-project-devsecops-guideline/|menengah|teks|en|4
+cloud_security|AWS security documentation|https://docs.aws.amazon.com/security/|menengah|teks|en|6
+cloud_security|Snyk Learn|https://learn.snyk.io/|dasar|kursus|en|8
+figma_design_tools|Figma for beginners|https://help.figma.com/hc/en-us/articles/360040328273-Figma-for-beginners|dasar|kursus|en|3
+figma_design_tools|Figma resource library|https://www.figma.com/resource-library/|dasar|teks|en|4
+figma_design_tools|Figma learn design|https://www.figma.com/resource-library/what-is-figma/|dasar|teks|en|1
+prototyping_interaction|What is prototyping?|https://www.interaction-design.org/literature/topics/prototyping|dasar|teks|en|2
+prototyping_interaction|Figma prototyping guide|https://help.figma.com/hc/en-us/sections/360008122734-Prototyping|dasar|teks|en|2
+prototyping_interaction|Laws of UX|https://lawsofux.com/|menengah|teks|en|2
+user_research|UX research methods|https://www.nngroup.com/articles/which-ux-research-methods/|menengah|teks|en|1
+user_research|What is user research?|https://www.interaction-design.org/literature/topics/user-research|dasar|teks|en|2
+user_research|How to conduct user interviews|https://www.usability.gov/how-to-and-tools/methods/user-interviews.html|dasar|teks|en|1
+usability_testing|Usability 101|https://www.nngroup.com/articles/usability-101-introduction-to-usability/|dasar|teks|en|1
+usability_testing|Running a usability test|https://www.usability.gov/how-to-and-tools/methods/usability-testing.html|dasar|teks|en|2
+usability_testing|Ten usability heuristics|https://www.nngroup.com/articles/ten-usability-heuristics/|dasar|teks|en|1
+design_systems|Design Systems|https://www.designsystems.com/|menengah|teks|en|4
+design_systems|Material Design 3|https://m3.material.io/|menengah|teks|en|6
+design_systems|Atomic Design|https://atomicdesign.bradfrost.com/|menengah|teks|en|4
+visual_design_fundamentals|What is visual design?|https://www.interaction-design.org/literature/topics/visual-design|dasar|teks|en|2
+visual_design_fundamentals|Refactoring UI|https://refactoringui.com/|menengah|teks|en|6
+visual_design_fundamentals|Typography in Material Design|https://m3.material.io/styles/typography/overview|dasar|teks|en|1
+information_architecture|Information architecture study guide|https://www.nngroup.com/articles/information-architecture-study-guide/|dasar|teks|en|2
+information_architecture|What is information architecture?|https://www.usability.gov/what-and-why/information-architecture.html|dasar|teks|en|1
+information_architecture|Optimal Workshop learning|https://www.optimalworkshop.com/learn/|menengah|teks|en|3
+accessibility_design|WCAG overview|https://www.w3.org/WAI/standards-guidelines/wcag/|menengah|teks|en|3
+accessibility_design|WebAIM: introduction to web accessibility|https://webaim.org/intro/|dasar|teks|en|2
+accessibility_design|Learn Accessibility (web.dev)|https://web.dev/learn/accessibility|menengah|kursus|en|6
+seo|SEO starter guide (Google)|https://developers.google.com/search/docs/fundamentals/seo-starter-guide|dasar|teks|en|2
+seo|The beginner's guide to SEO|https://moz.com/beginners-guide-to-seo|dasar|kursus|en|4
+seo|Ahrefs: learn SEO|https://ahrefs.com/seo|dasar|teks|en|4
+search_ads|Google Ads Help: about Google Ads|https://support.google.com/google-ads/answer/6146252|dasar|teks|en|1
+search_ads|Skillshop: Google Ads certification|https://skillshop.exceedlms.com/student/catalog/list?category_ids=6431-google-ads|dasar|kursus|en|8
+search_ads|Google Ads home|https://ads.google.com/home/|dasar|teks|en|1
+social_media_ads|Meta Blueprint learn|https://www.facebook.com/business/learn|dasar|kursus|en|6
+social_media_ads|TikTok Ads help center|https://ads.tiktok.com/help/|dasar|teks|en|2
+social_media_ads|Meta Ads Manager guide|https://www.facebook.com/business/tools/ads-manager|dasar|teks|en|1
+web_analytics|Google Skillshop|https://skillshop.withgoogle.com/|dasar|kursus|en|6
+web_analytics|Get started with Google Analytics|https://support.google.com/analytics/answer/9304153|dasar|teks|en|2
+web_analytics|Google Tag Manager: get started|https://support.google.com/tagmanager/answer/6102821|dasar|teks|en|2
+email_marketing_automation|HubSpot Academy: email marketing|https://academy.hubspot.com/courses/email-marketing|dasar|kursus|en|3
+email_marketing_automation|Mailchimp marketing resources|https://mailchimp.com/resources/|dasar|teks|en|3
+email_marketing_automation|SendGrid blog: email deliverability|https://sendgrid.com/en-us/blog|menengah|teks|en|2
+conversion_optimization|CXL: conversion optimisation|https://cxl.com/blog/conversion-optimization/|menengah|teks|en|3
+conversion_optimization|VWO: A/B testing guide|https://vwo.com/ab-testing/|dasar|teks|en|2
+conversion_optimization|Optimizely glossary: CRO|https://www.optimizely.com/optimization-glossary/conversion-rate-optimization/|dasar|teks|en|1
+marketplace_ecommerce|Shopee Seller Education Hub|https://seller.shopee.co.id/edu/|dasar|kursus|id|6
+marketplace_ecommerce|Tokopedia Seller Edu|https://seller.tokopedia.com/edu|dasar|kursus|id|6
+marketplace_ecommerce|Shopify Learn|https://www.shopify.com/learn|dasar|kursus|en|6
+content_creation_tools|Canva Design School|https://www.canva.com/designschool/|dasar|kursus|en|5
+content_creation_tools|CapCut resources|https://www.capcut.com/resource|dasar|teks|en|3
+content_creation_tools|How to create a social media content calendar|https://blog.hootsuite.com/social-media-content-calendar/|dasar|teks|en|1
+accounting_fundamentals|Financial accounting (Khan Academy)|https://www.khanacademy.org/economics-finance-domain/financial-accounting|dasar|kursus|en|15
+accounting_fundamentals|AccountingCoach|https://www.accountingcoach.com/|dasar|kursus|en|20
+accounting_fundamentals|IFRS standards|https://www.ifrs.org/issued-standards/list-of-standards/|menengah|teks|en|6
+financial_statements|Financial statements (CFI)|https://corporatefinanceinstitute.com/resources/accounting/financial-statements/|dasar|teks|en|3
+financial_statements|Financial statements (Investopedia)|https://www.investopedia.com/terms/f/financial-statements.asp|dasar|teks|en|1
+financial_statements|AccountingTools guides|https://www.accountingtools.com/|menengah|teks|en|6
+tax_compliance_id|Direktorat Jenderal Pajak|https://www.pajak.go.id/|dasar|teks|id|3
+tax_compliance_id|Ortax: peraturan pajak|https://ortax.org/|menengah|teks|id|4
+tax_compliance_id|OnlinePajak: tentang pajak|https://www.online-pajak.com/tentang-pajak|dasar|teks|id|3
+accounting_software|Accurate Online|https://accurate.id/|dasar|teks|id|3
+accounting_software|Jurnal by Mekari|https://www.jurnal.id/id/|dasar|teks|id|3
+accounting_software|SAP Learning|https://learning.sap.com/|menengah|kursus|en|20
+ap_ar_reconciliation|Accounts payable (Investopedia)|https://www.investopedia.com/terms/a/accountspayable.asp|dasar|teks|en|1
+ap_ar_reconciliation|Bank reconciliation (Investopedia)|https://www.investopedia.com/terms/b/bank-reconciliation.asp|dasar|teks|en|1
+ap_ar_reconciliation|Accounts receivable (CFI)|https://corporatefinanceinstitute.com/resources/accounting/accounts-receivable-ar/|dasar|teks|en|1
+budgeting_forecasting|What is financial modelling? (CFI)|https://corporatefinanceinstitute.com/resources/financial-modeling/what-is-financial-modeling/|menengah|teks|en|3
+budgeting_forecasting|Budget (Investopedia)|https://www.investopedia.com/terms/b/budget.asp|dasar|teks|en|1
+budgeting_forecasting|Forecasting (CFI)|https://corporatefinanceinstitute.com/resources/financial-modeling/forecasting-methods/|menengah|teks|en|2
+audit_internal_control|COSO internal control framework|https://www.coso.org/|menengah|teks|en|4
+audit_internal_control|IIA standards|https://www.theiia.org/en/standards/|lanjut|teks|en|4
+audit_internal_control|Internal controls (Investopedia)|https://www.investopedia.com/terms/i/internalcontrols.asp|dasar|teks|en|1
+cost_accounting|What is cost accounting? (AccountingTools)|https://www.accountingtools.com/articles/what-is-cost-accounting.html|dasar|teks|en|1
+cost_accounting|Cost accounting (Investopedia)|https://www.investopedia.com/terms/c/costaccounting.asp|dasar|teks|en|1
+cost_accounting|Cost accounting (CFI)|https://corporatefinanceinstitute.com/resources/accounting/cost-accounting/|menengah|teks|en|2

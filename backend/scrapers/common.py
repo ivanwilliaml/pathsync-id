@@ -90,45 +90,8 @@ def html_to_text(raw: str | None) -> str:
 
 # ------------------------------------------------------------------ role filters
 
-# Titles that count as the target role "Business Analyst" and its Indonesian /
-# equivalent designations (paper III.C.1: "Business Analyst dan sebutan setara").
-BA_TITLE = re.compile(
-    # business analyst, business systems/process/operations analyst, "Business Process and Improvement Analyst"
-    r"business\s+(?:[\w&/-]+\s+){0,3}analy[sz]|businessanalyst",
-    re.I,
-)
-BA_TITLE_EXTRA = re.compile(
-    r"analis\s+bisnis|\bit\s*ba\b|\bba\s*(?:-|–|\(|$)|\bbusiness\s+analysis\b|^business\s+process\b|"
-    r"system[s]?\s+analy[sz]|analis\s+sistem|functional\s+(?:analyst|consultant)|"
-    r"requirement[s]?\s+analyst|process\s+analyst|solution[s]?\s+analyst",
-    re.I,
-)
-# Adjacent role used to exercise the "change target role" trigger of the adaptive cycle
-DA_TITLE = re.compile(
-    r"data\s+analy[sz]|data\s+analis|analis\s+data|\bbi\s+(?:analyst|developer|specialist)|business\s+intelligence|"
-    r"reporting\s+analyst|insight[s]?\s+(?:analyst|associate)|customer\s+insight|product\s+analyst|"
-    r"analytics\s+(?:analyst|specialist|associate)|digital\s+analyst|"
-    r"\bmis\s+(?:analyst|staff|officer|specialist)|data\s*(?:&|and)\s*reporting|data\s+insight",
-    re.I,
-)
-EXCLUDE_TITLE = re.compile(
-    r"credit\s+analyst|security|soc\b|network|pentest|claim|quality\s+control|\bqc\b|laborator|"
-    r"chemist|research\s+chemist|financial\s+analyst|investment|equity|underwrit|risk\s+analyst|"
-    r"tax\s+analyst|treasury|actuar",
-    re.I,
-)
-
-
-def classify_role(title: str) -> str | None:
-    t = title or ""
-    if EXCLUDE_TITLE.search(t) and not (BA_TITLE.search(t) or DA_TITLE.search(t)):
-        return None
-    if DA_TITLE.search(t):
-        return "data_analyst"
-    if BA_TITLE.search(t) or BA_TITLE_EXTRA.search(t):
-        return "business_analyst"
-    return None
-
+# Role patterns live in pathsync.roles (matched in priority order).
+from pathsync.roles import classify_role  # noqa: E402,F401
 
 ID_LOCATION = re.compile(
     r"indonesia|jakarta|surabaya|bandung|tangerang|bekasi|depok|bogor|yogyakarta|jogja|semarang|"

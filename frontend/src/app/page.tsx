@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { BadgeCheck, Briefcase, ClipboardCheck, Route as RouteIcon, ShieldCheck } from "lucide-react";
+import { requireKeySave } from "@/components/key-guard";
+import { track, trackOnce } from "@/lib/track";
 import { toast } from "sonner";
 import { api, type Meta } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
@@ -13,27 +15,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ErrorNote, LinkButton, NativeSelect } from "@/components/kit";
+import { ErrorNote, LinkButton, NativeSelect, Tag } from "@/components/kit";
 import { Logo } from "@/components/logo";
 
-const PROGRAMS = ["Information Systems", "Computer Science", "Management", "Accounting", "Statistics", "Other"];
-
-const ROLES = [
-  {
-    id: "business_analyst",
-    name: "Business Analyst",
-    image: "/images/role-ba.webp",
-    blurb: "Turns business problems into clear requirements, process maps, and decisions the team can build on.",
-    skills: ["Requirements Elicitation", "Process Modeling", "Stakeholder Management"],
-  },
-  {
-    id: "data_analyst",
-    name: "Data Analyst",
-    image: "/images/role-da.webp",
-    blurb: "Pulls, cleans, and analyses data so the business can see what is happening and why.",
-    skills: ["SQL", "Data Analysis", "Dashboards & Reporting"],
-  },
-];
+const PROGRAMS = ["Information Systems", "Computer Science", "Design / Visual Communication", "Management / Marketing", "Accounting", "Statistics", "Other"];
 
 export default function Landing() {
   const router = useRouter();
@@ -51,6 +36,7 @@ export default function Landing() {
   }, [ready, id, checked, router]);
 
   const n = meta.data?.n_postings;
+  useEffect(() => trackOnce("page_view", "landing"), []);
   return (
     <div className="min-h-screen bg-background">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
@@ -59,8 +45,8 @@ export default function Landing() {
           <Link href="/market" className="hidden rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:text-ink sm:inline-block">
             Job Market
           </Link>
-          <Link href="/experts" className="hidden rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:text-ink sm:inline-block">
-            For Experts
+          <Link href="/how-it-works" className="hidden rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:text-ink sm:inline-block">
+            How It Works
           </Link>
           <Button variant="outline" size="lg" onClick={() => setResumeOpen(true)}>
             Resume Profile
@@ -86,7 +72,7 @@ export default function Landing() {
           </div>
           <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink/70">
             <li className="flex items-center gap-2">
-              <ShieldCheck className="size-4 text-mint" aria-hidden="true" /> Free, no account needed
+              <ShieldCheck className="size-4 text-mint" aria-hidden="true" /> Free, no email or password
             </li>
             <li className="flex items-center gap-2">
               <ClipboardCheck className="size-4 text-mint" aria-hidden="true" /> About 2 minutes to set up
@@ -109,37 +95,44 @@ export default function Landing() {
       </section>
 
       {/* Roles */}
-      <section className="border-y bg-card">
+      <section className="border-y bg-card" id="roles">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-[28px] font-bold text-ink">Choose Your Target Role</h2>
+          <h2 className="text-[28px] font-bold text-ink">Choose Your Target Career</h2>
           <p className="mt-2 max-w-2xl text-ink/70">
-            PathSync currently covers two analyst roles, so every recommendation can be backed by enough real job postings.
+            {meta.data ? `${meta.data.roles.length} technical careers` : "Technical careers"}, each built from real Indonesian job postings. PathSync teaches hard skills only: the tools and methods that
+            courses can teach and a quick check can measure. Careers with fewer postings are marked Beta.
           </p>
-          <div className="mt-8 grid gap-6 md:grid-cols-2">
-            {ROLES.map((r) => (
-              <article key={r.id} className="group overflow-hidden rounded-2xl border bg-background">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={r.image} alt="" width={1600} height={1067} loading="lazy" className="h-48 w-full object-cover sm:h-56" />
-                <div className="p-6">
-                  <div className="flex items-center gap-2">
-                    <Briefcase className="size-5 text-indigo" aria-hidden="true" />
-                    <h3 className="text-xl font-bold text-ink">{r.name}</h3>
-                  </div>
-                  <p className="mt-2 text-ink/75">{r.blurb}</p>
-                  <ul className="mt-4 flex flex-wrap gap-2" aria-label="Most requested skills">
-                    {r.skills.map((s) => (
-                      <li key={s} className="rounded-full bg-secondary px-3 py-1 text-xs font-medium text-secondary-foreground">
-                        {s}
-                      </li>
+          {(meta.data?.roles ?? []).length === 0 ? (
+            <p className="mt-8 text-sm text-ink/60">Loading careers…</p>
+          ) : (
+            Object.entries(meta.data?.families ?? {}).map(([fam, label]) => {
+              const list = (meta.data?.roles ?? []).filter((r) => r.family === fam);
+              if (!list.length) return null;
+              return (
+                <div key={fam} className="mt-10 first:mt-8">
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-ink/55">{label}</h3>
+                  <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {list.map((r) => (
+                      <article key={r.id} className="flex flex-col rounded-2xl border bg-background p-5">
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <Briefcase className="size-5 shrink-0 text-indigo" aria-hidden="true" />
+                            <h4 className="text-lg font-bold leading-snug text-ink">{r.name}</h4>
+                          </div>
+                          {r.limited_data ? <Tag tone="ember">Beta</Tag> : null}
+                        </div>
+                        <p className="mt-2 flex-1 text-sm text-ink/75">{r.blurb}</p>
+                        <p className="mt-3 text-xs text-ink/60">{r.n_postings ? `Based on ${r.n_postings} real postings` : "Collecting postings"}</p>
+                        <Button size="lg" variant="outline" className="mt-4 h-10" onClick={() => setStartRole(r.id)}>
+                          Start as {r.name}
+                        </Button>
+                      </article>
                     ))}
-                  </ul>
-                  <Button size="lg" variant="outline" className="mt-6 h-11" onClick={() => setStartRole(r.id)}>
-                    Start as {r.name}
-                  </Button>
+                  </div>
                 </div>
-              </article>
-            ))}
-          </div>
+              );
+            })
+          )}
         </div>
       </section>
 
@@ -177,7 +170,7 @@ export default function Landing() {
               <li className="flex gap-3">
                 <Briefcase className="mt-0.5 size-5 shrink-0 text-ember" aria-hidden="true" />
                 <p className="text-white/80">
-                  <span className="font-semibold text-white">Real job postings.</span> {n ? `${n} unique postings` : "Postings"} from Karirhub
+                  <span className="font-semibold text-white">Real job postings.</span> {n ? `${n} unique postings` : "Postings"} across the careers above, from Karirhub
                   (Kemnaker) and company career sites, refreshed monthly.
                 </p>
               </li>
@@ -203,9 +196,14 @@ export default function Landing() {
         </div>
       </section>
 
+      <Waitlist />
       <footer className="border-t">
         <div className="mx-auto flex max-w-6xl flex-wrap justify-between gap-3 px-4 py-6 text-xs text-muted-foreground sm:px-6">
-          <span>PathSync is a research prototype by Team cupuu for ICC 2026.</span>
+          <span className="flex flex-wrap gap-x-4 gap-y-1">
+            <span>&copy; 2026 PathSync · closed beta</span>
+            <Link href="/about" className="hover:text-ink">About &amp; Contact</Link>
+            <Link href="/privacy" className="hover:text-ink">Privacy Policy</Link>
+          </span>
           <span>
             Photos from{" "}
             <a className="underline hover:text-ink" href="https://unsplash.com" target="_blank" rel="noreferrer">
@@ -215,22 +213,57 @@ export default function Landing() {
         </div>
       </footer>
 
-      <StartDialog role={startRole} onClose={() => setStartRole(null)} roles={meta.data?.roles} />
+      <StartDialog role={startRole} onClose={() => setStartRole(null)} roles={meta.data?.roles} families={meta.data?.families} />
       <ResumeDialog open={resumeOpen} onOpenChange={setResumeOpen} />
     </div>
+  );
+}
+
+function Waitlist() {
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
+  const [done, setDone] = useState(false);
+  const [err, setErr] = useState<unknown>(null);
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setErr(null);
+    try {
+      await api.post("/waitlist", { email, role });
+      setDone(true);
+    } catch (e) {
+      setErr(e);
+    }
+  }
+  return (
+    <section className="border-t bg-card">
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+        <h2 className="text-[24px] font-bold text-ink">Your Role Isn&rsquo;t Here Yet?</h2>
+        <p className="mt-1 max-w-2xl text-ink/70">We add roles as soon as there are enough real job postings. Leave your email and the role you need. We only write when it launches.</p>
+        {done ? (
+          <p className="mt-5 rounded-xl bg-secondary p-4 text-sm font-medium text-secondary-foreground">Thanks! We will email you when your role is ready.</p>
+        ) : (
+          <form onSubmit={submit} className="mt-5 flex max-w-2xl flex-col gap-3 sm:flex-row">
+            <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email address…" aria-label="Email address" autoComplete="email" className="h-11 sm:flex-1" />
+            <Input value={role} onChange={(e) => setRole(e.target.value)} placeholder="Role you need, e.g. UI/UX Designer…" aria-label="Role you need" className="h-11 sm:flex-1" maxLength={120} />
+            <Button type="submit" size="lg" className="h-11">Notify Me</Button>
+          </form>
+        )}
+        <div className="mt-3"><ErrorNote error={err} /></div>
+      </div>
+    </section>
   );
 }
 
 /** The signature element: a three-stop route with the brand gradient, laid over the hero photo. */
 function RoutePreview({ n }: { n?: number }) {
   const stops = [
-    { name: "Stakeholder Management", state: "Ready now" },
-    { name: "Requirements Elicitation", state: "Unlocks 3 skills" },
-    { name: "Requirements Documentation", state: "Asked in 72% of postings" },
+    { name: "SQL", state: "Ready now" },
+    { name: "Data Cleaning", state: "Unlocks 3 skills" },
+    { name: "Data Visualization", state: "Asked in most postings" },
   ];
   return (
     <div className="relative -mt-16 ml-4 mr-4 rounded-2xl border bg-white p-5 shadow-xl sm:ml-6 sm:mr-auto sm:max-w-[360px] lg:absolute lg:-bottom-10 lg:-left-10 lg:m-0 lg:w-[340px]">
-      <p className="text-sm font-semibold text-ink">Sample Route to Business Analyst</p>
+      <p className="text-sm font-semibold text-ink">Sample Route to Data Analyst</p>
       <ol className="relative mt-4 space-y-3 pl-6">
         <span className="absolute bottom-2 left-[7px] top-2 w-[3px] rounded-full bg-route-v" aria-hidden="true" />
         {stops.map((s, i) => (
@@ -245,17 +278,18 @@ function RoutePreview({ n }: { n?: number }) {
           </li>
         ))}
       </ol>
-      {n ? <p className="mt-4 text-xs text-muted-foreground">Based on {n} real postings</p> : null}
+      {n ? <p className="mt-4 text-xs text-muted-foreground">Built from {n} real postings across all careers</p> : null}
     </div>
   );
 }
 
-function StartDialog({ role, onClose, roles }: { role: string | null; onClose: () => void; roles?: Meta["roles"] }) {
+function StartDialog({ role, onClose, roles, families }: { role: string | null; onClose: () => void; roles?: Meta["roles"]; families?: Record<string, string> }) {
   const router = useRouter();
   const [name, setName] = useState("");
   const [program, setProgram] = useState(PROGRAMS[0]);
   const [target, setTarget] = useState("business_analyst");
   const [consent, setConsent] = useState(false);
+  const [research, setResearch] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
 
@@ -274,7 +308,9 @@ function StartDialog({ role, onClose, roles }: { role: string | null; onClose: (
     try {
       const r = await api.post<{ id: string; token: string }>("/students", { display_name: name.trim() || "Student", program, target_role: target, consent });
       setStudent({ id: r.id, token: r.token });
-      toast.success("Profile created", { description: "Your access key is in Settings: save it to continue on another device." });
+      requireKeySave();
+      track("signup", { role: target });
+      if (research) await api.put(`/students/${r.id}/research-consent`, { consent: true }).catch(() => {});
       router.push("/evidence");
     } catch (e) {
       setErr(e);
@@ -303,26 +339,34 @@ function StartDialog({ role, onClose, roles }: { role: string | null; onClose: (
               ))}
             </NativeSelect>
           </div>
-          <fieldset className="space-y-1.5">
-            <legend className="mb-1.5 text-sm font-medium">Target Role</legend>
-            <div className="grid grid-cols-2 gap-2">
-              {(roles ?? ROLES).map((r) => (
-                <label
-                  key={r.id}
-                  className={`flex min-h-11 cursor-pointer items-center justify-center rounded-lg border px-3 text-center text-sm font-medium transition-colors ${
-                    target === r.id ? "border-indigo bg-secondary text-secondary-foreground" : "hover:bg-muted"
-                  }`}
-                >
-                  <input type="radio" name="role" value={r.id} checked={target === r.id} onChange={() => setTarget(r.id)} className="sr-only" />
-                  {r.name}
-                </label>
+          <div className="space-y-1.5">
+            <Label htmlFor="role">Target Career</Label>
+            <NativeSelect id="role" name="role" value={target} onChange={(e) => setTarget(e.target.value)}>
+              {Object.entries(families ?? {}).map(([fam, label]) => (
+                <optgroup key={fam} label={label}>
+                  {(roles ?? []).filter((r) => r.family === fam).map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.name}
+                      {r.limited_data ? " (Beta)" : ""}
+                    </option>
+                  ))}
+                </optgroup>
               ))}
-            </div>
-          </fieldset>
+            </NativeSelect>
+          </div>
           <label className="flex cursor-pointer gap-3 rounded-lg bg-muted p-3 text-sm text-ink/80">
             <Checkbox checked={consent} onCheckedChange={(v) => setConsent(v === true)} className="mt-0.5" aria-describedby="consent-text" />
             <span id="consent-text">
-              I agree that my grades, documents, and answers are used to build my learning path. They are not shared, and I can delete them anytime.
+              I agree that my grades, documents, and answers are used to build my learning path. A sample of uploaded projects is read by a PathSync
+              reviewer to keep scoring fair, and lecturers only see class totals if I join a class. I can download or delete everything anytime.{" "}
+              <Link href="/privacy" target="_blank" className="font-medium text-indigo underline">Privacy Policy</Link>
+            </span>
+          </label>
+          <label className="flex cursor-pointer gap-3 rounded-lg border p-3 text-sm text-ink/80">
+            <Checkbox checked={research} onCheckedChange={(v) => setResearch(v === true)} className="mt-0.5" />
+            <span>
+              <span className="font-medium text-ink">Optional:</span> I also allow anonymised use of my data for PathSync research (user studies and model
+              calibration). I can withdraw at any time in Settings.
             </span>
           </label>
           <ErrorNote error={err} />

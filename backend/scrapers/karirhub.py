@@ -13,17 +13,14 @@ from __future__ import annotations
 import argparse
 from datetime import datetime
 
+from pathsync.roles import all_keywords
+
 from .common import RAW_DIR, PoliteClient, Posting, classify_role, detect_language, html_to_text, ts_to_date, write_jsonl
 
 BASE = "https://api.kemnaker.go.id/karirhub/vacancy/v2/published-industrial-vacancies"
 HEADERS = {"Origin": "https://karirhub.kemnaker.go.id", "Referer": "https://karirhub.kemnaker.go.id/"}
 
-KEYWORDS = [
-    "business analyst", "business analysis", "IT business analyst", "system analyst", "systems analyst",
-    "business process", "process analyst", "functional analyst", "requirement", "analis",
-    "data analyst", "business intelligence", "product analyst", "reporting", "analyst", "sql",
-    "power bi", "tableau", "data",
-]
+KEYWORDS = all_keywords()
 
 
 def list_keyword(client: PoliteClient, keyword: str, max_pages: int = 60) -> list[dict]:

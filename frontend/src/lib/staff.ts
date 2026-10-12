@@ -1,59 +1,62 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { api } from "./api";
 
-// Staff sign-in (admin, expert, advisor). Tokens are issued by an admin and shown once.
-const KEY = "pathsync.staff";
+// Staff sign-in (admin, expert, advisor). The key is exchanged once for an HttpOnly cookie, so no staff token is ever
+// kept in localStorage where an XSS bug could read it (PM audit BE-2).
 const EVENT = "pathsync-staff";
 
 export type StaffRole = "admin" | "expert" | "advisor";
-export interface StaffAuth {
+export interface StaffSession {
   role: StaffRole;
-  token: string;
+  subject_id: string;
+  label: string;
+  expires_at: string | null;
 }
 
-function read(): Record<string, string> {
+export async function staffSignIn(token: string): Promise<StaffSession> {
+  const s = await api.post<StaffSession>("/staff/session", { token });
+  window.dispatchEvent(new Event(EVENT));
+  return s;
+}
+
+export async function staffSignOut() {
   try {
-    return JSON.parse(localStorage.getItem(KEY) ?? "{}") ?? {};
-  } catch {
-    return {};
+    await api.del("/staff/session");
+  } finally {
+    window.dispatchEvent(new Event(EVENT));
   }
 }
 
-export function getStaffToken(role: StaffRole): string | null {
-  return read()[role] ?? null;
-}
-
-/** Token for a staff route: the role's own token, falling back to an admin token (admins can do everything). */
-export function staffTokenFor(path: string): string | null {
-  const all = read();
-  if (path.startsWith("/admin")) return all.admin ?? null;
-  if (path.startsWith("/expert")) return all.expert ?? all.admin ?? null;
-  if (path.startsWith("/advisor")) return all.advisor ?? all.admin ?? null;
-  return null;
-}
-
-export function setStaffToken(role: StaffRole, token: string | null) {
-  try {
-    const all = read();
-    if (token) all[role] = token;
-    else delete all[role];
-    localStorage.setItem(KEY, JSON.stringify(all));
-    window.dispatchEvent(new Event(EVENT));
-  } catch {}
-}
-
-export function useStaffToken(role: StaffRole): { token: string | null; ready: boolean } {
-  const [state, setState] = useState<{ token: string | null; ready: boolean }>({ token: null, ready: false });
+/** The current staff session, or null. `ready` is false until the first check finishes. */
+export function useStaffSession(): { session: StaffSession | null; ready: boolean } {
+  const [state, setState] = useState<{ session: StaffSession | null; ready: boolean }>({ session: null, ready: false });
   useEffect(() => {
-    const update = () => setState({ token: getStaffToken(role) ?? (role !== "admin" ? getStaffToken("admin") : null), ready: true });
-    update();
-    window.addEventListener(EVENT, update);
-    window.addEventListener("storage", update);
+    let alive = true;
+    const load = () =>
+      api
+        .get<StaffSession>("/staff/session")
+        .then((session) => alive && setState({ session, ready: true }))
+        .catch(() => alive && setState({ session: null, ready: true }));
+    load();
+    window.addEventListener(EVENT, load);
     return () => {
-      window.removeEventListener(EVENT, update);
-      window.removeEventListener("storage", update);
+      alive = false;
+      window.removeEventListener(EVENT, load);
     };
-  }, [role]);
+  }, []);
   return state;
+}
+
+/** `token` is a truthy marker when the signed-in staff role may use this page. */
+export function useStaffToken(role: StaffRole): { token: string | null; ready: boolean } {
+  const { session, ready } = useStaffSession();
+  const ok = session && (session.role === role || session.role === "admin");
+  return { token: ok ? "session" : null, ready };
+}
+
+/** Sign out of a role (kept for existing call sites). */
+export function setStaffToken(_role: StaffRole, token: string | null) {
+  if (token === null) void staffSignOut();
 }

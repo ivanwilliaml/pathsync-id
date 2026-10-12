@@ -6,6 +6,7 @@ served again, so revealing the correct answer after submission cannot be replaye
 """
 from __future__ import annotations
 
+import os
 from datetime import timedelta
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -22,7 +23,8 @@ from pathsync.assessment import (
     reassessment_items,
     validate_submission,
 )
-from pathsync.db import AssessmentResponse, AssessmentSession, Student, utcnow
+from pathsync.config import READINESS_THRESHOLD
+from pathsync.db import AssessmentResponse, AssessmentSession, ProductEvent, Student, utcnow
 from pathsync.engine import load_context, record_history, responses, student_states
 from pathsync.security import db_session, rate_limit, student_access
 
@@ -31,6 +33,7 @@ from ..common import has_history, recommend_for
 router = APIRouter(prefix="/api/students/{sid}/assessment", tags=["assessment"],
                    dependencies=[Depends(rate_limit("assessment", 60))])
 SESSION_TTL = timedelta(hours=2)
+MIN_SECONDS_PER_ITEM = float(os.getenv("PATHSYNC_MIN_SECONDS_PER_ITEM", "3"))
 
 
 def _answered(s: Session, sid: str) -> set[str]:
@@ -54,7 +57,7 @@ def _issue(s: Session, st: Student, phase: str, items: list[dict], skill_id: str
 
 def _items_payload(sess: AssessmentSession, names: dict) -> list[dict]:
     bank = item_bank()
-    return [{**public_item(bank[i]), "skill_name": names[bank[i]["skill_id"]]} for i in sess.item_ids if i in bank]
+    return [{**public_item(bank[i], sess.id), "skill_name": names[bank[i]["skill_id"]]} for i in sess.item_ids if i in bank]
 
 
 @router.get("/diagnostic")
@@ -104,10 +107,14 @@ def submit(body: SubmitIn, st: Student = Depends(student_access), s: Session = D
         raise HTTPException(400, "Answer at least one question.")
     ctx = load_context(s, st.target_role)
     before = student_states(s, st, ctx)
-    graded = grade(answers)
+    elapsed = (utcnow() - sess.created_at).total_seconds()
+    if elapsed < MIN_SECONDS_PER_ITEM * len(sess.item_ids):
+        # a real read-and-answer takes seconds per question; a bot or an answer-sheet run does not (PM audit P0-1)
+        raise HTTPException(422, "That was very fast. Read each question, then submit again.")
+    graded = grade(answers, sess.id)
     for g in graded:
         s.add(AssessmentResponse(student_id=st.id, item_id=g["item_id"], skill_id=g["skill_id"], correct=g["correct"],
-                                 phase=sess.phase, session_id=sess.id))
+                                 choice_canon=g["choice_canon"], phase=sess.phase, session_id=sess.id))
     sess.submitted_at = utcnow()
     s.commit()
     s.refresh(st)
@@ -115,6 +122,12 @@ def submit(body: SubmitIn, st: Student = Depends(student_access), s: Session = D
     changed = {g["skill_id"]: {"name": ctx.names[g["skill_id"]], "p_before": round(before[g["skill_id"]].p, 3),
                                "p_after": round(after[g["skill_id"]].p, 3),
                                "trace": [round(x, 3) for x in after[g["skill_id"]].bkt_trace]} for g in graded}
+    # server-side funnel events: trusted, because the client cannot claim a pass (PM audit §6.6)
+    proved = [k for k, v in changed.items() if v["p_before"] < READINESS_THRESHOLD <= v["p_after"]]
+    s.add(ProductEvent(name="check_completed", student_id=st.id, props={"phase": sess.phase, "correct": sum(g["correct"] for g in graded), "total": len(graded)}))
+    if sess.phase == "reassessment" and proved:
+        s.add(ProductEvent(name="reassess_passed", student_id=st.id, props={"skills": ",".join(proved)[:100]}))
+    s.commit()
     trigger = "evidence" if has_history(s, st.id) else "initial"
     record_history(s, st, trigger, note=("skill check: " + ", ".join(v["name"] for v in changed.values()))[:200],
                    rec=recommend_for(s, st))

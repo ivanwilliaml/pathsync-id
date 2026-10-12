@@ -32,7 +32,10 @@ export const SOURCE: Record<string, string> = {
   karirhub: "Karirhub (Kemnaker)", workable: "Workable", workday: "Workday", lever: "Lever", greenhouse: "Greenhouse",
   smartrecruiters: "SmartRecruiters", ashby: "Ashby", recruitee: "Recruitee",
 };
-export const CLUSTER_ORDER = ["business_process", "data_analytics", "tools", "communication"];
+export const CLUSTER_ORDER = [
+  "data_analytics", "bi_tools", "business_analysis", "data_ml", "data_eng", "web_frontend", "backend", "mobile",
+  "testing", "devops", "security", "design", "marketing", "finance",
+];
 
 const nf0 = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
 export const pct = (x: number | null | undefined, digits = 0) =>
@@ -42,8 +45,8 @@ export const num = (x: number | null | undefined, digits = 2) =>
 export const int = (x: number | null | undefined) => (x == null ? "–" : nf0.format(x));
 export const hours = (h: number) => `${new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 }).format(h)} h`;
 
-const dateFmt = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric" });
-const dateTimeFmt = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+const dateFmt = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", year: "numeric" });
+const dateTimeFmt = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 /** Backend timestamps are naive UTC. */
 export const fmtDate = (iso: string | null | undefined) => (iso ? dateFmt.format(new Date(iso.length > 10 && !iso.endsWith("Z") ? iso + "Z" : iso)) : "–");
 export const fmtDateTime = (iso: string) => dateTimeFmt.format(new Date(iso.endsWith("Z") ? iso : iso + "Z"));

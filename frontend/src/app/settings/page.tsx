@@ -4,8 +4,10 @@ import { useState } from "react";
 import { Copy, Download, Eye, EyeOff, ShieldCheck, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { api, type Student } from "@/lib/api";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useApi } from "@/lib/hooks";
 import { accessKey, setStudent } from "@/lib/student";
+import { requireKeySave } from "@/components/key-guard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -38,6 +40,7 @@ function Settings({ sid }: { sid: string }) {
       <PageHeader title="Settings & Data" description="Your profile, your access key, classes and studies you join, and control over your personal data." />
       <Profile sid={sid} s={s} onSaved={st.reload} />
       <AccessKey />
+      <Research sid={sid} on={!!(s as { research_consent_at?: string | null }).research_consent_at} onChange={st.reload} />
       <Joins sid={sid} cohort={s.cohort_id} arm={s.study_arm} onChange={st.reload} />
       <Privacy sid={sid} consentAt={s.consent_at} version={s.consent_version} />
     </div>
@@ -120,6 +123,45 @@ function AccessKey() {
           <Copy /> Copy
         </Button>
       </div>
+      <div className="mt-3">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={async () => {
+            const id = key.split(".")[0];
+            if (!confirm("Create a new key? The old key stops working on every device.")) return;
+            const r = await api.post<{ id: string; token: string }>(`/students/${id}/rotate-key`);
+            setStudent({ id: r.id, token: r.token });
+            requireKeySave();
+            window.location.reload();
+          }}
+        >
+          Create a New Key
+        </Button>
+      </div>
+    </Panel>
+  );
+}
+
+function Research({ sid, on, onChange }: { sid: string; on: boolean; onChange: () => void }) {
+  return (
+    <Panel>
+      <SectionTitle>Research Participation</SectionTitle>
+      <label className="flex cursor-pointer gap-3 text-sm text-ink/80">
+        <Checkbox
+          checked={on}
+          onCheckedChange={async (v) => {
+            await api.put(`/students/${sid}/research-consent`, { consent: v === true });
+            toast.success(v === true ? "Thanks for helping the research" : "Research participation withdrawn");
+            onChange();
+          }}
+          className="mt-0.5"
+        />
+        <span>
+          I allow anonymised use of my data for PathSync research (user studies and model calibration). Optional: it never changes the features you get.
+          Withdrawing also removes you from any running study.
+        </span>
+      </label>
     </Panel>
   );
 }
@@ -206,8 +248,9 @@ function Privacy({ sid, consentAt, version }: { sid: string; consentAt: string |
         </span>
       </SectionTitle>
       <p className="text-sm text-ink/75">
-        Under Indonesia&rsquo;s Personal Data Protection Law (UU No. 27/2022) you can see everything we store and delete it. We use your data only to build your
-        own route. Consent given {consentAt ? new Date(consentAt + "Z").toLocaleDateString() : "–"} (policy version {version || "–"}).
+        Under Indonesia&rsquo;s Personal Data Protection Law (UU No. 27/2022) you can see everything we store and delete it. We use your data to build your own route; a
+        sample of uploaded projects is read by a PathSync reviewer for quality, and lecturers see class totals only if you join a class.{" "}
+        <a href="/privacy" className="font-medium text-indigo underline">Read the privacy policy</a>. Consent given {consentAt ? new Date(consentAt + "Z").toLocaleDateString() : "–"} (policy version {version || "–"}).
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <Button variant="outline" onClick={exportData}>

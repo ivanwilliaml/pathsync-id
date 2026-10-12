@@ -8,7 +8,7 @@ import { fmtDateTime, int, num, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { useStaffToken } from "@/lib/staff";
 import { StaffLogin } from "@/components/staff-login";
-import { ProjectReviews, Studies, TeamAndClasses } from "./admin-extra";
+import { Activity, LaunchMetrics, ProjectReviews, Studies, TeamAndClasses } from "./admin-extra";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,7 +62,7 @@ export default function AdminPage() {
       <div className="mx-auto max-w-md">
         <PageHeader title="Admin" description="Team-only console for market data, reviews, models, experts, classes and studies." />
         <Panel>
-          <StaffLogin role="admin" error={who.error} hint="The first admin key is set with PATHSYNC_ADMIN_TOKEN, or written to backend/data/admin_token.txt on first start." />
+          <StaffLogin role="admin" error={who.error} hint="Staff only. Enter your admin key." />
         </Panel>
       </div>
     );
@@ -86,8 +86,9 @@ function AdminConsole() {
           <Fact label="Last Market Build" value={s.last_build ?? "–"} note={`Extractor: ${s.extractor === "llm" ? "LLM" : "lexicon"}`} small />
         </dl>
       ) : null}
-      <Tabs defaultValue="market">
+      <Tabs defaultValue="launch">
         <TabsList className="mb-5 flex-wrap">
+          <TabsTrigger value="launch">Launch Metrics</TabsTrigger>
           <TabsTrigger value="market">Market Data</TabsTrigger>
           <TabsTrigger value="review">Review Queue</TabsTrigger>
           <TabsTrigger value="annotate">Annotation</TabsTrigger>
@@ -95,7 +96,11 @@ function AdminConsole() {
           <TabsTrigger value="projects">Project Reviews</TabsTrigger>
           <TabsTrigger value="team">Team &amp; Classes</TabsTrigger>
           <TabsTrigger value="studies">User Studies</TabsTrigger>
+          <TabsTrigger value="activity">Activity &amp; Reports</TabsTrigger>
         </TabsList>
+        <TabsContent value="launch">
+          <LaunchMetrics />
+        </TabsContent>
         <TabsContent value="market">
           <MarketData meta={meta.data} onChange={stats.reload} />
         </TabsContent>
@@ -116,6 +121,9 @@ function AdminConsole() {
         </TabsContent>
         <TabsContent value="studies">
           <Studies />
+        </TabsContent>
+        <TabsContent value="activity">
+          <Activity />
         </TabsContent>
       </Tabs>
     </div>

@@ -23,6 +23,9 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { setStudent, useStudentId } from "@/lib/student";
+import { staffSignOut, useStaffSession } from "@/lib/staff";
+import { FeedbackButton } from "./feedback-button";
+import { KeyGuard } from "./key-guard";
 import { LinkButton } from "./kit";
 import { Logo } from "./logo";
 
@@ -50,6 +53,8 @@ const TEAM: NavItem[] = [
 export function AppShell({ children }: { children: ReactNode }) {
   const path = usePathname();
   if (path === "/") return <>{children}</>;
+  const bare = path === "/privacy" || path === "/about";
+  if (bare) return <>{children}</>;
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-[256px_minmax(0,1fr)]">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-3 focus:py-2">
@@ -63,6 +68,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main id="main" className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
           {children}
         </main>
+        <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-2 border-t px-4 py-4 text-xs text-muted-foreground sm:px-6 lg:px-10">
+          <span className="flex gap-4">
+            <Link href="/privacy" className="hover:text-ink">Privacy</Link>
+            <Link href="/about" className="hover:text-ink">About &amp; Contact</Link>
+          </span>
+          <FeedbackButton />
+        </footer>
+        <KeyGuard />
       </div>
     </div>
   );
@@ -71,6 +84,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
   const path = usePathname();
   const { id } = useStudentId();
+  const { session } = useStaffSession();
   const section = (title: string, items: NavItem[]) => (
     <div className="space-y-1">
       <p className="px-3 pb-1 text-xs font-medium text-muted-foreground">{title}</p>
@@ -102,8 +116,13 @@ function SidebarNav({ onNavigate }: { onNavigate?: () => void }) {
       <nav aria-label="Main" className="flex flex-1 flex-col gap-6 overflow-y-auto">
         {id ? section("Your Journey", JOURNEY) : null}
         {section("Explore", EXPLORE)}
-        {section("Team Workspace", TEAM)}
+        {session ? section("Team Workspace", TEAM.filter((t) => session.role === "admin" || t.href === (session.role === "expert" ? "/experts" : "/advisor"))) : null}
       </nav>
+      {session ? (
+        <button type="button" onClick={() => void staffSignOut()} className="px-3 text-left text-xs font-medium text-ink/70 hover:text-ink">
+          Staff: sign out ({session.role})
+        </button>
+      ) : null}
       <ProfileChip onNavigate={onNavigate} />
     </div>
   );

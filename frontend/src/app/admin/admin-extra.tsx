@@ -346,3 +346,116 @@ export function Studies() {
     </div>
   );
 }
+
+// ------------------------------------------------------------------ launch operations
+interface Metrics {
+  window_days: number;
+  new_students: number;
+  funnel: { step: string; students: number; share: number }[];
+  north_star: { definition: string; value: number };
+  d7_retention: number;
+  review_queue: { pending: number; over_72h: number; sla_hours: number };
+}
+
+/** Launch funnel, North Star and review-queue SLA (PM audit §6.5, §6.6, AI-9). */
+export function LaunchMetrics() {
+  const [days, setDays] = useState(14);
+  const m = useApi<Metrics>(`/admin/metrics?days=${days}`);
+  const wl = useApi<{ total: number; by_role: Record<string, number> }>("/admin/waitlist");
+  if (m.error) return <ErrorNote error={m.error} />;
+  if (!m.data) return <Loading />;
+  const d = m.data;
+  return (
+    <div className="space-y-6">
+      <Panel>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <SectionTitle>North Star</SectionTitle>
+          <NativeSelect value={String(days)} onChange={(e) => setDays(Number(e.target.value))} aria-label="Window">
+            {[7, 14, 30, 90].map((n) => (
+              <option key={n} value={n}>
+                Last {n} days
+              </option>
+            ))}
+          </NativeSelect>
+        </div>
+        <p className="text-[40px] font-extrabold leading-none text-ink tabular">{Math.round(d.north_star.value * 100)}%</p>
+        <p className="mt-1 text-sm text-ink/70">{d.north_star.definition}. {d.new_students} new students in this window · D7 return {Math.round(d.d7_retention * 100)}%.</p>
+      </Panel>
+      <Panel>
+        <SectionTitle>Funnel</SectionTitle>
+        <ol className="space-y-2">
+          {d.funnel.map((f) => (
+            <li key={f.step} className="grid grid-cols-[minmax(0,12rem)_1fr_auto] items-center gap-3 text-sm">
+              <span className="truncate text-ink">{f.step}</span>
+              <span className="h-2.5 overflow-hidden rounded-full bg-muted">
+                <span className="block h-full rounded-full bg-indigo" style={{ width: `${Math.round(f.share * 100)}%` }} />
+              </span>
+              <span className="tabular text-ink/75">{f.students} · {Math.round(f.share * 100)}%</span>
+            </li>
+          ))}
+        </ol>
+      </Panel>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <Panel>
+          <SectionTitle>Project Review SLA</SectionTitle>
+          <p className="text-sm text-ink/80">
+            {d.review_queue.pending} waiting, <span className={d.review_queue.over_72h ? "font-semibold text-ember-ink" : ""}>{d.review_queue.over_72h} over {d.review_queue.sla_hours} h</span>.
+          </p>
+        </Panel>
+        <Panel>
+          <SectionTitle>Role Waitlist</SectionTitle>
+          <p className="text-sm text-ink/80">{wl.data ? `${wl.data.total} sign-ups` : "…"}</p>
+          <ul className="mt-2 space-y-0.5 text-sm text-ink/75">
+            {Object.entries(wl.data?.by_role ?? {}).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([r, n]) => (
+              <li key={r}>{r}: {n}</li>
+            ))}
+          </ul>
+        </Panel>
+      </div>
+    </div>
+  );
+}
+
+interface AuditRow { id: number; at: string; actor: string; action: string; target: string }
+interface FeedbackRow { id: number; at: string; kind: string; message: string; page: string; request_id: string; contact: string; resolved: boolean }
+
+/** Staff activity log and problem reports. */
+export function Activity() {
+  const log = useApi<AuditRow[]>("/admin/audit-log?limit=100");
+  const fb = useApi<FeedbackRow[]>("/admin/feedback");
+  return (
+    <div className="space-y-6">
+      <Panel>
+        <SectionTitle>Problem Reports</SectionTitle>
+        {!fb.data ? <Loading /> : fb.data.length === 0 ? <EmptyState title="No Reports Yet">Reports from the in-app button show up here.</EmptyState> : (
+          <ul className="divide-y">
+            {fb.data.map((r) => (
+              <li key={r.id} className="flex flex-wrap items-start justify-between gap-3 py-3 text-sm">
+                <div className="min-w-0">
+                  <p className="text-ink">{r.message}</p>
+                  <p className="mt-0.5 text-xs text-ink/60">{fmtDateTime(r.at)} · {r.page}{r.request_id ? ` · ref ${r.request_id}` : ""}{r.contact ? ` · ${r.contact}` : ""}</p>
+                </div>
+                {r.resolved ? <Tag tone="mint">Resolved</Tag> : (
+                  <Button size="sm" variant="outline" onClick={() => api.post(`/admin/feedback/${r.id}/resolve`).then(fb.reload)}>Mark Resolved</Button>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </Panel>
+      <Panel>
+        <SectionTitle>Staff Activity</SectionTitle>
+        {!log.data ? <Loading /> : (
+          <ul className="max-h-96 divide-y overflow-y-auto text-sm">
+            {log.data.map((r) => (
+              <li key={r.id} className="flex flex-wrap justify-between gap-2 py-2">
+                <span className="text-ink">{r.action}{r.target ? ` · ${r.target}` : ""}</span>
+                <span className="text-xs text-ink/60">{r.actor} · {fmtDateTime(r.at)}</span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </Panel>
+    </div>
+  );
+}

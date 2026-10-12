@@ -79,3 +79,10 @@ Tanpa keduanya, sistem memakai ekstraktor leksikon offline dengan kontrak keluar
 - **Fitur baru:** Course Companion & rencana mingguan (`/classroom`), tampilan dosen (`/advisor`), `/how-it-works` (model card, governance taksonomi, bobot), panel "How was this decided?", ekspor/hapus data (UU PDP), studi 4 lengan.
 - **Auth:** pendaftaran mahasiswa menghasilkan kunci akses (`id.token`). Token admin diambil dari env `PATHSYNC_ADMIN_TOKEN`; kalau tidak diset, token dibuat otomatis ke `backend/data/admin_token.txt`. Token pakar dan dosen dibuat dari halaman Admin.
 - **Migrasi DB:** Alembic dijalankan otomatis saat startup.
+
+## Pra-launch (audit PM)
+
+- Audit produk: [docs/PM_AUDIT_PRELAUNCH.md](docs/PM_AUDIT_PRELAUNCH.md). Tindak lanjut per temuan dengan status jujur: [docs/PM_AUDIT_RESPONSE.md](docs/PM_AUDIT_RESPONSE.md).
+- Deploy produksi: `cp .env.example .env` (isi rahasia), lalu `docker compose up -d --build`. Caddy (HTTPS) → Next.js → FastAPI → PostgreSQL, Redis, backup harian, refresh pasar bulanan.
+- Login staf memakai cookie HttpOnly (`POST /api/staff/session`); skrip boleh memakai `Authorization: Bearer`.
+- Uji beban: `python deploy/loadtest.py http://127.0.0.1:8000 200 30`.

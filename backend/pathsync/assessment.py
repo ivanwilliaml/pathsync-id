@@ -39,8 +39,30 @@ def item_bank() -> dict[str, dict]:
     return bank
 
 
-def public_item(it: dict) -> dict:
-    return {k: it[k] for k in ("id", "skill_id", "difficulty", "stem", "options")}
+def session_order(session_id: str, item_id: str, n: int = 4) -> list[int]:
+    """Per-session permutation of an item's options (indices into the canonical bank order).
+
+    Seeded by (session id, item id): the same student sees a stable order if the page reloads, but two sessions never
+    share one, so "item 7 is C" cannot circulate as an answer sheet (PM audit P0-1)."""
+    digest = hashlib.sha256(f"{session_id}|{item_id}".encode()).digest()
+    order = list(range(n))
+    random.Random(int.from_bytes(digest[:8], "big")).shuffle(order)
+    return order
+
+
+def public_item(it: dict, session_id: str | None = None) -> dict:
+    out = {k: it[k] for k in ("id", "skill_id", "difficulty", "stem", "options")}
+    if session_id:
+        base = canonical_options(it)
+        out["options"] = [base[i] for i in session_order(session_id, it["id"], len(base))]
+    return out
+
+
+def canonical_options(it: dict) -> list[str]:
+    """Options with the key first, as authored."""
+    opts = list(it["options"])
+    key = opts[it["answer"]]
+    return [key] + [o for i, o in enumerate(opts) if i != it["answer"]]
 
 
 def items_for(skill_id: str) -> list[dict]:
@@ -103,15 +125,28 @@ def validate_submission(issued: list[str], answers: list[dict]) -> list[dict]:
     return clean
 
 
-def grade(answers: list[dict]) -> list[dict]:
+def grade(answers: list[dict], session_id: str | None = None) -> list[dict]:
+    """Grade answers whose `choice` indexes the options as shown in this session (see `session_order`).
+
+    Returns the displayed index of the key (`answer`) and the canonical index chosen (`choice_canon`, 0 = key), which
+    the item analysis uses to count how often each distractor attracts students."""
     bank = item_bank()
     out = []
     for a in answers:
         it = bank.get(a["item_id"])
         if not it:
             continue
+        order = session_order(session_id, it["id"]) if session_id else None
+        if order is None:
+            shown_key = it["answer"]
+        else:
+            # canonical index 0 is the key; position of canonical 0 in the displayed order
+            shown_key = order.index(0)
         choice = a.get("choice")
-        correct = choice is not None and int(choice) == it["answer"]
+        correct = choice is not None and int(choice) == shown_key
+        canon = None
+        if choice is not None:
+            canon = order[int(choice)] if order else (0 if correct else None)
         out.append({"item_id": it["id"], "skill_id": it["skill_id"], "correct": correct, "choice": choice,
-                    "answer": it["answer"], "explanation": it["explanation"]})
+                    "choice_canon": canon, "answer": shown_key, "explanation": it["explanation"]})
     return out

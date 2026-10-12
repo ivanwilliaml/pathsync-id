@@ -164,6 +164,9 @@ class Student(Base):
     target_role: Mapped[str] = mapped_column(String(40), default="business_analyst")
     consent_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     consent_version: Mapped[str] = mapped_column(String(20), default="")
+    # separate, optional consent for research use (user studies, weight calibration); never required to use PathSync
+    research_consent_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    last_seen_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     cohort_id: Mapped[str | None] = mapped_column(ForeignKey("cohorts.id"), nullable=True, index=True)
     study_id: Mapped[str | None] = mapped_column(ForeignKey("studies.id"), nullable=True, index=True)
     study_arm: Mapped[str | None] = mapped_column(String(20), nullable=True)
@@ -197,6 +200,7 @@ class AssessmentResponse(Base):
     correct: Mapped[bool] = mapped_column(Boolean)
     phase: Mapped[str] = mapped_column(String(20))          # diagnostic | reassessment
     session_id: Mapped[str] = mapped_column(String(40), default="")
+    choice_canon: Mapped[int | None] = mapped_column(Integer, nullable=True)   # 0 = key, 1-3 = distractors (item analysis)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
 
@@ -223,6 +227,51 @@ class ApiToken(Base):
     label: Mapped[str] = mapped_column(String(120), default="")
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     revoked_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    expires_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)   # staff tokens: 30 days
+
+
+class AuditLog(Base):
+    """Who did what in the staff tools (model activation, market simulation, token changes, reviews)."""
+    __tablename__ = "audit_log"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    actor: Mapped[str] = mapped_column(String(160), default="")       # "admin:Founding admin", "system"
+    action: Mapped[str] = mapped_column(String(60), index=True)
+    target: Mapped[str] = mapped_column(String(200), default="")
+    detail: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, index=True)
+
+
+class ProductEvent(Base):
+    """First-party product analytics (PM audit §6.6). No third-party tracker; student id only, no content."""
+    __tablename__ = "product_events"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(40), index=True)
+    student_id: Mapped[str | None] = mapped_column(String(40), nullable=True, index=True)
+    props: Mapped[dict] = mapped_column(JSON, default=dict)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, index=True)
+
+
+class Feedback(Base):
+    """'Report a problem' messages and client-side errors, with the request id for tracing."""
+    __tablename__ = "feedback"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    kind: Mapped[str] = mapped_column(String(20), default="feedback")   # feedback | client_error
+    message: Mapped[str] = mapped_column(Text, default="")
+    page: Mapped[str] = mapped_column(String(300), default="")
+    request_id: Mapped[str] = mapped_column(String(64), default="")
+    contact: Mapped[str] = mapped_column(String(200), default="")
+    student_id: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    resolved: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow, index=True)
+
+
+class Waitlist(Base):
+    """Students asking to be told when their role is supported (PM audit §6.2)."""
+    __tablename__ = "waitlist"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    email: Mapped[str] = mapped_column(String(200), index=True)
+    role: Mapped[str] = mapped_column(String(120), default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 
 
 # ------------------------------------------------- classroom & learning experience
@@ -330,12 +379,16 @@ class Annotation(Base):
 
 # ------------------------------------------------------------------ engine
 _engine = create_engine(DATABASE_URL, future=True,
-                        connect_args={"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {})
+                        # sqlite: wait up to 30 s for the single writer instead of failing with "database is locked"
+                        connect_args={"check_same_thread": False, "timeout": 30} if DATABASE_URL.startswith("sqlite") else {},
+                        pool_pre_ping=not DATABASE_URL.startswith("sqlite"))
 if DATABASE_URL.startswith("sqlite"):
     @event.listens_for(_engine, "connect")
     def _sqlite_pragmas(dbapi_conn, _):  # pragma: no cover - connection setup
         cur = dbapi_conn.cursor()
         cur.execute("PRAGMA journal_mode=WAL")
+        cur.execute("PRAGMA synchronous=NORMAL")      # safe with WAL; commits no longer wait for a full fsync
+        cur.execute("PRAGMA busy_timeout=30000")
         cur.execute("PRAGMA foreign_keys=ON")
         cur.close()
 

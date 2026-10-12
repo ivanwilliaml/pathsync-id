@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import { api, type Item } from "@/lib/api";
 import { num, titleCase } from "@/lib/format";
+import { track } from "@/lib/track";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,6 +37,7 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
   const [confirm, setConfirm] = useState(false);
   const [err, setErr] = useState<unknown>(null);
 
+  useEffect(() => track("check_started", { items: items.length }), [items.length]);
   const it = items[idx];
   const answered = Object.keys(answers).length;
   const last = idx === items.length - 1;

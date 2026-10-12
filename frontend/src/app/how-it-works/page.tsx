@@ -11,6 +11,8 @@ interface ModelCard {
   embedding_model: { name: string; use: string };
   knowledge_tracing: { type: string; slip: number; guess: number; learn: number };
   llm_is_never_used_for: string[];
+  validation?: { real_experts: number; ranker_trained_on: string; status: string };
+  planned?: string[];
 }
 interface Criterion {
   value: number | string;
@@ -143,13 +145,22 @@ function Models({ c }: { c: ModelCard }) {
         <p className="text-sm text-muted-foreground">Decides priorities</p>
         <p className="mt-1 font-semibold text-ink">{c.decision_model.name}</p>
         <p className="text-sm text-ink/75">{c.decision_model.type}. Chosen because {c.decision_model.why}.</p>
+        {c.validation ? (
+          <p className="mt-2 inline-block rounded-md bg-ember/10 px-2 py-1 text-xs font-medium text-ember-ink">
+            Beta: validated with {c.validation.real_experts} real experts so far; trained on {c.validation.ranker_trained_on}.
+          </p>
+        ) : null}
       </Panel>
       <Panel>
         <p className="text-sm text-muted-foreground">Reads job postings (language understanding only)</p>
-        <p className="mt-1 font-semibold text-ink">{c.extraction_llm.runtime ?? "Claude API (when a key is configured)"}</p>
+        <p className="mt-1 font-semibold text-ink">
+          {c.extraction_llm.active_for_market_map === "llm" ? c.extraction_llm.runtime : "Keyword and phrase matching (no LLM)"}
+        </p>
         <p className="text-sm text-ink/75">
-          {c.extraction_llm.runtime_provider}. Offline run: {c.extraction_llm.offline_run}. Active for the market map now:{" "}
-          {c.extraction_llm.active_for_market_map === "llm" ? "LLM" : "lexicon extractor"}. Gates: {c.extraction_llm.gates}.
+          {c.extraction_llm.active_for_market_map === "llm"
+            ? `${c.extraction_llm.runtime_provider}. Gates: ${c.extraction_llm.gates}.`
+            : `Today the market map is read by a transparent lexicon matcher. Gates: ${c.extraction_llm.gates}. LLM reading (Claude API) is planned, not active.`}
+          {" "}Offline comparison run: {c.extraction_llm.offline_run}.
         </p>
       </Panel>
       <Panel>
@@ -308,6 +319,8 @@ function Weights({ w }: { w: WeightsReport }) {
 }
 
 function Evaluation({ e }: { e: EvalReport }) {
+  // hide a method with no data in any condition (the generic-LLM baseline is not available yet)
+  const methods = Object.keys(METHOD).filter((m) => Object.values(e.conditions).some((c) => c.cv.methods[m]));
   return (
     <Panel>
       <p className="mb-3 text-sm text-ink/70">
@@ -319,7 +332,7 @@ function Evaluation({ e }: { e: EvalReport }) {
           <thead>
             <tr className="text-left text-ink/70">
               <th className="py-1.5 pr-3 font-medium">Condition</th>
-              {Object.keys(METHOD).map((m) => (
+              {methods.map((m) => (
                 <th key={m} className="py-1.5 pr-3 font-medium">
                   {METHOD[m]}
                 </th>
@@ -330,7 +343,7 @@ function Evaluation({ e }: { e: EvalReport }) {
             {Object.entries(e.conditions).map(([k, c]) => (
               <tr key={k} className="border-t">
                 <td className="py-1.5 pr-3">{COND[k] ?? k}</td>
-                {Object.keys(METHOD).map((m) => (
+                {methods.map((m) => (
                   <td key={m} className="py-1.5 pr-3">
                     {c.cv.methods[m] ? num(c.cv.methods[m].ndcg5.mean, 3) : "–"}
                   </td>

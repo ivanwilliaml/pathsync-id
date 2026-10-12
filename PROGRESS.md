@@ -1,5 +1,8 @@
 # PathSync — Progres & Langkah Berikutnya
 
+> **Update 12 Okt 2026 (pra-launch):** audit PM ditindaklanjuti, lihat [docs/PM_AUDIT_RESPONSE.md](docs/PM_AUDIT_RESPONSE.md). Bank soal diseimbangkan (opsi terpanjang benar 83% → 16%), rubrik proyek dibatasi dan anti-duplikat, rate limit tidak bisa dipalsukan, layar simpan kunci, cookie staf, privasi + opt-in riset, metrik launch. Backend 59 tes lulus. Belum: deploy produksi nyata, terjemahan Indonesia penuh, perluasan bank soal, 20 peran.
+
+
 Terakhir diperbarui: 6 Oktober 2026. Acuan: paper semifinal ICC 2026 (Tim cupuu), Bagian III Metodologi.
 
 ## Ringkasan

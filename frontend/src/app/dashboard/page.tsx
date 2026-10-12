@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, ChevronRight, Clock, Lock } from "lucide-react";
 import { api, FEATURE_LABELS, type Competency, type Dashboard, type PathStep, type RankRow } from "@/lib/api";
 import { CLUSTER_ORDER, LEVEL, REC, firstSentence, hours, num, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
+import { track, trackOnce } from "@/lib/track";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RequireStudent } from "@/components/require-student";
@@ -19,6 +20,8 @@ export default function DashboardPage() {
 function DashboardView({ sid }: { sid: string }) {
   const { data: d, error } = useApi<Dashboard>(`/students/${sid}/dashboard`);
   const [detail, setDetail] = useState<SkillDetail | null>(null);
+  const pulseReady = usePulseReady();
+  useEffect(() => trackOnce("next_step_viewed", `next-${sid}`), [sid]);
   const comps = useMemo(() => Object.fromEntries((d?.competencies ?? []).map((c) => [c.skill_id, c])), [d]);
   const ranks = useMemo(() => Object.fromEntries((d?.ranking ?? []).map((r) => [r.skill_id, r])), [d]);
 
@@ -28,6 +31,8 @@ function DashboardView({ sid }: { sid: string }) {
   const hasEvidence = d.diagnostic_done || Object.entries(d.evidence_summary).some(([, v]) => v > 0);
   const names = Object.fromEntries(d.competencies.map((c) => [c.skill_id, titleCase(c.name)]));
   const open = (skillId: string) => {
+    markPulseReady();
+    track("why_opened", { skill: skillId });
     const r = ranks[skillId];
     const step = d.path.find((p) => p.skill_id === skillId);
     setDetail({
@@ -95,7 +100,7 @@ function DashboardView({ sid }: { sid: string }) {
       </section>
 
       {d.study_arm ? <StudyPlanCard sid={sid} /> : null}
-      <ClarityPulse sid={sid} />
+      {pulseReady ? <ClarityPulse sid={sid} /> : null}
       {f.evidence && d.confirmations.length > 0 ? <Attention items={d.confirmations} onOpen={open} /> : null}
 
       <LearningRoute steps={d.path} names={names} onOpen={open} totalHours={d.path_hours} weekly={weekly} />
@@ -207,7 +212,7 @@ function LearningRoute({ steps, names, onOpen, totalHours, weekly }: { steps: Pa
                 </span>
                 <span className="mt-2 block font-semibold leading-snug text-ink">{titleCase(s.name)}</span>
                 <span className="mt-1 block text-xs text-ink/65">
-                  {LEVEL[s.level_now]} to {LEVEL[s.level_target]}, about {hours(s.hours)}
+                  Start with a ~{hours(s.first_module_hours ?? s.hours)} first module. Full gap: {LEVEL[s.level_now]} to {LEVEL[s.level_target]}, about {hours(s.hours)}
                 </span>
                 {s.waiting_for.length ? (
                   <span className="mt-2 flex items-center gap-1 text-xs text-ember-ink">
@@ -481,3 +486,39 @@ function StudyPlanCard({ sid }: { sid: string }) {
     </Panel>
   );
 }
+
+
+// The clarity pulse asks "do you know what to learn next and why?", so it only appears once the student has opened the
+// explanation or returned for a second visit (PM audit UX-8).
+const PULSE_KEY = "pathsync.pulseReady";
+const PULSE_EVENT = "pathsync-pulse";
+function markPulseReady() {
+  try {
+    localStorage.setItem(PULSE_KEY, "1");
+    window.dispatchEvent(new Event(PULSE_EVENT));
+  } catch {}
+}
+function usePulseReady() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const read = () => {
+      try {
+        setReady(localStorage.getItem(PULSE_KEY) === "1");
+      } catch {}
+    };
+    try {
+      // count one visit per browser session, however many times the dashboard mounts
+      if (!sessionStorage.getItem("pathsync.visitCounted")) {
+        sessionStorage.setItem("pathsync.visitCounted", "1");
+        const visits = Number(localStorage.getItem("pathsync.visits") ?? 0) + 1;
+        localStorage.setItem("pathsync.visits", String(visits));
+        if (visits >= 2) localStorage.setItem(PULSE_KEY, "1");
+      }
+    } catch {}
+    read();
+    window.addEventListener(PULSE_EVENT, read);
+    return () => window.removeEventListener(PULSE_EVENT, read);
+  }, []);
+  return ready;
+}
+

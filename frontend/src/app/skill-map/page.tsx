@@ -7,6 +7,8 @@ import { useApi } from "@/lib/hooks";
 import { useStudentId } from "@/lib/student";
 import { cn } from "@/lib/utils";
 import { ErrorNote, Loading, MasteryBar, NativeSelect, PageHeader, Panel, Tag } from "@/components/kit";
+import { MySkills } from "@/components/my-skills";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface GNode {
   id: string;
@@ -36,6 +38,32 @@ interface GraphData {
 
 export default function SkillMapPage() {
   const { id, ready } = useStudentId();
+  if (!ready) return <Loading />;
+  if (!id) return <Connections />;
+  return (
+    <div>
+      <PageHeader
+        title="Skill Map"
+        description="See which skills are already strong, which are close, and which to fix first, then how the skills connect."
+      />
+      <Tabs defaultValue="mine">
+        <TabsList className="mb-5">
+          <TabsTrigger value="mine">My Skills</TabsTrigger>
+          <TabsTrigger value="connect">How Skills Connect</TabsTrigger>
+        </TabsList>
+        <TabsContent value="mine">
+          <MySkills sid={id} />
+        </TabsContent>
+        <TabsContent value="connect">
+          <Connections embedded />
+        </TabsContent>
+      </Tabs>
+    </div>
+  );
+}
+
+function Connections({ embedded }: { embedded?: boolean }) {
+  const { id, ready } = useStudentId();
   const g = useApi<GraphData>(ready ? (id ? `/students/${id}/graph` : "/graph") : null);
   const [focus, setFocus] = useState<string | null>(null);
   const [showFull, setShowFull] = useState(false);
@@ -60,10 +88,12 @@ export default function SkillMapPage() {
 
   return (
     <div>
-      <PageHeader
-        title="Skill Map"
-        description="See what each skill builds on and what it opens up. Start from your route, or pick any skill."
-      />
+      {embedded ? null : (
+        <PageHeader
+          title="Skill Map"
+          description="See what each skill builds on and what it opens up. Pick any skill to explore."
+        />
+      )}
       <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
         <aside className="space-y-5">
           <div className="space-y-1.5">

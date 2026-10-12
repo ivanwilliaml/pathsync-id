@@ -1,6 +1,7 @@
 "use client";
 
 import { BookOpen, ExternalLink, Quote } from "lucide-react";
+import { track } from "@/lib/track";
 import type { Competency, Explanation, PathStep } from "@/lib/api";
 import { DIFFICULTY, FORMAT, LEVEL, REC, hours, num, titleCase } from "@/lib/format";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -93,6 +94,7 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
                         <li key={m.id}>
                           <a
                             href={m.url}
+                            onClick={() => track("material_clicked", { skill: step.skill_id })}
                             target="_blank"
                             rel="noreferrer"
                             className="flex gap-3 rounded-xl border bg-card p-3 transition-colors hover:border-indigo/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"

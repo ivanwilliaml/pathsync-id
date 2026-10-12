@@ -9,12 +9,14 @@ from sqlalchemy.orm import Session
 
 from pathsync.assessment import item_bank
 from pathsync.config import EMBEDDING_MODEL, GRADE_SCORES, LLM_MODEL, MODELS_DIR, ROLES
-from pathsync.db import GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot
+from pathsync.db import Expert, GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot
 from pathsync.engine import graph_from_db
 from pathsync.extraction.llm import llm_configured
+from pathsync.roles import FAMILIES
 from pathsync.security import db_session, rate_limit
 from pathsync.taxonomy import cluster_names, load_skills, load_taxonomy
 
+LIMITED_DATA_POSTINGS = 30   # below this many postings a role is shown as "limited data" (beta)
 router = APIRouter(prefix="/api", tags=["public"], dependencies=[Depends(rate_limit("public", 240))])
 
 
@@ -40,6 +42,12 @@ def model_card(s: Session) -> dict:
         "embedding_model": {"name": EMBEDDING_MODEL, "use": "map free-text skill phrases and course names to the taxonomy"},
         "knowledge_tracing": {"type": "Bayesian knowledge tracing (eq. 3)", "slip": 0.10, "guess": 0.25, "learn": 0.10},
         "llm_is_never_used_for": ["choosing priorities", "estimating mastery", "ordering the path"],
+        # what is validated today, so the UI can say "Beta" honestly (PM audit AI-6, AI-7)
+        "validation": {"real_experts": s.scalar(select(func.count(Expert.id)).where(Expert.kind != "simulasi")) or 0,
+                       "ranker_trained_on": "simulated experts" if ranker and "simulated" in (ranker.name or "").lower() else "expert rankings",
+                       "status": "beta"},
+        "planned": ["LLM-based reading of postings (Claude API) once the gold annotation set is complete",
+                    "Ranker re-trained on a real expert panel"],
     }
 
 
@@ -49,7 +57,13 @@ def meta(s: Session = Depends(db_session)):
     snaps = {r: (snap.version if (snap := active_snapshot(s, r)) else None) for r in ROLES}
     skills = load_skills()
     ranker = s.scalars(select(RankerModel).where(RankerModel.active.is_(True))).first()
-    return {"roles": [{"id": k, "name": v["name"]} for k, v in ROLES.items()], "clusters": cluster_names(),
+    role_info = []
+    for k, v in ROLES.items():
+        snap = active_snapshot(s, k)
+        n = snap.data.get("n_postings", 0) if snap else 0
+        role_info.append({"id": k, "name": v["name"], "family": v.get("family", ""), "blurb": v.get("blurb", ""),
+                          "n_postings": n, "limited_data": n < LIMITED_DATA_POSTINGS})
+    return {"roles": role_info, "families": FAMILIES, "clusters": cluster_names(),
             "taxonomy_version": tax["version"],
             "skills": [{"id": sk.id, "name": sk.name, "name_en": sk.name_en, "cluster": sk.cluster, "kind": sk.kind,
                         "description": sk.description, "learn_what": sk.learn_what} for sk in skills.values()],

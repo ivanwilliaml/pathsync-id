@@ -1,0 +1,772 @@
+{
+"flutter_dart-1": {
+"new": {
+"skill_id": "flutter_dart",
+"difficulty": 1,
+"stem_en": "In Flutter, what is almost everything you see on screen?",
+"expl_en": "Everything is a widget."
+},
+"en": [
+"A widget",
+"A fragment",
+"A view controller",
+"An activity"
+]
+},
+"flutter_dart-2": {
+"new": {
+"skill_id": "flutter_dart",
+"difficulty": 1,
+"stem_en": "Which language is used to write Flutter apps?",
+"expl_en": "Dart."
+},
+"en": [
+"Dart",
+"Kotlin",
+"Swift",
+"JavaScript"
+]
+},
+"flutter_dart-3": {
+"new": {
+"skill_id": "flutter_dart",
+"difficulty": 2,
+"stem_en": "What is the difference between a StatelessWidget and a StatefulWidget?",
+"expl_en": "A StatefulWidget holds mutable state and rebuilds when setState is called; a StatelessWidget does not change on its own."
+},
+"en": [
+"A stateful widget holds state that can change and rebuild it",
+"A stateless widget holds state that can change over time and rebuild",
+"A stateful widget cannot contain some child widgets",
+"A stateless widget is usually rendered by the native platform view"
+]
+},
+"flutter_dart-4": {
+"new": {
+"skill_id": "flutter_dart",
+"difficulty": 2,
+"stem_en": "Which widget lets you build a long scrolling list efficiently, creating items only when needed?",
+"expl_en": "ListView.builder builds items lazily."
+},
+"en": [
+"ListView.builder",
+"Column with many children",
+"Stack with positioned items",
+"Row inside a SingleChildScrollView"
+]
+},
+"flutter_dart-5": {
+"new": {
+"skill_id": "flutter_dart",
+"difficulty": 3,
+"stem_en": "Several screens need to share and react to the same app data. Which approach is idiomatic in Flutter?",
+"expl_en": "Use a state-management solution such as Provider, Riverpod or Bloc rather than passing data through every constructor."
+},
+"en": [
+"Use a state-management package such as Provider, Riverpod or Bloc",
+"Pass the data through the constructor of each screen",
+"Store it in a global variable that some file can edit during the project",
+"Reload the data from the server on each screen build"
+]
+},
+"android_kotlin-1": {
+"new": {
+"skill_id": "android_kotlin",
+"difficulty": 1,
+"stem_en": "Which language does Google recommend for new Android development?",
+"expl_en": "Kotlin."
+},
+"en": [
+"Kotlin",
+"Swift",
+"Dart",
+"C#"
+]
+},
+"android_kotlin-2": {
+"new": {
+"skill_id": "android_kotlin",
+"difficulty": 1,
+"stem_en": "What is Jetpack Compose?",
+"expl_en": "A declarative UI toolkit for Android written in Kotlin."
+},
+"en": [
+"A declarative UI toolkit for Android at that stage",
+"A database library for Android",
+"A tool for publishing apps to the store in most teams",
+"A testing framework for Android apps"
+]
+},
+"android_kotlin-3": {
+"new": {
+"skill_id": "android_kotlin",
+"difficulty": 2,
+"stem_en": "Which library is the standard way to store structured data in a local SQLite database on Android?",
+"expl_en": "Room."
+},
+"en": [
+"Room",
+"Retrofit",
+"Glide",
+"Hilt"
+]
+},
+"android_kotlin-4": {
+"new": {
+"skill_id": "android_kotlin",
+"difficulty": 2,
+"stem_en": "The screen is rotated and the UI state is lost. Which component is designed to survive configuration changes?",
+"expl_en": "A ViewModel keeps UI state across configuration changes."
+},
+"en": [
+"ViewModel",
+"BroadcastReceiver",
+"ContentProvider",
+"Intent"
+]
+},
+"android_kotlin-5": {
+"new": {
+"skill_id": "android_kotlin",
+"difficulty": 3,
+"stem_en": "A network call on the main thread freezes the UI and may crash the app. What should you do?",
+"expl_en": "Run it off the main thread with coroutines (for example Dispatchers.IO)."
+},
+"en": [
+"Run the call in a coroutine on a background dispatcher",
+"Increase the timeout of the HTTP client for the project",
+"Call it from onCreate so it finishes first in day-to-day work",
+"Wrap the call in a try and catch block"
+]
+},
+"ios_swift-1": {
+"new": {
+"skill_id": "ios_swift",
+"difficulty": 1,
+"stem_en": "Which IDE is used to develop iOS apps?",
+"expl_en": "Xcode."
+},
+"en": [
+"Xcode",
+"Android Studio",
+"Visual Studio",
+"Eclipse"
+]
+},
+"ios_swift-2": {
+"new": {
+"skill_id": "ios_swift",
+"difficulty": 1,
+"stem_en": "What is SwiftUI?",
+"expl_en": "Apple's declarative framework for building user interfaces across its platforms."
+},
+"en": [
+"A declarative UI framework from Apple",
+"A package manager for Swift libraries and tools",
+"A database framework for iOS from the start",
+"A tool for testing app performance in practice"
+]
+},
+"ios_swift-3": {
+"new": {
+"skill_id": "ios_swift",
+"difficulty": 2,
+"stem_en": "What does an optional (String?) in Swift mean?",
+"expl_en": "The value may be a string or nil."
+},
+"en": [
+"The value can be a string or nil",
+"The string is usually empty within the team",
+"The string cannot be changed after it is created",
+"The string is stored on the disk of the device"
+]
+},
+"ios_swift-4": {
+"new": {
+"skill_id": "ios_swift",
+"difficulty": 2,
+"stem_en": "Which property wrapper in SwiftUI stores local view state that refreshes the view when it changes?",
+"expl_en": "@State."
+},
+"en": [
+"@State",
+"@Binding alone",
+"@Environment alone",
+"@AppStorage alone"
+]
+},
+"ios_swift-5": {
+"new": {
+"skill_id": "ios_swift",
+"difficulty": 3,
+"stem_en": "Which tool distributes beta builds of an iOS app to testers before release?",
+"expl_en": "TestFlight."
+},
+"en": [
+"TestFlight",
+"Instruments",
+"Simulator",
+"Playgrounds"
+]
+},
+"react_native-1": {
+"new": {
+"skill_id": "react_native",
+"difficulty": 1,
+"stem_en": "What does React Native let you do?",
+"expl_en": "Build native mobile apps for iOS and Android with React and JavaScript."
+},
+"en": [
+"Build iOS and Android apps with React and JavaScript",
+"Build just websites that run in a browser at that stage",
+"Build desktop games with a physics engine",
+"Build back-end services for databases"
+]
+},
+"react_native-2": {
+"new": {
+"skill_id": "react_native",
+"difficulty": 1,
+"stem_en": "Which tool simplifies starting and running a React Native project without native setup?",
+"expl_en": "Expo."
+},
+"en": [
+"Expo",
+"Webpack",
+"Storybook",
+"Cordova"
+]
+},
+"react_native-3": {
+"new": {
+"skill_id": "react_native",
+"difficulty": 2,
+"stem_en": "Which component should you use to render a long scrolling list?",
+"expl_en": "FlatList virtualises long lists."
+},
+"en": [
+"FlatList",
+"View with many children",
+"ScrollView with all items rendered",
+"Text with line breaks"
+]
+},
+"react_native-4": {
+"new": {
+"skill_id": "react_native",
+"difficulty": 2,
+"stem_en": "Which library is commonly used for screen navigation in React Native?",
+"expl_en": "React Navigation."
+},
+"en": [
+"React Navigation",
+"React Router DOM",
+"Redux Thunk",
+"Axios"
+]
+},
+"react_native-5": {
+"new": {
+"skill_id": "react_native",
+"difficulty": 3,
+"stem_en": "An animation stutters because it runs on the JavaScript thread. What helps?",
+"expl_en": "Use the native driver or Reanimated so animations run on the UI thread."
+},
+"en": [
+"Run it on the UI thread with Reanimated or the native driver",
+"Add more state variables to the component as the work grows for the business",
+"Reduce the length of the animation to one frame in most teams",
+"Re-render the whole screen on each frame for the business in most cases"
+]
+},
+"mobile_backend_services-1": {
+"new": {
+"skill_id": "mobile_backend_services",
+"difficulty": 1,
+"stem_en": "What is Firebase Authentication used for?",
+"expl_en": "Signing users in with email, phone or providers such as Google."
+},
+"en": [
+"Signing users in with email, phone or social accounts",
+"Compressing images before they are uploaded",
+"Compiling the app for several platforms",
+"Measuring the speed of the network"
+]
+},
+"mobile_backend_services-2": {
+"new": {
+"skill_id": "mobile_backend_services",
+"difficulty": 1,
+"stem_en": "Which Firebase service sends push notifications?",
+"expl_en": "Firebase Cloud Messaging (FCM)."
+},
+"en": [
+"Firebase Cloud Messaging",
+"Firebase Hosting",
+"Remote Config",
+"Test Lab"
+]
+},
+"mobile_backend_services-3": {
+"new": {
+"skill_id": "mobile_backend_services",
+"difficulty": 2,
+"stem_en": "An app must keep working without internet and sync later. What is this called?",
+"expl_en": "Offline-first design with local storage and background sync."
+},
+"en": [
+"Offline-first with local storage and later sync",
+"Server-side rendering of each screen",
+"Polling the server in a tight loop",
+"Caching just the app icon on the device in most cases"
+]
+},
+"mobile_backend_services-4": {
+"new": {
+"skill_id": "mobile_backend_services",
+"difficulty": 2,
+"stem_en": "Which tool reports crashes from real users with stack traces?",
+"expl_en": "Crashlytics (or similar crash reporters)."
+},
+"en": [
+"Firebase Crashlytics",
+"Google Analytics for web",
+"Android Lint",
+"Xcode Previews"
+]
+},
+"mobile_backend_services-5": {
+"new": {
+"skill_id": "mobile_backend_services",
+"difficulty": 3,
+"stem_en": "Where should an API secret key used to call a paid service be kept?",
+"expl_en": "On your own server, which proxies the call; keys inside the app can be extracted."
+},
+"en": [
+"On your own server that makes the call for the app",
+"Inside the app code in a constant",
+"In the strings file of the app",
+"In the app's icon metadata"
+]
+},
+"mobile_release_quality-1": {
+"new": {
+"skill_id": "mobile_release_quality",
+"difficulty": 1,
+"stem_en": "Where are Android apps published for public download?",
+"expl_en": "Google Play Console / Play Store."
+},
+"en": [
+"Google Play Console",
+"App Store Connect",
+"TestFlight",
+"Firebase Hosting"
+]
+},
+"mobile_release_quality-2": {
+"new": {
+"skill_id": "mobile_release_quality",
+"difficulty": 1,
+"stem_en": "Why must an app be signed before release?",
+"expl_en": "The signature proves who published it and that it has not been altered."
+},
+"en": [
+"To prove who published it and that it was not altered",
+"To make the app smaller to download",
+"To let the app run without internet access",
+"To give the app permission to use the camera for the project"
+]
+},
+"mobile_release_quality-3": {
+"new": {
+"skill_id": "mobile_release_quality",
+"difficulty": 2,
+"stem_en": "What is a staged rollout?",
+"expl_en": "Releasing a new version to a growing percentage of users while watching for problems."
+},
+"en": [
+"Releasing to a growing share of users while monitoring",
+"Releasing just to the developers of the app",
+"Releasing the same build under several names in many setups",
+"Releasing after each test has been rewritten in a real project"
+]
+},
+"mobile_release_quality-4": {
+"new": {
+"skill_id": "mobile_release_quality",
+"difficulty": 2,
+"stem_en": "Which tool automates building, signing and uploading mobile app releases?",
+"expl_en": "Fastlane."
+},
+"en": [
+"Fastlane",
+"Gradle wrapper alone",
+"CocoaPods",
+"ProGuard"
+]
+},
+"mobile_release_quality-5": {
+"new": {
+"skill_id": "mobile_release_quality",
+"difficulty": 3,
+"stem_en": "Crash-free sessions dropped from 99.5% to 96% after a release. What is the best action?",
+"expl_en": "Halt the rollout, investigate with crash reports and fix or roll back."
+},
+"en": [
+"Halt the rollout and investigate with crash reports",
+"Wait a whole month to see if it improves on its own by then",
+"Ask users to reinstall the app twice for the project",
+"Raise the star rating target in the store in day-to-day work"
+]
+},
+"test_design_techniques-1": {
+"new": {
+"skill_id": "test_design_techniques",
+"difficulty": 1,
+"stem_en": "What should a good bug report contain?",
+"expl_en": "Steps to reproduce, expected and actual result, environment and evidence such as screenshots."
+},
+"en": [
+"Steps to reproduce, expected and actual results, and environment",
+"Only the word error and the date it happened in most cases at that stage",
+"The name of the developer who wrote the code in the long run at that stage",
+"A guess about which line is the cause"
+]
+},
+"test_design_techniques-2": {
+"new": {
+"skill_id": "test_design_techniques",
+"difficulty": 1,
+"stem_en": "What is regression testing?",
+"expl_en": "Re-testing existing features after a change to make sure nothing broke."
+},
+"en": [
+"Re-testing existing features after a change",
+"Testing a new feature for the very first time",
+"Testing the system with very many users",
+"Testing the software by reading its source code"
+]
+},
+"test_design_techniques-3": {
+"new": {
+"skill_id": "test_design_techniques",
+"difficulty": 2,
+"stem_en": "A field accepts ages from 18 to 60. Which values are the boundary values to test?",
+"expl_en": "Boundary value analysis tests values at and around the limits: 17, 18, 60, 61."
+},
+"en": [
+"17, 18, 60 and 61",
+"18, 30, 45 and 60",
+"0, 18, 60 and 100",
+"19, 20, 58 and 59"
+]
+},
+"test_design_techniques-4": {
+"new": {
+"skill_id": "test_design_techniques",
+"difficulty": 2,
+"stem_en": "What does equivalence partitioning do?",
+"expl_en": "It groups inputs that the system should treat the same way and tests one value per group."
+},
+"en": [
+"Groups inputs treated alike and tests one value per group",
+"Splits the test team into equal groups",
+"Divides the code into equally sized modules within the team",
+"Runs each test case on two environments for the project in day-to-day work"
+]
+},
+"test_design_techniques-5": {
+"new": {
+"skill_id": "test_design_techniques",
+"difficulty": 3,
+"stem_en": "Time is short and the release cannot move. How should you prioritise the tests?",
+"expl_en": "Risk-based testing: test the highest-risk and most-used features first."
+},
+"en": [
+"Test the highest-risk and most-used features first",
+"Test the features in the order they were built in practice",
+"Test just the features that are easy to automate first",
+"Skip testing and rely on user feedback after release"
+]
+},
+"test_automation_web-1": {
+"new": {
+"skill_id": "test_automation_web",
+"difficulty": 1,
+"stem_en": "Which tool automates browser actions for testing web applications?",
+"expl_en": "Selenium (also Cypress and Playwright)."
+},
+"en": [
+"Selenium",
+"Figma",
+"Jira",
+"Maven"
+]
+},
+"test_automation_web-2": {
+"new": {
+"skill_id": "test_automation_web",
+"difficulty": 1,
+"stem_en": "What is a locator in UI test automation?",
+"expl_en": "An expression such as an id, CSS selector or XPath that finds an element on the page."
+},
+"en": [
+"An expression that finds an element on the page",
+"A file that stores the test results",
+"A server that runs the browser somewhere in the cloud",
+"A report that lists the failed tests"
+]
+},
+"test_automation_web-3": {
+"new": {
+"skill_id": "test_automation_web",
+"difficulty": 2,
+"stem_en": "A test clicks a button before the page has loaded and fails at random. What is the right fix?",
+"expl_en": "Use explicit waits for the element or condition instead of fixed sleeps."
+},
+"en": [
+"Wait explicitly for the element to be clickable",
+"Add a fixed pause of thirty seconds at that stage",
+"Run the test again until it passes in a real project",
+"Remove the click from the test"
+]
+},
+"test_automation_web-4": {
+"new": {
+"skill_id": "test_automation_web",
+"difficulty": 2,
+"stem_en": "What is the Page Object Model?",
+"expl_en": "A pattern that wraps each page's elements and actions in a class to reduce duplication."
+},
+"en": [
+"A pattern that wraps each page's elements and actions in a class",
+"A report format for test results",
+"A way to record the screen while tests run for the project in a real project",
+"A database of test data for each page at that stage in most teams"
+]
+},
+"test_automation_web-5": {
+"new": {
+"skill_id": "test_automation_web",
+"difficulty": 3,
+"stem_en": "Which tests are best candidates for automation?",
+"expl_en": "Stable, repetitive, high-value checks such as regression and smoke tests."
+},
+"en": [
+"Stable, repetitive checks that run on every release during the project",
+"One-off tests of a design that will change next week",
+"Tests that need human judgement about the look",
+"Tests of features that nobody uses"
+]
+},
+"api_testing-1": {
+"new": {
+"skill_id": "api_testing",
+"difficulty": 1,
+"stem_en": "Which tool is widely used to send and inspect API requests manually?",
+"expl_en": "Postman."
+},
+"en": [
+"Postman",
+"Photoshop",
+"Excel",
+"Wireshark"
+]
+},
+"api_testing-2": {
+"new": {
+"skill_id": "api_testing",
+"difficulty": 1,
+"stem_en": "What should a test check about the response of a successful GET request?",
+"expl_en": "The status code, headers and body content or schema."
+},
+"en": [
+"The status code, headers and body",
+"Only the colour of the page",
+"Only the time that the server started up",
+"Only the size of the request that was sent"
+]
+},
+"api_testing-3": {
+"new": {
+"skill_id": "api_testing",
+"difficulty": 2,
+"stem_en": "Which API test is a good negative test?",
+"expl_en": "Sending invalid input or missing authentication and expecting a proper 4xx error."
+},
+"en": [
+"Sending an invalid token and expecting 401",
+"Sending a valid request and expecting 200",
+"Repeating a valid request and expecting the same data",
+"Sending a valid request after a long pause"
+]
+},
+"api_testing-4": {
+"new": {
+"skill_id": "api_testing",
+"difficulty": 2,
+"stem_en": "How can Postman collections run automatically in a pipeline?",
+"expl_en": "With the Newman command-line runner."
+},
+"en": [
+"With the Newman command-line runner",
+"By exporting them to a spreadsheet for the whole team",
+"By emailing them to the developers",
+"By sharing the screen during the meeting"
+]
+},
+"api_testing-5": {
+"new": {
+"skill_id": "api_testing",
+"difficulty": 3,
+"stem_en": "What does contract testing verify between a consumer and a provider service?",
+"expl_en": "That requests and responses match the agreed contract, so changes do not break the consumer."
+},
+"en": [
+"That messages match the agreed contract between them",
+"That both services use the same programming language and framework",
+"That both services run on the same server",
+"That both services have the same number of tests as the work grows"
+]
+},
+"performance_testing-1": {
+"new": {
+"skill_id": "performance_testing",
+"difficulty": 1,
+"stem_en": "Which tool is commonly used for load testing web applications?",
+"expl_en": "Apache JMeter (also k6 and Locust)."
+},
+"en": [
+"Apache JMeter",
+"Selenium IDE",
+"Postman collections",
+"Cucumber"
+]
+},
+"performance_testing-2": {
+"new": {
+"skill_id": "performance_testing",
+"difficulty": 1,
+"stem_en": "What is the goal of a load test?",
+"expl_en": "To measure behaviour under expected levels of concurrent users."
+},
+"en": [
+"Measure behaviour under the expected number of users",
+"Find spelling mistakes on the pages for the project within the team",
+"Check that the colours meet the style guide at that stage",
+"Verify that the code compiles on each machine in the team"
+]
+},
+"performance_testing-3": {
+"new": {
+"skill_id": "performance_testing",
+"difficulty": 2,
+"stem_en": "The average response time is 300 ms but the 95th percentile is 4 seconds. What does this show?",
+"expl_en": "Some users have a much slower experience; percentiles reveal outliers that the average hides."
+},
+"en": [
+"A share of users gets a much slower experience",
+"The system is much faster than the average suggests",
+"The test ran for too short a time",
+"The server is using too little memory"
+]
+},
+"performance_testing-4": {
+"new": {
+"skill_id": "performance_testing",
+"difficulty": 2,
+"stem_en": "What is the difference between a load test and a stress test?",
+"expl_en": "A load test uses expected load; a stress test pushes beyond it to find the breaking point."
+},
+"en": [
+"Load uses expected traffic, stress goes past the limit",
+"Load uses one user, stress uses two users as the work grows",
+"Load checks the design, while stress checks the colours",
+"They are two names for the same test in most teams during the project"
+]
+},
+"performance_testing-5": {
+"new": {
+"skill_id": "performance_testing",
+"difficulty": 3,
+"stem_en": "Throughput stops growing as users increase while response time climbs. What is the likely situation?",
+"expl_en": "A bottleneck: some resource (CPU, database connections, locks) is saturated."
+},
+"en": [
+"A resource is saturated and has become the bottleneck",
+"The test tool is generating too few requests at that stage",
+"The network cable is faster than needed",
+"The browser cache is working too well"
+]
+},
+"ci_for_testing-1": {
+"new": {
+"skill_id": "ci_for_testing",
+"difficulty": 1,
+"stem_en": "Why run automated tests in a CI pipeline?",
+"expl_en": "To catch regressions early on every change."
+},
+"en": [
+"To catch regressions early on every change for the business",
+"To avoid writing some of the manual test cases",
+"To make the application use less memory when it runs in most cases",
+"To remove the need for code review"
+]
+},
+"ci_for_testing-2": {
+"new": {
+"skill_id": "ci_for_testing",
+"difficulty": 1,
+"stem_en": "Which of these is a common CI server?",
+"expl_en": "Jenkins."
+},
+"en": [
+"Jenkins",
+"Zeplin",
+"Notion",
+"Miro"
+]
+},
+"ci_for_testing-3": {
+"new": {
+"skill_id": "ci_for_testing",
+"difficulty": 2,
+"stem_en": "What is a flaky test?",
+"expl_en": "A test that sometimes passes and sometimes fails without any code change."
+},
+"en": [
+"One that passes and fails without a code change from the start",
+"One that usually fails on the first run",
+"One that takes more than a second to run each time",
+"One that has no assertions at all"
+]
+},
+"ci_for_testing-4": {
+"new": {
+"skill_id": "ci_for_testing",
+"difficulty": 2,
+"stem_en": "A suite of 2,000 UI tests takes two hours in CI. What is the best way to speed it up?",
+"expl_en": "Run the tests in parallel across several machines or containers and keep only valuable UI tests."
+},
+"en": [
+"Run the tests in parallel on several workers",
+"Run the tests just once a month",
+"Remove the assertions from each test in the long run",
+"Run the tests on a developer laptop"
+]
+},
+"ci_for_testing-5": {
+"new": {
+"skill_id": "ci_for_testing",
+"difficulty": 3,
+"stem_en": "What does shift-left testing mean?",
+"expl_en": "Testing earlier in the development lifecycle, for example unit and integration tests in CI."
+},
+"en": [
+"Testing earlier in the development lifecycle",
+"Testing just after the product is released",
+"Testing with just the left half of the team",
+"Testing the left side of each page"
+]
+}
+}

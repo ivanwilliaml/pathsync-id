@@ -53,6 +53,23 @@ class ExtractionResult:
         return best
 
 
+def _trigrams(t: str) -> set[str]:
+    t = f"  {t.lower()} "
+    return {t[i:i + 3] for i in range(len(t) - 2)}
+
+
+def lexical_support(surface: str, form: str) -> float:
+    """Character-trigram Jaccard, 1.0 when they share a whole word. Embeddings alone rate unrelated short words ("teliti",
+    "ollama", "odi") close to some skill name; a mapping must also look like the form it maps to."""
+    if set(surface.lower().split()) & set(form.lower().split()):
+        return 1.0
+    a, b = _trigrams(surface), _trigrams(form)
+    return len(a & b) / len(a | b) if a | b else 0.0
+
+
+MIN_LEXICAL_SUPPORT = 0.2
+
+
 def apply_gates(raw: list[Mention], source_text: str, index, valid_ids: set[str]) -> ExtractionResult:
     res = ExtractionResult()
     free: list[Mention] = []
@@ -69,6 +86,9 @@ def apply_gates(raw: list[Mention], source_text: str, index, valid_ids: set[str]
     if free and index is not None:
         for m, (sid, sim, form) in zip(free, index.nearest([m.surface for m in free]), strict=False):
             m.similarity = round(sim, 4)
+            if sim >= SIM_AUTO and lexical_support(m.surface, form) < MIN_LEXICAL_SUPPORT:
+                sim = min(sim, SIM_AUTO - 1e-3)       # looks similar to the embedding but not to the text: needs a human
+                m.reason = f"embedding match without textual overlap with '{form}'"
             if sim >= SIM_AUTO:
                 m.skill_id, m.status = sid, "auto"
                 res.mentions.append(m)

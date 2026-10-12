@@ -67,8 +67,7 @@ RANKER_L2 = 1.0                 # regularisation towards the formula-5 weights
 PATH_TOP_K = 3                  # three top-ranked skills + their unmastered prerequisites
 MATERIALS_PER_STEP = 3
 
-ROLES = {
-    "business_analyst": {"name": "Business Analyst", "esco": ["business_analyst", "ict_business_analyst"]},
-    "data_analyst": {"name": "Data Analyst", "esco": ["data_analyst"]},
-}
+from .roles import CATALOG as _CATALOG  # noqa: E402
+
+ROLES = {r.id: {"name": r.name, "esco": list(r.esco), "family": r.family, "blurb": r.blurb} for r in _CATALOG}
 DEFAULT_ROLE = "business_analyst"

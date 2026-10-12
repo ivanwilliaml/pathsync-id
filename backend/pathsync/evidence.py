@@ -92,6 +92,7 @@ class Response:
     skill_id: str
     correct: bool
     phase: str                    # diagnostic | reassessment
+    guess: float = BKT_GUESS      # chance of a correct answer without the skill (higher for items with surface cues)
 
 
 def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list[Response],
@@ -125,16 +126,22 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
             conf_terms[s].append(CONFIDENCE_STRENGTH.get(ev.kind, 0.2) * ev.strength.get(s, 1.0) * ev.reliability)
 
     diag: dict[str, list[bool]] = {}
-    reassess: dict[str, list[bool]] = {}
+    reassess: dict[str, list[tuple[bool, float]]] = {}
+    diag_guess: dict[str, list[float]] = {}
     for r in responses:
         if r.skill_id not in states:
             continue
-        (diag if r.phase == "diagnostic" else reassess).setdefault(r.skill_id, []).append(r.correct)
+        if r.phase == "diagnostic":
+            diag.setdefault(r.skill_id, []).append(r.correct)
+            diag_guess.setdefault(r.skill_id, []).append(r.guess)
+        else:
+            reassess.setdefault(r.skill_id, []).append((r.correct, r.guess))
 
     for s, st in states.items():
         d = diag.get(s, [])
         if d:
-            st.components["assessment"] = smoothed_accuracy(sum(d), len(d))
+            g = diag_guess[s]
+            st.components["assessment"] = smoothed_accuracy(sum(d), len(d), sum(g) / len(g))
             st.sources.setdefault("assessment", []).append(f"Diagnostic assessment ({sum(d)}/{len(d)} correct)")
         # eq. (2): weighted mean over the evidence that exists
         if st.components:
@@ -142,10 +149,10 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
             st.p0 = sum(wk[k] * v for k, v in st.components.items()) / sum(wk.values())
         st.p = st.p0
         st.bkt_trace = [st.p]
-        for correct in reassess.get(s, []):              # eq. (3) for every new answer
-            st.p = bkt_update(st.p, correct)
+        for correct, guess in reassess.get(s, []):       # eq. (3) for every new answer
+            st.p = bkt_update(st.p, correct, guess=guess)
             st.bkt_trace.append(st.p)
-        answers = d + reassess.get(s, [])
+        answers = d + [c for c, _ in reassess.get(s, [])]
         st.n_items, st.n_correct = len(answers), sum(answers)
         if answers:
             conf_terms[s].append(1 - 0.75 ** len(answers))

@@ -18,10 +18,21 @@ from statistics import mean
 
 ARTIFACTS = {
     "data_analytics": "your notebook, query file (.sql) or analysis report",
-    "business_process": "your BPMN/flowchart, requirement document (BRD/user stories) or process write-up",
-    "tools": "the file you built (exported dashboard description, spreadsheet notes, diagram) as text or PDF",
-    "communication": "your written report, slide script or meeting notes",
+    "bi_tools": "the file you built (spreadsheet notes, dashboard description or export) as text or PDF",
+    "business_analysis": "your BPMN/flowchart, requirement document (BRD/user stories) or process write-up",
+    "data_ml": "your notebook with the data, model, evaluation and conclusions",
+    "data_eng": "your pipeline code or SQL, and a short description of the data flow",
+    "web_frontend": "your code (HTML/CSS/JS), repository README or a short build write-up",
+    "backend": "your source code, API documentation or README with the endpoints",
+    "mobile": "your app code, README and a description of the screens",
+    "testing": "your test plan, test cases, automation scripts or bug reports",
+    "devops": "your Dockerfile, pipeline config or infrastructure code with a short README",
+    "security": "your lab report, scan results or write-up of the exercise (no real credentials)",
+    "design": "your case study: research notes, flows, screens and what you learned",
+    "marketing": "your campaign plan, report or analytics write-up with the numbers",
+    "finance": "your worksheet, journal or report with the calculations explained",
 }
+DEFAULT_ARTIFACT = "the work you produced (code, document or report) as text or PDF"
 K_ANONYMITY = 5
 
 
@@ -47,7 +58,7 @@ def course_companion(courses: list[dict], rec: dict, skills: dict) -> list[dict]
             rows.append({
                 "skill_id": sid, "name": sk.name, "strength": round(strength, 2), "on_path": on_path,
                 "path_step": path_pos.get(sid), "rank": rank.get(sid), "p": cp.get("p"), "required": cp.get("required"),
-                "evidence_tip": (f"Turn a {c['name']} assignment into proof of {sk.name}: upload {ARTIFACTS[sk.cluster]} "
+                "evidence_tip": (f"Turn a {c['name']} assignment into proof of {sk.name}: upload {ARTIFACTS.get(sk.cluster, DEFAULT_ARTIFACT)} "
                                  f"as a project. The rubric looks for {sk.learn_what}."),
             })
         aligned = [r for r in rows if r["on_path"] or (r["rank"] and r["rank"] <= 6)]

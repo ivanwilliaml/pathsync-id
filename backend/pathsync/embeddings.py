@@ -10,20 +10,32 @@ import numpy as np
 
 from .config import EMBEDDING_MODEL, PROCESSED_DIR
 
-_lock = threading.Lock()
+_model_lock = threading.Lock()          # held only while the model loads
+_encode_slots = threading.BoundedSemaphore(2)   # at most two concurrent encodes: a slow upload no longer blocks everyone
 _CACHE_PATH = PROCESSED_DIR / "embedding_cache.sqlite"
+_local = threading.local()
 
 
 @lru_cache(maxsize=1)
-def get_model():
+def _load_model():
     from sentence_transformers import SentenceTransformer  # heavy import, load lazily
 
     return SentenceTransformer(EMBEDDING_MODEL)
 
 
+def get_model():
+    with _model_lock:
+        return _load_model()
+
+
 def _cache_conn():
-    conn = sqlite3.connect(_CACHE_PATH)
-    conn.execute("CREATE TABLE IF NOT EXISTS emb (k TEXT PRIMARY KEY, v BLOB)")
+    """One SQLite connection per thread (opening a new one on every call was a measurable cost)."""
+    conn = getattr(_local, "conn", None)
+    if conn is None:
+        conn = sqlite3.connect(_CACHE_PATH, timeout=10, check_same_thread=False)
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("CREATE TABLE IF NOT EXISTS emb (k TEXT PRIMARY KEY, v BLOB)")
+        _local.conn = conn
     return conn
 
 
@@ -33,24 +45,22 @@ def encode(texts: list[str], batch_size: int = 64) -> np.ndarray:
         return np.zeros((0, 384), dtype=np.float32)
     keys = [hashlib.sha1(f"{EMBEDDING_MODEL}|{t}".encode()).hexdigest() for t in texts]
     out: list[np.ndarray | None] = [None] * len(texts)
-    with _lock:
-        conn = _cache_conn()
-        try:
-            for i, k in enumerate(keys):
-                row = conn.execute("SELECT v FROM emb WHERE k=?", (k,)).fetchone()
-                if row:
-                    out[i] = np.frombuffer(row[0], dtype=np.float32)
-            missing = [i for i, v in enumerate(out) if v is None]
-            if missing:
-                vecs = get_model().encode([texts[i] for i in missing], batch_size=batch_size,
-                                          normalize_embeddings=True, show_progress_bar=False)
-                for i, v in zip(missing, vecs, strict=False):
-                    v = np.asarray(v, dtype=np.float32)
-                    out[i] = v
-                    conn.execute("INSERT OR REPLACE INTO emb VALUES (?, ?)", (keys[i], v.tobytes()))
-                conn.commit()
-        finally:
-            conn.close()
+    conn = _cache_conn()
+    for i, k in enumerate(keys):
+        row = conn.execute("SELECT v FROM emb WHERE k=?", (k,)).fetchone()
+        if row:
+            out[i] = np.frombuffer(row[0], dtype=np.float32)
+    missing = [i for i, v in enumerate(out) if v is None]
+    if missing:
+        model = get_model()
+        with _encode_slots:
+            vecs = model.encode([texts[i] for i in missing], batch_size=batch_size,
+                                normalize_embeddings=True, show_progress_bar=False)
+        for i, v in zip(missing, vecs, strict=False):
+            v = np.asarray(v, dtype=np.float32)
+            out[i] = v
+            conn.execute("INSERT OR REPLACE INTO emb VALUES (?, ?)", (keys[i], v.tobytes()))
+        conn.commit()
     return np.vstack(out)
 
 
