@@ -16,7 +16,6 @@ from pathsync import soft
 from pathsync.config import GRADE_SCORES, ROLES
 from pathsync.db import (
     AssessmentResponse,
-    AssessmentSession,
     CourseEnrollment,
     Evidence,
     Pulse,
@@ -161,11 +160,10 @@ def export_data(st: Student = Depends(student_access), s: Session = Depends(db_s
 
 @router.delete("/students/{sid}")
 def erase(st: Student = Depends(student_access), s: Session = Depends(db_session)):
-    """Right to erasure: delete the profile and every record linked to it."""
-    for model in (AssessmentResponse, AssessmentSession, RecommendationHistory, CourseEnrollment, WeeklyPlan, Pulse, StudyPlan,
-                  Evidence):
-        s.execute(delete(model).where(model.student_id == st.id))
-    s.execute(delete(Student).where(Student.id == st.id))
+    """Right to erasure: delete the profile and every record linked to it (analytics events included)."""
+    from pathsync.retention import erase_student
+
+    erase_student(s, st.id)
     s.commit()
     return {"deleted": True}
 
