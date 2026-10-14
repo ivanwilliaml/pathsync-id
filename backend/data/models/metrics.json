@@ -1,0 +1,242 @@
+{
+ "generated_at": "2026-10-14T19:17:34",
+ "taxonomy": {
+  "version": "2026.10-v3",
+  "sha256": "6b994c0b4e56317dab92d9434859285efae355ef959b194f4d0a11fede7bf415"
+ },
+ "gold_sha256": {
+  "gold_pilot.json": "d960d9833e745c551d3d729001afd460ecb32229cecb6035bc3961f61be54aba",
+  "gold_heldout.json": "8c88b35eb6a3df5fae5130fe74d1e77ff12533f1cbec8da9d9b43ea9b52b9aea",
+  "gold_blind.json": "855ce344e27902e668d358b26d3192c1e64c3dd989665e3844807137ed0a5cd4",
+  "gold_split.json": "da76655470d7c2687bb139e4a89633a8ca0d4045c1659189b640789255f445d6"
+ },
+ "extraction": {
+  "pilot_dev": {
+   "n_postings": 24,
+   "annotators": 1,
+   "precision": 0.844,
+   "recall": 0.918,
+   "f1": 0.88,
+   "precision_ci95": [
+    0.7824,
+    0.8905
+   ],
+   "recall_ci95": [
+    0.8651,
+    0.9516
+   ],
+   "tp": 146,
+   "fp": 27,
+   "fn": 13
+  },
+  "heldout": {
+   "n_postings": 26,
+   "annotators": 1,
+   "precision": 0.855,
+   "recall": 0.917,
+   "f1": 0.885,
+   "precision_ci95": [
+    0.7796,
+    0.9073
+   ],
+   "recall_ci95": [
+    0.8505,
+    0.956
+   ],
+   "tp": 100,
+   "fp": 17,
+   "fn": 9
+  },
+  "blind": {
+   "n_postings": 26,
+   "annotators": 1,
+   "precision": 0.828,
+   "recall": 0.889,
+   "f1": 0.857,
+   "precision_ci95": [
+    0.7486,
+    0.8855
+   ],
+   "recall_ci95": [
+    0.8158,
+    0.9353
+   ],
+   "tp": 96,
+   "fp": 20,
+   "fn": 12
+  }
+ },
+ "normalisation": null,
+ "answer_patterns": {
+  "n_items": 570,
+  "language": "en",
+  "accuracy": 0.37,
+  "chance": 0.25,
+  "null_mean": 0.251,
+  "null_p95": 0.295
+ },
+ "taxonomy_final": {
+  "data_engineer": {
+   "n_postings": 18,
+   "final": false,
+   "n_core": 24,
+   "C1_coverage": 0.9085,
+   "C2_no_frequent_candidate": 0.111,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "data_scientist": {
+   "n_postings": 19,
+   "final": false,
+   "n_core": 24,
+   "C1_coverage": 0.8709,
+   "C2_no_frequent_candidate": 0.158,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "data_analyst": {
+   "n_postings": 37,
+   "final": false,
+   "n_core": 17,
+   "C1_coverage": 0.8809,
+   "C2_no_frequent_candidate": 0.054,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "business_analyst": {
+   "n_postings": 57,
+   "final": false,
+   "n_core": 21,
+   "C1_coverage": 0.9004,
+   "C2_no_frequent_candidate": 0.14,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "cybersecurity_analyst": {
+   "n_postings": 26,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.8921,
+   "C2_no_frequent_candidate": 0.115,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "devops_engineer": {
+   "n_postings": 24,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.9442,
+   "C2_no_frequent_candidate": 0.083,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "qa_engineer": {
+   "n_postings": 31,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.898,
+   "C2_no_frequent_candidate": 0.194,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "mobile_developer": {
+   "n_postings": 29,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.8815,
+   "C2_no_frequent_candidate": 0.276,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "fullstack_developer": {
+   "n_postings": 49,
+   "final": false,
+   "n_core": 24,
+   "C1_coverage": 0.9182,
+   "C2_no_frequent_candidate": 0.102,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "frontend_developer": {
+   "n_postings": 18,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.8379,
+   "C2_no_frequent_candidate": 0.278,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "backend_developer": {
+   "n_postings": 72,
+   "final": false,
+   "n_core": 20,
+   "C1_coverage": 0.8974,
+   "C2_no_frequent_candidate": 0.125,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "ui_ux_designer": {
+   "n_postings": 7,
+   "final": false,
+   "n_core": 13,
+   "C1_coverage": 0.8776,
+   "C2_no_frequent_candidate": 0.143,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "digital_marketing": {
+   "n_postings": 190,
+   "final": false,
+   "n_core": 11,
+   "C1_coverage": 0.8707,
+   "C2_no_frequent_candidate": 0.037,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "accountant": {
+   "n_postings": 172,
+   "final": false,
+   "n_core": 10,
+   "C1_coverage": 0.9277,
+   "C2_no_frequent_candidate": 0.041,
+   "C3_grounding": "114/114 grounded in at least one role"
+  }
+ },
+ "ranker": {
+  "generated_at": "2026-10-14T19:16:25",
+  "experts": "simulated",
+  "ndcg5_by_condition": {
+   "titik_hambat": {
+    "model": 0.989,
+    "kesenjangan_terbesar": 0.739,
+    "kesenjangan_x_permintaan": 0.91,
+    "formula5": 0.979
+   },
+   "kesenjangan_permintaan": {
+    "model": 0.961,
+    "kesenjangan_terbesar": 0.825,
+    "kesenjangan_x_permintaan": 0.96,
+    "formula5": 0.936
+   },
+   "campuran": {
+    "model": 0.975,
+    "kesenjangan_terbesar": 0.758,
+    "kesenjangan_x_permintaan": 0.926,
+    "formula5": 0.975
+   }
+  },
+  "active_cv_ndcg5": 0.9747,
+  "formula5_ndcg5": 0.9749,
+  "llm_baseline": "tidak dijalankan (urutan LLM luring tidak lengkap/kedaluwarsa; ekspor ulang skenario)"
+ },
+ "evidence_weights": {
+  "prior": {
+   "academic": 0.2,
+   "certificate": 0.25,
+   "project": 0.3,
+   "assessment": 0.5
+  },
+  "n_calibration_pairs": 0,
+  "min_pairs": 30,
+  "calibration": {
+   "status": "waiting for data",
+   "message": "0 of 30 pairs collected; the documented prior stays active."
+  },
+  "sensitivity_top3": {
+   "documented prior (0.20/0.25/0.30/0.50)": 1.0,
+   "random weights near the prior (Dirichlet, concentration 100)": 0.9855,
+   "random weights near the prior (Dirichlet, concentration 30)": 0.9718,
+   "equal weights": 0.9556,
+   "no assessment weight boost (assessment = project)": 0.9833,
+   "grades weigh most (reversed)": 0.9167
+  }
+ },
+ "performance": null
+}

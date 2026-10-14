@@ -30,9 +30,11 @@ def model_card(s: Session) -> dict:
     ranker = s.scalars(select(RankerModel).where(RankerModel.active.is_(True))).first()
     ext = MODELS_DIR / "extractor_comparison.json"
     offline = json.loads(ext.read_text(encoding="utf-8")).get("llm_model") if ext.exists() else None
-    gold = MODELS_DIR / "extractor_gold_eval.json"
-    ev = json.loads(gold.read_text(encoding="utf-8")) if gold.exists() else {}
-    blind = (ev.get("blind") or {}).get("overall")
+    # plan D2: quoted numbers come from metrics.json (python -m pipeline.report) only
+    mfile = MODELS_DIR / "metrics.json"
+    metrics = json.loads(mfile.read_text(encoding="utf-8")) if mfile.exists() else {}
+    extraction = metrics.get("extraction", {})
+    best = extraction.get("consensus_test_lexicon") or extraction.get("blind")
     return {
         "decision_model": {"type": "linear learning-to-rank (eq. 4), not an LLM",
                            "name": ranker.name if ranker else "Formula (5)", "weights": ranker.weights if ranker else None,
@@ -48,7 +50,10 @@ def model_card(s: Session) -> dict:
         # what is validated today, so the UI can say "Beta" honestly (PM audit AI-6, AI-7)
         "validation": {"real_experts": s.scalar(select(func.count(Expert.id)).where(Expert.kind != "simulasi")) or 0,
                        "ranker_trained_on": "simulated experts" if ranker and "simulated" in (ranker.name or "").lower() else "expert rankings",
-                       "extractor_blind_eval": ({**blind, "n_postings": ev["blind"]["n_postings"], "annotators": 1} if blind else None),
+                       "extractor_blind_eval": ({k: best[k] for k in ("n_postings", "annotators", "precision", "recall", "f1",
+                                                                       "precision_ci95", "recall_ci95") if k in best}
+                                                if best else None),
+                       "metrics_generated_at": metrics.get("generated_at"),
                        "status": "beta"},
         "planned": ["LLM-based reading of postings (Claude API) once the gold annotation set is complete",
                     "Ranker re-trained on a real expert panel"],

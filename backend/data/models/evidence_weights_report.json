@@ -26,32 +26,32 @@
    "documented prior (0.20/0.25/0.30/0.50)": {
     "top3_overlap": 1.0,
     "kendall_tau": 1.0,
-    "mastery_mae": 0.1051
+    "mastery_mae": 0.1048
    },
    "random weights near the prior (Dirichlet, concentration 100)": {
-    "top3_overlap": 0.9776,
-    "kendall_tau": 0.9747,
-    "mastery_mae": 0.106
+    "top3_overlap": 0.9855,
+    "kendall_tau": 0.9735,
+    "mastery_mae": 0.1057
    },
    "random weights near the prior (Dirichlet, concentration 30)": {
-    "top3_overlap": 0.9555,
-    "kendall_tau": 0.9578,
-    "mastery_mae": 0.1068
+    "top3_overlap": 0.9718,
+    "kendall_tau": 0.9571,
+    "mastery_mae": 0.1064
    },
    "equal weights": {
-    "top3_overlap": 0.9389,
-    "kendall_tau": 0.9341,
-    "mastery_mae": 0.1118
+    "top3_overlap": 0.9556,
+    "kendall_tau": 0.9325,
+    "mastery_mae": 0.1107
    },
    "no assessment weight boost (assessment = project)": {
-    "top3_overlap": 0.9722,
-    "kendall_tau": 0.9619,
-    "mastery_mae": 0.1076
+    "top3_overlap": 0.9833,
+    "kendall_tau": 0.9595,
+    "mastery_mae": 0.107
    },
    "grades weigh most (reversed)": {
-    "top3_overlap": 0.8833,
-    "kendall_tau": 0.8751,
-    "mastery_mae": 0.125
+    "top3_overlap": 0.9167,
+    "kendall_tau": 0.887,
+    "mastery_mae": 0.1222
    }
   }
  },
