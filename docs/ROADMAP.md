@@ -14,7 +14,7 @@ Pembangunan selesai: backend 88 route, 36 tes, CI, Docker, frontend 15 halaman, 
 ## Startup
 - **Model:** B2B2C — kampus/prodi berlangganan (dasbor dosen, laporan kesenjangan kurikulum vs pasar), mahasiswa gratis.
 - **Ekspansi:** peran DA (menunggu C1 ≥ 95%), lalu peran lain dengan mekanisme governance yang sama.
-- **Teknis berikutnya:** rate limiter Redis untuk multi-worker, snapshot pasar bulanan terjadwal, PostgreSQL + pgvector di produksi.
+- **Teknis berikutnya:** rate limiter Redis untuk multi-worker, snapshot pasar bulanan terjadwal, PostgreSQL di produksi (embedding tetap di memori dengan cache, tanpa pgvector).
 
 ## Future Works
 
@@ -39,7 +39,7 @@ Target: 20 role. Langkah: (1) tambah role di katalog dan batas skill, scrape Kar
 
 ### Teknis
 - Soal berbahasa Indonesia (soal baru saat ini hanya berbahasa Inggris).
-- Uji deploy produksi (PostgreSQL + pgvector, Redis rate limit, refresh pasar terjadwal).
+- Uji deploy produksi (PostgreSQL, Redis rate limit, refresh pasar terjadwal).
 
 ## Status 12 Okt 2026 (setelah audit PM)
 - **Taksonomi:** 114 hard skill di 14 klaster (v3) dengan 14 role. Soft skill dipertahankan sebagai lapisan terpisah berbasis pengalaman (9 skill), tanpa soal, tidak masuk ranking atau jalur belajar.

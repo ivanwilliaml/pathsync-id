@@ -10,7 +10,9 @@ plus the expert panel (Expert, Scenario, ScenarioRanking), ranker versions and
 gold annotations for extraction evaluation.
 
 Default engine is SQLite; set PATHSYNC_DATABASE_URL=postgresql+psycopg://... to use
-PostgreSQL (docker-compose ships a pgvector image).
+PostgreSQL (docker-compose ships postgres:16). Embeddings stay in memory with a
+persistent cache (data/processed/embedding_cache.sqlite); there is no vector query in
+the database, so pgvector is not used.
 """
 from __future__ import annotations
 
