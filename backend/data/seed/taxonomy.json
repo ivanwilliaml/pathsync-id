@@ -103,7 +103,6 @@
     "statistik deskriptif",
     "spss",
     "anova",
-    "correlation",
     "korelasi"
    ],
    "esco": [
@@ -203,7 +202,6 @@
     "business intelligence",
     "management report",
     "laporan manajemen",
-    "bi tools",
     "bi reporting"
    ],
    "esco": [
@@ -408,7 +406,6 @@
     "user requirement",
     "user requirements",
     "kebutuhan pengguna",
-    "kebutuhan user",
     "kebutuhan bisnis",
     "business requirement",
     "business requirements",
@@ -418,7 +415,6 @@
     "requirements analysis",
     "analisis kebutuhan",
     "menganalisis kebutuhan",
-    "analyze requirements",
     "analyse requirements"
    ],
    "esco": [
@@ -502,9 +498,6 @@
     "to-be",
     "as is to be",
     "proses bisnis",
-    "business process",
-    "business processes",
-    "workflow",
     "alur kerja"
    ],
    "esco": [
@@ -561,7 +554,6 @@
     "software development lifecycle",
     "system development life cycle",
     "systems development life cycle",
-    "development lifecycle",
     "siklus pengembangan",
     "waterfall"
    ],
@@ -585,7 +577,6 @@
     "uat",
     "user acceptance test",
     "user acceptance testing",
-    "test scenarios",
     "skenario pengujian",
     "skenario uji",
     "system integration testing",
@@ -619,7 +610,6 @@
     "xlookup",
     "hlookup",
     "power query",
-    "microsoft office",
     "ms office",
     "office 365",
     "rumus excel",
@@ -707,7 +697,6 @@
    "aliases": [
     "jira",
     "confluence",
-    "trello",
     "asana",
     "clickup",
     "azure devops",
@@ -791,7 +780,6 @@
     "dynamics 365",
     "d365",
     "salesforce",
-    "crm",
     "core banking",
     "t24",
     "enterprise system",
@@ -870,7 +858,6 @@
     "aljabar linear",
     "probabilitas",
     "gradient descent",
-    "statistical modeling",
     "vector calculus"
    ],
    "esco": [],
@@ -970,7 +957,6 @@
     "text classification",
     "sentiment analysis",
     "named entity recognition",
-    "speech recognition",
     "yolo",
     "spacy",
     "nltk",
@@ -1007,7 +993,9 @@
     "model registry",
     "data drift",
     "deploy model",
-    "ml in production"
+    "ml in production",
+    "deploy machine learning models",
+    "deploy ml models"
    ],
    "esco": [],
    "description_en": "Ship models to production: serving, versioning, monitoring and retraining pipelines.",
@@ -1076,7 +1064,8 @@
     "delta lake",
     "synapse",
     "clickhouse",
-    "gudang data"
+    "gudang data",
+    "data warehouses"
    ],
    "esco": [],
    "description_en": "Model and operate analytical stores: star schemas, warehouses, lakes and lakehouses.",
@@ -1184,7 +1173,6 @@
     "red hat",
     "rhel",
     "debian",
-    "bash",
     "shell scripting",
     "shell script",
     "bash scripting",
@@ -1231,8 +1219,7 @@
     "network administration",
     "osi model",
     "bgp",
-    "ospf",
-    "jaringan"
+    "ospf"
    ],
    "esco": [],
    "description_en": "Understand how networks move traffic: TCP/IP, DNS, HTTP/TLS, routing, subnets and firewalls.",
@@ -1448,8 +1435,7 @@
     "jaeger",
     "slo",
     "sli",
-    "incident management",
-    "on-call"
+    "incident management"
    ],
    "esco": [],
    "description_en": "Know what a system is doing: metrics, logs, traces, dashboards, alerts and SLOs.",
@@ -1547,7 +1533,6 @@
     "alert triage",
     "mitre att&ck",
     "sigma rules",
-    "threat intelligence",
     "ioc",
     "cti"
    ],
@@ -1647,7 +1632,8 @@
     "csirt",
     "root cause analysis security",
     "ransomware response",
-    "evidence collection"
+    "evidence collection",
+    "incident detection and response"
    ],
    "esco": [],
    "description_en": "Contain and investigate security incidents, collect evidence and analyse malware or artefacts.",
@@ -2086,8 +2072,8 @@
     "membuat api",
     "web service",
     "soap",
-    "api",
-    "apis"
+    "restful apis",
+    "rest apis"
    ],
    "esco": [],
    "description_en": "Design and build HTTP APIs with proper resources, methods, status codes, validation and documentation.",
@@ -2337,7 +2323,9 @@
     "event-driven architecture",
     "background jobs",
     "queue worker",
-    "memcached"
+    "memcached",
+    "messaging systems",
+    "message queues"
    ],
    "esco": [],
    "description_en": "Speed up and decouple systems with caches, queues and event streams.",
@@ -2392,7 +2380,8 @@
     "code coverage",
     "mocking",
     "testing framework",
-    "xunit"
+    "xunit",
+    "unit tests"
    ],
    "esco": [],
    "description_en": "Write automated unit and integration tests and use them to drive design.",
@@ -2582,7 +2571,6 @@
     "testrail",
     "bug tracking",
     "quality assurance",
-    "qa",
     "penjaminan mutu"
    ],
    "esco": [],
@@ -3174,8 +3162,6 @@
     "bukalapak",
     "blibli",
     "marketplace",
-    "e-commerce",
-    "ecommerce",
     "shopee ads",
     "tokopedia ads",
     "product listing",
@@ -3224,7 +3210,6 @@
     "tiktok content",
     "youtube studio",
     "content scheduler",
-    "seo content",
     "wordpress blogging",
     "podcast editing"
    ],
@@ -3355,7 +3340,6 @@
    "learn_what": "company setup and chart of accounts, sales and purchase flows, ledgers and reports, month-end tasks in Accurate, Jurnal or SAP",
    "hours": 18,
    "aliases": [
-    "accurate",
     "accurate online",
     "zahir",
     "jurnal.id",
@@ -3400,7 +3384,6 @@
     "piutang usaha",
     "bank reconciliation",
     "rekonsiliasi bank",
-    "reconciliation",
     "rekonsiliasi",
     "invoice processing",
     "payment processing",
@@ -3429,7 +3412,6 @@
    "hours": 18,
    "aliases": [
     "budgeting",
-    "budget",
     "anggaran",
     "penganggaran",
     "rolling forecast",

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ExternalLink, Quote } from "lucide-react";
 import { SOURCE, fmtDate, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
+import type { Meta } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -44,15 +45,21 @@ interface PostingRow {
   skills: string[];
 }
 
-const ROLES = [
-  { id: "business_analyst", name: "Business Analyst" },
-  { id: "data_analyst", name: "Data Analyst" },
-];
+interface Bps {
+  title: string;
+  note: string;
+  scope_note: string;
+  figures: { id: string; label: string; value: string; detail: string; source: string; ref: number }[];
+  fields: { field: string; share: number | null; roles: string[] }[];
+}
 
 export default function MarketPage() {
   const [role, setRole] = useState("business_analyst");
   const [all, setAll] = useState(false);
   const [skill, setSkill] = useState<string | null>(null);
+  const meta = useApi<Meta>("/meta");
+  const bps = useApi<Bps>("/context/bps");
+  const ROLES = meta.data?.roles ?? [];
   const m = useApi<Market>(`/market/${role}`);
   const ev = useApi<SkillEvidence>(skill ? `/market/${role}/skill/${skill}` : null);
   const posts = useApi<PostingRow[]>(`/postings?role=${role}&limit=200`);
@@ -72,28 +79,49 @@ export default function MarketPage() {
           <p className="mt-2 max-w-lg text-white/80">
             What Indonesian employers ask for, read from {m.data ? `${m.data.n_postings} real postings` : "real postings"} on Karirhub and company career sites.
           </p>
-          <div role="radiogroup" aria-label="Role" className="mt-6 inline-flex rounded-xl bg-white/10 p-1 backdrop-blur">
-            {ROLES.map((r) => (
-              <button
-                key={r.id}
-                type="button"
-                role="radio"
-                aria-checked={role === r.id}
-                onClick={() => {
-                  setRole(r.id);
-                  setSkill(null);
-                }}
-                className={cn(
-                  "h-10 rounded-lg px-4 text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
-                  role === r.id ? "bg-white text-ink" : "text-white/80 hover:text-white",
-                )}
-              >
-                {r.name}
-              </button>
+          <label htmlFor="market-role" className="mt-6 block text-xs font-medium text-white/70">Career</label>
+          <select
+            id="market-role"
+            value={role}
+            onChange={(e) => {
+              setRole(e.target.value);
+              setSkill(null);
+            }}
+            className="mt-1 h-11 w-full max-w-sm rounded-xl bg-white px-4 text-sm font-semibold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          >
+            {Object.entries(meta.data?.families ?? {}).map(([fid, fname]) => (
+              <optgroup key={fid} label={fname}>
+                {ROLES.filter((r) => r.family === fid).map((r) => (
+                  <option key={r.id} value={r.id}>
+                    {r.name}
+                    {r.limited_data ? " (Beta)" : ""}
+                  </option>
+                ))}
+              </optgroup>
             ))}
-          </div>
+          </select>
         </div>
       </section>
+
+      {bps.data ? (
+        <Panel>
+          <h2 className="text-lg font-semibold text-ink">{bps.data.title}</h2>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {bps.data.figures.map((f) => (
+              <div key={f.id} className="rounded-xl bg-card p-4">
+                <p className="text-xs font-medium text-ink/60">{f.label}</p>
+                <p className="mt-1 text-[24px] font-bold text-ink">{f.value}</p>
+                <p className="text-xs text-ink/65">{f.detail}</p>
+                <p className="mt-1 text-[11px] text-ink/50">
+                  {f.source} [{f.ref}]
+                </p>
+              </div>
+            ))}
+          </div>
+          <p className="mt-3 text-sm text-ink/70">{bps.data.scope_note}</p>
+          <p className="mt-1 text-xs text-ink/55">{bps.data.note}</p>
+        </Panel>
+      ) : null}
 
       {m.data?.simulated ? (
         <p role="note" className="rounded-xl border border-ember/30 bg-[#fff7f1] px-4 py-3 text-sm text-ember-ink">

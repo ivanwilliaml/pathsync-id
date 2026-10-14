@@ -1,0 +1,243 @@
+{
+ "note": "Held-out gold set: 26 postings annotated blind (before running the extractor) by a single annotator (Claude) from the first 1500 chars of each posting, explicit hard-skill mentions only. Not used to tune aliases.",
+ "postings": {
+  "karirhub:01a05bda-267e-70bb-b8e2-4399254e329f": {
+   "role": "accountant",
+   "skills": [
+    "tax_compliance_id",
+    "excel",
+    "erp_crm",
+    "accounting_software",
+    "ap_ar_reconciliation",
+    "accounting_fundamentals",
+    "financial_statements"
+   ]
+  },
+  "karirhub:f097934f-29f6-4d89-a93f-20a484695753": {
+   "role": "accountant",
+   "skills": [
+    "financial_statements",
+    "tax_compliance_id",
+    "cost_accounting",
+    "accounting_fundamentals",
+    "excel"
+   ]
+  },
+  "karirhub:01a0ec81-5cb1-7014-9c02-da598efe7df1": {
+   "role": "backend_developer",
+   "skills": [
+    "java_spring",
+    "rest_api_design",
+    "api_integration",
+    "git_version_control",
+    "unit_testing_tdd",
+    "api_testing",
+    "system_design_architecture"
+   ]
+  },
+  "kalibrr:264921": {
+   "role": "backend_developer",
+   "skills": [
+    "caching_messaging"
+   ]
+  },
+  "karirhub:01a08a6c-a0bb-719a-9dba-b0099a094f4d": {
+   "role": "business_analyst",
+   "skills": [
+    "business_process_modeling",
+    "requirements_elicitation",
+    "wireframing",
+    "diagramming_tools",
+    "requirements_documentation"
+   ]
+  },
+  "karirhub:01a01926-8e5e-73b9-b4f1-52b0c6bfec9e": {
+   "role": "business_analyst",
+   "skills": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "sql",
+    "excel",
+    "power_bi",
+    "tableau",
+    "bi_tools_other",
+    "data_analysis"
+   ]
+  },
+  "kalibrr:273527": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "penetration_testing",
+    "vulnerability_assessment",
+    "siem_monitoring",
+    "incident_response_forensics",
+    "network_security",
+    "security_frameworks_compliance"
+   ]
+  },
+  "workable:3ca67615-b97f-4a93-beae-b4f79cad4f48": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "penetration_testing",
+    "security_frameworks_compliance"
+   ]
+  },
+  "karirhub:01a104b4-706b-73ec-8e54-4096a91baf1b": {
+   "role": "data_analyst",
+   "skills": [
+    "excel",
+    "data_cleaning",
+    "data_analysis"
+   ]
+  },
+  "karirhub:9d35f657-d7b5-49d7-a427-fbd7118c9f95": {
+   "role": "data_analyst",
+   "skills": [
+    "data_cleaning",
+    "data_analysis",
+    "web_analytics",
+    "search_ads",
+    "excel"
+   ]
+  },
+  "kalibrr:272950": {
+   "role": "data_engineer",
+   "skills": [
+    "etl_pipelines",
+    "python_programming",
+    "kubernetes",
+    "sql",
+    "cloud_aws"
+   ]
+  },
+  "workable:06760210-b018-405c-9860-87c67a6f8fe5": {
+   "role": "data_engineer",
+   "skills": [
+    "data_warehousing",
+    "etl_pipelines"
+   ]
+  },
+  "karirhub:01a10d41-668b-720a-b23f-7255552f4f3b": {
+   "role": "data_scientist",
+   "skills": []
+  },
+  "karirhub:01a0d9c0-343e-7184-b387-928217abe083": {
+   "role": "data_scientist",
+   "skills": [
+    "sql",
+    "nosql_databases",
+    "machine_learning",
+    "mlops_deployment",
+    "etl_pipelines",
+    "statistics",
+    "python_programming"
+   ]
+  },
+  "karirhub:8812d4cc-641a-4bd9-8cc3-b40f6ab0edb9": {
+   "role": "devops_engineer",
+   "skills": [
+    "ci_cd_pipelines",
+    "python_programming"
+   ]
+  },
+  "karirhub:01a0e0e6-355d-7169-8006-659af21529e0": {
+   "role": "devops_engineer",
+   "skills": [
+    "html_css",
+    "javascript",
+    "nosql_databases",
+    "sql",
+    "linux_administration",
+    "api_integration",
+    "networking_fundamentals",
+    "python_programming",
+    "nodejs_backend"
+   ]
+  },
+  "karirhub:01a0e938-4470-70c4-87f4-c1d01badfd68": {
+   "role": "digital_marketing",
+   "skills": [
+    "search_ads",
+    "social_media_ads",
+    "web_analytics"
+   ]
+  },
+  "karirhub:53a911cd-b8a8-4daa-8e90-964b19b992ef": {
+   "role": "digital_marketing",
+   "skills": [
+    "social_media_ads",
+    "search_ads",
+    "web_analytics"
+   ]
+  },
+  "karirhub:01a0679f-caa4-7356-8009-46f648fe667b": {
+   "role": "frontend_developer",
+   "skills": [
+    "frontend_frameworks_other",
+    "javascript",
+    "html_css",
+    "responsive_accessible_web",
+    "api_integration",
+    "git_version_control"
+   ]
+  },
+  "karirhub:01a06680-2237-72d4-8ed6-b0e2405dbc70": {
+   "role": "frontend_developer",
+   "skills": [
+    "linux_administration",
+    "web_servers_proxies",
+    "networking_fundamentals",
+    "network_security",
+    "php_laravel",
+    "api_integration"
+   ]
+  },
+  "karirhub:01a0d5b3-c505-71fe-b0df-0da2099e95fa": {
+   "role": "fullstack_developer",
+   "skills": [
+    "golang_backend",
+    "python_programming",
+    "rest_api_design",
+    "git_version_control",
+    "auth_security_basics"
+   ]
+  },
+  "workable:8d422403-67dc-4067-8cbf-54fd5b8242c7": {
+   "role": "fullstack_developer",
+   "skills": [
+    "seo",
+    "search_ads",
+    "social_media_ads",
+    "email_marketing_automation"
+   ]
+  },
+  "workable:e237b472-be22-48b6-a23b-096edf2e7a8f": {
+   "role": "mobile_developer",
+   "skills": [
+    "ios_swift",
+    "unit_testing_tdd"
+   ]
+  },
+  "karirhub:01a0a3ea-e246-714e-b046-fc67cb0db653": {
+   "role": "mobile_developer",
+   "skills": [
+    "ios_swift",
+    "api_integration",
+    "git_version_control",
+    "ci_cd_pipelines"
+   ]
+  },
+  "kalibrr:271848": {
+   "role": "qa_engineer",
+   "skills": [
+    "test_design_techniques",
+    "sdlc"
+   ]
+  },
+  "lever:2ed4b9b2-22aa-4614-985c-9d373ce267ae": {
+   "role": "qa_engineer",
+   "skills": []
+  }
+ },
+ "max_chars": 1500
+}

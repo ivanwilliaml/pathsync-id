@@ -168,3 +168,22 @@ def test_rushed_submission_is_refused(client, monkeypatch):
 def test_item_analysis_endpoint(client):
     r = client.get("/api/admin/item-analysis?min_n=1", headers=ADMIN).json()
     assert "items" in r and r["items"] and {"p_correct", "choices", "flags"} <= set(r["items"][0])
+
+
+def test_soft_skills_are_experience_only(client):
+    """Soft skills show up with demand and the student's own experience, never in the ranking, path or assessment."""
+    sid, h = new_student(client)
+    d = client.get(f"/api/students/{sid}/dashboard", headers=h).json()
+    soft_ids = {x["skill_id"] for x in d["soft_skills"]}
+    assert "verbal_communication" in soft_ids and all(x["level"] == 0 for x in d["soft_skills"])
+    assert any(x["demand"] > 0 for x in d["soft_skills"])
+    assert not soft_ids & {r["skill_id"] for r in d["ranking"]} and not soft_ids & {p["skill_id"] for p in d["path"]}
+    assert not soft_ids & {c["skill_id"] for c in d["competencies"]}
+    put = lambda body: client.put(f"/api/students/{sid}/soft-experience", headers=h, json=body)  # noqa: E731
+    assert put({"skill_id": "collaboration", "level": 2, "note": "Capstone team of 4"}).status_code == 200
+    assert put({"skill_id": "sql", "level": 1}).status_code == 400          # hard skills are not recorded here
+    assert put({"skill_id": "collaboration", "level": 9}).status_code == 400
+    d = client.get(f"/api/students/{sid}/dashboard", headers=h).json()
+    c = next(x for x in d["soft_skills"] if x["skill_id"] == "collaboration")
+    assert c["level"] == 2 and c["note"] == "Capstone team of 4"
+    assert client.get("/api/assessment/items?skill_id=collaboration", headers=h).status_code in (404, 422)

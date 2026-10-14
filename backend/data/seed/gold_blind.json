@@ -1,0 +1,241 @@
+{
+ "note": "Blind gold set C: 26 postings annotated from the first 1200 chars before the extractor was run on them, single annotator (Claude); never used to tune aliases. Reported as the held-out number.",
+ "max_chars": 1200,
+ "postings": {
+  "kalibrr:271962": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "penetration_testing",
+    "vulnerability_assessment"
+   ]
+  },
+  "karirhub:9f43619b-f7b5-4d19-b93b-e841cfdd0433": {
+   "role": "accountant",
+   "skills": [
+    "financial_statements",
+    "ap_ar_reconciliation",
+    "tax_compliance_id",
+    "accounting_fundamentals"
+   ]
+  },
+  "kalibrr:268318": {
+   "role": "qa_engineer",
+   "skills": [
+    "test_design_techniques",
+    "testing_uat",
+    "sdlc",
+    "jira_confluence"
+   ]
+  },
+  "karirhub:01a0d9c4-8d5b-7134-8655-cf639c5ba4f1": {
+   "role": "data_analyst",
+   "skills": [
+    "data_cleaning",
+    "data_analysis"
+   ]
+  },
+  "kalibrr:272093": {
+   "role": "data_analyst",
+   "skills": [
+    "data_cleaning",
+    "data_analysis",
+    "excel",
+    "dashboard_reporting",
+    "data_visualization",
+    "bi_tools_other",
+    "kpi_metrics"
+   ]
+  },
+  "kalibrr:271398": {
+   "role": "business_analyst",
+   "skills": [
+    "requirements_elicitation",
+    "sdlc",
+    "business_process_modeling",
+    "requirements_documentation",
+    "testing_uat",
+    "test_design_techniques"
+   ]
+  },
+  "kalibrr:265065": {
+   "role": "ui_ux_designer",
+   "skills": [
+    "user_research",
+    "usability_testing",
+    "wireframing",
+    "prototyping_interaction"
+   ]
+  },
+  "karirhub:01a056a6-aa29-717d-b213-3453d1142a8c": {
+   "role": "backend_developer",
+   "skills": [
+    "golang_backend",
+    "nosql_databases",
+    "sql",
+    "unit_testing_tdd",
+    "linux_administration"
+   ]
+  },
+  "workable:93f3b07e-384a-4ac3-93de-99907bd7c46e": {
+   "role": "mobile_developer",
+   "skills": [
+    "flutter_dart",
+    "api_integration"
+   ]
+  },
+  "workable:09f134ff-bc78-469a-8bfe-d655b5e63c9c": {
+   "role": "devops_engineer",
+   "skills": [
+    "ci_cd_pipelines"
+   ]
+  },
+  "kalibrr:272777": {
+   "role": "mobile_developer",
+   "skills": [
+    "android_kotlin",
+    "ci_cd_pipelines",
+    "mobile_release_quality",
+    "monitoring_observability"
+   ]
+  },
+  "karirhub:01a0f1af-c25f-7000-8fa7-b90e2745cedc": {
+   "role": "frontend_developer",
+   "skills": [
+    "php_laravel",
+    "frontend_frameworks_other",
+    "sql",
+    "api_integration",
+    "data_modeling"
+   ]
+  },
+  "karirhub:a1b8c68a-1664-4d1c-a692-36d6edebd30b": {
+   "role": "accountant",
+   "skills": [
+    "financial_statements",
+    "tax_compliance_id",
+    "accounting_fundamentals"
+   ]
+  },
+  "karirhub:01a0e71b-63db-724e-945c-ab7c58009181": {
+   "role": "data_engineer",
+   "skills": [
+    "etl_pipelines",
+    "streaming_data",
+    "python_programming",
+    "kubernetes",
+    "sql",
+    "cloud_aws"
+   ]
+  },
+  "karirhub:85981d66-a1d0-42d3-96c6-fca0863530e2": {
+   "role": "fullstack_developer",
+   "skills": [
+    "java_spring",
+    "frontend_frameworks_other",
+    "javascript",
+    "nodejs_backend",
+    "react",
+    "golang_backend",
+    "rest_api_design",
+    "api_integration",
+    "sql",
+    "programming_fundamentals",
+    "html_css"
+   ]
+  },
+  "smartrecruiters:744000132554362": {
+   "role": "ui_ux_designer",
+   "skills": []
+  },
+  "karirhub:22709029-0de1-4b9c-bdd5-9971e6cd86ae": {
+   "role": "qa_engineer",
+   "skills": [
+    "test_automation_web",
+    "performance_testing",
+    "sql",
+    "jira_confluence",
+    "ci_cd_pipelines",
+    "linux_administration",
+    "python_programming",
+    "javascript"
+   ]
+  },
+  "karirhub:01a0b5bf-124f-7368-95e6-3fceb0abea58": {
+   "role": "data_scientist",
+   "skills": [
+    "machine_learning",
+    "deep_learning",
+    "python_programming",
+    "nlp_computer_vision",
+    "mlops_deployment",
+    "data_cleaning"
+   ]
+  },
+  "karirhub:01a0dbd9-b292-71ad-bb97-ab9d10fec6b8": {
+   "role": "data_engineer",
+   "skills": [
+    "etl_pipelines",
+    "streaming_data",
+    "api_integration",
+    "nosql_databases",
+    "data_warehousing",
+    "data_cleaning"
+   ]
+  },
+  "lever:dff2a165-d111-4542-bfec-ec3856892275": {
+   "role": "data_scientist",
+   "skills": []
+  },
+  "kalibrr:273182": {
+   "role": "backend_developer",
+   "skills": [
+    "golang_backend",
+    "nodejs_backend",
+    "rest_api_design",
+    "api_integration",
+    "system_design_architecture",
+    "sql",
+    "nosql_databases",
+    "git_version_control",
+    "docker_containers",
+    "ci_cd_pipelines"
+   ]
+  },
+  "karirhub:01a1081c-2717-72ba-9af6-4ed7194598f8": {
+   "role": "digital_marketing",
+   "skills": [
+    "content_creation_tools"
+   ]
+  },
+  "workable:8afb23b9-c60f-403a-b50a-d5dbed1d2697": {
+   "role": "cybersecurity_analyst",
+   "skills": []
+  },
+  "karirhub:01a0cc2b-6a5a-73b9-bf45-a59eb13ef6e5": {
+   "role": "devops_engineer",
+   "skills": [
+    "linux_administration",
+    "programming_fundamentals"
+   ]
+  },
+  "karirhub:aa53c046-9e6f-4be6-93bd-e4f351c83bc2": {
+   "role": "business_analyst",
+   "skills": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "requirements_documentation",
+    "system_modeling_uml",
+    "api_integration",
+    "sql",
+    "testing_uat"
+   ]
+  },
+  "workable:c2a725cc-1b6e-49b5-98dd-1a3733f850e2": {
+   "role": "frontend_developer",
+   "skills": [
+    "rest_api_design",
+    "api_integration"
+   ]
+  }
+ }
+}

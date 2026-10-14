@@ -80,7 +80,7 @@ function AdminConsole() {
       <PageHeader title="Admin" description="Keep the job market data fresh, review uncertain skill matches, and check how well the models perform." />
       {s ? (
         <dl className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <Fact label="Unique Postings" value={int(s.postings_total - s.duplicates)} note={`Business Analyst ${s.in_window_by_role.business_analyst ?? 0}, Data Analyst ${s.in_window_by_role.data_analyst ?? 0}`} />
+          <Fact label="Unique Postings" value={int(s.postings_total - s.duplicates)} note={`${Object.keys(s.in_window_by_role).length} careers; largest ${Math.max(0, ...Object.values(s.in_window_by_role) as number[])} postings`} />
           <Fact label="Skill Matches" value={int(s.mentions_by_status.auto ?? 0)} note={`${s.mentions_by_status.review ?? 0} waiting for review`} />
           <Fact label="Students" value={int(s.students)} note={`${s.experts} experts, ${s.cohorts ?? 0} classes, ${s.pending_project_reviews ?? 0} projects to review`} />
           <Fact label="Last Market Build" value={s.last_build ?? "–"} note={`Extractor: ${s.extractor === "llm" ? "LLM" : "lexicon"}`} small />

@@ -15,6 +15,7 @@ from functools import lru_cache
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from . import soft
 from .calibration import active_evidence_weights
 from .config import FORMULA5_WEIGHTS, READINESS_THRESHOLD, ROLES, SEED_DIR
 from .db import (
@@ -65,6 +66,7 @@ class Context:
     model_id: int | None
     esco: dict[str, str]
     quotes: dict[str, list[dict]]
+    soft_demand: dict[str, float]
 
 
 # ------------------------------------------------------------------ loading
@@ -141,7 +143,7 @@ def load_context(s: Session, role: str) -> Context:
     model, model_id = active_model(s)
     ctx = Context(role=role, role_name=ROLES[role]["name"], skills=skills, names={k: v.name for k, v in skills.items()},
                   graph=graph_from_db(s), market=market, req=req, market_version=version, model=model, model_id=model_id,
-                  esco=esco_status().get(role, {}), quotes=skill_quotes(s, role))
+                  esco=esco_status().get(role, {}), quotes=skill_quotes(s, role), soft_demand=soft.role_demand(s, role))
     with _CTX_LOCK:
         if len(_CTX_CACHE) > 16:
             _CTX_CACHE.clear()
@@ -325,6 +327,8 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
         "ranking": ranking, "path": path_out, "path_hours": round(total_hours, 1),
         "path_weeks": round(total_hours / weekly, 1) if weekly else None,
         "counterfactual": cf, "competencies": competencies, "confirmations": confirmations[:8], "perception": perception,
+        # experience-based, never ranked: shown on the Skill Map next to the hard skills
+        "soft_skills": soft.soft_profile(ctx.soft_demand, prefs.get("soft_experience")),
         "evidence_summary": {**ev_count, "assessment_items": n_diag},
         "diagnostic_done": n_diag > 0,
         "blocked_in_path": len(blocked_steps(order, graph, p)),

@@ -12,6 +12,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
+from pathsync import soft
 from pathsync.config import GRADE_SCORES, ROLES
 from pathsync.db import (
     AssessmentResponse,
@@ -120,6 +121,29 @@ def patch_student(body: StudentPatch, st: Student = Depends(student_access), s: 
     if role_changed and has_history(s, st.id):
         record_history(s, st, "role", note=f"new role {ROLES[st.target_role]['name']}", rec=recommend_for(s, st), force=True)
     return {"ok": True}
+
+
+class SoftExperienceIn(BaseModel):
+    skill_id: str
+    level: int
+    note: str = ""
+
+
+@router.put("/students/{sid}/soft-experience")
+def put_soft_experience(body: SoftExperienceIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
+    """Soft skills are recorded as experience (no quiz); they never enter the ranking or the path."""
+    if body.skill_id not in soft.load_soft():
+        raise HTTPException(400, "Unknown soft skill.")
+    if body.level not in soft.LEVELS:
+        raise HTTPException(400, "Level must be 0-3.")
+    st = s.merge(st)
+    prefs = dict(st.preferences or {})
+    exp = soft.clean_experience(prefs.get("soft_experience"))
+    exp[body.skill_id] = {"level": body.level, "note": body.note[: soft.MAX_NOTE]}
+    prefs["soft_experience"] = exp
+    st.preferences = prefs
+    s.commit()
+    return {"ok": True, "soft_experience": exp}
 
 
 # ----------------------------------------------------------- personal data (UU PDP No. 27/2022)

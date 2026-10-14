@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { GraduationCap, Lock } from "lucide-react";
 import { pct, titleCase } from "@/lib/format";
+import type { Meta } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
 import { setStaffToken, useStaffToken } from "@/lib/staff";
 import { Button } from "@/components/ui/button";
@@ -41,6 +42,7 @@ export default function AdvisorPage() {
   const { token, ready } = useStaffToken("advisor");
   const cohorts = useApi<CohortRow[]>(token ? "/advisor/cohorts" : null);
   const [sel, setSel] = useState<string>("");
+  const meta = useApi<Meta>("/meta");
   const [role, setRole] = useState("business_analyst");
   const current = sel || cohorts.data?.[0]?.id || "";
   const report = useApi<Report>(current ? `/advisor/cohorts/${current}/report?role=${role}` : null);
@@ -79,8 +81,11 @@ export default function AdvisorPage() {
           ))}
         </NativeSelect>
         <NativeSelect aria-label="Target role" value={role} onChange={(e) => setRole(e.target.value)}>
-          <option value="business_analyst">Business Analyst</option>
-          <option value="data_analyst">Data Analyst</option>
+          {(meta.data?.roles ?? []).map((r) => (
+            <option key={r.id} value={r.id}>
+              {r.name}
+            </option>
+          ))}
         </NativeSelect>
         <span className="text-sm">
           Students join with code{" "}

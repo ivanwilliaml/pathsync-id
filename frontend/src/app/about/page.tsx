@@ -36,7 +36,7 @@ export default function AboutPage() {
             .
           </p>
           <p>
-            <strong>Status:</strong> beta tertutup. Saat ini mendukung dua peran (Business Analyst dan Data Analyst). Peran lain menyusul;
+            <strong>Status:</strong> beta tertutup. Saat ini mendukung 14 peran teknis dan bisnis, hanya keterampilan hard skill. Peran bisnis lain (keuangan, SDM, rantai pasok) menyusul;
             daftarkan email Anda di beranda untuk diberi tahu.
           </p>
         </div>

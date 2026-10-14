@@ -68,6 +68,13 @@ _STOP_ITEM = re.compile(r"^(?:the|a|an|of|in|with|yang|untuk|dengan|di|ke|dari|s
                         r"\b(?:tahun|years?|bulan|months?)\b|\d", re.I)
 
 
+# A degree field ("Bachelor in Statistics") is not a skill requirement.
+DEGREE = re.compile(r"\b(?:bachelor|master|degree|diploma|s1|s2|d3|d4|sarjana|jurusan|gelar|graduate|lulusan|related field|pendidikan)\b", re.I)
+FIELD_ALIASES = {"statistics", "statistik", "accounting", "akuntansi", "marketing", "mathematics", "matematika", "computer science"}
+# "integrating ... APIs" / "API integration" is an api_integration mention even when the alias list has no exact form
+API_INTEGRATION = re.compile(r"\bintegrat\w*\b[^.;\n]{0,70}\bAPIs?\b|\bAPIs?\b[^.;\n]{0,20}\bintegrat\w*|\bintegrasi\b[^.;\n]{0,30}\bapi\b", re.I)
+
+
 class LexiconExtractor:
     name = "lexicon"
 
@@ -109,7 +116,16 @@ class LexiconExtractor:
                 hits.append((m, alias))
                 if alias not in WEAK_ALIASES:
                     strong_in_seg = True
+            if API_INTEGRATION.search(s) and "api_integration" in self.alias_owner.values():
+                am = API_INTEGRATION.search(s)
+                out.append(Mention(
+                    surface=am.group(0)[:40], quote=trim_quote(s, am.start(), am.end()), level=self._level(s, am.start()),
+                    skill_id="api_integration", similarity=1.0, status="auto", method="lexicon",
+                ))
+            degree = bool(DEGREE.search(s))
             for m, alias in hits:
+                if degree and alias in FIELD_ALIASES:
+                    continue
                 neg = NEGATIVE_CONTEXT.get(alias)
                 if neg and neg.search(s):
                     continue

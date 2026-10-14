@@ -2,9 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { ChevronDown, Flame, ShieldCheck, Sparkles, Target } from "lucide-react";
-import type { Competency, Dashboard } from "@/lib/api";
+import { api, type Competency, type Dashboard, type SoftSkill } from "@/lib/api";
 import { LEVEL, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { ErrorNote, LinkButton, Loading, MasteryBar, Panel, Tag } from "./kit";
 
@@ -43,7 +44,7 @@ export function MySkills({ sid }: { sid: string }) {
   const rows = useMemo<Row[]>(() => {
     if (!d) return [];
     const rank = Object.fromEntries(d.ranking.map((r) => [r.skill_id, r]));
-    return d.competencies.filter((c) => c.demand >= RELEVANT_DEMAND || rank[c.skill_id]).map((c) => {
+    return d.competencies.filter((c) => c.demand >= RELEVANT_DEMAND || (rank[c.skill_id]?.rank ?? 99) <= 5).map((c) => {
       const r = rank[c.skill_id];
       return { c, rank: r?.rank ?? null, why: r?.explanation ? r.explanation.why_now : null, status: classify(c, r?.rank ?? null) };
     });
@@ -68,7 +69,7 @@ export function MySkills({ sid }: { sid: string }) {
           <Summary label="Fix first" value={fixFirst.length ? fixFirst.map((r) => titleCase(r.c.name)).join(", ") : "Nothing urgent"} note="biggest gap that employers care about" small />
         </div>
         <p className="mt-4 text-xs text-ink/65">
-          How to read each bar: the fill is your level now, the black tick is the level employers ask for. Only skills asked for in at least 15% of the {d.role.n_postings} real postings are shown.
+          How to read each bar: the fill is your level now, the black tick is the level employers ask for. Only skills asked for in at least 15% of the {d.role.n_postings} real postings, or in your top five priorities, are shown.
         </p>
       </Panel>
 
@@ -104,7 +105,70 @@ export function MySkills({ sid }: { sid: string }) {
           </section>
         );
       })}
+
+      <SoftSection sid={sid} items={(d.soft_skills ?? []).filter((x) => x.demand >= RELEVANT_DEMAND)} />
     </div>
+  );
+}
+
+const EXPERIENCE = [
+  [0, "No experience yet"],
+  [1, "Tried it (class, club, event)"],
+  [2, "Regular (project, internship, job)"],
+  [3, "Led or taught others"],
+] as const;
+
+/** Soft skills are shown beside the hard skills but are never quizzed or ranked: the student records real experience. */
+function SoftSection({ sid, items }: { sid: string; items: SoftSkill[] }) {
+  const [local, setLocal] = useState<Record<string, { level: number; note: string }>>({});
+  if (!items.length) return null;
+  const save = (id: string, level: number, note: string) => {
+    setLocal((l) => ({ ...l, [id]: { level, note } }));
+    api.put(`/students/${sid}/soft-experience`, { skill_id: id, level, note }).catch(() => toast.error("Could not save. Try again."));
+  };
+  return (
+    <section aria-labelledby="sec-soft">
+      <h2 id="sec-soft" className="text-lg font-semibold text-ink">Soft Skills From Experience</h2>
+      <p className="mb-3 text-sm text-ink/70">
+        Employers ask for these too, but they are built through real experience, so there is no quiz and they never change your route. Record what you have actually done.
+      </p>
+      <ul className="grid gap-3 md:grid-cols-2">
+        {items.map((x) => {
+          const cur = local[x.skill_id] ?? { level: x.level, note: x.note };
+          return (
+            <li key={x.skill_id} className="rounded-xl border bg-card p-4">
+              <div className="flex flex-wrap items-start justify-between gap-2">
+                <p className="font-semibold leading-snug text-ink">{x.name}</p>
+                <Tag tone="neutral">Asked in {pct(x.demand)} of postings</Tag>
+              </div>
+              <label className="mt-3 block text-xs font-medium text-ink/70" htmlFor={`exp-${x.skill_id}`}>Your experience</label>
+              <select
+                id={`exp-${x.skill_id}`}
+                value={cur.level}
+                onChange={(e) => save(x.skill_id, Number(e.target.value), cur.note)}
+                className="mt-1 w-full rounded-lg border bg-card px-3 py-2 text-sm"
+              >
+                {EXPERIENCE.map(([v, label]) => (
+                  <option key={v} value={v}>{label}</option>
+                ))}
+              </select>
+              {cur.level > 0 ? (
+                <input
+                  aria-label={`Example for ${x.name}`}
+                  defaultValue={cur.note}
+                  maxLength={240}
+                  placeholder="One example, e.g. capstone team of 4"
+                  onBlur={(e) => e.target.value !== cur.note && save(x.skill_id, cur.level, e.target.value)}
+                  className="mt-2 w-full rounded-lg border bg-card px-3 py-2 text-sm"
+                />
+              ) : (
+                <p className="mt-2 text-xs leading-relaxed text-ink/65">{x.how_to_build}</p>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
   );
 }
 

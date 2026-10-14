@@ -1,0 +1,20 @@
+{
+  "title": "National context: graduate unemployment in Indonesia",
+  "note": "Figures are the ones cited in the PathSync proposal (Bab I), taken from BPS releases and the press coverage listed in its references. They give the problem context and are not used by the ranking. Check them against the BPS tables before quoting them elsewhere.",
+  "figures": [
+    {"id": "tpt_feb2025", "label": "Open unemployment rate, Feb 2025", "value": "4.76%", "detail": "7.28 million people not working", "source": "BPS, Keadaan Ketenagakerjaan Indonesia Februari 2025", "ref": 3},
+    {"id": "grad_feb2025", "label": "University graduates unemployed, Feb 2025", "value": "1,010,652", "detail": "highest in four years", "source": "BPS via CNN Indonesia", "ref": 5},
+    {"id": "grad_may2026", "label": "Higher-education unemployed, May 2026", "value": "1,033,182", "detail": "the trend has not improved", "source": "BPS, as cited in the proposal", "ref": 7},
+    {"id": "youth", "label": "Unemployment at ages 15-24", "value": "above 17%", "detail": "more than three times the national rate", "source": "Al Jazeera", "ref": 9}
+  ],
+  "fields": [
+    {"field": "Management", "share": 0.103, "roles": ["business_analyst", "digital_marketing"]},
+    {"field": "Law", "share": null, "roles": []},
+    {"field": "Economics", "share": null, "roles": ["accountant", "business_analyst"]},
+    {"field": "Education", "share": null, "roles": []},
+    {"field": "Accounting", "share": null, "roles": ["accountant"]},
+    {"field": "Computer Science", "share": 0.046, "roles": ["data_engineer", "data_scientist", "data_analyst", "cybersecurity_analyst", "devops_engineer", "qa_engineer", "mobile_developer", "fullstack_developer", "frontend_developer", "backend_developer", "ui_ux_designer"]}
+  ],
+  "top_five_share": 0.40,
+  "scope_note": "PathSync currently covers technology and business roles. Law and Education are outside the scope for now, and Economics, Management and Accounting are covered by the business roles listed."
+}

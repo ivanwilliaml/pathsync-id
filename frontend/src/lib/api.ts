@@ -175,7 +175,12 @@ export interface Competency {
   esco: string | null;
 }
 
+export interface SoftSkill {
+  skill_id: string; name: string; demand: number; level: number; level_label: string; note: string; how_to_build: string;
+}
+
 export interface Dashboard {
+  soft_skills?: SoftSkill[];
   student: { id: string; display_name: string; program: string; target_role: string; preferences: Record<string, unknown> };
   role: { id: string; name: string; n_postings: number; trend_status: string; reference_date: string };
   market_version: string;

@@ -1,139 +1,478 @@
 {
- "n_postings": 24,
- "overall": {
-  "precision": 0.514,
-  "recall": 0.911,
-  "f1": 0.657
+ "dev": {
+  "n_postings": 24,
+  "overall": {
+   "precision": 0.844,
+   "recall": 0.918,
+   "f1": 0.88
+  },
+  "per_role": {
+   "accountant": {
+    "precision": 1.0,
+    "recall": 0.882,
+    "f1": 0.938
+   },
+   "backend_developer": {
+    "precision": 0.818,
+    "recall": 1.0,
+    "f1": 0.9
+   },
+   "business_analyst": {
+    "precision": 0.889,
+    "recall": 0.667,
+    "f1": 0.762
+   },
+   "cybersecurity_analyst": {
+    "precision": 0.722,
+    "recall": 0.929,
+    "f1": 0.813
+   },
+   "data_analyst": {
+    "precision": 0.771,
+    "recall": 1.0,
+    "f1": 0.871
+   },
+   "data_engineer": {
+    "precision": 0.875,
+    "recall": 0.966,
+    "f1": 0.918
+   },
+   "data_scientist": {
+    "precision": 0.857,
+    "recall": 0.857,
+    "f1": 0.857
+   },
+   "devops_engineer": {
+    "precision": 0.885,
+    "recall": 1.0,
+    "f1": 0.939
+   }
+  },
+  "top_false_positives": [
+   [
+    "erp_crm",
+    2
+   ],
+   [
+    "cloud_security",
+    2
+   ],
+   [
+    "kpi_metrics",
+    2
+   ],
+   [
+    "data_cleaning",
+    2
+   ],
+   [
+    "data_structures_algorithms",
+    1
+   ],
+   [
+    "test_design_techniques",
+    1
+   ],
+   [
+    "api_integration",
+    1
+   ],
+   [
+    "system_modeling_uml",
+    1
+   ],
+   [
+    "business_process_modeling",
+    1
+   ],
+   [
+    "siem_monitoring",
+    1
+   ],
+   [
+    "security_frameworks_compliance",
+    1
+   ],
+   [
+    "penetration_testing",
+    1
+   ]
+  ],
+  "top_misses": [
+   [
+    "business_process_modeling",
+    3
+   ],
+   [
+    "rest_api_design",
+    2
+   ],
+   [
+    "accounting_software",
+    1
+   ],
+   [
+    "cost_accounting",
+    1
+   ],
+   [
+    "data_analysis",
+    1
+   ],
+   [
+    "requirements_elicitation",
+    1
+   ],
+   [
+    "testing_uat",
+    1
+   ],
+   [
+    "requirements_documentation",
+    1
+   ],
+   [
+    "wireframing",
+    1
+   ],
+   [
+    "vulnerability_assessment",
+    1
+   ]
+  ],
+  "extractor": "lexicon"
  },
- "per_role": {
-  "accountant": {
-   "precision": 1.0,
-   "recall": 0.882,
-   "f1": 0.938
+ "heldout": {
+  "n_postings": 26,
+  "overall": {
+   "precision": 0.855,
+   "recall": 0.917,
+   "f1": 0.885
   },
-  "backend_developer": {
-   "precision": 0.333,
-   "recall": 1.0,
-   "f1": 0.5
+  "per_role": {
+   "accountant": {
+    "precision": 1.0,
+    "recall": 0.833,
+    "f1": 0.909
+   },
+   "backend_developer": {
+    "precision": 0.8,
+    "recall": 1.0,
+    "f1": 0.889
+   },
+   "business_analyst": {
+    "precision": 1.0,
+    "recall": 0.769,
+    "f1": 0.87
+   },
+   "cybersecurity_analyst": {
+    "precision": 0.7,
+    "recall": 0.875,
+    "f1": 0.778
+   },
+   "data_analyst": {
+    "precision": 0.8,
+    "recall": 1.0,
+    "f1": 0.889
+   },
+   "data_engineer": {
+    "precision": 0.833,
+    "recall": 0.714,
+    "f1": 0.769
+   },
+   "data_scientist": {
+    "precision": 0.875,
+    "recall": 1.0,
+    "f1": 0.933
+   },
+   "devops_engineer": {
+    "precision": 0.786,
+    "recall": 1.0,
+    "f1": 0.88
+   },
+   "digital_marketing": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "frontend_developer": {
+    "precision": 0.923,
+    "recall": 1.0,
+    "f1": 0.96
+   },
+   "fullstack_developer": {
+    "precision": 0.889,
+    "recall": 0.889,
+    "f1": 0.889
+   },
+   "mobile_developer": {
+    "precision": 0.857,
+    "recall": 1.0,
+    "f1": 0.923
+   },
+   "qa_engineer": {
+    "precision": 0.5,
+    "recall": 1.0,
+    "f1": 0.667
+   }
   },
-  "business_analyst": {
-   "precision": 0.762,
-   "recall": 0.727,
-   "f1": 0.744
-  },
-  "cybersecurity_analyst": {
-   "precision": 0.389,
-   "recall": 0.875,
-   "f1": 0.538
-  },
-  "data_analyst": {
-   "precision": 0.405,
-   "recall": 1.0,
-   "f1": 0.577
-  },
-  "data_engineer": {
-   "precision": 0.394,
-   "recall": 1.0,
-   "f1": 0.565
-  },
-  "data_scientist": {
-   "precision": 0.625,
-   "recall": 1.0,
-   "f1": 0.769
-  },
-  "devops_engineer": {
-   "precision": 0.538,
-   "recall": 1.0,
-   "f1": 0.7
-  }
+  "top_false_positives": [
+   [
+    "rest_api_design",
+    3
+   ],
+   [
+    "sql",
+    2
+   ],
+   [
+    "erp_crm",
+    1
+   ],
+   [
+    "sdlc",
+    1
+   ],
+   [
+    "cloud_security",
+    1
+   ],
+   [
+    "siem_monitoring",
+    1
+   ],
+   [
+    "data_modeling",
+    1
+   ],
+   [
+    "dashboard_reporting",
+    1
+   ],
+   [
+    "streaming_data",
+    1
+   ],
+   [
+    "web_analytics",
+    1
+   ],
+   [
+    "security_frameworks_compliance",
+    1
+   ],
+   [
+    "machine_learning",
+    1
+   ]
+  ],
+  "top_misses": [
+   [
+    "accounting_fundamentals",
+    1
+   ],
+   [
+    "cost_accounting",
+    1
+   ],
+   [
+    "diagramming_tools",
+    1
+   ],
+   [
+    "requirements_documentation",
+    1
+   ],
+   [
+    "data_analysis",
+    1
+   ],
+   [
+    "security_frameworks_compliance",
+    1
+   ],
+   [
+    "data_warehousing",
+    1
+   ],
+   [
+    "etl_pipelines",
+    1
+   ],
+   [
+    "social_media_ads",
+    1
+   ]
+  ],
+  "extractor": "lexicon"
  },
- "top_false_positives": [
-  [
-   "git_version_control",
-   4
+ "blind": {
+  "n_postings": 26,
+  "overall": {
+   "precision": 0.828,
+   "recall": 0.889,
+   "f1": 0.857
+  },
+  "per_role": {
+   "accountant": {
+    "precision": 0.778,
+    "recall": 1.0,
+    "f1": 0.875
+   },
+   "backend_developer": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "business_analyst": {
+    "precision": 0.75,
+    "recall": 0.923,
+    "f1": 0.828
+   },
+   "cybersecurity_analyst": {
+    "precision": 0.25,
+    "recall": 0.5,
+    "f1": 0.333
+   },
+   "data_analyst": {
+    "precision": 1.0,
+    "recall": 0.889,
+    "f1": 0.941
+   },
+   "data_engineer": {
+    "precision": 0.909,
+    "recall": 0.833,
+    "f1": 0.87
+   },
+   "data_scientist": {
+    "precision": 0.5,
+    "recall": 0.667,
+    "f1": 0.571
+   },
+   "devops_engineer": {
+    "precision": 1.0,
+    "recall": 0.667,
+    "f1": 0.8
+   },
+   "digital_marketing": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0
+   },
+   "frontend_developer": {
+    "precision": 1.0,
+    "recall": 0.857,
+    "f1": 0.923
+   },
+   "fullstack_developer": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+   },
+   "mobile_developer": {
+    "precision": 0.8,
+    "recall": 0.667,
+    "f1": 0.727
+   },
+   "qa_engineer": {
+    "precision": 0.8,
+    "recall": 1.0,
+    "f1": 0.889
+   },
+   "ui_ux_designer": {
+    "precision": 0.8,
+    "recall": 1.0,
+    "f1": 0.889
+   }
+  },
+  "top_false_positives": [
+   [
+    "data_modeling",
+    2
+   ],
+   [
+    "requirements_elicitation",
+    2
+   ],
+   [
+    "data_cleaning",
+    2
+   ],
+   [
+    "android_kotlin",
+    1
+   ],
+   [
+    "ios_swift",
+    1
+   ],
+   [
+    "excel",
+    1
+   ],
+   [
+    "auth_security_basics",
+    1
+   ],
+   [
+    "ap_ar_reconciliation",
+    1
+   ],
+   [
+    "git_version_control",
+    1
+   ],
+   [
+    "java_spring",
+    1
+   ],
+   [
+    "data_analysis",
+    1
+   ],
+   [
+    "rest_api_design",
+    1
+   ]
   ],
-  [
-   "etl_pipelines",
-   3
+  "top_misses": [
+   [
+    "api_integration",
+    3
+   ],
+   [
+    "data_cleaning",
+    2
+   ],
+   [
+    "vulnerability_assessment",
+    1
+   ],
+   [
+    "flutter_dart",
+    1
+   ],
+   [
+    "mlops_deployment",
+    1
+   ],
+   [
+    "streaming_data",
+    1
+   ],
+   [
+    "content_creation_tools",
+    1
+   ],
+   [
+    "programming_fundamentals",
+    1
+   ],
+   [
+    "system_modeling_uml",
+    1
+   ]
   ],
-  [
-   "ci_cd_pipelines",
-   3
-  ],
-  [
-   "data_warehousing",
-   3
-  ],
-  [
-   "test_design_techniques",
-   3
-  ],
-  [
-   "networking_fundamentals",
-   3
-  ],
-  [
-   "cloud_security",
-   3
-  ],
-  [
-   "kpi_metrics",
-   3
-  ],
-  [
-   "cloud_data_platform",
-   3
-  ],
-  [
-   "sdlc",
-   2
-  ],
-  [
-   "erp_crm",
-   2
-  ],
-  [
-   "nosql_databases",
-   2
-  ]
- ],
- "top_misses": [
-  [
-   "cost_accounting",
-   1
-  ],
-  [
-   "accounting_software",
-   1
-  ],
-  [
-   "business_process_modeling",
-   1
-  ],
-  [
-   "data_analysis",
-   1
-  ],
-  [
-   "requirements_elicitation",
-   1
-  ],
-  [
-   "wireframing",
-   1
-  ],
-  [
-   "requirements_documentation",
-   1
-  ],
-  [
-   "testing_uat",
-   1
-  ],
-  [
-   "vulnerability_assessment",
-   1
-  ]
- ],
- "extractor": "lexicon"
+  "extractor": "lexicon"
+ }
 }

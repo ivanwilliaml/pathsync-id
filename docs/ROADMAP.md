@@ -40,3 +40,9 @@ Target: 20 role. Langkah: (1) tambah role di katalog dan batas skill, scrape Kar
 ### Teknis
 - Soal berbahasa Indonesia (soal baru saat ini hanya berbahasa Inggris).
 - Uji deploy produksi (PostgreSQL + pgvector, Redis rate limit, refresh pasar terjadwal).
+
+## Status 12 Okt 2026 (setelah audit PM)
+- **Taksonomi:** 114 hard skill di 14 klaster (v3) dengan 14 role. Soft skill dipertahankan sebagai lapisan terpisah berbasis pengalaman (9 skill), tanpa soal, tidak masuk ranking atau jalur belajar.
+- **Ekstraksi (Bab III.D, target precision > 0,80):** diukur di tiga set gold. Dev (24 posting, adjudikasi setelah melihat keluaran): P 0,844 / R 0,918. Held-out (26 posting, dipakai menyetel alias): P 0,855 / R 0,917. **Blind (26 posting baru, dianotasi sebelum ekstraktor dijalankan, tidak dipakai menyetel): P 0,828 / R 0,889 / F1 0,857.** Ketiganya satu anotator (Claude); anotator manusia kedua masih menjadi pekerjaan lanjutan. Ekstraktor yang diukur adalah lexicon + gerbang embedding, bukan LLM.
+- **Konteks BPS:** kartu konteks nasional di halaman Job Market (`/api/context/bps`); angka dari yang dikutip di Bab I, tampilan saja, tidak masuk ranking.
+- **Aset gold:** `backend/data/seed/gold_pilot.json` (dev), `gold_heldout.json`, `gold_blind.json`; jalankan `python -m pipeline.eval_extractor`.

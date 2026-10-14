@@ -1,8 +1,10 @@
 """Build data/seed/taxonomy.json (v3, hard skills only) from the retained skills plus data/seed/_src/skills_*.py.
 
-Soft and managerial skills are dropped on purpose (communication, critical thinking, stakeholder and change management,
-agile/scrum, project and risk management, strategy, writing, presenting). They cannot be assessed with multiple-choice
-questions and no course teaches them the way a tool or a method is taught.
+Soft and managerial skills are not part of this taxonomy on purpose (communication, critical thinking, stakeholder
+management, agile/scrum, project management, writing, presenting). They cannot be assessed with multiple-choice questions and
+no course teaches them the way a tool or a method is taught. A small curated set is kept separately as experience-based
+skills (pathsync/soft.py, data/seed/soft_skills.json): demand from postings plus the student's own recorded experience, no quiz,
+never in the ranking or the path.
 
 Run: python -m pipeline.build_taxonomy      (writes taxonomy.json, prints alias conflicts)
 """
@@ -66,11 +68,26 @@ ALIAS_REMOVE_FROM = {
     "budgeting_forecasting": {"forecast", "forecasting"},
     "php_laravel": {"composer"},
 }
+# surfaces that fired on team names, degree fields, tool-category words or unrelated domains in the held-out check
+GLOBAL_ALIAS_DROP = {
+    "qa", "development lifecycle", "oracle", "microsoft office", "correlation", "bi tools", "threat intelligence", "reconciliation",
+    "accurate", "database system", "on-call", "on call", "ecommerce", "e-commerce", "workflow", "statistical modeling",
+    "advanced analytics", "bash", "security principles", "jaringan", "trello", "business process", "business processes",
+    "kebutuhan user", "analyze requirements", "crm", "seo content", "budget", "test scenarios", "backend", "back end",
+    "cyber security", "cybersecurity", "speech recognition",
+}
 EXTRA_ALIASES = {
-    "test_design_techniques": ["quality assurance", "qa", "penjaminan mutu"],
-    "rest_api_design": ["api", "apis"],
+    "test_design_techniques": ["quality assurance", "penjaminan mutu"],
+    "rest_api_design": ["rest api", "restful api", "restful apis", "rest apis"],
+    "api_integration": ["api integration", "integrasi api", "web services"],
     "network_security": ["firewall", "waf"],
-    "networking_fundamentals": ["networking", "jaringan"],
+    "networking_fundamentals": ["networking", "jaringan komputer"],
+    "caching_messaging": ["messaging systems", "message queue", "message queues"],
+    "diagramming_tools": ["flow chart", "flowchart"],
+    "unit_testing_tdd": ["unit tests", "unit test"],
+    "mlops_deployment": ["deploy machine learning models", "model deployment", "deploy ml models"],
+    "incident_response_forensics": ["incident response", "incident detection and response"],
+    "data_warehousing": ["data warehouses"],
 }
 LEGACY_KEEPS = {"sap", "azure devops", "management report", "laporan manajemen"}
 
@@ -101,7 +118,7 @@ def main() -> None:
                 "esco": [], "description_en": n["desc"], "learn_what_en": n["learn"],
             })
     for s in skills:
-        s["aliases"] = [a for a in s["aliases"] if a not in ALIAS_REMOVE_FROM.get(s["id"], set())]
+        s["aliases"] = [a for a in s["aliases"] if a not in ALIAS_REMOVE_FROM.get(s["id"], set()) and a not in GLOBAL_ALIAS_DROP]
         for a in EXTRA_ALIASES.get(s["id"], []):
             if a not in s["aliases"] and a not in AMBIGUOUS:
                 s["aliases"].append(a)

@@ -370,3 +370,9 @@ def test_certificate_without_link_is_a_claim(client):
     assert r["claimed"] == 1
     ev = client.get(f"/api/students/{sid}", headers=h).json()["evidence"]
     assert sorted(e["review_status"] for e in ev if e["kind"] == "certificate") == ["auto", "claimed"]
+
+
+def test_bps_context_is_exposed_and_sourced(client):
+    d = client.get("/api/context/bps").json()
+    assert d["figures"] and all(f["source"] and f["ref"] for f in d["figures"])
+    assert "not used by the ranking" in d["note"]

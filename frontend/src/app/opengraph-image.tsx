@@ -22,7 +22,7 @@ export default function OpengraphImage() {
           <div style={{ fontSize: 34, color: "#cfcdf5" }}>Rute belajar dari lowongan kerja nyata Indonesia dan bukti kemampuanmu. Gratis, tanpa email.</div>
         </div>
         <div style={{ display: "flex", gap: 14, fontSize: 28 }}>
-          {["Business Analyst", "Data Analyst"].map((r) => (
+          {["14 careers", "Hard skills", "Real postings"].map((r) => (
             <div key={r} style={{ padding: "10px 24px", borderRadius: 999, background: "#4338ca" }}>
               {r}
             </div>

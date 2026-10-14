@@ -1,0 +1,211 @@
+{
+ "version": "2026.10-soft1",
+ "skills": [
+  {
+   "id": "verbal_communication",
+   "name": "Komunikasi Lisan & Interpersonal",
+   "name_en": "Verbal and interpersonal communication",
+   "aliases": [
+    "communication",
+    "communication skills",
+    "communication skill",
+    "komunikasi",
+    "kemampuan komunikasi",
+    "komunikasi yang baik",
+    "good communication",
+    "excellent communication",
+    "strong communication",
+    "interpersonal",
+    "interpersonal skills",
+    "verbal communication",
+    "komunikasi lisan",
+    "communicate effectively",
+    "berkomunikasi"
+   ],
+   "how_to_build": "Practise by explaining a technical topic to a non-technical friend, or by presenting in a class or club meeting."
+  },
+  {
+   "id": "presentation_storytelling",
+   "name": "Presentasi & Data Storytelling",
+   "name_en": "Presentation and data storytelling",
+   "aliases": [
+    "presentation",
+    "presentations",
+    "presentasi",
+    "presentation skills",
+    "present findings",
+    "presenting",
+    "mempresentasikan",
+    "storytelling",
+    "data storytelling",
+    "story telling",
+    "menyampaikan insight",
+    "powerpoint",
+    "ms powerpoint",
+    "slides",
+    "public speaking"
+   ],
+   "how_to_build": "Present a project result with one clear message and three slides, then ask for feedback."
+  },
+  {
+   "id": "business_writing",
+   "name": "Penulisan Bisnis",
+   "name_en": "Business writing",
+   "aliases": [
+    "business writing",
+    "written communication",
+    "komunikasi tertulis",
+    "writing skills",
+    "kemampuan menulis",
+    "report writing",
+    "penulisan laporan",
+    "user manual",
+    "user guide",
+    "manual book",
+    "panduan pengguna",
+    "technical writing",
+    "menyusun laporan"
+   ],
+   "how_to_build": "Write a one-page README or report for a project and ask someone to say what they understood."
+  },
+  {
+   "id": "collaboration",
+   "name": "Kolaborasi Tim",
+   "name_en": "Teamwork and collaboration",
+   "aliases": [
+    "teamwork",
+    "team work",
+    "team player",
+    "kerja sama tim",
+    "kerjasama tim",
+    "bekerja dalam tim",
+    "kerja tim",
+    "collaboration",
+    "collaborative",
+    "kolaborasi",
+    "berkolaborasi",
+    "collaborate",
+    "bekerja sama",
+    "work in a team",
+    "team-oriented"
+   ],
+   "how_to_build": "Join a group project or committee, keep a shared task board and record what you delivered."
+  },
+  {
+   "id": "critical_thinking",
+   "name": "Berpikir Kritis & Pemecahan Masalah",
+   "name_en": "Critical thinking and problem solving",
+   "aliases": [
+    "critical thinking",
+    "berpikir kritis",
+    "problem solving",
+    "problem-solving",
+    "pemecahan masalah",
+    "memecahkan masalah",
+    "analytical thinking",
+    "analytical skills",
+    "analytical skill",
+    "analytical mindset",
+    "kemampuan analitis",
+    "kemampuan analisa",
+    "kemampuan analisis",
+    "berpikir analitis",
+    "logical thinking",
+    "logika",
+    "root cause",
+    "root cause analysis",
+    "analisis akar masalah",
+    "structured thinking",
+    "attention to detail",
+    "detail oriented",
+    "detail-oriented",
+    "teliti"
+   ],
+   "how_to_build": "Write down a problem you solved: the options you compared, why you chose one and what you checked."
+  },
+  {
+   "id": "stakeholder_management",
+   "name": "Manajemen Pemangku Kepentingan",
+   "name_en": "Stakeholder management",
+   "aliases": [
+    "stakeholder",
+    "stakeholders",
+    "stakeholder management",
+    "pemangku kepentingan",
+    "cross-functional",
+    "cross functional",
+    "lintas fungsi",
+    "lintas divisi",
+    "coordinate with",
+    "work closely with",
+    "bekerja sama dengan tim",
+    "business users",
+    "user bisnis",
+    "client",
+    "klien",
+    "relationship management"
+   ],
+   "how_to_build": "Run a small project with a real requester (a lecturer, a club, a customer) and keep notes of what they asked for."
+  },
+  {
+   "id": "project_management",
+   "name": "Manajemen Proyek",
+   "name_en": "Project management",
+   "aliases": [
+    "project management",
+    "manajemen proyek",
+    "project plan",
+    "project planning",
+    "perencanaan proyek",
+    "pmp",
+    "project coordination",
+    "koordinasi proyek",
+    "manage projects",
+    "mengelola proyek",
+    "deliverables",
+    "project delivery",
+    "prince2"
+   ],
+   "how_to_build": "Plan a project with milestones and owners, track it weekly and write a short retrospective."
+  },
+  {
+   "id": "agile_scrum",
+   "name": "Agile & Scrum",
+   "name_en": "Agile and Scrum",
+   "aliases": [
+    "agile",
+    "scrum",
+    "kanban",
+    "backlog grooming",
+    "backlog refinement",
+    "scrum master",
+    "sprint planning",
+    "daily standup",
+    "safe",
+    "agile methodology",
+    "metodologi agile"
+   ],
+   "how_to_build": "Run a two-week sprint on a team project with planning, a daily check-in and a review."
+  },
+  {
+   "id": "english_proficiency",
+   "name": "Bahasa Inggris Profesional",
+   "name_en": "Professional English",
+   "aliases": [
+    "bahasa inggris",
+    "fluent in english",
+    "proficient in english",
+    "english proficiency",
+    "toeic",
+    "toefl",
+    "ielts",
+    "english speaking",
+    "written and spoken english",
+    "good english",
+    "active english",
+    "komunikasi bahasa inggris"
+   ],
+   "how_to_build": "Read documentation and write commit messages or reports in English; a TOEFL/IELTS score is a strong proof."
+  }
+ ]
+}

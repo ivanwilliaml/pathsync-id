@@ -55,3 +55,12 @@ def test_cue_only_model_cannot_find_the_key(bank):
     assert max(accs) <= 0.42, f"cue-only accuracy {accs} (chance 0.25)"
     for cue in ("longest", "shortest", "most_overlap_with_others", "most_stem_overlap"):
         assert 0.12 <= single_cue_rates(items)[cue] <= 0.36, cue
+
+
+def test_extractor_meets_precision_target_on_blind_gold():
+    """Bab III.D sets precision > 0.80 for the extraction component; measured on postings never used to tune aliases."""
+    from pipeline.eval_extractor import evaluate
+
+    r = evaluate(goldfile="gold_blind.json")["overall"]
+    assert r["precision"] >= 0.80, r
+    assert r["recall"] >= 0.80, r

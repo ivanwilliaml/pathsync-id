@@ -23,14 +23,15 @@ def load_postings() -> dict[str, dict]:
     return rows
 
 
-def evaluate(prefer: str = "lexicon") -> dict:
-    gold = json.loads((SEED_DIR / "gold_pilot.json").read_text(encoding="utf-8"))["postings"]
+def evaluate(prefer: str = "lexicon", goldfile: str = "gold_pilot.json") -> dict:
+    doc = json.loads((SEED_DIR / goldfile).read_text(encoding="utf-8"))
+    gold, cap = doc["postings"], doc.get("max_chars")
     rows = load_postings()
     tp = fp = fn = 0
     fps, fns = Counter(), Counter()
     per_role: dict[str, list[int]] = {}
     for key, g in gold.items():
-        res = extract_skills(rows[key]["description_text"], prefer=prefer)
+        res = extract_skills(rows[key]["description_text"][:cap], prefer=prefer)
         pred = {sid for sid in res.skills}
         want = set(g["skills"])
         a, b, c = len(pred & want), len(pred - want), len(want - pred)
@@ -52,9 +53,11 @@ def evaluate(prefer: str = "lexicon") -> dict:
 
 
 def main() -> None:
-    out = evaluate()
+    out = {"dev": evaluate(), "heldout": evaluate(goldfile="gold_heldout.json"), "blind": evaluate(goldfile="gold_blind.json")}
     (MODELS_DIR / "extractor_gold_eval.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
-    print(json.dumps(out, indent=1))
+    print(json.dumps({k: {"n": v["n_postings"], **v["overall"]} for k, v in out.items()}))
+    print("blind FP:", out["blind"]["top_false_positives"])
+    print("blind misses:", out["blind"]["top_misses"])
 
 
 if __name__ == "__main__":

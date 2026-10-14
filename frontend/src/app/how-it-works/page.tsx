@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { ArrowDown, CheckCircle2, Cpu, Scale, Tags, XCircle } from "lucide-react";
 import { num, pct, titleCase } from "@/lib/format";
+import type { Meta } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
 import { ErrorNote, Loading, PageHeader, Panel, SectionTitle, Tag } from "@/components/kit";
 
@@ -63,7 +65,9 @@ const METHOD: Record<string, string> = {
 
 export default function HowItWorksPage() {
   const card = useApi<ModelCard>("/model-card");
-  const gov = useApi<Governance>("/taxonomy/report?role=business_analyst");
+  const [govRole, setGovRole] = useState("business_analyst");
+  const meta = useApi<Meta>("/meta");
+  const gov = useApi<Governance>(`/taxonomy/report?role=${govRole}`);
   const weights = useApi<WeightsReport>("/evaluation/weights");
   const evals = useApi<EvalReport>("/evaluation");
   return (
@@ -84,9 +88,19 @@ export default function HowItWorksPage() {
       <section aria-labelledby="tax">
         <SectionTitle id="tax">
           <span className="inline-flex items-center gap-2">
-            <Tags className="size-5 text-indigo" aria-hidden="true" /> Is the Business Analyst Skill List Final?
+            <Tags className="size-5 text-indigo" aria-hidden="true" /> Is the Skill List Final?
           </span>
         </SectionTitle>
+        <label htmlFor="gov-role" className="mb-3 flex items-center gap-2 text-sm text-ink/70">
+          Career
+          <select id="gov-role" value={govRole} onChange={(e) => setGovRole(e.target.value)} className="rounded-lg border bg-card px-3 py-1.5 text-sm text-ink">
+            {(meta.data?.roles ?? []).map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.name}
+              </option>
+            ))}
+          </select>
+        </label>
         {gov.error ? <ErrorNote error={gov.error} /> : !gov.data ? <Loading /> : <Taxonomy g={gov.data} />}
       </section>
       <section aria-labelledby="weights">
@@ -218,7 +232,7 @@ function Taxonomy({ g }: { g: Governance }) {
         </ul>
       </Panel>
       <Panel>
-        <p className="mb-2 font-medium text-ink">Adjacent skills (core for Data Analyst, rare in Business Analyst postings)</p>
+        <p className="mb-2 font-medium text-ink">Adjacent skills (core for related careers, rare in this one)</p>
         <ul className="flex flex-wrap gap-2">
           {g.skills
             .filter((s) => s.status === "adjacent")
