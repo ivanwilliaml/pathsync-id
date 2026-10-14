@@ -2,9 +2,9 @@
  "version": "2026-10-12-lexicon",
  "reference_date": "2026-10-12",
  "mention_status": {
-  "auto": 17728,
-  "review": 1777,
-  "new": 1598,
+  "auto": 13708,
+  "review": 2378,
+  "new": 1730,
   "rejected": 2
  },
  "roles": {
@@ -31,40 +31,40 @@
      0.8341
     ],
     [
-     "data_modeling",
-     0.6581
+     "data_warehousing",
+     0.6087
     ],
     [
      "big_data_spark",
      0.5556
     ],
     [
-     "data_cleaning",
-     0.5527
-    ],
-    [
-     "data_warehousing",
-     0.5505
-    ],
-    [
      "cloud_aws",
      0.5496
-    ],
-    [
-     "data_analysis",
-     0.4969
-    ],
-    [
-     "cloud_data_platform",
-     0.4928
     ],
     [
      "workflow_orchestration",
      0.4398
     ],
     [
-     "monitoring_observability",
-     0.3273
+     "data_cleaning",
+     0.4397
+    ],
+    [
+     "data_modeling",
+     0.3409
+    ],
+    [
+     "git_version_control",
+     0.3251
+    ],
+    [
+     "cloud_data_platform",
+     0.2717
+    ],
+    [
+     "streaming_data",
+     0.2717
     ]
    ]
   },
@@ -93,11 +93,7 @@
     ],
     [
      "statistics",
-     0.486
-    ],
-    [
-     "data_analysis",
-     0.4235
+     0.4265
     ],
     [
      "nlp_computer_vision",
@@ -124,8 +120,12 @@
      0.3201
     ],
     [
-     "monitoring_observability",
-     0.3099
+     "cloud_gcp_azure",
+     0.2787
+    ],
+    [
+     "data_analysis",
+     0.2058
     ]
    ]
   },
@@ -142,27 +142,19 @@
    "top": [
     [
      "data_analysis",
-     0.9484
-    ],
-    [
-     "dashboard_reporting",
-     0.8071
+     0.8493
     ],
     [
      "excel",
      0.6031
     ],
     [
-     "statistics",
-     0.5583
+     "dashboard_reporting",
+     0.5127
     ],
     [
      "sql",
      0.4986
-    ],
-    [
-     "data_cleaning",
-     0.4041
     ],
     [
      "data_visualization",
@@ -171,6 +163,10 @@
     [
      "kpi_metrics",
      0.384
+    ],
+    [
+     "statistics",
+     0.3564
     ],
     [
      "python_programming",
@@ -187,6 +183,10 @@
     [
      "power_bi",
      0.276
+    ],
+    [
+     "data_cleaning",
+     0.2724
     ]
    ]
   },
@@ -207,31 +207,23 @@
     ],
     [
      "requirements_documentation",
-     0.6544
+     0.4802
     ],
     [
      "business_process_modeling",
-     0.6308
+     0.4148
     ],
     [
      "testing_uat",
-     0.5317
+     0.3518
     ],
     [
      "sdlc",
-     0.4526
-    ],
-    [
-     "dashboard_reporting",
-     0.3093
+     0.3118
     ],
     [
      "sql",
-     0.3088
-    ],
-    [
-     "excel",
-     0.2807
+     0.2937
     ],
     [
      "api_integration",
@@ -242,12 +234,20 @@
      0.2244
     ],
     [
+     "excel",
+     0.2072
+    ],
+    [
      "system_modeling_uml",
-     0.2225
+     0.2036
     ],
     [
      "data_modeling",
-     0.2173
+     0.2009
+    ],
+    [
+     "diagramming_tools",
+     0.1565
     ]
    ]
   },
@@ -263,27 +263,27 @@
    "top": [
     [
      "siem_monitoring",
-     0.6017
+     0.5302
     ],
     [
      "network_security",
      0.5041
     ],
     [
-     "networking_fundamentals",
-     0.4391
-    ],
-    [
      "cloud_security",
      0.4329
     ],
     [
-     "monitoring_observability",
-     0.4318
+     "networking_fundamentals",
+     0.4194
     ],
     [
      "security_frameworks_compliance",
      0.401
+    ],
+    [
+     "incident_response_forensics",
+     0.3828
     ],
     [
      "penetration_testing",
@@ -294,12 +294,8 @@
      0.3656
     ],
     [
-     "incident_response_forensics",
-     0.3372
-    ],
-    [
      "linux_administration",
-     0.2594
+     0.23
     ],
     [
      "cloud_aws",
@@ -308,6 +304,10 @@
     [
      "cloud_gcp_azure",
      0.1277
+    ],
+    [
+     "ci_cd_pipelines",
+     0.0897
     ]
    ]
   },
@@ -326,16 +326,8 @@
      0.6584
     ],
     [
-     "monitoring_observability",
-     0.6516
-    ],
-    [
      "networking_fundamentals",
      0.6188
-    ],
-    [
-     "linux_administration",
-     0.5741
     ],
     [
      "cloud_aws",
@@ -350,8 +342,16 @@
      0.5349
     ],
     [
+     "linux_administration",
+     0.5326
+    ],
+    [
      "cloud_gcp_azure",
      0.451
+    ],
+    [
+     "monitoring_observability",
+     0.399
     ],
     [
      "git_version_control",
@@ -382,12 +382,8 @@
    },
    "top": [
     [
-     "testing_uat",
-     0.9482
-    ],
-    [
      "test_design_techniques",
-     0.8531
+     0.8897
     ],
     [
      "test_automation_web",
@@ -414,20 +410,24 @@
      0.3148
     ],
     [
+     "rest_api_design",
+     0.3126
+    ],
+    [
      "java_spring",
      0.2978
     ],
     [
-     "rest_api_design",
-     0.2767
+     "testing_uat",
+     0.2957
     ],
     [
      "python_programming",
      0.171
     ],
     [
-     "python_analytics",
-     0.1646
+     "unit_testing_tdd",
+     0.166
     ]
    ]
   },
@@ -454,20 +454,12 @@
      0.5486
     ],
     [
-     "testing_uat",
-     0.424
-    ],
-    [
      "rest_api_design",
-     0.4139
+     0.5462
     ],
     [
      "auth_security_basics",
      0.3659
-    ],
-    [
-     "system_design_architecture",
-     0.3593
     ],
     [
      "flutter_dart",
@@ -478,12 +470,20 @@
      0.3373
     ],
     [
+     "system_design_architecture",
+     0.3218
+    ],
+    [
      "react_native",
      0.2655
     ],
     [
      "caching_messaging",
      0.2482
+    ],
+    [
+     "unit_testing_tdd",
+     0.2212
     ],
     [
      "mobile_backend_services",
@@ -503,7 +503,7 @@
    "top": [
     [
      "sql",
-     0.85
+     0.8276
     ],
     [
      "react",
@@ -511,7 +511,7 @@
     ],
     [
      "rest_api_design",
-     0.6734
+     0.7179
     ],
     [
      "git_version_control",
@@ -530,12 +530,12 @@
      0.3933
     ],
     [
-     "system_design_architecture",
-     0.3806
-    ],
-    [
      "nosql_databases",
      0.3726
+    ],
+    [
+     "system_design_architecture",
+     0.3443
     ],
     [
      "nodejs_backend",
@@ -625,12 +625,12 @@
      0.611
     ],
     [
-     "system_design_architecture",
-     0.5395
+     "rest_api_design",
+     0.5605
     ],
     [
-     "rest_api_design",
-     0.5305
+     "system_design_architecture",
+     0.4641
     ],
     [
      "git_version_control",
@@ -653,6 +653,10 @@
      0.2569
     ],
     [
+     "caching_messaging",
+     0.241
+    ],
+    [
      "python_programming",
      0.2296
     ],
@@ -663,10 +667,6 @@
     [
      "cloud_aws",
      0.2158
-    ],
-    [
-     "programming_fundamentals",
-     0.2136
     ]
    ]
   },
@@ -740,16 +740,12 @@
    },
    "top": [
     [
-     "data_analysis",
-     0.36
+     "social_media_ads",
+     0.3567
     ],
     [
      "content_creation_tools",
-     0.3585
-    ],
-    [
-     "social_media_ads",
-     0.3567
+     0.3532
     ],
     [
      "search_ads",
@@ -757,31 +753,35 @@
     ],
     [
      "marketplace_ecommerce",
-     0.285
-    ],
-    [
-     "dashboard_reporting",
-     0.2821
+     0.2418
     ],
     [
      "kpi_metrics",
      0.234
     ],
     [
-     "seo",
-     0.2067
+     "web_analytics",
+     0.2125
     ],
     [
-     "web_analytics",
-     0.1883
+     "seo",
+     0.212
     ],
     [
      "figma_design_tools",
      0.179
     ],
     [
+     "data_analysis",
+     0.1691
+    ],
+    [
      "visual_design_fundamentals",
      0.1304
+    ],
+    [
+     "conversion_optimization",
+     0.0801
     ],
     [
      "email_marketing_automation",
@@ -802,15 +802,7 @@
    "top": [
     [
      "accounting_fundamentals",
-     0.8499
-    ],
-    [
-     "dashboard_reporting",
-     0.6013
-    ],
-    [
-     "excel",
-     0.5878
+     0.7262
     ],
     [
      "tax_compliance_id",
@@ -818,11 +810,11 @@
     ],
     [
      "financial_statements",
-     0.5195
+     0.5468
     ],
     [
-     "accounting_software",
-     0.4993
+     "excel",
+     0.5271
     ],
     [
      "audit_internal_control",
@@ -830,25 +822,47 @@
     ],
     [
      "ap_ar_reconciliation",
-     0.432
+     0.4023
+    ],
+    [
+     "accounting_software",
+     0.264
     ],
     [
      "financial_analysis",
-     0.2837
+     0.2443
     ],
     [
      "erp_crm",
-     0.183
+     0.1769
     ],
     [
      "budgeting_forecasting",
-     0.1083
+     0.0736
     ],
     [
      "data_analysis",
-     0.0706
+     0.0582
+    ],
+    [
+     "cost_accounting",
+     0.0526
     ]
    ]
+  }
+ },
+ "provenance": {
+  "taxonomy_version": "2026.10-v3",
+  "taxonomy_sha256": "d887be8bb3605168",
+  "extractors": {
+   "lexicon": 1093
+  },
+  "cache_tags": {
+   "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+  },
+  "gold_sha256": {
+   "gold_blind.json": "6109aca0cc2883c0",
+   "gold_split.json": "ed04d7494cefb142"
   }
  }
 }

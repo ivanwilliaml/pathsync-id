@@ -39,6 +39,24 @@ def esco_status() -> dict[str, dict[str, str]]:
     return out
 
 
+def provenance(extractors: dict[str, int]) -> dict:
+    """What produced a snapshot: taxonomy version and hash, cache tag per extractor used, gold hashes."""
+    import hashlib
+
+    from .config import SEED_DIR
+    from .extraction import cache_tag
+    from .taxonomy import load_taxonomy
+
+    def sha(name: str) -> str | None:
+        f = SEED_DIR / name
+        return hashlib.sha256(f.read_bytes().replace(b"\r\n", b"\n")).hexdigest()[:16] if f.exists() else None
+
+    kinds = sorted({e.split(":")[0] for e in extractors})
+    return {"taxonomy_version": load_taxonomy()["version"], "taxonomy_sha256": sha("taxonomy.json"),
+            "extractors": extractors, "cache_tags": {k: cache_tag(k) for k in kinds if k in ("lexicon", "llm")},
+            "gold_sha256": {n: sha(n) for n in ("gold_blind.json", "gold_split.json", "gold_consensus.json") if sha(n)}}
+
+
 def build_snapshot(s: Session, role: str, version: str, ref: date, note: str = "",
                    overrides: dict[str, float] | None = None) -> MarketSnapshot:
     skills = load_skills()
@@ -56,8 +74,11 @@ def build_snapshot(s: Session, role: str, version: str, ref: date, note: str = "
             sources[p.source] = sources.get(p.source, 0) + 1
     req = required_levels(market, esco_status().get(role, {}), overrides)
     s.execute(update(MarketSnapshot).where(MarketSnapshot.role == role).values(active=False))
+    used: dict[str, int] = {}
+    for p in rows:
+        used[p.extractor or "?"] = used.get(p.extractor or "?", 0) + 1
     snap = MarketSnapshot(version=version, role=role, reference_date=ref, data=market.to_dict(), required=req,
-                          sources=sources, note=note, active=True)
+                          sources=sources, note=note, active=True, provenance=provenance(used))
     s.add(snap)
     bump_epoch(s)
     s.flush()

@@ -161,7 +161,8 @@ def simulate_market(body: ShiftIn, s: Session = Depends(db_session)):
     name = load_skills()[body.skill_id].name
     new = MarketSnapshot(version=f"{snap.version.split('+')[0]}+sim{datetime.now():%H%M%S}", role=body.role,
                          reference_date=snap.reference_date, data=m.to_dict(), required=snap.required, sources=snap.sources,
-                         note=f"SIMULATION: demand for {name} {body.demand_delta:+.0%}", simulated=True, active=True)
+                         note=f"SIMULATION: demand for {name} {body.demand_delta:+.0%}", simulated=True, active=True,
+                         provenance={**(snap.provenance or {}), "simulated_from": snap.version})
     s.add(new)
     bump_epoch(s)
     s.commit()

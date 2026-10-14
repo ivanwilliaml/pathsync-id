@@ -18,10 +18,9 @@ from sqlalchemy import delete
 
 from pathsync.config import PROCESSED_DIR, RAW_DIR, ROLES
 from pathsync.db import Posting, PostingMention, get_session, init_db
-from pathsync.extraction import extract_skills
-from pathsync.market import build_snapshot
+from pathsync.extraction import cache_tag, extract_skills
+from pathsync.market import build_snapshot, provenance
 from pathsync.roles import classify_role
-from pathsync.taxonomy import load_taxonomy
 
 DUP_THRESHOLD = 0.90
 EXTRACTION_CACHE = PROCESSED_DIR / "extraction_cache.json"
@@ -76,25 +75,26 @@ def main():
     version = args.version or f"{ref.isoformat()}-{args.extractor or 'auto'}"
 
     init_db()
-    tax_version = load_taxonomy()["version"]
     rows = [r for r in load_raw() if r.get("role") in ROLES and len(r.get("description_text", "")) >= 200]
     dup = dedupe(rows)
     cache = json.loads(EXTRACTION_CACHE.read_text(encoding="utf-8")) if EXTRACTION_CACHE.exists() else {}
     print(f"[market] {len(rows)} postings with text, {len(dup)} near-duplicates")
 
     stats = {"auto": 0, "review": 0, "new": 0, "rejected": 0}
+    used: dict[str, int] = {}
     with get_session() as s:
         for i, r in enumerate(rows, 1):
             key = f"{r['source']}:{r['source_id']}"
             published = date.fromisoformat(r["published_at"]) if r.get("published_at") else None
             first_seen = date.fromisoformat(r["first_seen"]) if r.get("first_seen") else ref
             in_window = 0 <= (ref - (published or first_seen)).days <= 366
-            ck = f"{r['fingerprint']}|{args.extractor or 'auto'}|{tax_version}"
+            ck = f"{r['fingerprint']}|{cache_tag(args.extractor or 'auto')}"
             if ck not in cache:
                 res = extract_skills(r["description_text"], prefer=args.extractor)
                 cache[ck] = {"extractor": res.extractor,
                              "mentions": [m.to_dict() for m in res.mentions + res.review + res.new_candidates + res.rejected]}
             entry = cache[ck]
+            used[entry["extractor"]] = used.get(entry["extractor"], 0) + 1
             p = s.get(Posting, key) or Posting(id=key)
             p.source, p.url, p.title, p.company = r["source"], r.get("url", ""), r["title"][:300], r.get("company", "")[:300]
             p.location, p.published_at, p.first_seen = r.get("location", "")[:300], published, first_seen
@@ -115,7 +115,8 @@ def main():
         EXTRACTION_CACHE.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
         s.commit()
 
-        export = {"version": version, "reference_date": ref.isoformat(), "mention_status": stats, "roles": {}}
+        export = {"version": version, "reference_date": ref.isoformat(), "mention_status": stats, "roles": {},
+                  "provenance": provenance(used)}
         for role in ROLES:
             snap = build_snapshot(s, role, version, ref, note=f"{len(rows)} raw postings, extractor={args.extractor or 'auto'}")
             export["roles"][role] = {"n_postings": snap.data["n_postings"], "trend_status": snap.data["trend_status"],

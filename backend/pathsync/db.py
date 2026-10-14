@@ -88,6 +88,8 @@ class MarketSnapshot(Base):
     note: Mapped[str] = mapped_column(Text, default="")
     simulated: Mapped[bool] = mapped_column(Boolean, default=False)
     active: Mapped[bool] = mapped_column(Boolean, default=True)
+    # taxonomy version + hash, extractor cache tags and gold hashes, so old numbers can be reproduced (plan B5)
+    provenance: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
 
 # -------------------------------------------------------- graph + expert panel

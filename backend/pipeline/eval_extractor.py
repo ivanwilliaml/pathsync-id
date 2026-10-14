@@ -22,9 +22,9 @@ import sys
 from collections import Counter
 
 from pathsync.config import MODELS_DIR, PROCESSED_DIR, RAW_DIR, SEED_DIR
-from pathsync.extraction import extract_skills
+from pathsync.extraction import cache_tag, extract_skills
 from pathsync.gold import CONSENSUS_FILE, load_split, prf
-from pathsync.taxonomy import load_skills, load_taxonomy
+from pathsync.taxonomy import load_skills
 
 EXTRACTORS = ("lexicon", "llm", "union", "intersection")
 EXTRACTION_CACHE = PROCESSED_DIR / "extraction_cache.json"
@@ -45,7 +45,7 @@ class _LLMCache:
 
     def __init__(self):
         cache = json.loads(EXTRACTION_CACHE.read_text(encoding="utf-8")) if EXTRACTION_CACHE.exists() else {}
-        tag = f"|llm|{load_taxonomy()['version']}"
+        tag = f"|{cache_tag('llm')}"
         self.by_fp = {k[: -len(tag)]: {m["skill_id"] for m in v["mentions"] if m.get("status") == "auto" and m.get("skill_id")}
                       for k, v in cache.items() if k.endswith(tag)}
 

@@ -24,7 +24,7 @@ from collections import Counter
 from pathlib import Path
 
 from pathsync.config import BACKEND_DIR, MODELS_DIR, PROCESSED_DIR, ROLES
-from pathsync.extraction import skill_index
+from pathsync.extraction import cache_tag, skill_index
 from pathsync.extraction.base import Mention, apply_gates
 from pathsync.extraction.llm import POSTING_SYSTEM, _mention_schema, _taxonomy_block
 from pathsync.taxonomy import load_skills, load_taxonomy
@@ -118,7 +118,6 @@ def _scenario_fingerprint(payload: dict) -> str:
 def import_postings(path: str):
     res = json.loads(Path(path).read_text(encoding="utf-8"))
     skills = load_skills()
-    tax_version = load_taxonomy()["version"]
     texts = {r["fingerprint"]: r["text"] for r in _postings() + _postings(_gold_plus_random(0))}
     cache = json.loads(EXTRACTION_CACHE.read_text(encoding="utf-8")) if EXTRACTION_CACHE.exists() else {}
     stats, n, bad = Counter(), 0, 0
@@ -140,7 +139,7 @@ def import_postings(path: str):
         mentions = g.mentions + g.review + g.new_candidates + g.rejected
         for m in mentions:
             stats[m.status] += 1
-        cache[f"{fp}|llm|{tax_version}"] = {"extractor": label, "mentions": [m.to_dict() for m in mentions]}
+        cache[f"{fp}|{cache_tag('llm')}"] = {"extractor": label, "mentions": [m.to_dict() for m in mentions]}
         n += 1
     EXTRACTION_CACHE.write_text(json.dumps(cache, ensure_ascii=False), encoding="utf-8")
     print(f"[llm_jobs] {n} lowongan diimpor ({bad} gagal diparse) | status sebutan: {dict(stats)}")
@@ -186,7 +185,6 @@ def compare():
     """Agreement between the lexicon and LLM extractors on the same postings (no gold labels needed)."""
     from scipy.stats import spearmanr
 
-    tax_version = load_taxonomy()["version"]
     cache = json.loads(EXTRACTION_CACHE.read_text(encoding="utf-8"))
     posts = _postings()
 
@@ -197,8 +195,8 @@ def compare():
     lex_cnt, llm_cnt = Counter(), Counter()
     n = 0
     for p in posts:
-        a = cache.get(f"{p['fingerprint']}|lexicon|{tax_version}")
-        b = cache.get(f"{p['fingerprint']}|llm|{tax_version}")
+        a = cache.get(f"{p['fingerprint']}|{cache_tag('lexicon')}")
+        b = cache.get(f"{p['fingerprint']}|{cache_tag('llm')}")
         if not a or not b:
             continue
         n += 1
