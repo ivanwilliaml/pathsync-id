@@ -37,3 +37,22 @@ def upgrade(engine) -> None:
             conn.commit()
             if bad:
                 raise RuntimeError(f"foreign key violations after migration: {bad[:5]}")
+
+
+def check(engine) -> None:
+    """Fail when the models and the migration head differ (same as `alembic check`)."""
+    with engine.connect() as conn:
+        command.check(_config(conn))
+
+
+if __name__ == "__main__":
+    import sys
+
+    from .db import _engine
+
+    if sys.argv[1:] == ["check"]:
+        check(_engine)
+        print("models and migrations match")
+    else:
+        upgrade(_engine)
+        print("upgraded to head")
