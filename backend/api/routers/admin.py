@@ -9,7 +9,6 @@ import sys
 import threading
 from collections import defaultdict
 from datetime import datetime
-from itertools import combinations
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
@@ -41,6 +40,8 @@ from pathsync.db import (
 from pathsync.demand import MarketMap, apply_market_shift
 from pathsync.engine import graph_from_db, propagate_market_change
 from pathsync.extraction.llm import llm_configured
+from pathsync.gold import agreement as annotator_agreement
+from pathsync.gold import load_split, prf
 from pathsync.security import audit_admin_writes, db_session, issue_token, require_admin, revoke
 from pathsync.study import DEFAULT_ARMS, analyse, join_code
 from pathsync.taxonomy import CycleError, load_skills
@@ -251,7 +252,17 @@ def decide_project(eid: int, body: ProjectReviewIn, s: Session = Depends(db_sess
 # ---------------------------------------------------------------- annotation
 @router.get("/annotation/next")
 def annotation_next(annotator: str, s: Session = Depends(db_session)):
-    done = select(Annotation.posting_id).where(Annotation.annotator == annotator)
+    """Next posting for this annotator. The locked gold split (plan A1) is served first, in a fixed
+    order, so every annotator labels the same postings; only the posting text is returned, never the
+    extractor output."""
+    done = set(s.scalars(select(Annotation.posting_id).where(Annotation.annotator == annotator)).all())
+    split = load_split()
+    if split:
+        todo = [pid for pid in split["dev"] + split["test"] if pid not in done]
+        if todo:
+            p = s.get(Posting, todo[0])
+            return {"posting_id": p.id, "title": p.title, "company": p.company, "description": p.description,
+                    "remaining": len(todo), "set": "gold_split"}
     p = s.scalars(select(Posting).where(Posting.duplicate_of.is_(None), Posting.id.not_in(done)).order_by(Posting.id)).first()
     if p is None:
         return {"posting_id": None}
@@ -297,25 +308,11 @@ def annotation_eval(s: Session = Depends(db_session)):
         tp += len(pred[pid] & gold)
         fp += len(pred[pid] - gold)
         fn += len(gold - pred[pid])
-    prec = tp / (tp + fp) if tp + fp else 0.0
-    rec = tp / (tp + fn) if tp + fn else 0.0
-    f1 = 2 * prec * rec / (prec + rec) if prec + rec else 0.0
-    kappas = []
-    skills = list(load_skills())
-    names = sorted({n for anns in by_post.values() for n in anns})
-    for a, b in combinations(names, 2):
-        both = [anns for anns in by_post.values() if a in anns and b in anns]
-        if len(both) < 3:
-            continue
-        x = [int(k in an[a]) for an in both for k in skills]
-        y = [int(k in an[b]) for an in both for k in skills]
-        po = sum(i == j for i, j in zip(x, y, strict=False)) / len(x)
-        pa, pb = sum(x) / len(x), sum(y) / len(y)
-        pe = pa * pb + (1 - pa) * (1 - pb)
-        kappas.append({"annotators": [a, b], "postings": len(both), "kappa": round((po - pe) / (1 - pe), 4) if pe < 1 else 1.0})
-    return {"n_postings": len(by_post), "precision": round(prec, 4), "recall": round(rec, 4), "f1": round(f1, 4),
+    m = prf(tp, fp, fn)
+    return {"n_postings": len(by_post), "precision": m["precision"], "recall": m["recall"], "f1": m["f1"],
+            "precision_ci95": m["precision_ci95"], "recall_ci95": m["recall_ci95"],
             "target_f1": 0.75, "tp": tp, "fp": fp, "fn": fn, "gold_rule": "majority of annotators",
-            "inter_annotator": kappas}
+            "inter_annotator": annotator_agreement(by_post, list(load_skills())), "target_kappa": 0.70}
 
 
 # ------------------------------------------------------------------- models

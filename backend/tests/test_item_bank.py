@@ -58,9 +58,14 @@ def test_cue_only_model_cannot_find_the_key(bank):
 
 
 def test_extractor_meets_precision_target_on_blind_gold():
-    """Bab III.D sets precision > 0.80 for the extraction component; measured on postings never used to tune aliases."""
+    """Bab III.D sets precision > 0.80 for the extraction component; measured on postings never used to tune aliases.
+    Once the two-annotator consensus exists (plan A1), the test half of the locked split replaces the blind set."""
+    from pathsync.gold import CONSENSUS_FILE
     from pipeline.eval_extractor import evaluate
 
-    r = evaluate(goldfile="gold_blind.json")["overall"]
+    if CONSENSUS_FILE.exists():
+        r = evaluate(goldfile=CONSENSUS_FILE.name, split="test")["overall"]
+    else:
+        r = evaluate(goldfile="gold_blind.json")["overall"]
     assert r["precision"] >= 0.80, r
     assert r["recall"] >= 0.80, r

@@ -5,7 +5,7 @@ pathsync/extraction/llm.py; only the model differs (an open-weight instruction m
 brought back through the same gates as any other extractor (quote verification + embedding
 normalisation), so nothing unverified enters the market map.
 
-  python -m pipeline.llm_jobs export-postings            -> kaggle/jobs/postings.json
+  python -m pipeline.llm_jobs export-postings [--gold-plus 300]  -> kaggle/jobs/postings.json
   python -m pipeline.llm_jobs export-scenarios           -> kaggle/jobs/scenarios.json
   (run kaggle/pathsync_llm.py on a GPU notebook, download llm_results_*.json)
   python -m pipeline.llm_jobs import-postings <file>     -> extraction cache (key ...|llm|<taxonomy>)
@@ -38,24 +38,48 @@ GENERIC_RANKING_SYSTEM = ("Kamu konselor karier. Urutkan keterampilan kandidat d
                           "oleh mahasiswa ini untuk peran target. Jawab dengan seluruh kandidat dalam urutan.")
 
 
-def _postings() -> list[dict]:
+def _postings(keys: set[str] | None = None) -> list[dict]:
+    """Unique postings by fingerprint. keys: restrict to these "source:source_id" ids; gold postings
+    are kept even when shorter than the 200-character floor."""
     from pipeline.build_market import load_raw
 
-    rows = [r for r in load_raw() if r.get("role") in ROLES and len(r.get("description_text", "")) >= 200]
+    rows = [r for r in load_raw() if r.get("role") in ROLES]
+    if keys is not None:
+        rows = [r for r in rows if f"{r['source']}:{r['source_id']}" in keys]
+    else:
+        rows = [r for r in rows if len(r.get("description_text", "")) >= 200]
     seen, out = set(), []
     for r in rows:
         if r["fingerprint"] in seen:
             continue
         seen.add(r["fingerprint"])
-        out.append({"fingerprint": r["fingerprint"], "title": r["title"], "text": r["description_text"]})
+        out.append({"fingerprint": r["fingerprint"], "key": f"{r['source']}:{r['source_id']}",
+                    "title": r["title"], "text": r["description_text"]})
     return out
 
 
-def export_postings():
+def _gold_plus_random(n_random: int, seed: int = 20261014) -> set[str]:
+    """Plan A2 step 2: every gold posting (locked split and the earlier sets) plus `n_random`
+    other postings, drawn with a fixed seed, for a stability check."""
+    import random
+
+    from pathsync.gold import earlier_gold_ids, load_split
+    from pipeline.build_market import load_raw
+
+    split = load_split() or {"dev": [], "test": []}
+    gold = set(split["dev"]) | set(split["test"]) | earlier_gold_ids()
+    rest = sorted(f"{r['source']}:{r['source_id']}" for r in load_raw()
+                  if r.get("role") in ROLES and len(r.get("description_text", "")) >= 200)
+    rest = [k for k in rest if k not in gold]
+    return gold | set(random.Random(seed).sample(rest, min(n_random, len(rest))))
+
+
+def export_postings(gold_plus: int | None = None):
     skills = load_skills()
+    items = _postings(_gold_plus_random(gold_plus) if gold_plus is not None else None)
     jobs = {"kind": "postings", "taxonomy_version": load_taxonomy()["version"],
             "system": POSTING_SYSTEM.format(taxonomy=_taxonomy_block(skills)),
-            "user_prefix": "Teks lowongan:\n\n", "schema": _mention_schema(list(skills)), "items": _postings()}
+            "user_prefix": "Teks lowongan:\n\n", "schema": _mention_schema(list(skills)), "items": items}
     JOBS_DIR.mkdir(parents=True, exist_ok=True)
     p = JOBS_DIR / "postings.json"
     p.write_text(json.dumps(jobs, ensure_ascii=False), encoding="utf-8")
@@ -95,7 +119,7 @@ def import_postings(path: str):
     res = json.loads(Path(path).read_text(encoding="utf-8"))
     skills = load_skills()
     tax_version = load_taxonomy()["version"]
-    texts = {r["fingerprint"]: r["text"] for r in _postings()}
+    texts = {r["fingerprint"]: r["text"] for r in _postings() + _postings(_gold_plus_random(0))}
     cache = json.loads(EXTRACTION_CACHE.read_text(encoding="utf-8")) if EXTRACTION_CACHE.exists() else {}
     stats, n, bad = Counter(), 0, 0
     label = f"llm:{res.get('model', 'open')}"
@@ -206,10 +230,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["export-postings", "export-scenarios", "import-postings", "import-scenarios", "compare"])
     ap.add_argument("path", nargs="?")
+    ap.add_argument("--gold-plus", type=int, metavar="N",
+                    help="export-postings: only the gold postings plus N random others (plan A2, e.g. 300)")
     a = ap.parse_args()
     if a.cmd.startswith("import") and not a.path:
         ap.error("butuh path berkas hasil")
-    {"export-postings": export_postings, "export-scenarios": export_scenarios, "compare": compare,
+    {"export-postings": lambda: export_postings(a.gold_plus), "export-scenarios": export_scenarios, "compare": compare,
      "import-postings": lambda: import_postings(a.path), "import-scenarios": lambda: import_scenarios(a.path)}[a.cmd]()
 
 
