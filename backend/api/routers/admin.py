@@ -55,6 +55,24 @@ def whoami():
 
 
 # ------------------------------------------------------------------- stats
+@router.get("/runtime")
+def runtime(s: Session = Depends(db_session)):
+    """Plan C4: p95 and error rate per route (this worker), database and market-snapshot health,
+    and the alerts an operator should act on."""
+    from pathsync.observability import STATS, health
+
+    ok, h = health(s)
+    routes = STATS.snapshot()
+    alerts = []
+    if not ok:
+        alerts.append("database unreachable")
+    if h.get("market_stale"):
+        alerts.append(f"market snapshot older than {h.get('market_max_age_days')} days (age {h.get('market_age_days')})")
+    alerts += [f"{r}: p95 {v['p95_ms']} ms" for r, v in routes.items() if v["requests"] >= 20 and v["p95_ms"] > 1000]
+    alerts += [f"{r}: error rate {v['error_rate']:.1%}" for r, v in routes.items() if v["requests"] >= 20 and v["error_rate"] > 0.01]
+    return {"worker_pid": os.getpid(), "health": {"ok": ok, **h}, "routes": routes, "alerts": alerts}
+
+
 @router.get("/stats")
 def stats(s: Session = Depends(db_session)):
     def cnt(stmt):

@@ -21,8 +21,15 @@ router = APIRouter(prefix="/api", tags=["public"], dependencies=[Depends(rate_li
 
 
 @router.get("/health")
-def health():
-    return {"ok": True}
+def health(s: Session = Depends(db_session)):
+    """Liveness for the container healthcheck: 503 only when the database is unreachable. A stale
+    market map is reported (market_stale) but does not make the service unhealthy."""
+    from fastapi.responses import JSONResponse
+
+    from pathsync.observability import health as check
+
+    ok, detail = check(s)
+    return JSONResponse({"ok": ok, **detail}, status_code=200 if ok else 503)
 
 
 def model_card(s: Session) -> dict:

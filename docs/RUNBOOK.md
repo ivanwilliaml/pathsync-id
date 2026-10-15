@@ -60,3 +60,17 @@ python -m pipeline.sqlite_to_postgres sqlite:///data/pathsync.db postgresql+psyc
 ```
 
 Target harus kosong. Skrip menaikkan migrasi, menyalin semua tabel urut foreign key, memajukan sequence id, lalu membandingkan jumlah baris.
+
+## Pemantauan (plan C4)
+
+Satu perintah untuk melihat kondisi server:
+
+```bash
+curl -s -H "Authorization: Bearer $PATHSYNC_ADMIN_TOKEN" https://<domain>/api/admin/runtime
+```
+
+Isinya: p50/p95/maks dan tingkat galat per rute (dikelompokkan per pola rute, jadi id mahasiswa tidak memecah statistik), kesehatan database, umur snapshot pasar, dan daftar `alerts`. Peringatan muncul bila database tidak terjangkau, snapshot pasar lebih tua dari 45 hari, p95 suatu rute di atas 1 detik, atau tingkat galat di atas 1% (minimal 20 permintaan). Statistik disimpan per proses worker; `worker_pid` menunjukkan worker mana yang menjawab.
+
+- `/api/health` dipakai healthcheck container: 503 hanya bila database mati; snapshot yang basi dilaporkan lewat `market_stale` tanpa membuat layanan dianggap mati.
+- Di produksi (`PATHSYNC_ENV=production`) setiap baris log berupa JSON dengan `rid` (request id yang sama dengan header `X-Request-ID` di respons dan pesan galat), metode, path, status, dan durasi. Isi permintaan dan token tidak pernah dicatat.
+- Galat dikirim ke Sentry bila `SENTRY_DSN` diisi di `.env` (tanpa data pribadi).

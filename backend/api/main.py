@@ -19,12 +19,13 @@ from fastapi.responses import JSONResponse
 
 from pathsync.db import get_session, init_db
 from pathsync.engine import ensure_seed
+from pathsync.observability import STATS, configure_logging
 from pathsync.security import ensure_admin_token
 
 from .routers import admin, advisor, assessment, classroom, experts, platform, public, students
 
 log = logging.getLogger("pathsync")
-logging.basicConfig(level=os.getenv("PATHSYNC_LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(message)s")
+configure_logging()     # JSON lines in production (PATHSYNC_LOG_JSON), plain text in development
 
 if os.getenv("SENTRY_DSN"):   # optional error tracking (PM audit P0-6); no request bodies or student content are sent
     try:
@@ -81,6 +82,8 @@ async def request_context(request: Request, call_next):
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["X-Frame-Options"] = "DENY"
     if request.url.path.startswith("/api/"):
+        route = request.scope.get("route")
+        STATS.record(f"{request.method} {getattr(route, 'path', 'unmatched')}", response.status_code, ms)
         # one structured line per request (PM audit BE-7); paths only, never bodies or tokens
         level = logging.WARNING if response.status_code >= 500 or ms > 1500 else logging.INFO
         log.log(level, '{"rid":"%s","method":"%s","path":"%s","status":%d,"ms":%.0f}',
