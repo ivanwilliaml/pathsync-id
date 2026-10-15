@@ -40,6 +40,7 @@ services:
       PATHSYNC_REDIS_URL: redis://redis:6379/0
       PATHSYNC_WORKERS: ${PATHSYNC_WORKERS:-2}
       PATHSYNC_ENV: production
+      PATHSYNC_WARMUP: sync          # each worker loads the embedding model before it accepts requests
       SENTRY_DSN: ${SENTRY_DSN:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     volumes: [hf:/app/.hf]

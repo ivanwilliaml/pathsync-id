@@ -16,6 +16,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from sqlalchemy.exc import IntegrityError
 
 from pathsync.db import get_session, init_db
 from pathsync.engine import ensure_seed
@@ -51,13 +52,26 @@ def _warmup():
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    # plan B4: sync endpoints run on AnyIO's thread pool (40 threads by default) and each holds a database
+    # session; with more threads than pooled connections, requests waited 15 s for a connection and failed
+    # with 500 under load. Matching the two makes extra requests queue instead.
+    from anyio import to_thread
+
+    from pathsync.db import DB_CONNECTIONS
+    if DB_CONNECTIONS:
+        to_thread.current_default_thread_limiter().total_tokens = DB_CONNECTIONS
     init_db()
     with get_session() as s:
         ensure_seed(s)
         token = ensure_admin_token(s)
     if token:
         log.warning("No PATHSYNC_ADMIN_TOKEN set: generated an admin token, saved to data/admin_token.txt")
-    if os.getenv("PATHSYNC_WARMUP", "1") != "0":
+    mode = os.getenv("PATHSYNC_WARMUP", "1")
+    if mode == "sync":
+        # production: this worker accepts requests only once the model is loaded, so the first users after a
+        # restart do not all load it at once (plan B4: cold start gave timeouts and 500s)
+        _warmup()
+    elif mode != "0":
         threading.Thread(target=_warmup, daemon=True).start()
     yield
 
@@ -89,6 +103,17 @@ async def request_context(request: Request, call_next):
         log.log(level, '{"rid":"%s","method":"%s","path":"%s","status":%d,"ms":%.0f}',
                 rid, request.method, request.url.path, response.status_code, ms)
     return response
+
+
+@app.exception_handler(IntegrityError)
+async def integrity(request: Request, exc: IntegrityError):
+    """A write that lost a race (for example evidence for a profile deleted a moment earlier) is a conflict
+    the client can retry or drop, not a server error."""
+    rid = request.headers.get("x-request-id") or uuid.uuid4().hex[:12]
+    log.warning('{"rid":"%s","path":"%s","event":"integrity_conflict","error":"%s"}', rid, request.url.path,
+                type(exc.orig).__name__ if exc.orig is not None else "IntegrityError")
+    return JSONResponse(status_code=409, headers={"X-Request-ID": rid},
+                        content={"detail": f"This change conflicts with the current data. Reload and try again. (ref {rid})"})
 
 
 @app.exception_handler(Exception)

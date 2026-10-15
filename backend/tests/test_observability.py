@@ -57,3 +57,35 @@ def test_route_stats_and_json_formatter():
     rec = logging.LogRecord("pathsync", logging.INFO, __file__, 1, '{"rid":"abc","status":200}', None, None)
     line = json.loads(JsonFormatter().format(rec))
     assert line["rid"] == "abc" and line["status"] == 200 and line["level"] == "INFO"
+
+
+def test_fast_json_matches_fastapi_encoding(client):
+    """Plan B4: the dashboard skips jsonable_encoder; the bytes must decode to the same document."""
+    from fastapi.encoders import jsonable_encoder
+
+    from api.common import recommend_for
+    from pathsync.db import SessionLocal, Student
+
+    r = client.post("/api/students", json={"display_name": "B4", "target_role": "business_analyst", "consent": True}).json()
+    h = {"Authorization": f"Bearer {r['token']}"}
+    got = client.get(f"/api/students/{r['id']}/dashboard", headers=h)
+    assert got.status_code == 200 and got.headers["content-type"].startswith("application/json")
+    with SessionLocal() as s:
+        want = jsonable_encoder({**recommend_for(s, s.get(Student, r["id"])), "study_arm": None})
+    assert got.json() == want
+
+
+def test_integrity_race_is_a_409_not_a_500(client):
+    """Plan B4: under load a transcript could land just after its profile was deleted; that is a conflict."""
+    from sqlalchemy.exc import IntegrityError
+
+    from api.main import app
+
+    @app.get("/api/__test_integrity")
+    def boom():
+        raise IntegrityError("insert", {}, Exception("fk"))
+    try:
+        r = client.get("/api/__test_integrity")
+        assert r.status_code == 409 and "ref" in r.json()["detail"]
+    finally:
+        app.router.routes[:] = [rt for rt in app.router.routes if getattr(rt, "path", "") != "/api/__test_integrity"]

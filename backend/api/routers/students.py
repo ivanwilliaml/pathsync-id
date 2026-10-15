@@ -40,7 +40,7 @@ from pathsync.intake import (
 from pathsync.security import clip_text, db_session, hash_token, new_token, rate_limit, read_upload, student_access
 from pathsync.taxonomy import load_skills
 
-from ..common import after_change, has_history, recommend_for
+from ..common import after_change, fast_json, has_history, recommend_for
 from .public import graph_payload
 
 router = APIRouter(prefix="/api", tags=["students"])
@@ -293,7 +293,7 @@ def dashboard(st: Student = Depends(student_access), s: Session = Depends(db_ses
     """Read-only: history is written by the mutations and by market updates, never by a page view."""
     rec = recommend_for(s, st)
     rec["study_arm"] = st.study_arm if st.study_id else None
-    return rec
+    return fast_json(rec)
 
 
 @router.get("/students/{sid}/history")
@@ -307,7 +307,7 @@ def history(st: Student = Depends(student_access), s: Session = Depends(db_sessi
 
 @router.get("/students/{sid}/graph")
 def student_graph(st: Student = Depends(student_access), s: Session = Depends(db_session)):
-    return graph_payload(s, st.target_role, recommend_for(s, st))
+    return fast_json(graph_payload(s, st.target_role, recommend_for(s, st)))
 
 
 @router.get("/students/{sid}/trace/{skill_id}")

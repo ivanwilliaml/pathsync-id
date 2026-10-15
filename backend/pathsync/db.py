@@ -16,6 +16,7 @@ the database, so pgvector is not used.
 """
 from __future__ import annotations
 
+import os
 import uuid
 from datetime import UTC, date, datetime
 
@@ -382,10 +383,17 @@ class Annotation(Base):
 
 
 # ------------------------------------------------------------------ engine
+# Server databases: sync endpoints run in a 40-thread pool per worker, and the default pool (5 + 10 overflow)
+# ran out under load (plan B4: 500s with "QueuePool limit ... reached"). 15 + 15 per worker keeps 2 workers
+# plus the side services under PostgreSQL's default max_connections of 100; raise both together.
+_POOL = {} if DATABASE_URL.startswith("sqlite") else {
+    "pool_size": int(os.getenv("PATHSYNC_DB_POOL", "15")), "max_overflow": int(os.getenv("PATHSYNC_DB_OVERFLOW", "15")),
+    "pool_timeout": 15, "pool_recycle": 1800}
+DB_CONNECTIONS = (_POOL["pool_size"] + _POOL["max_overflow"]) if _POOL else 0    # api.main sizes the thread pool to this
 _engine = create_engine(DATABASE_URL, future=True,
                         # sqlite: wait up to 30 s for the single writer instead of failing with "database is locked"
                         connect_args={"check_same_thread": False, "timeout": 30} if DATABASE_URL.startswith("sqlite") else {},
-                        pool_pre_ping=not DATABASE_URL.startswith("sqlite"))
+                        pool_pre_ping=not DATABASE_URL.startswith("sqlite"), **_POOL)
 if DATABASE_URL.startswith("sqlite"):
     @event.listens_for(_engine, "connect")
     def _sqlite_pragmas(dbapi_conn, _):  # pragma: no cover - connection setup
