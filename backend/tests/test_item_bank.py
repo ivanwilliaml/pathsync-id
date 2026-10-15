@@ -50,9 +50,9 @@ def test_cue_only_model_cannot_find_the_key(bank):
 
     items = list(bank.values())
     accs = [cue_classifier_accuracy(items, seed=s)["accuracy"] for s in (0, 1, 2)]
-    # Ceiling for the current bank (new items still carry a residual cue; scoring compensates with per-item guess
-    # probabilities). Ratchet this down as items are rewritten or replaced by item-analysis-approved ones; target 0.30.
-    assert max(accs) <= 0.42, f"cue-only accuracy {accs} (chance 0.25)"
+    # Plan A6: after the 60 most cue-prone items were rewritten the classifier sits at chance (0.258 on 14 Oct,
+    # down from 0.37). Ceiling 0.35; ratchet towards 0.30 as item analysis on real answers replaces weak items.
+    assert max(accs) <= 0.35, f"cue-only accuracy {accs} (chance 0.25)"
     for cue in ("longest", "shortest", "most_overlap_with_others", "most_stem_overlap"):
         assert 0.12 <= single_cue_rates(items)[cue] <= 0.36, cue
 
