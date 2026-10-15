@@ -3,9 +3,19 @@
 # rate limiter (PATHSYNC_TRUSTED_PROXIES = the compose network) cannot be fooled by a forged header.
 {$PATHSYNC_DOMAIN:localhost} {
 	encode zstd gzip
+	# uploads are capped at 5 MB by the backend; refuse anything larger before it reaches Next.js
+	request_body {
+		max_size 6MB
+	}
 	reverse_proxy frontend:3000
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		# Next.js inlines its bootstrap scripts and styles, hence 'unsafe-inline'; everything else is same-origin
+		Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		X-Frame-Options "DENY"
 		-Server
 	}
 	log {

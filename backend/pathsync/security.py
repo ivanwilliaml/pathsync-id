@@ -265,6 +265,13 @@ def read_upload(file, max_bytes: int = MAX_UPLOAD_BYTES) -> tuple[bytes, str]:
     data = file.file.read(max_bytes + 1)
     if len(data) > max_bytes:
         raise HTTPException(413, f"File too large (max {max_bytes // (1024 * 1024)} MB).")
+    # the extension must match the content: a renamed binary is refused before any parser sees it
+    magic = {".pdf": b"%PDF-", ".docx": b"PK\x03\x04"}
+    for ext, head in magic.items():
+        if name.endswith(ext) and not data.startswith(head):
+            raise HTTPException(415, f"This file is not a valid {ext} file.")
+    if not name.endswith((".pdf", ".docx")) and b"\x00" in data[:4096]:
+        raise HTTPException(415, "Text uploads must be plain text.")
     return data, name
 
 

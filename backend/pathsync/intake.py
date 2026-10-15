@@ -27,17 +27,45 @@ SKILL_FALLBACK = 0.60     # direct course-name -> skill similarity for unknown c
 
 
 # ------------------------------------------------------------------ documents
+MAX_PDF_PAGES = 40                     # transcripts, CVs and project reports are short; bounds parse time
+MAX_DOCX_UNZIPPED = 50 * 1024 * 1024   # a 5 MB .docx may not expand past this (zip bomb guard)
+
+
 def document_to_text(data: bytes, filename: str) -> str:
+    """Plain text of an upload. Parsing is bounded: at most MAX_PDF_PAGES pages are read and reading
+    stops once the text passes MAX_TEXT_CHARS, so a crafted file cannot tie up a worker."""
+    from fastapi import HTTPException
+
+    from .security import MAX_TEXT_CHARS
+
     name = filename.lower()
     if name.endswith(".pdf"):
         import pdfplumber
 
-        with pdfplumber.open(io.BytesIO(data)) as pdf:
-            return "\n".join((p.extract_text() or "") for p in pdf.pages)
+        parts, size = [], 0
+        try:
+            with pdfplumber.open(io.BytesIO(data)) as pdf:
+                for page in pdf.pages[:MAX_PDF_PAGES]:
+                    t = page.extract_text() or ""
+                    parts.append(t)
+                    size += len(t)
+                    if size > MAX_TEXT_CHARS:
+                        break
+        except Exception as e:  # noqa: BLE001 - malformed PDFs surface as a clear 422, not a 500
+            raise HTTPException(422, "This PDF could not be read. Export it again or upload a .docx or .txt.") from e
+        return "\n".join(parts)
     if name.endswith(".docx"):
+        import zipfile
+
         import docx
 
-        d = docx.Document(io.BytesIO(data))
+        try:
+            with zipfile.ZipFile(io.BytesIO(data)) as z:
+                if sum(i.file_size for i in z.infolist()) > MAX_DOCX_UNZIPPED:
+                    raise HTTPException(413, "This document expands to more than 50 MB; upload a smaller file.")
+            d = docx.Document(io.BytesIO(data))
+        except (zipfile.BadZipFile, KeyError, ValueError) as e:
+            raise HTTPException(422, "This .docx could not be read. Save it again or upload a PDF.") from e
         parts = [p.text for p in d.paragraphs]
         for t in d.tables:
             for row in t.rows:

@@ -2,3 +2,4 @@
 pytest==9.1.1
 ruff==0.8.6
 psycopg[binary]==3.3.6  # PostgreSQL job in CI (the Docker image installs it too)
+pip-audit==2.10.1
