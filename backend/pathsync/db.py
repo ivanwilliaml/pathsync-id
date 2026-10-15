@@ -84,6 +84,8 @@ class MarketSnapshot(Base):
     data: Mapped[dict] = mapped_column(JSON)            # MarketMap.to_dict()
     required: Mapped[dict] = mapped_column(JSON)        # r_s per skill
     sources: Mapped[dict] = mapped_column(JSON, default=dict)
+    # plan B5: taxonomy/graph hashes, extractor mix and posting count, so an old number can be reproduced later
+    provenance: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     note: Mapped[str] = mapped_column(Text, default="")
     simulated: Mapped[bool] = mapped_column(Boolean, default=False)
     active: Mapped[bool] = mapped_column(Boolean, default=True)

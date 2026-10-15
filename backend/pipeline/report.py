@@ -80,7 +80,8 @@ def _market(s) -> dict:
         n = s.scalar(select(func.count(Posting.id)).where(Posting.role == r, Posting.duplicate_of.is_(None),
                                                          Posting.in_window.is_(True))) or 0
         roles[r] = {"postings_in_window": n, "snapshot": snap.version if snap else None,
-                    "reference_date": snap.reference_date.isoformat() if snap else None}
+                    "reference_date": snap.reference_date.isoformat() if snap else None,
+                    "provenance": snap.provenance if snap else None}
     return {"roles": roles, "total_postings_in_window": sum(v["postings_in_window"] for v in roles.values())}
 
 

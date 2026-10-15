@@ -1,6 +1,7 @@
 """Market snapshot management: ESCO status, building and loading the demand map."""
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import date
 from functools import lru_cache
@@ -8,7 +9,7 @@ from functools import lru_cache
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
-from .config import RAW_DIR, ROLES
+from .config import RAW_DIR, ROLES, SEED_DIR
 from .db import MarketSnapshot, Posting, active_snapshot, bump_epoch
 from .demand import MarketMap, PostingSkills, compute_market, required_levels
 from .roles import skill_ids_for_role
@@ -39,6 +40,20 @@ def esco_status() -> dict[str, dict[str, str]]:
     return out
 
 
+def _sha(path) -> str | None:
+    return hashlib.sha256(path.read_bytes()).hexdigest()[:12] if path.exists() else None
+
+
+def provenance(rows: list[Posting], overrides: dict[str, float] | None = None) -> dict:
+    """What a snapshot was computed from (plan B5): seed hashes, extractor per posting, and whether it was simulated."""
+    extractors: dict[str, int] = {}
+    for p in rows:
+        extractors[p.extractor or "unknown"] = extractors.get(p.extractor or "unknown", 0) + 1
+    return {"taxonomy_sha": _sha(SEED_DIR / "taxonomy.json"), "graph_sha": _sha(SEED_DIR / "graph.json"),
+            "esco_sha": _sha(RAW_DIR / "esco_occupations.json"), "postings": len(rows), "extractors": extractors,
+            "overrides": bool(overrides)}
+
+
 def build_snapshot(s: Session, role: str, version: str, ref: date, note: str = "",
                    overrides: dict[str, float] | None = None) -> MarketSnapshot:
     skills = load_skills()
@@ -57,7 +72,7 @@ def build_snapshot(s: Session, role: str, version: str, ref: date, note: str = "
     req = required_levels(market, esco_status().get(role, {}), overrides)
     s.execute(update(MarketSnapshot).where(MarketSnapshot.role == role).values(active=False))
     snap = MarketSnapshot(version=version, role=role, reference_date=ref, data=market.to_dict(), required=req,
-                          sources=sources, note=note, active=True)
+                          sources=sources, note=note, active=True, provenance=provenance(rows, overrides))
     s.add(snap)
     bump_epoch(s)
     s.flush()
