@@ -13,12 +13,13 @@ from sqlalchemy.orm import Session
 
 from pathsync.db import AuditLog, Evidence, Feedback, ProductEvent, Student, Waitlist, utcnow
 from pathsync.security import (
+    SESSION_PREFIX,
     STAFF_COOKIE,
-    STAFF_TOKEN_DAYS,
     audit,
     audit_admin_writes,
     db_session,
     hash_token,
+    issue_session,
     new_token,
     rate_limit,
     require_admin,
@@ -41,15 +42,14 @@ def staff_login(body: StaffLogin, response: Response, s: Session = Depends(db_se
     row = staff_token_row(s, body.token.strip())
     if row is None:
         raise HTTPException(401, "Unknown, expired or revoked staff token.")
-    max_age = STAFF_TOKEN_DAYS * 86400
-    if row.expires_at is not None:
-        max_age = max(60, int((row.expires_at - utcnow()).total_seconds()))
-    response.set_cookie(STAFF_COOKIE, body.token.strip(), max_age=max_age, httponly=True, secure=SECURE_COOKIE,
+    token, session = issue_session(s, row)
+    max_age = max(60, int((session.expires_at - utcnow()).total_seconds()))
+    response.set_cookie(STAFF_COOKIE, token, max_age=max_age, httponly=True, secure=SECURE_COOKIE,
                         samesite="strict", path="/api")
     audit(s, f"{row.role}:{row.label or row.id}", "staff sign-in")
     s.commit()
     return {"role": row.role, "subject_id": row.subject_id, "label": row.label,
-            "expires_at": row.expires_at.isoformat() if row.expires_at else None}
+            "expires_at": session.expires_at.isoformat()}
 
 
 @router.get("/staff/session")
@@ -62,7 +62,12 @@ def staff_me(request: Request, s: Session = Depends(db_session)):
 
 
 @router.delete("/staff/session")
-def staff_logout(response: Response):
+def staff_logout(request: Request, response: Response, s: Session = Depends(db_session)):
+    """Sign out: the session token behind the cookie is revoked server-side, not only forgotten by the browser."""
+    row = staff_token_row(s, request.cookies.get(STAFF_COOKIE))
+    if row is not None and row.label.startswith(SESSION_PREFIX):
+        row.revoked_at = utcnow()
+        s.commit()
     response.delete_cookie(STAFF_COOKIE, path="/api")
     return {"ok": True}
 
