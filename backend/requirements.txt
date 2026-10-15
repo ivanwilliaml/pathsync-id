@@ -1,5 +1,6 @@
 # Runtime dependencies, pinned to the versions the test suite runs on (compatible upgrades: bump and re-run CI).
-fastapi==0.129.0
+fastapi==0.143.2
+starlette==1.8.0       # pinned past PYSEC-2026-161/248/249/2280/2281 (pip-audit, plan C3)
 uvicorn[standard]==0.41.0
 sqlalchemy==2.0.46
 alembic==1.18.4

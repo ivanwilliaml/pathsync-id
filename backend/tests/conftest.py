@@ -11,7 +11,13 @@ _SRC_DB = Path(__file__).resolve().parents[1] / "data" / "pathsync.db"
 _TMP_DIR = Path(tempfile.mkdtemp(prefix="pathsync-test-"))
 HAVE_DB = _SRC_DB.exists()
 
-if HAVE_DB:
+# PATHSYNC_TEST_DATABASE_URL runs the suite against a disposable server database (CI: PostgreSQL service, plan B1)
+# that the pipelines have already filled; otherwise a copy of the SQLite demo database is used.
+_TEST_URL = os.getenv("PATHSYNC_TEST_DATABASE_URL")
+if _TEST_URL:
+    HAVE_DB = True
+    os.environ["PATHSYNC_DATABASE_URL"] = _TEST_URL
+elif HAVE_DB:
     shutil.copy(_SRC_DB, _TMP_DIR / "pathsync.db")
     os.environ["PATHSYNC_DATABASE_URL"] = f"sqlite:///{(_TMP_DIR / 'pathsync.db').as_posix()}"
 os.environ["PATHSYNC_WARMUP"] = "0"

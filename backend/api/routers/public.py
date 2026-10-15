@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 
 from pathsync.assessment import item_bank
 from pathsync.config import EMBEDDING_MODEL, GRADE_SCORES, LLM_MODEL, MODELS_DIR, ROLES
-from pathsync.db import Expert, GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot
+from pathsync.db import Expert, GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot, utcnow
 from pathsync.engine import graph_from_db
 from pathsync.extraction.llm import llm_configured
 from pathsync.roles import FAMILIES
@@ -22,7 +22,28 @@ router = APIRouter(prefix="/api", tags=["public"], dependencies=[Depends(rate_li
 
 @router.get("/health")
 def health():
+    """Liveness: the process answers. Used by the container healthcheck, so it never touches the database."""
     return {"ok": True}
+
+
+SNAPSHOT_MAX_AGE_DAYS = 45   # the market map refreshes monthly; older than this means the refresh job is failing
+
+
+@router.get("/health/ready")
+def ready(s: Session = Depends(db_session)):
+    """Readiness (plan C4): the database answers and the active market snapshot is fresh enough."""
+    try:
+        newest = s.scalar(select(func.max(MarketSnapshot.created_at)).where(MarketSnapshot.active.is_(True)))
+    except Exception as e:  # pragma: no cover - only when the database is down
+        raise HTTPException(503, {"ok": False, "database": "down", "error": type(e).__name__}) from e
+    age = (utcnow() - newest).days if newest else None
+    stale = age is None or age > SNAPSHOT_MAX_AGE_DAYS
+    body = {"ok": not stale, "database": "up", "snapshot_age_days": age, "snapshot_max_age_days": SNAPSHOT_MAX_AGE_DAYS,
+            "warning": ("no active market snapshot" if age is None else
+                        f"market snapshot is {age} days old; check the monthly refresh") if stale else None}
+    if stale:
+        raise HTTPException(503, body)
+    return body
 
 
 def model_card(s: Session) -> dict:

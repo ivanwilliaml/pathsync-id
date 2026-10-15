@@ -27,16 +27,34 @@ SKILL_FALLBACK = 0.60     # direct course-name -> skill similarity for unknown c
 
 
 # ------------------------------------------------------------------ documents
+MAX_PDF_PAGES = 40                       # a transcript, CV or project report; more pages is abuse or the wrong file
+MAX_DOCX_UNZIPPED = 40 * 1024 * 1024     # a 5 MB .docx must not expand into gigabytes (zip bomb)
+
+
+class DocumentRejected(ValueError):
+    """The file is readable in principle but too large or damaged to parse safely."""
+
+
 def document_to_text(data: bytes, filename: str) -> str:
     name = filename.lower()
     if name.endswith(".pdf"):
         import pdfplumber
 
         with pdfplumber.open(io.BytesIO(data)) as pdf:
+            if len(pdf.pages) > MAX_PDF_PAGES:
+                raise DocumentRejected(f"This PDF has {len(pdf.pages)} pages; the limit is {MAX_PDF_PAGES}.")
             return "\n".join((p.extract_text() or "") for p in pdf.pages)
     if name.endswith(".docx"):
+        import zipfile
+
         import docx
 
+        try:
+            unzipped = sum(i.file_size for i in zipfile.ZipFile(io.BytesIO(data)).infolist())
+        except zipfile.BadZipFile as e:
+            raise DocumentRejected("This .docx file is damaged or is not a Word document.") from e
+        if unzipped > MAX_DOCX_UNZIPPED:
+            raise DocumentRejected("This .docx expands to more than 40 MB. Save it again, or paste the text instead.")
         d = docx.Document(io.BytesIO(data))
         parts = [p.text for p in d.paragraphs]
         for t in d.tables:

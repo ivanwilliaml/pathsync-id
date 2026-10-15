@@ -23,6 +23,7 @@ def main() -> None:
         for scraper in ("scrapers.karirhub", "scrapers.ats"):
             _run(scraper)
         _run("pipeline.build_market", "--ref", date.today().isoformat())
+        _run("pipeline.retention")
         outcome, ok = "ok", True
     except Exception as e:  # noqa: BLE001 - recorded, then re-raised so the container log shows it too
         outcome, ok = f"failed: {e}"[:300], False
