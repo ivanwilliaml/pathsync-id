@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import ipaddress
+import logging
 import os
 import secrets
 import threading
@@ -206,26 +207,38 @@ class RateLimiter:
     """Sliding-window limiter, in-process. With PATHSYNC_REDIS_URL set, a shared fixed-window counter in Redis is used
     instead so the limit holds across several workers or containers."""
 
-    def __init__(self):
+    def __init__(self, url: str | None = None):
         self._hits: dict[tuple[str, str], deque] = defaultdict(deque)
         self._lock = threading.Lock()
         self._redis = None
-        url = os.getenv("PATHSYNC_REDIS_URL")
+        self.fallbacks = 0            # checks answered locally because Redis failed (shown in /api/admin/runtime)
+        self._warned_at = 0.0
+        url = url if url is not None else os.getenv("PATHSYNC_REDIS_URL")
         if url:
             import redis  # optional dependency, only needed for multi-worker deployments
 
-            self._redis = redis.Redis.from_url(url, socket_timeout=0.5)
+            self._redis = redis.Redis.from_url(url, socket_timeout=0.5, socket_connect_timeout=0.5)
+
+    @property
+    def backend(self) -> str:
+        return "redis" if self._redis is not None else "memory"
 
     def check(self, key: tuple[str, str], limit: int, window: float) -> bool:
         if self._redis is not None:
             try:
                 k = f"rl:{key[1]}:{key[0]}:{int(time.time() // window)}"
-                n = self._redis.incr(k)
-                if n == 1:
-                    self._redis.expire(k, int(window) + 1)
+                pipe = self._redis.pipeline()
+                pipe.incr(k)
+                pipe.expire(k, int(window) + 1, nx=True)
+                n = pipe.execute()[0]
                 return n <= limit
-            except Exception:  # noqa: BLE001 - Redis down: fall back to the local window rather than failing requests
-                pass
+            except Exception as e:  # noqa: BLE001 - Redis down: fall back to the local window rather than failing requests
+                # the fallback limit is per worker, so it is looser than the shared one: say so, at most once a minute
+                self.fallbacks += 1
+                if time.monotonic() - self._warned_at > 60:
+                    self._warned_at = time.monotonic()
+                    logging.getLogger("pathsync").warning(
+                        '{"event":"rate_limit_fallback","reason":"%s","fallbacks":%d}', type(e).__name__, self.fallbacks)
         now = time.monotonic()
         with self._lock:
             q = self._hits[key]

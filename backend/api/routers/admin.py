@@ -70,7 +70,12 @@ def runtime(s: Session = Depends(db_session)):
         alerts.append(f"market snapshot older than {h.get('market_max_age_days')} days (age {h.get('market_age_days')})")
     alerts += [f"{r}: p95 {v['p95_ms']} ms" for r, v in routes.items() if v["requests"] >= 20 and v["p95_ms"] > 1000]
     alerts += [f"{r}: error rate {v['error_rate']:.1%}" for r, v in routes.items() if v["requests"] >= 20 and v["error_rate"] > 0.01]
-    return {"worker_pid": os.getpid(), "health": {"ok": ok, **h}, "routes": routes, "alerts": alerts}
+    from pathsync.security import limiter
+
+    if limiter.fallbacks:
+        alerts.append(f"rate limiter fell back to per-worker memory {limiter.fallbacks} times (Redis unreachable)")
+    return {"worker_pid": os.getpid(), "health": {"ok": ok, **h}, "routes": routes, "alerts": alerts,
+            "rate_limiter": {"backend": limiter.backend, "fallbacks": limiter.fallbacks}}
 
 
 @router.get("/stats")
