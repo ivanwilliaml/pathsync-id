@@ -295,7 +295,12 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
     by_cluster = {}
     for cl, label in cluster_names().items():
         ids = [k for k in ctx.req if ctx.skills[k].cluster == cl and demand.get(k, 0) > 0]
-        by_cluster[cl] = {"label": label, "coverage": round(coverage(p, {k: ctx.req[k] for k in ids}, demand), 4)}
+        if not ids:      # areas this role's postings never ask for are noise on the dashboard (was: shown as 0%)
+            continue
+        by_cluster[cl] = {"label": label, "coverage": round(coverage(p, {k: ctx.req[k] for k in ids}, demand), 4),
+                          "n_skills": len(ids),
+                          # False = every skill in the area is still at the no-evidence prior, so the number is not a measurement
+                          "measured": any(states[k].has_evidence for k in ids if k in states)}
 
     competencies = []
     for k, st in states.items():

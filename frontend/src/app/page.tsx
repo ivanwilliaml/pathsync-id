@@ -105,33 +105,30 @@ export default function Landing() {
           {(meta.data?.roles ?? []).length === 0 ? (
             <p className="mt-8 text-sm text-ink/60">Loading careers…</p>
           ) : (
-            Object.entries(meta.data?.families ?? {}).map(([fam, label]) => {
-              const list = (meta.data?.roles ?? []).filter((r) => r.family === fam);
-              if (!list.length) return null;
-              return (
-                <div key={fam} className="mt-10 first:mt-8">
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-ink/55">{label}</h3>
-                  <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {list.map((r) => (
-                      <article key={r.id} className="flex flex-col rounded-2xl border bg-background p-5">
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex items-center gap-2">
-                            <Briefcase className="size-5 shrink-0 text-indigo" aria-hidden="true" />
-                            <h4 className="text-lg font-bold leading-snug text-ink">{r.name}</h4>
-                          </div>
-                          {r.limited_data ? <Tag tone="ember">Beta</Tag> : null}
-                        </div>
-                        <p className="mt-2 flex-1 text-sm text-ink/75">{r.blurb}</p>
-                        <p className="mt-3 text-xs text-ink/60">{r.n_postings ? `Based on ${r.n_postings} real postings` : "Collecting postings"}</p>
-                        <Button size="lg" variant="outline" className="mt-4 h-10" onClick={() => setStartRole(r.id)}>
-                          Start as {r.name}
-                        </Button>
-                      </article>
-                    ))}
-                  </div>
-                </div>
-              );
-            })
+            // one grid, best-supported careers first (fewest-data Beta roles last), family shown on each card:
+            // grouping by family left rows with one card and two empty columns
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {(meta.data?.roles ?? [])
+                .slice()
+                .sort((a, b) => Number(a.limited_data) - Number(b.limited_data) || (b.n_postings ?? 0) - (a.n_postings ?? 0))
+                .map((r) => (
+                  <article key={r.id} className="flex flex-col rounded-2xl border bg-background p-5">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-ink/55">{meta.data?.families?.[r.family] ?? r.family}</p>
+                    <div className="mt-1.5 flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <Briefcase className="size-5 shrink-0 text-indigo" aria-hidden="true" />
+                        <h3 className="text-lg font-bold leading-snug text-ink">{r.name}</h3>
+                      </div>
+                      {r.limited_data ? <Tag tone="ember">Beta</Tag> : null}
+                    </div>
+                    <p className="mt-2 flex-1 text-sm text-ink/75">{r.blurb}</p>
+                    <p className="mt-3 text-xs text-ink/60">{r.n_postings ? `Based on ${r.n_postings} real postings` : "Collecting postings"}</p>
+                    <Button size="lg" variant="outline" className="mt-4 h-10" onClick={() => setStartRole(r.id)}>
+                      Start as {r.name}
+                    </Button>
+                  </article>
+                ))}
+            </div>
           )}
         </div>
       </section>

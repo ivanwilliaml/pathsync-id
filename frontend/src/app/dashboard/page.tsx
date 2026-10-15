@@ -94,8 +94,12 @@ function DashboardView({ sid }: { sid: string }) {
           )}
         </div>
         <div className="flex items-center gap-5 lg:flex-col lg:text-center">
-          {f.evidence ? <ReadinessRing value={d.coverage} label="Role Readiness" /> : null}
-          <p className="max-w-[220px] text-sm text-ink/70">How much of what employers ask for you can already show.</p>
+          {f.evidence ? <ReadinessRing value={hasEvidence ? d.coverage : null} label="Role Readiness" /> : null}
+          <p className="max-w-[220px] text-sm text-ink/70">
+            {hasEvidence
+              ? "How much of what employers ask for you can already show."
+              : "Not measured yet. Your readiness appears after your first evidence or quick check."}
+          </p>
         </div>
       </section>
 
@@ -124,7 +128,7 @@ function DashboardView({ sid }: { sid: string }) {
             <TabsTrigger value="ranking">How We Ranked</TabsTrigger>
           </TabsList>
           <TabsContent value="areas">
-            <Areas d={d} />
+            <Areas d={d} measured={hasEvidence} />
           </TabsContent>
           <TabsContent value="all">
             <AllSkills comps={d.competencies} onOpen={open} />
@@ -252,8 +256,16 @@ function PriorityRow({ r, comp, onOpen }: { r: RankRow; comp?: Competency; onOpe
   );
 }
 
-function Areas({ d }: { d: Dashboard }) {
+function Areas({ d, measured }: { d: Dashboard; measured: boolean }) {
   const order = CLUSTER_ORDER.filter((k) => d.coverage_by_cluster[k]);
+  if (!measured)
+    return (
+      <Panel>
+        <p className="text-sm text-ink/70">
+          Nothing measured yet. Add your transcript, a certificate or a project, or take the quick check, and your coverage per area appears here.
+        </p>
+      </Panel>
+    );
   return (
     <Panel>
       <ul className="grid gap-6 sm:grid-cols-2">
@@ -263,9 +275,9 @@ function Areas({ d }: { d: Dashboard }) {
             <li key={k}>
               <div className="mb-2 flex items-baseline justify-between">
                 <span className="font-medium text-ink">{c.label}</span>
-                <span className="tabular text-sm font-semibold text-ink">{pct(c.coverage)}</span>
+                <span className="tabular text-sm font-semibold text-ink">{c.measured === false ? "Not measured" : pct(c.coverage)}</span>
               </div>
-              <MasteryBar value={c.coverage} tone="indigo" />
+              <MasteryBar value={c.measured === false ? 0 : c.coverage} tone="indigo" />
             </li>
           );
         })}
