@@ -1,51 +1,336 @@
 {
  "dev": {
   "n_postings": 24,
+  "gold_file": "gold_pilot.json",
+  "gold_sha": "fd1d3a9c620a",
   "overall": {
    "precision": 0.844,
    "recall": 0.918,
-   "f1": 0.88
+   "f1": 0.88,
+   "precision_ci95": [
+    0.782,
+    0.89
+   ],
+   "recall_ci95": [
+    0.865,
+    0.952
+   ],
+   "support": 159,
+   "f1_ci95": [
+    0.839,
+    0.916
+   ]
   },
   "per_role": {
    "accountant": {
     "precision": 1.0,
     "recall": 0.882,
-    "f1": 0.938
+    "f1": 0.938,
+    "precision_ci95": [
+     0.796,
+     1.0
+    ],
+    "recall_ci95": [
+     0.657,
+     0.967
+    ],
+    "support": 17
    },
    "backend_developer": {
     "precision": 0.818,
     "recall": 1.0,
-    "f1": 0.9
+    "f1": 0.9,
+    "precision_ci95": [
+     0.615,
+     0.927
+    ],
+    "recall_ci95": [
+     0.824,
+     1.0
+    ],
+    "support": 18
    },
    "business_analyst": {
     "precision": 0.889,
     "recall": 0.667,
-    "f1": 0.762
+    "f1": 0.762,
+    "precision_ci95": [
+     0.672,
+     0.969
+    ],
+    "recall_ci95": [
+     0.467,
+     0.82
+    ],
+    "support": 24
    },
    "cybersecurity_analyst": {
     "precision": 0.722,
     "recall": 0.929,
-    "f1": 0.813
+    "f1": 0.812,
+    "precision_ci95": [
+     0.491,
+     0.875
+    ],
+    "recall_ci95": [
+     0.685,
+     0.987
+    ],
+    "support": 14
    },
    "data_analyst": {
     "precision": 0.771,
     "recall": 1.0,
-    "f1": 0.871
+    "f1": 0.871,
+    "precision_ci95": [
+     0.61,
+     0.879
+    ],
+    "recall_ci95": [
+     0.875,
+     1.0
+    ],
+    "support": 27
    },
    "data_engineer": {
     "precision": 0.875,
     "recall": 0.966,
-    "f1": 0.918
+    "f1": 0.918,
+    "precision_ci95": [
+     0.719,
+     0.95
+    ],
+    "recall_ci95": [
+     0.828,
+     0.994
+    ],
+    "support": 29
    },
    "data_scientist": {
     "precision": 0.857,
     "recall": 0.857,
-    "f1": 0.857
+    "f1": 0.857,
+    "precision_ci95": [
+     0.487,
+     0.974
+    ],
+    "recall_ci95": [
+     0.487,
+     0.974
+    ],
+    "support": 7
    },
    "devops_engineer": {
     "precision": 0.885,
     "recall": 1.0,
-    "f1": 0.939
+    "f1": 0.939,
+    "precision_ci95": [
+     0.71,
+     0.96
+    ],
+    "recall_ci95": [
+     0.857,
+     1.0
+    ],
+    "support": 23
+   }
+  },
+  "per_cluster": {
+   "backend": {
+    "precision": 0.897,
+    "recall": 0.929,
+    "f1": 0.912,
+    "precision_ci95": [
+     0.736,
+     0.964
+    ],
+    "recall_ci95": [
+     0.774,
+     0.98
+    ],
+    "support": 28
+   },
+   "bi_tools": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.676,
+     1.0
+    ],
+    "recall_ci95": [
+     0.676,
+     1.0
+    ],
+    "support": 8
+   },
+   "business_analysis": {
+    "precision": 0.706,
+    "recall": 0.706,
+    "f1": 0.706,
+    "precision_ci95": [
+     0.469,
+     0.867
+    ],
+    "recall_ci95": [
+     0.469,
+     0.867
+    ],
+    "support": 17
+   },
+   "data_analytics": {
+    "precision": 0.862,
+    "recall": 0.962,
+    "f1": 0.909,
+    "precision_ci95": [
+     0.694,
+     0.945
+    ],
+    "recall_ci95": [
+     0.811,
+     0.993
+    ],
+    "support": 26
+   },
+   "data_eng": {
+    "precision": 0.95,
+    "recall": 1.0,
+    "f1": 0.974,
+    "precision_ci95": [
+     0.764,
+     0.991
+    ],
+    "recall_ci95": [
+     0.832,
+     1.0
+    ],
+    "support": 19
+   },
+   "data_ml": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.51,
+     1.0
+    ],
+    "recall_ci95": [
+     0.51,
+     1.0
+    ],
+    "support": 4
+   },
+   "design": {
+    "precision": 1.0,
+    "recall": 0.5,
+    "f1": 0.667,
+    "precision_ci95": [
+     0.207,
+     1.0
+    ],
+    "recall_ci95": [
+     0.095,
+     0.905
+    ],
+    "support": 2
+   },
+   "devops": {
+    "precision": 0.875,
+    "recall": 1.0,
+    "f1": 0.933,
+    "precision_ci95": [
+     0.69,
+     0.957
+    ],
+    "recall_ci95": [
+     0.845,
+     1.0
+    ],
+    "support": 21
+   },
+   "finance": {
+    "precision": 1.0,
+    "recall": 0.846,
+    "f1": 0.917,
+    "precision_ci95": [
+     0.741,
+     1.0
+    ],
+    "recall_ci95": [
+     0.578,
+     0.957
+    ],
+    "support": 13
+   },
+   "marketing": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "precision_ci95": [
+     0.0,
+     0.561
+    ],
+    "recall_ci95": [
+     0.0,
+     1.0
+    ],
+    "support": 0
+   },
+   "mobile": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.207,
+     1.0
+    ],
+    "recall_ci95": [
+     0.207,
+     1.0
+    ],
+    "support": 1
+   },
+   "security": {
+    "precision": 0.647,
+    "recall": 0.917,
+    "f1": 0.759,
+    "precision_ci95": [
+     0.413,
+     0.827
+    ],
+    "recall_ci95": [
+     0.646,
+     0.985
+    ],
+    "support": 12
+   },
+   "testing": {
+    "precision": 0.8,
+    "recall": 0.8,
+    "f1": 0.8,
+    "precision_ci95": [
+     0.376,
+     0.964
+    ],
+    "recall_ci95": [
+     0.376,
+     0.964
+    ],
+    "support": 5
+   },
+   "web_frontend": {
+    "precision": 0.75,
+    "recall": 1.0,
+    "f1": 0.857,
+    "precision_ci95": [
+     0.301,
+     0.954
+    ],
+    "recall_ci95": [
+     0.439,
+     1.0
+    ],
+    "support": 3
    }
   },
   "top_false_positives": [
@@ -66,15 +351,15 @@
     2
    ],
    [
+    "api_integration",
+    1
+   ],
+   [
     "data_structures_algorithms",
     1
    ],
    [
     "test_design_techniques",
-    1
-   ],
-   [
-    "api_integration",
     1
    ],
    [
@@ -86,15 +371,15 @@
     1
    ],
    [
-    "siem_monitoring",
-    1
-   ],
-   [
     "security_frameworks_compliance",
     1
    ],
    [
-    "penetration_testing",
+    "siem_monitoring",
+    1
+   ],
+   [
+    "networking_fundamentals",
     1
    ]
   ],
@@ -124,15 +409,15 @@
     1
    ],
    [
-    "testing_uat",
-    1
-   ],
-   [
     "requirements_documentation",
     1
    ],
    [
     "wireframing",
+    1
+   ],
+   [
+    "testing_uat",
     1
    ],
    [
@@ -144,76 +429,406 @@
  },
  "heldout": {
   "n_postings": 26,
+  "gold_file": "gold_heldout.json",
+  "gold_sha": "7a7b67a79a7e",
   "overall": {
    "precision": 0.855,
    "recall": 0.917,
-   "f1": 0.885
+   "f1": 0.885,
+   "precision_ci95": [
+    0.78,
+    0.907
+   ],
+   "recall_ci95": [
+    0.85,
+    0.956
+   ],
+   "support": 109,
+   "f1_ci95": [
+    0.85,
+    0.915
+   ]
   },
   "per_role": {
    "accountant": {
     "precision": 1.0,
     "recall": 0.833,
-    "f1": 0.909
+    "f1": 0.909,
+    "precision_ci95": [
+     0.722,
+     1.0
+    ],
+    "recall_ci95": [
+     0.552,
+     0.953
+    ],
+    "support": 12
    },
    "backend_developer": {
     "precision": 0.8,
     "recall": 1.0,
-    "f1": 0.889
+    "f1": 0.889,
+    "precision_ci95": [
+     0.49,
+     0.943
+    ],
+    "recall_ci95": [
+     0.676,
+     1.0
+    ],
+    "support": 8
    },
    "business_analyst": {
     "precision": 1.0,
     "recall": 0.769,
-    "f1": 0.87
+    "f1": 0.87,
+    "precision_ci95": [
+     0.722,
+     1.0
+    ],
+    "recall_ci95": [
+     0.497,
+     0.918
+    ],
+    "support": 13
    },
    "cybersecurity_analyst": {
     "precision": 0.7,
     "recall": 0.875,
-    "f1": 0.778
+    "f1": 0.778,
+    "precision_ci95": [
+     0.397,
+     0.892
+    ],
+    "recall_ci95": [
+     0.529,
+     0.978
+    ],
+    "support": 8
    },
    "data_analyst": {
     "precision": 0.8,
     "recall": 1.0,
-    "f1": 0.889
+    "f1": 0.889,
+    "precision_ci95": [
+     0.49,
+     0.943
+    ],
+    "recall_ci95": [
+     0.676,
+     1.0
+    ],
+    "support": 8
    },
    "data_engineer": {
     "precision": 0.833,
     "recall": 0.714,
-    "f1": 0.769
+    "f1": 0.769,
+    "precision_ci95": [
+     0.436,
+     0.97
+    ],
+    "recall_ci95": [
+     0.359,
+     0.918
+    ],
+    "support": 7
    },
    "data_scientist": {
     "precision": 0.875,
     "recall": 1.0,
-    "f1": 0.933
+    "f1": 0.933,
+    "precision_ci95": [
+     0.529,
+     0.978
+    ],
+    "recall_ci95": [
+     0.646,
+     1.0
+    ],
+    "support": 7
    },
    "devops_engineer": {
     "precision": 0.786,
     "recall": 1.0,
-    "f1": 0.88
+    "f1": 0.88,
+    "precision_ci95": [
+     0.524,
+     0.924
+    ],
+    "recall_ci95": [
+     0.741,
+     1.0
+    ],
+    "support": 11
    },
    "digital_marketing": {
     "precision": 1.0,
     "recall": 1.0,
-    "f1": 1.0
+    "f1": 1.0,
+    "precision_ci95": [
+     0.61,
+     1.0
+    ],
+    "recall_ci95": [
+     0.61,
+     1.0
+    ],
+    "support": 6
    },
    "frontend_developer": {
     "precision": 0.923,
     "recall": 1.0,
-    "f1": 0.96
+    "f1": 0.96,
+    "precision_ci95": [
+     0.667,
+     0.986
+    ],
+    "recall_ci95": [
+     0.758,
+     1.0
+    ],
+    "support": 12
    },
    "fullstack_developer": {
     "precision": 0.889,
     "recall": 0.889,
-    "f1": 0.889
+    "f1": 0.889,
+    "precision_ci95": [
+     0.565,
+     0.98
+    ],
+    "recall_ci95": [
+     0.565,
+     0.98
+    ],
+    "support": 9
    },
    "mobile_developer": {
     "precision": 0.857,
     "recall": 1.0,
-    "f1": 0.923
+    "f1": 0.923,
+    "precision_ci95": [
+     0.487,
+     0.974
+    ],
+    "recall_ci95": [
+     0.61,
+     1.0
+    ],
+    "support": 6
    },
    "qa_engineer": {
     "precision": 0.5,
     "recall": 1.0,
-    "f1": 0.667
+    "f1": 0.667,
+    "precision_ci95": [
+     0.15,
+     0.85
+    ],
+    "recall_ci95": [
+     0.342,
+     1.0
+    ],
+    "support": 2
+   }
+  },
+  "per_cluster": {
+   "backend": {
+    "precision": 0.871,
+    "recall": 1.0,
+    "f1": 0.931,
+    "precision_ci95": [
+     0.711,
+     0.949
+    ],
+    "recall_ci95": [
+     0.875,
+     1.0
+    ],
+    "support": 27
+   },
+   "bi_tools": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.676,
+     1.0
+    ],
+    "recall_ci95": [
+     0.676,
+     1.0
+    ],
+    "support": 8
+   },
+   "business_analysis": {
+    "precision": 0.75,
+    "recall": 0.75,
+    "f1": 0.75,
+    "precision_ci95": [
+     0.409,
+     0.929
+    ],
+    "recall_ci95": [
+     0.409,
+     0.929
+    ],
+    "support": 8
+   },
+   "data_analytics": {
+    "precision": 0.692,
+    "recall": 0.9,
+    "f1": 0.783,
+    "precision_ci95": [
+     0.424,
+     0.873
+    ],
+    "recall_ci95": [
+     0.596,
+     0.982
+    ],
+    "support": 10
+   },
+   "data_eng": {
+    "precision": 0.667,
+    "recall": 0.5,
+    "f1": 0.571,
+    "precision_ci95": [
+     0.208,
+     0.939
+    ],
+    "recall_ci95": [
+     0.15,
+     0.85
+    ],
+    "support": 4
+   },
+   "data_ml": {
+    "precision": 0.667,
+    "recall": 1.0,
+    "f1": 0.8,
+    "precision_ci95": [
+     0.208,
+     0.939
+    ],
+    "recall_ci95": [
+     0.342,
+     1.0
+    ],
+    "support": 2
+   },
+   "design": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.207,
+     1.0
+    ],
+    "recall_ci95": [
+     0.207,
+     1.0
+    ],
+    "support": 1
+   },
+   "devops": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.701,
+     1.0
+    ],
+    "recall_ci95": [
+     0.701,
+     1.0
+    ],
+    "support": 9
+   },
+   "finance": {
+    "precision": 1.0,
+    "recall": 0.778,
+    "f1": 0.875,
+    "precision_ci95": [
+     0.646,
+     1.0
+    ],
+    "recall_ci95": [
+     0.453,
+     0.937
+    ],
+    "support": 9
+   },
+   "marketing": {
+    "precision": 0.917,
+    "recall": 0.917,
+    "f1": 0.917,
+    "precision_ci95": [
+     0.646,
+     0.985
+    ],
+    "recall_ci95": [
+     0.646,
+     0.985
+    ],
+    "support": 12
+   },
+   "mobile": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.342,
+     1.0
+    ],
+    "recall_ci95": [
+     0.342,
+     1.0
+    ],
+    "support": 2
+   },
+   "security": {
+    "precision": 0.727,
+    "recall": 0.889,
+    "f1": 0.8,
+    "precision_ci95": [
+     0.434,
+     0.903
+    ],
+    "recall_ci95": [
+     0.565,
+     0.98
+    ],
+    "support": 9
+   },
+   "testing": {
+    "precision": 0.667,
+    "recall": 1.0,
+    "f1": 0.8,
+    "precision_ci95": [
+     0.208,
+     0.939
+    ],
+    "recall_ci95": [
+     0.342,
+     1.0
+    ],
+    "support": 2
+   },
+   "web_frontend": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.61,
+     1.0
+    ],
+    "recall_ci95": [
+     0.61,
+     1.0
+    ],
+    "support": 6
    }
   },
   "top_false_positives": [
@@ -242,11 +857,11 @@
     1
    ],
    [
-    "data_modeling",
+    "dashboard_reporting",
     1
    ],
    [
-    "dashboard_reporting",
+    "data_modeling",
     1
    ],
    [
@@ -276,11 +891,11 @@
     1
    ],
    [
-    "diagramming_tools",
+    "requirements_documentation",
     1
    ],
    [
-    "requirements_documentation",
+    "diagramming_tools",
     1
    ],
    [
@@ -308,81 +923,420 @@
  },
  "blind": {
   "n_postings": 26,
+  "gold_file": "gold_blind.json",
+  "gold_sha": "6109aca0cc28",
   "overall": {
    "precision": 0.828,
    "recall": 0.889,
-   "f1": 0.857
+   "f1": 0.857,
+   "precision_ci95": [
+    0.749,
+    0.886
+   ],
+   "recall_ci95": [
+    0.816,
+    0.935
+   ],
+   "support": 108,
+   "f1_ci95": [
+    0.777,
+    0.918
+   ]
   },
   "per_role": {
    "accountant": {
     "precision": 0.778,
     "recall": 1.0,
-    "f1": 0.875
+    "f1": 0.875,
+    "precision_ci95": [
+     0.453,
+     0.937
+    ],
+    "recall_ci95": [
+     0.646,
+     1.0
+    ],
+    "support": 7
    },
    "backend_developer": {
     "precision": 1.0,
     "recall": 1.0,
-    "f1": 1.0
+    "f1": 1.0,
+    "precision_ci95": [
+     0.796,
+     1.0
+    ],
+    "recall_ci95": [
+     0.796,
+     1.0
+    ],
+    "support": 15
    },
    "business_analyst": {
     "precision": 0.75,
     "recall": 0.923,
-    "f1": 0.828
+    "f1": 0.828,
+    "precision_ci95": [
+     0.505,
+     0.898
+    ],
+    "recall_ci95": [
+     0.667,
+     0.986
+    ],
+    "support": 13
    },
    "cybersecurity_analyst": {
     "precision": 0.25,
     "recall": 0.5,
-    "f1": 0.333
+    "f1": 0.333,
+    "precision_ci95": [
+     0.046,
+     0.699
+    ],
+    "recall_ci95": [
+     0.095,
+     0.905
+    ],
+    "support": 2
    },
    "data_analyst": {
     "precision": 1.0,
     "recall": 0.889,
-    "f1": 0.941
+    "f1": 0.941,
+    "precision_ci95": [
+     0.676,
+     1.0
+    ],
+    "recall_ci95": [
+     0.565,
+     0.98
+    ],
+    "support": 9
    },
    "data_engineer": {
     "precision": 0.909,
     "recall": 0.833,
-    "f1": 0.87
+    "f1": 0.87,
+    "precision_ci95": [
+     0.623,
+     0.984
+    ],
+    "recall_ci95": [
+     0.552,
+     0.953
+    ],
+    "support": 12
    },
    "data_scientist": {
     "precision": 0.5,
     "recall": 0.667,
-    "f1": 0.571
+    "f1": 0.571,
+    "precision_ci95": [
+     0.215,
+     0.785
+    ],
+    "recall_ci95": [
+     0.3,
+     0.903
+    ],
+    "support": 6
    },
    "devops_engineer": {
     "precision": 1.0,
     "recall": 0.667,
-    "f1": 0.8
+    "f1": 0.8,
+    "precision_ci95": [
+     0.342,
+     1.0
+    ],
+    "recall_ci95": [
+     0.208,
+     0.939
+    ],
+    "support": 3
    },
    "digital_marketing": {
     "precision": 0.0,
     "recall": 0.0,
-    "f1": 0.0
+    "f1": 0.0,
+    "precision_ci95": [
+     0.0,
+     0.793
+    ],
+    "recall_ci95": [
+     0.0,
+     0.793
+    ],
+    "support": 1
    },
    "frontend_developer": {
     "precision": 1.0,
     "recall": 0.857,
-    "f1": 0.923
+    "f1": 0.923,
+    "precision_ci95": [
+     0.61,
+     1.0
+    ],
+    "recall_ci95": [
+     0.487,
+     0.974
+    ],
+    "support": 7
    },
    "fullstack_developer": {
     "precision": 1.0,
     "recall": 1.0,
-    "f1": 1.0
+    "f1": 1.0,
+    "precision_ci95": [
+     0.741,
+     1.0
+    ],
+    "recall_ci95": [
+     0.741,
+     1.0
+    ],
+    "support": 11
    },
    "mobile_developer": {
     "precision": 0.8,
     "recall": 0.667,
-    "f1": 0.727
+    "f1": 0.727,
+    "precision_ci95": [
+     0.376,
+     0.964
+    ],
+    "recall_ci95": [
+     0.3,
+     0.903
+    ],
+    "support": 6
    },
    "qa_engineer": {
     "precision": 0.8,
     "recall": 1.0,
-    "f1": 0.889
+    "f1": 0.889,
+    "precision_ci95": [
+     0.548,
+     0.93
+    ],
+    "recall_ci95": [
+     0.758,
+     1.0
+    ],
+    "support": 12
    },
    "ui_ux_designer": {
     "precision": 0.8,
     "recall": 1.0,
-    "f1": 0.889
+    "f1": 0.889,
+    "precision_ci95": [
+     0.376,
+     0.964
+    ],
+    "recall_ci95": [
+     0.51,
+     1.0
+    ],
+    "support": 4
+   }
+  },
+  "per_cluster": {
+   "backend": {
+    "precision": 0.857,
+    "recall": 0.857,
+    "f1": 0.857,
+    "precision_ci95": [
+     0.685,
+     0.943
+    ],
+    "recall_ci95": [
+     0.685,
+     0.943
+    ],
+    "support": 28
+   },
+   "bi_tools": {
+    "precision": 0.667,
+    "recall": 1.0,
+    "f1": 0.8,
+    "precision_ci95": [
+     0.208,
+     0.939
+    ],
+    "recall_ci95": [
+     0.342,
+     1.0
+    ],
+    "support": 2
+   },
+   "business_analysis": {
+    "precision": 0.769,
+    "recall": 0.909,
+    "f1": 0.833,
+    "precision_ci95": [
+     0.497,
+     0.918
+    ],
+    "recall_ci95": [
+     0.623,
+     0.984
+    ],
+    "support": 11
+   },
+   "data_analytics": {
+    "precision": 0.75,
+    "recall": 0.882,
+    "f1": 0.811,
+    "precision_ci95": [
+     0.531,
+     0.888
+    ],
+    "recall_ci95": [
+     0.657,
+     0.967
+    ],
+    "support": 17
+   },
+   "data_eng": {
+    "precision": 1.0,
+    "recall": 0.8,
+    "f1": 0.889,
+    "precision_ci95": [
+     0.51,
+     1.0
+    ],
+    "recall_ci95": [
+     0.376,
+     0.964
+    ],
+    "support": 5
+   },
+   "data_ml": {
+    "precision": 0.75,
+    "recall": 0.75,
+    "f1": 0.75,
+    "precision_ci95": [
+     0.301,
+     0.954
+    ],
+    "recall_ci95": [
+     0.301,
+     0.954
+    ],
+    "support": 4
+   },
+   "design": {
+    "precision": 0.667,
+    "recall": 1.0,
+    "f1": 0.8,
+    "precision_ci95": [
+     0.3,
+     0.903
+    ],
+    "recall_ci95": [
+     0.51,
+     1.0
+    ],
+    "support": 4
+   },
+   "devops": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.741,
+     1.0
+    ],
+    "recall_ci95": [
+     0.741,
+     1.0
+    ],
+    "support": 11
+   },
+   "finance": {
+    "precision": 0.875,
+    "recall": 1.0,
+    "f1": 0.933,
+    "precision_ci95": [
+     0.529,
+     0.978
+    ],
+    "recall_ci95": [
+     0.646,
+     1.0
+    ],
+    "support": 7
+   },
+   "marketing": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "precision_ci95": [
+     0.0,
+     1.0
+    ],
+    "recall_ci95": [
+     0.0,
+     0.793
+    ],
+    "support": 1
+   },
+   "mobile": {
+    "precision": 0.5,
+    "recall": 0.667,
+    "f1": 0.571,
+    "precision_ci95": [
+     0.15,
+     0.85
+    ],
+    "recall_ci95": [
+     0.208,
+     0.939
+    ],
+    "support": 3
+   },
+   "security": {
+    "precision": 1.0,
+    "recall": 0.5,
+    "f1": 0.667,
+    "precision_ci95": [
+     0.207,
+     1.0
+    ],
+    "recall_ci95": [
+     0.095,
+     0.905
+    ],
+    "support": 2
+   },
+   "testing": {
+    "precision": 0.875,
+    "recall": 1.0,
+    "f1": 0.933,
+    "precision_ci95": [
+     0.529,
+     0.978
+    ],
+    "recall_ci95": [
+     0.646,
+     1.0
+    ],
+    "support": 7
+   },
+   "web_frontend": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.61,
+     1.0
+    ],
+    "recall_ci95": [
+     0.61,
+     1.0
+    ],
+    "support": 6
    }
   },
   "top_false_positives": [
@@ -473,6 +1427,10 @@
     1
    ]
   ],
+  "extractor": "lexicon"
+ },
+ "provenance": {
+  "taxonomy_sha": "d887be8bb360",
   "extractor": "lexicon"
  }
 }

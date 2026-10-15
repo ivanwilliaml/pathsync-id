@@ -8,7 +8,18 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from pathsync.assessment import item_bank
-from pathsync.config import EMBEDDING_MODEL, GRADE_SCORES, LLM_MODEL, MODELS_DIR, ROLES
+from pathsync.config import (
+    BKT_GUESS,
+    BKT_SLIP,
+    BKT_TRANSIT,
+    EMBEDDING_MODEL,
+    GRADE_SCORES,
+    LLM_MODEL,
+    MODELS_DIR,
+    ROLES,
+    SIM_AUTO,
+    SIM_REVIEW,
+)
 from pathsync.db import Expert, GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot, utcnow
 from pathsync.engine import graph_from_db
 from pathsync.extraction.llm import llm_configured
@@ -54,6 +65,8 @@ def model_card(s: Session) -> dict:
     gold = MODELS_DIR / "extractor_gold_eval.json"
     ev = json.loads(gold.read_text(encoding="utf-8")) if gold.exists() else {}
     blind = (ev.get("blind") or {}).get("overall")
+    mpath = MODELS_DIR / "metrics.json"     # plan D2: the single source of reported numbers (python -m pipeline.report)
+    metrics = json.loads(mpath.read_text(encoding="utf-8")) if mpath.exists() else {}
     return {
         "decision_model": {"type": "linear learning-to-rank (eq. 4), not an LLM",
                            "name": ranker.name if ranker else "Formula (5)", "weights": ranker.weights if ranker else None,
@@ -62,14 +75,17 @@ def model_card(s: Session) -> dict:
                            "runtime_provider": "Anthropic Claude API (structured output, taxonomy-constrained)",
                            "offline_run": offline or "Qwen3-8B (Apache-2.0), Kaggle T4 x2",
                            "active_for_market_map": "llm" if llm_configured() else "lexicon",
-                           "gates": "quote must exist verbatim in the posting; embedding normalisation 0.85 / 0.70"},
+                           "gates": f"quote must exist verbatim in the posting; embedding normalisation {SIM_AUTO} / {SIM_REVIEW}"},
         "embedding_model": {"name": EMBEDDING_MODEL, "use": "map free-text skill phrases and course names to the taxonomy"},
-        "knowledge_tracing": {"type": "Bayesian knowledge tracing (eq. 3)", "slip": 0.10, "guess": 0.25, "learn": 0.10},
+        "knowledge_tracing": {"type": "Bayesian knowledge tracing (eq. 3)", "slip": BKT_SLIP, "guess": BKT_GUESS, "learn": BKT_TRANSIT,
+                              "calibrated": False},
         "llm_is_never_used_for": ["choosing priorities", "estimating mastery", "ordering the path"],
         # what is validated today, so the UI can say "Beta" honestly (PM audit AI-6, AI-7)
         "validation": {"real_experts": s.scalar(select(func.count(Expert.id)).where(Expert.kind != "simulasi")) or 0,
                        "ranker_trained_on": "simulated experts" if ranker and "simulated" in (ranker.name or "").lower() else "expert rankings",
                        "extractor_blind_eval": ({**blind, "n_postings": ev["blind"]["n_postings"], "annotators": 1} if blind else None),
+                       "metrics_file": metrics.get("generated_at"),
+                       "extractor_target_met_at_lower_ci": ((metrics.get("extraction") or {}).get("target_met") or {}).get("lower_ci_bound"),
                        "status": "beta"},
         "planned": ["LLM-based reading of postings (Claude API) once the gold annotation set is complete",
                     "Ranker re-trained on a real expert panel"],

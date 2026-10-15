@@ -1,0 +1,302 @@
+{
+ "generated_at": "2026-10-15T16:14:40+00:00",
+ "inputs": {
+  "taxonomy_sha": "d887be8bb360",
+  "graph_sha": "d399a628488d"
+ },
+ "constants": {
+  "sim_auto": 0.85,
+  "sim_review": 0.7,
+  "bkt": {
+   "slip": 0.1,
+   "guess": 0.25,
+   "transit": 0.1
+  }
+ },
+ "extraction": {
+  "extractor": "lexicon",
+  "sets": {
+   "dev": {
+    "n_postings": 24,
+    "precision": 0.844,
+    "precision_ci95": [
+     0.782,
+     0.89
+    ],
+    "recall": 0.918,
+    "recall_ci95": [
+     0.865,
+     0.952
+    ],
+    "f1": 0.88,
+    "f1_ci95": [
+     0.839,
+     0.916
+    ],
+    "gold_sha": "fd1d3a9c620a",
+    "tuned_on": true
+   },
+   "heldout": {
+    "n_postings": 26,
+    "precision": 0.855,
+    "precision_ci95": [
+     0.78,
+     0.907
+    ],
+    "recall": 0.917,
+    "recall_ci95": [
+     0.85,
+     0.956
+    ],
+    "f1": 0.885,
+    "f1_ci95": [
+     0.85,
+     0.915
+    ],
+    "gold_sha": "7a7b67a79a7e",
+    "tuned_on": false
+   },
+   "blind": {
+    "n_postings": 26,
+    "precision": 0.828,
+    "precision_ci95": [
+     0.749,
+     0.886
+    ],
+    "recall": 0.889,
+    "recall_ci95": [
+     0.816,
+     0.935
+    ],
+    "f1": 0.857,
+    "f1_ci95": [
+     0.777,
+     0.918
+    ],
+    "gold_sha": "6109aca0cc28",
+    "tuned_on": false
+   }
+  },
+  "annotators": 1,
+  "target_precision": 0.8,
+  "target_met": {
+   "point_estimate": true,
+   "lower_ci_bound": false
+  },
+  "note": "dev was used to tune aliases and must not be quoted as performance; blind is the reportable set"
+ },
+ "assessment_items": {
+  "generated": "2026-10-12",
+  "n_items": 570,
+  "language": "en",
+  "answer_pattern_accuracy": 0.37,
+  "chance": 0.25,
+  "random_p95": 0.295,
+  "note": "accuracy of a model that sees only option surface features; at or below random_p95 means no usable cue"
+ },
+ "ranker": {
+  "generated": "2026-10-12T23:51:31",
+  "role": "business_analyst",
+  "n_scenarios": 45,
+  "experts": "simulated",
+  "real_experts": 0,
+  "active_model": "LTR v1 (trained on simulated experts)",
+  "active_weights": {
+   "G": 2.8361,
+   "R": 3.0,
+   "K": -0.6544,
+   "D": 3.0,
+   "T": 1.1028,
+   "U": 2.2883,
+   "B": 0.3885
+  },
+  "ndcg5_by_expert_condition": {
+   "titik_hambat": {
+    "model": {
+     "mean": 0.9767,
+     "ci95": [
+      0.9612,
+      0.9904
+     ],
+     "n": 45
+    },
+    "kesenjangan_terbesar": {
+     "mean": 0.7325,
+     "ci95": [
+      0.6392,
+      0.816
+     ],
+     "n": 45
+    },
+    "kesenjangan_x_permintaan": {
+     "mean": 0.871,
+     "ci95": [
+      0.8129,
+      0.9198
+     ],
+     "n": 45
+    },
+    "formula5": {
+     "mean": 0.9762,
+     "ci95": [
+      0.9629,
+      0.9881
+     ],
+     "n": 45
+    }
+   },
+   "kesenjangan_permintaan": {
+    "model": {
+     "mean": 0.9606,
+     "ci95": [
+      0.9403,
+      0.9792
+     ],
+     "n": 45
+    },
+    "kesenjangan_terbesar": {
+     "mean": 0.8497,
+     "ci95": [
+      0.7739,
+      0.9143
+     ],
+     "n": 45
+    },
+    "kesenjangan_x_permintaan": {
+     "mean": 0.961,
+     "ci95": [
+      0.9406,
+      0.9797
+     ],
+     "n": 45
+    },
+    "formula5": {
+     "mean": 0.9003,
+     "ci95": [
+      0.8524,
+      0.9394
+     ],
+     "n": 45
+    }
+   },
+   "campuran": {
+    "model": {
+     "mean": 0.955,
+     "ci95": [
+      0.9337,
+      0.9753
+     ],
+     "n": 45
+    },
+    "kesenjangan_terbesar": {
+     "mean": 0.7466,
+     "ci95": [
+      0.6468,
+      0.8287
+     ],
+     "n": 45
+    },
+    "kesenjangan_x_permintaan": {
+     "mean": 0.8826,
+     "ci95": [
+      0.8377,
+      0.9236
+     ],
+     "n": 45
+    },
+    "formula5": {
+     "mean": 0.9589,
+     "ci95": [
+      0.9376,
+      0.978
+     ],
+     "n": 45
+    }
+   }
+  },
+  "llm_baseline": "tidak dijalankan (urutan LLM luring tidak lengkap/kedaluwarsa; ekspor ulang skenario)",
+  "note": "simulated experts rank with a known rule; this tests feasibility of the method, not agreement with people"
+ },
+ "market": {
+  "roles": {
+   "data_engineer": {
+    "postings_in_window": 13,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "data_scientist": {
+    "postings_in_window": 16,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "data_analyst": {
+    "postings_in_window": 34,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "business_analyst": {
+    "postings_in_window": 50,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "cybersecurity_analyst": {
+    "postings_in_window": 20,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "devops_engineer": {
+    "postings_in_window": 17,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "qa_engineer": {
+    "postings_in_window": 22,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "mobile_developer": {
+    "postings_in_window": 25,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "fullstack_developer": {
+    "postings_in_window": 30,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "frontend_developer": {
+    "postings_in_window": 14,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "backend_developer": {
+    "postings_in_window": 53,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "ui_ux_designer": {
+    "postings_in_window": 6,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "digital_marketing": {
+    "postings_in_window": 133,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   },
+   "accountant": {
+    "postings_in_window": 130,
+    "snapshot": "2026-10-01-lexicon",
+    "reference_date": "2026-10-01"
+   }
+  },
+  "total_postings_in_window": 563
+ },
+ "validation": {
+  "graph_edges": {
+   "draft": 137
+  },
+  "annotators_in_app": 0,
+  "annotated_postings_in_app": 0
+ }
+}
