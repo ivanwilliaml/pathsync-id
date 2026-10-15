@@ -24,6 +24,7 @@ elif HAVE_DB:
         _src.backup(_dst)
     os.environ["PATHSYNC_DATABASE_URL"] = f"sqlite:///{(_TMP_DIR / 'pathsync.db').as_posix()}"
 os.environ["PATHSYNC_WARMUP"] = "0"
+os.environ["PATHSYNC_RETENTION"] = "0"     # tests call pathsync.retention.purge directly
 os.environ.setdefault("PATHSYNC_EXTRACTOR", "lexicon")
 
 

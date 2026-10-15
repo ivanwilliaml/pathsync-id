@@ -22,7 +22,7 @@ from pathsync.embeddings import WARM
 from pathsync.engine import ensure_seed
 from pathsync.security import ensure_admin_token
 
-from .routers import admin, advisor, assessment, classroom, experts, platform, public, students
+from .routers import admin, advisor, assessment, classroom, demo, experts, platform, public, students
 
 log = logging.getLogger("pathsync")
 logging.basicConfig(level=os.getenv("PATHSYNC_LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(message)s")
@@ -54,6 +54,20 @@ def _warmup():
         WARM.set()
 
 
+def _retention_loop():
+    """Apply the retention periods once a day (plan B3). Idempotent, so several workers running it is harmless."""
+    from pathsync.retention import purge
+    while True:
+        try:
+            with get_session() as s:
+                counts = purge(s)
+            if any(counts.values()):
+                log.info("retention purge: %s", counts)
+        except Exception as e:  # pragma: no cover - retried tomorrow
+            log.warning("retention purge failed: %s", e)
+        time.sleep(86400)
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     init_db()
@@ -69,6 +83,8 @@ async def lifespan(_app: FastAPI):
         threading.Thread(target=_warmup, daemon=True).start()
     else:
         WARM.set()
+    if os.getenv("PATHSYNC_RETENTION", "1") != "0":
+        threading.Thread(target=_retention_loop, daemon=True).start()
     yield
 
 
@@ -107,6 +123,6 @@ async def unhandled(request: Request, exc: Exception):   # pragma: no cover - la
                         content={"detail": f"Something went wrong on the server. Try again in a moment. (ref {rid})"})
 
 
-for r in (public, students, assessment, classroom, experts, advisor, admin, platform):
+for r in (public, students, assessment, classroom, experts, advisor, admin, platform, demo):
     app.include_router(r.router)
 app.include_router(platform.admin)

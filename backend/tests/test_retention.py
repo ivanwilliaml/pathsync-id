@@ -79,3 +79,20 @@ def test_damaged_or_oversized_documents_are_refused_cleanly(client):
         z.writestr("word/document.xml", b"0" * (41 * 1024 * 1024))     # ~40 KB compressed, 41 MB expanded
     r = client.post(url, headers=h, files={"file": ("t.docx", bomb.getvalue(), "application/octet-stream")})
     assert r.status_code == 413
+
+
+def test_demo_profile_has_a_route_and_expires(client):
+    from pathsync import retention as R
+    from pathsync.db import Student, get_session, utcnow
+
+    j = client.post("/api/demo/profile").json()
+    h = {"Authorization": f"Bearer {j['token']}"}
+    d = client.get(f"/api/students/{j['id']}/dashboard", headers=h).json()
+    assert d["student"]["preferences"]["demo"] is True and d["ranking"] and d["path"]
+    assert any(c["measured"] for c in d["coverage_by_cluster"].values())
+    with get_session() as s:
+        s.get(Student, j["id"]).created_at = utcnow() - timedelta(days=R.DEMO_PROFILE_DAYS + 1)
+        s.commit()
+        R.purge(s)
+        s.expire_all()
+        assert s.get(Student, j["id"]) is None

@@ -96,7 +96,7 @@ def research_consent(body: ResearchConsent, st: Student = Depends(student_access
 # ------------------------------------------------------------------ analytics
 EVENTS = {"signup", "evidence_saved", "check_started", "check_completed", "next_step_viewed", "why_opened",
           "material_clicked", "reassess_started", "reassess_passed", "key_saved", "key_restored", "page_view",
-          "plan_saved", "reflection_saved", "trace_opened"}
+          "plan_saved", "reflection_saved", "trace_opened", "demo_started"}
 
 
 class EventIn(BaseModel):

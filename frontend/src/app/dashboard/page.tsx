@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, ChevronRight, Clock, Lock } from "lucide-react";
 import { api, FEATURE_LABELS, type Competency, type Dashboard, type PathStep, type RankRow } from "@/lib/api";
@@ -103,6 +104,7 @@ function DashboardView({ sid }: { sid: string }) {
         </div>
       </section>
 
+      {d.student.preferences.demo ? <DemoGuide topId={top?.skill_id} topName={top ? titleCase(top.name) : undefined} /> : null}
       {d.study_arm ? <StudyPlanCard sid={sid} /> : null}
       {pulseReady ? <ClarityPulse sid={sid} /> : null}
       {f.evidence && d.confirmations.length > 0 ? <Attention items={d.confirmations} onOpen={open} /> : null}
@@ -253,6 +255,42 @@ function PriorityRow({ r, comp, onOpen }: { r: RankRow; comp?: Competency; onOpe
         <ChevronRight className="size-5 text-ink/40" aria-hidden="true" />
       </button>
     </li>
+  );
+}
+
+/** Shown only on one-click demo profiles: what to try, in the order that shows the adaptive cycle. */
+function DemoGuide({ topId, topName }: { topId?: string; topName?: string }) {
+  return (
+    <section aria-labelledby="demo-guide" className="rounded-2xl border border-indigo/30 bg-card p-5">
+      <h2 id="demo-guide" className="font-semibold text-ink">
+        You are looking at a demo student
+      </h2>
+      <p className="mt-1 text-sm text-ink/75">
+        Rani studies Information Systems (semester 6) and wants to become a Business Analyst. Her transcript is already in. Three
+        things to try:
+      </p>
+      <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-ink/80">
+        <li>Open the first priority and read why it comes first: the job-ad quotes, what it unlocks, and what would change the order.</li>
+        <li>
+          {topId ? (
+            <Link href={`/assessment/${topId}`} className="font-medium text-indigo underline-offset-4 hover:underline">
+              Take the short check for {topName}
+            </Link>
+          ) : (
+            "Take a short skill check"
+          )}{" "}
+          and watch the route reorder from the new evidence.
+        </li>
+        <li>
+          Open{" "}
+          <Link href="/history" className="font-medium text-indigo underline-offset-4 hover:underline">
+            Path History
+          </Link>{" "}
+          to see every change and the reason for it.
+        </li>
+      </ol>
+      <p className="mt-3 text-xs text-muted-foreground">Demo profiles are deleted automatically after 2 days and are never used in research.</p>
+    </section>
   );
 }
 

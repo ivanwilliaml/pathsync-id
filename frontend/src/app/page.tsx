@@ -35,6 +35,21 @@ export default function Landing() {
     if (id) router.replace("/dashboard");
   }, [ready, id, checked, router]);
 
+  // one-click demo: a sample Information Systems student with a transcript already in (deleted after 2 days)
+  const [demoBusy, setDemoBusy] = useState(false);
+  const startDemo = async () => {
+    setDemoBusy(true);
+    try {
+      const r = await api.post<{ id: string; token: string }>("/demo/profile");
+      setStudent({ id: r.id, token: r.token });
+      track("demo_started");
+      router.push("/dashboard");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Couldn't start the demo. Try again in a moment.");
+      setDemoBusy(false);
+    }
+  };
+
   const n = meta.data?.n_postings;
   useEffect(() => trackOnce("page_view", "landing"), []);
   return (
@@ -70,6 +85,14 @@ export default function Landing() {
               Explore the Job Market
             </LinkButton>
           </div>
+          <button
+            type="button"
+            onClick={startDemo}
+            disabled={demoBusy}
+            className="mt-4 text-sm font-medium text-indigo underline-offset-4 hover:underline disabled:opacity-60"
+          >
+            {demoBusy ? "Preparing a demo profile…" : "Or look around first with a demo student profile →"}
+          </button>
           <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink/70">
             <li className="flex items-center gap-2">
               <ShieldCheck className="size-4 text-mint" aria-hidden="true" /> Free, no email or password

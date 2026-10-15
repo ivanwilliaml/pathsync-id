@@ -33,6 +33,7 @@ CLIENT_ERROR_DAYS = 90             # automatic client error reports (user-writte
 AUDIT_LOG_DAYS = 365               # staff activity log
 TOKEN_GRACE_DAYS = 30              # expired or revoked staff tokens are removed after this grace period
 SESSION_GRACE_DAYS = 7             # unsubmitted assessment sessions, counted from their expiry
+DEMO_PROFILE_DAYS = 2              # one-click demo profiles (api.routers.demo)
 
 STUDENT_TABLES = (AssessmentResponse, AssessmentSession, RecommendationHistory, CourseEnrollment, WeeklyPlan, Pulse,
                   StudyPlan, Evidence)
@@ -58,6 +59,10 @@ def purge(s: Session, now: datetime | None = None, dry_run: bool = False) -> dic
 
     last_active = func.coalesce(Student.last_seen_at, Student.created_at)
     inactive = list(s.scalars(select(Student.id).where(last_active < ago(INACTIVE_PROFILE_DAYS))))
+    # demo profiles carry preferences["demo"]; JSON paths differ per database, so filter the few candidates in Python
+    inactive += [st.id for st in s.scalars(select(Student).where(Student.consent_version == "demo",
+                                                                 Student.created_at < ago(DEMO_PROFILE_DAYS)))
+                 if (st.preferences or {}).get("demo") and st.id not in inactive]
     rules = {
         "product_events": (ProductEvent, ProductEvent.created_at < ago(PRODUCT_EVENT_DAYS)),
         "client_errors": (Feedback, (Feedback.kind == "client_error") & (Feedback.created_at < ago(CLIENT_ERROR_DAYS))),
