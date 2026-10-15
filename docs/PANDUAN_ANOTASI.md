@@ -46,3 +46,13 @@ Bila ragu antara dua label, pilih yang paling spesifik dan catat id lowongannya 
 - Kappa antar-anotator ≥ 0,70. Bila lebih rendah, panduan ini diperbaiki dan lowongan yang bermasalah dilabeli ulang.
 - Alias, prompt, dan ambang hanya boleh disetel di paruh **dev**. Angka yang dilaporkan hanya dari paruh **uji**: `python -m pipeline.eval_extractor --gold gold_consensus.json --split test --extractor <lexicon|llm|union|intersection>`.
 - Ekstraktor yang dipakai: F1 tertinggi di paruh uji dengan presisi ≥ 0,80. Bila selisih F1 < 0,02, pakai leksikon (lebih murah dan deterministik).
+
+## Label normalisasi frasa (plan A3)
+
+300 frasa bebas dari lowongan (100 per pita kemiripan: di bawah 0,70, 0,70 sampai 0,85, dan 0,85 ke atas) sudah dikunci di `backend/data/seed/normalisation_sample.json`. Sistem tidak menampilkan tebakannya ke pelabel.
+
+1. `python -m pipeline.normalisation sheet <nama>` membuat CSV untuk satu pelabel di `backend/data/processed/`.
+2. Isi kolom label dengan id skill taksonomi yang benar (daftar id: Admin, atau `GET /api/meta`), atau `none` bila frasa itu bukan skill atau skillnya tidak ada di taksonomi. Kerjakan sendiri tanpa melihat lembar pelabel lain.
+3. `python -m pipeline.normalisation import <csv-1> <csv-2>`, lalu `python -m pipeline.normalisation eval`.
+
+Aturan (ditulis sebelum label ada): ambang otomatis adalah ambang terendah dengan presisi ≥ 0,95. Frasa yang labelnya berbeda antara dua pelabel tidak dihitung sampai penilai ketiga mengisi `adjudicated`.

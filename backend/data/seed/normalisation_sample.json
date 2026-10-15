@@ -1,0 +1,1806 @@
+{
+ "seed": 20261015,
+ "note": "Locked sample for plan A3; phrases only, no system output.",
+ "phrases": [
+  {
+   "id": "n001",
+   "surface": "menjalankan campaign iklan berbayar",
+   "quote": "Menguasai dan menjalankan campaign iklan berbayar (Instagram Ads, Facebook Ads, Shopee Ads, Tiktok Ads) dengan fokus pada ROI, ROAS.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n002",
+   "surface": "Spyderbilt",
+   "quote": "Kami menghadirkan berbagai brand ternama seperti Planet Surf, Insight, Spyderbilt, Juice Ematic, Dragon, Voxfly, dan brand lainnya yang menjadi pilihan bagi para pecinta gaya hidup aktif dan kasual.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n003",
+   "surface": "constructs",
+   "quote": "- Strong knowledge in Go programming language, paradigms, constructs, and idioms with minimum 3 years of experience",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n004",
+   "surface": "Elixir",
+   "quote": "- Familiarity with Go, Elixir, PHP, or other languages is a plus",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n005",
+   "surface": "presentations using Microsoft PowerPoint",
+   "quote": "• Proficient in preparing reports and presentations using Microsoft PowerPoint and Microsoft Word",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n006",
+   "surface": "for building",
+   "quote": "- Experience with Azure Data Factory (ADF) for building and orchestrating data pipelines is highly preferred.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n007",
+   "surface": "mengidentifikasi tren",
+   "quote": "- Memiliki kemampuan dalam mengolah dan menganalisis data penjualan, mengidentifikasi tren, serta memberikan actionable insights.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n008",
+   "surface": "bidang Wedding",
+   "quote": "Diutamakan memiliki pengalaman di bidang Wedding, Hospitality, Hotel, F&B, Event, Venue, atau Lifestyle Brand.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n009",
+   "surface": "with an understa",
+   "quote": "Good technical understanding of IT Security, IT Infrastructure, Business Application Systems, Security Architecture, and Cybersecurity Incident Management, with an understanding of Stock Exchange Business Operations.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n010",
+   "surface": "AI agent-assisted coding tools",
+   "quote": "- Experience using AI agent-assisted coding tools and spec-driven development workflows to design, implement, and validate software changes.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n011",
+   "surface": "other golf service providers",
+   "quote": "- Proven ability to work with businesses such as golf clubs, resorts, golf equipment suppliers, or other golf service providers.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n012",
+   "surface": "marketing principles is essential",
+   "quote": "- Bachelor’s Degree in Marketing, Business Administration, Communications, or a related field – A foundational understanding of marketing principles is essential.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n013",
+   "surface": "engagement",
+   "quote": "Familiar with analytics tools and performance tracking (engagement, reach and conversion).",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n014",
+   "surface": "penerapannya sesuai karakteristik industri",
+   "quote": "- Memahami Standar Akuntansi Keuangan (SAK) dan penerapannya sesuai karakteristik industri",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n015",
+   "surface": "perplexity",
+   "quote": "- Ability to analyze and evaluate AI models using metrics such as perplexity, BLEU, ROUGE, or F1-score.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n016",
+   "surface": "Kreatif Konten",
+   "quote": "Memahami A/B Testing, Target Marekt, Ads Copy, Landing Page dan Kreatif Konten",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n017",
+   "surface": "purchasing",
+   "quote": "• Berkoordinasi dengan tim internal seperti warehouse, CS, KOL, purchasing dan tim terkait lainnya.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n018",
+   "surface": "Flyway Database Migration",
+   "quote": "- Terbiasa dengan Oracle DB / PostgreSQL, Flyway Database Migration, dan Redis (caching & distributed lock / ShedLock).",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n019",
+   "surface": "Accurate software",
+   "quote": "- Proficient in Accurate software",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n020",
+   "surface": "agile development methodologies",
+   "quote": "Experience working with microservices architecture and familiarity with agile development methodologies.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n021",
+   "surface": "automation access",
+   "quote": "- Familiarity with AI-assisted development tools and the security considerations around code, logs, secrets, and automation access.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n022",
+   "surface": "including GMV",
+   "quote": "- Strong understanding of e-commerce KPIs, including GMV, revenue, traffic, conversion rate, AOV, sell-through, and campaign performance.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n023",
+   "surface": "ability to explain",
+   "quote": "- Understanding of the accounting cycle and ability to explain and analyze financial statements.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n024",
+   "surface": "lending technology",
+   "quote": "- FinTech Domain Knowledge: Deep understanding of payments, cross-border transfers, digital wallets, or lending technology and their respective regulatory nuances.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n025",
+   "surface": "targeting",
+   "quote": "* Menguasai digital advertising, khususnya Meta Ads, termasuk menentukan target market, audience segmentation, targeting, retargeting, serta mengelola dan mengoptimalkan campaign.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n026",
+   "surface": "Bank Indonesia’s SNAP standards",
+   "quote": "• Familiarity with Indonesian payment rails (RTGS, SKN, BI-FAST), SWIFT, and Bank Indonesia’s SNAP standards",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n027",
+   "surface": "CTE",
+   "quote": "- Proficient in SQL (CTE, Window Functions, CTAS)",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n028",
+   "surface": "Purchase",
+   "quote": "- Strong knowledge of Odoo modules (Sales, Purchase, Inventory, Accounting, Project, HR)",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n029",
+   "surface": "Workday",
+   "quote": "- Experience with ERP systems such as Anaplan, Oracle, SAP, Darwinbox, NetSuite, Dynamics 365, Workday, SuccessFactors, or similar platforms.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n030",
+   "surface": "good communication skills",
+   "quote": "Knowledge of frameworks such as ATT&CK and kill-chain and good communication skills.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n031",
+   "surface": "multi-touch",
+   "quote": "- Demonstrated expertise in attribution modeling methodologies (multi-touch, algorithmic, rule-based approaches)",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n032",
+   "surface": "DevOps tools",
+   "quote": "- Familiar with CI/CD practices and DevOps tools, including Jenkins, Git, GitLab, or other equivalent tools.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n033",
+   "surface": "troubleshooting",
+   "quote": "- Good understanding of relational databases and SQL for data validation, analysis, and troubleshooting.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n034",
+   "surface": "recommender system",
+   "quote": "- Experience in recommender system, ranking, multi-armed bandits, search and discovery is a plus",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n035",
+   "surface": "code signing",
+   "quote": "- Experience with App Store submission, provisioning profiles, certificates, and code signing.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n036",
+   "surface": "BabyAGI",
+   "quote": "- Experience in developing chatbots using AI Agent frameworks like OpenAI Function Calling, AutoGPT, BabyAGI, or LangChain-based solutions.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n037",
+   "surface": "such as Next",
+   "quote": "Experience with modern React ecosystem, such as Next.js or TanStack.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n038",
+   "surface": "partial failures",
+   "quote": "- Handle real-world source complexity such as sessions, tokens, pagination, dynamic content, rate limits, retries, concurrency, and partial failures.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n039",
+   "surface": "analyzing campaign",
+   "quote": "- Experience in analyzing campaign, website, or marketplace performance",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n040",
+   "surface": "meeting deadlines",
+   "quote": "- Proven experience in supervising and guiding accounting staff, ensuring accuracy and meeting deadlines",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n041",
+   "surface": "exploration tools",
+   "quote": "Three or more years of experience with Python, SQL, and data visualization/exploration tools",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n042",
+   "surface": "popular Go tools",
+   "quote": "- Familiar with popular Go tools and frameworks",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n043",
+   "surface": "Adobe",
+   "quote": "Menguasai tools content creation seperti Canva, CapCut, Adobe, atau sejenisnya menjadi nilai tambah.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n044",
+   "surface": "utilizing AI",
+   "quote": "- Familiar and have experience in utilizing AI.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n045",
+   "surface": "Google Workspace",
+   "quote": "- Menguasai Google Workspace, Microsoft Office, serta tools diagram seperti Draw io , Microsoft Visio, atau Lucidchart.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n046",
+   "surface": "including building scalable",
+   "quote": "- Experience in system design, including building scalable, reliable, and fault-tolerant systems.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n047",
+   "surface": "Affiliate",
+   "quote": "• Familiarity with other digital marketing channels such as KOL, Affiliate, and Marketplace is a plus.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n048",
+   "surface": "instalasi serta konfigurasi Windows",
+   "quote": "Menguasai instalasi serta konfigurasi Windows dan aplikasi kerja.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n049",
+   "surface": "ringkasan laporan riset",
+   "quote": "Mengubah bahan mentah perusahaan (seperti case study proyek, ringkasan laporan riset, atau metodologi survei) menjadi konten yang mudah dipahami dan menarik.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n050",
+   "surface": "component-based design workflows",
+   "quote": "- Understanding of design systems and component-based design workflows.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n051",
+   "surface": "RDBMS",
+   "quote": "- Knowledge and experience in RDBMS (Oracle, MySQL)",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n052",
+   "surface": "penggunaan Next",
+   "quote": "- Memahami penggunaan Next.js untuk pengembangan frontend.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n053",
+   "surface": "debugging tools",
+   "quote": "Proficient in mobile application lifecycle, debugging tools (Logcat, Profiler, and similar tools), error handling, and crash management.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n054",
+   "surface": "leasing",
+   "quote": "- Experience in financial services, preferably P2P lending, multifinance, bank, leasing, or fintech.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n055",
+   "surface": "reporting solutions",
+   "quote": "- Familiarity with data migration, system integrations, and reporting solutions.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n056",
+   "surface": "NIQ Discover",
+   "quote": "- ​Familiar with NIQ Discover, Consumer Research Company, Database System, Google Analytics, Google AdWords & Ms Office (specially Excel and PPT)​",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n057",
+   "surface": "high-pressure Agency environment",
+   "quote": "- Industry Background: Direct experience in a fast-paced, high-pressure Agency environment, preferably with exposure to clients in Financial Services, Proprietary Trading, Hedge Funds, or Fintech.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n058",
+   "surface": "AI agentic workflow",
+   "quote": "- ⁠Familiar with AI agentic workflow",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n059",
+   "surface": "AI-assisted tools for scripting",
+   "quote": "- Familiarity with AI-assisted tools for scripting, debugging, documentation, or workflow automation is an advantage.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n060",
+   "surface": "hair smoothing",
+   "quote": "Menawarkan perawatan rambut dan penampilan secara menyeluruh dengan berbagai pilihan treatment rambut seperti hair cutting, hair smoothing, hair keratin, grooming, dan lainnya.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n061",
+   "surface": "differentiated hours",
+   "quote": "- Balancing personal commitments and life's demands are made easier with our FlexWork arrangements such as differentiated hours",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n062",
+   "surface": "regulatory requirements",
+   "quote": "Familiarity with Bank Indonesia (BI) regulations, regulatory requirements, and supervisory expectations, particularly those relevant to payment systems, technology risk, information",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n063",
+   "surface": "Code Igniter",
+   "quote": "- Menguasai web programming terutama PHP, SQL,CSS, Code Igniter dan Phyton",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n064",
+   "surface": "Microsoft Word",
+   "quote": "• Proficient in preparing reports and presentations using Microsoft PowerPoint and Microsoft Word",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n065",
+   "surface": "Carousell",
+   "quote": "We have advisors & angels from companies such as Grab, GoJek, Flipkart, PayPal, Carousell, Modalku, Rapyd, Mastercard, Instarem.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n066",
+   "surface": "serta memiliki kemampuan analitis",
+   "quote": "Wajib menguasai pengelolaan Marketplace Ads, budgeting iklan, serta memiliki kemampuan analitis dan detail oriented.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n067",
+   "surface": "related data-focused roles",
+   "quote": "- 3–5 years of experience in Data Engineering, ETL development, or related data-focused roles.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n068",
+   "surface": "diffing approaches",
+   "quote": "- Familiarity with content versioning/diffing approaches (e.g.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n069",
+   "surface": "Eclipse Vert",
+   "quote": "- Knowledge and experience in implementing Microservice (using Spring Boot, Eclipse Vert.x, etc)",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n070",
+   "surface": "karakter audiens mahasiswa",
+   "quote": "mencari **Content Creator / Social Media Specialist** yang kreatif, adaptif terhadap tren, memahami karakter audiens mahasiswa, serta mampu mengembangkan media sosial sebagai salah satu kanal utama untuk meningkatkan **brand",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n071",
+   "surface": "QA automation",
+   "quote": "Experience: Minimum 1+ years of professional experience in QA automation (web and/or mobile applications).",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n072",
+   "surface": "Agile development methodology",
+   "quote": "- Experience with Agile development methodology.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n073",
+   "surface": "bekerja secara mandiri",
+   "quote": "- Kemampuan untuk bekerja secara mandiri dan dalam tim dalam lingkungan yang dinamis",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n074",
+   "surface": "golf clubs",
+   "quote": "- Proven ability to work with businesses such as golf clubs, resorts, golf equipment suppliers, or other golf service providers.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n075",
+   "surface": "pencatatan transaksi",
+   "quote": "• Memahami proses pembayaran, pencatatan transaksi, dan administrasi keuangan",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n076",
+   "surface": "prime time",
+   "quote": "* Memahami dasar algoritma media sosial, engagement, prime time, hook, retention, dan CTA.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n077",
+   "surface": "existing template",
+   "quote": "Prior experience with Adobe InDesign and Photoshop, graphic design (existing template and new), videography, and/or photography is a plus",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n078",
+   "surface": "backend engineering",
+   "quote": "- 6 years of experience in backend engineering",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n079",
+   "surface": "mobile application architecture patterns",
+   "quote": "- Understanding of mobile application architecture patterns (MVC, MVVM, VIPER, or similar).",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n080",
+   "surface": "Elastic",
+   "quote": "- Experience in application monitoring and performance monitoring using Dynatrace, Grafana, and Elastic (ELK Stack).",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n081",
+   "surface": "resorts",
+   "quote": "- Proven ability to work with businesses such as golf clubs, resorts, golf equipment suppliers, or other golf service providers.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n082",
+   "surface": "application build",
+   "quote": "- Strong understanding of application build and deployment processes in Linux environments.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n083",
+   "surface": "bukan cuma coding",
+   "quote": "- Mampu berpikir sistematis dan memahami alur bisnis, bukan cuma coding",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n084",
+   "surface": "reach",
+   "quote": "Memahami dasar social media analytics, termasuk engagement rate, reach, impressions, views, followers growth, dan conversion.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n085",
+   "surface": "check-in",
+   "quote": "Mengembangkan fitur seperti membership, check-in, QR code, attendance, profile member, transaksi, notification, dan fitur operasional lainnya.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n086",
+   "surface": "Pop Up Store",
+   "quote": "- Knowledge in organising Marketing & PR Event (in-store gathering, Product Launching, KOL/MUA gathering, Pop Up Store).",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n087",
+   "surface": "these platforms",
+   "quote": "and/or Elastic Security; internal training will be provided for candidates who are not yet familiar with these platforms.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n088",
+   "surface": "Clay",
+   "quote": "- Proficient with HubSpot, Aircall, Clay, and LinkedIn Sales Navigator",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n089",
+   "surface": "basket analysis",
+   "quote": "- Develop new product in machine learning area such as demand forecasting, product recommendation or basket analysis and other solution",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n090",
+   "surface": "perusahaan distribusi",
+   "quote": "Berpengalaman di perusahaan distribusi, retail, FMCG, atau e-commerce.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n091",
+   "surface": "bias testing",
+   "quote": "Familiarity with AI/ML and conversational AI testing, including model validation, reliability, bias testing, and agentic workflows",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n092",
+   "surface": "good communication",
+   "quote": "- Having knowledge of Application testing methodology, good communication, analytical and software design skills",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n093",
+   "surface": "planning",
+   "quote": "- Mempunyai pengalaman dalam planning, designing, estimating dan executing untuk membuat pengembangan perangkat lunak terdeliver dengan baik kepada Customer",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n094",
+   "surface": "mampu membaca performa konten",
+   "quote": "* Memahami dasar analytics dan mampu membaca performa konten/campaign.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n095",
+   "surface": "presentation of insights",
+   "quote": "Proficient in Microsoft Excel and/or Google Sheets for data analysis, reporting, and presentation of insights.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n096",
+   "surface": "campaign tracking",
+   "quote": "* Memahami campaign tracking, CRM, lead management, dan integrasi dengan payment system menjadi nilai tambah.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n097",
+   "surface": "interested in AI-assisted development",
+   "quote": "- Familiar with or interested in AI-assisted development / vibe coding.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n098",
+   "surface": "particularly across macOS a",
+   "quote": "- OS-Level Mastery: Sound understanding of desktop application concepts, IPC (Inter-Process Communication), security boundaries, and OS-specific behaviors, particularly across macOS and Windows.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n099",
+   "surface": "obfuscation",
+   "quote": "- Security & Storage: Extensive practical knowledge of secure local data storage (EncryptedSharedPreferences, Keychain/Keystore), certificate pinning, and obfuscation.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n100",
+   "surface": "Insurance",
+   "quote": "Experience in Insurance, Banking, or Financial Services is highly preferred.",
+   "band": "below_0.70"
+  },
+  {
+   "id": "n101",
+   "surface": "proses penyusunan",
+   "quote": "- Memahami proses penyusunan dan analisa laporan keuangan",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n102",
+   "surface": "layanan pelanggan",
+   "quote": "Kandidat harus memiliki kemampuan dalam layanan pelanggan, kerja sama tim, serta menguasai Microsoft Excel dan Word.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n103",
+   "surface": "Logstash",
+   "quote": "and logging tools such as Grafana, Prometheus, Elasticsearch Stack (ELK) including Elasticsearch, Kibana, Logstash, Fluent-bit, Filebeat, Metricbeat, Heartbeat, Elastic APM, and Kibana Machine Learning (a must).",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n104",
+   "surface": "package management",
+   "quote": "- Understanding of package management, including installing dependencies and identifying outdated or vulnerable packages.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n105",
+   "surface": "AP management",
+   "quote": "- Memiliki pengalaman dalam AR/AP management, transaction validation, reconciliation, dan cost management.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n106",
+   "surface": "serta memahami Web Programming",
+   "quote": "Wajib menguasai HTML, CSS, JavaScript, serta memahami Web Programming, Web Design/UI, dan RESTful API.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n107",
+   "surface": "network protocols",
+   "quote": "- Familiarity with network protocols, operating systems, and cloud environments.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n108",
+   "surface": "RPA",
+   "quote": "- Understand and implement business processes on various banking solutions such as Digital Banking, Payment Gateway, Digital Onboarding, Loan Management, Core Banking, Treasury, RPA, DevSecOps",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n109",
+   "surface": "VPNs",
+   "quote": "- Good understanding of cloud networking concepts, including VPCs/VNets, subnets, routing, VPNs, DNS, and load balancers.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n110",
+   "surface": "Google AI",
+   "quote": "- Develop data science model using various machine learning platform such as Cloudera Data Science Workbench (CDSW), Google AI, Azure ML, IMB Watson, AWS Sagemaker, SAS, R, Python or others.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n111",
+   "surface": "Information Technology",
+   "quote": "Work Exposure/ Experience: • Minimum 2 years working experience in Information Technology, particularly in database and application",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n112",
+   "surface": "native",
+   "quote": "Having knowledge in the concept and implementation of mobile application development (native / hybrid) is a plus",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n113",
+   "surface": "system internals",
+   "quote": "- Understanding of CS fundamentals (algorithms, data structures), system internals, CI/CD pipelines, and app observability tools (crash analytics, remote debugging).",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n114",
+   "surface": "sistem secara menyeluruh",
+   "quote": "Kami mencari seseorang yang memiliki ownership, mampu memahami sistem secara menyeluruh, berani mencari solusi ketika terjadi masalah, dan siap ikut membangun teknologi PT KAR untuk jangka panjang",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n115",
+   "surface": "dasar invoicing",
+   "quote": "- Memahami dasar invoicing, Accounts Receivable (AR), reconciliation, dan cash flow.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n116",
+   "surface": "pengelolaan e-commerce",
+   "quote": "Saat ini, kami sedang mencari seseorang yang memiliki semangat untuk berkembang bersama kami, serta memiliki kemampuan dalam pemasaran digital dan pengelolaan e-commerce.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n117",
+   "surface": "abstraction",
+   "quote": "- Strong understanding of software design principles, clean code, modular architecture, abstraction, error handling, and maintainability.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n118",
+   "surface": "query ke database",
+   "quote": "- Memahami akses, penggunaan dan query ke database",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n119",
+   "surface": "dasar backend",
+   "quote": "Memahami dasar backend (API sederhana / CRUD) dan database relasional (MySQL atau sejenisnya)",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n120",
+   "surface": "more",
+   "quote": "partners across the regions offering a wide range of services such as transportation, food delivery, logistics and more.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n121",
+   "surface": "NDR",
+   "quote": "- experience with NDR, XDR (Netscout & MDE)",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n122",
+   "surface": "dengan baik CPAS",
+   "quote": "Memahami dengan baik CPAS / GTM",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n123",
+   "surface": "monitoring",
+   "quote": "- Memahami praktik DevOps dasar (CI/CD, monitoring, deployment)",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n124",
+   "surface": "transaksi",
+   "quote": "Mengembangkan fitur seperti membership, check-in, QR code, attendance, profile member, transaksi, notification, dan fitur operasional lainnya.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n125",
+   "surface": "videos",
+   "quote": "- Lead full-funnel brand strategy and ensure execution is aligned on all key marketing and sales channels such as videos, livestream, affiliates etc.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n126",
+   "surface": "product research",
+   "quote": "- At least 3 years of full-time experience in UX or product research, ideally in client-facing roles or in complex digital environments such as banking, fintech, or other regulated domains.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n127",
+   "surface": "pembayaran",
+   "quote": "- Menguasai pengerjaan jurnal transaksi, pembayaran, dan input data keuangan.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n128",
+   "surface": "conversion",
+   "quote": "Memahami dasar social media analytics, termasuk engagement rate, reach, impressions, views, followers growth, dan conversion.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n129",
+   "surface": "scripts",
+   "quote": "Has built or contributed to automation workflows using tools such as n8n, Make, Zapier, APIs, scripts, or similar platforms.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n130",
+   "surface": "lead generation",
+   "quote": "* Memahami dan mampu menjalankan digital marketing funnel secara end-to-end, mulai dari ads, landing page atau WhatsApp, lead generation, follow-up, hingga conversion menjadi donor atau partner.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n131",
+   "surface": "Certified Public Accountant",
+   "quote": "Candidates possessing professional certifications such as Certified Public Accountant (CPA), Chartered Accountant (CA), Certified Management Accountant (CMA), or Tax Brevet are highly preferred.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n132",
+   "surface": "security investigations",
+   "quote": "- Experience with incident response and security investigations.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n133",
+   "surface": "Kling",
+   "quote": "Pengalaman menggunakan Nano Banana, ChatGPT Image, Kling, Seedance, atau AI tools sejenis menjadi nilai tambah.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n134",
+   "surface": "query optimization",
+   "quote": "Strong hands-on experience with Entity Framework Core, LINQ, IQueryable, and query optimization.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n135",
+   "surface": "CREST",
+   "quote": "- Relevant cybersecurity certifications such as CEH, CPENT, OSCP, CREST, or equivalent certifications are an advantage.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n136",
+   "surface": "Infrastructure roles",
+   "quote": "- 5+ years of hands-on experience in DevOps, Cloud Engineering, or Infrastructure roles, with a demonstrable track record of running production-grade systems at scale.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n137",
+   "surface": "KNP",
+   "quote": "- Memahami proses konsolidasi Grup/Anak Perusahaan, termasuk intercompany dan KNP/NCI.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n138",
+   "surface": "Manufacturing",
+   "quote": "- Strong knowledge of D365 F&O modules such as Finance, Procurement, Inventory, Sales, Warehouse, or Manufacturing.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n139",
+   "surface": "teknologi cloud",
+   "quote": "Menguasai teknologi cloud (AWS, Azure, Google Cloud Platform), linux, networking, dan security",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n140",
+   "surface": "payment gateway",
+   "quote": "- Minimal 1-3 tahun pengalaman di Java Backend (diutamakan pernah di perbankan / fintech / payment gateway).",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n141",
+   "surface": "feature modules",
+   "quote": "- Architecture & Patterns: Deep expertise in clean architecture, modularization (feature modules), reactive programming, and state management at scale.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n142",
+   "surface": "Storage",
+   "quote": "- Solid understanding of Google Cloud fundamentals (Compute, Storage, Networking, IAM, Monitoring/Logging).",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n143",
+   "surface": "idioms",
+   "quote": "- Strong knowledge of Go programming language, paradigms, constructs, and idioms",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n144",
+   "surface": "Instruments",
+   "quote": "- Experience with Xcode, Instruments, debugging, and performance optimization.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n145",
+   "surface": "pemasaran konten",
+   "quote": "Kandidat harus memiliki kemampuan dalam komunikasi pemasaran, pemasaran B2B, pemasaran digital, media sosial, Google Ads, Google Analytics, pengeditan gambar, pemasaran konten, dan strategi konten.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n146",
+   "surface": "creating API specifications",
+   "quote": "• Proven experience in creating API specifications, sequence diagrams, and technical integration documentation (BRD/SOP)",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n147",
+   "surface": "idempotency",
+   "quote": "- Understanding of production reliability patterns such as retry, timeout, rate limiting, concurrency, idempotency, and failure recovery.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n148",
+   "surface": "Dynatrace",
+   "quote": "- Experience with performance monitoring tools such as Grafana, Prometheus, Dynatrace, AppDynamics, or similar is a plus.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n149",
+   "surface": "mengoptimalkan biaya cloud",
+   "quote": "Pengalaman dalam mengelola dan mengoptimalkan biaya cloud atau onpremise",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n150",
+   "surface": "using Microsoft Office",
+   "quote": "Proficiency in using Microsoft Office.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n151",
+   "surface": "financial transaction processes",
+   "quote": "- Good understanding of basic accounting principles and financial transaction processes.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n152",
+   "surface": "proses konsolidasi Grup",
+   "quote": "- Memahami proses konsolidasi Grup/Anak Perusahaan, termasuk intercompany dan KNP/NCI.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n153",
+   "surface": "evaluasi hasil improvement",
+   "quote": "- Memiliki pengalaman dalam proses implementasi sistem, User Acceptance Test (UAT), monitoring implementasi, dan evaluasi hasil improvement.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n154",
+   "surface": "konsep DevOps",
+   "quote": "Memahami konsep DevOps dan mampu melakukan implementasi DevOps",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n155",
+   "surface": "a similar finance",
+   "quote": "Minimum 4 years experience in accounts payable or a similar finance/accounting role.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n156",
+   "surface": "ICFR",
+   "quote": "- 3–5 years of relevant experience in accounting and/or financial reporting and ICFR",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n157",
+   "surface": "efisiensi proses",
+   "quote": "- Mengawasi dan memaksimalkan penggunaan ERP, khususnya Odoo, serta software perpajakan seperti Coretax, untuk meningkatkan akurasi dan efisiensi proses.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n158",
+   "surface": "social media analytics tools",
+   "quote": "Familiar with social media analytics tools.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n159",
+   "surface": "Account Management",
+   "quote": "- Experience: Minimum 2 years of proven experience in B2B Sales, Business Development, or Account Management (Strictly no fresh graduates).",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n160",
+   "surface": "Go Language",
+   "quote": "• Strong proficiency in Golang (Go Language).",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n161",
+   "surface": "optimasi website",
+   "quote": "Menguasai SEO (on-page & off-page/backlink) dan optimasi website",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n162",
+   "surface": "IBM DataStage",
+   "quote": "- Proficient in one or more ETL tools such as Oracle Data Integrator (ODI), IBM DataStage, Talend, or Pentaho",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n163",
+   "surface": "including API Gateways",
+   "quote": "• Familiarity with supporting infrastructure components, including API Gateways (e.g., Gravitee/Kong), IAM (Keycloak/LDAP), caching (Redis), and file storage systems (MinIO/NFS/SFTP)",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n164",
+   "surface": "transaction flows",
+   "quote": "Strong experience in payment systems, payment processing, transaction flows, reconciliation, settlement, digital payments, fintech, or other technology-driven financial ecosystems is highly preferred.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n165",
+   "surface": "KYB",
+   "quote": "- Familiarity with KYB (Know Your Business), business customer onboarding, or customer validation processes.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n166",
+   "surface": "database query validation",
+   "quote": "Familiarity with SQL and database query validation.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n167",
+   "surface": "test data",
+   "quote": "Plan, execute and create testing documents such as test approach, plans, test scenarios, test data",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n168",
+   "surface": "secure storage",
+   "quote": "Expertise: Deep technical knowledge of mobile app vulnerabilities (reverse engineering, certificate pinning, secure storage) and extensive hands-on experience managing security tooling native to GitHub, GitLab and Bitbucket.Proficiency",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n169",
+   "surface": "cost allocation",
+   "quote": "- Strong knowledge of inventory costing, cost allocation, and inventory valuation.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n170",
+   "surface": "Meta",
+   "quote": "Strong understanding of Meta, TikTok, and Shopee Ads, and marketplace campaign mechanics.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n171",
+   "surface": "website",
+   "quote": "- Experience in analyzing campaign, website, or marketplace performance",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n172",
+   "surface": "devops",
+   "quote": "Minimum 2 - 3 years of experience in software development, devops or related field.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n173",
+   "surface": "caption media sosial",
+   "quote": "Menyusun materi komunikasi pemasaran, seperti copywriting, caption media sosial, press release, dan materi promosi lainnya.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n174",
+   "surface": "monitoring risk models",
+   "quote": "At least 6-7 years of hands-on experience in building, evaluating, and monitoring risk models.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n175",
+   "surface": "audience engagement",
+   "quote": "Knowledge of branding strategies and audience engagement",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n176",
+   "surface": "AML",
+   "quote": "Familiarity with international regulations and frameworks such as FATCA, CRS, AML, Financial Crime Compliance, and Data Privacy.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n177",
+   "surface": "AXA",
+   "quote": "- We work with insurance enterprise clients such as AXA, Bupa, MSIG, Dai-ichi, Bank of China Group Insurance, and many more",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n178",
+   "surface": "industri F&B",
+   "quote": "• Memiliki pengalaman di industri F&B, beverage, hospitality, atau lifestyle menjadi nilai tambah.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n179",
+   "surface": "AI for",
+   "quote": "Experience using AI for:",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n180",
+   "surface": "database relasional",
+   "quote": "Memahami dasar backend (API sederhana / CRUD) dan database relasional (MySQL atau sejenisnya)",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n181",
+   "surface": "product recommendation",
+   "quote": "- Develop new product in machine learning area such as demand forecasting, product recommendation or basket analysis and other solution",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n182",
+   "surface": "Product Management",
+   "quote": "- 3+ years of experience in Business Analysis, System Analysis, IT Solution Analysis, Product Management, or related roles.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n183",
+   "surface": "reimbursement",
+   "quote": "• Berpengalaman dalam pengelolaan petty cash, reimbursement, dan rekonsiliasi data keuangan",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n184",
+   "surface": "SOP",
+   "quote": "- Menyusun, mengembangkan, serta memastikan dokumentasi proses bisnis seperti SOP, Work Instruction, dsb selalu up-to date",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n185",
+   "surface": "assurance",
+   "quote": "- 8–12 years’ experience in internal audit, risk or assurance, preferably within manufacturing, chemicals, semiconductor, supply chain or Big Four.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n186",
+   "surface": "Remote",
+   "quote": "Hire Digital is seeking a Freelance Full-Stack Developer with experience in both Python and JavaScript (Remote) to develop web applications, backend services, and integrations.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n187",
+   "surface": "digital content",
+   "quote": "- Strong understanding of the Indonesian KOL, influencer, digital content, and social media ecosystem.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n188",
+   "surface": "pemrogaman data analis lainnya",
+   "quote": "- menguasai PowerBI, Tableu, python dan pemrogaman data analis lainnya",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n189",
+   "surface": "email",
+   "quote": "and channel-specific plans, while reviewing or creating key assets such as KV, copy, captions, landing pages, email, and blog content when needed.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n190",
+   "surface": "supporting infrastructure components",
+   "quote": "• Familiarity with supporting infrastructure components, including API Gateways (e.g., Gravitee/Kong), IAM (Keycloak/LDAP), caching (Redis), and file storage systems (MinIO/NFS/SFTP)",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n191",
+   "surface": "including REST",
+   "quote": "Solid understanding of API communication protocols, including REST and gRPC.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n192",
+   "surface": "including component-based architecture",
+   "quote": "- Solid understanding of modern frontend development concepts, including component-based architecture, reusable components, and responsive UI development.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n193",
+   "surface": "detail",
+   "quote": "akuntansi, memiliki pengalaman sebagai supervisor/leader, menguasai laporan keuangan & perpajakan, teliti, detail, dan memiliki kemampuan analisis yang baik, serta mampu bekerja dalam tim maupun individu.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n194",
+   "surface": "real-world data engineering projects",
+   "quote": "- Hands-on experience in real-world data engineering projects",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n195",
+   "surface": "pemasaran",
+   "quote": "• Pengalaman di bidang komunikasi digital, sales atau pemasaran (min.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n196",
+   "surface": "termasuk analisis faktor",
+   "quote": "Memahami metode analisis statistik dan psikometri, termasuk analisis faktor, Item Response Theory, dan analisis klasifikasi.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n197",
+   "surface": "konsep CI",
+   "quote": "Memahami API testing, SQL dasar, Git, dan konsep CI/CD.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n198",
+   "surface": "operations research techniques",
+   "quote": "Hands-on experience with machine learning, statistical modeling, and/or operations research techniques.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n199",
+   "surface": "konsep Business Process Improvement",
+   "quote": "- Memahami konsep Business Process Improvement dan Continuous Improvement,",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n200",
+   "surface": "automation",
+   "quote": "- Proficiency in Python for data analysis, automation, and/or pipeline development.",
+   "band": "0.70_to_0.85"
+  },
+  {
+   "id": "n201",
+   "surface": "social media marketing",
+   "quote": "Memahami content strategy, storytelling, dan social media marketing (Instagram, TikTok, LinkedIn, dll.).",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n202",
+   "surface": "Oracle APEX",
+   "quote": "- Experience with Oracle, Linux, UiPath, Oracle APEX, webMethods, and other supporting technologies",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n203",
+   "surface": "Cloud Engineering",
+   "quote": "- 5+ years of professional experience in DevOps, Cloud Engineering, Site Reliability Engineering (SRE), or a similar role.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n204",
+   "surface": "lokasi",
+   "quote": "- Mengintegrasikan layanan pihak ketiga (third-party services) seperti payment gateway, push notification, lokasi/peta, dan analitik.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n205",
+   "surface": "Oracle",
+   "quote": "- Strong proficiency in SQL and relational databases (PostgreSQL, SQL Server, MySQL, Oracle, or similar).",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n206",
+   "surface": "performance tools",
+   "quote": "- Familiarity with app metrics (performance tools, crash analytics, debugging solutions) and experience optimizing factors such as API use, storage allocation, and battery drain.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n207",
+   "surface": "opening Pull Requests",
+   "quote": "Version Control: Basic proficiency with Git (creating branches, committing code, opening Pull Requests).",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n208",
+   "surface": "payments",
+   "quote": "- FinTech Domain Knowledge: Deep understanding of payments, cross-border transfers, digital wallets, or lending technology and their respective regulatory nuances.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n209",
+   "surface": "sejenisnya",
+   "quote": "• Memahami framework AI seperti TensorFlow, PyTorch, atau sejenisnya.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n210",
+   "surface": "testing tools",
+   "quote": "✅ Good understanding and hands-on experience with Unit Testing, including Go testing frameworks and testing tools.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n211",
+   "surface": "YouTube",
+   "quote": "Memahami dan mampu mengelola berbagai platform media sosial seperti Instagram, TikTok, Facebook, dan YouTube.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n212",
+   "surface": "cloud platforms",
+   "quote": "- Experience with cloud platforms (AWS, Google Cloud, Azure) and ML model deployment.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n213",
+   "surface": "deployment",
+   "quote": "- Memahami praktik DevOps dasar (CI/CD, monitoring, deployment)",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n214",
+   "surface": "mengelola",
+   "quote": "Pengalaman dalam mengelola dan mengoptimalkan biaya cloud atau onpremise",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n215",
+   "surface": "Objective C",
+   "quote": "- Proficiency in Swift or Objective C and experience with the iOS framework are necessary.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n216",
+   "surface": "performance optimiza",
+   "quote": "- System Design & Architecture: Strong expertise in microservices, event-driven architectures, cloud-native application design, reliability engineering, observability, and performance optimization.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n217",
+   "surface": "algorithmic",
+   "quote": "- Demonstrated expertise in attribution modeling methodologies (multi-touch, algorithmic, rule-based approaches)",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n218",
+   "surface": "similar messaging",
+   "quote": "- Experience with Apache Kafka or similar messaging/streaming platforms.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n219",
+   "surface": "test approach",
+   "quote": "Plan, execute and create testing documents such as test approach, plans, test scenarios, test data",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n220",
+   "surface": "Kustomize",
+   "quote": "- Expert-level knowledge of Kubernetes architecture and container technologies, including experience with configuration managers (Helm, Kustomize), service meshes (Istio, Linkerd), and cloud-native deployment patterns.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n221",
+   "surface": "database queries",
+   "quote": "- Familiarity with database queries and SQL, particularly MySQL and SQL Server.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n222",
+   "surface": "mengolah",
+   "quote": "- Memiliki kemampuan dalam mengolah dan menganalisis data penjualan, mengidentifikasi tren, serta memberikan actionable insights.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n223",
+   "surface": "test scenarios",
+   "quote": "- Understanding of system testing, test scenarios, test cases, and user acceptance testing.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n224",
+   "surface": "database systems",
+   "quote": "- Familiarity with database systems, both relational (MySQL, PostgreSQL) and NoSQL (MongoDB).",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n225",
+   "surface": "payment systems",
+   "quote": "Experience with payment systems, digital banking, financial platforms, or banking integrations.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n226",
+   "surface": "proses akuisisi bisnis",
+   "quote": "- Memahami proses akuisisi bisnis dan pengelolaan hubungan dengan dealer menjadi nilai tambah.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n227",
+   "surface": "proses",
+   "quote": "- Menguasai proses dan sistem pelaporan perpajakan.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n228",
+   "surface": "Journal",
+   "quote": "- Menguasai Accounting & Finance dalam ERP (GL, AP/AR, Cash & Bank, Fixed Assets, Journal, B/S & P&L) serta memahami end-to-end business process dan integrasi antar-modul ERP.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n229",
+   "surface": "security",
+   "quote": " Familiarity with security and regulatory standard of system development for financial industry",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n230",
+   "surface": "reconciliations",
+   "quote": "- Strong knowledge of accounting controls, reconciliations, and month-end/year-end closing processes",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n231",
+   "surface": "proses implementasi sistem",
+   "quote": "- Memiliki pengalaman dalam proses implementasi sistem, User Acceptance Test (UAT), monitoring implementasi, dan evaluasi hasil improvement.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n232",
+   "surface": "magang",
+   "quote": "• Memahami dunia kerja ke Jepang (magang, TG, SSW, dll)",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n233",
+   "surface": "color",
+   "quote": "- Solid proficiency in interaction design and visual design fundamentals, including typography, color, and layout.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n234",
+   "surface": "yang sejalan",
+   "quote": "Kami mencari kandidat yang memiliki gelar S1 dari jurusan terkait seperti Teknik Informatika, Ilmu Komputer, atau yang sejalan.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n235",
+   "surface": "Cloud Computing",
+   "quote": "- Familiar with Cloud Computing / Cloud Server environments, such as AWS, Google Cloud Platform (GCP), or other cloud platforms.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n236",
+   "surface": "JASP",
+   "quote": "Menguasai beberapa aplikasi olah data seperti R, LISREL, JASP, dll.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n237",
+   "surface": "information security",
+   "quote": "- Experience: 8+ years of dedicated experience in information security, with at least 3+ years specifically leading application security or product security functions within",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n238",
+   "surface": "database development",
+   "quote": "Good knowledge of SQL Server and database development.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n239",
+   "surface": "layanan cloud",
+   "quote": "- Pengalaman menggunakan layanan cloud (AWS, GCP, atau Firebase).",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n240",
+   "surface": "deploying",
+   "quote": "in infrastructure engineering, DevOps, or cloud platforms, combining a proven track record of designing, deploying, and managing production Kubernetes environments with demonstrated success in mentoring and leading technical",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n241",
+   "surface": "testing processes",
+   "quote": "- Understanding of Software QA methodologies and testing processes.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n242",
+   "surface": "growth",
+   "quote": "We believe that diverse perspectives—shaped by factors such as gender, age, race, ethnicity, education, culture, and life experiences—drive innovation and growth.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n243",
+   "surface": "dasar fotografi",
+   "quote": "Memahami dasar fotografi, videografi, dan storytelling.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n244",
+   "surface": "analisis klasifikasi",
+   "quote": "Memahami metode analisis statistik dan psikometri, termasuk analisis faktor, Item Response Theory, dan analisis klasifikasi.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n245",
+   "surface": "large language models",
+   "quote": "- Familiarity with generative AI tools and large language models (LLMs) for automating insights generation and reporting",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n246",
+   "surface": "other cloud platforms",
+   "quote": "- Familiar with Cloud Computing / Cloud Server environments, such as AWS, Google Cloud Platform (GCP), or other cloud platforms.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n247",
+   "surface": "analisis kompetitor",
+   "quote": "• Memahami dasar HTML, CSS, riset keyword, dan analisis kompetitor.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n248",
+   "surface": "B testing",
+   "quote": "- Demonstrated expertise in email marketing strategy and execution, including audience segmentation, automation workflows, A/B testing, deliverability optimization, and performance analytics.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n249",
+   "surface": "pelaporan keuangan",
+   "quote": "• Menguasai siklus akuntansi, AP/AR, pelaporan keuangan, serta perpajakan (pajak masa, SPT Tahunan, rekonsiliasi fiskal, pemeriksaan pajak)",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n250",
+   "surface": "Data Engineering",
+   "quote": "- 3–5 years of experience in Data Engineering, ETL development, or related data-focused roles.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n251",
+   "surface": "mengukur kinerja",
+   "quote": "Analisis performa: Menganalisis data penjualan, traffic, dan performa produk untuk memahami tren pasar, mengukur kinerja, dan memberikan rekomendasi.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n252",
+   "surface": "LLMs",
+   "quote": "- Familiarity with generative AI tools and large language models (LLMs) for automating insights generation and reporting",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n253",
+   "surface": "Account Receivable",
+   "quote": "- Memiliki pengalaman di bidang Collection, Account Receivable, Finance, atau posisi serupa menjadi nilai tambah.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n254",
+   "surface": "tech",
+   "quote": "regulations, regulatory requirements, and supervisory expectations, particularly those relevant to payment systems, technology risk, information security, and internal controls, is highly preferred.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n255",
+   "surface": "GCIH",
+   "quote": "- Certifications such as CEH, CompTIA Security+, GCIH, or Elastic Certified Analyst are a plus.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n256",
+   "surface": "caches",
+   "quote": "- Working knowledge of building distributed backend systems with DBMS (SQL, NoSQL) and caches (Redis) – Kubernetes and Kafka experience will be an advantage",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n257",
+   "surface": "CPAS",
+   "quote": "mengoptimalkan strategi pemasaran berbasis data untuk meningkatkan penjualan dan ROI di marketplace seperti Meta ads(CPAS)Shopee dan TikTok (TikTok Shop), mulai dari menjalankan dan mengoptimasi iklan (Shopee Ads & TikTok Ads), mengatur",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n258",
+   "surface": "internal controls",
+   "quote": "• Strong understanding of internal controls, risk assessment, audit processes and financial reporting.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n259",
+   "surface": "security vulnerability concept",
+   "quote": "- Familiar with security vulnerability concept",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n260",
+   "surface": "infrastructure-as-code",
+   "quote": "- Familiarity with proxy infrastructure, data observability, CI/CD, and infrastructure-as-code.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n261",
+   "surface": "brand",
+   "quote": "Minimum 1 year of experience in brand, trade, event, or offline marketing",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n262",
+   "surface": "AndroidSDK",
+   "quote": "- Familiarity with AndroidSDK, understanding of Android infrastructure, components, UI, data storage.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n263",
+   "surface": "cloud-based data platforms",
+   "quote": "- Familiar with cloud-based data platforms and services such as AWS, Azure, or Google Cloud Platform (GCP)",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n264",
+   "surface": "scenario test",
+   "quote": "- Have experience in scenario test and execution test",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n265",
+   "surface": "online-djp",
+   "quote": "Familiar with e-faktur, online-djp, online-pajak, e-bupot, Coretax DJP.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n266",
+   "surface": "pengolahan database",
+   "quote": "- Menguasai pengolahan database: MySQL, Postgre, MongoDB, Oracle, Snowflake.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n267",
+   "surface": "large-scale language models",
+   "quote": "- Hands-on experience with large-scale language models, including transformers, GPT-based models, and BERT-style architectures.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n268",
+   "surface": "system integrations",
+   "quote": "- Familiarity with data migration, system integrations, and reporting solutions.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n269",
+   "surface": "analytics tools",
+   "quote": "Familiar with analytics tools and performance tracking (engagement, reach and conversion).",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n270",
+   "surface": "computer science",
+   "quote": "banyak praktisi datang dari latar belakang beragam seperti jurnalisme, data science, linguistik, dan computer science.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n271",
+   "surface": "CDEP",
+   "quote": "- Certifications: Certifications such as Certified DevSecOps Professional (CDP), Practical DevSecOps (CDEP), or CSSLP are highly preferred",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n272",
+   "surface": "validation processes",
+   "quote": "- Strong understanding of data quality principles, validation processes, and troubleshooting techniques in data pipelines.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n273",
+   "surface": "sekitarnya",
+   "quote": "• Terbiasa menggunakan kendaraan roda 4 dan berdomisili di Palembang dan sekitarnya.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n274",
+   "surface": "Zapier",
+   "quote": "Has built or contributed to automation workflows using tools such as n8n, Make, Zapier, APIs, scripts, or similar platforms.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n275",
+   "surface": "L’Oreal",
+   "quote": "aCommerce is the leading ecommerce enabler and e-distributor in Southeast Asia, delivering retail solutions for global brands such as L’Oreal, Samsung, and Unilever.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n276",
+   "surface": "security practices",
+   "quote": "- Strong understanding of system reliability, observability, and security practices.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n277",
+   "surface": "integration testing",
+   "quote": "Understanding of RESTful APIs, microservices architecture, and integration testing.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n278",
+   "surface": "cloud infrastructure environments",
+   "quote": "- Familiar with cloud infrastructure environments, such as:",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n279",
+   "surface": "data",
+   "quote": "GASS (Growth Advertising Segmentation Specialist) adalah platform SaaS Indonesia yang membantu bisnis memahami data dan performa iklan dengan lebih jelas.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n280",
+   "surface": "CPENT",
+   "quote": "- Relevant cybersecurity certifications such as CEH, CPENT, OSCP, CREST, or equivalent certifications are an advantage.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n281",
+   "surface": "dasar social media strategy",
+   "quote": "• Memahami dasar social media strategy, content planning, dan digital marketing.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n282",
+   "surface": "designing",
+   "quote": "- Mempunyai pengalaman dalam planning, designing, estimating dan executing untuk membuat pengembangan perangkat lunak terdeliver dengan baik kepada Customer",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n283",
+   "surface": "Red-team",
+   "quote": "Alternatively, you may have very strong Cyber Security domain knowledge in Pen-testing, Red-team, Digital Forensics, Cyber Threat Intelligence, or similar experience and looking for a slight shift.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n284",
+   "surface": "programming languages",
+   "quote": "Familiarity with programming languages, databases, system integration, API, and software development processes.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n285",
+   "surface": "performance test",
+   "quote": "Experience in functional test, integration test, performance test, stress / load test",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n286",
+   "surface": "dasar-dasar financial",
+   "quote": "Memahami dasar-dasar financial dan accounting",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n287",
+   "surface": "Automation Test Web",
+   "quote": "- Familiar with Automation Test Web, API and Mobile (e.g., MochaChai, WebDriverIO, Playwright).",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n288",
+   "surface": "cost management",
+   "quote": "- Memiliki pengalaman dalam AR/AP management, transaction validation, reconciliation, dan cost management.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n289",
+   "surface": "online merchandising",
+   "quote": "- Understanding of CRO, online merchandising, marketplace algorithms, and digital promotional mechanics.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n290",
+   "surface": "analitik media sosial",
+   "quote": "Memahami strategi konten, copywriting, SEO, dan analitik media sosial",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n291",
+   "surface": "Keuangan",
+   "quote": "Kami mencari kandidat yang memiliki gelar S1 dari jurusan terkait seperti Akuntansi atau Keuangan.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n292",
+   "surface": "certificates",
+   "quote": "Memiliki pengalaman dalam menggunakan REST/SOAP APIs, JSON/XML, serta implementasi standar keamanan integrasi (OAuth, SSL/TLS, certificates).",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n293",
+   "surface": "alat desain dasar",
+   "quote": "- Familiar dengan alat desain dasar.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n294",
+   "surface": "functional test",
+   "quote": "Experience in functional test, integration test, performance test, stress / load test",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n295",
+   "surface": "ware",
+   "quote": "- Memahami end-to-end business process perusahaan, mulai dari purchasing, inventory, import/local purchase, sales, customer & supplier management, warehouse, cash & bank, accounting, finance, hingga reporting.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n296",
+   "surface": "dengan baik",
+   "quote": "- Menguasai Microsoft Office (terutama Excel, Word, Power Point) dengan baik.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n297",
+   "surface": "research",
+   "quote": "- Experience in research, data analysis, application testing, or problem-solving projects.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n298",
+   "surface": "content management",
+   "quote": "both frontend and backend capabilities using React, TypeScript and Node.js, working on features such as content management, publishing workflows, cloud-based infrastructure and automation.",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n299",
+   "surface": "ODI",
+   "quote": "- Design, develop, and maintain ETL/ELT pipelines and data integration workflows using tools such as ODI, Datastage, Talend, or Pentaho",
+   "band": "from_0.85"
+  },
+  {
+   "id": "n300",
+   "surface": "GHL",
+   "quote": "Familiar dengan GoHighLevel (GHL) — sub-account setup, landing page, form, dan funnel",
+   "band": "from_0.85"
+  }
+ ]
+}
