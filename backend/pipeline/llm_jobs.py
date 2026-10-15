@@ -95,7 +95,7 @@ def export_scenarios():
 
     with get_session() as s:
         names = load_context(s, "business_analyst").names
-        rows = s.scalars(select(Scenario).order_by(Scenario.id)).all()
+        rows = s.scalars(select(Scenario).where(Scenario.role == "business_analyst").order_by(Scenario.id)).all()
         items = [{"id": r.id, "text": scenario_prompt(r.payload, names), "candidates": r.payload["candidates"],
                   "fingerprint": _scenario_fingerprint(r.payload)} for r in rows]
     if not items:

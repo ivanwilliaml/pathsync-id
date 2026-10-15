@@ -362,34 +362,48 @@ def activate_model(mid: int, s: Session = Depends(db_session)):
 class TrainIn(BaseModel):
     use_simulated: bool = False
     activate_if_passes: bool = True
+    role: str = "business_analyst"     # the active ranker serves Business Analyst; other roles are report-only
 
 
 @router.post("/train")
 def train(body: TrainIn, s: Session = Depends(db_session)):
-    from pathsync.evaluation import NON_INFERIORITY, adaptivity, cross_validate, passes_rule, train_full
+    from pathsync.evaluation import (
+        NON_INFERIORITY,
+        adaptivity,
+        cross_validate,
+        leave_one_expert_out,
+        passes_rule,
+        train_full,
+    )
     from pathsync.ranker import aggregate_orders
     by = defaultdict(list)
+    per_expert: dict[str, dict[str, list[str]]] = defaultdict(dict)
     for rr in s.scalars(select(ScenarioRanking).where(ScenarioRanking.simulated.is_(body.use_simulated))).all():
         by[rr.scenario_id].append(rr.order)
-    scen = {r.id: r.payload for r in s.scalars(select(Scenario)).all()}
+        per_expert[rr.expert_id][rr.scenario_id] = rr.order
+    scen = {r.id: r.payload for r in s.scalars(select(Scenario).where(Scenario.role == body.role)).all()}
     data = [scen[k] for k in by if k in scen]
     if len({d["base_id"] for d in data}) < 3:
         raise HTTPException(400, "Expert rankings are needed for at least 3 base scenarios before training.")
     refs = {k: aggregate_orders(v) for k, v in by.items() if k in scen}
     cv = cross_validate(data, refs, k=min(5, len({d["base_id"] for d in data})))
     w, lam = train_full(data, refs)
-    ok = passes_rule(cv)
-    activate = ok and body.activate_if_passes
+    # simulated experts: non-inferiority to formula (5); real experts: plan A4, leave-one-expert-out,
+    # LTR must beat formula (5) by >= 0.02 with a bootstrap CI that excludes zero
+    loeo = None if body.use_simulated else leave_one_expert_out(data, per_expert)
+    ok = passes_rule(cv) if body.use_simulated else bool(loeo and loeo.get("passes"))
+    activate = ok and body.activate_if_passes and body.role == "business_analyst"
     if activate:
         s.execute(update(RankerModel).values(active=False))
         bump_epoch(s)
     m = RankerModel(name=f"LTR {'simulated' if body.use_simulated else 'expert'} {datetime.now():%Y-%m-%d %H:%M}",
                     source="simulated" if body.use_simulated else "expert", weights=w, active=activate,
                     metrics={"cv": cv["methods"], "l2": lam, "passes_rule": ok, "margin": NON_INFERIORITY,
-                             "adaptivity": adaptivity(data, refs, w)})
+                             "leave_one_expert_out": loeo, "adaptivity": adaptivity(data, refs, w)})
     s.add(m)
     s.commit()
-    return {"model_id": m.id, "weights": w, "active": activate, "passes_rule": ok, "cv": cv["methods"]}
+    return {"model_id": m.id, "weights": w, "active": activate, "passes_rule": ok, "cv": cv["methods"],
+            "leave_one_expert_out": loeo}
 
 
 @router.get("/expert-agreement")
