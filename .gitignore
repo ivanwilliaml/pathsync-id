@@ -31,3 +31,7 @@ backend/data/admin_token.txt
 backups/
 backend/data/processed/embedding_cache.sqlite-shm
 backend/data/processed/embedding_cache.sqlite-wal
+
+# test coverage data
+.coverage
+backend/.coverage

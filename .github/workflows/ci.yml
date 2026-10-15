@@ -52,8 +52,8 @@ jobs:
         run: |
           PATHSYNC_DATABASE_URL=sqlite:///./ci-fresh.db python -c "from pathsync.db import init_db; init_db(); init_db()"
           PATHSYNC_DATABASE_URL=sqlite:///./ci-fresh.db python -m pathsync.migrate check
-      - name: Tests
-        run: python -m pytest -q
+      - name: Tests (coverage of pathsync/ and api/ must stay at 80% or more)
+        run: python -m pytest -q --cov=pathsync --cov=api --cov-report=term --cov-fail-under=80
 
   backend-postgres:
     runs-on: ubuntu-latest
