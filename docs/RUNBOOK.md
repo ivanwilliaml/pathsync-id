@@ -74,3 +74,33 @@ Isinya: p50/p95/maks dan tingkat galat per rute (dikelompokkan per pola rute, ja
 - `/api/health` dipakai healthcheck container: 503 hanya bila database mati; snapshot yang basi dilaporkan lewat `market_stale` tanpa membuat layanan dianggap mati.
 - Di produksi (`PATHSYNC_ENV=production`) setiap baris log berupa JSON dengan `rid` (request id yang sama dengan header `X-Request-ID` di respons dan pesan galat), metode, path, status, dan durasi. Isi permintaan dan token tidak pernah dicatat.
 - Galat dikirim ke Sentry bila `SENTRY_DSN` diisi di `.env` (tanpa data pribadi).
+
+## Deploy dari nol (plan C1)
+
+```bash
+cp .env.example .env        # isi rahasia: openssl rand -base64 48
+docker compose up -d --build
+```
+
+Database kosong pada start pertama: backend membangun peta pasar dan studi pakar dulu (sekitar 6 sampai 7 menit di laptop 2 CPU), baru melayani. Healthcheck memberi waktu 20 menit (`start-period`), jadi frontend, Caddy, retensi, dan refresh pasar menunggu, bukan dianggap gagal. `market-refresh` langsung melakukan scraping dan membangun ulang pasar sekali saat start, lalu tiap 30 hari.
+
+### Catatan uji 15 Okt 2026 (Docker Desktop, Windows, `PATHSYNC_DOMAIN=localhost`)
+
+| | Deploy 1 | Deploy 2 (setelah perbaikan) |
+|---|---|---|
+| Build image | 549 detik | dari cache |
+| `up -d` sampai semua layanan jalan | **gagal**: backend dianggap tidak sehat setelah sekitar 4,5 menit, layanan lain tidak dinyalakan | 368 detik, tanpa campur tangan |
+
+Temuan yang diperbaiki di antara keduanya:
+- `start-period` healthcheck 120 detik terlalu pendek untuk build pasar pertama (sekarang 1.200 detik).
+- `docker-entrypoint.sh` memakai tanggal acuan tetap `2026-10-01`, sehingga lowongan yang terbit sesudahnya keluar dari jendela; sekarang tanggal hari ini.
+- `.dockerignore` backend tidak mengecualikan `.venv/`, jadi venv lokal ikut tersalin ke image.
+- `retention` dan `market-refresh` mewarisi healthcheck API yang tidak mereka jalankan; sekarang dimatikan untuk keduanya, dan ketiga layanan backend memakai satu image (`pathsync-backend:local`).
+
+Pemeriksaan pada deploy 2:
+- HTTPS lewat Caddy (sertifikat lokal), header CSP, HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options` ada.
+- `/api/health` lewat domain: database ok, umur pasar 0 hari.
+- Cookie staf `HttpOnly; Secure; SameSite=Strict`, berisi token sesi 12 jam (bukan token staf).
+- Kunci admin lemah ditolak saat start di produksi (`PATHSYNC_ADMIN_TOKEN` harus 32+ karakter acak).
+- `X-Forwarded-For` palsu dari luar diabaikan: 30 pendaftaran lewat domain dengan alamat palsu berbeda, 20 diterima dan 10 ditolak sesuai batas 20/menit per IP asli.
+- Uji beban dari dalam jaringan `edge` (alamat klien dipercaya seperti dari Caddy): 200 mahasiswa, 40 bersamaan, 0 galat. p95 pendaftaran 926 ms, transkrip 2.763 ms, dashboard 1.171 ms (2 worker); dua yang terakhir di atas target 1 detik dan ditangani di B4.

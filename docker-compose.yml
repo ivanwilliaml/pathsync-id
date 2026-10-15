@@ -31,6 +31,7 @@ services:
 
   backend:
     build: ./backend
+    image: pathsync-backend:local     # also used by retention and market-refresh (built once)
     environment:
       PATHSYNC_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-pathsync}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-pathsync}
       PATHSYNC_ADMIN_TOKEN: ${PATHSYNC_ADMIN_TOKEN:?set PATHSYNC_ADMIN_TOKEN in .env (32+ random characters)}
@@ -84,7 +85,8 @@ services:
 
   retention:
     # Daily purge of data past its retention period (plan B3; periods in backend/pathsync/retention.py).
-    build: ./backend
+    image: pathsync-backend:local
+    healthcheck: {disable: true}       # the image healthcheck probes the API, which this service does not run
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
@@ -101,7 +103,8 @@ services:
 
   market-refresh:
     # Monthly scrape + market rebuild (PM audit BE-8). Failures are logged and visible in Admin -> Activity.
-    build: ./backend
+    image: pathsync-backend:local
+    healthcheck: {disable: true}       # the image healthcheck probes the API, which this service does not run
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |

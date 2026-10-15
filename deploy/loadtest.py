@@ -4,7 +4,15 @@
 
 Arguments: base URL, number of students, concurrency. Each simulated student sends its own X-Forwarded-For, which a
 trusted reverse proxy would set to the real client address (see deploy/Caddyfile). Prints latency percentiles per step.
+
+Through Caddy the forged X-Forwarded-For is replaced by the real address, so every student shares one IP and the sign-up
+limit applies (that is the point). To measure capacity, run it inside the compose network instead:
+    docker compose run --rm --no-deps -v ./deploy:/deploy backend python /deploy/loadtest.py http://backend:8000 200 40
+PATHSYNC_LOADTEST_INSECURE=1 accepts the self-signed certificate of https://localhost. With PATHSYNC_LOADTEST_OUT set,
+the summary is also written there as JSON (pipeline.report reads data/models/loadtest.json).
 """
+import json
+import os
 import statistics
 import sys
 import threading
@@ -38,7 +46,7 @@ def timed(step, fn):
 
 def student(i: int):
     ip = {"X-Forwarded-For": f"10.{i // 250}.{i % 250}.{i % 200 + 1}"}
-    with httpx.Client(base_url=BASE, timeout=60, headers=ip) as c:
+    with httpx.Client(base_url=BASE, timeout=60, headers=ip, verify=os.getenv("PATHSYNC_LOADTEST_INSECURE") != "1") as c:
         r = timed("signup", lambda: c.post("/api/students", json={"display_name": f"Load {i}", "program": "Information Systems",
                                                                   "target_role": "business_analyst", "consent": True}))
         if r.status_code != 200:
@@ -55,7 +63,14 @@ t0 = time.time()
 with ThreadPoolExecutor(CONC) as ex:
     list(ex.map(student, range(N)))
 print(f"{N} students, concurrency {CONC}, {time.time() - t0:.1f}s, errors: {len(errors)} {sorted(set(errors))[:5]}")
+summary = {"base": BASE, "students": N, "concurrency": CONC, "seconds": round(time.time() - t0, 1),
+           "errors": len(errors), "error_kinds": sorted(set(errors))[:5], "steps": {}}
 for step, v in lat.items():
     if v:
         v.sort()
-        print(f"{step:11s} n={len(v):4d} p50={statistics.median(v):6.0f} ms  p95={v[int(len(v) * .95) - 1]:6.0f} ms  max={v[-1]:6.0f} ms")
+        p95 = v[max(0, int(len(v) * .95) - 1)]
+        summary["steps"][step] = {"n": len(v), "p50_ms": round(statistics.median(v)), "p95_ms": round(p95), "max_ms": round(v[-1])}
+        print(f"{step:11s} n={len(v):4d} p50={statistics.median(v):6.0f} ms  p95={p95:6.0f} ms  max={v[-1]:6.0f} ms")
+if os.getenv("PATHSYNC_LOADTEST_OUT"):
+    with open(os.environ["PATHSYNC_LOADTEST_OUT"], "w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=1)

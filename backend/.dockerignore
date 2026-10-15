@@ -8,3 +8,5 @@ data/admin_token.txt
 ruff.toml
 tests/
 .ruff_cache/
+.venv/
+venv/
