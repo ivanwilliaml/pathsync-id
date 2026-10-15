@@ -15,7 +15,7 @@ import secrets
 from functools import lru_cache
 
 from .config import GRADE_SCORES, RUBRIC_LABELS, SEED_DIR
-from .embeddings import encode
+from .embeddings import encode, once
 from .evidence import EvidenceItem, rubric_score
 from .extraction import extract_skills, skill_index
 from .extraction.llm import LLMUnavailable, llm_configured
@@ -91,12 +91,12 @@ def _catalog_index(entries: list[dict]):
     return forms, owner, encode(forms)
 
 
-@lru_cache(maxsize=1)
+@once
 def _course_index():
     return _catalog_index(_courses())
 
 
-@lru_cache(maxsize=1)
+@once
 def _cert_index():
     return _catalog_index(_certs()["certificates"])
 
@@ -346,7 +346,7 @@ _POSTING_HEADING = re.compile(
     r"job description|deskripsi pekerjaan|what you.ll do|who you are|benefits?)\s*:?\s*(\n|$)", re.I)
 
 
-@lru_cache(maxsize=1)
+@once
 def _posting_corpus():
     """TF-IDF index over scraped job postings, to reject a posting pasted as 'my project'."""
     from sklearn.feature_extraction.text import TfidfVectorizer

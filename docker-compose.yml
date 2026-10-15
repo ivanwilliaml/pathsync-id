@@ -38,6 +38,7 @@ services:
       PATHSYNC_TRUSTED_PROXIES: 172.28.0.0/16
       PATHSYNC_REDIS_URL: redis://redis:6379/0
       PATHSYNC_WORKERS: ${PATHSYNC_WORKERS:-2}
+      PATHSYNC_WARMUP: sync          # load the embedding model before taking traffic (cold uploads took minutes)
       PATHSYNC_ENV: production
       SENTRY_DSN: ${SENTRY_DSN:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}

@@ -14,6 +14,7 @@ PostgreSQL (docker-compose ships a pgvector image).
 """
 from __future__ import annotations
 
+import os
 import uuid
 from datetime import UTC, date, datetime
 
@@ -378,7 +379,10 @@ class Annotation(Base):
 
 
 # ------------------------------------------------------------------ engine
-_engine = create_engine(DATABASE_URL, future=True,
+# The pool must cover the request threadpool (40 threads by default); with the SQLAlchemy default of 5 + 10 a burst of
+# uploads queued for a connection and failed after 30 s (load test, plan B4).
+_POOL = int(os.getenv("PATHSYNC_DB_POOL", "20"))
+_engine = create_engine(DATABASE_URL, future=True, pool_size=_POOL, max_overflow=_POOL,
                         # sqlite: wait up to 30 s for the single writer instead of failing with "database is locked"
                         connect_args={"check_same_thread": False, "timeout": 30} if DATABASE_URL.startswith("sqlite") else {},
                         pool_pre_ping=not DATABASE_URL.startswith("sqlite"))

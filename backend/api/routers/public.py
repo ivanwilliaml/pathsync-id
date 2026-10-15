@@ -21,6 +21,7 @@ from pathsync.config import (
     SIM_REVIEW,
 )
 from pathsync.db import Expert, GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot, utcnow
+from pathsync.embeddings import WARM
 from pathsync.engine import graph_from_db
 from pathsync.extraction.llm import llm_configured
 from pathsync.roles import FAMILIES
@@ -49,10 +50,12 @@ def ready(s: Session = Depends(db_session)):
         raise HTTPException(503, {"ok": False, "database": "down", "error": type(e).__name__}) from e
     age = (utcnow() - newest).days if newest else None
     stale = age is None or age > SNAPSHOT_MAX_AGE_DAYS
-    body = {"ok": not stale, "database": "up", "snapshot_age_days": age, "snapshot_max_age_days": SNAPSHOT_MAX_AGE_DAYS,
+    warm = WARM.is_set()
+    body = {"ok": not stale and warm, "database": "up", "models_loaded": warm,
+            "snapshot_age_days": age, "snapshot_max_age_days": SNAPSHOT_MAX_AGE_DAYS,
             "warning": ("no active market snapshot" if age is None else
                         f"market snapshot is {age} days old; check the monthly refresh") if stale else None}
-    if stale:
+    if stale or not warm:
         raise HTTPException(503, body)
     return body
 

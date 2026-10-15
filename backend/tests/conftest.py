@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import os
 import shutil
+import sqlite3
 import tempfile
 from pathlib import Path
 
@@ -18,7 +19,9 @@ if _TEST_URL:
     HAVE_DB = True
     os.environ["PATHSYNC_DATABASE_URL"] = _TEST_URL
 elif HAVE_DB:
-    shutil.copy(_SRC_DB, _TMP_DIR / "pathsync.db")
+    # the backup API includes pages still in the -wal file; copying pathsync.db alone can give a malformed database
+    with sqlite3.connect(_SRC_DB) as _src, sqlite3.connect(_TMP_DIR / "pathsync.db") as _dst:
+        _src.backup(_dst)
     os.environ["PATHSYNC_DATABASE_URL"] = f"sqlite:///{(_TMP_DIR / 'pathsync.db').as_posix()}"
 os.environ["PATHSYNC_WARMUP"] = "0"
 os.environ.setdefault("PATHSYNC_EXTRACTOR", "lexicon")

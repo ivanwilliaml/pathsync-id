@@ -18,6 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from pathsync.db import get_session, init_db
+from pathsync.embeddings import WARM
 from pathsync.engine import ensure_seed
 from pathsync.security import ensure_admin_token
 
@@ -37,15 +38,20 @@ if os.getenv("SENTRY_DSN"):   # optional error tracking (PM audit P0-6); no requ
 
 
 def _warmup():
-    """Load the embedding model and skill index in the background so the first upload is not slow."""
+    """Load the embedding model and the skill, course, certificate and posting indexes so the first upload is not slow."""
     from pathsync.extraction import skill_index
-    from pathsync.intake import _posting_corpus, map_course
+    from pathsync.intake import _cert_index, _posting_corpus, map_course
+    t0 = time.perf_counter()
     try:
         skill_index()
         map_course("Basis Data")
+        _cert_index()
         _posting_corpus()
+        log.info("warmup done in %.1fs", time.perf_counter() - t0)
     except Exception as e:  # pragma: no cover - warmup is best effort
         log.warning("warmup failed: %s", e)
+    finally:
+        WARM.set()
 
 
 @asynccontextmanager
@@ -56,8 +62,13 @@ async def lifespan(_app: FastAPI):
         token = ensure_admin_token(s)
     if token:
         log.warning("No PATHSYNC_ADMIN_TOKEN set: generated an admin token, saved to data/admin_token.txt")
-    if os.getenv("PATHSYNC_WARMUP", "1") != "0":
+    mode = os.getenv("PATHSYNC_WARMUP", "1")      # 1 = background, sync = before serving (production), 0 = off (tests)
+    if mode == "sync":
+        _warmup()
+    elif mode != "0":
         threading.Thread(target=_warmup, daemon=True).start()
+    else:
+        WARM.set()
     yield
 
 
