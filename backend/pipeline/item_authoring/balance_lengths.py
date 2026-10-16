@@ -7,7 +7,7 @@ padded to go up, the distractor just below it is padded to go down. Because the 
 the target rank, never by correctness, the phrase itself carries no signal.
 
 Skips options that are code, numbers or very short names. Run after editing the n_*.json rewrite files:
-    python -m pipeline.balance_lengths      (then python -m pipeline.apply_item_rewrite)
+    python -m pipeline.item_authoring.balance_lengths      (then python -m pipeline.item_authoring.apply_item_rewrite)
 """
 from __future__ import annotations
 

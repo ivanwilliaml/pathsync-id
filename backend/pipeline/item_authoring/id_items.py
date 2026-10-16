@@ -1,11 +1,11 @@
 """Indonesian quiz items (plan A7).
 
-    python -m pipeline.id_items status          # per bank file: items without Indonesian text yet
-    python -m pipeline.id_items show x_testing  # the English source of one bank file, compact, to translate
-    python -m pipeline.id_items check           # translations in data/seed/_id: ids, option counts, key order
+    python -m pipeline.item_authoring.id_items status          # per bank file: items without Indonesian text yet
+    python -m pipeline.item_authoring.id_items show x_testing  # the English source of one bank file, compact, to translate
+    python -m pipeline.item_authoring.id_items check           # translations in data/seed/_id: ids, option counts, key order
 
 Translations live in data/seed/_id/<name>.json as {"item-id": {"stem", "options" (key first, like the seed), "explanation"}}
-and are merged by `python -m pipeline.apply_item_rewrite`. Tool and product names stay in English.
+and are merged by `python -m pipeline.item_authoring.apply_item_rewrite`. Tool and product names stay in English.
 """
 from __future__ import annotations
 

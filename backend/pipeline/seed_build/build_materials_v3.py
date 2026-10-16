@@ -1,7 +1,7 @@
 """Rebuild data/seed/materials.json: keep verified legacy materials for retained skills and add the new ones.
 
 Every URL is requested (GET, follows redirects). 2xx/3xx = verified. 401/403/429 (bot protection) are kept but marked
-unverified. Anything else is dropped and listed. Run: python -m pipeline.build_materials_v3
+unverified. Anything else is dropped and listed. Run: python -m pipeline.seed_build.build_materials_v3
 """
 from __future__ import annotations
 

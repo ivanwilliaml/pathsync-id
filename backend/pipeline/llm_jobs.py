@@ -5,9 +5,9 @@ pathsync/extraction/llm.py; only the model differs (an open-weight instruction m
 brought back through the same gates as any other extractor (quote verification + embedding
 normalisation), so nothing unverified enters the market map.
 
-  python -m pipeline.llm_jobs export-postings [--gold-plus 300]  -> kaggle/jobs/postings.json
-  python -m pipeline.llm_jobs export-scenarios           -> kaggle/jobs/scenarios.json
-  (run kaggle/pathsync_llm.py on a GPU notebook, download llm_results_*.json)
+  python -m pipeline.llm_jobs export-postings [--gold-plus 300]  -> backend/offline_llm/jobs/postings.json
+  python -m pipeline.llm_jobs export-scenarios           -> backend/offline_llm/jobs/scenarios.json
+  (run backend/offline_llm/pathsync_llm.py on a GPU notebook, download llm_results_*.json)
   python -m pipeline.llm_jobs import-postings <file>     -> extraction cache (key ...|llm|<taxonomy>)
   python -m pipeline.llm_jobs import-scenarios <file>    -> data/models/llm_baseline_orders.json
   python -m pipeline.llm_jobs compare                    -> data/models/extractor_comparison.json
@@ -29,7 +29,7 @@ from pathsync.extraction.base import Mention, apply_gates
 from pathsync.extraction.llm import POSTING_SYSTEM, _mention_schema, _taxonomy_block
 from pathsync.taxonomy import load_skills, load_taxonomy
 
-JOBS_DIR = BACKEND_DIR.parent / "kaggle" / "jobs"
+JOBS_DIR = BACKEND_DIR / "offline_llm" / "jobs"
 EXTRACTION_CACHE = PROCESSED_DIR / "extraction_cache.json"
 LLM_ORDERS = MODELS_DIR / "llm_baseline_orders.json"
 COMPARISON = MODELS_DIR / "extractor_comparison.json"

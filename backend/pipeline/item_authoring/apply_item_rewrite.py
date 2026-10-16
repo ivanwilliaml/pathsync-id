@@ -11,7 +11,7 @@ Later files override earlier ones (files are applied in name order).
 Indonesian text (plan A7): data/seed/_id/*.json maps item id -> {"stem", "options" (key first), "explanation"} and
 replaces the Indonesian side of that item (legacy and new alike); the English overlay in items_en is untouched.
 
-Run: python -m pipeline.apply_item_rewrite
+Run: python -m pipeline.item_authoring.apply_item_rewrite
 """
 from __future__ import annotations
 

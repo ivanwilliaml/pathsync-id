@@ -1,7 +1,7 @@
 """Build data/seed/soft_skills.json from the retained legacy soft-skill entries.
 
 Soft skills are experience-based: no quiz and no course path. They are mined from postings so a student can see which
-ones a role asks for, and the student records their own experience (see pathsync/soft.py). Run: python -m pipeline.build_soft_skills
+ones a role asks for, and the student records their own experience (see pathsync/soft.py). Run: python -m pipeline.seed_build.build_soft_skills
 """
 from __future__ import annotations
 

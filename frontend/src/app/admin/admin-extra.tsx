@@ -290,7 +290,7 @@ export function Studies() {
         <SectionTitle>Controlled User Study (Four Arms)</SectionTitle>
         <p className="mb-3 text-sm text-ink/70">
           A: skill list from postings · B: generic AI-style plan · C: PathSync without adaptivity · D: full PathSync. Students join with the study code in
-          Settings and are assigned by stratified minimisation. Protocol: docs/STUDY_PROTOCOL.md.
+          Settings and are assigned by stratified minimisation. Protocol: docs/ops/STUDY_PROTOCOL.md.
         </p>
         <form onSubmit={create} className="flex flex-wrap gap-2">
           <Input aria-label="Study name" value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Pilot BA Oktober 2026…" className="h-10 min-w-0 flex-1" />
