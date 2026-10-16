@@ -205,3 +205,17 @@ def test_soft_skills_are_experience_only(client):
     c = next(x for x in d["soft_skills"] if x["skill_id"] == "collaboration")
     assert c["level"] == 2 and c["note"] == "Capstone team of 4"
     assert client.get("/api/assessment/items?skill_id=collaboration", headers=h).status_code in (404, 422)
+
+
+def test_governance_counts_soft_skill_phrases_as_covered():
+    """Agile, project management and the other soft skills live in their own layer, so a posting phrase the
+    soft layer captures is neither a missing hard skill nor a new-skill candidate (jury note: BA list final)."""
+    from pathsync import governance
+    from pathsync.db import SessionLocal
+    from pathsync.soft import detect
+
+    with SessionLocal() as s:
+        rep = governance.report(s, "business_analyst")
+    assert rep["new_skill_candidates"], "the report should still list real candidates"
+    assert not [c["label"] for c in rep["new_skill_candidates"] if detect(c["label"])]
+    assert rep["criteria"]["C2_no_frequent_candidate"]["pass"] and 0.9 < rep["criteria"]["C1_coverage"]["value"] <= 1

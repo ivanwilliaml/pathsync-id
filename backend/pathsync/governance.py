@@ -24,6 +24,7 @@ from sqlalchemy.orm import Session
 from .config import ROLES, SEED_DIR
 from .db import Posting, PostingMention, active_snapshot
 from .market import esco_status
+from .soft import detect as soft_detect
 from .taxonomy import load_skills, load_taxonomy
 
 COVERAGE_TARGET = 0.95
@@ -70,10 +71,13 @@ def report(s: Session, role: str = "business_analyst") -> dict:
     mentions = s.execute(select(PostingMention.posting_id, PostingMention.skill_id, PostingMention.status,
                                 PostingMention.surface).where(PostingMention.posting_id.in_(pids))).all()
     counted = [m for m in mentions if m.status in ("auto", "review", "new")]
-    covered = [m for m in counted if m.status in ("auto", "review") and m.skill_id]
+    # a phrase the soft-skill layer already captures (Agile, project management, communication...) is not a missing
+    # skill: the product shows it, with its demand, outside the ranked hard-skill list
+    soft_hit = {m.surface: bool(soft_detect(m.surface)) for m in counted if m.status == "new"}
+    covered = [m for m in counted if (m.status in ("auto", "review") and m.skill_id) or soft_hit.get(m.surface)]
     coverage = len(covered) / len(counted) if counted else 0.0
 
-    clusters = _cluster_candidates([(m.surface, m.posting_id) for m in counted if m.status == "new"])
+    clusters = _cluster_candidates([(m.surface, m.posting_id) for m in counted if m.status == "new" and not soft_hit.get(m.surface)])
     cands = sorted(({"label": c["label"], "examples": sorted(c["members"])[:6], "postings": len(c["postings"]),
                      "share": round(len(c["postings"]) / max(1, n_posts), 3)} for c in clusters),
                    key=lambda c: -c["postings"])
