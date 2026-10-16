@@ -4,3 +4,4 @@ ruff==0.8.6
 psycopg[binary]==3.3.6  # PostgreSQL job in CI (the Docker image installs it too)
 pip-audit==2.10.1
 pytest-cov==7.1.0
+openpyxl==3.1.5    # offline annotation sheets (pipeline.gold sheet / import-sheet)
