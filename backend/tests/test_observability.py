@@ -24,13 +24,14 @@ def client():
         yield c
 
 
-def test_health_reports_database_and_market_age(client):
-    r = client.get("/api/health")
-    assert r.status_code == 200
-    j = r.json()
-    assert j["ok"] and j["database"] == "ok"
-    assert isinstance(j["market_age_days"], int) and j["market_max_age_days"] == 45
-    assert j["market_stale"] == (j["market_age_days"] > 45)
+def test_health_is_liveness_and_runtime_reports_market_age(client):
+    """/api/health only says the process answers (container healthcheck); the database and market age are in
+    /api/health/ready and in the admin runtime view."""
+    assert client.get("/api/health").json() == {"ok": True}
+    r = client.get("/api/admin/runtime", headers=ADMIN).json()["health"]
+    assert r["ok"] and r["database"] == "ok"
+    assert isinstance(r["market_age_days"], int) and r["market_max_age_days"] == 45
+    assert r["market_stale"] == (r["market_age_days"] > 45)
 
 
 def test_runtime_view_groups_by_route_template(client):

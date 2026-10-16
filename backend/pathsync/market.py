@@ -1,6 +1,7 @@
 """Market snapshot management: ESCO status, building and loading the demand map."""
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import date
 from functools import lru_cache
@@ -8,7 +9,7 @@ from functools import lru_cache
 from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
-from .config import RAW_DIR, ROLES
+from .config import RAW_DIR, ROLES, SEED_DIR
 from .db import MarketSnapshot, Posting, active_snapshot, bump_epoch
 from .demand import MarketMap, PostingSkills, compute_market, required_levels
 from .roles import skill_ids_for_role
@@ -39,22 +40,25 @@ def esco_status() -> dict[str, dict[str, str]]:
     return out
 
 
-def provenance(extractors: dict[str, int]) -> dict:
-    """What produced a snapshot: taxonomy version and hash, cache tag per extractor used, gold hashes."""
-    import hashlib
+def _sha(path) -> str | None:
+    """Short content hash; line endings are normalised so a Windows checkout gives the same value as CI."""
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()[:16] if path.exists() else None
 
-    from .config import SEED_DIR
+
+def provenance(extractors: dict[str, int], overrides: dict[str, float] | None = None, postings: int | None = None) -> dict:
+    """What a snapshot was computed from (plan B5): taxonomy version and seed hashes, extractor mix and the cache
+    tag of each extractor (the tag changes when aliases change), gold hashes, and whether levels were overridden."""
     from .extraction import cache_tag
     from .taxonomy import load_taxonomy
 
-    def sha(name: str) -> str | None:
-        f = SEED_DIR / name
-        return hashlib.sha256(f.read_bytes().replace(b"\r\n", b"\n")).hexdigest()[:16] if f.exists() else None
-
     kinds = sorted({e.split(":")[0] for e in extractors})
-    return {"taxonomy_version": load_taxonomy()["version"], "taxonomy_sha256": sha("taxonomy.json"),
-            "extractors": extractors, "cache_tags": {k: cache_tag(k) for k in kinds if k in ("lexicon", "llm")},
-            "gold_sha256": {n: sha(n) for n in ("gold_blind.json", "gold_split.json", "gold_consensus.json") if sha(n)}}
+    return {"taxonomy_version": load_taxonomy()["version"], "taxonomy_sha": _sha(SEED_DIR / "taxonomy.json"),
+            "graph_sha": _sha(SEED_DIR / "graph.json"), "esco_sha": _sha(RAW_DIR / "esco_occupations.json"),
+            "postings": postings if postings is not None else sum(extractors.values()), "extractors": extractors,
+            "cache_tags": {k: cache_tag(k) for k in kinds if k in ("lexicon", "llm")},
+            "gold_sha": {n: _sha(SEED_DIR / n) for n in ("gold_blind.json", "gold_split.json", "gold_consensus.json")
+                         if (SEED_DIR / n).exists()},
+            "overrides": bool(overrides)}
 
 
 def build_snapshot(s: Session, role: str, version: str, ref: date, note: str = "",
@@ -78,7 +82,7 @@ def build_snapshot(s: Session, role: str, version: str, ref: date, note: str = "
     for p in rows:
         used[p.extractor or "?"] = used.get(p.extractor or "?", 0) + 1
     snap = MarketSnapshot(version=version, role=role, reference_date=ref, data=market.to_dict(), required=req,
-                          sources=sources, note=note, active=True, provenance=provenance(used))
+                          sources=sources, note=note, active=True, provenance=provenance(used, overrides, len(rows)))
     s.add(snap)
     bump_epoch(s)
     s.flush()

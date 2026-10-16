@@ -93,10 +93,15 @@ export default function PrivacyPage() {
 
         <Section title="6. Berapa lama data disimpan">
           <p>
-            Selama profil Anda ada. Profil yang tidak dipakai lebih dari 24 bulan akan kami hapus. Anda dapat menghapus semuanya sendiri kapan saja
-            di Pengaturan. Catatan pemakaian aplikasi (tanpa isi bukti) dihapus setelah 365 hari, catatan tindakan staf setelah 730 hari, dan
-            cadangan basis data dihapus otomatis setelah 14 hari.
+            Selama profil Anda ada. Profil yang tidak dipakai lebih dari 24 bulan akan kami hapus otomatis. Anda dapat menghapus semuanya sendiri kapan saja
+            di Pengaturan. Cadangan basis data dihapus otomatis setelah 14 hari.
           </p>
+          <ul className="list-disc space-y-1.5 pl-5">
+            <li>Peristiwa penggunaan (misalnya &ldquo;membuka dasbor&rdquo;): 180 hari.</li>
+            <li>Laporan galat otomatis dari peramban: 90 hari. Pesan yang Anda tulis sendiri lewat &ldquo;Report a problem&rdquo; disimpan sampai ditangani.</li>
+            <li>Catatan aktivitas staf: 365 hari.</li>
+            <li>Saat Anda menghapus profil, peristiwa penggunaan Anda ikut dihapus dan laporan yang pernah Anda kirim dilepas dari profil Anda.</li>
+          </ul>
         </Section>
 
         <Section title="7. Hak Anda">

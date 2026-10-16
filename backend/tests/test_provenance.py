@@ -23,4 +23,4 @@ def test_active_snapshots_have_provenance():
     for snap in snaps:
         p = snap.provenance or {}
         assert p.get("taxonomy_version") == load_taxonomy()["version"], snap.role
-        assert p.get("taxonomy_sha256") and p.get("cache_tags"), snap.role
+        assert p.get("taxonomy_sha") and p.get("cache_tags"), snap.role

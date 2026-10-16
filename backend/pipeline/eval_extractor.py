@@ -1,8 +1,9 @@
 """Measure the skill extractor against a gold set.
 
-Reports skill-level precision, recall and F1 (micro-averaged over postings) with 95% Wilson
-intervals, per role and per taxonomy cluster, and lists the most common false positives and
-misses so aliases can be fixed.
+Reports skill-level precision, recall and F1 (micro-averaged over postings) with 95% intervals:
+Wilson for precision and recall, a posting-level bootstrap for F1 (pairs from one posting are not
+independent). Per role and per taxonomy cluster, with the most common false positives and misses
+so aliases can be fixed, and the taxonomy and gold hashes so a number can be traced to its data.
 
     python -m pipeline.eval_extractor [--json]
         the three earlier single-annotator sets, plus the human consensus dev/test halves once
@@ -17,16 +18,43 @@ from __future__ import annotations
 
 import argparse
 import glob
+import hashlib
 import json
+import random
 import sys
 from collections import Counter
 
 from pathsync.config import MODELS_DIR, PROCESSED_DIR, RAW_DIR, SEED_DIR
 from pathsync.extraction import cache_tag, extract_skills
-from pathsync.gold import CONSENSUS_FILE, load_split, prf
+from pathsync.gold import CONSENSUS_FILE, load_split, prf, wilson  # noqa: F401  (wilson re-exported for callers)
 from pathsync.taxonomy import load_skills
 
 EXTRACTORS = ("lexicon", "llm", "union", "intersection")
+BOOTSTRAP = 1000
+
+
+def _f1(tp: int, fp: int, fn: int) -> float:
+    return 2 * tp / (2 * tp + fp + fn) if tp else 0.0
+
+
+def bootstrap_f1(counts: list[tuple[int, int, int]], seed: int = 0) -> list[float]:
+    """Resample postings (not pairs) with replacement; percentile interval of micro F1."""
+    if not counts:
+        return [0.0, 1.0]
+    rng = random.Random(seed)
+    vals = []
+    for _ in range(BOOTSTRAP):
+        tp = fp = fn = 0
+        for _ in counts:
+            a, b, c = counts[rng.randrange(len(counts))]
+            tp, fp, fn = tp + a, fp + b, fn + c
+        vals.append(_f1(tp, fp, fn))
+    vals.sort()
+    return [round(vals[int(0.025 * BOOTSTRAP)], 3), round(vals[int(0.975 * BOOTSTRAP) - 1], 3)]
+
+
+def file_hash(path) -> str:
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()[:12]
 EXTRACTION_CACHE = PROCESSED_DIR / "extraction_cache.json"
 
 
@@ -80,6 +108,7 @@ def evaluate(prefer: str = "lexicon", goldfile: str = "gold_pilot.json", split: 
     fps, fns = Counter(), Counter()
     per_role: dict[str, list[int]] = {}
     per_cluster: dict[str, list[int]] = {}
+    per_posting: list[tuple[int, int, int]] = []
     skipped = []
     for key, g in gold.items():
         pred = _predict(rows[key], cap, prefer, llm)
@@ -89,6 +118,7 @@ def evaluate(prefer: str = "lexicon", goldfile: str = "gold_pilot.json", split: 
         want = set(g["skills"])
         a, b, c = len(pred & want), len(pred - want), len(want - pred)
         tp, fp, fn = tp + a, fp + b, fn + c
+        per_posting.append((a, b, c))
         for s in pred - want:
             fps[s] += 1
         for s in want - pred:
@@ -98,8 +128,9 @@ def evaluate(prefer: str = "lexicon", goldfile: str = "gold_pilot.json", split: 
         for s in pred | want:
             cl = per_cluster.setdefault(cluster.get(s, "?"), [0, 0, 0])
             cl[0 if (s in pred and s in want) else 1 if s in pred else 2] += 1
-    return {"gold": goldfile, "split": split, "extractor": prefer, "n_postings": len(gold) - len(skipped),
-            "skipped_no_llm_result": skipped, "overall": prf(tp, fp, fn),
+    return {"gold": goldfile, "gold_file": goldfile, "gold_sha": file_hash(SEED_DIR / goldfile), "split": split,
+            "extractor": prefer, "n_postings": len(gold) - len(skipped), "skipped_no_llm_result": skipped,
+            "overall": {**prf(tp, fp, fn), "f1_ci95": bootstrap_f1(per_posting)},
             "per_role": {k: prf(*v) for k, v in sorted(per_role.items())},
             "per_cluster": {k: prf(*v) for k, v in sorted(per_cluster.items())},
             "top_false_positives": fps.most_common(12), "top_misses": fns.most_common(12)}
@@ -120,10 +151,11 @@ def main() -> None:
     if CONSENSUS_FILE.exists():
         for half in ("dev", "test"):
             out[f"consensus_{half}"] = evaluate(goldfile=CONSENSUS_FILE.name, split=half)
+    out["provenance"] = {"taxonomy_sha": file_hash(SEED_DIR / "taxonomy.json"), "extractor": "lexicon"}
     (MODELS_DIR / "extractor_gold_eval.json").write_text(json.dumps(out, indent=1), encoding="utf-8")
     print(json.dumps({k: {"n": v["n_postings"], **{m: v["overall"][m] for m in ("precision", "recall", "f1",
-                                                                                 "precision_ci95", "recall_ci95")}}
-                      for k, v in out.items()}, indent=1))
+                                                                                 "precision_ci95", "recall_ci95", "f1_ci95")}}
+                      for k, v in out.items() if k != "provenance"}, indent=1))
     last = out.get("consensus_test", out["blind"])
     print("FP:", last["top_false_positives"])
     print("misses:", last["top_misses"])

@@ -31,7 +31,7 @@ SPLIT_SEED = 20261014
 def wilson(k: int, n: int, z: float = 1.96) -> list[float]:
     """95% Wilson score interval for a proportion k/n."""
     if n == 0:
-        return [0.0, 0.0]
+        return [0.0, 1.0]                 # no data: the proportion could be anything
     p = k / n
     den = 1 + z * z / n
     centre = (p + z * z / (2 * n)) / den

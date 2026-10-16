@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
 import { api, type Item } from "@/lib/api";
-import { num, titleCase } from "@/lib/format";
+import { pct, titleCase } from "@/lib/format";
 import { track } from "@/lib/track";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -200,6 +200,7 @@ function Results({ items, result }: { items: Item[]; result: SubmitResult }) {
 
       <Panel>
         <h2 className="text-lg font-semibold text-ink">What Changed</h2>
+        <p className="mt-1 text-sm text-ink/70">Estimated mastery per skill, before and after this check.</p>
         <ul className="mt-4 space-y-4">
           {changes.map(([k, s]) => {
             const up = s.p_after >= s.p_before;
@@ -208,7 +209,7 @@ function Results({ items, result }: { items: Item[]; result: SubmitResult }) {
                 <span className="truncate text-sm font-medium text-ink">{titleCase(s.name)}</span>
                 <MasteryBar value={s.p_after} tone="indigo" />
                 <span className={cn("tabular text-xs font-medium", up ? "text-mint-ink" : "text-destructive")}>
-                  {num(s.p_before)} to {num(s.p_after)}
+                  {pct(s.p_before)} {up ? "↑" : "↓"} {pct(s.p_after)}
                 </span>
               </li>
             );

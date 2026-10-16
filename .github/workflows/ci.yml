@@ -94,6 +94,7 @@ jobs:
       - name: Upgrade head from an empty database, then compare models and migrations
         run: |
           python -m pathsync.migrate
+          python -m pathsync.migrate
           python -m pathsync.migrate check
       - name: Build the demo database (market map + expert study)
         run: |

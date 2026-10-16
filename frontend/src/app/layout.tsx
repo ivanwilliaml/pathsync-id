@@ -11,8 +11,8 @@ const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
-  title: { default: "PathSync: tahu persis apa yang harus dipelajari berikutnya", template: "%s · PathSync" },
-  description: "Rute belajar untuk mahasiswa Indonesia, dari lowongan kerja nyata dan bukti kemampuanmu. Gratis, tanpa email dan kata sandi.",
+  title: { default: "PathSync: Know Exactly What to Learn Next", template: "%s · PathSync" },
+  description: "A learning route for Indonesian students, built from real job postings and the skills you can prove. Free, no email or password.",
   openGraph: { type: "website", siteName: "PathSync", locale: "id_ID", url: SITE },
   twitter: { card: "summary_large_image" },
 };

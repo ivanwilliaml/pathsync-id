@@ -10,7 +10,8 @@ the taxonomy does not have). Phrases where the two labellers disagree are left o
 a third rater fills `adjudicated` in the gold file.
 
 Threshold rule (written before the labels exist): the auto band starts at the lowest threshold whose
-precision on the gold is >= 0.95.
+precision on the gold is >= 0.95. As in the live gates, a phrase above the threshold with no word in
+common with the matched skill form (lexical_support) is not mapped automatically.
 """
 from __future__ import annotations
 
@@ -94,7 +95,8 @@ def cmd_import(paths: list[str]) -> None:
                                 "phrases": phrases}, ensure_ascii=False, indent=1), encoding="utf-8")
     both = [v for v in phrases.values() if len(v["labels"]) >= 2]
     agree = sum(len(set(v["labels"].values())) == 1 for v in both)
-    print(f"{len(phrases)} phrases labelled, {len(both)} by two people, raw agreement {agree}/{len(both)}")
+    print(f"{len(phrases)} phrases labelled, {len(both)} by two people, raw agreement {agree}/{len(both)}, "
+          f"kappa {labeller_kappa()['kappa']}")
 
 
 def gold_labels() -> dict[str, str]:
@@ -110,15 +112,36 @@ def gold_labels() -> dict[str, str]:
     return out
 
 
-def evaluate(gold: dict[str, str], predictions: dict[str, tuple[str, float]]) -> dict:
-    """predictions: phrase id -> (nearest skill, similarity) from the current embedding index."""
+def cohen_kappa(a: list[str], b: list[str]) -> float | None:
+    n = len(a)
+    if not n:
+        return None
+    po = sum(x == y for x, y in zip(a, b, strict=True)) / n
+    ca, cb = Counter(a), Counter(b)
+    pe = sum(ca[k] * cb.get(k, 0) for k in ca) / (n * n)
+    return round((po - pe) / (1 - pe), 4) if pe < 1 else 1.0
+
+
+def labeller_kappa() -> dict:
+    """Cohen's kappa over the label each of the first two labellers gave to the same phrase."""
+    doc = json.loads(GOLD.read_text(encoding="utf-8"))
+    names = sorted({n for v in doc["phrases"].values() for n in v["labels"]})[:2]
+    both = [v["labels"] for v in doc["phrases"].values() if all(n in v["labels"] for n in names)]
+    return {"labellers": names, "n": len(both),
+            "kappa": cohen_kappa([b[names[0]] for b in both], [b[names[1]] for b in both]) if len(names) == 2 else None}
+
+
+def evaluate(gold: dict[str, str], predictions: dict[str, tuple]) -> dict:
+    """predictions: phrase id -> (nearest skill, similarity[, lexically supported]) from the current index.
+    An unsupported phrase is never auto-mapped, whatever its similarity (same rule as the live gates)."""
     ids = [i for i in gold if i in predictions]
     skill_phrases = [i for i in ids if gold[i] != "none"]
+    supported = {i: (predictions[i][2] if len(predictions[i]) > 2 else True) for i in ids}
     curve = []
     for t in THRESHOLDS:
-        auto = [i for i in ids if predictions[i][1] >= t]
+        auto = [i for i in ids if predictions[i][1] >= t and supported[i]]
         right = sum(predictions[i][0] == gold[i] for i in auto)
-        below = [i for i in ids if predictions[i][1] < t]
+        below = [i for i in ids if not (predictions[i][1] >= t and supported[i])]
         curve.append({"threshold": t, "auto": len(auto), "precision": round(right / len(auto), 4) if auto else None,
                       "precision_ci95": wilson(right, len(auto)),
                       "coverage": round(right / len(skill_phrases), 4) if skill_phrases else None,
@@ -146,11 +169,15 @@ def cmd_eval() -> None:
     phrases = {p["id"]: p for p in json.loads(SAMPLE.read_text(encoding="utf-8"))["phrases"]}
     gold = gold_labels()
     ids = [i for i in gold if i in phrases]
+    from pathsync.extraction.base import MIN_LEXICAL_SUPPORT, lexical_support
+
     near = skill_index().nearest([phrases[i]["surface"] for i in ids])
-    preds = {i: (sid, float(sim)) for i, (sid, sim, _) in zip(ids, near, strict=True)}
-    out = evaluate(gold, preds)
+    preds = {i: (sid, float(sim), lexical_support(phrases[i]["surface"], form) >= MIN_LEXICAL_SUPPORT)
+             for i, (sid, sim, form) in zip(ids, near, strict=True)}
+    out = {**evaluate(gold, preds), "labellers": labeller_kappa()}
     REPORT.write_text(json.dumps(out, indent=1), encoding="utf-8")
-    print(json.dumps({k: out[k] for k in ("n_gold", "chosen_threshold", "current_auto_precision", "cluster_purity")}))
+    print(json.dumps({k: out[k] for k in ("n_gold", "chosen_threshold", "current_auto_precision", "cluster_purity",
+                                          "labellers")}))
 
 
 def main() -> None:

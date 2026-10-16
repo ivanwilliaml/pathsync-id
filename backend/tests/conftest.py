@@ -1,27 +1,30 @@
 """API tests run against a throwaway copy of the database built by the pipelines, so the
-real data/pathsync.db is never modified. The copy is made before pathsync.config is imported.
-
-Set PATHSYNC_TEST_DATABASE_URL (for example a PostgreSQL database already filled by
-build_market and expert_study) to run the suite against that database instead; it is
-modified by the tests, so point it at a throwaway database."""
+real data/pathsync.db is never modified. The copy is made before pathsync.config is imported."""
 from __future__ import annotations
 
 import os
 import shutil
+import sqlite3
 import tempfile
 from pathlib import Path
 
 _SRC_DB = Path(__file__).resolve().parents[1] / "data" / "pathsync.db"
 _TMP_DIR = Path(tempfile.mkdtemp(prefix="pathsync-test-"))
-_EXTERNAL_DB = os.getenv("PATHSYNC_TEST_DATABASE_URL")
-HAVE_DB = bool(_EXTERNAL_DB) or _SRC_DB.exists()
+HAVE_DB = _SRC_DB.exists()
 
-if _EXTERNAL_DB:
-    os.environ["PATHSYNC_DATABASE_URL"] = _EXTERNAL_DB
+# PATHSYNC_TEST_DATABASE_URL runs the suite against a disposable server database (CI: PostgreSQL service, plan B1)
+# that the pipelines have already filled; otherwise a copy of the SQLite demo database is used.
+_TEST_URL = os.getenv("PATHSYNC_TEST_DATABASE_URL")
+if _TEST_URL:
+    HAVE_DB = True
+    os.environ["PATHSYNC_DATABASE_URL"] = _TEST_URL
 elif HAVE_DB:
-    shutil.copy(_SRC_DB, _TMP_DIR / "pathsync.db")
+    # the backup API includes pages still in the -wal file; copying pathsync.db alone can give a malformed database
+    with sqlite3.connect(_SRC_DB) as _src, sqlite3.connect(_TMP_DIR / "pathsync.db") as _dst:
+        _src.backup(_dst)
     os.environ["PATHSYNC_DATABASE_URL"] = f"sqlite:///{(_TMP_DIR / 'pathsync.db').as_posix()}"
 os.environ["PATHSYNC_WARMUP"] = "0"
+os.environ["PATHSYNC_RETENTION"] = "0"     # tests call pathsync.retention.purge directly
 os.environ.setdefault("PATHSYNC_EXTRACTOR", "lexicon")
 
 

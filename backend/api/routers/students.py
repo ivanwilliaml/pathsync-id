@@ -27,6 +27,7 @@ from pathsync.db import (
 )
 from pathsync.engine import decision_trace, record_history
 from pathsync.intake import (
+    DocumentRejected,
     academic_evidence,
     artifact_signature,
     certificate_evidence,
@@ -37,6 +38,7 @@ from pathsync.intake import (
     signature_similarity,
     verification_link,
 )
+from pathsync.retention import erase_students
 from pathsync.security import clip_text, db_session, hash_token, new_token, rate_limit, read_upload, student_access
 from pathsync.taxonomy import load_skills
 
@@ -160,10 +162,8 @@ def export_data(st: Student = Depends(student_access), s: Session = Depends(db_s
 
 @router.delete("/students/{sid}")
 def erase(st: Student = Depends(student_access), s: Session = Depends(db_session)):
-    """Right to erasure: delete the profile and every record linked to it (analytics events included)."""
-    from pathsync.retention import erase_student
-
-    erase_student(s, st.id)
+    """Right to erasure: delete the profile and every record linked to it (usage events included)."""
+    erase_students(s, [st.id])
     s.commit()
     return {"deleted": True}
 
@@ -180,7 +180,13 @@ class CertsIn(BaseModel):
 def _text_from(text: str, file: UploadFile | None) -> tuple[str, str | None]:
     if file is not None and file.filename:
         data, name = read_upload(file)
-        return clip_text(document_to_text(data, name)), file.filename
+        try:
+            text = document_to_text(data, name)
+        except DocumentRejected as e:
+            raise HTTPException(413, str(e)) from e
+        except Exception as e:  # a damaged PDF/DOCX/notebook is the student's file problem, not a server error
+            raise HTTPException(422, "We couldn't read this file. Try exporting it again as PDF, or paste the text instead.") from e
+        return clip_text(text), file.filename
     return clip_text(text), None
 
 

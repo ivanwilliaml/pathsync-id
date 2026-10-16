@@ -15,7 +15,7 @@ import secrets
 from functools import lru_cache
 
 from .config import GRADE_SCORES, RUBRIC_LABELS, SEED_DIR
-from .embeddings import encode
+from .embeddings import encode, once
 from .evidence import EvidenceItem, rubric_score
 from .extraction import extract_skills, skill_index
 from .extraction.llm import LLMUnavailable, llm_configured
@@ -27,45 +27,35 @@ SKILL_FALLBACK = 0.60     # direct course-name -> skill similarity for unknown c
 
 
 # ------------------------------------------------------------------ documents
-MAX_PDF_PAGES = 40                     # transcripts, CVs and project reports are short; bounds parse time
-MAX_DOCX_UNZIPPED = 50 * 1024 * 1024   # a 5 MB .docx may not expand past this (zip bomb guard)
+MAX_PDF_PAGES = 40                       # a transcript, CV or project report; more pages is abuse or the wrong file
+MAX_DOCX_UNZIPPED = 40 * 1024 * 1024     # a 5 MB .docx must not expand into gigabytes (zip bomb)
+
+
+class DocumentRejected(ValueError):
+    """The file is readable in principle but too large or damaged to parse safely."""
 
 
 def document_to_text(data: bytes, filename: str) -> str:
-    """Plain text of an upload. Parsing is bounded: at most MAX_PDF_PAGES pages are read and reading
-    stops once the text passes MAX_TEXT_CHARS, so a crafted file cannot tie up a worker."""
-    from fastapi import HTTPException
-
-    from .security import MAX_TEXT_CHARS
-
     name = filename.lower()
     if name.endswith(".pdf"):
         import pdfplumber
 
-        parts, size = [], 0
-        try:
-            with pdfplumber.open(io.BytesIO(data)) as pdf:
-                for page in pdf.pages[:MAX_PDF_PAGES]:
-                    t = page.extract_text() or ""
-                    parts.append(t)
-                    size += len(t)
-                    if size > MAX_TEXT_CHARS:
-                        break
-        except Exception as e:  # noqa: BLE001 - malformed PDFs surface as a clear 422, not a 500
-            raise HTTPException(422, "This PDF could not be read. Export it again or upload a .docx or .txt.") from e
-        return "\n".join(parts)
+        with pdfplumber.open(io.BytesIO(data)) as pdf:
+            if len(pdf.pages) > MAX_PDF_PAGES:
+                raise DocumentRejected(f"This PDF has {len(pdf.pages)} pages; the limit is {MAX_PDF_PAGES}.")
+            return "\n".join((p.extract_text() or "") for p in pdf.pages)
     if name.endswith(".docx"):
         import zipfile
 
         import docx
 
         try:
-            with zipfile.ZipFile(io.BytesIO(data)) as z:
-                if sum(i.file_size for i in z.infolist()) > MAX_DOCX_UNZIPPED:
-                    raise HTTPException(413, "This document expands to more than 50 MB; upload a smaller file.")
-            d = docx.Document(io.BytesIO(data))
-        except (zipfile.BadZipFile, KeyError, ValueError) as e:
-            raise HTTPException(422, "This .docx could not be read. Save it again or upload a PDF.") from e
+            unzipped = sum(i.file_size for i in zipfile.ZipFile(io.BytesIO(data)).infolist())
+        except zipfile.BadZipFile as e:
+            raise DocumentRejected("This .docx file is damaged or is not a Word document.") from e
+        if unzipped > MAX_DOCX_UNZIPPED:
+            raise DocumentRejected("This .docx expands to more than 40 MB. Save it again, or paste the text instead.")
+        d = docx.Document(io.BytesIO(data))
         parts = [p.text for p in d.paragraphs]
         for t in d.tables:
             for row in t.rows:
@@ -101,12 +91,12 @@ def _catalog_index(entries: list[dict]):
     return forms, owner, encode(forms)
 
 
-@lru_cache(maxsize=1)
+@once
 def _course_index():
     return _catalog_index(_courses())
 
 
-@lru_cache(maxsize=1)
+@once
 def _cert_index():
     return _catalog_index(_certs()["certificates"])
 
@@ -356,7 +346,7 @@ _POSTING_HEADING = re.compile(
     r"job description|deskripsi pekerjaan|what you.ll do|who you are|benefits?)\s*:?\s*(\n|$)", re.I)
 
 
-@lru_cache(maxsize=1)
+@once
 def _posting_corpus():
     """TF-IDF index over scraped job postings, to reject a posting pasted as 'my project'."""
     from sklearn.feature_extraction.text import TfidfVectorizer

@@ -1,55 +1,114 @@
-"""Retention (plan B3): only data past its period is removed, active students stay intact, and
-the Privacy page quotes the same periods as pathsync/retention.py."""
-from __future__ import annotations
-
-import re
+"""Plan B3 (retention + erasure) and C4 (readiness check)."""
 from datetime import timedelta
 
-from sqlalchemy import func, select
-
-from pathsync import retention
-from pathsync.config import BACKEND_DIR
-from pathsync.db import ApiToken, AssessmentSession, AuditLog, ProductEvent, SessionLocal, Student, utcnow
+import pytest
+from test_api import new_student
 
 
-def test_purge_removes_only_expired_rows():
+@pytest.fixture(scope="module")
+def client():
+    from fastapi.testclient import TestClient
+
+    from api.main import app
+
+    with TestClient(app) as c:
+        yield c
+
+
+def test_retention_removes_only_rows_past_their_period(client):
+    from pathsync import retention as R
+    from pathsync.db import ApiToken, AuditLog, Feedback, ProductEvent, Student, get_session, utcnow
+
+    old_sid, _ = new_student(client)
+    fresh_sid, fresh_h = new_student(client)
     now = utcnow()
-    old = now - timedelta(days=retention.INACTIVE_PROFILE_MONTHS * 30 + 5)
-    with SessionLocal() as s:
-        gone = Student(display_name="lama", created_at=old, last_seen_at=old)
-        kept = Student(display_name="aktif", created_at=old, last_seen_at=now)
-        s.add_all([gone, kept])
-        s.flush()
+    with get_session() as s:
+        st = s.get(Student, old_sid)
+        st.last_seen_at = st.created_at = now - timedelta(days=R.INACTIVE_PROFILE_DAYS + 1)
         s.add_all([
-            ProductEvent(name="old", student_id=kept.id, created_at=now - timedelta(days=retention.PRODUCT_EVENT_DAYS + 1)),
-            ProductEvent(name="new", student_id=kept.id, created_at=now),
-            ProductEvent(name="of-gone", student_id=gone.id, created_at=now),
-            AuditLog(actor="t", action="old", created_at=now - timedelta(days=retention.AUDIT_LOG_DAYS + 1)),
-            AssessmentSession(student_id=kept.id, phase="diagnostic", expires_at=now - timedelta(days=30)),
-            AssessmentSession(student_id=kept.id, phase="diagnostic", expires_at=now + timedelta(hours=1)),
-            ApiToken(role="expert", token_hash="x" * 64, revoked_at=now - timedelta(days=retention.TOKEN_GRACE_DAYS + 1)),
+            ProductEvent(name="old", created_at=now - timedelta(days=R.PRODUCT_EVENT_DAYS + 1)),
+            ProductEvent(name="recent", created_at=now - timedelta(days=1)),
+            Feedback(kind="client_error", message="old", created_at=now - timedelta(days=R.CLIENT_ERROR_DAYS + 1)),
+            Feedback(kind="feedback", message="old but written by a person", created_at=now - timedelta(days=999)),
+            AuditLog(action="old", created_at=now - timedelta(days=R.AUDIT_LOG_DAYS + 1)),
+            ApiToken(role="expert", token_hash="x" * 64, expires_at=now - timedelta(days=R.TOKEN_GRACE_DAYS + 1)),
         ])
         s.commit()
-        gone_id, kept_id = gone.id, kept.id
+        dry = R.purge(s, now=now, dry_run=True)
+        assert dry["inactive_profiles"] >= 1 and s.get(Student, old_sid) is not None   # dry run changes nothing
+        out = R.purge(s, now=now)
+        assert out["inactive_profiles"] >= 1 and out["product_events"] >= 1 and out["client_errors"] >= 1
+        assert out["audit_log"] >= 1 and out["staff_tokens"] >= 1
+        s.expire_all()
+        assert s.get(Student, old_sid) is None
+        assert s.get(Student, fresh_sid) is not None
+        assert s.query(ProductEvent).filter_by(name="recent").count() == 1
+        assert s.query(Feedback).filter_by(message="old but written by a person").count() == 1
+    assert client.get(f"/api/students/{fresh_sid}", headers=fresh_h).status_code == 200
 
-        out = retention.purge(s, now)
-        assert out["inactive_profiles"] >= 1 and out["product_events"] >= 1 and out["audit_log"] >= 1
-        assert out["assessment_sessions"] >= 1 and out["api_tokens"] >= 1
-        assert s.get(Student, gone_id) is None
-        assert s.get(Student, kept_id) is not None
-        names = set(s.scalars(select(ProductEvent.name).where(ProductEvent.student_id.in_([gone_id, kept_id]))).all())
-        assert names == {"new"}
-        assert s.scalar(select(func.count()).select_from(AssessmentSession)
-                        .where(AssessmentSession.student_id == kept_id)) == 1
-        retention.erase_student(s, kept_id)
+
+def test_erasure_also_removes_usage_events(client):
+    from pathsync.db import ProductEvent, get_session
+
+    sid, h = new_student(client)
+    with get_session() as s:
+        s.add(ProductEvent(name="page_view", student_id=sid))
         s.commit()
+    assert client.delete(f"/api/students/{sid}", headers=h).json()["deleted"] is True
+    with get_session() as s:
+        assert s.query(ProductEvent).filter_by(student_id=sid).count() == 0
+
+
+def test_readiness_reports_database_and_snapshot_age(client):
+    r = client.get("/api/health/ready")
+    body = r.json() if r.status_code == 200 else r.json()["detail"]
+    assert body["database"] == "up" and "snapshot_age_days" in body
+    assert client.get("/api/health").json() == {"ok": True}
+
+
+def test_damaged_or_oversized_documents_are_refused_cleanly(client):
+    import io
+    import zipfile
+
+    sid, h = new_student(client)
+    url = f"/api/students/{sid}/transcript/parse"
+    r = client.post(url, headers=h, files={"file": ("t.pdf", b"%PDF-1.4 not really a pdf", "application/pdf")})
+    assert r.status_code == 422
+    bomb = io.BytesIO()
+    with zipfile.ZipFile(bomb, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("word/document.xml", b"0" * (41 * 1024 * 1024))     # ~40 KB compressed, 41 MB expanded
+    r = client.post(url, headers=h, files={"file": ("t.docx", bomb.getvalue(), "application/octet-stream")})
+    assert r.status_code == 413
+
+
+def test_demo_profile_has_a_route_and_expires(client):
+    from pathsync import retention as R
+    from pathsync.db import Student, get_session, utcnow
+
+    j = client.post("/api/demo/profile").json()
+    h = {"Authorization": f"Bearer {j['token']}"}
+    d = client.get(f"/api/students/{j['id']}/dashboard", headers=h).json()
+    assert d["student"]["preferences"]["demo"] is True and d["ranking"] and d["path"]
+    assert any(c["measured"] for c in d["coverage_by_cluster"].values())
+    with get_session() as s:
+        s.get(Student, j["id"]).created_at = utcnow() - timedelta(days=R.DEMO_PROFILE_DAYS + 1)
+        s.commit()
+        R.purge(s)
+        s.expire_all()
+        assert s.get(Student, j["id"]) is None
 
 
 def test_privacy_page_quotes_the_retention_constants():
+    """The periods in pathsync/retention.py are the ones written on the Privacy page and in backup.sh."""
+    import re
+
+    from pathsync import retention as R
+    from pathsync.config import BACKEND_DIR
+
     page = (BACKEND_DIR.parent / "frontend" / "src" / "app" / "privacy" / "page.tsx").read_text(encoding="utf-8")
     section = re.search(r"Berapa lama data disimpan(.*?)</Section>", page, re.S).group(1)
-    for n in (retention.INACTIVE_PROFILE_MONTHS, retention.PRODUCT_EVENT_DAYS, retention.AUDIT_LOG_DAYS,
-              retention.BACKUP_KEEP_DAYS):
+    months = round(R.INACTIVE_PROFILE_DAYS / 30.4)                    # 730 days is written as "24 bulan"
+    for n in (months, R.PRODUCT_EVENT_DAYS, R.CLIENT_ERROR_DAYS, R.AUDIT_LOG_DAYS, R.BACKUP_KEEP_DAYS):
         assert re.search(rf"\b{n}\b", section), n
     backup = (BACKEND_DIR.parent / "deploy" / "backup.sh").read_text(encoding="utf-8")
-    assert f"BACKUP_KEEP_DAYS:-{retention.BACKUP_KEEP_DAYS}" in backup
+    assert f"BACKUP_KEEP_DAYS:-{R.BACKUP_KEEP_DAYS}" in backup

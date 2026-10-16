@@ -186,7 +186,7 @@ export interface Dashboard {
   market_version: string;
   model: { id: number; name: string; weights: Features };
   coverage: number;
-  coverage_by_cluster: Record<string, { label: string; coverage: number }>;
+  coverage_by_cluster: Record<string, { label: string; coverage: number; n_skills?: number; measured?: boolean }>;
   ranking: RankRow[];
   path: PathStep[];
   path_hours: number;

@@ -31,7 +31,7 @@ services:
 
   backend:
     build: ./backend
-    image: pathsync-backend:local     # also used by retention and market-refresh (built once)
+    image: pathsync-backend:local     # also used by market-refresh (built once); retention runs inside the API
     environment:
       PATHSYNC_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-pathsync}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-pathsync}
       PATHSYNC_ADMIN_TOKEN: ${PATHSYNC_ADMIN_TOKEN:?set PATHSYNC_ADMIN_TOKEN in .env (32+ random characters)}
@@ -39,8 +39,8 @@ services:
       PATHSYNC_TRUSTED_PROXIES: 172.28.0.0/16
       PATHSYNC_REDIS_URL: redis://redis:6379/0
       PATHSYNC_WORKERS: ${PATHSYNC_WORKERS:-2}
+      PATHSYNC_WARMUP: sync          # load the embedding model before taking traffic (cold uploads took minutes)
       PATHSYNC_ENV: production
-      PATHSYNC_WARMUP: sync          # each worker loads the embedding model before it accepts requests
       SENTRY_DSN: ${SENTRY_DSN:-}
       ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
     volumes: [hf:/app/.hf]
@@ -81,24 +81,6 @@ services:
       - ./backups:/backups
     depends_on:
       db: {condition: service_healthy}
-    networks: [data]
-    restart: unless-stopped
-
-  retention:
-    # Daily purge of data past its retention period (plan B3; periods in backend/pathsync/retention.py).
-    image: pathsync-backend:local
-    healthcheck: {disable: true}       # the image healthcheck probes the API, which this service does not run
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        while true; do
-          python -m pathsync.retention || echo "[retention] FAILED $(date)" >&2
-          sleep 86400
-        done
-    environment:
-      PATHSYNC_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-pathsync}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-pathsync}
-    depends_on:
-      backend: {condition: service_healthy}
     networks: [data]
     restart: unless-stopped
 

@@ -19,11 +19,12 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import IntegrityError
 
 from pathsync.db import get_session, init_db
+from pathsync.embeddings import WARM
 from pathsync.engine import ensure_seed
 from pathsync.observability import STATS, configure_logging
 from pathsync.security import ensure_admin_token
 
-from .routers import admin, advisor, assessment, classroom, experts, platform, public, students
+from .routers import admin, advisor, assessment, classroom, demo, experts, platform, public, students
 
 log = logging.getLogger("pathsync")
 configure_logging()     # JSON lines in production (PATHSYNC_LOG_JSON), plain text in development
@@ -39,15 +40,34 @@ if os.getenv("SENTRY_DSN"):   # optional error tracking (PM audit P0-6); no requ
 
 
 def _warmup():
-    """Load the embedding model and skill index in the background so the first upload is not slow."""
+    """Load the embedding model and the skill, course, certificate and posting indexes so the first upload is not slow."""
     from pathsync.extraction import skill_index
-    from pathsync.intake import _posting_corpus, map_course
+    from pathsync.intake import _cert_index, _posting_corpus, map_course
+    t0 = time.perf_counter()
     try:
         skill_index()
         map_course("Basis Data")
+        _cert_index()
         _posting_corpus()
+        log.info("warmup done in %.1fs", time.perf_counter() - t0)
     except Exception as e:  # pragma: no cover - warmup is best effort
         log.warning("warmup failed: %s", e)
+    finally:
+        WARM.set()
+
+
+def _retention_loop():
+    """Apply the retention periods once a day (plan B3). Idempotent, so several workers running it is harmless."""
+    from pathsync.retention import purge
+    while True:
+        try:
+            with get_session() as s:
+                counts = purge(s)
+            if any(counts.values()):
+                log.info("retention purge: %s", counts)
+        except Exception as e:  # pragma: no cover - retried tomorrow
+            log.warning("retention purge failed: %s", e)
+        time.sleep(86400)
 
 
 @asynccontextmanager
@@ -66,13 +86,15 @@ async def lifespan(_app: FastAPI):
         token = ensure_admin_token(s)
     if token:
         log.warning("No PATHSYNC_ADMIN_TOKEN set: generated an admin token, saved to data/admin_token.txt")
-    mode = os.getenv("PATHSYNC_WARMUP", "1")
+    mode = os.getenv("PATHSYNC_WARMUP", "1")      # 1 = background, sync = before serving (production), 0 = off (tests)
     if mode == "sync":
-        # production: this worker accepts requests only once the model is loaded, so the first users after a
-        # restart do not all load it at once (plan B4: cold start gave timeouts and 500s)
         _warmup()
     elif mode != "0":
         threading.Thread(target=_warmup, daemon=True).start()
+    else:
+        WARM.set()
+    if os.getenv("PATHSYNC_RETENTION", "1") != "0":
+        threading.Thread(target=_retention_loop, daemon=True).start()
     yield
 
 
@@ -124,6 +146,6 @@ async def unhandled(request: Request, exc: Exception):   # pragma: no cover - la
                         content={"detail": f"Something went wrong on the server. Try again in a moment. (ref {rid})"})
 
 
-for r in (public, students, assessment, classroom, experts, advisor, admin, platform):
+for r in (public, students, assessment, classroom, experts, advisor, admin, platform, demo):
     app.include_router(r.router)
 app.include_router(platform.admin)

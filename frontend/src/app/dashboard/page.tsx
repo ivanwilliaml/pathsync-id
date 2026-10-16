@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { AlertTriangle, ChevronRight, Clock, Lock } from "lucide-react";
 import { api, FEATURE_LABELS, type Competency, type Dashboard, type PathStep, type RankRow } from "@/lib/api";
@@ -94,11 +95,16 @@ function DashboardView({ sid }: { sid: string }) {
           )}
         </div>
         <div className="flex items-center gap-5 lg:flex-col lg:text-center">
-          {f.evidence ? <ReadinessRing value={d.coverage} label="Role Readiness" /> : null}
-          <p className="max-w-[220px] text-sm text-ink/70">How much of what employers ask for you can already show.</p>
+          {f.evidence ? <ReadinessRing value={hasEvidence ? d.coverage : null} label="Role Readiness" /> : null}
+          <p className="max-w-[220px] text-sm text-ink/70">
+            {hasEvidence
+              ? "How much of what employers ask for you can already show."
+              : "Not measured yet. Your readiness appears after your first evidence or quick check."}
+          </p>
         </div>
       </section>
 
+      {d.student.preferences.demo ? <DemoGuide topId={top?.skill_id} topName={top ? titleCase(top.name) : undefined} /> : null}
       {d.study_arm ? <StudyPlanCard sid={sid} /> : null}
       {pulseReady ? <ClarityPulse sid={sid} /> : null}
       {f.evidence && d.confirmations.length > 0 ? <Attention items={d.confirmations} onOpen={open} /> : null}
@@ -124,7 +130,7 @@ function DashboardView({ sid }: { sid: string }) {
             <TabsTrigger value="ranking">How We Ranked</TabsTrigger>
           </TabsList>
           <TabsContent value="areas">
-            <Areas d={d} />
+            <Areas d={d} measured={hasEvidence} />
           </TabsContent>
           <TabsContent value="all">
             <AllSkills comps={d.competencies} onOpen={open} />
@@ -252,8 +258,52 @@ function PriorityRow({ r, comp, onOpen }: { r: RankRow; comp?: Competency; onOpe
   );
 }
 
-function Areas({ d }: { d: Dashboard }) {
+/** Shown only on one-click demo profiles: what to try, in the order that shows the adaptive cycle. */
+function DemoGuide({ topId, topName }: { topId?: string; topName?: string }) {
+  return (
+    <section aria-labelledby="demo-guide" className="rounded-2xl border border-indigo/30 bg-card p-5">
+      <h2 id="demo-guide" className="font-semibold text-ink">
+        You are looking at a demo student
+      </h2>
+      <p className="mt-1 text-sm text-ink/75">
+        Rani studies Information Systems (semester 6) and wants to become a Business Analyst. Her transcript is already in. Three
+        things to try:
+      </p>
+      <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-ink/80">
+        <li>Open the first priority and read why it comes first: the job-ad quotes, what it unlocks, and what would change the order.</li>
+        <li>
+          {topId ? (
+            <Link href={`/assessment/${topId}`} className="font-medium text-indigo underline-offset-4 hover:underline">
+              Take the short check for {topName}
+            </Link>
+          ) : (
+            "Take a short skill check"
+          )}{" "}
+          and watch the route reorder from the new evidence.
+        </li>
+        <li>
+          Open{" "}
+          <Link href="/history" className="font-medium text-indigo underline-offset-4 hover:underline">
+            Path History
+          </Link>{" "}
+          to see every change and the reason for it.
+        </li>
+      </ol>
+      <p className="mt-3 text-xs text-muted-foreground">Demo profiles are deleted automatically after 2 days and are never used in research.</p>
+    </section>
+  );
+}
+
+function Areas({ d, measured }: { d: Dashboard; measured: boolean }) {
   const order = CLUSTER_ORDER.filter((k) => d.coverage_by_cluster[k]);
+  if (!measured)
+    return (
+      <Panel>
+        <p className="text-sm text-ink/70">
+          Nothing measured yet. Add your transcript, a certificate or a project, or take the quick check, and your coverage per area appears here.
+        </p>
+      </Panel>
+    );
   return (
     <Panel>
       <ul className="grid gap-6 sm:grid-cols-2">
@@ -263,9 +313,9 @@ function Areas({ d }: { d: Dashboard }) {
             <li key={k}>
               <div className="mb-2 flex items-baseline justify-between">
                 <span className="font-medium text-ink">{c.label}</span>
-                <span className="tabular text-sm font-semibold text-ink">{pct(c.coverage)}</span>
+                <span className="tabular text-sm font-semibold text-ink">{c.measured === false ? "Not measured" : pct(c.coverage)}</span>
               </div>
-              <MasteryBar value={c.coverage} tone="indigo" />
+              <MasteryBar value={c.measured === false ? 0 : c.coverage} tone="indigo" />
             </li>
           );
         })}

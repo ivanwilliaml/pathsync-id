@@ -853,16 +853,20 @@
  },
  "provenance": {
   "taxonomy_version": "2026.10-v3",
-  "taxonomy_sha256": "d887be8bb3605168",
+  "taxonomy_sha": "d887be8bb3605168",
+  "graph_sha": "d399a628488deaa8",
+  "esco_sha": "b027e6c19853f013",
+  "postings": 1093,
   "extractors": {
    "lexicon": 1093
   },
   "cache_tags": {
    "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
   },
-  "gold_sha256": {
+  "gold_sha": {
    "gold_blind.json": "6109aca0cc2883c0",
    "gold_split.json": "ed04d7494cefb142"
-  }
+  },
+  "overrides": false
  }
 }

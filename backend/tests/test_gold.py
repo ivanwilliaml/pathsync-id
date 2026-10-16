@@ -5,7 +5,7 @@ from pathsync.gold import agreement, consensus, earlier_gold_ids, kappa, load_sp
 
 
 def test_wilson_interval_matches_known_values():
-    assert wilson(0, 0) == [0.0, 0.0]
+    assert wilson(0, 0) == [0.0, 1.0]
     lo, hi = wilson(8, 10)
     assert 0.49 < lo < 0.50 and 0.94 < hi < 0.95       # textbook value: [0.490, 0.943]
     lo, hi = wilson(80, 100)

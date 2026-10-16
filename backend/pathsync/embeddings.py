@@ -4,19 +4,39 @@ from __future__ import annotations
 import hashlib
 import sqlite3
 import threading
-from functools import lru_cache
+from functools import wraps
 
 import numpy as np
 
 from .config import EMBEDDING_MODEL, PROCESSED_DIR
 
-_model_lock = threading.Lock()          # held only while the model loads
+WARM = threading.Event()   # set once the model and indexes are loaded (api.main warmup); see /api/health/ready
 _encode_slots = threading.BoundedSemaphore(2)   # at most two concurrent encodes: a slow upload no longer blocks everyone
 _CACHE_PATH = PROCESSED_DIR / "embedding_cache.sqlite"
 _local = threading.local()
 
 
-@lru_cache(maxsize=1)
+def once(fn):
+    """Like lru_cache(maxsize=1) for zero-argument builders, but thread-safe: under concurrent first requests the
+    expensive build (model load, embedding an index) runs once and the other threads wait for it, instead of every
+    thread building its own copy (that made the first 40 concurrent uploads take two minutes)."""
+    lock = threading.Lock()
+    box: list = []
+
+    @wraps(fn)
+    def get():
+        if box:
+            return box[0]
+        with lock:
+            if not box:
+                box.append(fn())
+        return box[0]
+
+    get.cache_clear = box.clear
+    return get
+
+
+@once
 def _load_model():
     from sentence_transformers import SentenceTransformer  # heavy import, load lazily
 
@@ -24,8 +44,7 @@ def _load_model():
 
 
 def get_model():
-    with _model_lock:
-        return _load_model()
+    return _load_model()
 
 
 def _cache_conn():

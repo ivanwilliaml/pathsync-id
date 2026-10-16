@@ -7,11 +7,11 @@ Layanan `backup` di `docker-compose.yml` menjalankan `deploy/backup.sh`: `pg_dum
 ### Memulihkan
 
 ```bash
-docker compose stop backend market-refresh retention
+docker compose stop backend market-refresh
 gunzip -c backups/pathsync-YYYYMMDD.sql.gz | docker compose exec -T db psql -U pathsync -d pathsync -v ON_ERROR_STOP=1
 docker compose run --rm backend python -m pathsync.migrate          # dump lama: naikkan ke head
 docker compose run --rm backend python -m pathsync.migrate check    # harus: models and migrations match
-docker compose start backend market-refresh retention
+docker compose start backend market-refresh
 ```
 
 Kueri kontrol setelah pemulihan (bandingkan dengan sebelum insiden atau dengan log dump):
@@ -40,18 +40,20 @@ Ulangi latihan ini setiap ada migrasi baru dan sebelum final.
 
 ## Retensi data (plan B3)
 
-`python -m pathsync.retention` (layanan `retention`, harian) menghapus data yang lewat masa simpan. Angkanya satu sumber di `backend/pathsync/retention.py` dan dikutip apa adanya di halaman Privacy (dicek `tests/test_retention.py`).
+Setiap worker API menjalankan `pathsync.retention.purge` sekali sehari di latar belakang (aman dijalankan beberapa kali). Manual: `python -m pipeline.retention` (`--dry-run` untuk menghitung saja). Angkanya satu sumber di `backend/pathsync/retention.py` dan dikutip di halaman Privacy (dicek `tests/test_retention.py`).
 
 | Data | Masa simpan |
 |---|---|
-| Profil yang tidak dipakai | 24 bulan sejak terakhir aktif, lalu dihapus beserta semua data terkait |
-| Catatan pemakaian (`product_events`) | 365 hari |
-| Catatan tindakan staf (`audit_log`) | 730 hari |
+| Profil yang tidak dipakai | 730 hari (24 bulan) sejak terakhir aktif, lalu dihapus beserta semua data terkait |
+| Profil demo sekali klik | 2 hari |
+| Catatan pemakaian (`product_events`) | 180 hari |
+| Laporan galat otomatis dari peramban | 90 hari (pesan yang ditulis pengguna disimpan sampai ditangani) |
+| Catatan tindakan staf (`audit_log`) | 365 hari |
 | Sesi asesmen yang tidak dikirim | 7 hari setelah kedaluwarsa |
-| Token staf yang dicabut atau kedaluwarsa | 90 hari |
+| Token staf yang dicabut atau kedaluwarsa | 30 hari |
 | Cadangan basis data | 14 hari |
 
-"Delete My Profile" dan penghapusan otomatis memakai fungsi yang sama (`erase_student`), termasuk `product_events` milik mahasiswa itu.
+"Delete My Profile" dan penghapusan otomatis memakai fungsi yang sama (`erase_students`): semua data mahasiswa itu, `product_events`-nya, dan tautan di laporan masukan dilepas.
 
 ## Pindah dari SQLite ke PostgreSQL
 
@@ -71,7 +73,7 @@ curl -s -H "Authorization: Bearer $PATHSYNC_ADMIN_TOKEN" https://<domain>/api/ad
 
 Isinya: p50/p95/maks dan tingkat galat per rute (dikelompokkan per pola rute, jadi id mahasiswa tidak memecah statistik), kesehatan database, umur snapshot pasar, dan daftar `alerts`. Peringatan muncul bila database tidak terjangkau, snapshot pasar lebih tua dari 45 hari, p95 suatu rute di atas 1 detik, atau tingkat galat di atas 1% (minimal 20 permintaan). Statistik disimpan per proses worker; `worker_pid` menunjukkan worker mana yang menjawab.
 
-- `/api/health` dipakai healthcheck container: 503 hanya bila database mati; snapshot yang basi dilaporkan lewat `market_stale` tanpa membuat layanan dianggap mati.
+- `/api/health` dipakai healthcheck container dan hanya menjawab bahwa proses hidup. `/api/health/ready` mengecek database, model yang sudah dimuat, dan umur snapshot pasar (503 bila belum siap atau basi).
 - Di produksi (`PATHSYNC_ENV=production`) setiap baris log berupa JSON dengan `rid` (request id yang sama dengan header `X-Request-ID` di respons dan pesan galat), metode, path, status, dan durasi. Isi permintaan dan token tidak pernah dicatat.
 - Galat dikirim ke Sentry bila `SENTRY_DSN` diisi di `.env` (tanpa data pribadi).
 
@@ -82,7 +84,7 @@ cp .env.example .env        # isi rahasia: openssl rand -base64 48
 docker compose up -d --build
 ```
 
-Database kosong pada start pertama: backend membangun peta pasar dan studi pakar dulu (sekitar 6 sampai 7 menit di laptop 2 CPU), baru melayani. Healthcheck memberi waktu 20 menit (`start-period`), jadi frontend, Caddy, retensi, dan refresh pasar menunggu, bukan dianggap gagal. `market-refresh` langsung melakukan scraping dan membangun ulang pasar sekali saat start, lalu tiap 30 hari.
+Database kosong pada start pertama: backend membangun peta pasar dan studi pakar dulu (sekitar 6 sampai 7 menit di laptop 2 CPU), baru melayani. Healthcheck memberi waktu 20 menit (`start-period`), jadi frontend, Caddy, dan refresh pasar menunggu, bukan dianggap gagal. `market-refresh` langsung melakukan scraping dan membangun ulang pasar sekali saat start, lalu tiap 30 hari.
 
 ### Catatan uji 15 Okt 2026 (Docker Desktop, Windows, `PATHSYNC_DOMAIN=localhost`)
 
@@ -95,7 +97,7 @@ Temuan yang diperbaiki di antara keduanya:
 - `start-period` healthcheck 120 detik terlalu pendek untuk build pasar pertama (sekarang 1.200 detik).
 - `docker-entrypoint.sh` memakai tanggal acuan tetap `2026-10-01`, sehingga lowongan yang terbit sesudahnya keluar dari jendela; sekarang tanggal hari ini.
 - `.dockerignore` backend tidak mengecualikan `.venv/`, jadi venv lokal ikut tersalin ke image.
-- `retention` dan `market-refresh` mewarisi healthcheck API yang tidak mereka jalankan; sekarang dimatikan untuk keduanya, dan ketiga layanan backend memakai satu image (`pathsync-backend:local`).
+- `market-refresh` (dan dulu `retention`) mewarisi healthcheck API yang tidak dijalankannya; sekarang dimatikan, dan layanan backend memakai satu image (`pathsync-backend:local`). Retensi kini berjalan di dalam API.
 
 Pemeriksaan pada deploy 2:
 - HTTPS lewat Caddy (sertifikat lokal), header CSP, HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `X-Frame-Options` ada.

@@ -5,7 +5,7 @@ import hashlib
 from functools import lru_cache
 from pathlib import Path
 
-from ..embeddings import SkillIndex
+from ..embeddings import SkillIndex, once
 from ..taxonomy import load_skills
 from .base import ExtractionResult, Mention, apply_gates
 from .lexicon import LexiconExtractor
@@ -31,7 +31,7 @@ def cache_tag(extractor: str) -> str:
     return f"{extractor}|{load_taxonomy()['version']}|{h.hexdigest()[:12]}"
 
 
-@lru_cache(maxsize=1)
+@once
 def skill_index() -> SkillIndex:
     return SkillIndex(load_skills())
 
