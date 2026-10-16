@@ -1,0 +1,502 @@
+{
+ "ci_cd_pipelines-1": {
+  "stem": "Apa arti continuous integration?",
+  "options": [
+   "Sering menggabungkan perubahan dengan build dan tes otomatis",
+   "Meminta satu developer meninjau seluruh kode sebulan sekali",
+   "Merilis versi baru ke pelanggan secara otomatis setiap jam",
+   "Menulis sebagian besar tes setelah rilis ke pelanggan dilakukan"
+  ],
+  "explanation": "Developer sering menggabungkan perubahan dan setiap penggabungan di-build dan diuji secara otomatis."
+ },
+ "ci_cd_pipelines-2": {
+  "stem": "Mana yang merupakan layanan CI/CD bawaan GitHub?",
+  "options": [
+   "GitHub Actions",
+   "GitHub Pages",
+   "GitHub Sponsors",
+   "GitHub Gist"
+  ],
+  "explanation": "GitHub Actions menjalankan workflow yang didefinisikan dalam YAML."
+ },
+ "ci_cd_pipelines-3": {
+  "stem": "Apa beda continuous delivery dan continuous deployment?",
+  "options": [
+   "Delivery butuh langkah rilis manual, deployment merilis otomatis",
+   "Deployment butuh langkah rilis manual, delivery merilis otomatis",
+   "Delivery menjalankan tes, deployment melewatinya agar rilis lebih cepat",
+   "Delivery membangun kode, deployment hanya menjalankan tes"
+  ],
+  "explanation": "Delivery menjaga setiap perubahan siap dirilis dengan langkah rilis manual; deployment merilis setiap perubahan yang lolos secara otomatis."
+ },
+ "ci_cd_pipelines-4": {
+  "stem": "Di mana pipeline sebaiknya menyimpan kredensial untuk deployment?",
+  "options": [
+   "Di penyimpanan secret terenkripsi milik sistem CI",
+   "Di berkas teks biasa yang di-commit ke repositori proyek",
+   "Di nama branch yang sedang di-build oleh pipeline",
+   "Di README proyek agar mudah dibaca oleh seluruh tim"
+  ],
+  "explanation": "Di penyimpanan secret terenkripsi milik sistem CI, disuntikkan saat dijalankan, tidak pernah di repositori."
+ },
+ "ci_cd_pipelines-5": {
+  "stem": "Sebuah pipeline memakan 40 menit karena menginstal ulang dependensi di setiap eksekusi. Apa yang paling membantu?",
+  "options": [
+   "Meng-cache dependensi dan menjalankan job independen secara paralel",
+   "Menghapus semua tahap tes dari pipeline demi kecepatan build",
+   "Menjalankan pipeline hanya seminggu sekali pada hari yang tertentu",
+   "Membangun semuanya di laptop developer, bukan di server CI"
+  ],
+  "explanation": "Cache dependensi di antara eksekusi dan jalankan job yang independen secara paralel."
+ },
+ "cloud_aws-1": {
+  "stem": "Layanan AWS mana yang menyediakan penyimpanan objek?",
+  "options": [
+   "Amazon S3",
+   "Amazon EC2",
+   "Amazon RDS",
+   "Amazon VPC"
+  ],
+  "explanation": "Amazon S3 menyimpan objek dalam bucket."
+ },
+ "cloud_aws-2": {
+  "stem": "Apa itu Amazon EC2?",
+  "options": [
+   "Server virtual yang ukurannya bisa diubah sesuai kebutuhan",
+   "Layanan database relasional terkelola",
+   "Content delivery network untuk menyajikan halaman web dengan cepat",
+   "Layanan antrean untuk mengirim pesan"
+  ],
+  "explanation": "EC2 menyediakan server virtual yang ukurannya bisa diubah di cloud."
+ },
+ "cloud_aws-3": {
+  "stem": "Sebuah fungsi harus berjalan hanya saat berkas diunggah ke bucket, tanpa server yang perlu dikelola. Layanan mana yang cocok?",
+  "options": [
+   "AWS Lambda yang dipicu event S3",
+   "Instance EC2 yang berjalan sepanjang hari",
+   "Amazon RDS dengan read replica",
+   "AWS Direct Connect ke jaringan kantor"
+  ],
+  "explanation": "AWS Lambda menjalankan kode sebagai respons terhadap event seperti unggahan S3."
+ },
+ "cloud_aws-4": {
+  "stem": "Apa praktik terbaik saat memberi izin lewat IAM?",
+  "options": [
+   "Beri hanya izin yang dibutuhkan sebuah tugas, memakai role",
+   "Beri setiap developer kebijakan administrator penuh secara default",
+   "Bagikan satu access key ke seluruh tim",
+   "Pakai akun root untuk pekerjaan harian"
+  ],
+  "explanation": "Beri least privilege yang dibutuhkan, pakai role, bukan kunci berumur panjang."
+ },
+ "cloud_aws-5": {
+  "stem": "Sebuah web tier harus tetap tersedia jika satu pusat data gagal. Apa yang harus dilakukan?",
+  "options": [
+   "Menjalankan instance di beberapa Availability Zone di balik load balancer",
+   "Menjalankan satu instance lebih besar dengan restart otomatis di satu zona",
+   "Menjalankan instance di satu Availability Zone di balik load balancer",
+   "Mengambil snapshot sering agar instance bisa dipulihkan dengan cepat"
+  ],
+  "explanation": "Deploy di beberapa Availability Zone di balik load balancer."
+ },
+ "cloud_gcp_azure-1": {
+  "stem": "Layanan Google Cloud mana yang menyediakan mesin virtual?",
+  "options": [
+   "Compute Engine",
+   "Cloud Storage",
+   "BigQuery",
+   "Pub/Sub"
+  ],
+  "explanation": "Compute Engine."
+ },
+ "cloud_gcp_azure-2": {
+  "stem": "Di Azure, apa itu resource group?",
+  "options": [
+   "Wadah untuk sumber daya terkait yang dikelola bersama",
+   "Sekumpulan pengguna yang berbagi satu subscription",
+   "Pusat data fisik di sebuah region",
+   "Jaringan virtual yang mencakup banyak region"
+  ],
+  "explanation": "Wadah logis untuk sumber daya terkait yang berbagi siklus hidup."
+ },
+ "cloud_gcp_azure-3": {
+  "stem": "Layanan Google Cloud mana yang menjalankan container stateless dan bisa menyusut sampai nol?",
+  "options": [
+   "Cloud Run",
+   "Compute Engine",
+   "Cloud SQL",
+   "Cloud DNS"
+  ],
+  "explanation": "Cloud Run menjalankan container secara serverless dan bisa menyusut sampai nol."
+ },
+ "cloud_gcp_azure-4": {
+  "stem": "Layanan Azure mana yang mengelola identitas dan single sign-on untuk pengguna dan aplikasi?",
+  "options": [
+   "Microsoft Entra ID",
+   "Azure Monitor",
+   "Azure Blob Storage",
+   "Azure Front Door"
+  ],
+  "explanation": "Microsoft Entra ID (Azure Active Directory)."
+ },
+ "cloud_gcp_azure-5": {
+  "stem": "Sebuah aplikasi di VM cloud harus memanggil layanan penyimpanan tanpa menyimpan kunci di kode. Apa yang sebaiknya dipakai?",
+  "options": [
+   "Managed identity atau service account yang dilekatkan ke VM",
+   "Kunci akses yang dikirim lewat email kepada para developer",
+   "Kata sandi yang ditulis langsung di dalam kode sumber",
+   "Satu akun bersama yang dipakai oleh semua layanan aplikasi"
+  ],
+  "explanation": "Managed identity atau service account yang dilekatkan ke VM menyediakan kredensial secara otomatis."
+ },
+ "docker_containers-1": {
+  "stem": "Apa itu Docker image?",
+  "options": [
+   "Templat read-only untuk memulai sebuah container",
+   "Mesin virtual yang memiliki kernel sendiri yang terpisah",
+   "Instance aplikasi yang sedang berjalan di mesin host",
+   "Berkas khusus yang hanya dipakai untuk menyimpan database"
+  ],
+  "explanation": "Templat read-only yang berisi aplikasi dan dependensinya; container berjalan dari image."
+ },
+ "docker_containers-2": {
+  "stem": "Perintah mana yang menjalankan container dari image web di latar belakang?",
+  "options": [
+   "docker run -d web",
+   "docker build -d web",
+   "docker push web",
+   "docker pull -d web"
+  ],
+  "explanation": "docker run -d menjalankan container dalam mode detached."
+ },
+ "docker_containers-3": {
+  "stem": "Sebuah container dihapus dan berkas databasenya hilang. Fitur Docker mana yang menyimpan data?",
+  "options": [
+   "Volume yang di-mount ke container",
+   "Base image yang lebih besar untuk container",
+   "Container kedua dengan nama yang sama",
+   "Environment variable berisi path berkas"
+  ],
+  "explanation": "Volume menyimpan data di luar writable layer milik container."
+ },
+ "docker_containers-4": {
+  "stem": "Apa tujuan Docker Compose?",
+  "options": [
+   "Mendefinisikan dan menjalankan beberapa container dari satu berkas YAML",
+   "Mengompilasi kode sumber aplikasi di dalam container yang berjalan",
+   "Memantau pemakaian memori dan CPU pada mesin host secara berkala",
+   "Mengubah container menjadi mesin virtual penuh dengan kernel sendiri"
+  ],
+  "explanation": "Compose mendefinisikan dan menjalankan aplikasi multi-container dari satu berkas YAML."
+ },
+ "docker_containers-5": {
+  "stem": "Praktik Dockerfile mana yang menghasilkan image akhir yang lebih kecil dan lebih aman?",
+  "options": [
+   "Multi-stage build dengan runtime image yang ramping",
+   "Menyalin seluruh folder proyek termasuk folder .git ke image",
+   "Menjalankan aplikasi di dalam container sebagai pengguna root",
+   "Menginstal semua alat build di image akhir juga"
+  ],
+  "explanation": "Multi-stage build hanya menyalin artefak hasil build ke runtime image yang ramping."
+ },
+ "infrastructure_as_code-1": {
+  "stem": "Apa itu infrastructure as code?",
+  "options": [
+   "Mendefinisikan infrastruktur dalam berkas berversi, bukan langkah manual",
+   "Mendefinisikan infrastruktur di halaman wiki, bukan langkah manual",
+   "Menjalankan langkah setup manual dari riwayat shell yang direkam",
+   "Mendefinisikan kode aplikasi dalam berkas yang juga mengonfigurasi server"
+  ],
+  "explanation": "Mengelola infrastruktur lewat berkas definisi deklaratif yang berversi, bukan klik manual."
+ },
+ "infrastructure_as_code-2": {
+  "stem": "Perintah Terraform mana yang menampilkan pratinjau perubahan sebelum dilakukan?",
+  "options": [
+   "terraform plan",
+   "terraform apply",
+   "terraform init",
+   "terraform fmt"
+  ],
+  "explanation": "terraform plan menunjukkan apa yang akan dibuat, diubah, atau dihapus."
+ },
+ "infrastructure_as_code-3": {
+  "stem": "Apa tujuan berkas state Terraform?",
+  "options": [
+   "Memetakan konfigurasi ke sumber daya nyata",
+   "Mendaftar pengguna yang boleh menjalankan Terraform",
+   "Menyimpan data tagihan penyedia cloud",
+   "Menyimpan log setiap plan yang pernah dijalankan"
+  ],
+  "explanation": "Mencatat pemetaan antara konfigurasi dan sumber daya nyata agar Terraform bisa menghitung perubahan."
+ },
+ "infrastructure_as_code-4": {
+  "stem": "Playbook Ansible disebut idempoten. Apa artinya?",
+  "options": [
+   "Menjalankannya lagi tidak mengubah apa pun bila keadaan sudah benar",
+   "Hanya berjalan satu kali lalu menghapus dirinya sendiri dari server",
+   "Mengulang setiap task sampai ada salah satu task yang gagal",
+   "Harus selalu dijalankan dari server yang sedang dikonfigurasinya"
+  ],
+  "explanation": "Menjalankan playbook lagi tidak mengubah sistem jika sudah berada dalam keadaan yang diinginkan."
+ },
+ "infrastructure_as_code-5": {
+  "stem": "Seseorang mengubah security group secara manual dan kini infrastruktur nyata berbeda dari kode Terraform. Apa namanya?",
+  "options": [
+   "Configuration drift",
+   "State locking",
+   "Resource tainting",
+   "Module versioning"
+  ],
+  "explanation": "Configuration drift."
+ },
+ "kubernetes-1": {
+  "stem": "Apa unit terkecil yang bisa di-deploy di Kubernetes?",
+  "options": [
+   "Pod",
+   "Node",
+   "Namespace",
+   "Deployment"
+  ],
+  "explanation": "Pod, yang berisi satu container atau lebih."
+ },
+ "kubernetes-2": {
+  "stem": "Perintah mana yang menampilkan pod di namespace saat ini?",
+  "options": [
+   "kubectl get pods",
+   "kubectl run pods",
+   "kubectl apply pods",
+   "kubectl describe nodes"
+  ],
+  "explanation": "kubectl get pods mendaftarnya."
+ },
+ "kubernetes-3": {
+  "stem": "Apa yang dikelola sebuah Deployment?",
+  "options": [
+   "Pod replika dan pembaruan bergulirnya",
+   "Aturan firewall yang melindungi seluruh cluster",
+   "Disk penyimpanan tiap node",
+   "Catatan DNS dari domain"
+  ],
+  "explanation": "Menjaga jumlah pod replika yang diinginkan dan menangani rolling update."
+ },
+ "kubernetes-4": {
+  "stem": "Pod mendapat alamat IP baru saat restart. Objek mana yang memberi klien alamat yang stabil?",
+  "options": [
+   "Service",
+   "ConfigMap",
+   "Secret",
+   "Job"
+  ],
+  "explanation": "Service menyediakan IP virtual dan nama DNS yang stabil di depan sekumpulan pod."
+ },
+ "kubernetes-5": {
+  "stem": "Sebuah pod terus restart dengan status CrashLoopBackOff. Apa langkah pertama terbaik?",
+  "options": [
+   "Membaca log dan event pod",
+   "Menghapus node yang menjalankan pod lalu menunggu",
+   "Menaikkan jumlah replika menjadi sepuluh",
+   "Mengganti nama namespace pod"
+  ],
+  "explanation": "Baca log container dan event pod (kubectl logs, kubectl describe pod)."
+ },
+ "linux_administration-1": {
+  "stem": "Perintah mana yang mendaftar berkas di direktori saat ini beserta izin dan ukurannya?",
+  "options": [
+   "ls -l",
+   "cd -l",
+   "cat -l",
+   "pwd -l"
+  ],
+  "explanation": "ls -l menampilkan daftar panjang dengan izin, pemilik, dan ukuran."
+ },
+ "linux_administration-2": {
+  "stem": "Apa yang dilakukan chmod 755 script.sh?",
+  "options": [
+   "Memberi pemilik akses penuh, yang lain baca dan eksekusi",
+   "Memberi semua pengguna akses penuh termasuk hak menulis",
+   "Mengubah pemilik berkas itu menjadi pengguna bernama 755",
+   "Menghapus hak eksekusi berkas itu dari semua pengguna sistem"
+  ],
+  "explanation": "Menetapkan rwx untuk pemilik dan r-x untuk grup dan lainnya, sehingga skrip bisa dieksekusi semua orang."
+ },
+ "linux_administration-3": {
+  "stem": "Perintah mana yang menampilkan proses dengan pemakaian CPU terbesar secara real time?",
+  "options": [
+   "top",
+   "df",
+   "free",
+   "uname"
+  ],
+  "explanation": "top (atau htop) menampilkan pemakaian sumber daya proses secara langsung."
+ },
+ "linux_administration-4": {
+  "stem": "Apa yang dicapai pipe pada grep error app.log | wc -l?",
+  "options": [
+   "Menghitung baris app.log yang memuat error",
+   "Menghapus baris app.log yang memuat error",
+   "Menulis jumlah kata app.log ke berkas baru",
+   "Mendaftar berkas yang namanya memuat error"
+  ],
+  "explanation": "Mengirim keluaran grep ke wc, yang menghitung baris yang cocok."
+ },
+ "linux_administration-5": {
+  "stem": "Sebuah layanan harus mulai saat boot dan restart saat gagal pada distribusi modern. Alat apa yang tepat?",
+  "options": [
+   "Unit systemd yang diaktifkan dengan systemctl",
+   "Entri yang ditambahkan ke berkas .bashrc pengguna",
+   "Cron job yang berjalan tiap detik",
+   "Skrip yang ditaruh di folder Downloads"
+  ],
+  "explanation": "Berkas unit systemd dengan Restart= dan systemctl enable."
+ },
+ "monitoring_observability-1": {
+  "stem": "Alat mana yang umum dipasangkan dengan Prometheus untuk menggambar dasbor?",
+  "options": [
+   "Grafana",
+   "Jenkins",
+   "Ansible",
+   "Nginx"
+  ],
+  "explanation": "Grafana memvisualisasikan metrik dari Prometheus."
+ },
+ "monitoring_observability-2": {
+  "stem": "Tiga sinyal mana yang membentuk observability?",
+  "options": [
+   "Metrik, log, dan trace",
+   "Build, tes, dan rilis",
+   "Pengguna, role, dan kebijakan",
+   "Disk, memori, dan kartu jaringan"
+  ],
+  "explanation": "Metrik, log, dan trace."
+ },
+ "monitoring_observability-3": {
+  "stem": "Apa yang digambarkan sebuah SLO?",
+  "options": [
+   "Target tingkat keandalan sebuah layanan",
+   "Kontrak dengan penalti bagi pelanggan jika layanan gagal",
+   "Jadwal backup database",
+   "Daftar semua server yang menjalankan layanan"
+  ],
+  "explanation": "Target tingkat keandalan, misalnya 99,9% permintaan berhasil dalam sebulan."
+ },
+ "monitoring_observability-4": {
+  "stem": "Peringatan mana yang desainnya lebih baik untuk engineer on-call?",
+  "options": [
+   "Peringatan atas gejala yang dirasakan pengguna seperti error rate",
+   "Peringatan pada setiap lonjakan CPU di atas lima puluh persen",
+   "Peringatan pada setiap baris log yang memuat kata warning",
+   "Peringatan sekali sehari lewat email ringkasan panjang"
+  ],
+  "explanation": "Beri peringatan atas gejala yang memengaruhi pengguna, seperti error rate, bukan setiap lonjakan CPU."
+ },
+ "monitoring_observability-5": {
+  "stem": "Sebuah permintaan melewati enam microservice dan lambat. Sinyal mana yang membantu menemukan lompatan yang lambat?",
+  "options": [
+   "Distributed trace",
+   "Grafik CPU satu server",
+   "Pemakaian disk volume log",
+   "Uptime load balancer"
+  ],
+  "explanation": "Distributed tracing menunjukkan waktu yang dihabiskan di tiap layanan sepanjang jalur permintaan."
+ },
+ "networking_fundamentals-1": {
+  "stem": "Apa yang dilakukan DNS?",
+  "options": [
+   "Menerjemahkan nama domain menjadi alamat IP",
+   "Memberi alamat IP ke perangkat secara otomatis",
+   "Mengenkripsi lalu lintas antara dua jaringan terpisah",
+   "Memblokir lalu lintas dari perangkat tak dikenal"
+  ],
+  "explanation": "DNS menerjemahkan nama domain menjadi alamat IP."
+ },
+ "networking_fundamentals-2": {
+  "stem": "Port mana yang dipakai HTTPS secara default?",
+  "options": [
+   "443",
+   "80",
+   "22",
+   "25"
+  ],
+  "explanation": "HTTPS memakai port TCP 443."
+ },
+ "networking_fundamentals-3": {
+  "stem": "Berapa alamat host yang bisa dipakai pada subnet 192.168.1.0/24?",
+  "options": [
+   "254",
+   "256",
+   "255",
+   "24"
+  ],
+  "explanation": "Subnet /24 punya 256 alamat, dikurangi alamat jaringan dan broadcast: 254."
+ },
+ "networking_fundamentals-4": {
+  "stem": "Router bekerja pada lapisan mana dari model OSI?",
+  "options": [
+   "Lapisan jaringan (3)",
+   "Lapisan data link (2)",
+   "Lapisan transport (4)",
+   "Lapisan aplikasi (7)"
+  ],
+  "explanation": "Router meneruskan paket berdasarkan alamat IP pada lapisan jaringan (lapisan 3)."
+ },
+ "networking_fundamentals-5": {
+  "stem": "Sebuah server bisa di-ping lewat alamat IP tetapi situsnya tidak terbuka lewat nama. Apa yang pertama dicek?",
+  "options": [
+   "Resolusi DNS untuk nama domain",
+   "Kecepatan kabel jaringan yang dipakai",
+   "Subnet mask server",
+   "Tingkat baterai laptop klien"
+  ],
+  "explanation": "Konektivitas berfungsi, jadi cek resolusi nama (catatan DNS atau resolver)."
+ },
+ "web_servers_proxies-1": {
+  "stem": "Apa itu reverse proxy?",
+  "options": [
+   "Server yang meneruskan permintaan klien ke server back-end",
+   "Alat yang menyembunyikan identitas klien dari situs yang dikunjunginya",
+   "Database yang meng-cache halaman sebuah situs",
+   "Firewall yang memblokir permintaan dari negara lain"
+  ],
+  "explanation": "Server yang menerima permintaan klien dan meneruskannya ke server back-end."
+ },
+ "web_servers_proxies-2": {
+  "stem": "Mana yang merupakan web server dan reverse proxy yang banyak dipakai?",
+  "options": [
+   "Nginx",
+   "Postman",
+   "Docker",
+   "Redis"
+  ],
+  "explanation": "Nginx."
+ },
+ "web_servers_proxies-3": {
+  "stem": "Bagaimana mendapatkan sertifikat TLS gratis yang diperpanjang otomatis untuk sebuah domain?",
+  "options": [
+   "Memakai Let's Encrypt lewat klien ACME",
+   "Membuat sertifikat self-signed sekali lalu memakainya terus",
+   "Membeli sertifikat dan memasangnya manual setiap tahun",
+   "Menyalin sertifikat milik situs lain"
+  ],
+  "explanation": "Let's Encrypt dengan klien ACME seperti certbot atau Caddy."
+ },
+ "web_servers_proxies-4": {
+  "stem": "Direktif Nginx mana yang meneruskan permintaan ke aplikasi yang berjalan di port 3000?",
+  "options": [
+   "proxy_pass http://127.0.0.1:3000;",
+   "listen 127.0.0.1:3000 default_server;",
+   "return 301 http://127.0.0.1:3000/app;",
+   "root /var/www/aplikasi/port-3000;"
+  ],
+  "explanation": "proxy_pass mengirim permintaan ke upstream."
+ },
+ "web_servers_proxies-5": {
+  "stem": "Aset statis harus disajikan dengan cepat ke seluruh dunia. Kombinasi mana yang terbaik?",
+  "options": [
+   "CDN dengan masa cache panjang dan kompresi",
+   "Server aplikasi dengan cache dimatikan",
+   "Satu server besar di satu negara",
+   "Tabel database yang menyimpan berkas"
+  ],
+  "explanation": "Sajikan lewat CDN dengan masa cache panjang dan kompresi."
+ }
+}

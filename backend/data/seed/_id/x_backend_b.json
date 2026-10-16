@@ -1,0 +1,352 @@
+{
+ "php_laravel-1": {
+  "stem": "Di Laravel, berkas mana yang mendefinisikan rute web aplikasi?",
+  "options": [
+   "routes/web.php",
+   "config/app.php",
+   "app/Models/User.php",
+   "resources/views/welcome.blade.php"
+  ],
+  "explanation": "routes/web.php berisi rute web."
+ },
+ "php_laravel-2": {
+  "stem": "Apa itu Eloquent di Laravel?",
+  "options": [
+   "ORM yang memetakan tabel ke kelas model",
+   "Template engine yang merender tampilan aplikasi",
+   "Alat yang mengirim email dari antrean",
+   "Antarmuka baris perintah framework"
+  ],
+  "explanation": "Eloquent adalah ORM Laravel yang memetakan tabel ke kelas model."
+ },
+ "php_laravel-3": {
+  "stem": "Perintah Artisan mana yang membuat dan menjalankan migrasi database?",
+  "options": [
+   "php artisan migrate",
+   "php artisan serve",
+   "php artisan route:list",
+   "php artisan tinker"
+  ],
+  "explanation": "php artisan migrate menjalankan migrasi yang tertunda."
+ },
+ "php_laravel-4": {
+  "stem": "Di aplikasi Laravel yang rapi, di mana aturan validasi untuk form yang dikirim sebaiknya diletakkan?",
+  "options": [
+   "Di kelas Form Request yang dipakai controller",
+   "Di view Blade di samping setiap input",
+   "Di migrasi yang membuat tabel di database",
+   "Di berkas rute sebagai closure inline"
+  ],
+  "explanation": "Kelas Form Request menjaga validasi tetap di luar controller."
+ },
+ "php_laravel-5": {
+  "stem": "Sebuah halaman memuat daftar post dan mencetak nama penulis tiap post, sehingga muncul banyak kueri. Fitur Eloquent mana yang menyelesaikannya?",
+  "options": [
+   "Eager loading dengan Post::with('author')",
+   "Lazy loading dengan $post->author di dalam loop",
+   "Meng-cache tiap penulis dengan Cache::remember()",
+   "Pagination dengan Post::paginate(10)"
+  ],
+  "explanation": "Eager loading dengan with('author') memuat relasinya dalam satu kueri tambahan."
+ },
+ "programming_fundamentals-1": {
+  "stem": "Dalam pemrograman berorientasi objek, apa itu class?",
+  "options": [
+   "Cetak biru yang mendefinisikan data dan perilaku objek",
+   "Satu objek yang disimpan di memori program untuk jangka panjang",
+   "Fungsi yang berjalan sekali saat program dimulai",
+   "Berkas yang mendaftar library yang dibutuhkan proyek agar berjalan"
+  ],
+  "explanation": "Class adalah cetak biru yang mendefinisikan data dan perilaku objek yang dibuat darinya."
+ },
+ "programming_fundamentals-2": {
+  "stem": "Apa arti enkapsulasi?",
+  "options": [
+   "Menyembunyikan state internal di balik antarmuka publik",
+   "Menjalankan dua metode sekaligus pada saat yang persis sama",
+   "Membuat kelas baru dari kelas yang sudah ada sebelumnya",
+   "Memberi satu metode beberapa implementasi yang berbeda-beda"
+  ],
+  "explanation": "Enkapsulasi membungkus data bersama metode yang mengolahnya dan menyembunyikan detail internal di balik antarmuka publik."
+ },
+ "programming_fundamentals-3": {
+  "stem": "Kelas Dog memperluas Animal dan meng-override speak(). Memanggil speak() pada variabel bertipe Animal yang berisi Dog menjalankan versi milik Dog. Apa namanya?",
+  "options": [
+   "Polimorfisme",
+   "Enkapsulasi",
+   "Overloading",
+   "Komposisi"
+  ],
+  "explanation": "Polimorfisme: metode yang berjalan bergantung pada tipe objek sebenarnya saat runtime."
+ },
+ "programming_fundamentals-4": {
+  "stem": "Huruf S pada SOLID adalah Single Responsibility Principle. Apa isinya?",
+  "options": [
+   "Sebuah kelas harus punya satu alasan untuk berubah",
+   "Sebuah kelas harus punya hanya satu metode publik",
+   "Sebuah kelas harus dibuat hanya sekali dalam program",
+   "Sebuah kelas harus bergantung pada hanya satu kelas lain"
+  ],
+  "explanation": "Sebuah kelas harus punya satu alasan untuk berubah, yaitu satu tanggung jawab."
+ },
+ "programming_fundamentals-5": {
+  "stem": "Logika pembuatan objek tersebar di seluruh kode dan sering berubah. Design pattern mana yang memusatkannya?",
+  "options": [
+   "Factory",
+   "Observer",
+   "Decorator",
+   "Adapter"
+  ],
+  "explanation": "Factory (atau factory method) membungkus cara objek dibuat."
+ },
+ "python_backend-1": {
+  "stem": "Mana yang merupakan framework web Python untuk membangun API dengan dokumentasi otomatis dan type hint?",
+  "options": [
+   "FastAPI",
+   "Pandas",
+   "Matplotlib",
+   "NumPy"
+  ],
+  "explanation": "FastAPI membangun API dari type hint dan menghasilkan dokumentasi OpenAPI."
+ },
+ "python_backend-2": {
+  "stem": "Di Django, berkas mana yang biasanya memetakan URL ke fungsi view?",
+  "options": [
+   "urls.py",
+   "models.py",
+   "settings.py",
+   "admin.py"
+  ],
+  "explanation": "urls.py berisi pola URL yang mengarahkan permintaan ke view."
+ },
+ "python_backend-3": {
+  "stem": "Apa peran ORM seperti Django ORM atau SQLAlchemy?",
+  "options": [
+   "Memetakan tabel database ke kelas dan kueri Python",
+   "Mengompilasi Python menjadi kode mesin yang lebih cepat",
+   "Mengenkripsi data sebelum sampai ke server database",
+   "Mengubah template HTML menjadi respons JSON"
+  ],
+  "explanation": "ORM memetakan tabel database ke kelas Python sehingga kamu mengueri dengan objek, bukan string SQL mentah."
+ },
+ "python_backend-4": {
+  "stem": "Sebuah endpoint FastAPI menerima JSON yang harus memiliki age bertipe integer. Bagaimana memvalidasinya?",
+  "options": [
+   "Mendeklarasikan model Pydantic dengan age: int sebagai tipe body",
+   "Menulis pernyataan if untuk setiap field di setiap endpoint",
+   "Mengubah permintaan menjadi string lalu mencarinya dengan regex",
+   "Mengandalkan database untuk menolak nilai yang salah nanti"
+  ],
+  "explanation": "Mendeklarasikan model Pydantic (atau parameter bertipe) membuat FastAPI memvalidasi dan mem-parse body secara otomatis."
+ },
+ "python_backend-5": {
+  "stem": "Sebuah permintaan harus mengirim email tetapi pengguna tidak boleh menunggu. Pendekatan Python mana yang cocok?",
+  "options": [
+   "Menjalankannya di background task atau worker Celery",
+   "Memanggil library email di dalam view lalu menunggu",
+   "Menaikkan timeout web server sampai selesai",
+   "Mengirim email dari browser dengan JavaScript"
+  ],
+  "explanation": "Dorong pekerjaan itu ke background task atau worker antrean seperti Celery agar respons langsung kembali."
+ },
+ "python_programming-1": {
+  "stem": "Apa tipe dari nilai [1, 2, 3] di Python?",
+  "options": [
+   "list",
+   "tuple",
+   "set",
+   "dict"
+  ],
+  "explanation": "Kurung siku membuat list."
+ },
+ "python_programming-2": {
+  "stem": "Pernyataan mana yang benar untuk mendefinisikan fungsi di Python?",
+  "options": [
+   "def add(a, b):",
+   "function add(a, b):",
+   "func add(a, b) {",
+   "add = def(a, b):"
+  ],
+  "explanation": "def nama(parameter): memulai definisi fungsi."
+ },
+ "python_programming-3": {
+  "stem": "Apa keluaran dari print([x * x for x in range(4)])?",
+  "options": [
+   "[0, 1, 4, 9]",
+   "[1, 4, 9, 16]",
+   "[0, 1, 2, 3]",
+   "[0, 2, 4, 6]"
+  ],
+  "explanation": "range(4) menghasilkan 0..3, sehingga kuadratnya [0, 1, 4, 9]."
+ },
+ "python_programming-4": {
+  "stem": "Mengapa proyek memakai virtual environment (venv)?",
+  "options": [
+   "Untuk mengisolasi paket tiap proyek dari proyek lain",
+   "Agar interpreter Python berjalan lebih cepat",
+   "Untuk mengompilasi kode Python menjadi executable native",
+   "Untuk berbagi paket terpasang ke seluruh komputer sekaligus"
+  ],
+  "explanation": "Virtual environment mengisolasi paket satu proyek dari proyek lain dan dari Python sistem."
+ },
+ "python_programming-5": {
+  "stem": "def add(item, bucket=[]): bucket.append(item); return bucket. Memanggil add(1) lalu add(2) mengembalikan apa pada pemanggilan kedua?",
+  "options": [
+   "[1, 2]",
+   "[2]",
+   "[1]",
+   "Galat karena nilai default berupa list"
+  ],
+  "explanation": "List default dibuat sekali dan dipakai bersama antarpemanggilan, sehingga pemanggilan kedua mengembalikan [1, 2]."
+ },
+ "rest_api_design-1": {
+  "stem": "Metode HTTP mana yang sebaiknya dipakai REST API untuk mengambil sebuah resource tanpa mengubahnya?",
+  "options": [
+   "GET",
+   "POST",
+   "PUT",
+   "PATCH"
+  ],
+  "explanation": "GET adalah metode aman dan idempoten untuk membaca."
+ },
+ "rest_api_design-2": {
+  "stem": "Kode status mana yang sebaiknya dikembalikan API setelah berhasil membuat sebuah resource?",
+  "options": [
+   "201 Created",
+   "200 OK",
+   "204 No Content",
+   "301 Moved Permanently"
+  ],
+  "explanation": "201 Created menandakan resource baru telah dibuat."
+ },
+ "rest_api_design-3": {
+  "stem": "URL mana yang mengikuti konvensi penamaan REST untuk mengambil pesanan milik pelanggan 42?",
+  "options": [
+   "GET /customers/42/orders",
+   "GET /getOrdersForCustomer?id=42",
+   "POST /customers/42/fetchOrders",
+   "GET /order/customer/get/42"
+  ],
+  "explanation": "REST memakai kata benda jamak dan penyarangan untuk relasi, dengan kata kerja dibawa oleh metode HTTP."
+ },
+ "rest_api_design-4": {
+  "stem": "Klien mengirim body permintaan yang gagal validasi. Respons mana yang paling tepat?",
+  "options": [
+   "422 Unprocessable Entity dengan rincian field yang tidak valid",
+   "404 Not Found dengan menyertakan teks permintaan dari klien itu",
+   "500 Internal Server Error dengan menyertakan stack trace lengkapnya",
+   "200 OK dengan body kosong dan tanpa pesan galat apa pun juga"
+  ],
+  "explanation": "Kode 4xx memberi tahu klien bahwa permintaannya salah; 422 (atau 400) dengan rincian galat tepat dipakai."
+ },
+ "rest_api_design-5": {
+  "stem": "Sebuah endpoint daftar mengembalikan 100.000 record. Rancangan mana yang paling tepat?",
+  "options": [
+   "Memberi halaman pada hasil dengan limit dan cursor atau nomor halaman",
+   "Mengembalikan semuanya dan membiarkan klien membuang kelebihan data",
+   "Mengompresi respons dan tetap mengembalikan sebagian besar record",
+   "Memecah data ke beberapa endpoint yang dipilih klien"
+  ],
+  "explanation": "Beri halaman (limit/offset atau cursor) agar respons tetap kecil dan cepat."
+ },
+ "system_design_architecture-1": {
+  "stem": "Apa yang dilakukan load balancer?",
+  "options": [
+   "Menyebar permintaan masuk ke beberapa server",
+   "Menyimpan salinan respons agar dilayani lebih cepat",
+   "Mengirim tiap permintaan ke server terbaru lebih dulu",
+   "Mengantrekan permintaan masuk sampai ada server yang bebas"
+  ],
+  "explanation": "Load balancer menyebar permintaan masuk ke beberapa server untuk meningkatkan kapasitas dan ketersediaan."
+ },
+ "system_design_architecture-2": {
+  "stem": "Apa itu horizontal scaling?",
+  "options": [
+   "Menambah mesin untuk berbagi beban",
+   "Menambah memori pada satu mesin",
+   "Memindahkan aplikasi ke bahasa yang lebih cepat",
+   "Mengurangi jumlah data yang disimpan per pengguna"
+  ],
+  "explanation": "Menambah mesin atau instance, bukan membesarkan satu mesin."
+ },
+ "system_design_architecture-3": {
+  "stem": "Mana kelemahan utama memecah aplikasi menjadi microservice?",
+  "options": [
+   "Kompleksitas operasional dan mode kegagalan jaringan bertambah",
+   "Setiap fitur otomatis menjadi single point of failure tersendiri",
+   "Mustahil memakai lebih dari satu bahasa pemrograman di sistem",
+   "Pengembangan prototipe pertama menjadi lebih lambat daripada monolit saja"
+  ],
+  "explanation": "Sistem terdistribusi menambah kegagalan jaringan, beban operasional, dan konsistensi data yang lebih sulit."
+ },
+ "system_design_architecture-4": {
+  "stem": "Pada teorema CAP, terjadi partisi jaringan. Sebuah sistem memilih tetap menjawab dengan data yang mungkin basi. Properti mana yang ia utamakan?",
+  "options": [
+   "Availability di atas consistency",
+   "Consistency di atas availability saat partisi terjadi",
+   "Latensi di atas durabilitas",
+   "Throughput di atas keamanan"
+  ],
+  "explanation": "Sistem itu mengutamakan availability di atas consistency."
+ },
+ "system_design_architecture-5": {
+  "stem": "Sebuah layanan memanggil layanan lain yang sedang mati, dan retry menumpuk. Pola mana yang membatasi kerusakan?",
+  "options": [
+   "Circuit breaker dengan exponential backoff",
+   "Timeout yang lebih panjang pada setiap permintaan",
+   "Lebih banyak retry yang semuanya dikirim bersamaan",
+   "Database yang lebih besar untuk pemanggil"
+  ],
+  "explanation": "Circuit breaker menghentikan sementara panggilan ke dependensi yang gagal, dengan backoff pada retry."
+ },
+ "unit_testing_tdd-1": {
+  "stem": "Apa yang diperiksa oleh unit test?",
+  "options": [
+   "Satu unit kecil kode secara terisolasi",
+   "Seluruh sistem di lingkungan menyerupai produksi",
+   "Kecepatan sistem di bawah lalu lintas tinggi",
+   "Tampilan antarmuka di berbagai layar"
+  ],
+  "explanation": "Satu unit kecil kode secara terisolasi, misalnya sebuah fungsi."
+ },
+ "unit_testing_tdd-2": {
+  "stem": "Bagaimana urutan langkah pada test-driven development?",
+  "options": [
+   "Tulis tes yang gagal, buat lolos, lalu refactor",
+   "Tulis kode lebih dulu, tulis tes, lalu hapus kodenya lagi",
+   "Refactor dulu, lalu tulis tes, lalu baru menulis kodenya",
+   "Tulis kode, deploy ke produksi, lalu tulis tes sesudahnya"
+  ],
+  "explanation": "Red (tulis tes yang gagal), green (buat lolos), refactor."
+ },
+ "unit_testing_tdd-3": {
+  "stem": "Mengapa gateway pembayaran diganti dengan mock dalam unit test?",
+  "options": [
+   "Agar tes cepat, berulang, dan bebas dari tagihan sungguhan",
+   "Agar tes bisa berjalan tanpa beberapa assertion yang rumit",
+   "Agar terbukti bahwa gateway aslinya bekerja dengan benar",
+   "Agar cakupan kode milik gateway itu sendiri ikut naik"
+  ],
+  "explanation": "Mock menjaga tes tetap cepat dan deterministik serta menghindari efek samping nyata."
+ },
+ "unit_testing_tdd-4": {
+  "stem": "Sebuah proyek melaporkan line coverage 95%. Apa yang ditunjukkan angka ini?",
+  "options": [
+   "95% baris dijalankan saat tes, belum tentu pemeriksaannya baik",
+   "95% bug yang mungkin ada sudah ditemukan lalu diperbaiki",
+   "Kode itu tidak punya cacat sama sekali pada baris yang tercakup",
+   "Tes sudah mencakup 95% dari seluruh kebutuhan pengguna"
+  ],
+  "explanation": "95% baris dieksekusi oleh tes; ini tidak membuktikan assertion-nya bermakna."
+ },
+ "unit_testing_tdd-5": {
+  "stem": "Sebuah tes lolos saat dijalankan sendiri tetapi gagal saat seluruh suite berjalan. Apa penyebab yang paling mungkin?",
+  "options": [
+   "State bersama atau ketergantungan urutan antartes",
+   "Galat sintaks di dalam framework tes itu sendiri",
+   "Terlalu sedikit assertion pada tes yang gagal",
+   "Compiler yang mengabaikan tes yang gagal"
+  ],
+  "explanation": "State bersama atau ketergantungan urutan tes: tes harus independen dan menyiapkan datanya sendiri."
+ }
+}

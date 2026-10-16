@@ -65,11 +65,16 @@ def _extraction() -> dict:
 
 
 def _items() -> dict:
-    a = _load("item_cue_audit.json")
-    c = a.get("classifier", {})
-    return {"generated": a.get("generated"), "n_items": a.get("n_items"), "language": a.get("language"),
-            "answer_pattern_accuracy": c.get("accuracy"), "chance": c.get("chance"), "random_p95": c.get("null_p95"),
-            "note": "accuracy of a model that sees only option surface features; at or below random_p95 means no usable cue"}
+    def one(name: str) -> dict:
+        a = _load(name)
+        c = a.get("classifier", {})
+        return {"generated": a.get("generated"), "n_items": a.get("n_items"), "language": a.get("language"),
+                "answer_pattern_accuracy": c.get("accuracy"), "chance": c.get("chance"), "random_p95": c.get("null_p95")}
+
+    en, idn = one("item_cue_audit.json"), one("item_cue_audit_id.json")
+    return {**en, "indonesian": idn,
+            "note": "accuracy of a model that sees only option surface features; at or below random_p95 means no usable cue. "
+                    "The Indonesian bank (plan A7) is audited separately because translation changes option lengths."}
 
 
 def _ranker(s) -> dict:

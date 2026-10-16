@@ -169,9 +169,9 @@ GUESS_FLOOR, GUESS_CEIL = 0.25, 0.60
 
 @lru_cache(maxsize=1)
 def _guess_table() -> dict[str, float]:
-    from .config import MODELS_DIR
+    from .config import LANG, MODELS_DIR
 
-    path = MODELS_DIR / "item_cue_audit.json"
+    path = MODELS_DIR / ("item_cue_audit_id.json" if LANG == "id" else "item_cue_audit.json")
     if not path.exists():
         return {}
     return _json.loads(path.read_text(encoding="utf-8")).get("p_cue", {})

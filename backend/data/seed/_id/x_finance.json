@@ -1,0 +1,402 @@
+{
+ "accounting_fundamentals-1": {
+  "stem": "Apa persamaan akuntansi?",
+  "options": [
+   "Aset = Liabilitas + Ekuitas",
+   "Aset = Pendapatan - Beban",
+   "Ekuitas = Aset + Liabilitas + Pendapatan",
+   "Pendapatan = Aset - Ekuitas"
+  ],
+  "explanation": "Aset = Liabilitas + Ekuitas."
+ },
+ "accounting_fundamentals-2": {
+  "stem": "Dalam pembukuan berpasangan (double-entry), sebuah perusahaan membayar sewa secara tunai. Apa yang terjadi?",
+  "options": [
+   "Debit beban sewa dan kredit kas",
+   "Debit kas dan kredit beban sewa",
+   "Debit beban sewa dan kredit ekuitas",
+   "Kredit beban sewa dan kredit kas"
+  ],
+  "explanation": "Debit beban sewa dan kredit kas."
+ },
+ "accounting_fundamentals-3": {
+  "stem": "Sebuah perusahaan menyerahkan jasa pada Desember tetapi baru dibayar pada Januari. Pada akuntansi akrual, kapan pendapatan dicatat?",
+  "options": [
+   "Pada Desember, saat jasa diserahkan",
+   "Pada Januari, saat kas akhirnya diterima",
+   "Dibagi rata ke kedua bulan",
+   "Saat faktur diarsipkan"
+  ],
+  "explanation": "Pada Desember, saat pendapatan itu diperoleh."
+ },
+ "accounting_fundamentals-4": {
+  "stem": "Neraca saldo tidak seimbang sebesar Rp500.000. Apa langkah pertama yang terbaik?",
+  "options": [
+   "Mencari jurnal yang hanya satu sisi atau kesalahan posting",
+   "Membulatkan semua total ke jutaan rupiah terdekat agar seimbang",
+   "Menambah selisih Rp500.000 itu ke akun kas begitu saja",
+   "Menghapus semua jurnal yang dibuat pada bulan terakhir"
+  ],
+  "explanation": "Periksa kesalahan posting, seperti transposisi angka, jurnal satu sisi, atau jumlah yang salah."
+ },
+ "accounting_fundamentals-5": {
+  "stem": "Peralatan seharga Rp120 juta dipakai selama 4 tahun tanpa nilai sisa. Berapa penyusutan garis lurus per tahun?",
+  "options": [
+   "Rp30 juta",
+   "Rp40 juta",
+   "Rp24 juta",
+   "Rp60 juta"
+  ],
+  "explanation": "120 juta / 4 = 30 juta per tahun."
+ },
+ "accounting_software-1": {
+  "stem": "Mana yang merupakan perangkat lunak akuntansi yang banyak dipakai UMKM Indonesia?",
+  "options": [
+   "Accurate",
+   "Photoshop",
+   "AutoCAD",
+   "Premiere"
+  ],
+  "explanation": "Accurate (juga Jurnal, Zahir)."
+ },
+ "accounting_software-2": {
+  "stem": "Apa itu chart of accounts (bagan akun)?",
+  "options": [
+   "Daftar akun untuk mengklasifikasikan transaksi",
+   "Jadwal tenggat pajak yang berlaku untuk perusahaan",
+   "Grafik penjualan bulanan yang dibuat dari laporan",
+   "Tabel para staf beserta gaji yang diterima tiap bulan"
+  ],
+  "explanation": "Daftar seluruh akun yang dipakai untuk mengklasifikasikan transaksi."
+ },
+ "accounting_software-3": {
+  "stem": "Sebuah faktur penjualan dimasukkan ke perangkat lunak akuntansi. Jurnal mana yang diposting otomatis?",
+  "options": [
+   "Debit piutang, kredit penjualan dan PPN keluaran",
+   "Debit penjualan, kredit kas dan ekuitas",
+   "Debit persediaan, kredit utang dan PPN",
+   "Debit beban, kredit penjualan dan piutang sekaligus"
+  ],
+  "explanation": "Piutang (serta PPN dan pendapatan) diposting; umumnya debit piutang usaha, kredit penjualan dan PPN keluaran."
+ },
+ "accounting_software-4": {
+  "stem": "Di SAP, modul mana yang mencakup akuntansi keuangan dan pengendalian?",
+  "options": [
+   "FICO",
+   "MM",
+   "SD",
+   "HCM"
+  ],
+  "explanation": "SAP FICO."
+ },
+ "accounting_software-5": {
+  "stem": "Mengapa penguncian periode dipakai di perangkat lunak akuntansi setelah penutupan?",
+  "options": [
+   "Untuk menghentikan perubahan pada periode yang sudah ditutup",
+   "Agar perangkat lunak berjalan lebih cepat saat akhir bulan tiba",
+   "Untuk menghapus pelanggan lama dari sistem setelah penutupan buku",
+   "Untuk menyembunyikan transaksi tertentu dari para auditor eksternal"
+  ],
+  "explanation": "Untuk mencegah perubahan pada periode yang sudah ditutup dan menjaga angka laporan tetap stabil."
+ },
+ "ap_ar_reconciliation-1": {
+  "stem": "Apa yang diwakili utang usaha (accounts payable)?",
+  "options": [
+   "Uang yang terutang perusahaan kepada pemasok",
+   "Uang yang terutang pelanggan kepada perusahaan",
+   "Uang yang disimpan di rekening bank",
+   "Uang yang dibayarkan kepada staf sebagai gaji"
+  ],
+  "explanation": "Uang yang terutang perusahaan kepada pemasok."
+ },
+ "ap_ar_reconciliation-2": {
+  "stem": "Apa yang dibandingkan dalam rekonsiliasi bank?",
+  "options": [
+   "Buku kas dengan rekening koran bank",
+   "Anggaran dengan prakiraan",
+   "Faktur dengan permintaan pembelian awal",
+   "Penggajian dengan SPT pajak"
+  ],
+  "explanation": "Buku kas perusahaan dengan rekening koran bank."
+ },
+ "ap_ar_reconciliation-3": {
+  "stem": "Three-way matching membandingkan dokumen apa saja sebelum membayar pemasok?",
+  "options": [
+   "Purchase order, tanda terima barang, dan faktur",
+   "Faktur, rekening koran, dan SPT tahunan perusahaan",
+   "Penawaran, kontrak, dan bukti pembayaran dari pemasok",
+   "Anggaran, pesanan, dan jadwal pengiriman dari pemasok"
+  ],
+  "explanation": "Purchase order, tanda terima barang, dan faktur pemasok."
+ },
+ "ap_ar_reconciliation-4": {
+  "stem": "Laporan umur piutang menunjukkan banyak faktur berumur lebih dari 90 hari. Apa yang sebaiknya dilakukan tim?",
+  "options": [
+   "Menindaklanjuti penagihan dan menilai cadangan piutang ragu-ragu",
+   "Menghapus semua faktur lama itu begitu saja dari buku besar",
+   "Mencatat faktur lama itu sebagai pendapatan tahun depan",
+   "Menawarkan diskon yang lebih besar untuk pesanan baru pelanggan"
+  ],
+  "explanation": "Tindak lanjuti penagihan dan nilai perlunya cadangan piutang ragu-ragu."
+ },
+ "ap_ar_reconciliation-5": {
+  "stem": "Rekening koran menunjukkan setoran Rp5 juta yang tidak ada di buku kas. Perlakuan yang benar?",
+  "options": [
+   "Menyelidikinya dan mencatatnya di buku kas",
+   "Mengabaikannya sampai audit berikutnya",
+   "Mengurangi saldo bank di pembukuan sebesar jumlah yang sama",
+   "Mencatatnya sebagai beban bulan itu"
+  ],
+  "explanation": "Selidiki dan catat di buku kas (misalnya transfer pelanggan) agar keduanya cocok."
+ },
+ "audit_internal_control-1": {
+  "stem": "Apa tujuan pengendalian internal?",
+  "options": [
+   "Mengamankan aset dan memastikan pelaporan yang andal",
+   "Meningkatkan penjualan perusahaan dalam setahun berjalan",
+   "Mengurangi jumlah karyawan agar biaya operasional turun",
+   "Menggantikan audit eksternal yang dilakukan setiap tahun"
+  ],
+  "explanation": "Untuk mengamankan aset, memastikan pelaporan yang andal, dan mendorong kepatuhan."
+ },
+ "audit_internal_control-2": {
+  "stem": "Apa itu segregation of duties (pemisahan tugas)?",
+  "options": [
+   "Memisahkan otorisasi, pencatatan, dan penyimpanan di antara orang berbeda",
+   "Pencatatan dan penyimpanan oleh satu orang, persetujuan oleh orang lain",
+   "Memecah satu tugas menjadi langkah yang dikerjakan oleh orang yang sama",
+   "Meminta auditor menyetujui setiap transaksi sebelum transaksi itu dicatat"
+  ],
+  "explanation": "Memisahkan tugas seperti otorisasi, pencatatan, dan penyimpanan di antara orang yang berbeda."
+ },
+ "audit_internal_control-3": {
+  "stem": "Mana yang merupakan pengendalian preventif?",
+  "options": [
+   "Batas persetujuan sebelum pembayaran dilakukan",
+   "Tinjauan bulanan rekening koran oleh manajer",
+   "Audit setelah akhir tahun",
+   "Laporan kesalahan kuartal lalu"
+  ],
+  "explanation": "Batas persetujuan yang menghentikan pembayaran sebelum dilakukan."
+ },
+ "audit_internal_control-4": {
+  "stem": "Apa itu audit sampling?",
+  "options": [
+   "Menguji sebagian sampel lalu menyimpulkan tentang seluruh populasi",
+   "Meminta manajemen memilihkan bukti yang akan diperiksa auditor",
+   "Hanya meninjau beberapa pelanggan terbesar milik perusahaan",
+   "Memeriksa setiap transaksi dalam setahun satu per satu secara penuh"
+  ],
+  "explanation": "Menguji sebagian item terpilih dan menarik kesimpulan tentang seluruh populasi."
+ },
+ "audit_internal_control-5": {
+  "stem": "Seorang auditor menemukan bahwa karyawan yang sama membuat data vendor dan menyetujui pembayarannya. Apa ini?",
+  "options": [
+   "Kelemahan pemisahan tugas dan risiko kecurangan",
+   "Efisiensi yang wajar di perusahaan berukuran kecil",
+   "Perbedaan waktu pencatatan di buku besar perusahaan",
+   "Kekuatan proses pembelian yang sudah memadai"
+  ],
+  "explanation": "Kelemahan pemisahan tugas dan risiko kecurangan."
+ },
+ "budgeting_forecasting-1": {
+  "stem": "Apa itu anggaran?",
+  "options": [
+   "Rencana pendapatan dan pengeluaran yang diharapkan",
+   "Laporan pendapatan dan pengeluaran masa lalu",
+   "Daftar pelanggan perusahaan beserta pesanannya",
+   "Catatan aset perusahaan"
+  ],
+  "explanation": "Rencana pendapatan dan pengeluaran yang diharapkan untuk periode mendatang."
+ },
+ "budgeting_forecasting-2": {
+  "stem": "Apa yang dilakukan rolling forecast?",
+  "options": [
+   "Diperbarui berkala dan selalu melihat ke depan dengan rentang waktu tetap",
+   "Ditetapkan sekali setahun lalu jarang diubah selama tahun berjalan itu",
+   "Hanya mencatat apa yang sudah terjadi pada periode sebelumnya saja",
+   "Disusun oleh para auditor eksternal untuk keperluan pemeriksaan tahunan"
+  ],
+  "explanation": "Diperbarui secara berkala dan selalu melihat sejumlah periode tetap ke depan."
+ },
+ "budgeting_forecasting-3": {
+  "stem": "Apa beda CAPEX dan OPEX?",
+  "options": [
+   "CAPEX membeli aset jangka panjang, OPEX menutup biaya operasional",
+   "CAPEX menutup biaya operasional, sedangkan OPEX membeli aset jangka panjang",
+   "CAPEX untuk pajak, OPEX untuk gaji",
+   "Keduanya dua nama untuk biaya yang sama"
+  ],
+  "explanation": "CAPEX membeli aset jangka panjang; OPEX menutup biaya operasional sehari-hari."
+ },
+ "budgeting_forecasting-4": {
+  "stem": "Sebuah proyek berbiaya Rp100 juta dan memberi pengembalian Rp40 juta per tahun. Berapa payback period-nya?",
+  "options": [
+   "2,5 tahun",
+   "4 tahun",
+   "40 bulan",
+   "1,5 tahun"
+  ],
+  "explanation": "100 / 40 = 2,5 tahun."
+ },
+ "budgeting_forecasting-5": {
+  "stem": "Dalam valuasi DCF, tingkat diskonto yang lebih tinggi berdampak apa pada nilai sekarang?",
+  "options": [
+   "Menurunkan nilai sekarang",
+   "Menaikkan nilai sekarang",
+   "Tidak mengubahnya",
+   "Membuatnya negatif dalam semua kasus"
+  ],
+  "explanation": "Menurunkan nilai sekarang dari arus kas masa depan."
+ },
+ "cost_accounting-1": {
+  "stem": "Biaya mana yang tetap sama berapa pun volume produksi dalam jangka pendek?",
+  "options": [
+   "Biaya tetap seperti sewa",
+   "Biaya variabel seperti bahan baku",
+   "Biaya langsung seperti komisi penjualan",
+   "Biaya campuran seperti listrik"
+  ],
+  "explanation": "Biaya tetap, seperti sewa."
+ },
+ "cost_accounting-2": {
+  "stem": "Apa kepanjangan COGS?",
+  "options": [
+   "Cost of goods sold",
+   "Cash on goods and services",
+   "Cost of general supplies",
+   "Capital of group subsidiaries"
+  ],
+  "explanation": "Cost of goods sold (harga pokok penjualan, HPP)."
+ },
+ "cost_accounting-3": {
+  "stem": "Biaya tetap Rp60 juta, harga jual Rp50.000, dan biaya variabel Rp20.000 per unit. Berapa volume titik impas?",
+  "options": [
+   "2.000 unit",
+   "1.200 unit",
+   "3.000 unit",
+   "1.500 unit"
+  ],
+  "explanation": "60.000.000 / (50.000 - 20.000) = 2.000 unit."
+ },
+ "cost_accounting-4": {
+  "stem": "Pembelian 10 unit seharga 100, lalu 10 unit seharga 120. Dengan FIFO, berapa harga pokok 10 unit pertama yang terjual?",
+  "options": [
+   "1.000",
+   "1.100",
+   "1.200",
+   "2.200"
+  ],
+  "explanation": "FIFO memakai biaya tertua lebih dulu: 10 x 100 = 1.000."
+ },
+ "cost_accounting-5": {
+  "stem": "Harga bahan baku naik. Metode penilaian persediaan mana yang melaporkan laba tertinggi?",
+  "options": [
+   "FIFO, yang membebankan biaya tertua lebih dulu",
+   "Rata-rata tertimbang, yang mencampur semua biaya",
+   "Identifikasi khusus untuk setiap unit yang terjual",
+   "Metodenya tidak mengubah laba"
+  ],
+  "explanation": "FIFO membebankan biaya tertua yang lebih rendah lebih dulu, sehingga HPP lebih rendah dan laba lebih tinggi saat harga naik."
+ },
+ "financial_statements-1": {
+  "stem": "Laporan mana yang melaporkan pendapatan dan beban selama suatu periode?",
+  "options": [
+   "Laporan laba rugi",
+   "Neraca",
+   "Laporan arus kas",
+   "Laporan perubahan ekuitas"
+  ],
+  "explanation": "Laporan laba rugi."
+ },
+ "financial_statements-2": {
+  "stem": "Laporan mana yang menunjukkan aset, liabilitas, dan ekuitas pada satu titik waktu?",
+  "options": [
+   "Neraca",
+   "Laporan laba rugi",
+   "Laporan arus kas",
+   "Neraca saldo saja"
+  ],
+  "explanation": "Neraca."
+ },
+ "financial_statements-3": {
+  "stem": "Sebuah perusahaan menguntungkan tetapi kasnya sedikit. Laporan mana yang menjelaskan sebabnya?",
+  "options": [
+   "Laporan arus kas",
+   "Laporan laba rugi",
+   "Bagan akun",
+   "Neraca saldo"
+  ],
+  "explanation": "Laporan arus kas, yang menunjukkan pergerakan kas operasi, investasi, dan pendanaan."
+ },
+ "financial_statements-4": {
+  "stem": "Apa tujuan penutupan akhir bulan?",
+  "options": [
+   "Mencatat penyesuaian dan merekonsiliasi akun periode itu",
+   "Mencetak setiap faktur bulan itu untuk keperluan arsip kantor",
+   "Mengunci akun dan menghentikan semua penjualan baru perusahaan",
+   "Menghapus transaksi bulan sebelumnya agar laporan tampak ringkas"
+  ],
+  "explanation": "Untuk mencatat akrual dan penyesuaian, merekonsiliasi akun, dan menghasilkan laporan periode yang akurat."
+ },
+ "financial_statements-5": {
+  "stem": "Penjualan Rp800 juta terhadap anggaran Rp900 juta. Berapa selisihnya (variance)?",
+  "options": [
+   "Tidak menguntungkan sebesar Rp100 juta (11,1%)",
+   "Menguntungkan sebesar Rp100 juta (11,1%)",
+   "Tidak menguntungkan sebesar Rp100 juta (12,5% dari realisasi)",
+   "Menguntungkan sebesar Rp90 juta (10%)"
+  ],
+  "explanation": "Realisasi dikurangi anggaran = -100 juta: selisih tidak menguntungkan sebesar 11,1%."
+ },
+ "tax_compliance_id-1": {
+  "stem": "Pajak Indonesia mana yang dipotong dari gaji karyawan?",
+  "options": [
+   "PPh 21",
+   "PPh 23",
+   "PPN",
+   "PBB"
+  ],
+  "explanation": "PPh 21."
+ },
+ "tax_compliance_id-2": {
+  "stem": "Berapa tarif umum PPN di Indonesia sejak April 2022 sampai 2024?",
+  "options": [
+   "11%",
+   "10%",
+   "5%",
+   "15%"
+  ],
+  "explanation": "11% sejak 1 April 2022 (12% berlaku untuk barang mewah mulai 2025)."
+ },
+ "tax_compliance_id-3": {
+  "stem": "Pajak mana yang dipotong atas pembayaran jasa seperti konsultasi atau sewa aset selain tanah dan bangunan?",
+  "options": [
+   "PPh 23",
+   "PPh 21",
+   "PPh 25",
+   "PPh Final 4(2)"
+  ],
+  "explanation": "PPh 23."
+ },
+ "tax_compliance_id-4": {
+  "stem": "Untuk apa e-Faktur dipakai?",
+  "options": [
+   "Menerbitkan faktur pajak elektronik",
+   "Membayar pajak penghasilan tahunan perusahaan",
+   "Mendaftarkan nama perusahaan baru ke kementerian",
+   "Mengajukan pemberitahuan pabean"
+  ],
+  "explanation": "Menerbitkan faktur pajak elektronik untuk pengusaha kena pajak (PKP)."
+ },
+ "tax_compliance_id-5": {
+  "stem": "Dalam satu bulan terdapat PPN masukan Rp40 juta dan PPN keluaran Rp55 juta. Apa hasilnya?",
+  "options": [
+   "PPN kurang bayar Rp15 juta",
+   "PPN lebih bayar Rp15 juta yang bisa dikembalikan",
+   "PPN kurang bayar Rp95 juta",
+   "PPN kurang bayar Rp40 juta"
+  ],
+  "explanation": "Keluaran dikurangi masukan = PPN kurang bayar Rp15 juta."
+ }
+}

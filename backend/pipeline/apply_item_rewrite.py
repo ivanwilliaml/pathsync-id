@@ -8,6 +8,9 @@ The key is always written first in the seed files; the engine shuffles options p
 (pathsync.assessment.session_order). Items of skills that are no longer in the taxonomy (soft skills) are dropped.
 Later files override earlier ones (files are applied in name order).
 
+Indonesian text (plan A7): data/seed/_id/*.json maps item id -> {"stem", "options" (key first), "explanation"} and
+replaces the Indonesian side of that item (legacy and new alike); the English overlay in items_en is untouched.
+
 Run: python -m pipeline.apply_item_rewrite
 """
 from __future__ import annotations
@@ -36,6 +39,16 @@ def main() -> None:
     for f in sorted(glob.glob(str(SEED_DIR / "_rewrite" / "*.json"))):
         rewrites.update(json.load(open(f, encoding="utf-8")))
 
+    overlay: dict[str, dict] = {}
+    for f in sorted(glob.glob(str(SEED_DIR / "_id" / "*.json"))):
+        overlay.update(json.load(open(f, encoding="utf-8")))
+
+    def indonesian(item: dict) -> None:
+        t = overlay.get(item["id"])
+        if t:
+            assert len(t["options"]) == len(item["options"]) and t["stem"].strip() and t["explanation"].strip(), item["id"]
+            item["stem"], item["options"], item["explanation"] = t["stem"], t["options"], t["explanation"]
+
     seen: set[str] = set()
     legacy_files = [f for f in sorted(glob.glob(str(SEED_DIR / "items" / "*.json"))) if not os.path.basename(f).startswith("x_")]
     for f in legacy_files:
@@ -52,6 +65,8 @@ def main() -> None:
                 if "en" in r:
                     en[it["id"]]["options"] = r["en"]
                 seen.add(it["id"])
+        for it in kept:
+            indonesian(it)
         en = {k: v for k, v in en.items() if k in {it["id"] for it in kept}}
         _write_items(f, kept)
         _write_en(ep, en)
@@ -67,6 +82,7 @@ def main() -> None:
         stem_en, expl_en = n["stem_en"], n["expl_en"]
         item = {"id": iid, "skill_id": n["skill_id"], "difficulty": n["difficulty"], "stem": n.get("stem_id", stem_en),
                 "options": r.get("id", r["en"]), "explanation": n.get("expl_id", expl_en)}
+        indonesian(item)
         by_cluster.setdefault(cluster_of[n["skill_id"]], []).append(
             (item, {"stem": stem_en, "options": r["en"], "explanation": expl_en}))
         seen.add(iid)

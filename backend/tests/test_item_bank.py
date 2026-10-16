@@ -57,6 +57,49 @@ def test_cue_only_model_cannot_find_the_key(bank):
         assert 0.12 <= single_cue_rates(items)[cue] <= 0.36, cue
 
 
+def _bank(lang, monkeypatch):
+    import pathsync.assessment as assessment
+    import pathsync.config as config
+
+    monkeypatch.setattr(config, "LANG", lang)
+    monkeypatch.setattr(assessment, "LANG", lang)
+    assessment.item_bank.cache_clear()
+    return assessment.item_bank()
+
+
+def test_both_languages_hold_the_same_items(monkeypatch):
+    """Plan A7: the Indonesian and English banks differ only in text, never in structure or in which option is the key."""
+    import importlib
+
+    import pathsync.assessment as assessment
+
+    try:
+        en, idn = _bank("en", monkeypatch), _bank("id", monkeypatch)
+        assert set(en) == set(idn)
+        for k in en:
+            assert en[k]["skill_id"] == idn[k]["skill_id"] and en[k]["difficulty"] == idn[k]["difficulty"], k
+            assert len(en[k]["options"]) == len(idn[k]["options"]) == 4, k
+            assert en[k]["answer"] == idn[k]["answer"], k
+    finally:
+        assessment.item_bank.cache_clear()
+        importlib.reload(assessment)
+
+
+def test_indonesian_bank_is_translated(monkeypatch):
+    """No item of the Indonesian bank may still be its English text (the 440 x_* items started out in English)."""
+    import importlib
+
+    import pathsync.assessment as assessment
+
+    try:
+        en, idn = _bank("en", monkeypatch), _bank("id", monkeypatch)
+        same = [k for k in en if en[k]["stem"] == idn[k]["stem"] and not k.startswith(("excel", "sql", "python"))]
+        assert len(same) <= 5, same[:10]
+    finally:
+        assessment.item_bank.cache_clear()
+        importlib.reload(assessment)
+
+
 def test_extractor_meets_precision_target_on_blind_gold():
     """Bab III.D sets precision > 0.80 for the extraction component; measured on postings never used to tune aliases.
     Once the two-annotator consensus exists (plan A1), the test half of the locked split replaces the blind set."""

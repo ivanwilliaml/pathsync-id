@@ -1,0 +1,402 @@
+{
+ "accessibility_design-1": {
+  "stem": "Rasio kontras minimum berapa yang disyaratkan WCAG AA untuk teks isi biasa?",
+  "options": [
+   "4,5 banding 1",
+   "3 banding 1",
+   "2 banding 1",
+   "7,5 banding 1"
+  ],
+  "explanation": "4,5:1."
+ },
+ "accessibility_design-2": {
+  "stem": "Mengapa warna tidak boleh menjadi satu-satunya cara menunjukkan galat?",
+  "options": [
+   "Sebagian pengguna tidak bisa membedakan warna",
+   "Warna menambah ukuran halaman di memori",
+   "Browser tidak bisa menampilkan warna merah dengan andal",
+   "Warna tidak diizinkan di formulir"
+  ],
+  "explanation": "Sebagian pengguna tidak bisa membedakan warna; tambahkan juga teks atau ikon."
+ },
+ "accessibility_design-3": {
+  "stem": "Apa yang harus selalu bisa dilihat pengguna keyboard?",
+  "options": [
+   "Indikator fokus yang terlihat",
+   "Bilah progres gulir",
+   "Tooltip pada setiap elemen",
+   "Judul halaman yang disorot"
+  ],
+  "explanation": "Indikator fokus yang terlihat dan menunjukkan elemen mana yang aktif."
+ },
+ "accessibility_design-4": {
+  "stem": "Berapa ukuran target sentuh minimum yang direkomendasikan di ponsel?",
+  "options": [
+   "Sekitar 44 sampai 48 poin",
+   "Sekitar 16 poin",
+   "Sekitar 24 poin",
+   "Sekitar 100 poin"
+  ],
+  "explanation": "Sekitar 44 x 44 poin (iOS) atau 48 x 48 dp (Android)."
+ },
+ "accessibility_design-5": {
+  "stem": "Sebuah tombol hanya berisi ikon tanpa teks. Bagaimana pengguna screen reader tahu fungsinya?",
+  "options": [
+   "Beri nama yang dapat diakses seperti aria-label",
+   "Beri tooltip yang muncul saat kursor diarahkan",
+   "Beri judul dengan warna berkontras kuat",
+   "Beri role img agar dibacakan"
+  ],
+  "explanation": "Tombol itu butuh nama yang dapat diakses, seperti aria-label atau teks tersembunyi secara visual."
+ },
+ "design_systems-1": {
+  "stem": "Apa itu design system?",
+  "options": [
+   "Kumpulan komponen, gaya, dan panduan yang dipakai bersama",
+   "Folder bersama berisi layar jadi untuk tiap produk perusahaan",
+   "Library komponen yang hanya dipakai oleh para developer saja",
+   "Kumpulan warna dan font merek yang dipakai tim pemasaran"
+  ],
+  "explanation": "Kumpulan komponen, gaya, dan panduan bersama untuk membangun produk yang konsisten."
+ },
+ "design_systems-2": {
+  "stem": "Apa itu design token?",
+  "options": [
+   "Nilai bernama seperti warna dan spasi yang dibagi dengan kode",
+   "Komponen bernama seperti tombol dan kartu yang dibagi dengan kode",
+   "Nilai tetap seperti kode hex yang ditulis di tiap layar",
+   "Berkas bernama seperti ikon dan logo yang dibagi dengan pemasaran"
+  ],
+  "explanation": "Nilai bernama seperti warna dan spasi yang dibagi antara desain dan kode."
+ },
+ "design_systems-3": {
+  "stem": "Atomic design membangun antarmuka dari bagian kecil menjadi lebih besar. Apa urutan yang benar?",
+  "options": [
+   "Atom, molekul, organisme, template, halaman",
+   "Halaman, template, organisme, molekul, atom",
+   "Molekul, atom, halaman, organisme, template",
+   "Template, atom, halaman, molekul, organisme"
+  ],
+  "explanation": "Atom, molekul, organisme, template, halaman."
+ },
+ "design_systems-4": {
+  "stem": "Mengapa design system perlu mendokumentasikan kapan sebuah komponen tidak dipakai?",
+  "options": [
+   "Mencegah salah pakai dan menjaga konsistensi produk",
+   "Menjaga library tetap kecil dan mudah dirawat",
+   "Menggantikan tinjauan desain untuk komponen baru",
+   "Membuat developer bisa melewatkan contoh penggunaan"
+  ],
+  "explanation": "Panduan penggunaan mencegah salah pakai dan menjaga konsistensi produk."
+ },
+ "design_systems-5": {
+  "stem": "Desainer dan developer terus membuat tombol yang sedikit berbeda. Perbaikan paling efektif?",
+  "options": [
+   "Library komponen bersama dengan token dan versioning",
+   "Dokumen panduan gaya bersama berisi tangkapan layar",
+   "Rapat tinjauan sebelum tiap tombol dibuat",
+   "Folder bersama berisi gambar tombol hasil ekspor"
+  ],
+  "explanation": "Satu sumber kebenaran: library komponen dan token bersama, dengan aturan kontribusi dan versioning."
+ },
+ "figma_design_tools-1": {
+  "stem": "Di Figma, apa itu component?",
+  "options": [
+   "Elemen yang bisa dipakai ulang dan instance-nya ikut berubah",
+   "Plugin yang mengekspor desain menjadi kode siap pakai",
+   "Warna bersama yang tidak bisa disunting oleh anggota tim",
+   "Halaman khusus yang menyimpan komentar dari prototipe"
+  ],
+  "explanation": "Elemen desain yang bisa dipakai ulang; mengubah main component memperbarui semua instance-nya."
+ },
+ "figma_design_tools-2": {
+  "stem": "Apa yang dilakukan Auto Layout di Figma?",
+  "options": [
+   "Mengatur ukuran frame dan jarak anak secara otomatis",
+   "Menulis kode produksi langsung dari berkas desain",
+   "Mengekspor setiap frame menjadi berkas PDF terpisah",
+   "Mengoreksi ejaan pada semua lapisan teks di berkas"
+  ],
+  "explanation": "Membuat frame mengubah ukuran dan mengatur jarak anak-anaknya secara otomatis, seperti flexbox."
+ },
+ "figma_design_tools-3": {
+  "stem": "Sebuah tombol butuh tampilan primary, secondary, dan disabled. Fitur Figma mana yang mengaturnya?",
+  "options": [
+   "Component variants",
+   "Frame grid",
+   "Layer mask",
+   "Pen path"
+  ],
+  "explanation": "Component variants mengelompokkan keadaan sebuah komponen."
+ },
+ "figma_design_tools-4": {
+  "stem": "Fitur Figma mana yang menyimpan warna, spasi, dan angka bersama sebagai nilai yang bisa dipakai ulang?",
+  "options": [
+   "Variables dan styles",
+   "Version history",
+   "Komentar Dev Mode",
+   "Aplikasi Mirror"
+  ],
+  "explanation": "Variables (dan styles) menyimpan nilai desain yang bisa dipakai ulang."
+ },
+ "figma_design_tools-5": {
+  "stem": "Developer butuh nilai spasi, aset, dan potongan CSS dari desain yang sudah jadi. Dari mana mereka mendapatkannya?",
+  "options": [
+   "Dari Dev Mode di berkas Figma",
+   "Dari tangkapan layar yang dikirim lewat chat",
+   "Dari versi cetak layar-layar itu",
+   "Dari nama layer saja"
+  ],
+  "explanation": "Dev Mode di Figma menampilkan ukuran, aset, dan potongan kode."
+ },
+ "information_architecture-1": {
+  "stem": "Apa itu sitemap dalam arsitektur informasi?",
+  "options": [
+   "Diagram halaman-halaman dan hubungan di antaranya",
+   "Berkas yang mendaftar warna yang dipakai situs",
+   "Laporan kecepatan tiap halaman",
+   "Denah semua server yang menjalankan situs"
+  ],
+  "explanation": "Diagram hierarkis halaman-halaman dan hubungan di antaranya."
+ },
+ "information_architecture-2": {
+  "stem": "Metode mana yang meminta pengguna mengelompokkan kartu konten ke dalam kategori yang masuk akal bagi mereka?",
+  "options": [
+   "Card sorting",
+   "Tree testing",
+   "A/B testing",
+   "Heatmapping"
+  ],
+  "explanation": "Card sorting."
+ },
+ "information_architecture-3": {
+  "stem": "Apa yang dievaluasi tree testing?",
+  "options": [
+   "Apakah orang bisa menemukan item dalam struktur yang diusulkan",
+   "Apakah orang memahami label pada layar yang sudah jadi",
+   "Bagaimana orang mengelompokkan item ke kategori mereka sendiri",
+   "Item mana yang paling sering dikunjungi pada struktur saat ini"
+  ],
+  "explanation": "Apakah orang bisa menemukan item dalam struktur yang diusulkan, tanpa desain visual."
+ },
+ "information_architecture-4": {
+  "stem": "Sebuah menu punya 14 item tingkat atas. Perbaikan apa yang masuk akal?",
+  "options": [
+   "Mengelompokkan item terkait ke dalam kategori yang lebih sedikit",
+   "Mengecilkan ukuran font agar semua item menu bisa muat di layar",
+   "Menyembunyikan seluruh menu di balik ikon yang tanpa label teks",
+   "Mengurutkan semua item menurut tanggal terakhir ditambahkan ke menu"
+  ],
+  "explanation": "Kelompokkan item terkait ke dalam kategori yang lebih sedikit dan berlabel jelas."
+ },
+ "information_architecture-5": {
+  "stem": "Label mana yang terbaik untuk tautan ke informasi penagihan?",
+  "options": [
+   "Tagihan dan pembayaran",
+   "Modul antarmuka keuangan",
+   "Bagian 4.2",
+   "Klik di sini"
+  ],
+  "explanation": "Label sebaiknya memakai kata yang dipakai pengguna; Tagihan atau Pembayaran lebih jelas daripada jargon internal."
+ },
+ "prototyping_interaction-1": {
+  "stem": "Apa itu clickable prototype?",
+  "options": [
+   "Simulasi yang bisa diklik pengguna tanpa kode sungguhan",
+   "Mockup statis tiap layar tanpa interaksi",
+   "Build pertama aplikasi dengan kode sungguhan dan data uji",
+   "Diagram user flow yang menunjukkan hubungan antarlayar"
+  ],
+  "explanation": "Simulasi produk yang memungkinkan pengguna mengklik antarlayar tanpa kode sungguhan."
+ },
+ "prototyping_interaction-2": {
+  "stem": "Apa yang ditunjukkan user flow?",
+  "options": [
+   "Jalur pengguna menyelesaikan sebuah tugas",
+   "Server yang menjalankan produk di lingkungan produksi",
+   "Anggota tim yang membuat tiap layar pada aplikasi",
+   "Warna yang dipakai di sebagian besar layar produk"
+  ],
+  "explanation": "Jalur yang ditempuh pengguna di dalam produk untuk menyelesaikan sebuah tugas."
+ },
+ "prototyping_interaction-3": {
+  "stem": "Sebuah tombol tidak memberi umpan balik setelah diketuk dan pengguna mengetuk lagi. Prinsip interaksi mana yang hilang?",
+  "options": [
+   "Umpan balik yang mengakui aksi pengguna",
+   "Konsistensi palet warna di seluruh layar",
+   "Hierarki judul",
+   "Perataan grid"
+  ],
+  "explanation": "Feedback: sistem harus mengakui setiap aksi pengguna."
+ },
+ "prototyping_interaction-4": {
+  "stem": "Tingkat fidelitas mana yang terbaik untuk memeriksa alur dasar sebuah ide bersama pengguna pada hari kedua proyek?",
+  "options": [
+   "Prototipe low-fidelity",
+   "Prototipe beranimasi yang pixel-perfect",
+   "Build produksi yang sudah dikodekan",
+   "Panduan merek yang dicetak"
+  ],
+  "explanation": "Prototipe low-fidelity cepat dan murah diubah."
+ },
+ "prototyping_interaction-5": {
+  "stem": "Keadaan layar mana yang perlu dirancang untuk daftar yang memuat data dari server?",
+  "options": [
+   "Loading, kosong, galat, dan terisi",
+   "Loading dan terisi, karena galat jarang",
+   "Kosong, terisi, dan keadaan hover untuk tiap baris",
+   "Terisi dan galat, dengan loading ditangani server"
+  ],
+  "explanation": "Keadaan loading, kosong, galat, dan terisi."
+ },
+ "usability_testing-1": {
+  "stem": "Apa tujuan usability test?",
+  "options": [
+   "Melihat di mana pengguna kesulitan saat mengerjakan tugas",
+   "Memilih warna merek yang paling disukai untuk produk",
+   "Menghitung berapa banyak orang yang mengunjungi situs",
+   "Memeriksa bahwa kode tidak punya galat sintaks sama sekali"
+  ],
+  "explanation": "Untuk melihat di mana pengguna nyata kesulitan saat memakai produk untuk menyelesaikan tugas."
+ },
+ "usability_testing-2": {
+  "stem": "Dalam tes think-aloud, peserta diminta untuk...",
+  "options": [
+   "Mengatakan apa yang mereka pikirkan sambil bekerja",
+   "Menulis laporan singkat setelah setiap kali melakukan klik",
+   "Menjelaskan rancangan desain kepada fasilitator tes",
+   "Diam sampai seluruh tugas yang diberikan selesai dikerjakan"
+  ],
+  "explanation": "Mengatakan apa yang mereka pikirkan sambil memakai produk."
+ },
+ "usability_testing-3": {
+  "stem": "Mana yang merupakan tugas usability test yang baik?",
+  "options": [
+   "Kamu perlu mengganti alamat pengiriman sebuah pesanan",
+   "Klik ikon profil lalu buka Alamat",
+   "Temukan layar Alamat di menu pengaturan",
+   "Ceritakan bagaimana pendapatmu tentang menu pengaturan baru"
+  ],
+  "explanation": "Tujuan yang realistis tanpa petunjuk tentang di mana harus mengklik."
+ },
+ "usability_testing-4": {
+  "stem": "Apa itu heuristic evaluation?",
+  "options": [
+   "Pakar meninjau antarmuka berdasarkan prinsip-prinsip usability",
+   "Pengguna menyelesaikan tugas sementara pakar mengamati dan mencatat",
+   "Pakar membandingkan antarmuka dengan produk pesaing",
+   "Pengguna menilai antarmuka berdasarkan daftar prinsip"
+  ],
+  "explanation": "Pakar meninjau antarmuka berdasarkan prinsip usability yang diakui."
+ },
+ "usability_testing-5": {
+  "stem": "Lima dari delapan peserta gagal pada langkah checkout yang sama. Bagaimana masalah ini dinilai?",
+  "options": [
+   "Keparahan tinggi, diperbaiki lebih dulu",
+   "Keparahan rendah, karena tiga pengguna berhasil",
+   "Kosmetik, karena hanya satu layar",
+   "Di luar cakupan, karena sampelnya kecil"
+  ],
+  "explanation": "Masalah yang menghalangi sebagian besar pengguna pada tugas kritis berkeparahan tinggi dan harus diperbaiki lebih dulu."
+ },
+ "user_research-1": {
+  "stem": "Apa itu user persona?",
+  "options": [
+   "Profil berbasis riset yang mewakili sekelompok pengguna",
+   "Pelanggan nyata yang menandatangani kontrak dengan tim",
+   "Daftar fitur yang diinginkan para engineer",
+   "Akun uji dengan hak administrator"
+  ],
+  "explanation": "Profil fiktif tetapi berbasis riset yang mewakili sekelompok pengguna."
+ },
+ "user_research-2": {
+  "stem": "Pertanyaan mana yang merupakan pertanyaan wawancara terbuka terbaik?",
+  "options": [
+   "Bisakah kamu ceritakan tentang terakhir kali kamu memesan perjalanan?",
+   "Apakah kamu suka memesan perjalanan lewat ponsel?",
+   "Apakah kamu akan memakai aplikasi pemesanan perjalanan setiap hari?",
+   "Apakah memesan perjalanan itu mudah bagimu?"
+  ],
+  "explanation": "Pertanyaan terbuka memancing cerita, bukan jawaban ya atau tidak."
+ },
+ "user_research-3": {
+  "stem": "Berapa pengguna yang biasanya dibutuhkan studi usability kualitatif untuk menemukan sebagian besar masalah utama?",
+  "options": [
+   "Sekitar lima per putaran",
+   "Sekitar lima ratus secara total",
+   "Hanya satu pengguna",
+   "Tepat seratus pengguna"
+  ],
+  "explanation": "Sekitar lima pengguna per putaran mengungkap sebagian besar masalah utama (Nielsen)."
+ },
+ "user_research-4": {
+  "stem": "Apa itu affinity mapping?",
+  "options": [
+   "Mengelompokkan pengamatan yang mirip menjadi tema",
+   "Meranking pengamatan berdasarkan seberapa sering muncul",
+   "Memetakan tiap pengamatan ke sebuah fitur produk",
+   "Mengelompokkan pengguna menjadi persona berdasarkan demografi"
+  ],
+  "explanation": "Mengelompokkan pengamatan yang mirip dari riset menjadi tema."
+ },
+ "user_research-5": {
+  "stem": "Narasumber bilang mereka akan membayar untuk sebuah fitur, tetapi sedikit yang melakukannya setelah peluncuran. Apa yang ditunjukkan ini tentang riset?",
+  "options": [
+   "Niat yang dinyatakan berbeda dari perilaku, jadi amati aksi nyata",
+   "Wawancaranya terlalu singkat, jadi adakan sesi lebih panjang",
+   "Harganya salah, jadi tanyakan berapa yang akan mereka bayar",
+   "Sampelnya bias, jadi ulangi pertanyaan yang sama dengan lebih banyak orang"
+  ],
+  "explanation": "Apa yang orang katakan akan dilakukan sering berbeda dari yang mereka lakukan; amati perilaku dan uji kesediaan membayar."
+ },
+ "visual_design_fundamentals-1": {
+  "stem": "Apa fungsi hierarki visual?",
+  "options": [
+   "Mengarahkan mata ke elemen terpenting lebih dulu",
+   "Mengurutkan susunan layer di dalam berkas desain",
+   "Menambah hiasan di area kosong supaya tampak penuh",
+   "Membuat setiap elemen di halaman berukuran sama besar"
+  ],
+  "explanation": "Mengarahkan mata ke elemen terpenting lebih dulu lewat ukuran, kontras, dan posisi."
+ },
+ "visual_design_fundamentals-2": {
+  "stem": "Pasangan huruf mana yang biasanya terbaik untuk teks isi yang mudah dibaca di layar?",
+  "options": [
+   "Sans-serif yang bersih pada 16 px dengan jarak baris yang lega",
+   "Huruf skrip dekoratif pada 10 px dengan spasi sangat rapat",
+   "Font display yang dipadatkan dalam huruf kapital semua",
+   "Font tulisan tangan berwarna abu-abu muda"
+  ],
+  "explanation": "Jenis huruf yang bersih dan terbaca pada ukuran dan jarak baris yang nyaman; huruf dekoratif mengganggu pembacaan."
+ },
+ "visual_design_fundamentals-3": {
+  "stem": "Pendekatan warna mana yang menghasilkan palet harmonis dari satu warna merek?",
+  "options": [
+   "Tint dan shade, ditambah skala netral dan satu warna aksen",
+   "Lima warna jenuh penuh yang dipilih dari seluruh roda warna",
+   "Warna acak yang dipilih untuk tiap layar",
+   "Hanya hitam dan putih tanpa warna merek"
+  ],
+  "explanation": "Variasi analog atau tonal dari warna merek, ditambah skala netral dan satu aksen."
+ },
+ "visual_design_fundamentals-4": {
+  "stem": "Mengapa desainer memakai skala spasi 8 poin?",
+  "options": [
+   "Menciptakan ritme yang konsisten dan implementasi yang mudah",
+   "Membuat setiap elemen di layar berukuran sama persis",
+   "Menghilangkan kebutuhan akan grid pada tata letak halaman",
+   "Karena itu satu-satunya skala yang bisa dirender browser"
+  ],
+  "explanation": "Skala yang konsisten menciptakan ritme dan membuat tata letak dapat diprediksi serta mudah diimplementasikan."
+ },
+ "visual_design_fundamentals-5": {
+  "stem": "Sebuah poster punya lima judul berukuran sama yang saling bersaing. Perubahan mana yang memperbaikinya?",
+  "options": [
+   "Membuat satu judul dominan dan mengelompokkan sisanya di bawahnya",
+   "Membuat semua judul menjadi lebih besar lagi dari sebelumnya",
+   "Memberi warna yang berbeda-beda pada tiap judul di poster",
+   "Menengahkan semua teks dan memberi bingkai pada tiap judul poster"
+  ],
+  "explanation": "Tetapkan satu titik fokus yang jelas dengan kontras ukuran dan ketebalan, lalu kelompokkan sisanya."
+ }
+}

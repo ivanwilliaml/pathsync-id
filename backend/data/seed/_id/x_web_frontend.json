@@ -1,0 +1,452 @@
+{
+ "cms_wordpress-1": {
+  "stem": "Di WordPress, apa itu plugin?",
+  "options": [
+   "Kode yang menambah fitur ke situs tanpa menyunting berkas inti",
+   "Templat yang hanya mengatur warna dan font seluruh situs",
+   "Tabel database yang menyimpan pos dan halaman situs",
+   "Paket hosting yang menjaga situs tetap daring sepanjang hari"
+  ],
+  "explanation": "Plugin menambah fitur ke situs WordPress tanpa mengubah berkas inti."
+ },
+ "cms_wordpress-2": {
+  "stem": "Plugin WordPress mana yang paling umum dipakai untuk mengubah situs menjadi toko daring?",
+  "options": [
+   "WooCommerce",
+   "Akismet",
+   "Yoast SEO",
+   "Jetpack Boost"
+  ],
+  "explanation": "WooCommerce adalah plugin e-commerce standar untuk WordPress."
+ },
+ "cms_wordpress-3": {
+  "stem": "Kamu perlu mengubah tampilan sebuah tema tanpa kehilangan perubahan saat tema diperbarui. Apa yang harus dibuat?",
+  "options": [
+   "Child theme yang mewarisi dari parent theme",
+   "Salinan folder tema dengan nama baru",
+   "Berkas CSS kustom yang disunting di dalam folder plugin",
+   "Backup database sebelum setiap pembaruan"
+  ],
+  "explanation": "Child theme mewarisi dari parent dan menjaga kustomisasi tetap aman saat parent diperbarui."
+ },
+ "cms_wordpress-4": {
+  "stem": "Fitur WordPress mana yang memungkinkan kamu mendefinisikan konten seperti Produk atau Acara dengan kolom dan arsipnya sendiri?",
+  "options": [
+   "Custom post types",
+   "Widget",
+   "Shortcode",
+   "Menu"
+  ],
+  "explanation": "Custom post types (sering dengan custom field) memodelkan jenis konten baru."
+ },
+ "cms_wordpress-5": {
+  "stem": "Sebuah situs WordPress lambat. Kombinasi mana yang memberi perbaikan terbesar dengan usaha paling kecil?",
+  "options": [
+   "Page caching, gambar yang dioptimalkan, dan lebih sedikit plugin tak terpakai",
+   "Tema baru, lebih banyak plugin tambahan, dan database yang lebih besar",
+   "Server yang lebih cepat, dengan plugin dan gambar yang tidak diubah sama sekali",
+   "Page caching saja, dengan gambar asli ukuran penuh tetap dipertahankan"
+  ],
+  "explanation": "Page caching, optimasi gambar, dan menghapus plugin yang tak terpakai mengatasi penyebab yang paling umum."
+ },
+ "frontend_frameworks_other-1": {
+  "stem": "Mana yang merupakan framework front-end yang ditulis dan dipelihara Google?",
+  "options": [
+   "Angular",
+   "Vue",
+   "Svelte",
+   "Laravel"
+  ],
+  "explanation": "Angular dikembangkan Google; Vue dan Svelte adalah proyek komunitas, dan Laravel adalah framework back-end PHP."
+ },
+ "frontend_frameworks_other-2": {
+  "stem": "Di Vue, direktif mana yang mengikat elemen input ke properti data dua arah?",
+  "options": [
+   "v-model",
+   "v-bind",
+   "v-on",
+   "v-show"
+  ],
+  "explanation": "v-model membuat binding dua arah antara input formulir dan data."
+ },
+ "frontend_frameworks_other-3": {
+  "stem": "Di Angular, konstruksi mana yang dipakai untuk berbagi logika dan data antara beberapa komponen?",
+  "options": [
+   "Service yang bisa di-inject",
+   "Template reference variable",
+   "Structural directive",
+   "Aturan CSS view encapsulation"
+  ],
+  "explanation": "Service yang bisa di-inject, disediakan lewat dependency injection, adalah cara standar berbagi logika dan state."
+ },
+ "frontend_frameworks_other-4": {
+  "stem": "Di Vue 3, fungsi mana yang membuat nilai reaktif yang dibaca dan ditulis lewat .value?",
+  "options": [
+   "ref()",
+   "computed()",
+   "watch()",
+   "provide()"
+  ],
+  "explanation": "ref() membungkus nilai primitif dalam objek reaktif yang diakses lewat .value."
+ },
+ "frontend_frameworks_other-5": {
+  "stem": "Fitur Angular mana yang berhenti berlangganan Observable secara otomatis saat dipakai di template?",
+  "options": [
+   "Async pipe",
+   "Direktif ngModel",
+   "Fungsi trackBy",
+   "Direktif ngIf"
+  ],
+  "explanation": "Async pipe berlangganan dan berhenti berlangganan untukmu, sehingga menghindari memory leak."
+ },
+ "frontend_testing-1": {
+  "stem": "Apa itu unit test untuk fungsi front-end?",
+  "options": [
+   "Tes yang memeriksa satu potongan kecil logika secara terisolasi",
+   "Tes yang mengukur berapa lama halaman dimuat oleh pengunjung",
+   "Tes yang mengklik seluruh aplikasi di browser sungguhan tanpa mock",
+   "Tes yang membandingkan tangkapan layar di berbagai jenis browser"
+  ],
+  "explanation": "Unit test memeriksa satu potongan kecil logika secara terisolasi."
+ },
+ "frontend_testing-2": {
+  "stem": "Alat mana yang merupakan test runner dan library assertion populer untuk proyek JavaScript?",
+  "options": [
+   "Jest",
+   "Webpack",
+   "ESLint",
+   "Babel"
+  ],
+  "explanation": "Jest menjalankan tes dan menyediakan assertion expect serta mock."
+ },
+ "frontend_testing-3": {
+  "stem": "Dengan React Testing Library, bagaimana biasanya kamu menemukan sebuah tombol dalam tes?",
+  "options": [
+   "Lewat role dan nama yang dapat diaksesnya, seperti getByRole('button', { name: 'Save' })",
+   "Lewat test id-nya, seperti getByTestId('save-button') pada setiap elemen tombol di halaman",
+   "Lewat kelas CSS-nya, seperti container.querySelector('.btn-save') pada tombol yang dicari",
+   "Lewat posisinya, seperti getAllByRole('button')[2] di dalam daftar tombol pada halaman"
+  ],
+  "explanation": "Query berdasarkan role dan nama yang dapat diakses meniru cara pengguna menemukan elemen dan menjaga tes tetap tangguh."
+ },
+ "frontend_testing-4": {
+  "stem": "Sebuah komponen memanggil REST API saat dimuat. Bagaimana unit test sebaiknya menangani permintaan itu?",
+  "options": [
+   "Me-mock permintaan agar tes cepat dan dapat diulang",
+   "Memanggil API produksi yang asli agar datanya realistis",
+   "Melewati komponen karena kode jaringan tidak bisa diuji",
+   "Menambah timeout panjang agar server asli sempat menjawab"
+  ],
+  "explanation": "Mock panggilan jaringan agar tes cepat, deterministik, dan tidak bergantung pada server."
+ },
+ "frontend_testing-5": {
+  "stem": "Sebuah tes end-to-end gagal sekali dalam sepuluh eksekusi tanpa perubahan kode. Apa namanya, dan apa penyebab yang lazim?",
+  "options": [
+   "Flaky test, biasanya karena timing atau state bersama",
+   "Regresi, biasanya karena deployment yang gagal",
+   "False negative, biasanya karena assertion yang terlalu sedikit",
+   "Smoke test, biasanya karena test runner yang lambat"
+  ],
+  "explanation": "Flaky test; biasanya disebabkan timing, state bersama, atau tidak menunggu pekerjaan asinkron."
+ },
+ "html_css-1": {
+  "stem": "Elemen HTML mana yang paling tepat untuk tautan navigasi utama sebuah halaman?",
+  "options": [
+   "nav, yang menandai blok sebagai navigasi utama",
+   "div, yang mengelompokkan tautan tanpa makna",
+   "section, yang menandai blok sebagai wilayah bertopik",
+   "aside, yang menandai blok sebagai konten sampingan"
+  ],
+  "explanation": "Elemen nav adalah landmark semantik untuk blok navigasi utama; div dan span tidak bermakna."
+ },
+ "html_css-2": {
+  "stem": "Dalam box model CSS, properti mana yang berada di antara konten dan border?",
+  "options": [
+   "padding",
+   "margin",
+   "outline",
+   "gap"
+  ],
+  "explanation": "Padding adalah ruang antara konten dan border; margin berada di luar border."
+ },
+ "html_css-3": {
+  "stem": "Kamu ingin tiga kartu dalam satu baris yang turun ke baris berikutnya di layar sempit. CSS mana yang paling cocok?",
+  "options": [
+   "display: flex dengan flex-wrap: wrap pada parent",
+   "display: flex dengan flex-wrap: nowrap pada parent",
+   "display: inline-block dengan lebar tetap pada tiap kartu",
+   "display: grid dengan tiga kolom tetap 400px pada parent"
+  ],
+  "explanation": "Kontainer flex dengan flex-wrap membuat item berbagi satu baris dan turun saat ruang habis."
+ },
+ "html_css-4": {
+  "stem": "Aturan .btn.primary { color: white } dan aturan .primary { color: black } sama-sama cocok pada sebuah elemen. Warna mana yang berlaku?",
+  "options": [
+   "Putih, karena selector dengan dua kelas lebih spesifik",
+   "Hitam, karena selector yang lebih pendek diterapkan belakangan dalam cascade",
+   "Putih, karena aturan yang ditulis lebih dulu biasanya menimpa yang belakangan",
+   "Hitam, karena satu kelas biasanya mengalahkan selector gabungan"
+  ],
+  "explanation": "Selector .btn.primary punya specificity lebih tinggi (dua kelas) daripada .primary (satu kelas), sehingga putih menang."
+ },
+ "html_css-5": {
+  "stem": "Sebuah sidebar berlebar tetap dan kolom utama harus mengisi sisa lebar, berdampingan. Deklarasi CSS grid mana yang melakukannya?",
+  "options": [
+   "grid-template-columns: 240px 1fr",
+   "grid-template-columns: 240px 240px",
+   "grid-template-rows: 240px 1fr",
+   "grid-auto-flow: column 240px 1fr"
+  ],
+  "explanation": "grid-template-columns: 240px 1fr memberi kolom 240px dan membiarkan kolom kedua mengambil sisa ruang."
+ },
+ "javascript-1": {
+  "stem": "Kata kunci mana yang mendeklarasikan variabel yang binding-nya tidak bisa ditetapkan ulang?",
+  "options": [
+   "const",
+   "let",
+   "var",
+   "static"
+  ],
+  "explanation": "const mencegah penetapan ulang binding; let dan var mengizinkannya."
+ },
+ "javascript-2": {
+  "stem": "Apa yang dikembalikan [1, 2, 3].map(n => n * 2)?",
+  "options": [
+   "Array baru: [2, 4, 6]",
+   "Array yang sama, diubah di tempat menjadi [2, 4, 6]",
+   "Angka 12 sebagai jumlah dari nilai yang digandakan",
+   "Iterator yang harus di-spread sebelum dipakai"
+  ],
+  "explanation": "map mengembalikan array baru dengan callback diterapkan pada tiap elemen: [2, 4, 6]."
+ },
+ "javascript-3": {
+  "stem": "Apa yang selalu dikembalikan fungsi async?",
+  "options": [
+   "Promise yang resolve dengan nilai yang dikembalikan",
+   "Nilai yang dikembalikan itu sendiri tanpa pembungkus",
+   "Callback yang berjalan setelah nilai siap dipakai",
+   "Array berisi nilai bersama flag status"
+  ],
+  "explanation": "Fungsi async membungkus nilai kembaliannya dalam Promise."
+ },
+ "javascript-4": {
+  "stem": "Apa yang dicatat oleh: console.log(0 == '0', 0 === '0')?",
+  "options": [
+   "true false",
+   "false true",
+   "true true",
+   "false false"
+  ],
+  "explanation": "== mengonversi tipe sehingga 0 == '0' bernilai true; === membandingkan tipe dan nilai sehingga bernilai false."
+ },
+ "javascript-5": {
+  "stem": "Dalam urutan apa log dicetak? console.log('A'); setTimeout(() => console.log('B'), 0); Promise.resolve().then(() => console.log('C')); console.log('D');",
+  "options": [
+   "A D C B",
+   "A D B C",
+   "A C D B",
+   "A B C D"
+  ],
+  "explanation": "Kode sinkron berjalan lebih dulu (A, D), lalu microtask promise (C), lalu callback timer (B)."
+ },
+ "react-1": {
+  "stem": "Hook mana yang menyimpan nilai yang, saat berubah, membuat komponen React dirender ulang?",
+  "options": [
+   "useState",
+   "useRef",
+   "useMemo",
+   "useId"
+  ],
+  "explanation": "useState menyimpan state dan memicu render ulang saat setter-nya dipanggil."
+ },
+ "react-2": {
+  "stem": "Bagaimana komponen induk memberi data ke komponen anak?",
+  "options": [
+   "Lewat props yang dikirim pada elemen anak",
+   "Lewat variabel global yang diimpor anak",
+   "Lewat id DOM elemen anak",
+   "Lewat callback yang didaftarkan di objek window"
+  ],
+  "explanation": "Data mengalir ke bawah lewat props."
+ },
+ "react-3": {
+  "stem": "Sebuah daftar dirender dengan items.map(). Mengapa tiap elemen butuh prop key yang stabil?",
+  "options": [
+   "Agar React bisa mencocokkan item antar-render dan memperbarui yang tepat",
+   "Untuk mengatur atribut id yang dipakai selector CSS pada tiap item daftar",
+   "Untuk mengurutkan item secara abjad sebelum ditampilkan di layar pengguna",
+   "Untuk mencegah seluruh daftar dirender ulang ketika datanya berubah nanti"
+  ],
+  "explanation": "Key membuat React mencocokkan elemen antar-render sehingga ia memperbarui, memindahkan, atau menghapus yang tepat."
+ },
+ "react-4": {
+  "stem": "useEffect(() => { fetchData(id) }, [id]). Kapan efek ini berjalan?",
+  "options": [
+   "Setelah render pertama dan setiap kali id berubah",
+   "Hanya sekali, setelah render pertama komponen",
+   "Setelah setiap render, berapa pun nilai id",
+   "Hanya saat komponen dihapus dari halaman"
+  ],
+  "explanation": "Dependency array [id] membuat efek berjalan setelah render pertama dan lagi setiap kali id berubah."
+ },
+ "react-5": {
+  "stem": "setCount(count + 1) dipanggil tiga kali dalam satu handler klik, dan hitungan hanya naik satu. Perubahan mana yang memperbaikinya?",
+  "options": [
+   "Memakai bentuk fungsional: setCount(c => c + 1)",
+   "Membungkus tiap panggilan dalam setTimeout dengan jeda nol",
+   "Memindahkan tiga panggilan itu ke useEffect tanpa dependency array",
+   "Mendeklarasikan count dengan var, bukan memakai useState"
+  ],
+  "explanation": "Pembaruan yang bergantung pada nilai sebelumnya harus memakai bentuk fungsional, setCount(c => c + 1), karena count adalah snapshot usang di dalam handler."
+ },
+ "responsive_accessible_web-1": {
+  "stem": "Meta tag mana yang membuat halaman berskala benar di layar ponsel?",
+  "options": [
+   "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+   "<meta name=\"viewport\" content=\"width=1024, initial-scale=1\">",
+   "<meta name=\"viewport\" content=\"width=device-width, user-scalable=no\">",
+   "<meta name=\"viewport\" content=\"initial-scale=2, maximum-scale=1\">"
+  ],
+  "explanation": "Meta tag viewport menetapkan lebar tata letak sama dengan lebar perangkat."
+ },
+ "responsive_accessible_web-2": {
+  "stem": "Apa yang sebaiknya ada di atribut alt untuk gambar yang informatif?",
+  "options": [
+   "Deskripsi singkat tentang apa yang ditunjukkan atau dimaknai gambar",
+   "Nama berkas gambar beserta ekstensinya",
+   "Kata kunci yang ingin diperingkatkan halaman di hasil pencarian",
+   "Ukuran piksel gambar (lebar dan tinggi)"
+  ],
+  "explanation": "Teks alt sebaiknya menjelaskan makna gambar bagi orang yang tidak bisa melihatnya."
+ },
+ "responsive_accessible_web-3": {
+  "stem": "Stylesheet mobile-first menambahkan tata letak untuk layar yang lebih lebar. Fitur mana yang melakukannya?",
+  "options": [
+   "@media (min-width: 768px) { ... }",
+   "@media (max-width: 768px) { ... }",
+   "@import url(desktop.css)",
+   "@supports (display: grid) { ... }"
+  ],
+  "explanation": "CSS mobile-first dimulai dari gaya layar kecil lalu menambahkan media query min-width untuk layar yang lebih besar."
+ },
+ "responsive_accessible_web-4": {
+  "stem": "Teks isi biasa punya rasio kontras 3:1 terhadap latar belakangnya. Apa kata WCAG AA tentangnya?",
+  "options": [
+   "Gagal, karena teks biasa butuh minimal 4,5:1",
+   "Lolos, karena 3:1 adalah minimum untuk semua teks",
+   "Lolos, selama teksnya tebal atau huruf kapital",
+   "Gagal, karena AA mensyaratkan rasio minimal 7:1"
+  ],
+  "explanation": "WCAG AA mensyaratkan minimal 4,5:1 untuk teks biasa, sehingga 3:1 gagal."
+ },
+ "responsive_accessible_web-5": {
+  "stem": "Dropdown kustom yang dibuat dari div harus berfungsi untuk pengguna keyboard dan screen reader. Pendekatan terbaik?",
+  "options": [
+   "Memakai select bawaan, atau menambah role ARIA dan penanganan keyboard",
+   "Menambah atribut title pada tiap div dan membiarkan handler mouse apa adanya",
+   "Menyembunyikan dropdown dari alat bantu dan menampilkan tautan sebagai gantinya",
+   "Mengatur tabindex ke angka besar agar difokuskan lebih dulu"
+  ],
+  "explanation": "Pakai elemen bawaan bila memungkinkan; jika tidak, tambahkan role, state, dan penanganan keyboard penuh."
+ },
+ "typescript-1": {
+  "stem": "Apa manfaat utama TypeScript dibanding JavaScript biasa?",
+  "options": [
+   "Tipe diperiksa sebelum kode dijalankan",
+   "Kode berjalan lebih cepat di mesin browser",
+   "Kode tidak perlu lagi dikompilasi atau di-bundle",
+   "Variabel bisa diubah tanpa dideklarasikan"
+  ],
+  "explanation": "TypeScript menambahkan tipe statis yang diperiksa saat kompilasi, menangkap banyak galat sebelum kode dijalankan."
+ },
+ "typescript-2": {
+  "stem": "Deklarasi mana yang memberi parameter fungsi tipe string?",
+  "options": [
+   "function greet(name: string) {}",
+   "function greet(string name) {}",
+   "function greet(name <string>) {}",
+   "function greet(name as string) {}"
+  ],
+  "explanation": "Sintaksnya name: tipe, sehingga (name: string) memberi tipe pada parameter."
+ },
+ "typescript-3": {
+  "stem": "type Status = 'idle' | 'loading' | 'done'. Apa akibat memberikan 'error' ke variabel bertipe Status?",
+  "options": [
+   "Galat tipe saat kompilasi",
+   "Exception saat runtime ketika baris dijalankan",
+   "Tidak ada, karena string biasanya diterima",
+   "Nilainya diubah menjadi literal valid terdekat"
+  ],
+  "explanation": "Union literal string hanya menerima nilai persis itu, sehingga 'error' adalah galat tipe saat kompilasi."
+ },
+ "typescript-4": {
+  "stem": "Tipe mana yang paling aman untuk nilai yang bentuknya belum diketahui dan harus diperiksa sebelum dipakai?",
+  "options": [
+   "unknown",
+   "any",
+   "never",
+   "void"
+  ],
+  "explanation": "unknown memaksamu mempersempit tipe sebelum dipakai; any mematikan pemeriksaan."
+ },
+ "typescript-5": {
+  "stem": "Sebuah fungsi harus mengembalikan tipe yang sama dengan yang diterimanya, untuk tipe apa pun. Signature mana yang menyatakannya?",
+  "options": [
+   "function id<T>(x: T): T",
+   "function id(x: any): any",
+   "function id(x: unknown): unknown",
+   "function id(x: object): object"
+  ],
+  "explanation": "Parameter tipe generik T menghubungkan tipe parameter dan tipe kembalian: function id<T>(x: T): T."
+ },
+ "web_performance-1": {
+  "stem": "Alat bawaan Chrome mana yang mengaudit kinerja halaman dan memberi skor?",
+  "options": [
+   "Lighthouse",
+   "Panel Sources",
+   "Panel Application",
+   "Panel Elements"
+  ],
+  "explanation": "Lighthouse mengaudit kinerja, aksesibilitas, praktik terbaik, dan SEO."
+ },
+ "web_performance-2": {
+  "stem": "Apa yang diukur metrik Largest Contentful Paint (LCP)?",
+  "options": [
+   "Berapa lama elemen terbesar yang terlihat dirender",
+   "Berapa lama seluruh halaman selesai diunduh browser",
+   "Seberapa cepat halaman merespons klik pertama",
+   "Seberapa besar tata letak bergeser saat halaman dimuat"
+  ],
+  "explanation": "LCP mengukur berapa lama elemen konten terbesar yang terlihat dirender."
+ },
+ "web_performance-3": {
+  "stem": "Atribut mana yang menunda pemuatan gambar di bawah lipatan layar sampai mendekati viewport?",
+  "options": [
+   "loading=\"lazy\"",
+   "decoding=\"sync\"",
+   "fetchpriority=\"high\"",
+   "crossorigin=\"anonymous\""
+  ],
+  "explanation": "loading=\"lazy\" membuat browser menunda gambar di luar layar."
+ },
+ "web_performance-4": {
+  "stem": "Bundle JavaScript 2 MB memperlambat pemuatan pertama. Teknik mana yang paling membantu?",
+  "options": [
+   "Code splitting agar tiap rute hanya memuat yang dibutuhkan",
+   "Meminify hanya berkas CSS dan tetap memakai satu skrip besar",
+   "Menambah lebih banyak font agar teks dirender lebih cepat",
+   "Meng-inline sebagian besar gambar sebagai teks base64 di dalam skrip"
+  ],
+  "explanation": "Code splitting hanya memuat kode yang dibutuhkan rute saat ini dan menunda sisanya."
+ },
+ "web_performance-5": {
+  "stem": "Cumulative Layout Shift tinggi karena gambar muncul tiba-tiba dan mendorong teks ke bawah. Perbaikan terbaik?",
+  "options": [
+   "Menetapkan width dan height atau aspect-ratio agar ruang dicadangkan",
+   "Memuat gambar baru setelah seluruh halaman selesai dimuat oleh browser",
+   "Memindahkan gambar ke domain lain agar dimuat lebih cepat oleh pengguna",
+   "Memampatkan gambar sampai ukurannya kurang dari 10 KB per berkas"
+  ],
+  "explanation": "Mencadangkan ruang dengan width dan height (atau aspect-ratio) mencegah konten melompat saat gambar dimuat."
+ }
+}
