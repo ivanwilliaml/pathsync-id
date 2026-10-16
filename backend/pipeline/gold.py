@@ -81,7 +81,7 @@ GUIDE = [
     "Jangan hitung: bidang gelar, nama perusahaan atau produknya, domain bisnis tanpa kemampuan, soft skill, benefit.",
     "Baca seluruh teks lowongan. Kerjakan sendiri, jangan lihat lembar anotator lain atau halaman Job Market.",
     "Lowongan tanpa skill dari daftar: tulis 'none'. Ragu antara dua skill: pilih yang paling spesifik dan tulis di kolom catatan.",
-    "Panduan lengkap: docs/PANDUAN_ANOTASI.md. Setelah selesai, kirim berkas ini kembali tanpa mengubah kolom id.",
+    "Panduan lengkap: docs/ops/PANDUAN_ANOTASI.md. Setelah selesai, kirim berkas ini kembali tanpa mengubah kolom id.",
 ]
 
 

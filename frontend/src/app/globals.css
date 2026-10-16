@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * PathSync design system (docs/UI_AUDIT.md)
+ * PathSync design system (docs/audit/UI_AUDIT.md)
  *   Ink #1B1740 · Indigo #4338CA · Iris #7C6CF6 · Ember #F2711C · Mint #0E9F8A · Paper #F6F6FB
  * The "route" gradient (indigo → iris → ember) is the one signature element: it is reserved for the
  * learning path, the readiness ring, assessment progress and hero panels. Everything else stays quiet.

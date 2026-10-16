@@ -1,4 +1,4 @@
-"""Patch single options of the rewrite files: python -m pipeline.rewrite_patch <stem|all> <patch.json>
+"""Patch single options of the rewrite files: python -m pipeline.item_authoring.rewrite_patch <stem|all> <patch.json>
 
 patch.json: {"item-id": {"en": {"1": "text"}, "id": {"3": "text"}}}
 """

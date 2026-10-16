@@ -6,7 +6,7 @@ no course teaches them the way a tool or a method is taught. A small curated set
 skills (pathsync/soft.py, data/seed/soft_skills.json): demand from postings plus the student's own recorded experience, no quiz,
 never in the ranking or the path.
 
-Run: python -m pipeline.build_taxonomy      (writes taxonomy.json, prints alias conflicts)
+Run: python -m pipeline.seed_build.build_taxonomy      (writes taxonomy.json, prints alias conflicts)
 """
 from __future__ import annotations
 

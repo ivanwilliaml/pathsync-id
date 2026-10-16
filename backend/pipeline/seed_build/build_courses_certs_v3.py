@@ -2,7 +2,7 @@
 
 * Strips skills that no longer exist (soft skills) from every course and certificate; drops entries left empty.
 * Adds the courses and certificates of the new careers (course names are the usual Indonesian catalogue names).
-Run: python -m pipeline.build_courses_certs_v3
+Run: python -m pipeline.seed_build.build_courses_certs_v3
 """
 from __future__ import annotations
 

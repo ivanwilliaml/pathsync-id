@@ -8,7 +8,7 @@ The key is always written first in the seed files; the engine shuffles options p
 (pathsync.assessment.session_order). Items of skills that are no longer in the taxonomy (soft skills) are dropped.
 Later files override earlier ones (files are applied in name order).
 
-Run: python -m pipeline.apply_item_rewrite
+Run: python -m pipeline.item_authoring.apply_item_rewrite
 """
 from __future__ import annotations
 

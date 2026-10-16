@@ -2,7 +2,7 @@
 
 Keeps the legacy edges whose two skills still exist and adds the edges of the new careers. An edge A -> B says that
 learning A first makes B much easier (the engine treats B as not ready until A is at least 0.6). Edges stay drafts until
-the expert panel validates them (paper III.A.3). Run: python -m pipeline.build_graph
+the expert panel validates them (paper III.A.3). Run: python -m pipeline.seed_build.build_graph
 """
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Every three-decimal metric quoted in README.md or docs/PLAN_PERBAIKAN.md must come from
+"""Every three-decimal metric quoted in the live documents (README, PLAN, audit, plans) must come from
 data/models/metrics.json (plan D2). Regenerate the file with `python -m pipeline.report`."""
 from __future__ import annotations
 
@@ -7,7 +7,9 @@ import re
 
 from pathsync.config import BACKEND_DIR, MODELS_DIR
 
-DOCS = [BACKEND_DIR.parent / "README.md", BACKEND_DIR.parent / "docs" / "PLAN_PERBAIKAN.md"]
+ROOT = BACKEND_DIR.parent
+DOCS = [ROOT / "README.md", ROOT / "PLAN.md", ROOT / "docs" / "audit" / "AUDIT_2026-10-16.md",
+        ROOT / "docs" / "plan" / "PLAN_BACKEND_DATA_AI.md", ROOT / "docs" / "plan" / "PLAN_FRONTEND_UIUX.md"]
 METRIC = re.compile(r"(?<![\d.,])0[.,](\d{3})(?!\d)")
 
 

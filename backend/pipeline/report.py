@@ -4,7 +4,7 @@
     python -m pipeline.report --refresh    # re-run the extractor evaluation and the item-cue audit first
     python -m pipeline.report --ranker     # also re-run the expert study (slow, registers a model)
 
-tests/test_metrics_single_source.py fails when README.md or docs/PLAN_PERBAIKAN.md quotes a three-decimal
+tests/test_metrics_single_source.py fails when the live documents (README, PLAN, audit, plans) quotes a three-decimal
 metric that is not in this file.
 
 The model card (GET /api/model-card) and the documents quote this file only. Every block carries the date and the

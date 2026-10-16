@@ -4,7 +4,7 @@ Each step of a learning path links to 2-3 existing open materials labelled with 
 and difficulty - PathSync points to content, it does not create it. Every URL below is
 checked with an HTTP request; unreachable links are dropped from the catalogue.
 
-Run: python -m pipeline.build_materials
+Run: python -m pipeline.seed_build.build_materials
 """
 from __future__ import annotations
 

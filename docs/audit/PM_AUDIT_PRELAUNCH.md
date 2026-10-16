@@ -9,7 +9,7 @@
 
 ## 0. Ringkasan Eksekutif
 
-PathSync punya **fondasi yang jauh di atas rata-rata purwarupa lomba**. Ada data lowongan nyata dengan kutipan yang bisa ditelusuri, mesin keputusan yang transparan (halaman *How the AI Works* sangat kuat), hak data UU PDP, tes otomatis, CI, dan UI yang rapi serta responsif. Audit internal sebelumnya (docs/AUDIT.md) menutup banyak lubang besar.
+PathSync punya **fondasi yang jauh di atas rata-rata purwarupa lomba**. Ada data lowongan nyata dengan kutipan yang bisa ditelusuri, mesin keputusan yang transparan (halaman *How the AI Works* sangat kuat), hak data UU PDP, tes otomatis, CI, dan UI yang rapi serta responsif. Audit internal sebelumnya (docs/audit/AUDIT.md) menutup banyak lubang besar.
 
 Namun **janji inti produk**, yaitu *"diagnosis berbasis bukti, bukan tebakan"*, saat ini **masih bisa dibobol dengan mudah**. Ini terlihat di tiga titik: bank soal (jawaban bisa ditebak), rubrik proyek (teks karangan langsung diberi nilai "mahir"), dan sertifikat (cukup diketik). Selain itu ada beberapa risiko operasional yang akan langsung terasa di hari launch: rate limit, kehilangan akun, dan server dev.
 

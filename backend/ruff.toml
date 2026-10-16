@@ -1,6 +1,6 @@
 line-length = 130
 target-version = "py312"
-exclude = ["migrations/versions"]
+exclude = ["migrations/versions", "offline_llm/pathsync_llm.py"]   # Kaggle notebook template, runs on Kaggle's Python
 
 [lint]
 select = ["E", "F", "W", "I", "B", "UP"]

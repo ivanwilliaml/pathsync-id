@@ -1,4 +1,4 @@
-# PathSync - offline LLM run on a Kaggle GPU (template; build with kaggle/build_kernel.py).
+# PathSync - offline LLM run on a Kaggle GPU (template; build with backend/offline_llm/build_kernel.py).
 #
 # Runs an open-weight instruction model (Qwen3, Apache-2.0, attached as a Kaggle Model, no internet
 # needed) on a PathSync job file: skill extraction from job postings, or the "generic LLM" ranking

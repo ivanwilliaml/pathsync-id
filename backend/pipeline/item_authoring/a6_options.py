@@ -2,7 +2,7 @@
 
 Distractors are plausible, wrong answers written in the same form and vocabulary as the key, with
 no filler phrases, so a test-wise student cannot pick the key from its surface. Stems are unchanged.
-`python -m pipeline.a6_rewrite` turns this table into data/seed/_rewrite/zz_a6.json.
+`python -m pipeline.item_authoring.a6_rewrite` turns this table into data/seed/_rewrite/zz_a6.json.
 """
 
 OPTIONS = {

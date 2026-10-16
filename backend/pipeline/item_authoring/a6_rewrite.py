@@ -1,8 +1,8 @@
-"""Write data/seed/_rewrite/zz_a6.json from pipeline/a6_options.py (plan A6).
+"""Write data/seed/_rewrite/zz_a6.json from pipeline/item_authoring/a6_options.py (plan A6).
 
 Legacy items (Indonesian seed with an English overlay) get only their English options replaced;
 items that came from a rewrite file keep their "new" block and Indonesian text, with the English
-options replaced. Run, then `python -m pipeline.apply_item_rewrite` and `python -m pipeline.item_cue_audit`.
+options replaced. Run, then `python -m pipeline.item_authoring.apply_item_rewrite` and `python -m pipeline.item_cue_audit`.
 """
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import glob
 import json
 
 from pathsync.config import SEED_DIR
-from pipeline.a6_options import OPTIONS
+from pipeline.item_authoring.a6_options import OPTIONS
 
 
 def main() -> None:

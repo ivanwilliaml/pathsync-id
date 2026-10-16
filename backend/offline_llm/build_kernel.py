@@ -1,9 +1,9 @@
 """Build a ready-to-push Kaggle kernel folder from a PathSync job file.
 
-  python kaggle/build_kernel.py postings  --user <kaggle-username>
-  kaggle kernels push -p kaggle/build/postings
+  python backend/offline_llm/build_kernel.py postings  --user <kaggle-username>
+  kaggle kernels push -p backend/offline_llm/build/postings
   kaggle kernels status <user>/pathsync-llm-postings
-  kaggle kernels output <user>/pathsync-llm-postings -p kaggle/results
+  kaggle kernels output <user>/pathsync-llm-postings -p backend/offline_llm/results
 
 The job file is embedded in the script (gzip + base64), so no Kaggle dataset is needed. Qwen3 is
 attached as a Kaggle Model, so the kernel runs without internet access.

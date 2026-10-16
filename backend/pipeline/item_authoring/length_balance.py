@@ -2,7 +2,7 @@
 
 Authors write the key first and tend to make it the most detailed option. For every language this prints, for the items
 whose key is longer than the quota allows, the distractor that is nearest in length, so it can be lengthened by hand.
-Usage: python -m pipeline.length_balance <rewrite-file-stem> [en|id]
+Usage: python -m pipeline.item_authoring.length_balance <rewrite-file-stem> [en|id]
 """
 from __future__ import annotations
 

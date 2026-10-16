@@ -1,3 +1,5 @@
+> **Catatan 16 Okt 2026:** dokumen ini ditulis pada tahap semifinal dan angkanya sudah usang (misalnya "42 skill" dan "lulus 3/3"; sekarang 114 skill, dan tidak ada role yang lulus kriteria taksonomi final). Kondisi terbaru ada di [AUDIT_2026-10-16.md](AUDIT_2026-10-16.md). Perbarui sebelum dikirim ke juri (tugas D3 di PLAN.md).
+
 # Jawaban atas Catatan Juri Semifinal
 
 Skor semifinal 82,63 (rata-rata 4 juri). Nilai terendah ada di **Metodologi & Kelayakan Teknis** (78–88) dan **Tinjauan Pustaka & Positioning** (78–84). Dokumen ini memetakan setiap catatan juri ke perubahan **di produk yang berjalan**, bukan hanya di naskah: di mana melihatnya dan bukti angkanya.
@@ -7,10 +9,10 @@ Skor semifinal 82,63 (rata-rata 4 juri). Nilai terendah ada di **Metodologi & Ke
 | 1 | Kaitan ke pengalaman belajar di kelas kurang, fokusnya ke karier | Rute kini berjangkar pada mata kuliah semester berjalan, ditambah siklus rencana–refleksi mingguan dan tampilan kohort untuk dosen | `/classroom`, `/advisor` |
 | 2 | Daftar keterampilan BA perlu dipastikan final | Kriteria "final" yang terukur dan dicek otomatis pada data: BA **lulus 3/3** (37 inti + 5 berdekatan) | `/how-it-works` → "Is the skill list final?", `GET /api/taxonomy/report` |
 | 3 | Model LLM yang dipakai belum disebut | Model card: tiap model, perannya, dan apa yang **tidak pernah** dikerjakan LLM | `/how-it-works` → "Models we use", `GET /api/model-card` |
-| 4 | Bentuk mesin keputusan kurang jelas | Spesifikasi 5 tahap + panel "How was this decided?" yang menampilkan angka asli setiap mahasiswa | Panel skill di `/dashboard`, `docs/DECISION_ENGINE.md` |
+| 4 | Bentuk mesin keputusan kurang jelas | Spesifikasi 5 tahap + panel "How was this decided?" yang menampilkan angka asli setiap mahasiswa | Panel skill di `/dashboard`, `docs/design/DECISION_ENGINE.md` |
 | 5 | Bobot 0,2/0,3/0,5 belum ada alasannya | Dasar inverse-variance (rasio galat eksplisit) + kalibrasi otomatis dari data + analisis sensitivitas | `/how-it-works` → "Why evidence is weighted this way" |
-| 6 | Kelompok pembanding uji pengguna terlalu sederhana | 4 lengan (daftar lowongan, rencana AI generik, PathSync tanpa adaptif, PathSync penuh), pengacakan minimisasi, instrumen hasil di dalam produk | Admin → User Studies, `docs/STUDY_PROTOCOL.md` |
-| 7 | Jadwal 10 minggu melewati tenggat lomba | Pembangunan sudah selesai; sisa pekerjaan adalah validasi manusia yang dipadatkan menjadi 4 minggu paralel | `docs/ROADMAP.md` |
+| 6 | Kelompok pembanding uji pengguna terlalu sederhana | 4 lengan (daftar lowongan, rencana AI generik, PathSync tanpa adaptif, PathSync penuh), pengacakan minimisasi, instrumen hasil di dalam produk | Admin → User Studies, `docs/ops/STUDY_PROTOCOL.md` |
+| 7 | Jadwal 10 minggu melewati tenggat lomba | Pembangunan sudah selesai; sisa pekerjaan adalah validasi manusia yang dipadatkan menjadi 4 minggu paralel | `docs/plan/ROADMAP.md` |
 
 ---
 
@@ -54,7 +56,7 @@ LLM **tidak pernah** memilih prioritas, mengestimasi penguasaan, atau menyusun u
 
 ## 4. Bentuk mesin keputusan
 
-Lima tahap deterministik (input sama → output sama), lengkap di `docs/DECISION_ENGINE.md`:
+Lima tahap deterministik (input sama → output sama), lengkap di `docs/design/DECISION_ENGINE.md`:
 1. **Bukti → p0:** pers. (2), rata-rata berbobot dari bukti yang ada.
 2. **Jawaban baru → p:** BKT, pers. (3).
 3. **Fitur:** 7 fitur Tabel 3 (G, R, K, D, T, U, B).
@@ -80,7 +82,7 @@ Urutan bobot berdampak nyata, tetapi angka persisnya tidak rapuh.
 
 ## 6. Kelompok pembanding
 
-Empat lengan, sehingga kontribusi tiap komponen bisa diukur (`docs/STUDY_PROTOCOL.md`):
+Empat lengan, sehingga kontribusi tiap komponen bisa diukur (`docs/ops/STUDY_PROTOCOL.md`):
 - **A** daftar skill dari lowongan (kontrol paper)
 - **B** rencana "AI generik" (urut permintaan, tanpa diagnosis bukti dan tanpa graf; mewakili "tanya chatbot")
 - **C** PathSync tanpa siklus adaptif
@@ -96,4 +98,4 @@ Power analysis yang jujur: 20/lengan dengan d = 0,9 → power 0,79. Karena itu *
 
 ## 7. Jadwal vs tenggat
 
-Paper menjadwalkan 10 minggu karena mengasumsikan pembangunan dari nol. Sekarang **pembangunan sudah selesai dan teruji**: 36 tes backend, CI, Docker, 15 halaman, dan seluruh alat validasi (anotasi + kappa, panel pakar, studi 4 lengan, review proyek). Yang tersisa hanya pekerjaan manusia, dipadatkan menjadi **4 minggu paralel** (`docs/ROADMAP.md`).
+Paper menjadwalkan 10 minggu karena mengasumsikan pembangunan dari nol. Sekarang **pembangunan sudah selesai dan teruji**: 36 tes backend, CI, Docker, 15 halaman, dan seluruh alat validasi (anotasi + kappa, panel pakar, studi 4 lengan, review proyek). Yang tersisa hanya pekerjaan manusia, dipadatkan menjadi **4 minggu paralel** (`docs/plan/ROADMAP.md`).

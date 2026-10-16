@@ -1,27 +1,47 @@
-# PathSync — Navigator Belajar Adaptif (ICC 2026, Tim cupuu)
+# PathSync: Navigator Belajar Adaptif (ICC 2026, Tim cupuu)
 
-Purwarupa kerja (bukan mockup) dari metodologi paper semifinal *PathSync: Navigator Belajar Adaptif Berbasis Kecerdasan Buatan*. Peran target awal: **Business Analyst** (plus **Data Analyst** sebagai peran berdekatan untuk menguji pemicu "ganti peran").
+Purwarupa kerja dari metodologi paper semifinal *PathSync: Navigator Belajar Adaptif Berbasis Kecerdasan Buatan*. PathSync membaca lowongan kerja nyata Indonesia, memeriksa apa yang sudah bisa dibuktikan mahasiswa, lalu menyusun rute belajar berurutan untuk **hard skill**, lengkap dengan alasan dan materi gratis.
 
-Status lengkap dan langkah berikutnya: lihat **[PROGRESS.md](PROGRESS.md)**.
+**Cakupan sekarang:** 14 role (Business Analyst sebagai role yang divalidasi penuh, 13 role lain berlabel Beta), 114 hard skill di 14 klaster, 137 prasyarat, 570 soal Cek Cepat, dan 9 soft skill berbasis pengalaman (tanpa kuis, tidak masuk ranking).
+
+**Mulai dari sini:**
+- Rencana produk dan prioritas: **[PLAN.md](PLAN.md)**
+- Audit terbaru (AI engineer, investor, pengguna, product manager): [docs/audit/AUDIT_2026-10-16.md](docs/audit/AUDIT_2026-10-16.md)
+- Rencana backend dan data/AI: [docs/plan/PLAN_BACKEND_DATA_AI.md](docs/plan/PLAN_BACKEND_DATA_AI.md)
+- Rencana frontend dan UI/UX: [docs/plan/PLAN_FRONTEND_UIUX.md](docs/plan/PLAN_FRONTEND_UIUX.md)
+- Semua dokumen: [docs/README.md](docs/README.md)
+
+Semua angka kinerja ada di satu berkas, `backend/data/models/metrics.json`, yang dihasilkan oleh `python -m pipeline.report`.
 
 ## Struktur
 
 ```
+PLAN.md                  rencana master
+docker-compose.yml       produksi: Caddy, frontend, backend, PostgreSQL, Redis, backup, refresh pasar bulanan
 backend/
-  scrapers/      Karirhub Kemnaker, ATS publik (Workable, Workday, Lever, Greenhouse, SmartRecruiters, Ashby, Recruitee), ESCO API
-  pathsync/      inti: taksonomi+graf, ekstraksi (LLM/leksikon) + verifikasi kutipan + normalisasi embedding,
-                 peta permintaan (pers. 1), model bukti (pers. 2) + BKT (pers. 3), fitur Tabel 3 + LTR (pers. 4-5),
-                 jalur + penjelasan + kontrafaktual + cakupan (pers. 6), siklus adaptif + riwayat, evaluasi
-  pipeline/      build_market (pembaruan bulanan), expert_study (skenario + simulasi pakar + pelatihan), build_materials,
-                 llm_jobs (ekspor/impor run LLM luring di GPU Kaggle)
-  api/main.py    REST API FastAPI
-  data/seed/     taksonomi 42 skill, graf 50 sisi, 121 materi terbuka, 210 butir soal, katalog mata kuliah & sertifikat
-  data/raw/      hasil scraping (snapshot 2026-10-01)
-  tests/         uji kesetiaan terhadap contoh paper (Tabel 4 direproduksi persis) + uji API end-to-end
-docs/            audit UI/UX dan design system
-frontend/        Next.js 16 + Tailwind 4 + shadcn/ui: landing, bukti, asesmen, dasbor, peta skill, pasar, riwayat, panel pakar, admin (bahasa Inggris)
-dump/            arsip file yang tidak dipakai sistem (lihat dump/README.md)
-kaggle/          kernel LLM open-weight (Qwen3) untuk ekstraksi lowongan & pembanding "LLM generik"; results/ = keluaran mentah
+  pathsync/              inti: taksonomi dan graf, ekstraksi (leksikon dan LLM) dengan verifikasi kutipan dan
+                         normalisasi embedding, peta permintaan, model bukti dan BKT, ranking, jalur, penjelasan,
+                         siklus adaptif, soft skill, retensi data, observabilitas
+  api/                   router FastAPI (publik, siswa, asesmen, platform, admin, pakar, dosen, classroom)
+  pipeline/              pekerjaan batch yang dijalankan rutin:
+                         build_market, expert_study, eval_extractor, report, item_cue_audit, gold, normalisation,
+                         calibrate_items, calibrate_weights, llm_jobs, retention, scheduled_refresh, sqlite_to_postgres
+    seed_build/          pembangun data seed (taksonomi, graf, materi, kursus, soft skill), dijalankan saat seed berubah
+    item_authoring/      alat penulisan dan penyeimbangan soal (arsip kerja, jarang dijalankan)
+  scrapers/              Karirhub, Kalibrr, ATS publik, ESCO
+  offline_llm/           jalur LLM luring di GPU Kaggle (pembanding ekstraksi dan peringkat)
+  data/seed/             taksonomi, graf, soal (Indonesia dengan overlay Inggris), gold, materi, kursus, konteks BPS
+  data/models/           hasil ukur dan model terdaftar
+  tests/                 tes domain, API, migrasi, retensi, metrik, observabilitas
+frontend/                Next.js 16, React 19, Tailwind 4, shadcn/ui
+deploy/                  Caddyfile, backup.sh, loadtest.py, explain_queries.py
+.github/workflows/       CI (backend SQLite dan PostgreSQL, frontend) dan scraping bulanan
+docs/
+  audit/                 audit dan tanggapan
+  plan/                  rencana per bidang dan roadmap
+  ops/                   runbook deploy, protokol studi, panduan anotasi
+  design/                desain mesin keputusan
+  archive/               dokumen lama dan berkas yang tidak dipakai sistem
 ```
 
 ## Menjalankan backend
@@ -29,60 +49,47 @@ kaggle/          kernel LLM open-weight (Qwen3) untuk ekstraksi lowongan & pemba
 ```bash
 cd backend
 pip install -r requirements.txt
-python -m pipeline.build_market --extractor lexicon   # membangun DB + peta permintaan dari data/raw
-python -m pipeline.expert_study                        # 45 skenario, simulasi pakar, latih & daftarkan model
-python -m pytest -q tests                              # uji kesetiaan paper + uji API (pakai salinan DB sementara)
+python -m pipeline.build_market --extractor lexicon   # membangun DB dan peta permintaan dari data/raw
+python -m pipeline.expert_study                        # skenario, simulasi pakar, latih dan daftarkan model
+python -m pytest -q                                    # tes (memakai salinan DB sementara)
 uvicorn api.main:app --port 8000                       # dokumentasi interaktif: http://localhost:8000/docs
+python -m pipeline.report                              # menulis data/models/metrics.json
 ```
 
-Scraping ulang (pembaruan bulanan): `python -m scrapers.karirhub`, `python -m scrapers.ats`, lalu `python -m pipeline.build_market`.
+Perbarui data lowongan: `python -m scrapers.karirhub`, `python -m scrapers.kalibrr`, `python -m scrapers.ats`, lalu `python -m pipeline.build_market`. Alembic berjalan otomatis saat server mulai.
+
+Token admin diambil dari `PATHSYNC_ADMIN_TOKEN`. Jika tidak diset, token dibuat ke `backend/data/admin_token.txt`. Produksi menolak token yang lemah.
 
 ## Menjalankan frontend
 
 ```bash
 cd frontend
 npm install
-npm run dev          # http://localhost:3000, /api/* diteruskan ke backend (ubah lewat PATHSYNC_API)
+npm run build && npm start     # http://localhost:3000, /api/* diteruskan ke backend (ubah lewat PATHSYNC_API)
 ```
 
-Antarmuka berbahasa Inggris (desain dan alasan perubahan: [docs/UI_AUDIT.md](docs/UI_AUDIT.md)). Halaman: `/` landing + pendaftaran, `/evidence` wizard bukti (transkrip, sertifikat, proyek, CV, preferensi), `/assessment` cek cepat dan `/assessment/<skill>` cek per skill, `/dashboard` (langkah berikutnya, kesiapan, rute belajar, prioritas, detail per skill), `/skill-map` (prasyarat dan yang dibuka per skill), `/history`, `/market`, `/experts` (validasi prasyarat satu per satu, peringkat skenario), `/admin` (pembaruan pasar dengan tombol Stop, simulasi, antrean tinjauan, anotasi, model & evaluasi). URL lama berbahasa Indonesia diarahkan otomatis.
+Untuk pengembangan lokal pakai `npm run dev`. Jika repo berada di path yang mengandung spasi atau titik, server pengembangan bisa mengembalikan 404; gunakan build produksi atau pindahkan repo.
 
-Komponen: shadcn/ui (Base UI) + Tailwind 4, font Plus Jakarta Sans, foto dari Unsplash. Bahasa tampilan backend diatur `PATHSYNC_LANG` (bawaan `en`); data seed menyimpan teks Indonesia aslinya (dipakai prompt ekstraksi dan pencocokan) beserta terjemahan Inggris (field `*_en` di `taxonomy.json` dan `graph.json`, soal di `data/seed/items_en/`).
+## Ekstraksi LLM (opsional)
 
-## Ekstraksi LLM
+Dengan Claude: set `ANTHROPIC_API_KEY` (atau `PATHSYNC_EXTRACTOR=llm`), lalu `python -m pipeline.build_market --extractor llm`.
 
-Dengan Claude: set `ANTHROPIC_API_KEY` (atau paksa `PATHSYNC_EXTRACTOR=llm`), lalu `python -m pipeline.build_market --extractor llm`.
-
-Tanpa kunci API, jalankan model open-weight di GPU Kaggle dengan prompt, taksonomi, dan skema yang sama persis; hasilnya masuk lewat gerbang verifikasi kutipan + normalisasi embedding yang sama:
+Tanpa kunci API, jalankan model open-weight di GPU Kaggle dengan prompt, taksonomi, dan skema yang sama; hasilnya melewati gerbang verifikasi kutipan dan normalisasi embedding yang sama:
 
 ```bash
 cd backend
-python -m pipeline.llm_jobs export-postings                          # -> kaggle/jobs/postings.json
-python ../kaggle/build_kernel.py postings --user <akun-kaggle>
-kaggle kernels push -p ../kaggle/build/postings                     # Qwen3-8B, GPU T4 x2, tanpa internet
-kaggle kernels output <akun-kaggle>/pathsync-llm-postings -p ../kaggle/results
-python -m pipeline.llm_jobs import-postings ../kaggle/results/llm_results_postings.json
-python -m pipeline.build_market --extractor llm                     # memakai cache, tidak memanggil API
+python -m pipeline.llm_jobs export-postings --gold-plus 300         # -> offline_llm/jobs/postings.json
+python offline_llm/build_kernel.py postings --user <akun-kaggle>
+kaggle kernels push -p offline_llm/build/postings                    # Qwen3-8B, GPU T4 x2, tanpa internet
+kaggle kernels output <akun-kaggle>/pathsync-llm-postings -p offline_llm/results
+python -m pipeline.llm_jobs import-postings offline_llm/results/llm_results_postings.json
 python -m pipeline.llm_jobs compare                                  # kesepakatan leksikon vs LLM
-python -m pipeline.expert_study
-# pembanding "LLM generik" untuk evaluasi peringkat:
-python -m pipeline.llm_jobs export-scenarios && python ../kaggle/build_kernel.py scenarios --user <akun-kaggle>
-kaggle kernels push -p ../kaggle/build/scenarios   # lalu kernels output -> import-scenarios -> expert_study
 ```
 
-Tanpa keduanya, sistem memakai ekstraktor leksikon offline dengan kontrak keluaran dan gerbang verifikasi yang sama.
+Tanpa keduanya, sistem memakai ekstraktor leksikon offline dengan kontrak keluaran dan gerbang verifikasi yang sama (ini yang aktif sekarang).
 
-## Platform v1 (final round)
+## Deploy
 
-- **Audit:** [docs/AUDIT.md](docs/AUDIT.md). Ada 4 temuan kritis dan 9 temuan tinggi, semuanya sudah diperbaiki dan punya tes regresi.
-- **Jawaban juri:** [docs/JURY_RESPONSE.md](docs/JURY_RESPONSE.md) · [Mesin keputusan](docs/DECISION_ENGINE.md) · [Protokol studi](docs/STUDY_PROTOCOL.md) · [Roadmap](docs/ROADMAP.md)
-- **Fitur baru:** Course Companion & rencana mingguan (`/classroom`), tampilan dosen (`/advisor`), `/how-it-works` (model card, governance taksonomi, bobot), panel "How was this decided?", ekspor/hapus data (UU PDP), studi 4 lengan.
-- **Auth:** pendaftaran mahasiswa menghasilkan kunci akses (`id.token`). Token admin diambil dari env `PATHSYNC_ADMIN_TOKEN`; kalau tidak diset, token dibuat otomatis ke `backend/data/admin_token.txt`. Token pakar dan dosen dibuat dari halaman Admin.
-- **Migrasi DB:** Alembic dijalankan otomatis saat startup.
+`cp .env.example .env` (isi rahasia), lalu `docker compose up -d --build`. Caddy (HTTPS), Next.js, FastAPI, PostgreSQL, Redis, cadangan harian, dan refresh pasar bulanan. Langkah rinci, latihan pemulihan, dan bug deploy yang sudah ditemukan: [docs/ops/RUNBOOK.md](docs/ops/RUNBOOK.md). Uji beban: `python deploy/loadtest.py http://127.0.0.1:8000 200 40`.
 
-## Pra-launch (audit PM)
-
-- Audit produk: [docs/PM_AUDIT_PRELAUNCH.md](docs/PM_AUDIT_PRELAUNCH.md). Tindak lanjut per temuan dengan status jujur: [docs/PM_AUDIT_RESPONSE.md](docs/PM_AUDIT_RESPONSE.md).
-- Deploy produksi: `cp .env.example .env` (isi rahasia), lalu `docker compose up -d --build`. Caddy (HTTPS) → Next.js → FastAPI → PostgreSQL, Redis, backup harian, refresh pasar bulanan.
-- Login staf memakai cookie HttpOnly (`POST /api/staff/session`); skrip boleh memakai `Authorization: Bearer`.
-- Uji beban: `python deploy/loadtest.py http://127.0.0.1:8000 200 30`.
+Login staf memakai cookie sesi HttpOnly (`POST /api/staff/session`); skrip boleh memakai `Authorization: Bearer`.
