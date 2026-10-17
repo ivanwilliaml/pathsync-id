@@ -14,8 +14,8 @@ from sqlalchemy.orm import Session
 from .config import ROLES
 from .db import Student
 from .engine import load_context, responses, student_states
+from .i18n import family_names
 from .pathing import coverage, level_label
-from .roles import FAMILIES
 from .taxonomy import cluster_names
 
 LIMITED_DATA_POSTINGS = 30      # same threshold as the "Beta" label on the landing page (api/routers/public.py)
@@ -45,7 +45,7 @@ def career_graph(s: Session) -> dict:
         overlap = len(reqs[a] & reqs[b]) / len(union)
         if overlap >= EDGE_MIN_OVERLAP:
             edges.append({"a": a, "b": b, "overlap": round(overlap, 3), "shared": len(reqs[a] & reqs[b])})
-    return {"nodes": nodes, "edges": edges, "families": FAMILIES, "min_overlap": EDGE_MIN_OVERLAP}
+    return {"nodes": nodes, "edges": edges, "families": family_names(), "min_overlap": EDGE_MIN_OVERLAP}
 
 
 def careers_for(s: Session, student: Student) -> dict:

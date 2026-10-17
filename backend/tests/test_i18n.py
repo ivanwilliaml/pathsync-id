@@ -77,3 +77,22 @@ def test_default_language_without_header(client):
 
     r = client.get("/api/meta")
     assert r.headers["Content-Language"] == LANG
+
+
+def test_every_role_has_an_indonesian_description_and_family_label():
+    from pathsync.roles import BLURB_ID, CATALOG, FAMILIES, FAMILIES_ID
+
+    assert {r.id for r in CATALOG} == set(BLURB_ID)
+    assert set(FAMILIES) == set(FAMILIES_ID)
+
+
+def test_meta_roles_and_model_card_follow_the_language(client):
+    en = client.get("/api/meta", headers={"Accept-Language": "en"}).json()
+    idr = client.get("/api/meta", headers={"X-PathSync-Lang": "id"}).json()
+    assert [r["id"] for r in en["roles"]] == [r["id"] for r in idr["roles"]]
+    hr_en = next(r for r in en["roles"] if r["id"] == "hr_specialist")["blurb"]
+    hr_id = next(r for r in idr["roles"] if r["id"] == "hr_specialist")["blurb"]
+    assert hr_en != hr_id and "rekrutmen" in hr_id.lower()
+    assert idr["families"]["finance"] == "Keuangan & Akuntansi" and en["families"]["finance"] == "Finance & Accounting"
+    card_id = client.get("/api/model-card", headers={"X-PathSync-Lang": "id"}).json()
+    assert "bukan LLM" in card_id["decision_model"]["type"] or card_id["decision_model"]["type"].startswith("formula (5)")

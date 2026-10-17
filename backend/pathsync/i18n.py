@@ -154,3 +154,17 @@ def lang() -> str:
 def tr(en: str, id_: str) -> str:
     """Inline English/Indonesian pair for short one-off sentences (errors, hints) that are not worth a catalogue key."""
     return id_ if get_lang() == "id" else en
+
+
+def role_blurb(role_id: str, default: str = "") -> str:
+    """One-line role description in the request's language."""
+    from .roles import BLURB_ID
+
+    return BLURB_ID.get(role_id, default) if get_lang() == "id" else default
+
+
+def family_names() -> dict[str, str]:
+    """Role family labels in the request's language."""
+    from .roles import FAMILIES, FAMILIES_ID
+
+    return FAMILIES_ID if get_lang() == "id" else FAMILIES

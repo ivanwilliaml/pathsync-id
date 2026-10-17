@@ -174,6 +174,40 @@ CATALOG: list[Role] = [
          exclude=r"account\s+(?:executive|manager|officer\s+sales)|key\s+account"),
 ]
 
+FAMILIES_ID = {
+    "data": "Data & AI",
+    "software": "Rekayasa Perangkat Lunak",
+    "infra": "Infrastruktur & Keamanan",
+    "design": "Produk & Desain",
+    "business": "Bisnis & Analisis",
+    "marketing": "Pemasaran",
+    "finance": "Keuangan & Akuntansi",
+    "management": "Manajemen & Operasi",
+}
+
+BLURB_ID = {
+    "data_engineer": "Membangun pipeline dan gudang data yang dibutuhkan analis dan model ML.",
+    "data_scientist": "Mengubah data menjadi model prediktif dan merilis fitur machine learning.",
+    "data_analyst": "Menjawab pertanyaan bisnis dengan SQL, statistik, dan dasbor.",
+    "business_analyst": "Menerjemahkan kebutuhan bisnis menjadi requirement, model proses, dan perubahan sistem.",
+    "cybersecurity_analyst": "Memantau, menguji, dan memperkuat sistem terhadap serangan.",
+    "devops_engineer": "Mengotomatiskan deployment dan menjalankan infrastruktur cloud yang andal.",
+    "qa_engineer": "Merancang kasus uji dan mengotomatiskan tes supaya rilis tidak rusak.",
+    "mobile_developer": "Membangun aplikasi Android, iOS, atau lintas platform.",
+    "fullstack_developer": "Menyelesaikan fitur dari ujung ke ujung, dari database sampai antarmuka pengguna.",
+    "frontend_developer": "Membangun antarmuka web yang dipakai orang, dengan HTML, CSS, JavaScript, dan React.",
+    "backend_developer": "Menulis kode sisi server, API, dan database di balik aplikasi.",
+    "ui_ux_designer": "Meneliti pengguna dan merancang layar produk yang mudah dipakai dan enak dilihat.",
+    "digital_marketing": "Menumbuhkan pelanggan lewat SEO, iklan, email, dan analitik pemasaran.",
+    "financial_analyst": "Memodelkan keuangan perusahaan, memproyeksikan hasil, dan mendukung keputusan investasi dan anggaran.",
+    "tax_specialist": "Menghitung, memotong, dan melaporkan pajak Indonesia (PPh, PPN) agar perusahaan patuh.",
+    "internal_auditor": "Menguji kontrol, mengaudit proses, dan menilai risiko supaya manajemen bisa memercayai angka.",
+    "hr_specialist": "Menjalankan rekrutmen, payroll, BPJS, data karyawan, dan pelaporan SDM.",
+    "supply_chain_analyst": "Merencanakan permintaan, persediaan, dan pembelian, serta menjaga operasi tetap lancar dengan data ERP.",
+    "project_coordinator": "Merencanakan ruang lingkup, jadwal, dan backlog, memantau pengiriman, dan melaporkan progres ke pemangku kepentingan.",
+    "accountant": "Mencatat transaksi, menyusun laporan keuangan, dan menangani pajak.",
+}
+
 ROLE_BY_ID = {r.id: r for r in CATALOG}
 
 # Taxonomy clusters (or single skill ids) a role's market map may contain; "-skill_id" removes one. Without a scope a skill
