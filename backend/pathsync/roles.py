@@ -49,19 +49,19 @@ CATALOG: list[Role] = [
     Role("data_engineer", "Data Engineer", "data",
          "Builds the pipelines and warehouses that analysts and ML models depend on.",
          r"data\s+engineer|big\s+data|etl\s+(?:developer|engineer)|data\s+warehouse|analytics\s+engineer|data\s+platform",
-         ("data engineer", "big data", "etl developer", "analytics engineer", "data warehouse")),
+         ("data engineer", "big data", "etl developer", "analytics engineer", "data warehouse", "etl", "data pipeline", "big data engineer")),
     Role("data_scientist", "Data Scientist / ML Engineer", "data",
          "Turns data into predictive models and ships machine-learning features.",
          r"data\s+scien|machine\s+learning|\bml\s+engineer|\bai\s+(?:engineer|developer|specialist)|deep\s+learning|"
          r"computer\s+vision|\bnlp\b|artificial\s+intelligence",
-         ("data scientist", "machine learning", "ai engineer", "ml engineer", "artificial intelligence")),
+         ("data scientist", "machine learning", "ai engineer", "ml engineer", "artificial intelligence", "data science", "machine learning engineer", "nlp engineer", "computer vision")),
     Role("data_analyst", "Data Analyst", "data",
          "Answers business questions with SQL, statistics and dashboards.",
          r"data\s+analy[sz]|data\s+analis|analis\s+data|\bbi\s+(?:analyst|developer|specialist)|business\s+intelligence|"
          r"reporting\s+analyst|insight[s]?\s+(?:analyst|associate)|customer\s+insight|product\s+analyst|"
          r"analytics\s+(?:analyst|specialist|associate)|digital\s+analyst|\bmis\s+(?:analyst|staff|officer|specialist)|"
          r"data\s*(?:&|and)\s*reporting|data\s+insight",
-         ("data analyst", "business intelligence", "product analyst", "reporting analyst", "analis data", "power bi"),
+         ("data analyst", "business intelligence", "product analyst", "reporting analyst", "analis data", "power bi", "data analytics", "bi developer", "tableau", "dashboard analyst"),
          ("data_analyst",),
          exclude=r"head\s+of|manager\s+of"),
     Role("business_analyst", "Business Analyst", "business",
@@ -69,39 +69,39 @@ CATALOG: list[Role] = [
          r"business\s+(?:[\w&/-]+\s+){0,3}analy[sz]|businessanalyst|analis\s+bisnis|\bit\s*ba\b|\bba\s*(?:-|–|\(|$)|"
          r"\bbusiness\s+analysis\b|^business\s+process\b|system[s]?\s+analy[sz]|analis\s+sistem|"
          r"functional\s+(?:analyst|consultant)|requirement[s]?\s+analyst|process\s+analyst|solution[s]?\s+analyst",
-         ("business analyst", "system analyst", "business process analyst", "functional analyst", "analis bisnis"),
+         ("business analyst", "system analyst", "business process analyst", "functional analyst", "analis bisnis", "analis sistem", "it business analyst", "functional consultant", "requirements analyst"),
          ("business_analyst", "ict_business_analyst")),
     Role("cybersecurity_analyst", "Cybersecurity Analyst", "infra",
          "Monitors, tests and hardens systems against attacks.",
          r"cyber|security\s+(?:analyst|engineer|specialist|operation)|information\s+security|infosec|\bsoc\b|penetration|"
          r"pentest|\bgrc\b|it\s+security|keamanan\s+(?:siber|informasi)",
-         ("cyber security", "security analyst", "information security", "soc analyst", "penetration tester"),
+         ("cyber security", "security analyst", "information security", "soc analyst", "penetration tester", "cybersecurity", "keamanan siber", "vulnerability", "grc"),
          exclude=r"security\s+(?:guard|officer\s+building)|satpam"),
     Role("devops_engineer", "DevOps / Cloud Engineer", "infra",
          "Automates deployment and runs reliable cloud infrastructure.",
          r"devops|dev\s*ops|\bsre\b|site\s+reliability|cloud\s+(?:engineer|architect|specialist|administrator)|"
          r"platform\s+engineer|infrastructure\s+engineer|devsecops|kubernetes",
-         ("devops", "cloud engineer", "site reliability engineer", "infrastructure engineer", "platform engineer")),
+         ("devops", "cloud engineer", "site reliability engineer", "infrastructure engineer", "platform engineer", "devsecops", "kubernetes", "cloud administrator")),
     Role("qa_engineer", "QA / Software Tester", "software",
          "Designs test cases and automates tests so releases do not break.",
          r"\bqa\b|quality\s+assurance\s+(?:engineer|analyst|tester|automation|software)|software\s+(?:tester|test)|"
          r"test(?:ing)?\s+(?:engineer|analyst|automation)|\btester\b|\bsdet\b|automation\s+test",
-         ("quality assurance engineer", "software tester", "qa engineer", "qa automation", "test engineer"),
+         ("quality assurance engineer", "software tester", "qa engineer", "qa automation", "test engineer", "qa", "tester", "sdet", "automation tester"),
          exclude=r"food|pangan|produksi|production|manufactur|pabrik|garment|textile|laborator|\bqc\b|quality\s+control"),
     Role("mobile_developer", "Mobile Developer", "software",
          "Builds Android, iOS or cross-platform apps.",
          r"mobile\s+(?:developer|engineer|programmer|apps?)|android|\bios\s+(?:developer|engineer)|flutter|react\s+native|"
          r"kotlin|swift\s+developer",
-         ("mobile developer", "android developer", "ios developer", "flutter", "react native")),
+         ("mobile developer", "android developer", "ios developer", "flutter", "react native", "android", "ios", "kotlin", "mobile engineer")),
     Role("fullstack_developer", "Full-Stack Developer", "software",
          "Ships features end to end, from database to user interface.",
          r"full[\s-]*stack|fullstack",
-         ("full stack developer", "fullstack developer", "full stack engineer")),
+         ("full stack developer", "fullstack developer", "full stack engineer", "fullstack", "full stack web developer", "mern")),
     Role("frontend_developer", "Front-End Developer", "software",
          "Builds the web interfaces people use, with HTML, CSS, JavaScript and React.",
          r"front[\s-]*end|frontend|web\s+(?:developer|programmer|engineer)|react(?:\.?js)?\s+developer|"
          r"vue(?:\.?js)?\s+developer|angular\s+developer|ui\s+(?:developer|engineer)|wordpress\s+developer",
-         ("frontend developer", "front end developer", "web developer", "react developer", "web programmer")),
+         ("frontend developer", "front end developer", "web developer", "react developer", "web programmer", "frontend engineer", "javascript developer", "vue developer", "angular developer")),
     Role("backend_developer", "Back-End / Software Engineer", "software",
          "Writes the server-side code, APIs and databases behind applications.",
          r"back[\s-]*end|backend|software\s+(?:engineer|developer|programmer)|programmer|"
@@ -113,8 +113,8 @@ CATALOG: list[Role] = [
     Role("ui_ux_designer", "UI/UX Designer", "design",
          "Researches users and designs usable, good-looking product screens.",
          r"ui\s*/?\s*ux|ux\s*/?\s*ui|\bux\b|user\s+experience|product\s+designer|ui\s+designer|interaction\s+designer|"
-         r"user\s+interface\s+designer|ux\s+(?:writer|researcher)",
-         ("ui ux designer", "ui/ux", "product designer", "ux researcher", "ui designer")),
+         r"user\s+interface\s+designer|ux\s+(?:writer|researcher)|desainer\s+(?:ui|ux|produk)|designer\s+ui",
+         ("ui ux designer", "ui/ux", "product designer", "ux researcher", "ui designer", "desainer ui ux", "ux designer", "web designer", "user experience")),
     Role("digital_marketing", "Digital Marketing Specialist", "marketing",
          "Grows customers through SEO, ads, email and marketing analytics.",
          r"digital\s+marketing|performance\s+marketing|\bseo\b|\bsem\b|growth\s+(?:marketing|hacker|marketer)|"

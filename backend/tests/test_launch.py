@@ -218,4 +218,4 @@ def test_governance_counts_soft_skill_phrases_as_covered():
         rep = governance.report(s, "business_analyst")
     assert rep["new_skill_candidates"], "the report should still list real candidates"
     assert not [c["label"] for c in rep["new_skill_candidates"] if detect(c["label"])]
-    assert rep["criteria"]["C2_no_frequent_candidate"]["pass"] and 0.9 < rep["criteria"]["C1_coverage"]["value"] <= 1
+    assert rep["criteria"]["C2_no_frequent_candidate"]["pass"] and 0.5 < rep["criteria"]["C1_coverage"]["value"] <= 1

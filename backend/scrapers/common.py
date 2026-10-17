@@ -154,6 +154,7 @@ def detect_language(text: str) -> str:
 
 
 def write_jsonl(path: Path, rows: Iterable[dict]) -> int:
+    path = Path(path)  # --out arrives as a string
     n = 0
     with path.open("w", encoding="utf-8") as f:
         for r in rows:
