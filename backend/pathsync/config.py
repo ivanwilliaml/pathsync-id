@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+from contextvars import ContextVar
 from pathlib import Path
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
@@ -16,7 +17,27 @@ for _d in (RAW_DIR, SEED_DIR, PROCESSED_DIR, MODELS_DIR):
 
 # Display language of everything the API returns (skill names, explanations, assessment items).
 # Seed data keeps the Indonesian originals; extraction prompts always use them.
+# LANG is the server default; a request can ask for its own ("X-PathSync-Lang: id|en", set by the web app's
+# language switch), which display code reads through lang() / tr(). Matching and extraction never depend on it.
 LANG = os.getenv("PATHSYNC_LANG", "en")
+LANGS = ("id", "en")
+_REQUEST_LANG: ContextVar[str | None] = ContextVar("pathsync_lang", default=None)
+
+
+def lang() -> str:
+    """Display language for the current request, else the server default."""
+    return _REQUEST_LANG.get() or LANG
+
+
+def set_request_lang(value: str | None):
+    """Called once per request by the API middleware; returns a token for ContextVar.reset."""
+    v = (value or "").split(",")[0].split("-")[0].strip().lower()
+    return _REQUEST_LANG.set(v if v in LANGS else None)
+
+
+def tr(en: str, id_: str) -> str:
+    """Pick the English or Indonesian form of a display string."""
+    return id_ if lang() == "id" else en
 
 DATABASE_URL = os.getenv("PATHSYNC_DATABASE_URL", f"sqlite:///{(DATA_DIR / 'pathsync.db').as_posix()}")
 

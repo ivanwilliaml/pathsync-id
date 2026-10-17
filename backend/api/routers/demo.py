@@ -11,6 +11,7 @@ import os
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from pathsync.config import tr
 from pathsync.db import Evidence, Student, utcnow
 from pathsync.intake import academic_evidence
 from pathsync.security import db_session, hash_token, new_token, rate_limit
@@ -37,7 +38,7 @@ DEMO_COURSES = [
 @router.post("/demo/profile", dependencies=[Depends(rate_limit("signup", 20))])
 def demo_profile(s: Session = Depends(db_session)):
     if os.getenv("PATHSYNC_DEMO", "1") == "0":
-        raise HTTPException(404, "The demo profile is turned off on this server.")
+        raise HTTPException(404, tr("The demo profile is turned off on this server.", "Profil demo dimatikan di server ini."))
     token = new_token()
     st = Student(display_name="Rani (demo)", program="Information Systems", semester=6, target_role="business_analyst",
                  consent_at=utcnow(), consent_version="demo", token_hash=hash_token(token),

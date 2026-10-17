@@ -4,6 +4,7 @@
 // evidence, job posting, dashboard...) stay in English in both, since that is how students meet them in postings.
 // Strings live next to their use as t("English", "Indonesia") pairs, so a screen reads the same in either language.
 import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import { cn } from "./utils";
 
 export type Lang = "id" | "en";
@@ -79,11 +80,39 @@ export function LangSwitch({ className }: { className?: string }) {
   );
 }
 
-/** Keeps <html lang> in step with the choice (the server always sends "id"). */
+// Tab titles per route, [English, Indonesian]. The server renders the Indonesian ones (page metadata); this swaps
+// them when the visitor picked English. Kept in step with the metadata in each app/*/layout.tsx.
+const TITLES: [string, [string, string]][] = [
+  ["/dashboard", ["Dashboard", "Dashboard"]],
+  ["/classroom", ["My Classes", "Kelas Saya"]],
+  ["/evidence", ["My Evidence", "Evidence Saya"]],
+  ["/assessment", ["Quick Check", "Quick Check"]],
+  ["/skill-map", ["Skill Map", "Skill Map"]],
+  ["/history", ["Path History", "Path History"]],
+  ["/settings", ["Settings & Data", "Pengaturan & Data"]],
+  ["/market", ["Job Market", "Job Market"]],
+  ["/how-it-works", ["How the AI Works", "Cara Kerja AI"]],
+  ["/advisor", ["Lecturer View", "Tampilan Dosen"]],
+  ["/experts", ["Expert Panel", "Panel Pakar"]],
+  ["/admin", ["Admin", "Admin"]],
+  ["/privacy", ["Privacy Policy", "Kebijakan Privasi"]],
+  ["/about", ["About & Contact", "Tentang & Kontak"]],
+];
+const HOME: [string, string] = ["PathSync: Know Exactly What to Learn Next", "PathSync: Tahu Persis Apa yang Harus Dipelajari Berikutnya"];
+
+/** Keeps <html lang> and the tab title in step with the choice (the server always sends Indonesian). */
 export function LangSync() {
   const lang = useLang();
+  const path = usePathname();
   useEffect(() => {
     document.documentElement.lang = lang;
-  }, [lang]);
+    const pick = ([en, id]: [string, string]) => (lang === "en" ? en : id);
+    const hit = TITLES.find(([p]) => path === p || path.startsWith(p + "/"));
+    // after Next has applied the route's own metadata title
+    const raf = requestAnimationFrame(() => {
+      document.title = path === "/" ? pick(HOME) : hit ? `${pick(hit[1])} · PathSync` : document.title;
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [lang, path]);
   return null;
 }

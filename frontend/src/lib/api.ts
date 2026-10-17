@@ -31,6 +31,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   const token = tokenFor(path);
   if (token) headers.authorization = `Bearer ${token}`;
   if (method !== "GET") headers["x-pathsync"] = "1"; // CSRF guard for cookie-authenticated staff writes
+  headers["x-pathsync-lang"] = tNow("en", "id"); // the backend writes its explanations and messages in this language
   const init: RequestInit = { method, headers, credentials: "same-origin" };
   if (body instanceof FormData) {
     init.body = body;

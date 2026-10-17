@@ -13,9 +13,7 @@ from pathsync.item_audit import audit, item_cue_probabilities
 
 
 def main() -> None:
-    assessment.LANG = "en"
-    assessment.item_bank.cache_clear()
-    items = list(assessment.item_bank().values())
+    items = list(assessment.item_bank("en").values())
     report = audit(items)
     p = item_cue_probabilities(items)
     out = {"generated": date.today().isoformat(), "n_items": len(items), "language": "en", **report, "p_cue": p,

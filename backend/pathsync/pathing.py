@@ -12,7 +12,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .config import PATH_TOP_K, READINESS_THRESHOLD
+from .config import PATH_TOP_K, READINESS_THRESHOLD, tr
 from .ranker import Candidate
 from .taxonomy import SkillGraph
 
@@ -61,13 +61,13 @@ def counterfactuals(path: list[PathStep], ranked: list[tuple[Candidate, float]],
     order = [st.skill_id for st in path]
     cand = {c.skill_id: c for c, _ in ranked}
     alts = {
-        "PathSync order": order,
-        "Biggest gap first": sorted(order, key=lambda s: -(cand[s].G if s in cand else 0.0)),
-        "Most in-demand first": sorted(order, key=lambda s: -(cand[s].D if s in cand else 0.0)),
+        tr("PathSync order", "Urutan PathSync"): order,
+        tr("Biggest gap first", "Gap terbesar dulu"): sorted(order, key=lambda s: -(cand[s].G if s in cand else 0.0)),
+        tr("Most in-demand first", "Paling dicari dulu"): sorted(order, key=lambda s: -(cand[s].D if s in cand else 0.0)),
     }
     for c, _ in ranked[1:PATH_TOP_K]:
         if c.skill_id in order and c.blocked_by:
-            alts[f"{names[c.skill_id]} first"] = [c.skill_id] + [s for s in order if s != c.skill_id]
+            alts[tr(f"{names[c.skill_id]} first", f"{names[c.skill_id]} dulu")] = [c.skill_id] + [s for s in order if s != c.skill_id]
     rows = []
     for label, o in alts.items():
         b = blocked_steps(o, graph, p)
@@ -76,14 +76,19 @@ def counterfactuals(path: list[PathStep], ranked: list[tuple[Candidate, float]],
     notes = []
     for r in rows[1:]:
         for d in r["blocked_detail"][:1]:
-            notes.append(f"With \"{r['label'].lower()}\", you would get stuck on {names[d['skill_id']]} because "
-                         f"{', '.join(names[m] for m in d['waiting_for'])} is not mastered yet.")
+            waiting = ", ".join(names[m] for m in d["waiting_for"])
+            notes.append(tr(f"With \"{r['label'].lower()}\", you would get stuck on {names[d['skill_id']]} because "
+                            f"{waiting} is not mastered yet.",
+                            f"Dengan \"{r['label'].lower()}\", kamu akan macet di {names[d['skill_id']]} karena "
+                            f"{waiting} belum dikuasai."))
     best = min(rows, key=lambda r: r["blocked"])
     return {"alternatives": rows, "notes": notes[:3], "recommended_blocked": rows[0]["blocked"],
             "recommended_is_minimal": rows[0]["blocked"] == best["blocked"]}
 
 
-LEVEL_TEXT = {"awal": "beginner", "dasar": "basic", "mandiri": "proficient", "mahir": "advanced"}
+# (English, Indonesian)
+LEVEL_TEXT = {"awal": ("beginner", "pemula"), "dasar": ("basic", "dasar"), "mandiri": ("proficient", "mandiri"),
+              "mahir": ("advanced", "mahir")}
 
 
 def level_label(x: float) -> str:
@@ -103,36 +108,48 @@ def explain(c: Candidate, rank: int, contrib: dict[str, float], ctx: dict) -> di
     role_name = ctx["role_name"]
     p, r = ctx["p"].get(c.skill_id, 0.0), ctx["req"].get(c.skill_id, 0.0)
 
-    lv = LEVEL_TEXT
-    what = (f"Focus on {sk.learn_what}. You are at {lv[level_label(p)]} level ({p:.2f}); "
-            f"the role expects {lv[level_label(r)]} ({r:.2f}).")
+    def lv(x: float) -> str:
+        return tr(*LEVEL_TEXT[level_label(x)])
+    what = tr(f"Focus on {sk.learn_what}. You are at {lv(p)} level ({p:.2f}); the role expects {lv(r)} ({r:.2f}).",
+              f"Fokus pada {sk.learn_what}. Kamu di level {lv(p)} ({p:.2f}); role ini butuh {lv(r)} ({r:.2f}).")
     why_parts = []
     if md and ctx["market"].n_postings:
-        why_parts.append(f"Asked for in {md.count} of {ctx['market'].n_postings} {role_name} job postings ({md.share:.0%}).")
+        n = ctx["market"].n_postings
+        why_parts.append(tr(f"Asked for in {md.count} of {n} {role_name} job postings ({md.share:.0%}).",
+                            f"Diminta di {md.count} dari {n} job posting {role_name} ({md.share:.0%})."))
         if ctx["market"].trend_status == "ok" and abs(md.trend) >= 0.05:
-            why_parts.append(f"Demand is {'rising' if md.trend > 0 else 'falling'} {abs(md.trend):.0%} over the last 6 months.")
+            up = md.trend > 0
+            why_parts.append(tr(f"Demand is {'rising' if up else 'falling'} {abs(md.trend):.0%} over the last 6 months.",
+                                f"Demand {'naik' if up else 'turun'} {abs(md.trend):.0%} dalam 6 bulan terakhir."))
     esco = ctx["esco"].get(c.skill_id)
     if esco:
-        why_parts.append(f"Listed as {'essential' if esco == 'essential' else 'optional'} for this occupation in ESCO.")
+        ess = esco == "essential"
+        why_parts.append(tr(f"Listed as {'essential' if ess else 'optional'} for this occupation in ESCO.",
+                            f"Tercatat sebagai skill {'essential' if ess else 'optional'} untuk okupasi ini di ESCO."))
     quotes = ctx["quotes"].get(c.skill_id, [])[:2]
 
     if c.blocked_by:
-        now = (f"Not ready yet: {', '.join(names[q] for q in c.blocked_by)} must reach 0.6 first, "
-               f"so your path covers {'it' if len(c.blocked_by) == 1 else 'them'} before this.")
+        pre = ", ".join(names[q] for q in c.blocked_by)
+        now = tr(f"Not ready yet: {pre} must reach 0.6 first, so your path covers {'it' if len(c.blocked_by) == 1 else 'them'} before this.",
+                 f"Belum siap: {pre} harus mencapai 0.6 dulu, jadi path-mu membahasnya sebelum skill ini.")
     else:
-        now = "You already have the prerequisites, so you can start now."
+        now = tr("You already have the prerequisites, so you can start now.", "Prasyaratnya sudah kamu punya, jadi kamu bisa mulai sekarang.")
     if c.unlocks:
         k = len(c.unlocks)
-        now += (f" It unlocks {k} other skill{'s' if k > 1 else ''} you still need: "
-                f"{', '.join(names[t] for t in c.unlocks[:4])}{'' if k <= 4 else ', and more'}.")
+        listed = ", ".join(names[t] for t in c.unlocks[:4])
+        now += tr(f" It unlocks {k} other skill{'s' if k > 1 else ''} you still need: {listed}{'' if k <= 4 else ', and more'}.",
+                  f" Skill ini membuka {k} skill lain yang masih kamu butuhkan: {listed}{'' if k <= 4 else ', dan lainnya'}.")
     bottleneck = len(c.unlocks) >= 2 and not c.blocked_by
 
     nxt = ctx["next_step"].get(c.skill_id)
     if nxt:
-        nxt_txt = f"{names[nxt]}, once your {names[c.skill_id]} evidence reaches 0.6."
+        nxt_txt = tr(f"{names[nxt]}, once your {names[c.skill_id]} evidence reaches 0.6.",
+                     f"{names[nxt]}, setelah evidence {names[c.skill_id]}-mu mencapai 0.6.")
     elif c.unlocks:
-        nxt_txt = f"{names[c.unlocks[0]]}, which builds on this skill."
+        nxt_txt = tr(f"{names[c.unlocks[0]]}, which builds on this skill.", f"{names[c.unlocks[0]]}, yang dibangun di atas skill ini.")
     else:
-        nxt_txt = "Add new evidence (a re-check or a project) to refresh your path."
-    return {"what": what, "why": " ".join(why_parts) or "Required by your target role.", "why_now": now, "next": nxt_txt,
+        nxt_txt = tr("Add new evidence (a re-check or a project) to refresh your path.",
+                     "Tambahkan evidence baru (check ulang atau project) untuk memperbarui path-mu.")
+    why = " ".join(why_parts) or tr("Required by your target role.", "Dibutuhkan oleh target role-mu.")
+    return {"what": what, "why": why, "why_now": now, "next": nxt_txt,
             "quotes": quotes, "bottleneck": bottleneck, "contributions": contrib, "rank": rank}

@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 
 from pathsync import soft
 from pathsync.careers import careers_for
-from pathsync.config import GRADE_SCORES, ROLES
+from pathsync.config import GRADE_SCORES, ROLES, tr
 from pathsync.db import (
     AssessmentResponse,
     CourseEnrollment,
@@ -72,9 +72,9 @@ class StudentPatch(BaseModel):
 @router.post("/students", dependencies=[Depends(rate_limit("signup", 20))])
 def create_student(body: StudentIn, s: Session = Depends(db_session)):
     if not body.consent:
-        raise HTTPException(400, "Please accept the data consent to continue.")
+        raise HTTPException(400, tr("Please accept the data consent to continue.", "Setujui persetujuan data untuk melanjutkan."))
     if body.target_role not in ROLES:
-        raise HTTPException(400, "Unknown target role.")
+        raise HTTPException(400, tr("Unknown target role.", "Target role tidak dikenal."))
     token = new_token()
     st = Student(display_name=body.display_name.strip() or "Student", program=body.program, semester=body.semester,
                  target_role=body.target_role, consent_at=utcnow(), consent_version=CONSENT_VERSION,
@@ -106,7 +106,7 @@ def get_student(st: Student = Depends(student_access), s: Session = Depends(db_s
 def patch_student(body: StudentPatch, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     st = s.merge(st)
     if body.target_role and body.target_role not in ROLES:
-        raise HTTPException(400, "Unknown target role.")
+        raise HTTPException(400, tr("Unknown target role.", "Target role tidak dikenal."))
     role_changed = bool(body.target_role and body.target_role != st.target_role)
     for k in ("display_name", "program", "semester", "target_role"):
         if getattr(body, k) is not None:
@@ -135,9 +135,9 @@ class SoftExperienceIn(BaseModel):
 def put_soft_experience(body: SoftExperienceIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     """Soft skills are recorded as experience (no quiz); they never enter the ranking or the path."""
     if body.skill_id not in soft.load_soft():
-        raise HTTPException(400, "Unknown soft skill.")
+        raise HTTPException(400, tr("Unknown soft skill.", "Soft skill tidak dikenal."))
     if body.level not in soft.LEVELS:
-        raise HTTPException(400, "Level must be 0-3.")
+        raise HTTPException(400, tr("Level must be 0-3.", "Level harus 0-3."))
     st = s.merge(st)
     prefs = dict(st.preferences or {})
     exp = soft.clean_experience(prefs.get("soft_experience"))
@@ -186,7 +186,7 @@ def _text_from(text: str, file: UploadFile | None) -> tuple[str, str | None]:
         except DocumentRejected as e:
             raise HTTPException(413, str(e)) from e
         except Exception as e:  # a damaged PDF/DOCX/notebook is the student's file problem, not a server error
-            raise HTTPException(422, "We couldn't read this file. Try exporting it again as PDF, or paste the text instead.") from e
+            raise HTTPException(422, tr("We couldn't read this file. Try exporting it again as PDF, or paste the text instead.", "File ini tidak bisa kami baca. Coba ekspor ulang sebagai PDF, atau tempel teksnya.")) from e
         return clip_text(text), file.filename
     return clip_text(text), None
 
@@ -202,7 +202,7 @@ def add_academic(body: CoursesIn, st: Student = Depends(student_access), s: Sess
     st = s.merge(st)
     courses = [{"name": str(c.get("name", ""))[:200], "grade": str(c.get("grade", "")).upper()[:2]} for c in body.courses]
     if not any(c["grade"] in GRADE_SCORES for c in courses):
-        raise HTTPException(400, "Add at least one course with a letter grade (A to E).")
+        raise HTTPException(400, tr("Add at least one course with a letter grade (A to E).", "Tambahkan minimal satu mata kuliah dengan nilai huruf (A sampai E)."))
     item, detail = academic_evidence(courses)
     s.execute(delete(Evidence).where(Evidence.student_id == st.id, Evidence.kind == "academic"))
     s.add(Evidence(student_id=st.id, kind="academic", title="Transcript", scores=item.scores,
@@ -218,7 +218,7 @@ def add_cert(body: CertsIn, st: Student = Depends(student_access), s: Session = 
     certs = [{"name": str(c.get("name", ""))[:200], "score": c.get("score"), "url": str(c.get("url") or "")[:500]}
              for c in body.certificates if c.get("name")]
     if not certs:
-        raise HTTPException(400, "Add at least one certificate name.")
+        raise HTTPException(400, tr("Add at least one certificate name.", "Tambahkan minimal satu nama sertifikat."))
     # a credential link from a known issuer counts fully; a typed name alone is a claim at half weight (PM audit AI-3)
     groups = {"auto": [c for c in certs if verification_link(c["url"])], "claimed": [c for c in certs if not verification_link(c["url"])]}
     scores, details = {}, []
@@ -242,7 +242,7 @@ def add_cv(st: Student = Depends(student_access), text: str = Form(""), file: Up
     st = s.merge(st)
     body, fname = _text_from(text, file)
     if len(body.strip()) < 20:
-        raise HTTPException(400, "The CV text is too short. Paste the full CV or upload the file.")
+        raise HTTPException(400, tr("The CV text is too short. Paste the full CV or upload the file.", "Teks CV terlalu pendek. Tempel CV lengkap atau unggah file-nya."))
     item, detail = cv_evidence(body)
     s.execute(delete(Evidence).where(Evidence.student_id == st.id, Evidence.kind == "cv"))
     s.add(Evidence(student_id=st.id, kind="cv", title=fname or "CV", scores={}, details={"claim_ids": item.claims, **detail}))
@@ -259,16 +259,17 @@ def add_project(st: Student = Depends(student_access), title: str = Form("Projec
     today = s.scalar(select(func.count(Evidence.id)).where(Evidence.student_id == st.id, Evidence.kind == "project",
                                                            Evidence.created_at >= since))
     if today >= MAX_PROJECTS_PER_DAY:
-        raise HTTPException(429, f"You can add up to {MAX_PROJECTS_PER_DAY} projects per day. Try again tomorrow.")
+        raise HTTPException(429, tr(f"You can add up to {MAX_PROJECTS_PER_DAY} projects per day. Try again tomorrow.",
+                                    f"Kamu bisa menambah maksimal {MAX_PROJECTS_PER_DAY} project per hari. Coba lagi besok."))
     body, _ = _text_from(text, file)
     if len(body.strip()) < 30:
-        raise HTTPException(400, "The project text is too short. Paste more of it or upload the file.")
+        raise HTTPException(400, tr("The project text is too short. Paste more of it or upload the file.", "Teks project terlalu pendek. Tempel lebih banyak atau unggah file-nya."))
     sig = artifact_signature(body)
     for e in s.scalars(select(Evidence).where(Evidence.kind == "project")):
         if signature_similarity(sig, (e.details or {}).get("signature") or []) >= DUPLICATE_THRESHOLD:
             mine = e.student_id == st.id
-            raise HTTPException(409, "You already added this project." if mine else
-                                "This document matches one another student already submitted. Upload your own work.")
+            raise HTTPException(409, tr("You already added this project.", "Project ini sudah kamu tambahkan.") if mine else
+                                tr("This document matches one another student already submitted. Upload your own work.", "Dokumen ini sama dengan yang sudah dikirim mahasiswa lain. Unggah karyamu sendiri."))
     item, detail = project_evidence(body, title[:200])
     detail["signature"] = sig
     if course:
@@ -287,7 +288,7 @@ def delete_evidence(eid: int, st: Student = Depends(student_access), s: Session 
     st = s.merge(st)
     e = s.get(Evidence, eid)
     if not e or e.student_id != st.id:
-        raise HTTPException(404, "Evidence not found.")
+        raise HTTPException(404, tr("Evidence not found.", "Evidence tidak ditemukan."))
     s.delete(e)
     s.commit()
     after_change(s, st, "evidence", "evidence removed")
@@ -329,4 +330,4 @@ def trace(skill_id: str, st: Student = Depends(student_access), s: Session = Dep
     try:
         return decision_trace(s, st, skill_id)
     except KeyError:
-        raise HTTPException(404, "Unknown skill.") from None
+        raise HTTPException(404, tr("Unknown skill.", "Skill tidak dikenal.")) from None

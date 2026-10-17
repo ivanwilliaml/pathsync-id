@@ -18,6 +18,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import IntegrityError
 
+from pathsync.config import _REQUEST_LANG, set_request_lang
 from pathsync.db import get_session, init_db
 from pathsync.embeddings import WARM
 from pathsync.engine import ensure_seed
@@ -103,7 +104,7 @@ app = FastAPI(title="PathSync API", version="1.0.0", lifespan=lifespan,
                           "at sign-up; staff routes need an admin, expert or advisor token.")
 origins = [o.strip() for o in os.getenv("PATHSYNC_CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",") if o.strip()]
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
-                   allow_headers=["Authorization", "Content-Type", "X-PathSync", "X-Request-ID"],
+                   allow_headers=["Authorization", "Content-Type", "X-PathSync", "X-PathSync-Lang", "X-Request-ID"],
                    expose_headers=["X-Request-ID"], allow_credentials=True)
 
 
@@ -111,7 +112,12 @@ app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", 
 async def request_context(request: Request, call_next):
     rid = request.headers.get("x-request-id") or uuid.uuid4().hex[:12]
     t0 = time.perf_counter()
-    response = await call_next(request)
+    # display language chosen in the web app (falls back to Accept-Language, then the server default)
+    lang_token = set_request_lang(request.headers.get("x-pathsync-lang") or request.headers.get("accept-language"))
+    try:
+        response = await call_next(request)
+    finally:
+        _REQUEST_LANG.reset(lang_token)
     ms = (time.perf_counter() - t0) * 1000
     response.headers["X-Request-ID"] = rid
     response.headers["X-Content-Type-Options"] = "nosniff"

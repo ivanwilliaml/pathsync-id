@@ -20,6 +20,7 @@ from pathsync.config import (
     ROLES,
     SIM_AUTO,
     SIM_REVIEW,
+    tr,
 )
 from pathsync.db import Expert, GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot, utcnow
 from pathsync.embeddings import WARM
@@ -27,7 +28,7 @@ from pathsync.engine import graph_from_db
 from pathsync.extraction.llm import llm_configured
 from pathsync.roles import FAMILIES
 from pathsync.security import db_session, rate_limit
-from pathsync.taxonomy import cluster_names, load_skills, load_taxonomy
+from pathsync.taxonomy import cluster_names, display_rationale, display_skills, load_taxonomy
 
 LIMITED_DATA_POSTINGS = 30   # below this many postings a role is shown as "limited data" (beta)
 router = APIRouter(prefix="/api", tags=["public"], dependencies=[Depends(rate_limit("public", 240))])
@@ -108,7 +109,7 @@ def bps_context():
 def meta(s: Session = Depends(db_session)):
     tax = load_taxonomy()
     snaps = {r: (snap.version if (snap := active_snapshot(s, r)) else None) for r in ROLES}
-    skills = load_skills()
+    skills = display_skills()
     ranker = s.scalars(select(RankerModel).where(RankerModel.active.is_(True))).first()
     role_info = []
     for k, v in ROLES.items():
@@ -140,11 +141,11 @@ def catalog():
 @router.get("/market/{role}")
 def market(role: str, s: Session = Depends(db_session)):
     if role not in ROLES:
-        raise HTTPException(404, "Unknown role.")
+        raise HTTPException(404, tr("Unknown role.", "Role tidak dikenal."))
     snap = active_snapshot(s, role)
     if not snap:
-        raise HTTPException(404, "No market snapshot yet. Run a market update first.")
-    skills = load_skills()
+        raise HTTPException(404, tr("No market snapshot yet. Run a market update first.", "Belum ada snapshot pasar. Jalankan update pasar dulu."))
+    skills = display_skills()
     data = snap.data
     rows = [{**v, "name": skills[k].name, "cluster": skills[k].cluster, "required": snap.required.get(k)}
             for k, v in data["skills"].items() if v["count"] or k in snap.required]
@@ -160,9 +161,9 @@ def market(role: str, s: Session = Depends(db_session)):
 
 @router.get("/market/{role}/skill/{skill_id}")
 def market_skill(role: str, skill_id: str, s: Session = Depends(db_session)):
-    skills = load_skills()
+    skills = display_skills()
     if role not in ROLES or skill_id not in skills:
-        raise HTTPException(404, "Unknown role or skill.")
+        raise HTTPException(404, tr("Unknown role or skill.", "Role atau skill tidak dikenal."))
     rows = s.execute(select(PostingMention, Posting).join(Posting, Posting.id == PostingMention.posting_id)
                      .where(Posting.role == role, Posting.duplicate_of.is_(None), Posting.in_window.is_(True),
                             PostingMention.skill_id == skill_id, PostingMention.status == "auto")
@@ -201,7 +202,7 @@ def postings(role: str | None = None, q: str | None = None, limit: int = 100, s:
 def posting(pid: str, s: Session = Depends(db_session)):
     p = s.get(Posting, pid)
     if not p:
-        raise HTTPException(404, "Posting not found.")
+        raise HTTPException(404, tr("Posting not found.", "Posting tidak ditemukan."))
     return {"id": p.id, "title": p.title, "company": p.company, "url": p.url, "source": p.source, "description": p.description,
             "published_at": p.published_at.isoformat() if p.published_at else None, "extractor": p.extractor,
             "mentions": [{"skill_id": m.skill_id, "surface": m.surface, "quote": m.quote, "level": m.level,
@@ -210,7 +211,7 @@ def posting(pid: str, s: Session = Depends(db_session)):
 
 def graph_payload(s: Session, role: str, rec: dict | None = None) -> dict:
     g = graph_from_db(s)
-    skills = load_skills()
+    skills = display_skills()
     depth = g.depth()
     snap = active_snapshot(s, role)
     D = {k: v["demand"] for k, v in snap.data["skills"].items()} if snap else {}
@@ -225,8 +226,8 @@ def graph_payload(s: Session, role: str, rec: dict | None = None) -> dict:
         nodes.append({"id": k, "name": sk.name, "cluster": sk.cluster, "depth": depth[k], "demand": D.get(k, 0.0),
                       "p": c.get("p"), "required": c.get("required"), "rank": rank.get(k, {}).get("rank"),
                       "in_path": k in path, "path_index": path.get(k), "bottleneck": bool(expl.get("bottleneck"))})
-    edges = [{"id": e.id, "from": e.src, "to": e.dst, "source": e.source, "rationale": e.rationale, "status": e.status,
-              "active": (e.src, e.dst) in active} for e in s.scalars(select(GraphEdge)).all()]
+    edges = [{"id": e.id, "from": e.src, "to": e.dst, "source": e.source, "rationale": display_rationale(e.src, e.dst, e.rationale),
+              "status": e.status, "active": (e.src, e.dst) in active} for e in s.scalars(select(GraphEdge)).all()]
     return {"nodes": nodes, "edges": edges, "clusters": cluster_names()}
 
 
@@ -246,7 +247,7 @@ def taxonomy_report(role: str = "business_analyst", s: Session = Depends(db_sess
     """Is the skill list final? Measured exit criteria, core vs adjacent skills, frozen hash, changelog."""
     from pathsync.governance import report
     if role not in ROLES:
-        raise HTTPException(404, "Unknown role.")
+        raise HTTPException(404, tr("Unknown role.", "Role tidak dikenal."))
     return report(s, role)
 
 

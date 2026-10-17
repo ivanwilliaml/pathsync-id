@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from .config import BKT_GUESS, BKT_SLIP, BKT_TRANSIT, EVIDENCE_WEIGHTS, LOW_CONFIDENCE, PRIOR_NO_EVIDENCE, RUBRIC_SCORES
+from .config import BKT_GUESS, BKT_SLIP, BKT_TRANSIT, EVIDENCE_WEIGHTS, LOW_CONFIDENCE, PRIOR_NO_EVIDENCE, RUBRIC_SCORES, tr
 
 # confidence contribution of one piece of evidence of each kind (scaled by mapping strength)
 CONFIDENCE_STRENGTH = {"academic": 0.20, "certificate": 0.30, "project": 0.45}
@@ -142,7 +142,8 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
         if d:
             g = diag_guess[s]
             st.components["assessment"] = smoothed_accuracy(sum(d), len(d), sum(g) / len(g))
-            st.sources.setdefault("assessment", []).append(f"Diagnostic assessment ({sum(d)}/{len(d)} correct)")
+            st.sources.setdefault("assessment", []).append(tr(f"Diagnostic assessment ({sum(d)}/{len(d)} correct)",
+                                                              f"Assessment diagnostik ({sum(d)}/{len(d)} benar)"))
         # eq. (2): weighted mean over the evidence that exists
         if st.components:
             wk = {k: w[k] * factor.get((s, k), 1.0) for k in st.components}

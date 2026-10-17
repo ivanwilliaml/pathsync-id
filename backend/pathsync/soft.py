@@ -13,11 +13,24 @@ from functools import lru_cache
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from .config import SEED_DIR
+from .config import SEED_DIR, lang, tr
 from .db import Posting
 
-LEVELS = {0: "No experience yet", 1: "Tried it (class, club, event)", 2: "Regular (project, internship, job)",
-          3: "Led or taught others"}
+# (English, Indonesian)
+LEVELS = {0: ("No experience yet", "Belum ada pengalaman"), 1: ("Tried it (class, club, event)", "Pernah mencoba (kelas, organisasi, acara)"),
+          2: ("Regular (project, internship, job)", "Rutin (project, magang, kerja)"), 3: ("Led or taught others", "Memimpin atau mengajari orang lain")}
+# Indonesian "how to build" tips; the seed file holds the English ones
+HOW_TO_BUILD_ID = {
+    "verbal_communication": "Latih dengan menjelaskan topik teknis ke teman yang bukan dari bidang teknis, atau dengan presentasi di kelas atau rapat organisasi.",
+    "presentation_storytelling": "Presentasikan hasil project dengan satu pesan yang jelas dan tiga slide, lalu minta masukan.",
+    "business_writing": "Tulis README atau laporan satu halaman untuk sebuah project, lalu minta orang lain menceritakan apa yang mereka pahami.",
+    "collaboration": "Ikut project kelompok atau kepanitiaan, gunakan papan tugas bersama, dan catat apa yang kamu selesaikan.",
+    "critical_thinking": "Tulis satu masalah yang pernah kamu selesaikan: opsi yang kamu bandingkan, kenapa memilih salah satunya, dan apa yang kamu cek.",
+    "stakeholder_management": "Jalankan project kecil dengan pemberi tugas nyata (dosen, organisasi, pelanggan) dan catat apa saja yang mereka minta.",
+    "project_management": "Rencanakan project dengan milestone dan penanggung jawab, pantau tiap minggu, dan tulis retrospektif singkat.",
+    "agile_scrum": "Jalankan sprint dua minggu di project tim dengan planning, check-in harian, dan review.",
+    "english_proficiency": "Baca dokumentasi dan tulis commit message atau laporan dalam bahasa Inggris; skor TOEFL/IELTS adalah bukti yang kuat.",
+}
 MAX_NOTE = 240
 
 
@@ -63,7 +76,9 @@ def soft_profile(demand: dict[str, float], experience: dict | None) -> list[dict
     rows = []
     for sid, sk in load_soft().items():
         e = exp.get(sid, {"level": 0, "note": ""})
-        rows.append({"skill_id": sid, "name": sk["name_en"], "demand": demand.get(sid, 0.0), "level": e["level"],
-                     "level_label": LEVELS[e["level"]], "note": e["note"], "how_to_build": sk["how_to_build"]})
+        en = lang() == "en"
+        rows.append({"skill_id": sid, "name": sk["name_en"] if en else sk.get("name", sk["name_en"]), "demand": demand.get(sid, 0.0),
+                     "level": e["level"], "level_label": tr(*LEVELS[e["level"]]), "note": e["note"],
+                     "how_to_build": sk["how_to_build"] if en else HOW_TO_BUILD_ID.get(sid, sk["how_to_build"])})
     rows.sort(key=lambda r: -r["demand"])
     return rows

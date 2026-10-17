@@ -23,7 +23,7 @@ from pathsync.assessment import (
     reassessment_items,
     validate_submission,
 )
-from pathsync.config import READINESS_THRESHOLD
+from pathsync.config import READINESS_THRESHOLD, tr
 from pathsync.db import AssessmentResponse, AssessmentSession, ProductEvent, Student, utcnow
 from pathsync.engine import load_context, record_history, responses, student_states
 from pathsync.security import db_session, rate_limit, student_access
@@ -65,7 +65,7 @@ def diagnostic(st: Student = Depends(student_access), s: Session = Depends(db_se
     ctx = load_context(s, st.target_role)
     plan = diagnostic_plan(ctx.market, student_states(s, st, ctx), _answered(s, st.id))
     if not plan:
-        raise HTTPException(409, "You have answered every quick-check question for your role's key skills.")
+        raise HTTPException(409, tr("You have answered every quick-check question for your role's key skills.", "Kamu sudah menjawab semua soal Quick Check untuk skill utama role-mu."))
     sess = _issue(s, st, "diagnostic", plan, None)
     return {"session_id": sess.id, "expires_at": sess.expires_at.isoformat(), "items": _items_payload(sess, ctx.names)}
 
@@ -74,12 +74,13 @@ def diagnostic(st: Student = Depends(student_access), s: Session = Depends(db_se
 def reassess(skill_id: str, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     ctx = load_context(s, st.target_role)
     if skill_id not in ctx.skills:
-        raise HTTPException(404, "Unknown skill.")
+        raise HTTPException(404, tr("Unknown skill.", "Skill tidak dikenal."))
     p = student_states(s, st, ctx)[skill_id].p
     items = reassessment_items(skill_id, p, _answered(s, st.id))
     if not items:
-        raise HTTPException(409, f"No unseen questions left for {ctx.names[skill_id]}. "
-                                 "Show this skill with a project from a course or your own work instead.")
+        nm = ctx.names[skill_id]
+        raise HTTPException(409, tr(f"No unseen questions left for {nm}. Show this skill with a project from a course or your own work instead.",
+                                    f"Soal untuk {nm} sudah habis. Tunjukkan skill ini lewat project dari mata kuliah atau karyamu sendiri."))
     sess = _issue(s, st, "reassessment", items, skill_id)
     return {"session_id": sess.id, "skill_id": skill_id, "skill_name": ctx.names[skill_id], "p": p,
             "expires_at": sess.expires_at.isoformat(), "items": _items_payload(sess, ctx.names)}
@@ -94,23 +95,23 @@ class SubmitIn(BaseModel):
 def submit(body: SubmitIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     sess = s.get(AssessmentSession, body.session_id)
     if sess is None or sess.student_id != st.id:
-        raise HTTPException(404, "This check session was not found. Start the check again.")
+        raise HTTPException(404, tr("This check session was not found. Start the check again.", "Sesi check ini tidak ditemukan. Mulai check-nya lagi."))
     if sess.submitted_at is not None:
-        raise HTTPException(409, "This check was already submitted.")
+        raise HTTPException(409, tr("This check was already submitted.", "Check ini sudah dikirim."))
     if sess.expires_at < utcnow():
-        raise HTTPException(410, "This check expired. Start it again to get fresh questions.")
+        raise HTTPException(410, tr("This check expired. Start it again to get fresh questions.", "Check ini sudah kedaluwarsa. Mulai lagi untuk mendapat soal baru."))
     try:
         answers = validate_submission(sess.item_ids, body.answers)
     except SubmissionError as e:
         raise HTTPException(400, str(e)) from None
     if not answers:
-        raise HTTPException(400, "Answer at least one question.")
+        raise HTTPException(400, tr("Answer at least one question.", "Jawab minimal satu soal."))
     ctx = load_context(s, st.target_role)
     before = student_states(s, st, ctx)
     elapsed = (utcnow() - sess.created_at).total_seconds()
     if elapsed < MIN_SECONDS_PER_ITEM * len(sess.item_ids):
         # a real read-and-answer takes seconds per question; a bot or an answer-sheet run does not (PM audit P0-1)
-        raise HTTPException(422, "That was very fast. Read each question, then submit again.")
+        raise HTTPException(422, tr("That was very fast. Read each question, then submit again.", "Itu terlalu cepat. Baca setiap soal, lalu kirim lagi."))
     graded = grade(answers, sess.id)
     for g in graded:
         s.add(AssessmentResponse(student_id=st.id, item_id=g["item_id"], skill_id=g["skill_id"], correct=g["correct"],

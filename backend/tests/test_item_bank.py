@@ -11,10 +11,9 @@ def bank(request, monkeypatch):
     import pathsync.config as config
 
     monkeypatch.setattr(config, "LANG", request.param)
-    monkeypatch.setattr(assessment, "LANG", request.param)
-    assessment.item_bank.cache_clear()
+    assessment._item_bank.cache_clear()
     yield assessment.item_bank()
-    assessment.item_bank.cache_clear()
+    assessment._item_bank.cache_clear()
     importlib.reload(assessment)
 
 

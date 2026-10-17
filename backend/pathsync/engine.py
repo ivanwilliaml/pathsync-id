@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from . import soft
 from .calibration import active_evidence_weights
-from .config import FORMULA5_WEIGHTS, READINESS_THRESHOLD, ROLES, SEED_DIR
+from .config import FORMULA5_WEIGHTS, READINESS_THRESHOLD, ROLES, SEED_DIR, lang, tr
 from .db import (
     AssessmentResponse,
     GraphEdge,
@@ -34,13 +34,27 @@ from .evidence import EvidenceItem, Response, SkillState, diagnose, recommendati
 from .market import esco_status, load_market
 from .pathing import blocked_steps, build_path, counterfactuals, coverage, explain, level_label
 from .ranker import RankingModel, build_candidates
-from .taxonomy import Edge, Skill, SkillGraph, cluster_names, load_draft_edges, load_skills, seed_rationales
+from .taxonomy import (
+    Edge,
+    Skill,
+    SkillGraph,
+    cluster_names,
+    display_rationale,
+    display_skills,
+    load_draft_edges,
+    seed_rationales,
+)
 
+# (English, Indonesian)
 FLAG_TEXT = {
-    "paparan_akademik_tanpa_bukti_langsung": "Strong course grades, but no project or assessment evidence yet.",
-    "klaim_cv_belum_terbukti": "Mentioned on your CV, but there is no evidence we can check yet.",
-    "bukti_bertentangan": "Your course grades are much higher than your assessment result.",
-    "persepsi_lebih_tinggi_dari_bukti": "You rated yourself higher than your evidence shows.",
+    "paparan_akademik_tanpa_bukti_langsung": ("Strong course grades, but no project or assessment evidence yet.",
+                                              "Nilai mata kuliahmu bagus, tapi belum ada evidence project atau assessment."),
+    "klaim_cv_belum_terbukti": ("Mentioned on your CV, but there is no evidence we can check yet.",
+                                "Disebut di CV-mu, tapi belum ada evidence yang bisa kami cek."),
+    "bukti_bertentangan": ("Your course grades are much higher than your assessment result.",
+                           "Nilai mata kuliahmu jauh lebih tinggi daripada hasil assessment-mu."),
+    "persepsi_lebih_tinggi_dari_bukti": ("You rated yourself higher than your evidence shows.",
+                                         "Penilaian dirimu lebih tinggi daripada yang ditunjukkan evidence-mu."),
 }
 
 
@@ -89,8 +103,8 @@ def ensure_seed(s: Session) -> None:
 
 def graph_from_db(s: Session) -> SkillGraph:
     rows = s.scalars(select(GraphEdge)).all()
-    edges = [Edge(r.src, r.dst, r.source, r.rationale, r.status) for r in rows] or load_draft_edges()
-    return SkillGraph(load_skills(), edges)
+    edges = [Edge(r.src, r.dst, r.source, display_rationale(r.src, r.dst, r.rationale), r.status) for r in rows] or load_draft_edges()
+    return SkillGraph(display_skills(), edges)
 
 
 def active_model(s: Session) -> tuple[RankingModel, int | None]:
@@ -127,18 +141,18 @@ _CTX_LOCK = threading.Lock()
 def load_context(s: Session, role: str) -> Context:
     """Shared, read-only decision context for a role.
 
-    Built once per (role, active snapshot, active model, cache epoch) and reused by every student:
+    Built once per (role, active snapshot, active model, cache epoch, display language) and reused by every student:
     the paper notes the demand map is computed once per update and shared, so adding users does not
     add proportional compute (III.B). Any change to snapshot, model or graph bumps the epoch.
     """
     snap = active_snapshot(s, role)
     model_row = s.scalars(select(RankerModel.id).where(RankerModel.active.is_(True)).order_by(RankerModel.id.desc())).first()
-    key = (role, snap.id if snap else None, model_row, cache_epoch(s))
+    key = (role, snap.id if snap else None, model_row, cache_epoch(s), lang())
     with _CTX_LOCK:
         hit = _CTX_CACHE.get(key)
     if hit is not None:
         return hit
-    skills = load_skills()
+    skills = display_skills()
     market, req, version = load_market(s, role)
     model, model_id = active_model(s)
     ctx = Context(role=role, role_name=ROLES[role]["name"], skills=skills, names={k: v.name for k, v in skills.items()},
@@ -286,7 +300,7 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
             "first_module_hours": round(min(hours, mats[0]["hours"]) if mats else min(hours, 2.0), 1),
             "waiting_for": waiting, "learn_what": ctx.skills[sid].learn_what,
             "why_prereq": None if stp.role_in_path == "prioritas" else
-            f"Needed before {', '.join(ctx.names[t] for t in graph.dependents.get(sid, []) if t in order)}.",
+            tr("Needed before {}.", "Dibutuhkan sebelum {}.").format(", ".join(ctx.names[t] for t in graph.dependents.get(sid, []) if t in order)),
             "explanation": rank_of.get(sid, {}).get("explanation"),
         })
 
@@ -312,7 +326,7 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
             "rec_type": recommendation_type(st), "level": level_label(st.p), "esco": ctx.esco.get(k, ""),
         })
     competencies.sort(key=lambda c: -c["demand"])
-    confirmations = [{"skill_id": c["skill_id"], "name": c["name"], "flag": f, "message": FLAG_TEXT[f]}
+    confirmations = [{"skill_id": c["skill_id"], "name": c["name"], "flag": f, "message": tr(*FLAG_TEXT[f])}
                      for c in competencies for f in c["flags"] if f in FLAG_TEXT]
     perception = [{"skill_id": c["skill_id"], "name": c["name"], "self_rating": c["self_rating"], "p": c["p"]}
                   for c in competencies if c["self_rating"] is not None]
@@ -357,40 +371,53 @@ def _reasons(prev: list[dict], cur: list[dict], rec: dict, names: dict[str, str]
         a, b = pm.get(sid), cm.get(sid)
         nm = names.get(sid, sid)
         if a and not b:
-            reasons.append(f"{nm} left your priorities: the gap is closed (mastery {comp.get(sid, {}).get('p', 0):.2f}).")
+            pv = comp.get(sid, {}).get("p", 0)
+            reasons.append(tr(f"{nm} left your priorities: the gap is closed (mastery {pv:.2f}).",
+                              f"{nm} keluar dari prioritasmu: gap-nya sudah tertutup (mastery {pv:.2f})."))
             continue
         if b and not a:
-            reasons.append(f"{nm} joined your priorities at #{b['rank']}.")
+            reasons.append(tr(f"{nm} joined your priorities at #{b['rank']}.", f"{nm} masuk prioritasmu di #{b['rank']}."))
             continue
         if a["rank"] == b["rank"] and abs(a["priority"] - b["priority"]) < 0.01:
             continue
         causes = []
         if a.get("p") is not None and b.get("p") is not None and abs(a["p"] - b["p"]) >= 0.02:
-            causes.append(f"your mastery {'rose' if b['p'] > a['p'] else 'fell'} {a['p']:.2f} to {b['p']:.2f}")
+            up = b["p"] > a["p"]
+            causes.append(tr(f"your mastery {'rose' if up else 'fell'} {a['p']:.2f} to {b['p']:.2f}",
+                             f"mastery-mu {'naik' if up else 'turun'} dari {a['p']:.2f} ke {b['p']:.2f}"))
         elif abs(a["G"] - b["G"]) >= 0.02:
-            causes.append(f"gap {'narrowed' if b['G'] < a['G'] else 'widened'} {a['G']:.2f} to {b['G']:.2f}")
+            nar = b["G"] < a["G"]
+            causes.append(tr(f"gap {'narrowed' if nar else 'widened'} {a['G']:.2f} to {b['G']:.2f}",
+                             f"gap {'menyempit' if nar else 'melebar'} dari {a['G']:.2f} ke {b['G']:.2f}"))
         if a["R"] != b["R"]:
-            causes.append("prerequisites now met" if b["R"] > a["R"] else "prerequisites not met yet")
+            causes.append(tr("prerequisites now met", "prasyarat kini terpenuhi") if b["R"] > a["R"]
+                          else tr("prerequisites not met yet", "prasyarat belum terpenuhi"))
         if abs(a["D"] - b["D"]) >= 0.01:
-            causes.append(f"market demand {'rose' if b['D'] > a['D'] else 'fell'} {a['D']:.0%} to {b['D']:.0%}")
+            up = b["D"] > a["D"]
+            causes.append(tr(f"market demand {'rose' if up else 'fell'} {a['D']:.0%} to {b['D']:.0%}",
+                             f"market demand {'naik' if up else 'turun'} dari {a['D']:.0%} ke {b['D']:.0%}"))
         if abs(a["T"] - b["T"]) >= 0.01:
-            causes.append(f"trend {'strengthened' if b['T'] > a['T'] else 'weakened'}")
+            causes.append(tr("trend strengthened", "tren menguat") if b["T"] > a["T"] else tr("trend weakened", "tren melemah"))
         if not causes:
-            causes.append("changes in skills that depend on it")
-        move = "moved up" if b["rank"] < a["rank"] else "moved down" if b["rank"] > a["rank"] else "stayed"
-        reasons.append(f"{nm} {move} #{a['rank']} to #{b['rank']}: {', '.join(causes)}.")
+            causes.append(tr("changes in skills that depend on it", "perubahan pada skill yang bergantung padanya"))
+        move = (tr("moved up", "naik") if b["rank"] < a["rank"] else tr("moved down", "turun") if b["rank"] > a["rank"]
+                else tr("stayed", "tetap"))
+        reasons.append(tr(f"{nm} {move} #{a['rank']} to #{b['rank']}: {', '.join(causes)}.",
+                          f"{nm} {move} dari #{a['rank']} ke #{b['rank']}: {', '.join(causes)}."))
     top_prev = prev[0]["skill_id"] if prev else None
     top_cur = cur[0]["skill_id"] if cur else None
-    label = {"initial": "First path created", "evidence": "New evidence added", "market": "Job market updated",
-             "role": "Target role changed", "manual": "Manual update"}[trigger]
+    label = tr(*{"initial": ("First path created", "Path pertama dibuat"), "evidence": ("New evidence added", "Evidence baru ditambahkan"),
+                  "market": ("Job market updated", "Pasar kerja diperbarui"), "role": ("Target role changed", "Target role diganti"),
+                  "manual": ("Manual update", "Update manual")}[trigger])
     if top_cur and not top_prev:
-        summary = f"{label}: your top priority is {names[top_cur]}."
+        summary = tr(f"{label}: your top priority is {names[top_cur]}.", f"{label}: prioritas utamamu adalah {names[top_cur]}.")
     elif top_prev and top_cur and top_prev != top_cur:
-        summary = f"{label}: your top priority moved from {names[top_prev]} to {names[top_cur]}."
+        summary = tr(f"{label}: your top priority moved from {names[top_prev]} to {names[top_cur]}.",
+                     f"{label}: prioritas utamamu berpindah dari {names[top_prev]} ke {names[top_cur]}.")
     elif top_cur:
-        summary = f"{label}: {names[top_cur]} is still your top priority."
+        summary = tr(f"{label}: {names[top_cur]} is still your top priority.", f"{label}: {names[top_cur]} masih prioritas utamamu.")
     else:
-        summary = f"{label}: no gaps left for this role."
+        summary = tr(f"{label}: no gaps left for this role.", f"{label}: tidak ada gap tersisa untuk role ini.")
     if note:
         summary += f" ({note})"
     return summary, reasons[:8]
@@ -409,7 +436,7 @@ def record_history(s: Session, student: Student, trigger: str, note: str = "", r
     if last is None:
         trigger = "initial"
         summary, reasons = _reasons([], cur, rec, names, trigger, note)
-        reasons = [f"{r['name']} is priority #{r['rank']}." for r in rec["ranking"][:3]]
+        reasons = [tr(f"{r['name']} is priority #{r['rank']}.", f"{r['name']} adalah prioritas #{r['rank']}.") for r in rec["ranking"][:3]]
     else:
         same = [r["skill_id"] for r in last.ranking[:5]] == [r["skill_id"] for r in cur[:5]] and \
             all(abs(a["priority"] - b["priority"]) < 0.005 for a, b in zip(last.ranking[:5], cur[:5], strict=False))
@@ -432,7 +459,7 @@ def check_market_trigger(s: Session, student: Student, rec: dict) -> None:
     last = s.scalars(select(RecommendationHistory).where(RecommendationHistory.student_id == student.id)
                      .order_by(RecommendationHistory.id.desc())).first()
     if last is not None and last.market_version != rec["market_version"]:
-        record_history(s, student, "market", note=f"market version {rec['market_version']}", rec=rec, force=True)
+        record_history(s, student, "market", note=tr("market version", "versi pasar") + f" {rec['market_version']}", rec=rec, force=True)
 
 
 # ------------------------------------------------------------ decision trace
@@ -472,8 +499,9 @@ def decision_trace(s: Session, student: Student, skill_id: str) -> dict:
          "inputs": [{"evidence": k, "score_e": round(v, 3), "weight_w": used[k], "sources": st.sources.get(k, [])}
                     for k, v in comps.items()],
          "result": round(st.p0, 4),
-         "note": "No evidence yet: prior 0.10." if not comps else
-                 "CV claims and self-ratings are shown for confirmation only and never enter this sum."},
+         "note": tr("No evidence yet: prior 0.10.", "Belum ada evidence: prior 0.10.") if not comps else
+                 tr("CV claims and self-ratings are shown for confirmation only and never enter this sum.",
+                    "Klaim CV dan penilaian diri hanya ditampilkan untuk konfirmasi dan tidak pernah masuk ke penjumlahan ini.")},
         {"stage": "2. New answers -> mastery p (eq. 3, Bayesian knowledge tracing)",
          "formula": "correct: p' = p(1-S)/(p(1-S)+(1-p)G); wrong: p' = pS/(pS+(1-p)(1-G)); then p = p' + (1-p')T",
          "inputs": {"S_slip": 0.10, "G_guess": 0.25, "T_learn": 0.10, "trace": [round(x, 4) for x in st.bkt_trace]},
@@ -492,7 +520,8 @@ def decision_trace(s: Session, student: Student, skill_id: str) -> dict:
                        "result": {"score": row["score"], "priority_exp_score": row["priority"], "rank": row["rank"],
                                   "of_candidates": len(rec["ranking"]), "model": ctx.model.name}})
     else:
-        stages.append({"stage": "3. Ranking", "result": "Not ranked: no gap left for this role (p >= required level)."})
+        stages.append({"stage": "3. Ranking", "result": tr("Not ranked: no gap left for this role (p >= required level).",
+                                                          "Tidak diranking: tidak ada gap tersisa untuk role ini (p >= level yang dibutuhkan).")})
     stages.append({"stage": "5. Learning path rule (III.A.5)",
                    "formula": "top-3 ranked skills + their prerequisites with p < 0.6, in topological order",
                    "result": {"in_path": step is not None, "position": rec["path"].index(step) + 1 if step else None,
