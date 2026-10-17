@@ -8,6 +8,7 @@ import { useStudentId } from "@/lib/student";
 import { cn } from "@/lib/utils";
 import { ErrorNote, Loading, MasteryBar, NativeSelect, PageHeader, Panel, Tag } from "@/components/kit";
 import { MySkills } from "@/components/my-skills";
+import { CareerMap } from "@/components/career-map";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface GNode {
@@ -36,21 +37,33 @@ interface GraphData {
   clusters: Record<string, string>;
 }
 
+const TABS = ["careers", "mine", "connect"] as const;
+
 export default function SkillMapPage() {
   const { id, ready } = useStudentId();
+  // ?tab=careers|mine|connect deep-links a tab (e.g. "Explore careers" on the dashboard)
+  const [tab, setTab] = useState<string>("careers");
+  useEffect(() => {
+    const t = new URLSearchParams(window.location.search).get("tab");
+    if (t && (TABS as readonly string[]).includes(t)) setTab(t);
+  }, []);
   if (!ready) return <Loading />;
   if (!id) return <Connections />;
   return (
     <div>
       <PageHeader mascot="nodes"
         title="Skill Map"
-        description="See which skills are already strong, which are close, and which to fix first, then how the skills connect."
+        description="Explore which careers your skills bring you close to, see which skills are strong and which to fix first, then how the skills connect."
       />
-      <Tabs defaultValue="mine">
-        <TabsList className="mb-5">
+      <Tabs value={tab} onValueChange={(v) => setTab(String(v))}>
+        <TabsList className="mb-6">
+          <TabsTrigger value="careers">Career Map</TabsTrigger>
           <TabsTrigger value="mine">My Skills</TabsTrigger>
           <TabsTrigger value="connect">How Skills Connect</TabsTrigger>
         </TabsList>
+        <TabsContent value="careers">
+          <CareerMap sid={id} />
+        </TabsContent>
         <TabsContent value="mine">
           <MySkills sid={id} />
         </TabsContent>

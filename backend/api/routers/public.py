@@ -8,6 +8,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from pathsync.assessment import item_bank
+from pathsync.careers import career_graph
 from pathsync.config import (
     BKT_GUESS,
     BKT_SLIP,
@@ -232,6 +233,12 @@ def graph_payload(s: Session, role: str, rec: dict | None = None) -> dict:
 @router.get("/graph")
 def graph(role: str = "business_analyst", s: Session = Depends(db_session)):
     return graph_payload(s, role)
+
+
+@router.get("/careers/graph")
+def careers_graph(s: Session = Depends(db_session)):
+    """Roles linked by the skills their postings share (Career Map). Market data only, same for everyone."""
+    return career_graph(s)
 
 
 @router.get("/taxonomy/report")

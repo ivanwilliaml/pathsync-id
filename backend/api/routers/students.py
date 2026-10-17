@@ -13,6 +13,7 @@ from sqlalchemy import delete, func, select
 from sqlalchemy.orm import Session
 
 from pathsync import soft
+from pathsync.careers import careers_for
 from pathsync.config import GRADE_SCORES, ROLES
 from pathsync.db import (
     AssessmentResponse,
@@ -314,6 +315,12 @@ def history(st: Student = Depends(student_access), s: Session = Depends(db_sessi
 @router.get("/students/{sid}/graph")
 def student_graph(st: Student = Depends(student_access), s: Session = Depends(db_session)):
     return graph_payload(s, st.target_role, recommend_for(s, st))
+
+
+@router.get("/students/{sid}/careers")
+def student_careers(st: Student = Depends(student_access), s: Session = Depends(db_session)):
+    """Readiness for every role from the same evidence (Career Map)."""
+    return careers_for(s, st)
 
 
 @router.get("/students/{sid}/trace/{skill_id}")

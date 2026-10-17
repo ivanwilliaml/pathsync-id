@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ExternalLink, Quote } from "lucide-react";
 import { SOURCE, fmtDate, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
@@ -56,6 +56,11 @@ interface Bps {
 
 export default function MarketPage() {
   const [role, setRole] = useState("business_analyst");
+  // ?role=<id> opens a specific career (links from the Career Map)
+  useEffect(() => {
+    const r = new URLSearchParams(window.location.search).get("role");
+    if (r) setRole(r);
+  }, []);
   const [all, setAll] = useState(false);
   const [skill, setSkill] = useState<string | null>(null);
   const meta = useApi<Meta>("/meta");

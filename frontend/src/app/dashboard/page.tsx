@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RequireStudent } from "@/components/require-student";
 import { ReadinessRing } from "@/components/readiness-ring";
 import { Mascot } from "@/components/mascot";
+import type { CareersData } from "@/components/career-map";
 import { SkillSheet, type SkillDetail } from "@/components/skill-sheet";
 import { EmptyState, ErrorNote, LinkButton, Loading, MasteryBar, Panel, SectionTitle, Tag } from "@/components/kit";
 
@@ -125,6 +126,8 @@ function DashboardView({ sid }: { sid: string }) {
           ))}
         </ul>
       </section>
+
+      {hasEvidence ? <AlsoClose sid={sid} /> : null}
 
       <section aria-labelledby="explore">
         <SectionTitle id="explore">Explore Your Profile</SectionTitle>
@@ -584,3 +587,28 @@ function usePulseReady() {
   return ready;
 }
 
+
+/** Careers the same evidence already brings the student close to (links to the Career Map). */
+function AlsoClose({ sid }: { sid: string }) {
+  const careers = useApi<CareersData>(`/students/${sid}/careers`);
+  const others = (careers.data?.careers ?? []).filter((c) => !c.is_target && c.n_measured > 0).slice(0, 3);
+  if (!others.length) return null;
+  return (
+    <section aria-labelledby="also-close" className="flex flex-col gap-4 rounded-2xl border bg-card p-6 sm:flex-row sm:items-center sm:p-8">
+      <Mascot name="signpost" size={88} className="hidden sm:block" />
+      <div className="min-w-0 flex-1">
+        <h2 id="also-close" className="text-lg font-semibold text-ink">Your Skills Also Bring You Close To</h2>
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {others.map((c) => (
+            <li key={c.id} className="rounded-full bg-secondary px-3 py-1 text-sm text-secondary-foreground">
+              {c.name} <span className="tabular font-semibold">{pct(c.readiness)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <LinkButton href="/skill-map?tab=careers" variant="outline" size="lg" className="h-10 shrink-0">
+        Explore Careers
+      </LinkButton>
+    </section>
+  );
+}

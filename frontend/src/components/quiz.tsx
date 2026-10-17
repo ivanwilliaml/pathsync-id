@@ -20,6 +20,7 @@ import {
 import { ErrorNote, LinkButton, MasteryBar, Panel, Tag } from "./kit";
 import { ReadinessRing } from "./readiness-ring";
 import { Mascot, type MascotName } from "./mascot";
+import type { CareersData } from "./career-map";
 
 interface SubmitResult {
   results: { item_id: string; skill_id: string; correct: boolean; choice: number | null; answer: number; explanation: string }[];
@@ -39,6 +40,11 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
   const [err, setErr] = useState<unknown>(null);
 
   useEffect(() => track("check_started", { items: items.length }), [items.length]);
+  // readiness for every career before the check, to show what the new evidence moved (Career Map feedback)
+  const [before, setBefore] = useState<CareersData | null>(null);
+  useEffect(() => {
+    api.get<CareersData>(`/students/${sid}/careers`).then(setBefore, () => setBefore(null));
+  }, [sid]);
   const it = items[idx];
   const answered = Object.keys(answers).length;
   const last = idx === items.length - 1;
@@ -87,7 +93,7 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
     return () => window.removeEventListener("keydown", onKey);
   }, [it, last, finish, items.length, result]);
 
-  if (result) return <Results items={items} result={result} />;
+  if (result) return <Results items={items} result={result} sid={sid} before={before} />;
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -187,7 +193,7 @@ function resultMascot(correct: number, total: number): MascotName {
   return share >= 0.7 ? "celebrate" : share >= 0.4 ? "thinking" : "sad";
 }
 
-function Results({ items, result }: { items: Item[]; result: SubmitResult }) {
+function Results({ items, result, sid, before }: { items: Item[]; result: SubmitResult; sid: string; before: CareersData | null }) {
   const byId = Object.fromEntries(items.map((i) => [i.id, i]));
   const changes = Object.entries(result.skills).sort((a, b) => b[1].p_after - b[1].p_before - (a[1].p_after - a[1].p_before));
   return (
@@ -205,6 +211,7 @@ function Results({ items, result }: { items: Item[]; result: SubmitResult }) {
         </div>
         <Mascot name={resultMascot(result.correct, result.total)} size={140} className="sm:ml-auto" />
       </section>
+      <CareerShift sid={sid} before={before} />
 
       <Panel>
         <h2 className="text-lg font-semibold text-ink">What Changed</h2>
@@ -253,5 +260,43 @@ function Results({ items, result }: { items: Item[]; result: SubmitResult }) {
         </ol>
       </details>
     </div>
+  );
+}
+
+/** "What your check moved": readiness change per career, the text form of the Career Map feedback (works without motion). */
+function CareerShift({ sid, before }: { sid: string; before: CareersData | null }) {
+  const [after, setAfter] = useState<CareersData | null>(null);
+  useEffect(() => {
+    api.get<CareersData>(`/students/${sid}/careers`).then(setAfter, () => setAfter(null));
+  }, [sid]);
+  if (!before || !after) return null;
+  const prev = Object.fromEntries(before.careers.map((c) => [c.id, c.readiness]));
+  const moved = after.careers
+    .map((c) => ({ ...c, delta: c.readiness - (prev[c.id] ?? 0) }))
+    .filter((c) => Math.abs(c.delta) >= 0.005)
+    .sort((a, b) => Number(b.is_target) - Number(a.is_target) || Math.abs(b.delta) - Math.abs(a.delta))
+    .slice(0, 5);
+  if (!moved.length) return null;
+  return (
+    <Panel aria-live="polite">
+      <h2 className="text-lg font-semibold text-ink">What This Check Moved</h2>
+      <p className="mt-1 text-sm text-muted-foreground">How much of what employers ask you can now show, per career.</p>
+      <ul className="mt-4 space-y-2">
+        {moved.map((c) => (
+          <li key={c.id} className="flex items-center justify-between gap-3 text-sm">
+            <span className="text-ink">
+              {c.name}
+              {c.is_target ? <span className="ml-2 text-xs text-muted-foreground">(your target)</span> : null}
+            </span>
+            <span className={cn("tabular shrink-0 text-xs font-medium", c.delta > 0 ? "text-mint-ink" : "text-destructive")}>
+              {pct(c.readiness - c.delta)} {c.delta > 0 ? "↑" : "↓"} {pct(c.readiness)}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <LinkButton href="/skill-map?tab=careers" variant="outline" size="lg" className="mt-5 h-10">
+        Open My Career Map
+      </LinkButton>
+    </Panel>
   );
 }
