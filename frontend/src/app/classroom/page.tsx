@@ -81,13 +81,13 @@ function ClassroomView({ sid }: { sid: string }) {
   if (!c.data) return <Loading label="Linking your courses to your route…" />;
   const d = c.data;
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       <PageHeader mascot="board"
         title="My Classes"
         description="Your route, anchored in the courses you take this semester: which skills each course builds, which assignments can prove them, and a weekly plan you reflect on."
       />
       {d.needs_reflection ? <Reflection sid={sid} plan={d.needs_reflection} onDone={reload} late /> : null}
-      <section aria-labelledby="courses-title">
+      <section aria-labelledby="courses-title" className="space-y-4">
         <SectionTitle id="courses-title">This Semester&rsquo;s Courses</SectionTitle>
         <AddCourse sid={sid} enrolled={courses.data ?? []} onChange={reload} />
         {d.courses.length === 0 ? (
@@ -95,14 +95,14 @@ function ClassroomView({ sid }: { sid: string }) {
             We map each course to skills and show which assignments can become evidence for your route.
           </EmptyState>
         ) : (
-          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-6 lg:grid-cols-2">
             {d.courses.map((co) => (
               <CourseCompanion key={co.course} co={co} />
             ))}
           </div>
         )}
         {d.courses.length > 0 && d.unlinked_path_steps.length > 0 ? (
-          <p className="mt-3 text-sm text-ink/70">
+          <p className="text-sm text-ink/70">
             {d.unlinked_path_steps.length} step{d.unlinked_path_steps.length > 1 ? "s" : ""} of your route have no supporting course this semester: plan them
             as self-study below.
           </p>
@@ -135,7 +135,7 @@ function AddCourse({ sid, enrolled, onChange }: { sid: string; enrolled: Enrolle
     }
   }
   return (
-    <div>
+    <div className="space-y-3">
       <form onSubmit={add} className="flex flex-wrap gap-2">
         <Input
           aria-label="Course name"
@@ -156,7 +156,7 @@ function AddCourse({ sid, enrolled, onChange }: { sid: string; enrolled: Enrolle
       </form>
       <ErrorNote error={err} />
       {enrolled.length ? (
-        <ul className="mt-3 flex flex-wrap gap-2">
+        <ul className="flex flex-wrap gap-2">
           {enrolled.map((c) => (
             <li key={c.id} className="flex items-center gap-1 rounded-full border bg-card py-1 pl-3 pr-1 text-sm">
               {c.name}
@@ -354,7 +354,7 @@ function Reflection({ sid, plan, onDone, late }: { sid: string; plan: Plan; onDo
             </label>
           ))}
         </fieldset>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-1.5">
             <Label htmlFor={`min-${plan.id}`}>Minutes actually spent</Label>
             <Input id={`min-${plan.id}`} type="number" min={0} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} className="h-10" />
@@ -389,7 +389,7 @@ function Progress({ data }: { data: Classroom }) {
           <Mascot name="journal" size={56} /> Your Learning Rhythm
         </span>
       </SectionTitle>
-      <dl className="grid gap-3 sm:grid-cols-4">
+      <dl className="grid gap-4 sm:grid-cols-4">
         {[
           ["Weeks reflected", `${s.weeks_reflected} of ${s.weeks_planned}`],
           ["Time done vs planned", s.minutes_done_vs_planned != null ? `${Math.round(s.minutes_done_vs_planned * 100)}%` : "–"],

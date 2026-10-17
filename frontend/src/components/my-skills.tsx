@@ -63,7 +63,7 @@ export function MySkills({ sid }: { sid: string }) {
     <div className="space-y-6">
       <Panel className="bg-route-soft">
         <h2 className="text-lg font-semibold text-ink">Where You Stand for {d.role.name}</h2>
-        <div className="mt-3 grid gap-4 sm:grid-cols-3">
+        <div className="mt-4 grid gap-5 sm:grid-cols-3">
           <Summary label="Role readiness" value={pct(d.coverage)} note="of what employers ask for, weighted by how often" />
           <Summary label="Strongest" value={strongest.length ? strongest.map((r) => titleCase(r.c.name)).join(", ") : "Nothing proven yet"} note="skills at or above the required level" small />
           <Summary label="Fix first" value={fixFirst.length ? fixFirst.map((r) => titleCase(r.c.name)).join(", ") : "Nothing urgent"} note="biggest gap that employers care about" small />
@@ -96,7 +96,7 @@ export function MySkills({ sid }: { sid: string }) {
             </button>
             <p className="-mt-1 mb-3 text-sm text-ink/70">{sec.blurb}</p>
             {open[sec.id] ? (
-              <ul className="grid gap-3 md:grid-cols-2">
+              <ul className="grid gap-4 md:grid-cols-2">
                 {list.map((r) => (
                   <SkillRow key={r.c.skill_id} r={r} />
                 ))}
@@ -132,7 +132,7 @@ function SoftSection({ sid, items }: { sid: string; items: SoftSkill[] }) {
       <p className="mb-3 text-sm text-ink/70">
         Employers ask for these too, but they are built through real experience, so there is no quiz and they never change your route. Record what you have actually done.
       </p>
-      <ul className="grid gap-3 md:grid-cols-2">
+      <ul className="grid gap-4 md:grid-cols-2">
         {items.map((x) => {
           const cur = local[x.skill_id] ?? { level: x.level, note: x.note };
           return (

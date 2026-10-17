@@ -166,7 +166,7 @@ export function TeamAndClasses() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <ErrorNote error={err} />
       {secret ? <OneTimeSecret label={secret.label} value={secret.value} /> : null}
       <div className="grid gap-5 lg:grid-cols-2">
@@ -366,7 +366,7 @@ export function LaunchMetrics() {
   if (!m.data) return <Loading />;
   const d = m.data;
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Panel>
         <div className="flex flex-wrap items-end justify-between gap-3">
           <SectionTitle>North Star</SectionTitle>
@@ -424,7 +424,7 @@ export function Activity() {
   const log = useApi<AuditRow[]>("/admin/audit-log?limit=100");
   const fb = useApi<FeedbackRow[]>("/admin/feedback");
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Panel>
         <SectionTitle>Problem Reports</SectionTitle>
         {!fb.data ? <Loading /> : fb.data.length === 0 ? <EmptyState title="No Reports Yet">Reports from the in-app button show up here.</EmptyState> : (

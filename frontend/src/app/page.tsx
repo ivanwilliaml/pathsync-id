@@ -135,7 +135,7 @@ export default function Landing() {
           ) : (
             // one grid, best-supported careers first (fewest-data Beta roles last), family shown on each card:
             // grouping by family left rows with one card and two empty columns
-            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {(meta.data?.roles ?? [])
                 .slice()
                 .sort((a, b) => Number(a.limited_data) - Number(b.limited_data) || (b.n_postings ?? 0) - (a.n_postings ?? 0))

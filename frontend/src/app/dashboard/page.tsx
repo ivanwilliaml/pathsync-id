@@ -54,7 +54,7 @@ function DashboardView({ sid }: { sid: string }) {
   if (!f.path) return <ControlListView d={d} sid={sid} />;
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-12">
       {/* Hero */}
       <section className="grid gap-6 rounded-3xl bg-route-soft p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
         <div className="min-w-0">
@@ -246,7 +246,7 @@ function PriorityRow({ r, comp, onOpen }: { r: RankRow; comp?: Competency; onOpe
       <button
         type="button"
         onClick={onOpen}
-        className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 p-4 text-left transition-colors duration-100 hover:bg-muted/60 active:bg-secondary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:p-5"
+        className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 p-5 text-left transition-colors duration-100 hover:bg-muted/60 active:bg-secondary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:px-6 sm:py-5"
       >
         <span className="flex size-9 items-center justify-center rounded-full bg-secondary text-sm font-bold text-secondary-foreground">{r.rank}</span>
         <span className="min-w-0">
@@ -436,7 +436,7 @@ function HowRanked({ ranking }: { ranking: RankRow[] }) {
 function ControlListView({ d, sid }: { d: Dashboard; sid: string }) {
   const rows = [...d.competencies].sort((a, b) => b.demand - a.demand).slice(0, 15);
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <section className="rounded-3xl bg-route-soft p-6 sm:p-8">
         <h1 className="text-[30px] font-extrabold leading-tight text-ink">Hi, {d.student.display_name}</h1>
         <p className="mt-1 text-ink/70">

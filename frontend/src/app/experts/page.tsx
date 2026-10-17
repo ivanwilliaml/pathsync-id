@@ -75,7 +75,7 @@ function Experts() {
   if (me && task === "scenarios") return <ScenarioRanking me={me} onBack={() => go(null)} />;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <section className="grid items-center gap-8 lg:grid-cols-[1.1fr_1fr]">
         <div>
           <h1 className="text-[32px] font-extrabold leading-tight text-ink sm:text-[38px]">Expert Panel</h1>
@@ -397,7 +397,7 @@ function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
             <p className="text-sm font-medium text-indigo">Student Profile</p>
             <h2 className="mt-1 text-xl font-bold text-ink">{detail.data.title}</h2>
             <p className="mt-2 text-sm text-ink/70">Click the skills in the order this student should learn them. Click a numbered skill to undo back to it.</p>
-            <ul className="mt-5 grid gap-3 md:grid-cols-2">
+            <ul className="mt-5 grid gap-4 md:grid-cols-2">
               {cands.map((c) => {
                 const pos = order.indexOf(c.skill_id);
                 return (

@@ -65,7 +65,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
       <div className="min-w-0">
         <MobileBar />
-        <main id="main" className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 lg:px-10 lg:py-10">
+        <main id="main" className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-10 lg:py-12">
           {children}
         </main>
         <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-2 border-t px-4 py-4 text-xs text-muted-foreground sm:px-6 lg:px-10">

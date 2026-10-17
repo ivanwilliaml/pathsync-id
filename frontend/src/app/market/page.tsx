@@ -70,7 +70,7 @@ export default function MarketPage() {
   const max = Math.max(0.01, ...rows.map((r) => r.share));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <section className="relative overflow-hidden rounded-3xl">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/market.webp" alt="" width={1600} height={1067} className="absolute inset-0 h-full w-full object-cover" />
@@ -108,7 +108,7 @@ export default function MarketPage() {
       {bps.data ? (
         <Panel>
           <h2 className="text-lg font-semibold text-ink">{bps.data.title}</h2>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {bps.data.figures.map((f) => (
               <div key={f.id} className="rounded-xl bg-card p-4">
                 <p className="text-xs font-medium text-ink/60">{f.label}</p>
@@ -197,7 +197,7 @@ export default function MarketPage() {
             {!posts.data ? (
               <Loading />
             ) : (
-              <ul className="grid gap-3 md:grid-cols-2">
+              <ul className="grid gap-4 md:grid-cols-2">
                 {posts.data.map((p) => (
                   <li key={p.id}>
                     <a

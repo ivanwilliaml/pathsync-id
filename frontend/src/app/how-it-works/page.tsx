@@ -71,7 +71,7 @@ export default function HowItWorksPage() {
   const weights = useApi<WeightsReport>("/evaluation/weights");
   const evals = useApi<EvalReport>("/evaluation");
   return (
-    <div className="space-y-12">
+    <div className="space-y-14">
       <PageHeader mascot="shift-route"
         title="How the AI Works"
         description="Which AI does what, how a recommendation is decided, why the skill list is final, and why evidence is weighted the way it is."
@@ -154,7 +154,7 @@ function Engine() {
 
 function Models({ c }: { c: ModelCard }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid gap-6 md:grid-cols-2">
       <Panel>
         <p className="text-sm text-muted-foreground">Decides priorities</p>
         <p className="mt-1 font-semibold text-ink">{c.decision_model.name}</p>

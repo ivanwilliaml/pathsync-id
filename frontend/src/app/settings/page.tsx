@@ -37,7 +37,7 @@ function Settings({ sid }: { sid: string }) {
   if (!st.data) return <Loading />;
   const s = st.data;
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <PageHeader mascot="key" title="Settings & Data" description="Your profile, your access key, classes and studies you join, and control over your personal data." />
       <Profile sid={sid} s={s} onSaved={st.reload} />
       <AccessKey />

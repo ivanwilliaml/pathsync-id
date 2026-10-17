@@ -61,7 +61,7 @@ export default function AdvisorPage() {
   if (!cohorts.data.length) return <EmptyState title="No Classes Yet" mascot="group">Ask the PathSync team to create a class for you.</EmptyState>;
   const co = cohorts.data.find((c) => c.id === current)!;
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <PageHeader mascot="advisor"
         title="Lecturer View"
         description="Anonymous, class-level gaps against the job market. Use it to plan class sessions, assignments and electives."
@@ -110,7 +110,7 @@ export default function AdvisorPage() {
 function CohortReport({ r }: { r: Report }) {
   return (
     <>
-      <dl className="grid gap-3 sm:grid-cols-3">
+      <dl className="grid gap-4 sm:grid-cols-3">
         <div className="rounded-2xl border bg-card p-4">
           <dt className="text-sm text-ink/70">Students in this view</dt>
           <dd className="tabular mt-1 text-2xl font-bold">{r.n_students}</dd>

@@ -453,7 +453,7 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid gap-6 lg:grid-cols-2">
         <Panel>
           <h2 className="text-lg font-semibold text-ink">Extraction Quality</h2>
@@ -652,7 +652,7 @@ function Models() {
 
   const conds = report.data ? Object.entries(report.data.conditions) : [];
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div className="grid gap-6 lg:grid-cols-2">
         <Panel>
           <h2 className="text-lg font-semibold text-ink">Expert Agreement</h2>

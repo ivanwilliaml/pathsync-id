@@ -34,7 +34,7 @@ export function PageHeader({ title, description, actions, className, mascot }: {
   mascot?: MascotName;
 }) {
   return (
-    <header className={cn("mb-8 flex flex-wrap items-end justify-between gap-4", className)}>
+    <header className={cn("mb-10 flex flex-wrap items-end justify-between gap-4", className)}>
       <div className="flex min-w-0 max-w-3xl items-end gap-4">
         {mascot ? <Mascot name={mascot} size={88} priority className="-mb-1 hidden sm:block" /> : null}
         <div className="min-w-0 max-w-2xl">
@@ -49,7 +49,7 @@ export function PageHeader({ title, description, actions, className, mascot }: {
 
 export function SectionTitle({ children, action, id }: { children: ReactNode; action?: ReactNode; id?: string }) {
   return (
-    <div className="mb-4 flex items-center justify-between gap-3">
+    <div className="mb-5 flex items-center justify-between gap-3">
       <h2 id={id} className="scroll-mt-24 text-lg font-semibold text-ink">
         {children}
       </h2>
@@ -60,7 +60,7 @@ export function SectionTitle({ children, action, id }: { children: ReactNode; ac
 
 export function Panel({ children, className, ...props }: ComponentProps<"section">) {
   return (
-    <section className={cn("rounded-2xl border bg-card p-5 sm:p-6", className)} {...props}>
+    <section className={cn("rounded-2xl border bg-card p-6 sm:p-8", className)} {...props}>
       {children}
     </section>
   );
@@ -95,7 +95,7 @@ export function EmptyState({ title, children, action, image, mascot = "empty-box
   mascot?: MascotName;
 }) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-dashed bg-card px-6 py-12 text-center">
+    <div className="flex flex-col items-center rounded-2xl border border-dashed bg-card px-6 py-14 text-center">
       {image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={image} alt="" width={160} height={107} loading="lazy" className="mb-5 h-[107px] w-40 rounded-xl object-cover" />
