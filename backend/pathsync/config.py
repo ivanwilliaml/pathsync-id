@@ -30,6 +30,10 @@ for _p in ("postgres://", "postgresql://"):
 # ---------------------------------------------------------------- embeddings
 # Open-source multilingual sentence embedding model that handles mixed ID/EN terms [III.B]
 EMBEDDING_MODEL = os.getenv("PATHSYNC_EMBEDDING_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+# "torch" (sentence-transformers) or "onnx" (onnxruntime, int8 file below; for small hosts, see docs/ops/DEPLOY_GRATIS.md)
+EMBED_BACKEND = os.getenv("PATHSYNC_EMBED_BACKEND", "torch")
+# a local path (built by deploy/render/quantize.py) or a file in the model repo
+ONNX_FILE = os.getenv("PATHSYNC_ONNX_FILE", "onnx/model.onnx")
 
 # ----------------------------------------------------- extraction / normalisation [III.A.1]
 SIM_AUTO = 0.85        # >= 0.85  -> mapped automatically (only when EMBEDDING_AUTO is on)

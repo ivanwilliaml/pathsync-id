@@ -2,18 +2,21 @@
 from __future__ import annotations
 
 import hashlib
+import os
 import sqlite3
 import threading
 from functools import wraps
 
 import numpy as np
 
-from .config import EMBEDDING_MODEL, PROCESSED_DIR
+from .config import EMBED_BACKEND, EMBEDDING_MODEL, ONNX_FILE, PROCESSED_DIR
 
 WARM = threading.Event()   # set once the model and indexes are loaded (api.main warmup); see /api/health/ready
 _encode_slots = threading.BoundedSemaphore(2)   # at most two concurrent encodes: a slow upload no longer blocks everyone
 _CACHE_PATH = PROCESSED_DIR / "embedding_cache.sqlite"
 _local = threading.local()
+# int8 ONNX vectors differ slightly from the PyTorch ones: keep them apart in the cache
+_CACHE_TAG = EMBEDDING_MODEL if EMBED_BACKEND != "onnx" else f"{EMBEDDING_MODEL}#{ONNX_FILE}"
 
 
 def once(fn):
@@ -36,8 +39,65 @@ def once(fn):
     return get
 
 
+class _OnnxModel:
+    """Same model through onnxruntime, for hosts with 512 MB RAM (PyTorch needs ~1 GB). Two memory choices, both
+    checked against the PyTorch model in docs/ops/DEPLOY_GRATIS.md:
+    * only the token-embedding table is int8 and pruned to Latin-script pieces (scripts/quantize_onnx.py); the
+      transformer stays float32, because the fully int8 export moved the nearest skill for 18% of the labelled phrases;
+    * SentencePiece instead of tokenizer.json (the `tokenizers` vocabulary took ~285 MB), with XLM-R's id offset;
+      ids are identical on 2,655 taxonomy, course and posting phrases.
+    Mean pooling over tokens, as the sentence-transformers config does."""
+
+    MAX_TOKENS = 128
+
+    def __init__(self):
+        import onnxruntime as ort
+        import sentencepiece as spm
+        from huggingface_hub import hf_hub_download
+
+        path = ONNX_FILE if os.path.exists(ONNX_FILE) else hf_hub_download(EMBEDDING_MODEL, ONNX_FILE)
+        local_sp = os.path.join(os.path.dirname(path), "sentencepiece.bpe.model")
+        self.sp = spm.SentencePieceProcessor(
+            model_file=local_sp if os.path.exists(local_sp) else hf_hub_download(EMBEDDING_MODEL, "sentencepiece.bpe.model"))
+        opts = ort.SessionOptions()
+        opts.intra_op_num_threads = 1
+        opts.enable_cpu_mem_arena = False
+        self.sess = ort.InferenceSession(path, opts, providers=["CPUExecutionProvider"])
+        self.inputs = {i.name for i in self.sess.get_inputs()}
+        remap = path + ".ids.npy"                                   # pruned vocabulary (scripts/quantize_onnx.py)
+        self.remap = np.load(remap) if os.path.exists(remap) else None
+
+    def _ids(self, text: str) -> list[int]:
+        # fairseq offset used by XLM-R: <s>=0, <pad>=1, </s>=2, <unk>=3, SentencePiece id + 1 otherwise
+        body = [(i + 1) if i else 3 for i in self.sp.encode(text)][: self.MAX_TOKENS - 2]
+        if self.remap is not None:
+            body = [int(self.remap[i]) for i in body]
+        return [0, *body, 2]
+
+    def encode(self, texts, batch_size=64, normalize_embeddings=True, show_progress_bar=False):
+        out = []
+        for i in range(0, len(texts), batch_size):
+            seqs = [self._ids(t) for t in texts[i:i + batch_size]]
+            width = max(map(len, seqs))
+            ids = np.ones((len(seqs), width), dtype=np.int64)          # pad id 1
+            mask = np.zeros((len(seqs), width), dtype=np.int64)
+            for r, sq in enumerate(seqs):
+                ids[r, :len(sq)] = sq
+                mask[r, :len(sq)] = 1
+            feed = {"input_ids": ids, "attention_mask": mask, "token_type_ids": np.zeros_like(ids)}
+            hidden = self.sess.run(None, {k: v for k, v in feed.items() if k in self.inputs})[0]
+            m = mask[..., None].astype(np.float32)
+            v = (hidden * m).sum(1) / np.clip(m.sum(1), 1e-9, None)
+            if normalize_embeddings:
+                v = v / np.clip(np.linalg.norm(v, axis=1, keepdims=True), 1e-12, None)
+            out.append(v.astype(np.float32))
+        return np.vstack(out)
+
+
 @once
 def _load_model():
+    if EMBED_BACKEND == "onnx":
+        return _OnnxModel()
     from sentence_transformers import SentenceTransformer  # heavy import, load lazily
 
     return SentenceTransformer(EMBEDDING_MODEL)
@@ -62,7 +122,7 @@ def encode(texts: list[str], batch_size: int = 64) -> np.ndarray:
     """L2-normalised embeddings with a persistent cache keyed by (model, text)."""
     if not texts:
         return np.zeros((0, 384), dtype=np.float32)
-    keys = [hashlib.sha1(f"{EMBEDDING_MODEL}|{t}".encode()).hexdigest() for t in texts]
+    keys = [hashlib.sha1(f"{_CACHE_TAG}|{t}".encode()).hexdigest() for t in texts]
     out: list[np.ndarray | None] = [None] * len(texts)
     conn = _cache_conn()
     for i, k in enumerate(keys):

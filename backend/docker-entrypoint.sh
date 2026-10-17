@@ -12,4 +12,4 @@ with get_session() as s:
   python -m pipeline.build_market --extractor "${PATHSYNC_BUILD_EXTRACTOR:-lexicon}" --ref "${PATHSYNC_REF_DATE:-$(date +%F)}"   # postings published after the reference date are left out of the window
   python -m pipeline.expert_study
 fi
-exec uvicorn api.main:app --host 0.0.0.0 --port 8000 --no-proxy-headers --workers "${PATHSYNC_WORKERS:-1}"
+exec uvicorn api.main:app --host 0.0.0.0 --port "${PORT:-8000}" --no-proxy-headers --workers "${PATHSYNC_WORKERS:-1}"
