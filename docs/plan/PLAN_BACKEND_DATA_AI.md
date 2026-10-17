@@ -45,7 +45,7 @@ Prinsip ini berlaku untuk semua tugas di bawah dan bisa dibantah hanya dengan al
 **Masalah.** Semua gold dianotasi satu orang (AI-1 di audit). Batas bawah selang presisi 0,7486 masih di bawah 0,80.
 
 **Langkah.**
-1. Dua anotator manusia mengikuti [PANDUAN_ANOTASI.md](../ops/PANDUAN_ANOTASI.md). Mereka melabeli 100 posting terkunci (`data/seed/gold_split.json`: 50 dev, 50 uji) di Admin > Annotation, atau lewat lembar luring: `python -m pipeline.gold sheet <nama>` dan `python -m pipeline.gold import-sheet <nama> <berkas>`.
+1. Dua anotator manusia mengikuti [PANDUAN_ANOTASI.md](../validasi/PANDUAN_ANOTASI.md). Mereka melabeli 100 posting terkunci (`data/seed/gold_split.json`: 50 dev, 50 uji) di Admin > Annotation, atau lewat lembar luring: `python -m pipeline.gold sheet <nama>` dan `python -m pipeline.gold import-sheet <nama> <berkas>`.
 2. `python -m pipeline.gold status` untuk memantau kemajuan. Setelah keduanya selesai: `python -m pipeline.gold consensus`. Sengketa masuk `data/models/gold_agreement.json`, dan penilai ketiga memutuskan di `data/seed/gold_adjudication.json`.
 3. Setel alias hanya terhadap paruh dev. Bekukan. Ukur sekali di paruh uji: `python -m pipeline.eval_extractor --gold gold_consensus.json --split test`.
 4. `python -m pipeline.report`.

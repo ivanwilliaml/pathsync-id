@@ -2,7 +2,7 @@
 
 Tujuan: bukti pertama dari pengguna sungguhan. Yang diukur adalah **kebergunaan** (bisa dipakai, dipahami, dan memberi arah) dan **perbandingan dengan saran karier umum** seperti dijanjikan Bab III.D. Ini **bukan** uji efektivitas jangka panjang; jangan dilaporkan sebagai bukti dampak terhadap pekerjaan.
 
-Lembar pengamat: [lembar/V3_lembar_pengamat.xlsx](lembar/V3_lembar_pengamat.xlsx). Satu baris per peserta.
+Lembar pengamat: [V3_lembar_pengamat.xlsx](V3_lembar_pengamat.xlsx). Satu baris per peserta.
 
 ---
 

@@ -1,13 +1,13 @@
 # Paket Validasi Manusia (V1-V4)
 
-Empat pekerjaan yang hanya bisa dilakukan manusia, dan menentukan nilai Metodologi. Semua lembar kerja sudah dibuat di [lembar/](lembar/), siap dibagikan. Tidak perlu menjalankan aplikasi untuk V1, V2, dan V4.
+Empat pekerjaan yang hanya bisa dilakukan manusia, dan menentukan nilai Metodologi. Semua berkas ada di folder ini: panduan, protokol pilot, dan lembar Excel yang siap dibagikan. Tidak perlu menjalankan aplikasi untuk V1, V2, dan V4.
 
 | Kode | Pekerjaan | Siapa | Berapa orang | Waktu per orang | Berkas yang dibagikan |
 |---|---|---|---|---|---|
-| **V1** | Anotasi skill di 130 lowongan | Mahasiswa atau alumni yang paham lowongan kerja (IT, bisnis, akuntansi). **Bukan** orang yang menulis alias atau kode ekstraksi | 2 (wajib), +1 penengah | 3-4 jam, boleh dicicil | `lembar/V1_anotasi_lowongan_anotator1.xlsx`, `..._anotator2.xlsx` |
-| **V2** | Validasi prasyarat dan relevansi skill Business Analyst | Dosen sistem informasi atau praktisi BA (minimal 2 tahun) | 1 minimal, 3 ideal | 60-90 menit | `lembar/V2_pakar_BA.xlsx` (satu salinan per pakar) |
+| **V1** | Anotasi skill di 130 lowongan | Mahasiswa atau alumni yang paham lowongan kerja (IT, bisnis, akuntansi). **Bukan** orang yang menulis alias atau kode ekstraksi | 2 (wajib), +1 penengah | 3-4 jam, boleh dicicil | `V1_anotasi_lowongan_anotator1.xlsx`, `..._anotator2.xlsx` |
+| **V2** | Validasi prasyarat dan relevansi skill Business Analyst | Dosen sistem informasi atau praktisi BA (minimal 2 tahun) | 1 minimal, 3 ideal | 60-90 menit | `V2_pakar_BA.xlsx` (satu salinan per pakar) |
 | **V3** | Pilot pengguna | Mahasiswa tingkat akhir (target BA: Sistem Informasi, Manajemen, Informatika) | 10-20 | 30-40 menit | aplikasi + [V3_PILOT.md](V3_PILOT.md) |
-| **V4** | Label 300 frasa normalisasi | Sama seperti V1, boleh orang yang sama | 2 | sekitar 1 jam | `lembar/V4_normalisasi_pelabel1.xlsx`, `..._pelabel2.xlsx` |
+| **V4** | Label 300 frasa normalisasi | Sama seperti V1, boleh orang yang sama | 2 | sekitar 1 jam | `V4_normalisasi_pelabel1.xlsx`, `..._pelabel2.xlsx` |
 
 **Urutan yang disarankan:** bagikan V1, V2, dan V4 hari ini (bisa dikerjakan di rumah). V3 butuh aplikasi yang bisa dibuka peserta, jadi jadwalkan setelah ada server (lihat V3_PILOT.md bagian 2).
 
@@ -29,7 +29,7 @@ Empat pekerjaan yang hanya bisa dilakukan manusia, dan menentukan nilai Metodolo
 3. Lowongan tanpa skill dari daftar: tulis `none`.
 4. Ragu: pilih yang paling spesifik, tulis alasannya di catatan.
 
-**Aturan hitung** (lengkap di [PANDUAN_ANOTASI.md](../ops/PANDUAN_ANOTASI.md), termasuk tabel skill yang tumpang tindih):
+**Aturan hitung** (lengkap di [PANDUAN_ANOTASI.md](PANDUAN_ANOTASI.md), termasuk tabel skill yang tumpang tindih):
 - Dihitung: syarat atau tugas eksplisit, daftar alternatif ("Python, R, atau sejenis"), nilai tambah ("diutamakan"), alat kerja yang disebut.
 - Tidak dihitung: bidang gelar, nama perusahaan atau produknya, domain bisnis tanpa kemampuan, **soft skill** (komunikasi, kerja tim, kepemimpinan), benefit.
 
