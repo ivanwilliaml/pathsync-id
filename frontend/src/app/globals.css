@@ -164,42 +164,63 @@
   }
 }
 
-/* Mascot loader (components/mascot-loader.tsx): 30-frame run cycle, colour cross-fade every 6 s */
+/* Mascot loader (components/mascot-loader.tsx): 30-frame run cycle with chameleon-like colour bands */
 .sync-run {
   position: relative;
   display: inline-block;
   width: var(--sync-w);
   height: var(--sync-h);
+  isolation: isolate;
 }
 .sync-run-layer {
   position: absolute;
   inset: 0;
-  background-repeat: no-repeat;
-  background-size: calc(var(--sync-w) * 30) var(--sync-h);
+}
+.sync-run-base {
+  background: url(/mascot/sync-run-green.webp) no-repeat 0 0 / calc(var(--sync-w) * 30) var(--sync-h);
   animation: sync-run-steps 1.4s steps(30) infinite;
 }
-.sync-run-blue {
-  opacity: 0;
-  animation: sync-run-steps 1.4s steps(30) infinite, sync-run-blue 6s ease-in-out infinite;
+.sync-run-color {
+  display: none;
 }
-.sync-run-yellow {
-  opacity: 0;
-  animation: sync-run-steps 1.4s steps(30) infinite, sync-run-yellow 6s ease-in-out infinite;
+@supports ((mask-image: url("")) or (-webkit-mask-image: url(""))) {
+  .sync-run-base {
+    background-image: url(/mascot/sync-run-shade.webp);
+  }
+  .sync-run-color {
+    display: block;
+    mix-blend-mode: multiply;
+    /* one period of colour bands; the start and end match so the sweep loops seamlessly */
+    background: repeating-linear-gradient(
+      105deg,
+      #4aa548 0px,
+      #3fb57a calc(var(--sync-w) * 0.35),
+      #14a39a calc(var(--sync-w) * 0.7),
+      #1d6fd8 calc(var(--sync-w) * 1.05),
+      #5eb0f0 calc(var(--sync-w) * 1.4),
+      #6cc24a calc(var(--sync-w) * 1.75),
+      #a8d43c calc(var(--sync-w) * 2.05),
+      #f5c542 calc(var(--sync-w) * 2.4),
+      #9bd34a calc(var(--sync-w) * 2.75),
+      #4aa548 calc(var(--sync-w) * 3.1)
+    );
+    -webkit-mask: url(/mascot/sync-run-mask.webp) no-repeat 0 0 / calc(var(--sync-w) * 30) var(--sync-h);
+    mask: url(/mascot/sync-run-mask.webp) no-repeat 0 0 / calc(var(--sync-w) * 30) var(--sync-h);
+    animation:
+      sync-run-mask-steps 1.4s steps(30) infinite,
+      sync-run-colour 7s linear infinite;
+  }
 }
 @keyframes sync-run-steps {
   to { background-position: calc(var(--sync-w) * -30) 0; }
 }
-@keyframes sync-run-blue {
-  0%, 12% { opacity: 0; }
-  25%, 42% { opacity: 1; }
-  55%, 100% { opacity: 0; }
+@keyframes sync-run-mask-steps {
+  to { -webkit-mask-position: calc(var(--sync-w) * -30) 0; mask-position: calc(var(--sync-w) * -30) 0; }
 }
-@keyframes sync-run-yellow {
-  0%, 45% { opacity: 0; }
-  58%, 75% { opacity: 1; }
-  90%, 100% { opacity: 0; }
+@keyframes sync-run-colour {
+  to { background-position: calc(var(--sync-w) * 3.1 / 0.9659) 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sync-run-layer { animation: none; }
-  .sync-run-blue, .sync-run-yellow { display: none; }
+  .sync-run-base { animation: none; background-image: url(/mascot/sync-run-green.webp); }
+  .sync-run-color { display: none; }
 }
