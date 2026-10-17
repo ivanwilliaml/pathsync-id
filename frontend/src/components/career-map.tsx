@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { Target } from "lucide-react";
 import { api } from "@/lib/api";
@@ -18,7 +18,6 @@ import { ChangeList } from "./change-list";
 // what employers ask the student can already show. Brightness is continuous on purpose: there is no fake "unlocked" moment.
 
 export interface CareerNode { id: string; name: string; family: string; n_postings: number; limited_data: boolean; n_skills: number }
-interface CareerGraph { nodes: CareerNode[]; edges: { a: string; b: string; overlap: number; shared: number }[]; families: Record<string, string> }
 export interface Career {
   id: string;
   name: string;
@@ -35,51 +34,71 @@ export interface Career {
 }
 export interface CareersData { careers: Career[]; any_evidence: boolean }
 
-// Orderly layout: one column per career family (related families side by side), careers in a column sorted
-// closest-first and evenly spaced. Drawn at a fixed size and scrolled inside a frame so text never shrinks.
-const FAMILY_ORDER = ["business", "data", "software", "infra", "design", "marketing", "finance"];
-const COL_W = 220;
-const PAD_X = 30;
-const HEAD_Y = 52;
-const ROW0 = 140;
-const ROW_H = 132;
-
-interface Placed { x: number; y: number }
-
-function layout(nodes: CareerNode[], readiness: (id: string) => number) {
-  const fams = [...FAMILY_ORDER.filter((f) => nodes.some((n) => n.family === f)), ...[...new Set(nodes.map((n) => n.family))].filter((f) => !FAMILY_ORDER.includes(f))];
-  const pos: Record<string, Placed> = {};
-  const cols: { family: string; x: number }[] = [];
-  let rows = 1;
-  fams.forEach((f, i) => {
-    const x = PAD_X + COL_W * i + COL_W / 2;
-    cols.push({ family: f, x });
-    const members = nodes.filter((n) => n.family === f).sort((a, b) => readiness(b.id) - readiness(a.id) || b.n_postings - a.n_postings);
-    rows = Math.max(rows, members.length);
-    members.forEach((n, j) => (pos[n.id] = { x, y: ROW0 + j * ROW_H }));
-  });
-  return { pos, cols, W: PAD_X * 2 + COL_W * fams.length, H: ROW0 + (rows - 1) * ROW_H + 110 };
-}
-
-/** Smooth link: across columns an S-curve, inside one column a bow to the right so it does not run through the nodes between. */
-function linkPath(a: Placed, b: Placed) {
-  if (Math.abs(a.x - b.x) < 1) {
-    const bow = 46 + Math.abs(a.y - b.y) * 0.18;
-    return `M ${a.x} ${a.y} C ${a.x + bow} ${a.y}, ${b.x + bow} ${b.y}, ${b.x} ${b.y}`;
-  }
-  const mx = (a.x + b.x) / 2;
-  return `M ${a.x} ${a.y} C ${mx} ${a.y}, ${mx} ${b.y}, ${b.x} ${b.y}`;
-}
-
 const shortName = (n: string) => n.replace(" / ML Engineer", "").replace(" Engineer", " Eng.").replace(" Developer", " Dev.");
 
+// Opportunity matrix (docs/design/CAREER_VIZ_DISCOVERY.md, option B): every career is a dot. Right = how much of what its
+// postings ask for the student can already show; up = how many postings back it. The top-right zone answers "which careers
+// am I close to that employers also ask for a lot". Careers under 30 postings sit in the Beta band at the bottom.
+const VW = 920;
+const VH = 520;
+const PL = 72;
+const PR = 28;
+const PT = 26;
+const PB = 64;
+const READY_SPLIT = 0.4;
+const DEMAND_SPLIT = 30;
+
+function scales(careers: Career[]) {
+  const xMax = Math.min(1, Math.max(0.6, Math.ceil((Math.max(...careers.map((c) => c.readiness)) + 0.08) * 10) / 10));
+  const yMax = Math.max(DEMAND_SPLIT * 2, ...careers.map((c) => c.n_postings)) * 1.08;
+  const x = (v: number) => PL + (v / xMax) * (VW - PL - PR);
+  // square-root scale: a few careers have 130+ postings and would squash the rest against the axis
+  const y = (n: number) => VH - PB - (Math.sqrt(n) / Math.sqrt(yMax)) * (VH - PB - PT);
+  const xTicks = Array.from({ length: Math.round(xMax * 10) + 1 }, (_, i) => i / 10).filter((v) => Math.round(v * 10) % 2 === 0);
+  const yTicks = [10, 30, 60, 100, 150].filter((t) => t < yMax);
+  return { x, y, xMax, yMax, xTicks, yTicks };
+}
+
+/** Greedy label placement: try right, left, above, below; keep the first spot that hits no dot and no earlier label. */
+function placeLabels(points: { id: string; x: number; y: number; r: number; text: string }[]) {
+  const boxes: { x0: number; y0: number; x1: number; y1: number }[] = points.map((p) => ({ x0: p.x - p.r, y0: p.y - p.r, x1: p.x + p.r, y1: p.y + p.r }));
+  const out: Record<string, { x: number; y: number; anchor: "start" | "end" | "middle"; lead?: { x1: number; y1: number; x2: number; y2: number } }> = {};
+  const hit = (b: { x0: number; y0: number; x1: number; y1: number }) => boxes.some((o) => b.x0 < o.x1 && o.x0 < b.x1 && b.y0 < o.y1 && o.y0 < b.y1);
+  for (const p of [...points].sort((a, b) => a.x - b.x)) {
+    const w = p.text.length * 7.1;
+    const opts = [
+      { x: p.x + p.r + 7, y: p.y + 4, anchor: "start" as const, b: { x0: p.x + p.r + 5, y0: p.y - 8, x1: p.x + p.r + 9 + w, y1: p.y + 8 } },
+      { x: p.x - p.r - 7, y: p.y + 4, anchor: "end" as const, b: { x0: p.x - p.r - 9 - w, y0: p.y - 8, x1: p.x - p.r - 5, y1: p.y + 8 } },
+      { x: p.x, y: p.y - p.r - 8, anchor: "middle" as const, b: { x0: p.x - w / 2, y0: p.y - p.r - 22, x1: p.x + w / 2, y1: p.y - p.r - 6 } },
+      { x: p.x, y: p.y + p.r + 17, anchor: "middle" as const, b: { x0: p.x - w / 2, y0: p.y + p.r + 4, x1: p.x + w / 2, y1: p.y + p.r + 20 } },
+      // diagonals and a wider gap, for crowded corners (the Beta band)
+      { x: p.x + p.r + 4, y: p.y - p.r - 6, anchor: "start" as const, b: { x0: p.x + p.r + 2, y0: p.y - p.r - 20, x1: p.x + p.r + 6 + w, y1: p.y - p.r - 4 } },
+      { x: p.x + p.r + 4, y: p.y + p.r + 15, anchor: "start" as const, b: { x0: p.x + p.r + 2, y0: p.y + p.r + 2, x1: p.x + p.r + 6 + w, y1: p.y + p.r + 18 } },
+      { x: p.x - p.r - 4, y: p.y - p.r - 6, anchor: "end" as const, b: { x0: p.x - p.r - 6 - w, y0: p.y - p.r - 20, x1: p.x - p.r - 2, y1: p.y - p.r - 4 } },
+      { x: p.x - p.r - 4, y: p.y + p.r + 15, anchor: "end" as const, b: { x0: p.x - p.r - 6 - w, y0: p.y + p.r + 2, x1: p.x - p.r - 2, y1: p.y + p.r + 18 } },
+      { x: p.x + p.r + 22, y: p.y + 4, anchor: "start" as const, b: { x0: p.x + p.r + 20, y0: p.y - 8, x1: p.x + p.r + 24 + w, y1: p.y + 8 } },
+      { x: p.x - p.r - 22, y: p.y + 4, anchor: "end" as const, b: { x0: p.x - p.r - 24 - w, y0: p.y - 8, x1: p.x - p.r - 20, y1: p.y + 8 } },
+    ] as { x: number; y: number; anchor: "start" | "end" | "middle"; b: { x0: number; y0: number; x1: number; y1: number }; lead?: boolean }[];
+    // last resort: further out with a leader line back to the dot
+    for (const dy of [-26, 26, -42, 42, -58, 58])
+      for (const side of [1, -1]) {
+        const lx = p.x + side * (p.r + 34);
+        opts.push({ x: lx, y: p.y + dy + 4, anchor: side > 0 ? "start" : "end", lead: true,
+          b: side > 0 ? { x0: lx - 2, y0: p.y + dy - 8, x1: lx + w + 2, y1: p.y + dy + 8 } : { x0: lx - w - 2, y0: p.y + dy - 8, x1: lx + 2, y1: p.y + dy + 8 } });
+      }
+    const fit = opts.filter((o) => o.b.x0 > PL - 4 && o.b.x1 < VW - 2 && o.b.y0 > PT - 4 && o.b.y1 < VH - PB + 4);
+    const pick = fit.find((o) => !hit(o.b)) ?? fit[0];
+    if (!pick) continue;
+    boxes.push(pick.b);
+    out[p.id] = { x: pick.x, y: pick.y, anchor: pick.anchor, lead: pick.lead ? { x1: p.x + Math.sign(pick.x - p.x) * p.r, y1: p.y, x2: pick.x - Math.sign(pick.x - p.x) * 3, y2: pick.y - 4 } : undefined };
+  }
+  return out;
+}
+
 export function CareerMap({ sid }: { sid: string }) {
-  const graph = useApi<CareerGraph>("/careers/graph");
   const mine = useApi<CareersData>(`/students/${sid}/careers`);
   const [selected, setSelected] = useState<string | null>(null);
   const [hover, setHover] = useState<string | null>(null);
-  const frame = useRef<HTMLDivElement>(null);
-  const centred = useRef(false);
   // readiness the student saw last time, kept on this device only; differences pulse on the map and are listed in text
   const [seen, setSeen] = useState<Record<string, number> | null>(null);
   const seenKey = `pathsync.careers.seen.${sid}`;
@@ -95,28 +114,19 @@ export function CareerMap({ sid }: { sid: string }) {
   }, [mine.data, seenKey]);
 
   const byId = useMemo(() => Object.fromEntries((mine.data?.careers ?? []).map((c) => [c.id, c])), [mine.data]);
-  const maxN = Math.max(1, ...(graph.data?.nodes.map((n) => n.n_postings) ?? [1]));
-  const lay = useMemo(() => (graph.data ? layout(graph.data.nodes, (id) => byId[id]?.readiness ?? 0) : null), [graph.data, byId]);
+  const sc = useMemo(() => (mine.data ? scales(mine.data.careers) : null), [mine.data]);
+  const labels = useMemo(
+    () => (mine.data && sc ? placeLabels(mine.data.careers.map((c) => ({ id: c.id, x: sc.x(c.readiness), y: sc.y(c.n_postings), r: c.is_target ? 11 : 9, text: shortName(c.name) }))) : {}),
+    [mine.data, sc],
+  );
 
-  // open scrolled so the student's own target is in view (once, after the map first renders)
-  useEffect(() => {
-    const el = frame.current;
-    const tid = mine.data?.careers.find((c) => c.is_target)?.id;
-    if (centred.current || !el || !lay || !tid || !lay.pos[tid]) return;
-    const tp = lay.pos[tid];
-    el.scrollTo({ left: Math.max(0, tp.x - el.clientWidth / 2), top: Math.max(0, tp.y - el.clientHeight / 2) });
-    centred.current = true;
-  }, [lay, mine.data]);
-
-  if (graph.error || mine.error) return <ErrorNote error={graph.error || mine.error} />;
-  if (!graph.data || !mine.data || !lay) return <Loading label="Drawing your career map…" />;
+  if (mine.error) return <ErrorNote error={mine.error} />;
+  if (!mine.data || !sc) return <Loading label="Drawing your career map…" />;
 
   const target = mine.data.careers.find((c) => c.is_target);
-
   const focus = selected ?? target?.id ?? null;
-  const active = hover ?? focus;
-  const linked = new Set(graph.data.edges.filter((e) => e.a === active || e.b === active).flatMap((e) => [e.a, e.b]));
   const sel = focus ? byId[focus] : null;
+  const hov = hover ? byId[hover] : null;
   const changes = seen
     ? mine.data.careers
         .filter((c) => seen[c.id] !== undefined && Math.abs(c.readiness - seen[c.id]) >= 0.01)
@@ -124,73 +134,89 @@ export function CareerMap({ sid }: { sid: string }) {
         .sort((a, b) => Math.abs(b.now - b.before) - Math.abs(a.now - a.before))
     : [];
   const changed: Record<string, "up" | "down"> = Object.fromEntries(changes.map((x) => [x.id, x.now > x.before ? "up" : "down"]));
+  const xs = sc.x(READY_SPLIT);
+  const ys = sc.y(DEMAND_SPLIT);
 
   return (
     <div className="space-y-6">
       <p className="max-w-3xl text-sm text-muted-foreground">
-        Each circle is a career. Brighter means you can already show more of what its job postings ask for; bigger means more postings back it.
-        Lines join careers that ask for many of the same skills, so progress on one moves the others too.
-        {!mine.data.any_evidence ? " Add evidence or take the quick check to light up the map." : ""}
+        Each dot is a career. Further right means you can already show more of what its job postings ask for; higher means more postings ask
+        for it. Hover a dot for its areas, click or tap it for the full picture.
+        {!mine.data.any_evidence ? " Add evidence or take the quick check to move the dots." : ""}
       </p>
       <Panel className="p-0 sm:p-0">
-        <div ref={frame} className="max-h-[70vh] overflow-auto rounded-2xl bg-[radial-gradient(circle,var(--border)_1px,transparent_1px)] [background-size:28px_28px]">
-          <svg viewBox={`0 0 ${lay.W} ${lay.H}`} width={lay.W} height={lay.H} className="block max-w-none" role="group" aria-label="Career map">
-            {lay.cols.map((c) => (
-              <g key={c.family} aria-hidden="true">
-                <rect x={c.x - COL_W / 2 + 10} y={18} width={COL_W - 20} height={lay.H - 36} rx={18} style={{ fill: "var(--muted)", opacity: 0.45 }} />
-                <text x={c.x} y={HEAD_Y} textAnchor="middle" className="fill-muted-foreground text-[12.5px] font-semibold uppercase tracking-wider">
-                  {graph.data!.families[c.family] ?? c.family}
-                </text>
+        {/* below ~680px the labels would shrink past legibility, so the chart keeps its size and scrolls sideways */}
+        <div className="overflow-x-auto">
+        <div className="relative min-w-[680px]" onMouseLeave={() => setHover(null)}>
+          <svg viewBox={`0 0 ${VW} ${VH}`} className="block h-auto w-full" role="group" aria-label="Opportunity matrix of careers">
+            <rect x={xs} y={PT} width={VW - PR - xs} height={ys - PT} rx={14} style={{ fill: "var(--secondary)" }} aria-hidden="true" />
+            <text x={VW - PR - 14} y={PT + 22} textAnchor="end" className="text-[13px] font-semibold" style={{ fill: "var(--secondary-foreground)" }} aria-hidden="true">
+              Close and in demand
+            </text>
+            <rect x={PL} y={ys} width={VW - PL - PR} height={VH - PB - ys} style={{ fill: "var(--muted)", opacity: 0.6 }} aria-hidden="true" />
+            <text x={PL + 10} y={VH - PB - 10} className="fill-muted-foreground text-[11.5px]" aria-hidden="true">
+              Beta: fewer than {DEMAND_SPLIT} postings, read with care
+            </text>
+            {sc.xTicks.map((t) => (
+              <g key={`x${t}`} aria-hidden="true">
+                <line x1={sc.x(t)} x2={sc.x(t)} y1={PT} y2={VH - PB} style={{ stroke: "var(--border)" }} />
+                <text x={sc.x(t)} y={VH - PB + 20} textAnchor="middle" className="fill-muted-foreground text-[12px]">{Math.round(t * 100)}%</text>
               </g>
             ))}
-            {graph.data.edges.map((e) => {
-              const on = active && (e.a === active || e.b === active);
+            {sc.yTicks.map((t) => (
+              <g key={`y${t}`} aria-hidden="true">
+                <line x1={PL} x2={VW - PR} y1={sc.y(t)} y2={sc.y(t)} style={{ stroke: "var(--border)" }} />
+                <text x={PL - 10} y={sc.y(t) + 4} textAnchor="end" className="fill-muted-foreground text-[12px]">{t}</text>
+              </g>
+            ))}
+            <text x={(PL + VW - PR) / 2} y={VH - 14} textAnchor="middle" className="fill-ink text-[12.5px] font-medium" aria-hidden="true">
+              How much of what employers ask you can show →
+            </text>
+            <text x={18} y={(PT + VH - PB) / 2} textAnchor="middle" transform={`rotate(-90 18 ${(PT + VH - PB) / 2})`} className="fill-ink text-[12.5px] font-medium" aria-hidden="true">
+              Job postings →
+            </text>
+            {mine.data.careers.map((c) => {
+              const cx = sc.x(c.readiness);
+              const cy = sc.y(c.n_postings);
+              const r = c.is_target ? 11 : 9;
+              const lb = labels[c.id];
+              const on = hover === c.id || focus === c.id;
               return (
-                <path key={`${e.a}-${e.b}`} d={linkPath(lay.pos[e.a], lay.pos[e.b])} fill="none" strokeLinecap="round"
-                  style={{ stroke: on ? "var(--indigo)" : "var(--input)", strokeWidth: 1 + e.overlap * 5, opacity: on ? 0.8 : active ? 0.25 : 0.55, transition: "opacity 200ms" }} />
-              );
-            })}
-            {graph.data.nodes.map((n) => {
-              const c = byId[n.id];
-              const p = lay.pos[n.id];
-              const r = 15 + 11 * Math.sqrt(n.n_postings / maxN);
-              const glow = c ? 0.15 + 0.85 * c.readiness : 0.15;
-              const dim = active && n.id !== active && !linked.has(n.id);
-              return (
-                <g key={n.id} transform={`translate(${p.x} ${p.y})`} style={{ opacity: dim ? 0.4 : 1, transition: "opacity 200ms" }}>
-                  {changed[n.id] ? (
-                    <circle r={r + 4} fill="none" strokeWidth={3} className="career-pulse" aria-hidden="true"
-                      style={{ stroke: changed[n.id] === "up" ? "var(--mint)" : "var(--destructive)" }} />
+                <g key={c.id}>
+                  {changed[c.id] ? (
+                    <circle cx={cx} cy={cy} r={r + 5} fill="none" strokeWidth={3} className="career-pulse" aria-hidden="true"
+                      style={{ stroke: changed[c.id] === "up" ? "var(--mint)" : "var(--destructive)" }} />
                   ) : null}
-                  {c?.is_target ? <circle r={r + 6} fill="none" strokeWidth={2.5} style={{ stroke: "var(--iris)" }} aria-hidden="true" /> : null}
-                  <circle r={r} style={{ fill: "var(--card)" }} aria-hidden="true" />
+                  {c.is_target ? <circle cx={cx} cy={cy} r={r + 5} fill="none" strokeWidth={2.5} style={{ stroke: "var(--iris)" }} aria-hidden="true" /> : null}
                   <circle
-                    r={r}
+                    cx={cx}
+                    cy={cy}
+                    r={on ? r + 2 : r}
                     role="button"
                     tabIndex={0}
-                    aria-label={`${n.name}: you can show ${c ? pct(c.readiness) : "0%"} of what employers ask, ${n.n_postings} postings${n.limited_data ? ", limited data" : ""}${c?.is_target ? ", your target" : ""}`}
-                    aria-pressed={focus === n.id}
-                    onClick={() => setSelected(n.id)}
-                    onKeyDown={(ev) => (ev.key === "Enter" || ev.key === " ") && (ev.preventDefault(), setSelected(n.id))}
-                    onMouseEnter={() => setHover(n.id)}
-                    onMouseLeave={() => setHover(null)}
-                    onFocus={() => setHover(n.id)}
+                    aria-label={`${c.name}: you can show ${pct(c.readiness)} of what employers ask, ${c.n_postings} postings${c.limited_data ? ", limited data" : ""}${c.is_target ? ", your target" : ""}`}
+                    aria-pressed={focus === c.id}
+                    onClick={() => setSelected(c.id)}
+                    onKeyDown={(ev) => (ev.key === "Enter" || ev.key === " ") && (ev.preventDefault(), setSelected(c.id))}
+                    onMouseEnter={() => setHover(c.id)}
+                    onFocus={() => setHover(c.id)}
                     onBlur={() => setHover(null)}
-                    className="cursor-pointer outline-none"
-                    style={{ fill: "var(--indigo)", fillOpacity: glow, stroke: focus === n.id ? "var(--ink)" : "var(--indigo)", strokeOpacity: focus === n.id ? 1 : 0.35,
-                      strokeWidth: focus === n.id ? 2.5 : 1.5, strokeDasharray: n.limited_data ? "4 3" : undefined }}
+                    className="cursor-pointer outline-none transition-[r] duration-150"
+                    style={{ fill: c.limited_data ? "var(--card)" : "var(--indigo)", stroke: "var(--indigo)", strokeWidth: c.limited_data ? 2 : on ? 3 : 0,
+                      strokeDasharray: c.limited_data ? "3 2" : undefined }}
                   />
-                  <text y={r + 22} textAnchor="middle" className="pointer-events-none fill-ink text-[14px] font-semibold" aria-hidden="true">
-                    {shortName(n.name)}
-                  </text>
-                  <text y={r + 40} textAnchor="middle" className="pointer-events-none fill-muted-foreground text-[12px]" aria-hidden="true">
-                    <tspan className="fill-ink font-semibold">{c && c.n_measured ? pct(c.readiness) : "–"}</tspan>
-                    {` · ${n.n_postings} postings${n.limited_data ? " · Beta" : ""}`}
-                  </text>
+                  {lb?.lead ? <line {...lb.lead} strokeWidth={1} style={{ stroke: "var(--input)" }} aria-hidden="true" /> : null}
+                  {lb ? (
+                    <text x={lb.x} y={lb.y} textAnchor={lb.anchor} className={cn("pointer-events-none text-[12.5px]", on || c.is_target ? "fill-ink font-semibold" : "fill-muted-foreground")} aria-hidden="true">
+                      {shortName(c.name)}
+                    </text>
+                  ) : null}
                 </g>
               );
             })}
           </svg>
+          {hov ? <HoverCard c={hov} x={sc.x(hov.readiness) / VW} y={sc.y(hov.n_postings) / VH} /> : null}
+        </div>
         </div>
         <Legend />
       </Panel>
@@ -214,13 +240,37 @@ export function CareerMap({ sid }: { sid: string }) {
   );
 }
 
+/** Floating details for the hovered dot: readiness, sample size, a small radar of the areas and the biggest gap. */
+function HoverCard({ c, x, y }: { c: Career; x: number; y: number }) {
+  const left = x > 0.55;
+  return (
+    <div
+      className="pointer-events-none absolute z-10 hidden w-[280px] rounded-2xl border bg-card p-4 shadow-lg sm:block"
+      style={{ left: left ? undefined : `calc(${x * 100}% + 18px)`, right: left ? `calc(${(1 - x) * 100}% + 18px)` : undefined, top: `clamp(8px, calc(${y * 100}% - 120px), calc(100% - 330px))` }}
+      role="tooltip"
+    >
+      <p className="font-semibold text-ink">{c.name}</p>
+      <p className="mt-0.5 text-xs text-muted-foreground">
+        <span className="font-semibold text-ink">{c.n_measured ? pct(c.readiness) : "Not measured"}</span> · {c.n_measured} of {c.n_skills} skills measured · {c.n_postings} postings
+        {c.limited_data ? " · Beta" : ""}
+      </p>
+      <Radar a={c} b={null} size={220} />
+      {c.top_gaps[0] ? (
+        <p className="mt-1 text-xs text-muted-foreground">
+          Biggest gap: <span className="text-ink">{c.top_gaps[0].name}</span> ({c.top_gaps[0].level_now} → {c.top_gaps[0].level_needed})
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 function Legend() {
   return (
     <ul className="flex flex-wrap gap-x-6 gap-y-2 border-t px-5 py-4 text-xs text-muted-foreground">
-      <li className="flex items-center gap-2"><span className="size-3 rounded-full" style={{ background: "var(--indigo)", opacity: 0.25 }} /> Little you can show yet</li>
-      <li className="flex items-center gap-2"><span className="size-3 rounded-full" style={{ background: "var(--indigo)" }} /> Much you can show</li>
+      <li className="flex items-center gap-2"><span className="size-3 rounded-full" style={{ background: "var(--indigo)" }} /> Career</li>
       <li className="flex items-center gap-2"><span className="size-3 rounded-full border-2" style={{ borderColor: "var(--iris)" }} /> Your target</li>
       <li className="flex items-center gap-2"><span className="size-3 rounded-full border-2 border-dashed" style={{ borderColor: "var(--indigo)" }} /> Beta: fewer than 30 postings</li>
+      <li className="flex items-center gap-2"><span className="h-3 w-5 rounded" style={{ background: "var(--secondary)" }} /> Close and in demand</li>
     </ul>
   );
 }
@@ -348,12 +398,12 @@ function areaRows(a: Career, b: Career | null) {
 }
 
 /** Readiness per area as a radar. Only measured areas are joined by the shape; unmeasured axes are dashed, never drawn as zero. */
-function Radar({ a, b }: { a: Career; b: Career | null }) {
+function Radar({ a, b, size = 320 }: { a: Career; b: Career | null; size?: number }) {
   const rows = areaRows(a, b).slice(0, 7);
   if (rows.length < 3) return null;
-  const S = 320;
+  const S = size;
   const C = S / 2;
-  const R = 92;
+  const R = S * 0.29;
   const pt = (i: number, v: number): [number, number] => {
     const ang = -Math.PI / 2 + (i / rows.length) * Math.PI * 2;
     return [C + Math.cos(ang) * R * v, C + Math.sin(ang) * R * v];
@@ -371,7 +421,7 @@ function Radar({ a, b }: { a: Career; b: Career | null }) {
   const sb = b ? shape("b") : [];
   return (
     <figure>
-      <svg viewBox={`0 0 ${S} ${S}`} className="mx-auto h-auto w-full max-w-[320px]" role="img" aria-label={`Readiness by area for ${a.name}${b ? ` and ${b.name}` : ""}`}>
+      <svg viewBox={`0 0 ${S} ${S}`} className="mx-auto h-auto w-full" style={{ maxWidth: S }} role="img" aria-label={`Readiness by area for ${a.name}${b ? ` and ${b.name}` : ""}`}>
         {[0.25, 0.5, 0.75, 1].map((f) => (
           <polygon key={f} points={poly(rows.map((_, i) => pt(i, f)))} fill="none" style={{ stroke: "var(--border)" }} />
         ))}
