@@ -1,11 +1,9 @@
 "use client";
 
-import { useId } from "react";
 import { useT } from "@/lib/i18n";
 
-/** Circular progress with the route gradient. `value: null` = not measured yet (no evidence), shown as a dash, not 0%. */
+/** Circular progress in the primary colour. `value: null` = not measured yet (no evidence), shown as a dash, not 0%. */
 export function ReadinessRing({ value, size = 148, stroke = 14, label }: { value: number | null; size?: number; stroke?: number; label?: string }) {
-  const id = useId();
   const t = useT();
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
@@ -19,21 +17,14 @@ export function ReadinessRing({ value, size = 148, stroke = 14, label }: { value
       aria-label={value === null ? `${label ?? t("Progress", "Progres")}: ${t("not measured yet", "belum terukur")}` : `${label ?? t("Progress", "Progres")}: ${text}`}
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
-        <defs>
-          <linearGradient id={`ring-${id}`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" style={{ stopColor: "var(--indigo)" }} />
-            <stop offset="0.55" style={{ stopColor: "var(--iris)" }} />
-            <stop offset="1" style={{ stopColor: "var(--ember)" }} />
-          </linearGradient>
-        </defs>
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e7e5f3" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" style={{ stroke: "var(--indigo)", strokeOpacity: 0.15 }} strokeWidth={stroke} />
         {value === null ? null : (
           <circle
             cx={size / 2}
             cy={size / 2}
             r={r}
             fill="none"
-            stroke={`url(#ring-${id})`}
+            style={{ stroke: "var(--indigo)" }}
             strokeWidth={stroke}
             strokeLinecap="round"
             strokeDasharray={`${c * v} ${c}`}

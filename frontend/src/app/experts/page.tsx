@@ -182,7 +182,7 @@ function TaskHeader({ title, onBack, done, total }: { title: string; onBack: () 
         </span>
       </div>
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
-        <div className="h-2 rounded-full bg-route transition-[width] duration-300" style={{ width: `${total ? (done / total) * 100 : 0}%` }} />
+        <div className="h-2 rounded-full bg-indigo transition-[width] duration-300" style={{ width: `${total ? (done / total) * 100 : 0}%` }} />
       </div>
     </div>
   );

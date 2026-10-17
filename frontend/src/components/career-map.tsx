@@ -515,7 +515,7 @@ function CareerList({ careers, selected, onSelect }: { careers: Career[]; select
               </span>
               <span className="flex items-center gap-3">
                 <span className="hidden h-2 w-28 overflow-hidden rounded-full bg-muted sm:block" aria-hidden="true">
-                  <span className="block h-full rounded-full" style={{ width: `${Math.max(2, c.readiness * 100)}%`, background: "var(--route)" }} />
+                  <span className="block h-full rounded-full" style={{ width: `${Math.max(2, c.readiness * 100)}%`, background: "var(--indigo)" }} />
                 </span>
                 <span className="tabular w-12 text-right font-semibold text-ink">{c.n_measured ? pct(c.readiness) : "–"}</span>
               </span>

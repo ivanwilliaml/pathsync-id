@@ -72,8 +72,8 @@ export function MySkills({ sid }: { sid: string }) {
         </div>
         <p className="mt-4 text-xs text-ink/65">
           {t(
-            `How to read each bar: the fill is your level now, the black tick is the level employers ask for. Only skills asked for in at least 15% of the ${d.role.n_postings} real postings, or in your top five priorities, are shown.`,
-            `Cara membaca bar: isian adalah level kamu sekarang, garis hitam adalah level yang diminta employer. Yang ditampilkan hanya skill yang diminta di minimal 15% dari ${d.role.n_postings} job posting nyata, atau yang masuk lima prioritas teratasmu.`,
+            `How to read each bar: the solid part is your level now, the light part runs to the level employers ask for, and the bar turns green once you reach it. Only skills asked for in at least 15% of the ${d.role.n_postings} real postings, or in your top five priorities, are shown.`,
+            `Cara membaca bar: bagian pekat adalah level kamu sekarang, bagian muda sampai ke level yang diminta employer, dan bar berubah hijau begitu kamu mencapainya. Yang ditampilkan hanya skill yang diminta di minimal 15% dari ${d.role.n_postings} job posting nyata, atau yang masuk lima prioritas teratasmu.`,
           )}
         </p>
       </Panel>
@@ -194,7 +194,7 @@ function Summary({ label, value, note, small }: { label: string; value: string; 
 function SkillRow({ r }: { r: Row }) {
   const { c } = r;
   const t = useT();
-  const tone = r.status === "strong" ? "mint" : "route";
+  const tone = r.status === "strong" ? "mint" : "indigo";
   return (
     <li className="rounded-xl border bg-card p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">

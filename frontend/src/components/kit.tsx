@@ -111,16 +111,23 @@ export function EmptyState({ title, children, action, image, mascot = "empty-box
   );
 }
 
-/** Mastery bar: filled to the current level, with a tick at the target. */
-export function MasteryBar({ value, target, className, tone = "route" }: { value: number; target?: number | null; className?: string; tone?: "route" | "indigo" | "mint" }) {
+/** Mastery bar. Solid fill = level now; a light band of the same colour runs to the target, so the band left
+ * uncovered is the gap still to close. Once the target is reached the fill turns green. */
+export function MasteryBar({ value, target, className, tone = "indigo" }: { value: number; target?: number | null; className?: string; tone?: "indigo" | "mint" }) {
   const v = Math.max(0, Math.min(1, value));
-  const fill = tone === "route" ? "bg-route" : tone === "mint" ? "bg-mint" : "bg-indigo";
+  const t = target == null ? null : Math.max(0, Math.min(1, target));
+  const met = t != null && v >= t;
+  const fill = tone === "mint" || met ? "bg-mint" : "bg-indigo";
   return (
-    <div className={cn("relative h-2 w-full rounded-full bg-muted", className)} role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(v * 100)}>
-      <div className={cn("h-2 rounded-full", fill)} style={{ width: `${v * 100}%` }} />
-      {target != null ? (
-        <span className="absolute -top-1 h-4 w-[3px] rounded-full bg-ink" style={{ left: `calc(${Math.min(1, target) * 100}% - 1.5px)` }} aria-hidden="true" />
-      ) : null}
+    <div
+      className={cn("relative h-2 w-full overflow-hidden rounded-full bg-muted", className)}
+      role="meter"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(v * 100)}
+    >
+      {t != null && !met ? <div className="absolute inset-y-0 left-0 rounded-full bg-indigo/20" style={{ width: `${t * 100}%` }} aria-hidden="true" /> : null}
+      <div className={cn("absolute inset-y-0 left-0 rounded-full transition-[width] duration-300", fill)} style={{ width: `${v * 100}%` }} />
     </div>
   );
 }

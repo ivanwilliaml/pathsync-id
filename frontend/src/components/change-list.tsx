@@ -34,7 +34,7 @@ export function ChangeList({ items, className }: { items: Change[]; className?: 
             </div>
             <div className="relative order-last col-span-2 h-2 overflow-hidden rounded-full bg-muted sm:order-none sm:col-span-1" aria-hidden="true">
               <div className="absolute inset-y-0 left-0 rounded-full bg-input" style={{ width: `${Math.max(c.before, c.now) * 100}%` }} />
-              <div className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${c.now * 100}%`, background: up ? "var(--route)" : "var(--destructive)" }} />
+              <div className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${c.now * 100}%`, background: up ? "var(--indigo)" : "var(--destructive)" }} />
             </div>
             <span
               className={cn(
