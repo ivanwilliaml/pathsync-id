@@ -28,8 +28,13 @@ DATABASE_URL = os.getenv("PATHSYNC_DATABASE_URL", f"sqlite:///{(DATA_DIR / 'path
 EMBEDDING_MODEL = os.getenv("PATHSYNC_EMBEDDING_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 
 # ----------------------------------------------------- extraction / normalisation [III.A.1]
-SIM_AUTO = 0.85        # >= 0.85  -> mapped automatically
+SIM_AUTO = 0.85        # >= 0.85  -> mapped automatically (only when EMBEDDING_AUTO is on)
 SIM_REVIEW = 0.70      # 0.70-0.85 -> manual review queue ; < 0.70 -> new-skill candidate
+# Free-text phrases mapped by embedding similarity alone. The rule written before the labels existed: the automatic band
+# starts at the lowest threshold whose precision on the labelled phrases is >= 0.95. On the 274 verified phrases no
+# threshold reaches it (data/models/normalisation_eval.json), so these phrases go to the review queue and never count
+# in the market map. Turn back on only when a re-run of pipeline.normalisation eval chooses a threshold.
+EMBEDDING_AUTO = os.getenv("PATHSYNC_EMBEDDING_AUTO", "0") == "1"
 LLM_MODEL = os.getenv("PATHSYNC_LLM_MODEL", "claude-opus-5-5")
 
 # ------------------------------------------------------------ demand map [III.A.1, eq. 1]

@@ -13,7 +13,7 @@ from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from pathsync.db import ApiToken, EdgeVote, Expert, GraphEdge, Scenario, ScenarioRanking, StudyPlan, bump_epoch
+from pathsync.db import NON_EXPERT_KINDS, ApiToken, EdgeVote, Expert, GraphEdge, Scenario, ScenarioRanking, StudyPlan, bump_epoch
 from pathsync.engine import graph_from_db
 from pathsync.security import db_session, require_expert
 from pathsync.taxonomy import CycleError, Edge, SkillGraph, load_skills
@@ -32,7 +32,7 @@ def _who(tok: ApiToken, s: Session, expert_id: str | None) -> str:
 def me(tok: ApiToken = Depends(require_expert), s: Session = Depends(db_session)):
     if tok.role == "admin":
         return {"role": "admin", "experts": [{"id": e.id, "name": e.name} for e in
-                                             s.scalars(select(Expert).where(Expert.kind != "simulasi")).all()]}
+                                             s.scalars(select(Expert).where(Expert.kind.not_in(NON_EXPERT_KINDS))).all()]}
     e = s.get(Expert, tok.subject_id)
     return {"role": "expert", "expert": {"id": e.id, "name": e.name, "affiliation": e.affiliation,
                                          "validates_graph": e.validates_graph}}

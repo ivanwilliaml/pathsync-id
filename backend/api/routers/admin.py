@@ -17,6 +17,7 @@ from sqlalchemy.orm import Session
 
 from pathsync.config import BACKEND_DIR, PROCESSED_DIR, ROLES
 from pathsync.db import (
+    NON_EXPERT_KINDS,
     Annotation,
     ApiToken,
     Cohort,
@@ -91,7 +92,7 @@ def stats(s: Session = Depends(db_session)):
     return {"postings_total": cnt(select(func.count(Posting.id))),
             "duplicates": cnt(select(func.count(Posting.id)).where(Posting.duplicate_of.is_not(None))),
             "by_source": by_source, "in_window_by_role": by_role, "mentions_by_status": by_status,
-            "students": cnt(select(func.count(Student.id))), "experts": cnt(select(func.count(Expert.id)).where(Expert.kind != "simulasi")),
+            "students": cnt(select(func.count(Student.id))), "experts": cnt(select(func.count(Expert.id)).where(Expert.kind.not_in(NON_EXPERT_KINDS))),
             "scenarios": cnt(select(func.count(Scenario.id))), "annotations": cnt(select(func.count(Annotation.id))),
             "pending_project_reviews": cnt(select(func.count(Evidence.id)).where(Evidence.review_status == "pending")),
             "cohorts": cnt(select(func.count(Cohort.id))), "studies": cnt(select(func.count(Study.id))),
@@ -422,9 +423,11 @@ def agreement(simulated: bool = False, s: Session = Depends(db_session)):
 def finalize_edges(s: Session = Depends(db_session)):
     """Keep an edge when at least two of three experts approve it (paper III.A.3)."""
     summary = {"approved": 0, "rejected": 0, "draft": 0}
+    counted = {x.id for x in s.scalars(select(Expert).where(Expert.kind.not_in(NON_EXPERT_KINDS))).all()}
     for e in s.scalars(select(GraphEdge)).all():
-        a = sum(v.approve for v in e.votes)
-        r = sum(not v.approve for v in e.votes)
+        votes = [v for v in e.votes if v.expert_id in counted]       # internal and simulated reviews never validate a link
+        a = sum(v.approve for v in votes)
+        r = sum(not v.approve for v in votes)
         e.status = "approved" if a >= 2 else "rejected" if r >= 2 else "draft"
         summary[e.status] += 1
     try:
@@ -448,7 +451,7 @@ class ExpertIn(BaseModel):
 @router.get("/experts")
 def experts(s: Session = Depends(db_session)):
     return [{"id": e.id, "name": e.name, "affiliation": e.affiliation, "kind": e.kind, "validates_graph": e.validates_graph}
-            for e in s.scalars(select(Expert).where(Expert.kind != "simulasi")).all()]
+            for e in s.scalars(select(Expert).where(Expert.kind.not_in(NON_EXPERT_KINDS))).all()]
 
 
 @router.post("/experts")

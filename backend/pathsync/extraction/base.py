@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 
-from ..config import SIM_AUTO, SIM_REVIEW
+from ..config import EMBEDDING_AUTO, SIM_AUTO, SIM_REVIEW
 from ..text import verify_quote
 
 LEVELS = ("dasar", "mandiri", "mahir")
@@ -68,6 +68,7 @@ GENERIC_WORDS = {
     "projects", "proyek", "financial", "keuangan", "basic", "dasar", "advanced", "lanjutan", "and", "dan", "of", "the",
     "untuk", "for", "with", "dengan", "di", "in", "planning", "perencanaan", "solution", "solutions", "operation",
     "operations", "operasional", "technical", "teknis", "application", "applications", "aplikasi", "software",
+    "inventory", "payment", "payments", "logistics", "metrics", "revenue", "algorithms", "customer", "sales",
 }
 
 
@@ -103,9 +104,12 @@ def apply_gates(raw: list[Mention], source_text: str, index, valid_ids: set[str]
             if sim >= SIM_AUTO and lexical_support(m.surface, form) < MIN_LEXICAL_SUPPORT:
                 sim = min(sim, SIM_AUTO - 1e-3)       # looks similar to the embedding but not to the text: needs a human
                 m.reason = f"embedding match without textual overlap with '{form}'"
-            if sim >= SIM_AUTO:
+            if sim >= SIM_AUTO and EMBEDDING_AUTO:
                 m.skill_id, m.status = sid, "auto"
                 res.mentions.append(m)
+            elif sim >= SIM_AUTO:          # automatic band disabled by the labelled evaluation: a human decides
+                m.skill_id, m.status, m.reason = sid, "review", f"mirip '{form}' ({sim:.2f}); otomatis dimatikan"
+                res.review.append(m)
             elif sim >= SIM_REVIEW:
                 m.skill_id, m.status, m.reason = sid, "review", f"mirip '{form}' ({sim:.2f})"
                 res.review.append(m)

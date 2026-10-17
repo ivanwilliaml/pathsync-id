@@ -95,6 +95,11 @@ def cmd_consensus() -> None:
         roles = dict(s.execute(select(Posting.id, Posting.role).where(Posting.id.in_(ids))).all())
     doc, open_disputes = consensus(by_post, roles, adjudication)
     agree = agreement(by_post, list(load_skills()))
+    if CONSENSUS_FILE.exists():                   # who annotated, and how independently, survives a re-run
+        prev = json.loads(CONSENSUS_FILE.read_text(encoding="utf-8")).get("provenance")
+        if prev:
+            doc["provenance"] = prev
+            doc["note"] = f"{prev['label']}. {prev['note']}"
     CONSENSUS_FILE.write_text(json.dumps(doc, indent=1), encoding="utf-8")
     (MODELS_DIR / "gold_agreement.json").write_text(json.dumps({"pairs": agree, "open_disputes": open_disputes},
                                                                indent=1), encoding="utf-8")

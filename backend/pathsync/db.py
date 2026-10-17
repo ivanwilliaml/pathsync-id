@@ -105,12 +105,17 @@ class GraphEdge(Base):
     votes: Mapped[list[EdgeVote]] = relationship(back_populates="edge", cascade="all, delete-orphan")
 
 
+# reviewers who are not independent experts: simulated ones, and the team's own internal review. Their votes are kept
+# but never count as expert validation (real_experts, the 2-of-3 rule for prerequisite links).
+NON_EXPERT_KINDS = ("simulasi", "tim")
+
+
 class Expert(Base):
     __tablename__ = "experts"
     id: Mapped[str] = mapped_column(String(40), primary_key=True, default=new_id)
     name: Mapped[str] = mapped_column(String(200))
     affiliation: Mapped[str] = mapped_column(String(200), default="")
-    kind: Mapped[str] = mapped_column(String(20), default="dosen")    # dosen | praktisi | simulasi
+    kind: Mapped[str] = mapped_column(String(20), default="dosen")    # dosen | praktisi | simulasi | tim
     validates_graph: Mapped[bool] = mapped_column(Boolean, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
 

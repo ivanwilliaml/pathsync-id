@@ -22,7 +22,17 @@ from pathsync.config import (
     TREND_MIN_POSTINGS,
     TREND_WINDOW_MONTHS,
 )
-from pathsync.db import Expert, GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot, utcnow
+from pathsync.db import (
+    NON_EXPERT_KINDS,
+    Expert,
+    GraphEdge,
+    MarketSnapshot,
+    Posting,
+    PostingMention,
+    RankerModel,
+    active_snapshot,
+    utcnow,
+)
 from pathsync.embeddings import WARM
 from pathsync.engine import graph_from_db
 from pathsync.extraction.llm import llm_configured
@@ -89,7 +99,7 @@ def model_card(s: Session) -> dict:
                               "calibrated": False},
         "llm_is_never_used_for": ["choosing priorities", "estimating mastery", "ordering the path"],
         # what is validated today, so the UI can say "Beta" honestly (PM audit AI-6, AI-7)
-        "validation": {"real_experts": s.scalar(select(func.count(Expert.id)).where(Expert.kind != "simulasi")) or 0,
+        "validation": {"real_experts": s.scalar(select(func.count(Expert.id)).where(Expert.kind.not_in(NON_EXPERT_KINDS))) or 0,
                        "ranker_trained_on": "simulated experts" if ranker and "simulated" in (ranker.name or "").lower() else "expert rankings",
                        "extractor_blind_eval": ({**blind, "n_postings": ev["blind"]["n_postings"], "annotators": 1} if blind else None),
                        "metrics_file": metrics.get("generated_at"),

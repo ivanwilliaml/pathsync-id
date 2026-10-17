@@ -307,7 +307,14 @@ def test_expert_panel_flow(client):
 
 
 def test_annotation_f1_and_kappa(client):
+    from sqlalchemy import delete
+
+    from pathsync.db import Annotation, SessionLocal
     from pathsync.gold import load_split
+
+    with SessionLocal() as s:                  # the test database is a copy; start from no annotations
+        s.execute(delete(Annotation))
+        s.commit()
 
     p = client.get("/api/admin/annotation/next?annotator=uji", headers=ADMIN).json()
     split = load_split()

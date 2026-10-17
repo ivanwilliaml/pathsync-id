@@ -23,7 +23,17 @@ from pathlib import Path
 from sqlalchemy import func, select
 
 from pathsync.config import BKT_GUESS, BKT_SLIP, BKT_TRANSIT, MODELS_DIR, ROLES, SEED_DIR, SIM_AUTO, SIM_REVIEW
-from pathsync.db import Annotation, Expert, GraphEdge, Posting, RankerModel, active_snapshot, get_session, init_db
+from pathsync.db import (
+    NON_EXPERT_KINDS,
+    Annotation,
+    Expert,
+    GraphEdge,
+    Posting,
+    RankerModel,
+    active_snapshot,
+    get_session,
+    init_db,
+)
 
 OUT = MODELS_DIR / "metrics.json"
 CRLF, LF = bytes([13, 10]), bytes([10])     # hashes ignore line endings (Windows checkouts vs CI)
@@ -47,7 +57,7 @@ def _extraction() -> dict:
                 ("precision", "precision_ci95", "recall", "recall_ci95", "f1") if m in v["overall"]},
                 "f1_ci95": v["overall"].get("f1_ci95"), "gold_sha": v.get("gold_sha"),
                 # dev and held-out were both used to tune aliases (held-out after its first measurement, 12 Oct)
-                "tuned_on": k in ("dev", "heldout")}
+                "tuned_on": k in ("dev", "heldout", "consensus_dev")}
             for k, v in ev.items() if k != "provenance"}
     from pathsync.gold import CONSENSUS_FILE
     if CONSENSUS_FILE.exists():                     # plan A2: every extractor on the two-annotator test half
@@ -55,8 +65,11 @@ def _extraction() -> dict:
         for ext in EXTRACTORS:
             r = evaluate(ext, CONSENSUS_FILE.name, "test")
             if r["n_postings"]:
-                sets[f"consensus_test_{ext}"] = {"n_postings": r["n_postings"], "annotators": 2, **r["overall"],
-                                                 "tuned_on": False}
+                prov = json.loads(CONSENSUS_FILE.read_text(encoding="utf-8")).get("provenance", {})
+                sets[f"consensus_test_{ext}"] = {"n_postings": r["n_postings"], **r["overall"], "tuned_on": False,
+                                                 "annotators": prov.get("label", "2 human annotators"),
+                                                 "human_annotators": prov.get("human_annotators", 2),
+                                                 "independent": prov.get("independent", True)}
     blind = sets.get("blind", {})
     lo = (blind.get("precision_ci95") or [None])[0]
     return {"extractor": (ev.get("provenance") or {}).get("extractor", "lexicon"), "sets": sets,
@@ -88,7 +101,7 @@ def _ranker(s) -> dict:
     for name, c in (rep.get("conditions") or {}).items():
         methods = ((c.get("cv") or {}).get("methods") or {})
         conds[name] = {m: (v.get("ndcg5") or {}) for m, v in methods.items()}
-    real = s.scalar(select(func.count(Expert.id)).where(Expert.kind != "simulasi")) or 0
+    real = s.scalar(select(func.count(Expert.id)).where(Expert.kind.not_in(NON_EXPERT_KINDS))) or 0
     return {"generated": rep.get("generated_at"), "role": rep.get("role"), "n_scenarios": rep.get("n_scenarios"),
             "experts": "real" if real >= 3 else "simulated", "real_experts": real,
             "active_model": active.name if active else "Formula (5)",
@@ -112,8 +125,16 @@ def _market(s) -> dict:
 def _validation(s) -> dict:
     edges = dict(s.execute(select(GraphEdge.status, func.count()).group_by(GraphEdge.status)).all())
     annotators = s.scalar(select(func.count(func.distinct(Annotation.annotator)))) or 0
+    from pathsync.db import Expert
+    from pathsync.gold import CONSENSUS_FILE
+
+    prov = json.loads(CONSENSUS_FILE.read_text(encoding="utf-8")).get("provenance") if CONSENSUS_FILE.exists() else None
+    reviewers = [{"name": e.name, "kind": e.kind} for e in s.scalars(select(Expert)).all() if e.kind != "simulasi"]
     return {"graph_edges": edges, "annotators_in_app": annotators,
-            "annotated_postings_in_app": s.scalar(select(func.count(func.distinct(Annotation.posting_id)))) or 0}
+            "annotated_postings_in_app": s.scalar(select(func.count(func.distinct(Annotation.posting_id)))) or 0,
+            "annotation_provenance": prov and {k: prov[k] for k in ("label", "human_annotators", "independent")},
+            "graph_reviewers": reviewers,
+            "independent_experts": sum(r["kind"] not in NON_EXPERT_KINDS for r in reviewers)}
 
 
 def _taxonomy_final(s) -> dict:

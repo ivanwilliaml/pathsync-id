@@ -126,8 +126,8 @@ def cmd_sheet(name: str, role: str) -> None:
 def cmd_import(path: str, name: str, affiliation: str, kind: str, role: str) -> None:
     from openpyxl import load_workbook
 
-    if kind not in ("dosen", "praktisi"):
-        raise SystemExit("--kind must be dosen or praktisi")
+    if kind not in ("dosen", "praktisi", "tim"):
+        raise SystemExit("--kind must be dosen, praktisi or tim (internal team review; never counts as expert validation)")
     skills = load_skills()
     wb = load_workbook(path, read_only=True)
     votes, bad = {}, []

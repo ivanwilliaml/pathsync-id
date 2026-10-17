@@ -37,9 +37,29 @@ ALIAS_TRANSFERS = {
 }
 
 
+# Aliases that fired on unrelated text in the dev half of the verified gold set (17 Oct): generic words, an Indonesian
+# word ("keras" = hard, as in "pekerja keras"), testing jargon ("regression" testing) and wrong neighbours (GraphQL is not
+# REST design, fraud detection in ML postings is not internal audit). Tuned on dev only; the test half was measured once after.
+ALIAS_DROPS = {
+    "kpi_metrics": ("metrics", "retention", "metrik"),
+    "warehouse_logistics": ("logistics", "logistik"),
+    "ap_ar_reconciliation": ("rekonsiliasi",),
+    "financial_analysis": ("revenue",),
+    "data_structures_algorithms": ("algorithms", "algoritma", "data structures"),
+    "audit_internal_control": ("fraud detection",),
+    "rest_api_design": ("graphql",),
+    "requirements_elicitation": ("business needs", "kebutuhan bisnis"),
+}
+
+
 def transfer_aliases(tax: dict) -> list[str]:
     by_id = {s["id"]: s for s in tax["skills"]}
     moved = []
+    for sid, aliases in ALIAS_DROPS.items():
+        for a in aliases:
+            if sid in by_id and a in by_id[sid]["aliases"]:
+                by_id[sid]["aliases"].remove(a)
+                moved.append(f"{a}: dropped from {sid}")
     for (src, dst), aliases in ALIAS_TRANSFERS.items():
         if src not in by_id or dst not in by_id:
             continue

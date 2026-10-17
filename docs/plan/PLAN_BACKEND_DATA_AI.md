@@ -15,18 +15,20 @@ Semua angka di bawah ada di `backend/data/models/metrics.json` (`python -m pipel
 | Regresi lint | Selesai | `ruff` bersih |
 | Regresi pola jawaban | Sebagian | 120 soal bisnis diperbaiki isinya (72 pengecoh ditulis ulang, frasa pengisi dibuang, kunci PPh 23 dikoreksi ke tanggal 15). Audit sekarang rata-rata 5 pembagian lipat: Inggris 0,298, Indonesia 0,321, keduanya masih di atas batas acak. Sisa petunjuk ada di seluruh bank dan menunggu analisis butir dari pilot (AI-10) |
 | Regresi klaster frontend | Selesai | `CLUSTER_ORDER` memuat 20 klaster, dijaga tes |
-| AI-01, AI-02, AI-04 (validasi manusia, LLM) | Menunggu orang dan Kaggle | Alat dan lembar siap di `docs/validasi/` |
+| AI-01 gold ekstraksi | Selesai (dengan catatan) | 130 lowongan: pra-anotasi LLM dua putaran, diverifikasi satu anggota tim (Ivan). Bukan dua anotator independen, jadi kesepakatan antar-lembar tidak dilaporkan sebagai kappa antar-manusia. Label yang berbeda antar-lembar dikeluarkan. Paruh uji: presisi 0,792 [0,7478-0,8294], recall 0,817; target 0,80 belum tercapai di titik tengah. Paruh dev dipakai menyetel |
+| AI-02 LLM vs lexicon | Menunggu Kaggle | Ekspor siap |
 | AI-03 taksonomi BA | Selesai | BA lolos 3 dari 3 (cakupan 0,9739, kandidat 0,035), begitu juga DevOps dan Tax. Frasa di luar cakupan dikeluarkan dari penyebut dan dicantumkan di laporan |
-| AI-04 penjaga normalisasi | Selesai (kode), menunggu label | Kata generik tidak lagi dihitung, ambang dukungan leksikal 0,35. Pasangan lowongan-skill dari embedding saja turun dari 6,1% ke 4,7% (BA 9,7% ke 7,7%). Ambang dikalibrasi ulang setelah label V4 |
+| AI-04 normalisasi | Selesai | Label 274 frasa (pra-anotasi LLM, diverifikasi Ivan). Pada ambang 0,85 pemetaan otomatis hanya benar 0,4237; tidak ada ambang yang mencapai 0,95. Sesuai aturan yang ditulis sebelumnya, pemetaan embedding otomatis dimatikan (`PATHSYNC_EMBEDDING_AUTO=0`): frasa bebas masuk antrean tinjauan dan tidak dihitung di peta pasar |
 | AI-05 kesiapan terbukti | Selesai (backend) | `p_proven`, `evidence_kinds`, `coverage_proven` di API dashboard; nilai kuliah tidak pernah dihitung sebagai terbukti. Frontend belum memakainya |
 | AI-06 ranker | Selesai | Model aktif: Formula (5). Model dari pakar simulasi tidak pernah aktif |
-| AI-07 graf pakar | Menunggu pakar | Lembar V2 siap |
+| AI-07 graf pakar | Tinjauan internal selesai, pakar independen belum | Ivan (jenis `tim`): 23 dari 25 prasyarat disetujui, 2 ditolak, 8 usulan baru; relevansi skill teratas BA precision@20 0,6. Jenis `tim` tidak dihitung sebagai pakar dan tidak memvalidasi sisi (aturan 2 dari 3 pakar). Pakar independen: 0 |
 | AI-08 data | Ditahan | Scraping tambahan ditunda sampai keputusan sumber data (lihat `docs/ops/DATA_SOURCES.md`) |
 | AI-09 tren | Selesai | API menjelaskan kenapa tren belum ada (jumlah lowongan per periode), dalam dua bahasa |
 | AI-10 kalibrasi asesmen | Menunggu pilot | Alat siap |
 | AI-11 soal Indonesia | Selesai (A7 Jonathan) | Bank soal Indonesia dipakai otomatis saat permintaan berbahasa Indonesia |
 | AI-12 soal BA | Ditinjau, tidak diubah | 27 dari 30 soal menguji notasi atau metode; 3 soal situasional berbasis teknik BABOK |
-| Ekstraksi bisnis (baru) | Diukur | Set buta 18 lowongan bisnis: presisi 0,783, recall 0,72, satu anotator, tidak dipakai menyetel |
+| Ekstraksi bisnis (baru) | Diukur | Set buta 18 lowongan bisnis: presisi 0,85, recall 0,68, satu anotator, tidak dipakai menyetel |
+| Pilot (V3) | Belum bisa dipakai | Lembar yang ada bertanda simulasi AI; menunggu data mentah survei (ekspor formulir atau catatan sesi) |
 | BE-01 CI GitHub | Tidak bisa dicek dari sini | `gh` tidak terpasang dan repo privat; cek tab Actions |
 | BE-02 deploy publik | Belum | Butuh VPS dan kredensial |
 | BE-03 sumber data | Selesai (dokumen), menunggu keputusan | `docs/ops/DATA_SOURCES.md`: syarat layanan Kalibrr melarang penyalinan tanpa izin tertulis; Karirhub tanpa syarat layanan yang bisa ditemukan. `PATHSYNC_EXCLUDED_SOURCES` untuk mengeluarkan sumber; kontak perekrut disamarkan saat dimuat |

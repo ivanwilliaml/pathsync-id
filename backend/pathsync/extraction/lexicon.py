@@ -53,6 +53,14 @@ NEGATIVE_CONTEXT = {
     "reports": re.compile(r"\breports? to\b", re.I),
     "client": re.compile(r"\b(?:our|serving|serve)\s+(?:\w+\s+)?clients?\b", re.I),
     "english": re.compile(r"\benglish (?:name|version)\b", re.I),
+    # Indonesian "keras" (hard): pekerja keras, perangkat keras, kerja keras
+    "keras": re.compile(r"\b(?:pekerja|kerja|bekerja|perangkat|berusaha|belajar)\s+keras\b|\bkeras\s+(?:dan|&)", re.I),
+    # "regression testing" is QA, not statistics
+    "regression": re.compile(r"\bregression\s+test|\b(?:smoke|functional|integration|uat)\b", re.I),
+    "regresi": re.compile(r"\b(?:uji|pengujian|testing)\s+regresi\b|\bregresi\s+test", re.I),
+    # building software "aligned with business requirements" is not eliciting them
+    "business requirements": re.compile(r"\b(?:align\w*|meet\w*|accordance|in line|according|sesuai|support\w*|based on)\b"
+                                        r"[^.;]{0,40}\bbusiness requirements\b", re.I),
 }
 PATTERN_CUE = re.compile(
     r"(?:experience (?:in|with|using)|knowledge (?:of|in)|familiar(?:ity)? with|proficien(?:t|cy) (?:in|with)|understanding of|"
