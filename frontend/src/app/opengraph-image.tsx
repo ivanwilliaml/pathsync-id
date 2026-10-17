@@ -16,7 +16,11 @@ export default async function OpengraphImage() {
         <div style={{ display: "flex", alignItems: "center", gap: 20, fontSize: 40, fontWeight: 700 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={head} width={64} height={64} alt="" />
-          PathSync
+          <div style={{ display: "flex", gap: 0 }}>
+            <span>Path</span>
+            {/* satori adds a word gap between flex children; pull "Sync" back so the wordmark reads as one word */}
+            <span style={{ marginLeft: -10, backgroundImage: "linear-gradient(100deg, #8fdc6e, #5ed6c4, #7fc0ff)", backgroundClip: "text", color: "transparent" }}>Sync</span>
+          </div>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={wave} width={330} height={392} alt="" style={{ position: "absolute", right: 56, bottom: 36 }} />
