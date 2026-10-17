@@ -34,6 +34,7 @@ AUDIT_LOG_DAYS = 365               # staff activity log
 TOKEN_GRACE_DAYS = 30              # expired or revoked staff tokens are removed after this grace period
 SESSION_GRACE_DAYS = 7             # unsubmitted assessment sessions, counted from their expiry
 DEMO_PROFILE_DAYS = 2              # one-click demo profiles (api.routers.demo)
+BACKUP_KEEP_DAYS = 14              # deploy/backup.sh default (Privacy §6)
 
 STUDENT_TABLES = (AssessmentResponse, AssessmentSession, RecommendationHistory, CourseEnrollment, WeeklyPlan, Pulse,
                   StudyPlan, Evidence)

@@ -1,0 +1,602 @@
+{
+ "generated_at": "2026-10-15T20:10:22",
+ "role": "data_analyst",
+ "note": "Simulasi kelayakan dengan pakar tersimulasi (bukan kinerja pada pakar nyata). Peringkat pakar nyata dikumpulkan melalui Panel Pakar dan dilatih dengan pipeline yang sama.",
+ "conditions": {
+  "titik_hambat": {
+   "styles": [
+    "titik_hambat",
+    "titik_hambat",
+    "titik_hambat"
+   ],
+   "kendall_w_mean": 0.9758,
+   "cv": {
+    "methods": {
+     "model": {
+      "ndcg5": {
+       "mean": 0.9868,
+       "ci95": [
+        0.9693,
+        0.997
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.946,
+       "ci95": [
+        0.9159,
+        0.9698
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.9333,
+       "ci95": [
+        0.8963,
+        0.9704
+       ],
+       "n": 45
+      }
+     },
+     "kesenjangan_terbesar": {
+      "ndcg5": {
+       "mean": 0.5872,
+       "ci95": [
+        0.4856,
+        0.6841
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.1413,
+       "ci95": [
+        0.0159,
+        0.281
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.4593,
+       "ci95": [
+        0.3704,
+        0.5481
+       ],
+       "n": 45
+      }
+     },
+     "kesenjangan_x_permintaan": {
+      "ndcg5": {
+       "mean": 0.7018,
+       "ci95": [
+        0.6472,
+        0.7557
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.4524,
+       "ci95": [
+        0.381,
+        0.5222
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.5481,
+       "ci95": [
+        0.4741,
+        0.6222
+       ],
+       "n": 45
+      }
+     },
+     "formula5": {
+      "ndcg5": {
+       "mean": 0.9799,
+       "ci95": [
+        0.9639,
+        0.9915
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.9016,
+       "ci95": [
+        0.873,
+        0.9302
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.8963,
+       "ci95": [
+        0.8519,
+        0.9407
+       ],
+       "n": 45
+      }
+     }
+    },
+    "fold_weights_mean": {
+     "G": 1.9749,
+     "R": 2.5791,
+     "K": -0.1088,
+     "D": 2.2328,
+     "T": 1.04,
+     "U": 2.5823,
+     "B": 1.1253
+    },
+    "n_folds": 5,
+    "n_scenarios": 45,
+    "n_base": 15,
+    "l2_selected": [
+     0.01,
+     0.05,
+     0.01,
+     0.01,
+     0.2
+    ]
+   },
+   "ablation": {
+    "tanpa_fitur_graf": {
+     "mean": 0.6696,
+     "ci95": [
+      0.6393,
+      0.7063
+     ],
+     "n": 45
+    },
+    "tanpa_fitur_tren": {
+     "mean": 0.9873,
+     "ci95": [
+      0.9702,
+      0.9975
+     ],
+     "n": 45
+    },
+    "lengkap": {
+     "mean": 0.9868,
+     "ci95": [
+      0.9693,
+      0.997
+     ],
+     "n": 45
+    }
+   },
+   "weights_full": {
+    "G": 1.6615,
+    "R": 2.3505,
+    "K": -0.0768,
+    "D": 1.952,
+    "T": 1.0004,
+    "U": 2.2883,
+    "B": 0.6543
+   },
+   "l2_full": 0.05,
+   "adaptivity": {
+    "competency": {
+     "n": 15,
+     "model_moved_expected": 13,
+     "agrees_with_experts": 12,
+     "share_expected": 0.8667,
+     "share_agree": 0.8
+    },
+    "market": {
+     "n": 15,
+     "model_moved_expected": 7,
+     "agrees_with_experts": 9,
+     "share_expected": 0.4667,
+     "share_agree": 0.6
+    }
+   },
+   "ndcg5_by_n_base": {
+    "8": 0.9902,
+    "15": 0.9774,
+    "30": 0.9849
+   }
+  },
+  "kesenjangan_permintaan": {
+   "styles": [
+    "kesenjangan_permintaan",
+    "kesenjangan_permintaan",
+    "kesenjangan_permintaan"
+   ],
+   "kendall_w_mean": 0.9273,
+   "cv": {
+    "methods": {
+     "model": {
+      "ndcg5": {
+       "mean": 0.9757,
+       "ci95": [
+        0.9625,
+        0.9875
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.9111,
+       "ci95": [
+        0.8952,
+        0.927
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.9185,
+       "ci95": [
+        0.8667,
+        0.9704
+       ],
+       "n": 45
+      }
+     },
+     "kesenjangan_terbesar": {
+      "ndcg5": {
+       "mean": 0.7737,
+       "ci95": [
+        0.7087,
+        0.8329
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.4444,
+       "ci95": [
+        0.3397,
+        0.5429
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.6444,
+       "ci95": [
+        0.5704,
+        0.7185
+       ],
+       "n": 45
+      }
+     },
+     "kesenjangan_x_permintaan": {
+      "ndcg5": {
+       "mean": 0.972,
+       "ci95": [
+        0.9601,
+        0.9837
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.9048,
+       "ci95": [
+        0.8873,
+        0.9238
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.9333,
+       "ci95": [
+        0.8815,
+        0.9778
+       ],
+       "n": 45
+      }
+     },
+     "formula5": {
+      "ndcg5": {
+       "mean": 0.7478,
+       "ci95": [
+        0.7005,
+        0.7934
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.5317,
+       "ci95": [
+        0.4635,
+        0.6032
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.6222,
+       "ci95": [
+        0.563,
+        0.6889
+       ],
+       "n": 45
+      }
+     }
+    },
+    "fold_weights_mean": {
+     "G": 2.9115,
+     "R": 0.0178,
+     "K": -0.1061,
+     "D": 2.9593,
+     "T": 1.1882,
+     "U": 0.2013,
+     "B": 0.0
+    },
+    "n_folds": 5,
+    "n_scenarios": 45,
+    "n_base": 15,
+    "l2_selected": [
+     0.01,
+     0.01,
+     0.01,
+     0.01,
+     0.05
+    ]
+   },
+   "ablation": {
+    "tanpa_fitur_graf": {
+     "mean": 0.9745,
+     "ci95": [
+      0.9629,
+      0.9851
+     ],
+     "n": 45
+    },
+    "tanpa_fitur_tren": {
+     "mean": 0.967,
+     "ci95": [
+      0.95,
+      0.9812
+     ],
+     "n": 45
+    },
+    "lengkap": {
+     "mean": 0.9757,
+     "ci95": [
+      0.9625,
+      0.9875
+     ],
+     "n": 45
+    }
+   },
+   "weights_full": {
+    "G": 3.0,
+    "R": 0.0,
+    "K": -0.0944,
+    "D": 3.0,
+    "T": 1.2508,
+    "U": 0.1894,
+    "B": 0.0
+   },
+   "l2_full": 0.01,
+   "adaptivity": {
+    "competency": {
+     "n": 15,
+     "model_moved_expected": 13,
+     "agrees_with_experts": 13,
+     "share_expected": 0.8667,
+     "share_agree": 0.8667
+    },
+    "market": {
+     "n": 15,
+     "model_moved_expected": 13,
+     "agrees_with_experts": 13,
+     "share_expected": 0.8667,
+     "share_agree": 0.8667
+    }
+   },
+   "ndcg5_by_n_base": {
+    "8": 0.9705,
+    "15": 0.9772,
+    "30": 0.9678
+   }
+  },
+  "campuran": {
+   "styles": [
+    "titik_hambat",
+    "kesenjangan_permintaan",
+    "kesiapan"
+   ],
+   "kendall_w_mean": 0.7927,
+   "cv": {
+    "methods": {
+     "model": {
+      "ndcg5": {
+       "mean": 0.9616,
+       "ci95": [
+        0.9285,
+        0.9852
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.8873,
+       "ci95": [
+        0.8524,
+        0.9143
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.8741,
+       "ci95": [
+        0.8148,
+        0.9259
+       ],
+       "n": 45
+      }
+     },
+     "kesenjangan_terbesar": {
+      "ndcg5": {
+       "mean": 0.6765,
+       "ci95": [
+        0.5861,
+        0.7497
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.2619,
+       "ci95": [
+        0.1254,
+        0.4
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.5037,
+       "ci95": [
+        0.3926,
+        0.6222
+       ],
+       "n": 45
+      }
+     },
+     "kesenjangan_x_permintaan": {
+      "ndcg5": {
+       "mean": 0.7982,
+       "ci95": [
+        0.7441,
+        0.8446
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.6238,
+       "ci95": [
+        0.5571,
+        0.6873
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.6963,
+       "ci95": [
+        0.637,
+        0.763
+       ],
+       "n": 45
+      }
+     },
+     "formula5": {
+      "ndcg5": {
+       "mean": 0.951,
+       "ci95": [
+        0.931,
+        0.9693
+       ],
+       "n": 45
+      },
+      "kendall_tau": {
+       "mean": 0.854,
+       "ci95": [
+        0.8206,
+        0.8873
+       ],
+       "n": 45
+      },
+      "top3": {
+       "mean": 0.8667,
+       "ci95": [
+        0.8148,
+        0.9185
+       ],
+       "n": 45
+      }
+     }
+    },
+    "fold_weights_mean": {
+     "G": 2.6568,
+     "R": 2.8231,
+     "K": -0.5425,
+     "D": 2.8407,
+     "T": 1.1611,
+     "U": 1.7495,
+     "B": 0.226
+    },
+    "n_folds": 5,
+    "n_scenarios": 45,
+    "n_base": 15,
+    "l2_selected": [
+     0.01,
+     0.01,
+     0.01,
+     0.05,
+     0.01
+    ]
+   },
+   "ablation": {
+    "tanpa_fitur_graf": {
+     "mean": 0.7875,
+     "ci95": [
+      0.7382,
+      0.8299
+     ],
+     "n": 45
+    },
+    "tanpa_fitur_tren": {
+     "mean": 0.9612,
+     "ci95": [
+      0.9279,
+      0.985
+     ],
+     "n": 45
+    },
+    "lengkap": {
+     "mean": 0.9616,
+     "ci95": [
+      0.9285,
+      0.9852
+     ],
+     "n": 45
+    }
+   },
+   "weights_full": {
+    "G": 2.063,
+    "R": 2.1077,
+    "K": -0.3789,
+    "D": 2.3003,
+    "T": 1.0299,
+    "U": 1.45,
+    "B": 0.207
+   },
+   "l2_full": 0.05,
+   "adaptivity": {
+    "competency": {
+     "n": 15,
+     "model_moved_expected": 13,
+     "agrees_with_experts": 13,
+     "share_expected": 0.8667,
+     "share_agree": 0.8667
+    },
+    "market": {
+     "n": 15,
+     "model_moved_expected": 12,
+     "agrees_with_experts": 12,
+     "share_expected": 0.8,
+     "share_agree": 0.8
+    }
+   },
+   "ndcg5_by_n_base": {
+    "8": 0.9535,
+    "15": 0.9482,
+    "30": 0.9552
+   }
+  }
+ },
+ "n_scenarios": 45,
+ "n_base": 15,
+ "market_version": "2026-10-12-lexicon",
+ "llm_baseline": "tidak dijalankan (urutan LLM luring tidak lengkap/kedaluwarsa; ekspor ulang skenario)",
+ "registered_model": {
+  "weights": {
+   "G": 2.063,
+   "R": 2.1077,
+   "K": -0.3789,
+   "D": 2.3003,
+   "T": 1.0299,
+   "U": 1.45,
+   "B": 0.207
+  },
+  "active": false,
+  "note": "report only; the app ranker is trained on Business Analyst rankings",
+  "cv_ndcg5": 0.9616,
+  "formula5_ndcg5": 0.951
+ }
+}

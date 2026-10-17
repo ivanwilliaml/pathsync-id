@@ -1,0 +1,167 @@
+{
+ "seed": 20261014,
+ "note": "Locked split for the human gold set (plan A1). Tune aliases, prompts and thresholds on dev only; report numbers on test only.",
+ "excluded_earlier_gold": 76,
+ "per_role": {
+  "accountant": {
+   "dev": 5,
+   "test": 5
+  },
+  "backend_developer": {
+   "dev": 5,
+   "test": 5
+  },
+  "business_analyst": {
+   "dev": 5,
+   "test": 5
+  },
+  "cybersecurity_analyst": {
+   "dev": 3,
+   "test": 2
+  },
+  "data_analyst": {
+   "dev": 5,
+   "test": 5
+  },
+  "data_engineer": {
+   "dev": 2,
+   "test": 3
+  },
+  "data_scientist": {
+   "dev": 3,
+   "test": 2
+  },
+  "devops_engineer": {
+   "dev": 2,
+   "test": 3
+  },
+  "digital_marketing": {
+   "dev": 5,
+   "test": 5
+  },
+  "frontend_developer": {
+   "dev": 3,
+   "test": 2
+  },
+  "fullstack_developer": {
+   "dev": 5,
+   "test": 5
+  },
+  "mobile_developer": {
+   "dev": 2,
+   "test": 3
+  },
+  "qa_engineer": {
+   "dev": 3,
+   "test": 2
+  },
+  "ui_ux_designer": {
+   "dev": 2,
+   "test": 3
+  }
+ },
+ "dev": [
+  "kalibrr:254916",
+  "kalibrr:267604",
+  "kalibrr:269823",
+  "kalibrr:270000",
+  "kalibrr:271196",
+  "kalibrr:271254",
+  "kalibrr:271429",
+  "kalibrr:272074",
+  "kalibrr:272230",
+  "kalibrr:272422",
+  "kalibrr:272709",
+  "kalibrr:272717",
+  "kalibrr:272776",
+  "kalibrr:273187",
+  "kalibrr:273218",
+  "kalibrr:273555",
+  "kalibrr:273726",
+  "karirhub:01a02311-413d-7239-85c0-5750364e67cb",
+  "karirhub:01a031e0-3652-72ca-ac75-494e89bd5c14",
+  "karirhub:01a04eba-5268-7332-8ac6-7e5dd61dd18f",
+  "karirhub:01a0561f-73d4-72be-b7fb-cfae59d2c457",
+  "karirhub:01a0c807-0f63-7185-864c-01323fd72012",
+  "karirhub:01a0deea-aa90-7074-bc6f-64e068c77c48",
+  "karirhub:01a0e5cf-0c5d-7039-800a-e73b97b73b2b",
+  "karirhub:01a0f38f-cc00-7249-9d47-e7be6f726d94",
+  "karirhub:0ad07c2f-1cdc-431c-bc58-b7c76de59dc9",
+  "karirhub:0c85be76-29e3-4763-84ed-9097d1387420",
+  "karirhub:1930707f-8972-4320-90c5-5e9a0a8a95cc",
+  "karirhub:21cfdfa8-3d85-45b8-ba31-2d68cf760910",
+  "karirhub:3e39527d-0cf9-41ce-945f-513a0e01b61a",
+  "karirhub:470b6c57-d9c8-4980-a6ac-93b1a004547c",
+  "karirhub:805590be-7cb4-4f81-99b4-9e27066ef9ee",
+  "karirhub:dbc02af6-63d6-4424-9cc1-8bd26f58059a",
+  "karirhub:e5667238-ee1e-4db7-af92-e4253bc0a9ff",
+  "karirhub:f0984379-8fce-47e7-b114-e66cd41afeb4",
+  "karirhub:f456a8cb-6698-404a-b7d3-4840eed245b1",
+  "lever:1e6eb820-9037-4a80-bbd6-d0e50125a292",
+  "lever:3340d907-1dd4-4591-93e2-d5246b5d0b61",
+  "lever:3fc8dd54-3af0-4b27-a7b4-e7762bf1c9af",
+  "lever:5e2c3395-ab00-4818-95b2-b6efa2fe6148",
+  "smartrecruiters:743999833215762",
+  "smartrecruiters:743999892855045",
+  "smartrecruiters:744000143637779",
+  "smartrecruiters:744000144226639",
+  "workable:4272d3d2-9cbd-43de-ab6f-50f381c08395",
+  "workable:712fc15f-3a5c-47d5-8641-dda452e2c894",
+  "workable:766b08de-90ff-43d4-8ce0-c85bba27c37a",
+  "workable:a6d2f0fa-d922-46d9-97bb-2f08b8e2ebf5",
+  "workable:f2ab2504-4bff-4d3f-8683-778611b0fb49",
+  "workable:f56fd51e-b354-4f82-9ce4-42e367a63653"
+ ],
+ "test": [
+  "kalibrr:228861",
+  "kalibrr:236267",
+  "kalibrr:251758",
+  "kalibrr:267421",
+  "kalibrr:267805",
+  "kalibrr:267998",
+  "kalibrr:268320",
+  "kalibrr:268599",
+  "kalibrr:270282",
+  "kalibrr:272018",
+  "kalibrr:272975",
+  "kalibrr:273688",
+  "karirhub:01a0446b-1d01-73f6-9517-0f45e5b6ea77",
+  "karirhub:01a04710-1e74-739e-90f1-031829b11d4c",
+  "karirhub:01a0573f-e949-73bb-ad6c-3bf8769a192c",
+  "karirhub:01a06649-35ff-7211-b814-2d2ab730ac55",
+  "karirhub:01a07b52-2cdd-71cc-bab5-505783c134fb",
+  "karirhub:01a08aac-873f-707b-beff-56a540546991",
+  "karirhub:01a096d1-68bb-71e1-8d60-d6b8c110c951",
+  "karirhub:01a0ad43-8268-7145-93d5-8483d25c713d",
+  "karirhub:01a0b3d1-d7de-721d-8dd7-bd923f939952",
+  "karirhub:01a0d9c3-ceb2-71cb-88c4-6f1c2676de58",
+  "karirhub:01a0d9c4-7cd5-7129-98a3-7934ba7c2574",
+  "karirhub:01a0deeb-1006-72d3-bc5d-21040e98c7ef",
+  "karirhub:01a0e28c-f5e6-73cf-b8aa-95af700fbd51",
+  "karirhub:01a0e294-825e-72af-a661-ba2b56f03a5c",
+  "karirhub:01a0e77b-2473-71e1-a5a9-c53abbaf86e9",
+  "karirhub:01a0f14b-c3d7-7066-bde7-3254c4c25c3b",
+  "karirhub:01a0f385-41b7-72a8-9be1-1d738528fbfa",
+  "karirhub:01a0f8a6-b2d7-709c-8f15-6a7816c6f099",
+  "karirhub:01a10acc-b36d-7271-814b-7d9ea1fc346e",
+  "karirhub:01a114f8-829a-7092-b2f3-3dec10c887f4",
+  "karirhub:01a12c2a-66bb-718b-8db3-a02806a5257f",
+  "karirhub:2ca3a260-a4df-4a07-a7df-f1ad41d33a13",
+  "karirhub:4a163976-26c3-4ec5-a9df-3e82dbbe26f9",
+  "karirhub:92c121f9-f0bf-42bb-9d4f-4a2ed25e8b1e",
+  "karirhub:cfa8836b-a684-44e6-a96b-434615fb1b14",
+  "karirhub:d60f97f0-9fc2-4107-8b81-978cea2d31ff",
+  "lever:2d581907-e2a0-477a-b219-d0eb5b41a089",
+  "lever:d909a99d-a913-4a92-a324-031a3c499992",
+  "lever:f3566bb7-f2fd-4aef-bf2d-a1e0108d24e3",
+  "smartrecruiters:744000144227409",
+  "smartrecruiters:744000153988681",
+  "workable:0022d4ff-a9cd-4e8f-bdb5-5bc3453f4b2b",
+  "workable:36461c0c-bdb4-4629-8ab6-6bbc57f7be2f",
+  "workable:4b903baa-05b2-4e88-8249-435ce08a14ee",
+  "workable:7457a221-dbfd-4a4c-ae23-a9ec155bb8c5",
+  "workable:9b0738ec-4e80-4994-90cc-9e0e996878f2",
+  "workable:a1a12e89-4646-49bf-9f4c-40b0ae84778c",
+  "workable:f075f897-d79d-4fc1-9cf7-abc85e76c841"
+ ]
+}

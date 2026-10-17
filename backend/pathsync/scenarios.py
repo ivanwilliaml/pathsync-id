@@ -45,9 +45,34 @@ class ScenarioState:
     T: dict[str, float]
 
 
-def make_profile(idx: int, graph: SkillGraph, rng: random.Random) -> tuple[str, dict[str, float], dict[str, float]]:
-    label, base = ARCHETYPES[idx % len(ARCHETYPES)]
-    bias = SKILL_BIAS[idx % len(ARCHETYPES)]
+def archetypes_for(graph: SkillGraph, market: MarketMap, role: str) -> tuple[list, dict]:
+    """Business Analyst keeps the hand-written archetypes (so its scenarios and evaluation do not
+    move). Other roles get five generic profiles built on the role's own clusters, ordered by how
+    much market demand each cluster carries, instead of every unknown cluster sitting at 0.35."""
+    if role == "business_analyst":
+        return ARCHETYPES, SKILL_BIAS
+    weight: dict[str, float] = {}
+    for sid, sk in graph.skills.items():
+        weight[sk.cluster] = weight.get(sk.cluster, 0.0) + market.D(sid)
+    top = [c for c, w in sorted(weight.items(), key=lambda kv: -kv[1]) if w > 0]
+    first, second = (top + ["", ""])[:2]
+    rest = 0.30
+    profiles = [
+        ("Beginner from a related major, semester 3", {c: 0.22 for c in top}),
+        ("Related major, semester 5", {**{c: rest for c in top}, first: 0.45}),
+        ("Related major, semester 7", {**{c: 0.35 for c in top}, first: 0.55, second: 0.50}),
+        ("Bootcamp graduate", {**{c: rest for c in top}, second: 0.60, first: 0.40}),
+        ("Career switcher with side projects", {c: (0.50 if i % 2 else 0.28) for i, c in enumerate(top)}),
+    ]
+    return profiles, {i: {} for i in range(len(profiles))}
+
+
+def make_profile(idx: int, graph: SkillGraph, rng: random.Random, archetypes: list | None = None,
+                 biases: dict | None = None) -> tuple[str, dict[str, float], dict[str, float]]:
+    archetypes = archetypes or ARCHETYPES
+    biases = SKILL_BIAS if biases is None else biases
+    label, base = archetypes[idx % len(archetypes)]
+    bias = biases.get(idx % len(archetypes), {})
     p, K = {}, {}
     for s, sk in graph.skills.items():
         v = base.get(sk.cluster, 0.35) + bias.get(s, 0.0) + rng.gauss(0, 0.15)
@@ -76,19 +101,21 @@ def choose_candidates(graph: SkillGraph, st: ScenarioState, req: dict[str, float
     return picked[:n]
 
 
-def build_scenarios(graph: SkillGraph, market: MarketMap, req: dict[str, float], n_base: int = 15, seed: int = 7) -> list[dict]:
+def build_scenarios(graph: SkillGraph, market: MarketMap, req: dict[str, float], n_base: int = 15, seed: int = 7,
+                    role: str = "business_analyst", id_prefix: str = "") -> list[dict]:
     rng = random.Random(seed)
+    archetypes, biases = archetypes_for(graph, market, role)
     D = {s: market.D(s) for s in graph.skills}
     T = {s: market.T(s) for s in graph.skills}
     out = []
     for b in range(n_base):
-        label, p, K = make_profile(b, graph, rng)
+        label, p, K = make_profile(b, graph, rng, archetypes, biases)
         base = ScenarioState(p, K, D, T)
         cands = choose_candidates(graph, base, req, rng)
         if len(cands) < 6:
             continue
         feats = _features(graph, base, req, cands)
-        bid = f"S{b + 1:02d}"
+        bid = f"{id_prefix}S{b + 1:02d}"
         out.append(_pack(f"{bid}-base", bid, "base", f"{label}", base, req, feats, cands, graph))
         # derivative 1: the most "unlocking" candidate is learned (e.g. SQL 0.35 -> 0.72 in Table 4)
         bott = max(cands, key=lambda s: (feats[s].U, feats[s].G))

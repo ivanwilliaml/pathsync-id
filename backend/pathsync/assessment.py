@@ -94,9 +94,32 @@ def diagnostic_plan(market: MarketMap, states: dict[str, SkillState], answered: 
     return plan
 
 
+@lru_cache(maxsize=1)
+def calibrated_difficulty() -> dict[str, float]:
+    """Empirical Rasch difficulty per item from data/models/item_calibration.json (plan A5), only for
+    items with enough real answers and only once the calibration is marked active."""
+    from .config import MODELS_DIR
+
+    f = MODELS_DIR / "item_calibration.json"
+    if not f.exists():
+        return {}
+    doc = json.loads(f.read_text(encoding="utf-8"))
+    return {k: v["b"] for k, v in doc.get("rasch", {}).items() if v.get("calibrated")} if doc.get("active") else {}
+
+
 def reassessment_items(skill_id: str, p: float, answered: set[str], n: int = 3) -> list[dict]:
-    """Unseen items only: an item whose answer was revealed can never count as evidence again."""
+    """Unseen items only: an item whose answer was revealed can never count as evidence again.
+
+    With an active calibration, items are picked by Fisher information at the student's current
+    ability (Rasch); otherwise by the author's difficulty closest to the mastery band."""
+    from .item_analysis import item_information, theta_from_mastery
+
     pool = [it for it in items_for(skill_id) if it["id"] not in answered]
+    b = calibrated_difficulty()
+    if pool and all(it["id"] in b for it in pool):
+        theta = theta_from_mastery(p)
+        pool.sort(key=lambda it: (-item_information(theta, b[it["id"]]), it["id"]))
+        return pool[:n]
     target = 1 if p < 0.35 else 2 if p < 0.65 else 3
     pool.sort(key=lambda it: (abs(it["difficulty"] - target), it["id"]))
     return pool[:n]

@@ -41,16 +41,23 @@ def esco_status() -> dict[str, dict[str, str]]:
 
 
 def _sha(path) -> str | None:
-    return hashlib.sha256(path.read_bytes()).hexdigest()[:12] if path.exists() else None
+    """Short content hash; line endings are normalised so a Windows checkout gives the same value as CI."""
+    return hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()[:16] if path.exists() else None
 
 
-def provenance(rows: list[Posting], overrides: dict[str, float] | None = None) -> dict:
-    """What a snapshot was computed from (plan B5): seed hashes, extractor per posting, and whether it was simulated."""
-    extractors: dict[str, int] = {}
-    for p in rows:
-        extractors[p.extractor or "unknown"] = extractors.get(p.extractor or "unknown", 0) + 1
-    return {"taxonomy_sha": _sha(SEED_DIR / "taxonomy.json"), "graph_sha": _sha(SEED_DIR / "graph.json"),
-            "esco_sha": _sha(RAW_DIR / "esco_occupations.json"), "postings": len(rows), "extractors": extractors,
+def provenance(extractors: dict[str, int], overrides: dict[str, float] | None = None, postings: int | None = None) -> dict:
+    """What a snapshot was computed from (plan B5): taxonomy version and seed hashes, extractor mix and the cache
+    tag of each extractor (the tag changes when aliases change), gold hashes, and whether levels were overridden."""
+    from .extraction import cache_tag
+    from .taxonomy import load_taxonomy
+
+    kinds = sorted({e.split(":")[0] for e in extractors})
+    return {"taxonomy_version": load_taxonomy()["version"], "taxonomy_sha": _sha(SEED_DIR / "taxonomy.json"),
+            "graph_sha": _sha(SEED_DIR / "graph.json"), "esco_sha": _sha(RAW_DIR / "esco_occupations.json"),
+            "postings": postings if postings is not None else sum(extractors.values()), "extractors": extractors,
+            "cache_tags": {k: cache_tag(k) for k in kinds if k in ("lexicon", "llm")},
+            "gold_sha": {n: _sha(SEED_DIR / n) for n in ("gold_blind.json", "gold_split.json", "gold_consensus.json")
+                         if (SEED_DIR / n).exists()},
             "overrides": bool(overrides)}
 
 
@@ -71,8 +78,11 @@ def build_snapshot(s: Session, role: str, version: str, ref: date, note: str = "
             sources[p.source] = sources.get(p.source, 0) + 1
     req = required_levels(market, esco_status().get(role, {}), overrides)
     s.execute(update(MarketSnapshot).where(MarketSnapshot.role == role).values(active=False))
+    used: dict[str, int] = {}
+    for p in rows:
+        used[p.extractor or "?"] = used.get(p.extractor or "?", 0) + 1
     snap = MarketSnapshot(version=version, role=role, reference_date=ref, data=market.to_dict(), required=req,
-                          sources=sources, note=note, active=True, provenance=provenance(rows, overrides))
+                          sources=sources, note=note, active=True, provenance=provenance(used, overrides, len(rows)))
     s.add(snap)
     bump_epoch(s)
     s.flush()

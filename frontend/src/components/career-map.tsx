@@ -13,7 +13,7 @@ import { Mascot } from "./mascot";
 import { MascotLoader } from "./mascot-loader";
 import { ChangeList } from "./change-list";
 
-// Career Map (docs/CAREER_VIZ_DISCOVERY.md): the 14 roles as a constellation. Families are clusters, lines join roles whose
+// Career Map (docs/design/CAREER_VIZ_DISCOVERY.md): the 14 roles as a constellation. Families are clusters, lines join roles whose
 // postings ask for many of the same skills, node size is how many postings back the role, and brightness is how much of
 // what employers ask the student can already show. Brightness is continuous on purpose: there is no fake "unlocked" moment.
 

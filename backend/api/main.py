@@ -16,16 +16,18 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from sqlalchemy.exc import IntegrityError
 
 from pathsync.db import get_session, init_db
 from pathsync.embeddings import WARM
 from pathsync.engine import ensure_seed
+from pathsync.observability import STATS, configure_logging
 from pathsync.security import ensure_admin_token
 
 from .routers import admin, advisor, assessment, classroom, demo, experts, platform, public, students
 
 log = logging.getLogger("pathsync")
-logging.basicConfig(level=os.getenv("PATHSYNC_LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(message)s")
+configure_logging()     # JSON lines in production (PATHSYNC_LOG_JSON), plain text in development
 
 if os.getenv("SENTRY_DSN"):   # optional error tracking (PM audit P0-6); no request bodies or student content are sent
     try:
@@ -70,6 +72,14 @@ def _retention_loop():
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    # plan B4: sync endpoints run on AnyIO's thread pool (40 threads by default) and each holds a database
+    # session; with more threads than pooled connections, requests waited 15 s for a connection and failed
+    # with 500 under load. Matching the two makes extra requests queue instead.
+    from anyio import to_thread
+
+    from pathsync.db import DB_CONNECTIONS
+    if DB_CONNECTIONS:
+        to_thread.current_default_thread_limiter().total_tokens = DB_CONNECTIONS
     init_db()
     with get_session() as s:
         ensure_seed(s)
@@ -108,11 +118,24 @@ async def request_context(request: Request, call_next):
     response.headers["Referrer-Policy"] = "no-referrer"
     response.headers["X-Frame-Options"] = "DENY"
     if request.url.path.startswith("/api/"):
+        route = request.scope.get("route")
+        STATS.record(f"{request.method} {getattr(route, 'path', 'unmatched')}", response.status_code, ms)
         # one structured line per request (PM audit BE-7); paths only, never bodies or tokens
         level = logging.WARNING if response.status_code >= 500 or ms > 1500 else logging.INFO
         log.log(level, '{"rid":"%s","method":"%s","path":"%s","status":%d,"ms":%.0f}',
                 rid, request.method, request.url.path, response.status_code, ms)
     return response
+
+
+@app.exception_handler(IntegrityError)
+async def integrity(request: Request, exc: IntegrityError):
+    """A write that lost a race (for example evidence for a profile deleted a moment earlier) is a conflict
+    the client can retry or drop, not a server error."""
+    rid = request.headers.get("x-request-id") or uuid.uuid4().hex[:12]
+    log.warning('{"rid":"%s","path":"%s","event":"integrity_conflict","error":"%s"}', rid, request.url.path,
+                type(exc.orig).__name__ if exc.orig is not None else "IntegrityError")
+    return JSONResponse(status_code=409, headers={"X-Request-ID": rid},
+                        content={"detail": f"This change conflicts with the current data. Reload and try again. (ref {rid})"})
 
 
 @app.exception_handler(Exception)

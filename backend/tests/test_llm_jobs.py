@@ -12,7 +12,7 @@ from pipeline import llm_jobs
 def posting(monkeypatch, tmp_path):
     text = ("Kualifikasi:\n- Mampu menulis query SQL untuk analisis data.\n"
             "- Berpengalaman menyusun BRD dan user story bersama stakeholder.\n- Menguasai Microsoft Excel.")
-    monkeypatch.setattr(llm_jobs, "_postings", lambda: [{"fingerprint": "fp1", "title": "BA", "text": text}])
+    monkeypatch.setattr(llm_jobs, "_postings", lambda keys=None: [{"fingerprint": "fp1", "title": "BA", "text": text}])
     monkeypatch.setattr(llm_jobs, "EXTRACTION_CACHE", tmp_path / "cache.json")
     return text
 

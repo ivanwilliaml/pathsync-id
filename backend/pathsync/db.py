@@ -10,7 +10,9 @@ plus the expert panel (Expert, Scenario, ScenarioRanking), ranker versions and
 gold annotations for extraction evaluation.
 
 Default engine is SQLite; set PATHSYNC_DATABASE_URL=postgresql+psycopg://... to use
-PostgreSQL (docker-compose ships a pgvector image).
+PostgreSQL (docker-compose ships postgres:16). Embeddings stay in memory with a
+persistent cache (data/processed/embedding_cache.sqlite); there is no vector query in
+the database, so pgvector is not used.
 """
 from __future__ import annotations
 
@@ -84,11 +86,11 @@ class MarketSnapshot(Base):
     data: Mapped[dict] = mapped_column(JSON)            # MarketMap.to_dict()
     required: Mapped[dict] = mapped_column(JSON)        # r_s per skill
     sources: Mapped[dict] = mapped_column(JSON, default=dict)
-    # plan B5: taxonomy/graph hashes, extractor mix and posting count, so an old number can be reproduced later
-    provenance: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     note: Mapped[str] = mapped_column(Text, default="")
     simulated: Mapped[bool] = mapped_column(Boolean, default=False)
     active: Mapped[bool] = mapped_column(Boolean, default=True)
+    # taxonomy version + hash, extractor cache tags and gold hashes, so old numbers can be reproduced (plan B5)
+    provenance: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
 
 # -------------------------------------------------------- graph + expert panel
@@ -383,13 +385,17 @@ class Annotation(Base):
 
 
 # ------------------------------------------------------------------ engine
-# The pool must cover the request threadpool (40 threads by default); with the SQLAlchemy default of 5 + 10 a burst of
-# uploads queued for a connection and failed after 30 s (load test, plan B4).
-_POOL = int(os.getenv("PATHSYNC_DB_POOL", "20"))
-_engine = create_engine(DATABASE_URL, future=True, pool_size=_POOL, max_overflow=_POOL,
+# Server databases: sync endpoints run in a 40-thread pool per worker, and the default pool (5 + 10 overflow)
+# ran out under load (plan B4: 500s with "QueuePool limit ... reached"). 15 + 15 per worker keeps 2 workers
+# plus the side services under PostgreSQL's default max_connections of 100; raise both together.
+_POOL = {} if DATABASE_URL.startswith("sqlite") else {
+    "pool_size": int(os.getenv("PATHSYNC_DB_POOL", "15")), "max_overflow": int(os.getenv("PATHSYNC_DB_OVERFLOW", "15")),
+    "pool_timeout": 15, "pool_recycle": 1800}
+DB_CONNECTIONS = (_POOL["pool_size"] + _POOL["max_overflow"]) if _POOL else 0    # api.main sizes the thread pool to this
+_engine = create_engine(DATABASE_URL, future=True,
                         # sqlite: wait up to 30 s for the single writer instead of failing with "database is locked"
                         connect_args={"check_same_thread": False, "timeout": 30} if DATABASE_URL.startswith("sqlite") else {},
-                        pool_pre_ping=not DATABASE_URL.startswith("sqlite"))
+                        pool_pre_ping=not DATABASE_URL.startswith("sqlite"), **_POOL)
 if DATABASE_URL.startswith("sqlite"):
     @event.listens_for(_engine, "connect")
     def _sqlite_pragmas(dbapi_conn, _):  # pragma: no cover - connection setup

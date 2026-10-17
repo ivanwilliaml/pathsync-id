@@ -96,3 +96,19 @@ def test_demo_profile_has_a_route_and_expires(client):
         R.purge(s)
         s.expire_all()
         assert s.get(Student, j["id"]) is None
+
+
+def test_privacy_page_quotes_the_retention_constants():
+    """The periods in pathsync/retention.py are the ones written on the Privacy page and in backup.sh."""
+    import re
+
+    from pathsync import retention as R
+    from pathsync.config import BACKEND_DIR
+
+    page = (BACKEND_DIR.parent / "frontend" / "src" / "app" / "privacy" / "page.tsx").read_text(encoding="utf-8")
+    section = re.search(r"Berapa lama data disimpan(.*?)</Section>", page, re.S).group(1)
+    months = round(R.INACTIVE_PROFILE_DAYS / 30.4)                    # 730 days is written as "24 bulan"
+    for n in (months, R.PRODUCT_EVENT_DAYS, R.CLIENT_ERROR_DAYS, R.AUDIT_LOG_DAYS, R.BACKUP_KEEP_DAYS):
+        assert re.search(rf"\b{n}\b", section), n
+    backup = (BACKEND_DIR.parent / "deploy" / "backup.sh").read_text(encoding="utf-8")
+    assert f"BACKUP_KEEP_DAYS:-{R.BACKUP_KEEP_DAYS}" in backup

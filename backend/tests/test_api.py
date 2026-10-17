@@ -67,6 +67,24 @@ def test_upload_limits(client, stu):
     assert r.status_code == 415
 
 
+def test_upload_content_must_match_its_extension(client, stu):
+    """Plan C3: renamed binaries, broken PDFs and zip bombs never reach a parser unchecked."""
+    import io
+    import zipfile
+
+    sid, h = stu
+    url = f"/api/students/{sid}/evidence/cv"
+    assert client.post(url, headers=h, files={"file": ("cv.pdf", b"MZ\x90\x00 not a pdf", "application/pdf")}).status_code == 415
+    assert client.post(url, headers=h, files={"file": ("cv.docx", b"%PDF-1.4", "application/octet-stream")}).status_code == 415
+    assert client.post(url, headers=h, files={"file": ("cv.txt", b"abc\x00\x01\x02", "text/plain")}).status_code == 415
+    assert client.post(url, headers=h, files={"file": ("cv.pdf", b"%PDF-1.4 broken", "application/pdf")}).status_code == 422
+    bomb = io.BytesIO()
+    with zipfile.ZipFile(bomb, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("word/document.xml", b"0" * (60 * 1024 * 1024))           # 60 MB of zeros, ~60 KB zipped
+    r = client.post(url, headers=h, files={"file": ("cv.docx", bomb.getvalue(), "application/octet-stream")})
+    assert r.status_code == 413
+
+
 # ---------------------------------------------------------------- student flow
 def test_meta_catalog_and_model_card(client):
     m = client.get("/api/meta").json()
@@ -289,12 +307,18 @@ def test_expert_panel_flow(client):
 
 
 def test_annotation_f1_and_kappa(client):
+    from pathsync.gold import load_split
+
     p = client.get("/api/admin/annotation/next?annotator=uji", headers=ADMIN).json()
+    split = load_split()
+    assert p["set"] == "gold_split" and p["posting_id"] == split["dev"][0]     # locked split is served first
+    assert "mentions" not in p and "skills" not in p                          # no extractor output shown
     gold = client.get(f"/api/postings/{p['posting_id']}").json()
     skills = sorted({m["skill_id"] for m in gold["mentions"] if m["status"] == "auto" and m["skill_id"]})
     client.post("/api/admin/annotation", headers=ADMIN, json={"posting_id": p["posting_id"], "annotator": "uji", "skill_ids": skills})
     ev = client.get("/api/admin/annotation/eval", headers=ADMIN).json()
     assert ev["n_postings"] >= 1 and ev["f1"] == pytest.approx(1.0)
+    assert ev["precision_ci95"][1] == pytest.approx(1.0) and ev["target_kappa"] == 0.70
 
 
 def test_project_review_queue(client, stu):

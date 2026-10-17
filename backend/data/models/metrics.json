@@ -1,8 +1,14 @@
 {
- "generated_at": "2026-10-15T16:14:40+00:00",
+ "generated_at": "2026-10-16T10:45:36+00:00",
  "inputs": {
   "taxonomy_sha": "d887be8bb360",
-  "graph_sha": "d399a628488d"
+  "graph_sha": "d399a628488d",
+  "gold_sha": {
+   "gold_pilot.json": "fd1d3a9c620a",
+   "gold_heldout.json": "7a7b67a79a7e",
+   "gold_blind.json": "6109aca0cc28",
+   "gold_split.json": "ed04d7494cef"
+  }
  },
  "constants": {
   "sim_auto": 0.85,
@@ -20,13 +26,13 @@
     "n_postings": 24,
     "precision": 0.844,
     "precision_ci95": [
-     0.782,
-     0.89
+     0.7824,
+     0.8905
     ],
     "recall": 0.918,
     "recall_ci95": [
-     0.865,
-     0.952
+     0.8651,
+     0.9516
     ],
     "f1": 0.88,
     "f1_ci95": [
@@ -40,12 +46,12 @@
     "n_postings": 26,
     "precision": 0.855,
     "precision_ci95": [
-     0.78,
-     0.907
+     0.7796,
+     0.9073
     ],
     "recall": 0.917,
     "recall_ci95": [
-     0.85,
+     0.8505,
      0.956
     ],
     "f1": 0.885,
@@ -60,13 +66,13 @@
     "n_postings": 26,
     "precision": 0.828,
     "precision_ci95": [
-     0.749,
-     0.886
+     0.7486,
+     0.8855
     ],
     "recall": 0.889,
     "recall_ci95": [
-     0.816,
-     0.935
+     0.8158,
+     0.9353
     ],
     "f1": 0.857,
     "f1_ci95": [
@@ -86,129 +92,129 @@
   "note": "dev was used to tune aliases and must not be quoted as performance; blind is the reportable set"
  },
  "assessment_items": {
-  "generated": "2026-10-12",
+  "generated": "2026-10-16",
   "n_items": 570,
   "language": "en",
-  "answer_pattern_accuracy": 0.37,
+  "answer_pattern_accuracy": 0.258,
   "chance": 0.25,
-  "random_p95": 0.295,
+  "random_p95": 0.285,
   "note": "accuracy of a model that sees only option surface features; at or below random_p95 means no usable cue"
  },
  "ranker": {
-  "generated": "2026-10-12T23:51:31",
+  "generated": "2026-10-16T17:44:09",
   "role": "business_analyst",
   "n_scenarios": 45,
   "experts": "simulated",
   "real_experts": 0,
   "active_model": "LTR v1 (trained on simulated experts)",
   "active_weights": {
-   "G": 2.8361,
-   "R": 3.0,
-   "K": -0.6544,
-   "D": 3.0,
-   "T": 1.1028,
-   "U": 2.2883,
-   "B": 0.3885
+   "G": 1.1502,
+   "R": 1.1062,
+   "K": -0.0296,
+   "D": 1.2089,
+   "T": 0.9979,
+   "U": 1.0686,
+   "B": 0.0298
   },
   "ndcg5_by_expert_condition": {
    "titik_hambat": {
     "model": {
-     "mean": 0.9767,
+     "mean": 0.9892,
      "ci95": [
-      0.9612,
-      0.9904
+      0.9814,
+      0.9953
      ],
      "n": 45
     },
     "kesenjangan_terbesar": {
-     "mean": 0.7325,
+     "mean": 0.7388,
      "ci95": [
-      0.6392,
-      0.816
+      0.6661,
+      0.8079
      ],
      "n": 45
     },
     "kesenjangan_x_permintaan": {
-     "mean": 0.871,
+     "mean": 0.9099,
      "ci95": [
-      0.8129,
-      0.9198
+      0.8641,
+      0.9456
      ],
      "n": 45
     },
     "formula5": {
-     "mean": 0.9762,
+     "mean": 0.9788,
      "ci95": [
-      0.9629,
-      0.9881
+      0.9671,
+      0.99
      ],
      "n": 45
     }
    },
    "kesenjangan_permintaan": {
     "model": {
-     "mean": 0.9606,
+     "mean": 0.9609,
      "ci95": [
-      0.9403,
-      0.9792
+      0.9484,
+      0.9738
      ],
      "n": 45
     },
     "kesenjangan_terbesar": {
-     "mean": 0.8497,
+     "mean": 0.8245,
      "ci95": [
-      0.7739,
-      0.9143
+      0.7873,
+      0.8642
      ],
      "n": 45
     },
     "kesenjangan_x_permintaan": {
-     "mean": 0.961,
+     "mean": 0.9603,
      "ci95": [
-      0.9406,
-      0.9797
+      0.9429,
+      0.9775
      ],
      "n": 45
     },
     "formula5": {
-     "mean": 0.9003,
+     "mean": 0.9364,
      "ci95": [
-      0.8524,
-      0.9394
+      0.9098,
+      0.9565
      ],
      "n": 45
     }
    },
    "campuran": {
     "model": {
-     "mean": 0.955,
+     "mean": 0.9747,
      "ci95": [
-      0.9337,
-      0.9753
+      0.9624,
+      0.9862
      ],
      "n": 45
     },
     "kesenjangan_terbesar": {
-     "mean": 0.7466,
+     "mean": 0.7577,
      "ci95": [
-      0.6468,
-      0.8287
+      0.6951,
+      0.8118
      ],
      "n": 45
     },
     "kesenjangan_x_permintaan": {
-     "mean": 0.8826,
+     "mean": 0.9259,
      "ci95": [
-      0.8377,
-      0.9236
+      0.8891,
+      0.9556
      ],
      "n": 45
     },
     "formula5": {
-     "mean": 0.9589,
+     "mean": 0.9749,
      "ci95": [
-      0.9376,
-      0.978
+      0.9631,
+      0.987
      ],
      "n": 45
     }
@@ -220,83 +226,499 @@
  "market": {
   "roles": {
    "data_engineer": {
-    "postings_in_window": 13,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 18,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 18,
+     "extractors": {
+      "lexicon": 18
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "data_scientist": {
-    "postings_in_window": 16,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 19,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 20,
+     "extractors": {
+      "lexicon": 20
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "data_analyst": {
-    "postings_in_window": 34,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 37,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 38,
+     "extractors": {
+      "lexicon": 38
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "business_analyst": {
-    "postings_in_window": 50,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 57,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 61,
+     "extractors": {
+      "lexicon": 61
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "cybersecurity_analyst": {
-    "postings_in_window": 20,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 26,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 27,
+     "extractors": {
+      "lexicon": 27
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "devops_engineer": {
-    "postings_in_window": 17,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 24,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 25,
+     "extractors": {
+      "lexicon": 25
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "qa_engineer": {
-    "postings_in_window": 22,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 31,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 31,
+     "extractors": {
+      "lexicon": 31
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "mobile_developer": {
-    "postings_in_window": 25,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 29,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 30,
+     "extractors": {
+      "lexicon": 30
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "fullstack_developer": {
-    "postings_in_window": 30,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 49,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 49,
+     "extractors": {
+      "lexicon": 49
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "frontend_developer": {
-    "postings_in_window": 14,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 18,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 20,
+     "extractors": {
+      "lexicon": 20
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "backend_developer": {
-    "postings_in_window": 53,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 72,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 78,
+     "extractors": {
+      "lexicon": 78
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "ui_ux_designer": {
-    "postings_in_window": 6,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 7,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 10,
+     "extractors": {
+      "lexicon": 10
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "digital_marketing": {
-    "postings_in_window": 133,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 190,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 191,
+     "extractors": {
+      "lexicon": 191
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    },
    "accountant": {
-    "postings_in_window": 130,
-    "snapshot": "2026-10-01-lexicon",
-    "reference_date": "2026-10-01"
+    "postings_in_window": 172,
+    "snapshot": "2026-10-12-lexicon",
+    "reference_date": "2026-10-12",
+    "provenance": {
+     "taxonomy_version": "2026.10-v3",
+     "taxonomy_sha": "d887be8bb3605168",
+     "graph_sha": "d399a628488deaa8",
+     "esco_sha": "b027e6c19853f013",
+     "postings": 175,
+     "extractors": {
+      "lexicon": 175
+     },
+     "cache_tags": {
+      "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+     },
+     "gold_sha": {
+      "gold_blind.json": "6109aca0cc2883c0",
+      "gold_split.json": "ed04d7494cefb142"
+     },
+     "overrides": false
+    }
    }
   },
-  "total_postings_in_window": 563
+  "total_postings_in_window": 749
  },
  "validation": {
-  "graph_edges": {
-   "draft": 137
-  },
+  "graph_edges": {},
   "annotators_in_app": 0,
   "annotated_postings_in_app": 0
+ },
+ "taxonomy_final": {
+  "data_engineer": {
+   "n_postings": 18,
+   "final": false,
+   "n_core": 24,
+   "C1_coverage": 0.9085,
+   "C2_no_frequent_candidate": 0.111,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "data_scientist": {
+   "n_postings": 19,
+   "final": false,
+   "n_core": 24,
+   "C1_coverage": 0.8709,
+   "C2_no_frequent_candidate": 0.158,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "data_analyst": {
+   "n_postings": 37,
+   "final": false,
+   "n_core": 17,
+   "C1_coverage": 0.8809,
+   "C2_no_frequent_candidate": 0.054,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "business_analyst": {
+   "n_postings": 57,
+   "final": false,
+   "n_core": 21,
+   "C1_coverage": 0.9004,
+   "C2_no_frequent_candidate": 0.14,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "cybersecurity_analyst": {
+   "n_postings": 26,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.8921,
+   "C2_no_frequent_candidate": 0.115,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "devops_engineer": {
+   "n_postings": 24,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.9442,
+   "C2_no_frequent_candidate": 0.083,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "qa_engineer": {
+   "n_postings": 31,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.898,
+   "C2_no_frequent_candidate": 0.194,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "mobile_developer": {
+   "n_postings": 29,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.8815,
+   "C2_no_frequent_candidate": 0.276,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "fullstack_developer": {
+   "n_postings": 49,
+   "final": false,
+   "n_core": 24,
+   "C1_coverage": 0.9182,
+   "C2_no_frequent_candidate": 0.102,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "frontend_developer": {
+   "n_postings": 18,
+   "final": false,
+   "n_core": 14,
+   "C1_coverage": 0.8379,
+   "C2_no_frequent_candidate": 0.278,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "backend_developer": {
+   "n_postings": 72,
+   "final": false,
+   "n_core": 20,
+   "C1_coverage": 0.8974,
+   "C2_no_frequent_candidate": 0.125,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "ui_ux_designer": {
+   "n_postings": 7,
+   "final": false,
+   "n_core": 13,
+   "C1_coverage": 0.8776,
+   "C2_no_frequent_candidate": 0.143,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "digital_marketing": {
+   "n_postings": 190,
+   "final": false,
+   "n_core": 11,
+   "C1_coverage": 0.8707,
+   "C2_no_frequent_candidate": 0.037,
+   "C3_grounding": "114/114 grounded in at least one role"
+  },
+  "accountant": {
+   "n_postings": 172,
+   "final": false,
+   "n_core": 10,
+   "C1_coverage": 0.9277,
+   "C2_no_frequent_candidate": 0.041,
+   "C3_grounding": "114/114 grounded in at least one role"
+  }
+ },
+ "evidence_weights": {
+  "prior": {
+   "academic": 0.2,
+   "certificate": 0.25,
+   "project": 0.3,
+   "assessment": 0.5
+  },
+  "n_calibration_pairs": 0,
+  "min_pairs": 30,
+  "calibration": {
+   "status": "waiting for data",
+   "message": "0 of 30 pairs collected; the documented prior stays active."
+  },
+  "sensitivity_top3": {
+   "documented prior (0.20/0.25/0.30/0.50)": 1.0,
+   "random weights near the prior (Dirichlet, concentration 100)": 0.9855,
+   "random weights near the prior (Dirichlet, concentration 30)": 0.9718,
+   "equal weights": 0.9556,
+   "no assessment weight boost (assessment = project)": 0.9833,
+   "grades weigh most (reversed)": 0.9167
+  }
+ },
+ "normalisation": null,
+ "item_calibration": null,
+ "performance": {
+  "base": "http://backend:8000",
+  "students": 200,
+  "concurrency": 40,
+  "seconds": 13.0,
+  "errors": 0,
+  "error_kinds": [],
+  "steps": {
+   "signup": {
+    "n": 200,
+    "p50_ms": 359,
+    "p95_ms": 739,
+    "max_ms": 795
+   },
+   "transcript": {
+    "n": 200,
+    "p50_ms": 848,
+    "p95_ms": 1347,
+    "max_ms": 1570
+   },
+   "dashboard": {
+    "n": 200,
+    "p50_ms": 444,
+    "p95_ms": 751,
+    "max_ms": 920
+   }
+  }
  }
 }

@@ -141,5 +141,62 @@ def passes_rule(cv: dict) -> bool:
     return m >= f5 - NON_INFERIORITY
 
 
+EXPERT_MARGIN = 0.02     # plan A4: with real experts LTR must beat formula (5) by >= 0.02 ...
+                         # ... and the bootstrap CI of the difference must exclude zero
+
+
+def leave_one_expert_out(scenarios: list[dict], orders: dict[str, dict[str, list[str]]], k: int = 5,
+                         seed: int = 0, n_boot: int = 2000) -> dict:
+    """Plan A4 step 2. For each expert in turn, the model is trained on the aggregated orders of the
+    other experts (grouped k-fold over base scenarios, so a base and its derivatives never sit in both
+    train and test) and both the model and formula (5) are scored against the held-out expert's own
+    order. Returns mean NDCG@5 for both, the paired difference and its 95% bootstrap CI over
+    (expert, base) units."""
+    from .ranker import aggregate_orders
+
+    experts = sorted(orders)
+    if len(experts) < 2:
+        return {"n_experts": len(experts), "status": "needs at least two experts"}
+    by_base = sorted({s["base_id"] for s in scenarios})
+    rng = random.Random(seed)
+    rng.shuffle(by_base)
+    folds = [by_base[i::k] for i in range(min(k, len(by_base)))]
+    diffs: dict[tuple[str, str], list[float]] = defaultdict(list)
+    model_scores, f5_scores = [], []
+    for held in experts:
+        others = [e for e in experts if e != held]
+        refs = {}
+        for s in scenarios:
+            got = [orders[e][s["id"]] for e in others if s["id"] in orders[e]]
+            if got:
+                refs[s["id"]] = aggregate_orders(got)
+        for test_bases in folds:
+            train = [s for s in scenarios if s["base_id"] not in test_bases and s["id"] in refs]
+            test = [s for s in scenarios if s["base_id"] in test_bases and s["id"] in orders[held]]
+            if not train or not test:
+                continue
+            lam = select_l2(_groups(train, refs), [s["base_id"] for s in train])
+            w = fit_pairwise(_groups(train, refs), l2=lam)
+            for s in test:
+                truth = orders[held][s["id"]]
+                m = metrics(order_by_weights(s, w), truth)["ndcg5"]
+                f = metrics(order_baseline(s, "formula5"), truth)["ndcg5"]
+                model_scores.append(m)
+                f5_scores.append(f)
+                diffs[(held, s["base_id"])].append(m - f)
+    units = [float(np.mean(v)) for v in diffs.values()]
+    if not units:
+        return {"n_experts": len(experts), "status": "no overlapping rankings"}
+    boot = np.random.default_rng(seed)
+    means = [float(np.mean(boot.choice(units, size=len(units), replace=True))) for _ in range(n_boot)]
+    lo, hi = np.percentile(means, [2.5, 97.5])
+    diff = float(np.mean(units))
+    return {"n_experts": len(experts), "n_units": len(units),
+            "model_ndcg5": round(float(np.mean(model_scores)), 4), "formula5_ndcg5": round(float(np.mean(f5_scores)), 4),
+            "diff": round(diff, 4), "diff_ci95": [round(float(lo), 4), round(float(hi), 4)],
+            "rule": f"LTR only if diff >= {EXPERT_MARGIN} and the CI excludes 0; otherwise formula (5)",
+            "passes": bool(diff >= EXPERT_MARGIN and lo > 0)}
+
+
 def formula5() -> dict[str, float]:
     return dict(FORMULA5_WEIGHTS)

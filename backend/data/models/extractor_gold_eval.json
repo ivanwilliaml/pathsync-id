@@ -1,21 +1,27 @@
 {
  "dev": {
-  "n_postings": 24,
+  "gold": "gold_pilot.json",
   "gold_file": "gold_pilot.json",
   "gold_sha": "fd1d3a9c620a",
+  "split": null,
+  "extractor": "lexicon",
+  "n_postings": 24,
+  "skipped_no_llm_result": [],
   "overall": {
    "precision": 0.844,
    "recall": 0.918,
    "f1": 0.88,
    "precision_ci95": [
-    0.782,
-    0.89
+    0.7824,
+    0.8905
    ],
    "recall_ci95": [
-    0.865,
-    0.952
+    0.8651,
+    0.9516
    ],
-   "support": 159,
+   "tp": 146,
+   "fp": 27,
+   "fn": 13,
    "f1_ci95": [
     0.839,
     0.916
@@ -27,28 +33,32 @@
     "recall": 0.882,
     "f1": 0.938,
     "precision_ci95": [
-     0.796,
+     0.7961,
      1.0
     ],
     "recall_ci95": [
-     0.657,
-     0.967
+     0.6566,
+     0.9671
     ],
-    "support": 17
+    "tp": 15,
+    "fp": 0,
+    "fn": 2
    },
    "backend_developer": {
     "precision": 0.818,
     "recall": 1.0,
     "f1": 0.9,
     "precision_ci95": [
-     0.615,
-     0.927
+     0.6148,
+     0.9269
     ],
     "recall_ci95": [
-     0.824,
+     0.8241,
      1.0
     ],
-    "support": 18
+    "tp": 18,
+    "fp": 4,
+    "fn": 0
    },
    "business_analyst": {
     "precision": 0.889,
@@ -59,80 +69,92 @@
      0.969
     ],
     "recall_ci95": [
-     0.467,
-     0.82
+     0.4671,
+     0.8203
     ],
-    "support": 24
+    "tp": 16,
+    "fp": 2,
+    "fn": 8
    },
    "cybersecurity_analyst": {
     "precision": 0.722,
     "recall": 0.929,
-    "f1": 0.812,
+    "f1": 0.813,
     "precision_ci95": [
-     0.491,
+     0.4913,
      0.875
     ],
     "recall_ci95": [
-     0.685,
-     0.987
+     0.6853,
+     0.9873
     ],
-    "support": 14
+    "tp": 13,
+    "fp": 5,
+    "fn": 1
    },
    "data_analyst": {
     "precision": 0.771,
     "recall": 1.0,
     "f1": 0.871,
     "precision_ci95": [
-     0.61,
-     0.879
+     0.6098,
+     0.8793
     ],
     "recall_ci95": [
-     0.875,
+     0.8754,
      1.0
     ],
-    "support": 27
+    "tp": 27,
+    "fp": 8,
+    "fn": 0
    },
    "data_engineer": {
     "precision": 0.875,
     "recall": 0.966,
     "f1": 0.918,
     "precision_ci95": [
-     0.719,
-     0.95
+     0.7193,
+     0.9503
     ],
     "recall_ci95": [
-     0.828,
-     0.994
+     0.8282,
+     0.9939
     ],
-    "support": 29
+    "tp": 28,
+    "fp": 4,
+    "fn": 1
    },
    "data_scientist": {
     "precision": 0.857,
     "recall": 0.857,
     "f1": 0.857,
     "precision_ci95": [
-     0.487,
-     0.974
+     0.4869,
+     0.9743
     ],
     "recall_ci95": [
-     0.487,
-     0.974
+     0.4869,
+     0.9743
     ],
-    "support": 7
+    "tp": 6,
+    "fp": 1,
+    "fn": 1
    },
    "devops_engineer": {
     "precision": 0.885,
     "recall": 1.0,
     "f1": 0.939,
     "precision_ci95": [
-     0.71,
+     0.7102,
      0.96
     ],
     "recall_ci95": [
-     0.857,
+     0.8569,
      1.0
     ],
-    "support": 23
+    "tp": 23,
+    "fp": 3,
+    "fn": 0
    }
   },
   "per_cluster": {
@@ -141,98 +163,112 @@
     "recall": 0.929,
     "f1": 0.912,
     "precision_ci95": [
-     0.736,
-     0.964
+     0.7361,
+     0.9642
     ],
     "recall_ci95": [
-     0.774,
-     0.98
+     0.7735,
+     0.9802
     ],
-    "support": 28
+    "tp": 26,
+    "fp": 3,
+    "fn": 2
    },
    "bi_tools": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.676,
+     0.6756,
      1.0
     ],
     "recall_ci95": [
-     0.676,
+     0.6756,
      1.0
     ],
-    "support": 8
+    "tp": 8,
+    "fp": 0,
+    "fn": 0
    },
    "business_analysis": {
     "precision": 0.706,
     "recall": 0.706,
     "f1": 0.706,
     "precision_ci95": [
-     0.469,
-     0.867
+     0.4687,
+     0.8672
     ],
     "recall_ci95": [
-     0.469,
-     0.867
+     0.4687,
+     0.8672
     ],
-    "support": 17
+    "tp": 12,
+    "fp": 5,
+    "fn": 5
    },
    "data_analytics": {
     "precision": 0.862,
     "recall": 0.962,
     "f1": 0.909,
     "precision_ci95": [
-     0.694,
+     0.6944,
      0.945
     ],
     "recall_ci95": [
-     0.811,
-     0.993
+     0.8111,
+     0.9932
     ],
-    "support": 26
+    "tp": 25,
+    "fp": 4,
+    "fn": 1
    },
    "data_eng": {
     "precision": 0.95,
     "recall": 1.0,
     "f1": 0.974,
     "precision_ci95": [
-     0.764,
-     0.991
+     0.7639,
+     0.9911
     ],
     "recall_ci95": [
-     0.832,
+     0.8318,
      1.0
     ],
-    "support": 19
+    "tp": 19,
+    "fp": 1,
+    "fn": 0
    },
    "data_ml": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.51,
+     0.5101,
      1.0
     ],
     "recall_ci95": [
-     0.51,
+     0.5101,
      1.0
     ],
-    "support": 4
+    "tp": 4,
+    "fp": 0,
+    "fn": 0
    },
    "design": {
     "precision": 1.0,
     "recall": 0.5,
     "f1": 0.667,
     "precision_ci95": [
-     0.207,
+     0.2065,
      1.0
     ],
     "recall_ci95": [
-     0.095,
-     0.905
+     0.0945,
+     0.9055
     ],
-    "support": 2
+    "tp": 1,
+    "fp": 0,
+    "fn": 1
    },
    "devops": {
     "precision": 0.875,
@@ -240,27 +276,31 @@
     "f1": 0.933,
     "precision_ci95": [
      0.69,
-     0.957
+     0.9566
     ],
     "recall_ci95": [
-     0.845,
+     0.8454,
      1.0
     ],
-    "support": 21
+    "tp": 21,
+    "fp": 3,
+    "fn": 0
    },
    "finance": {
     "precision": 1.0,
     "recall": 0.846,
     "f1": 0.917,
     "precision_ci95": [
-     0.741,
+     0.7412,
      1.0
     ],
     "recall_ci95": [
-     0.578,
-     0.957
+     0.5776,
+     0.9567
     ],
-    "support": 13
+    "tp": 11,
+    "fp": 0,
+    "fn": 2
    },
    "marketing": {
     "precision": 0.0,
@@ -268,27 +308,31 @@
     "f1": 0.0,
     "precision_ci95": [
      0.0,
-     0.561
+     0.5615
     ],
     "recall_ci95": [
      0.0,
      1.0
     ],
-    "support": 0
+    "tp": 0,
+    "fp": 3,
+    "fn": 0
    },
    "mobile": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.207,
+     0.2065,
      1.0
     ],
     "recall_ci95": [
-     0.207,
+     0.2065,
      1.0
     ],
-    "support": 1
+    "tp": 1,
+    "fp": 0,
+    "fn": 0
    },
    "security": {
     "precision": 0.647,
@@ -296,41 +340,47 @@
     "f1": 0.759,
     "precision_ci95": [
      0.413,
-     0.827
+     0.8269
     ],
     "recall_ci95": [
-     0.646,
-     0.985
+     0.6461,
+     0.9851
     ],
-    "support": 12
+    "tp": 11,
+    "fp": 6,
+    "fn": 1
    },
    "testing": {
     "precision": 0.8,
     "recall": 0.8,
     "f1": 0.8,
     "precision_ci95": [
-     0.376,
-     0.964
+     0.3755,
+     0.9638
     ],
     "recall_ci95": [
-     0.376,
-     0.964
+     0.3755,
+     0.9638
     ],
-    "support": 5
+    "tp": 4,
+    "fp": 1,
+    "fn": 1
    },
    "web_frontend": {
     "precision": 0.75,
     "recall": 1.0,
     "f1": 0.857,
     "precision_ci95": [
-     0.301,
-     0.954
+     0.3006,
+     0.9544
     ],
     "recall_ci95": [
-     0.439,
+     0.4385,
      1.0
     ],
-    "support": 3
+    "tp": 3,
+    "fp": 1,
+    "fn": 0
    }
   },
   "top_false_positives": [
@@ -351,15 +401,15 @@
     2
    ],
    [
-    "api_integration",
-    1
-   ],
-   [
     "data_structures_algorithms",
     1
    ],
    [
     "test_design_techniques",
+    1
+   ],
+   [
+    "api_integration",
     1
    ],
    [
@@ -371,11 +421,11 @@
     1
    ],
    [
-    "security_frameworks_compliance",
+    "siem_monitoring",
     1
    ],
    [
-    "siem_monitoring",
+    "security_frameworks_compliance",
     1
    ],
    [
@@ -393,11 +443,15 @@
     2
    ],
    [
+    "cost_accounting",
+    1
+   ],
+   [
     "accounting_software",
     1
    ],
    [
-    "cost_accounting",
+    "requirements_elicitation",
     1
    ],
    [
@@ -405,7 +459,7 @@
     1
    ],
    [
-    "requirements_elicitation",
+    "testing_uat",
     1
    ],
    [
@@ -417,33 +471,34 @@
     1
    ],
    [
-    "testing_uat",
-    1
-   ],
-   [
     "vulnerability_assessment",
     1
    ]
-  ],
-  "extractor": "lexicon"
+  ]
  },
  "heldout": {
-  "n_postings": 26,
+  "gold": "gold_heldout.json",
   "gold_file": "gold_heldout.json",
   "gold_sha": "7a7b67a79a7e",
+  "split": null,
+  "extractor": "lexicon",
+  "n_postings": 26,
+  "skipped_no_llm_result": [],
   "overall": {
    "precision": 0.855,
    "recall": 0.917,
    "f1": 0.885,
    "precision_ci95": [
-    0.78,
-    0.907
+    0.7796,
+    0.9073
    ],
    "recall_ci95": [
-    0.85,
+    0.8505,
     0.956
    ],
-   "support": 109,
+   "tp": 100,
+   "fp": 17,
+   "fn": 9,
    "f1_ci95": [
     0.85,
     0.915
@@ -455,140 +510,160 @@
     "recall": 0.833,
     "f1": 0.909,
     "precision_ci95": [
-     0.722,
+     0.7225,
      1.0
     ],
     "recall_ci95": [
      0.552,
      0.953
     ],
-    "support": 12
+    "tp": 10,
+    "fp": 0,
+    "fn": 2
    },
    "backend_developer": {
     "precision": 0.8,
     "recall": 1.0,
     "f1": 0.889,
     "precision_ci95": [
-     0.49,
-     0.943
+     0.4902,
+     0.9433
     ],
     "recall_ci95": [
-     0.676,
+     0.6756,
      1.0
     ],
-    "support": 8
+    "tp": 8,
+    "fp": 2,
+    "fn": 0
    },
    "business_analyst": {
     "precision": 1.0,
     "recall": 0.769,
     "f1": 0.87,
     "precision_ci95": [
-     0.722,
+     0.7225,
      1.0
     ],
     "recall_ci95": [
-     0.497,
-     0.918
+     0.4974,
+     0.9182
     ],
-    "support": 13
+    "tp": 10,
+    "fp": 0,
+    "fn": 3
    },
    "cybersecurity_analyst": {
     "precision": 0.7,
     "recall": 0.875,
     "f1": 0.778,
     "precision_ci95": [
-     0.397,
-     0.892
+     0.3968,
+     0.8922
     ],
     "recall_ci95": [
-     0.529,
-     0.978
+     0.5291,
+     0.9776
     ],
-    "support": 8
+    "tp": 7,
+    "fp": 3,
+    "fn": 1
    },
    "data_analyst": {
     "precision": 0.8,
     "recall": 1.0,
     "f1": 0.889,
     "precision_ci95": [
-     0.49,
-     0.943
+     0.4902,
+     0.9433
     ],
     "recall_ci95": [
-     0.676,
+     0.6756,
      1.0
     ],
-    "support": 8
+    "tp": 8,
+    "fp": 2,
+    "fn": 0
    },
    "data_engineer": {
     "precision": 0.833,
     "recall": 0.714,
     "f1": 0.769,
     "precision_ci95": [
-     0.436,
-     0.97
+     0.4365,
+     0.9699
     ],
     "recall_ci95": [
-     0.359,
-     0.918
+     0.3589,
+     0.9178
     ],
-    "support": 7
+    "tp": 5,
+    "fp": 1,
+    "fn": 2
    },
    "data_scientist": {
     "precision": 0.875,
     "recall": 1.0,
     "f1": 0.933,
     "precision_ci95": [
-     0.529,
-     0.978
+     0.5291,
+     0.9776
     ],
     "recall_ci95": [
-     0.646,
+     0.6457,
      1.0
     ],
-    "support": 7
+    "tp": 7,
+    "fp": 1,
+    "fn": 0
    },
    "devops_engineer": {
     "precision": 0.786,
     "recall": 1.0,
     "f1": 0.88,
     "precision_ci95": [
-     0.524,
-     0.924
+     0.5241,
+     0.9243
     ],
     "recall_ci95": [
-     0.741,
+     0.7412,
      1.0
     ],
-    "support": 11
+    "tp": 11,
+    "fp": 3,
+    "fn": 0
    },
    "digital_marketing": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.61,
+     0.6097,
      1.0
     ],
     "recall_ci95": [
-     0.61,
+     0.6097,
      1.0
     ],
-    "support": 6
+    "tp": 6,
+    "fp": 0,
+    "fn": 0
    },
    "frontend_developer": {
     "precision": 0.923,
     "recall": 1.0,
     "f1": 0.96,
     "precision_ci95": [
-     0.667,
-     0.986
+     0.6669,
+     0.9863
     ],
     "recall_ci95": [
-     0.758,
+     0.7575,
      1.0
     ],
-    "support": 12
+    "tp": 12,
+    "fp": 1,
+    "fn": 0
    },
    "fullstack_developer": {
     "precision": 0.889,
@@ -596,27 +671,31 @@
     "f1": 0.889,
     "precision_ci95": [
      0.565,
-     0.98
+     0.9801
     ],
     "recall_ci95": [
      0.565,
-     0.98
+     0.9801
     ],
-    "support": 9
+    "tp": 8,
+    "fp": 1,
+    "fn": 1
    },
    "mobile_developer": {
     "precision": 0.857,
     "recall": 1.0,
     "f1": 0.923,
     "precision_ci95": [
-     0.487,
-     0.974
+     0.4869,
+     0.9743
     ],
     "recall_ci95": [
-     0.61,
+     0.6097,
      1.0
     ],
-    "support": 6
+    "tp": 6,
+    "fp": 1,
+    "fn": 0
    },
    "qa_engineer": {
     "precision": 0.5,
@@ -627,10 +706,12 @@
      0.85
     ],
     "recall_ci95": [
-     0.342,
+     0.3424,
      1.0
     ],
-    "support": 2
+    "tp": 2,
+    "fp": 2,
+    "fn": 0
    }
   },
   "per_cluster": {
@@ -639,196 +720,224 @@
     "recall": 1.0,
     "f1": 0.931,
     "precision_ci95": [
-     0.711,
-     0.949
+     0.7115,
+     0.9487
     ],
     "recall_ci95": [
-     0.875,
+     0.8754,
      1.0
     ],
-    "support": 27
+    "tp": 27,
+    "fp": 4,
+    "fn": 0
    },
    "bi_tools": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.676,
+     0.6756,
      1.0
     ],
     "recall_ci95": [
-     0.676,
+     0.6756,
      1.0
     ],
-    "support": 8
+    "tp": 8,
+    "fp": 0,
+    "fn": 0
    },
    "business_analysis": {
     "precision": 0.75,
     "recall": 0.75,
     "f1": 0.75,
     "precision_ci95": [
-     0.409,
-     0.929
+     0.4093,
+     0.9285
     ],
     "recall_ci95": [
-     0.409,
-     0.929
+     0.4093,
+     0.9285
     ],
-    "support": 8
+    "tp": 6,
+    "fp": 2,
+    "fn": 2
    },
    "data_analytics": {
     "precision": 0.692,
     "recall": 0.9,
     "f1": 0.783,
     "precision_ci95": [
-     0.424,
-     0.873
+     0.4237,
+     0.8732
     ],
     "recall_ci95": [
-     0.596,
-     0.982
+     0.5958,
+     0.9821
     ],
-    "support": 10
+    "tp": 9,
+    "fp": 4,
+    "fn": 1
    },
    "data_eng": {
     "precision": 0.667,
     "recall": 0.5,
     "f1": 0.571,
     "precision_ci95": [
-     0.208,
-     0.939
+     0.2077,
+     0.9385
     ],
     "recall_ci95": [
      0.15,
      0.85
     ],
-    "support": 4
+    "tp": 2,
+    "fp": 1,
+    "fn": 2
    },
    "data_ml": {
     "precision": 0.667,
     "recall": 1.0,
     "f1": 0.8,
     "precision_ci95": [
-     0.208,
-     0.939
+     0.2077,
+     0.9385
     ],
     "recall_ci95": [
-     0.342,
+     0.3424,
      1.0
     ],
-    "support": 2
+    "tp": 2,
+    "fp": 1,
+    "fn": 0
    },
    "design": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.207,
+     0.2065,
      1.0
     ],
     "recall_ci95": [
-     0.207,
+     0.2065,
      1.0
     ],
-    "support": 1
+    "tp": 1,
+    "fp": 0,
+    "fn": 0
    },
    "devops": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.701,
+     0.7008,
      1.0
     ],
     "recall_ci95": [
-     0.701,
+     0.7008,
      1.0
     ],
-    "support": 9
+    "tp": 9,
+    "fp": 0,
+    "fn": 0
    },
    "finance": {
     "precision": 1.0,
     "recall": 0.778,
     "f1": 0.875,
     "precision_ci95": [
-     0.646,
+     0.6457,
      1.0
     ],
     "recall_ci95": [
-     0.453,
-     0.937
+     0.4526,
+     0.9368
     ],
-    "support": 9
+    "tp": 7,
+    "fp": 0,
+    "fn": 2
    },
    "marketing": {
     "precision": 0.917,
     "recall": 0.917,
     "f1": 0.917,
     "precision_ci95": [
-     0.646,
-     0.985
+     0.6461,
+     0.9851
     ],
     "recall_ci95": [
-     0.646,
-     0.985
+     0.6461,
+     0.9851
     ],
-    "support": 12
+    "tp": 11,
+    "fp": 1,
+    "fn": 1
    },
    "mobile": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.342,
+     0.3424,
      1.0
     ],
     "recall_ci95": [
-     0.342,
+     0.3424,
      1.0
     ],
-    "support": 2
+    "tp": 2,
+    "fp": 0,
+    "fn": 0
    },
    "security": {
     "precision": 0.727,
     "recall": 0.889,
     "f1": 0.8,
     "precision_ci95": [
-     0.434,
-     0.903
+     0.4343,
+     0.9025
     ],
     "recall_ci95": [
      0.565,
-     0.98
+     0.9801
     ],
-    "support": 9
+    "tp": 8,
+    "fp": 3,
+    "fn": 1
    },
    "testing": {
     "precision": 0.667,
     "recall": 1.0,
     "f1": 0.8,
     "precision_ci95": [
-     0.208,
-     0.939
+     0.2077,
+     0.9385
     ],
     "recall_ci95": [
-     0.342,
+     0.3424,
      1.0
     ],
-    "support": 2
+    "tp": 2,
+    "fp": 1,
+    "fn": 0
    },
    "web_frontend": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.61,
+     0.6097,
      1.0
     ],
     "recall_ci95": [
-     0.61,
+     0.6097,
      1.0
     ],
-    "support": 6
+    "tp": 6,
+    "fp": 0,
+    "fn": 0
    }
   },
   "top_false_positives": [
@@ -845,11 +954,11 @@
     1
    ],
    [
-    "sdlc",
+    "cloud_security",
     1
    ],
    [
-    "cloud_security",
+    "sdlc",
     1
    ],
    [
@@ -857,11 +966,11 @@
     1
    ],
    [
-    "dashboard_reporting",
+    "data_modeling",
     1
    ],
    [
-    "data_modeling",
+    "dashboard_reporting",
     1
    ],
    [
@@ -891,11 +1000,11 @@
     1
    ],
    [
-    "requirements_documentation",
+    "diagramming_tools",
     1
    ],
    [
-    "diagramming_tools",
+    "requirements_documentation",
     1
    ],
    [
@@ -918,26 +1027,31 @@
     "social_media_ads",
     1
    ]
-  ],
-  "extractor": "lexicon"
+  ]
  },
  "blind": {
-  "n_postings": 26,
+  "gold": "gold_blind.json",
   "gold_file": "gold_blind.json",
   "gold_sha": "6109aca0cc28",
+  "split": null,
+  "extractor": "lexicon",
+  "n_postings": 26,
+  "skipped_no_llm_result": [],
   "overall": {
    "precision": 0.828,
    "recall": 0.889,
    "f1": 0.857,
    "precision_ci95": [
-    0.749,
-    0.886
+    0.7486,
+    0.8855
    ],
    "recall_ci95": [
-    0.816,
-    0.935
+    0.8158,
+    0.9353
    ],
-   "support": 108,
+   "tp": 96,
+   "fp": 20,
+   "fn": 12,
    "f1_ci95": [
     0.777,
     0.918
@@ -949,28 +1063,32 @@
     "recall": 1.0,
     "f1": 0.875,
     "precision_ci95": [
-     0.453,
-     0.937
+     0.4526,
+     0.9368
     ],
     "recall_ci95": [
-     0.646,
+     0.6457,
      1.0
     ],
-    "support": 7
+    "tp": 7,
+    "fp": 2,
+    "fn": 0
    },
    "backend_developer": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.796,
+     0.7961,
      1.0
     ],
     "recall_ci95": [
-     0.796,
+     0.7961,
      1.0
     ],
-    "support": 15
+    "tp": 15,
+    "fp": 0,
+    "fn": 0
    },
    "business_analyst": {
     "precision": 0.75,
@@ -978,83 +1096,95 @@
     "f1": 0.828,
     "precision_ci95": [
      0.505,
-     0.898
+     0.8982
     ],
     "recall_ci95": [
-     0.667,
-     0.986
+     0.6669,
+     0.9863
     ],
-    "support": 13
+    "tp": 12,
+    "fp": 4,
+    "fn": 1
    },
    "cybersecurity_analyst": {
     "precision": 0.25,
     "recall": 0.5,
     "f1": 0.333,
     "precision_ci95": [
-     0.046,
-     0.699
+     0.0456,
+     0.6994
     ],
     "recall_ci95": [
-     0.095,
-     0.905
+     0.0945,
+     0.9055
     ],
-    "support": 2
+    "tp": 1,
+    "fp": 3,
+    "fn": 1
    },
    "data_analyst": {
     "precision": 1.0,
     "recall": 0.889,
     "f1": 0.941,
     "precision_ci95": [
-     0.676,
+     0.6756,
      1.0
     ],
     "recall_ci95": [
      0.565,
-     0.98
+     0.9801
     ],
-    "support": 9
+    "tp": 8,
+    "fp": 0,
+    "fn": 1
    },
    "data_engineer": {
     "precision": 0.909,
     "recall": 0.833,
     "f1": 0.87,
     "precision_ci95": [
-     0.623,
-     0.984
+     0.6226,
+     0.9838
     ],
     "recall_ci95": [
      0.552,
      0.953
     ],
-    "support": 12
+    "tp": 10,
+    "fp": 1,
+    "fn": 2
    },
    "data_scientist": {
     "precision": 0.5,
     "recall": 0.667,
     "f1": 0.571,
     "precision_ci95": [
-     0.215,
-     0.785
+     0.2152,
+     0.7848
     ],
     "recall_ci95": [
      0.3,
-     0.903
+     0.9032
     ],
-    "support": 6
+    "tp": 4,
+    "fp": 4,
+    "fn": 2
    },
    "devops_engineer": {
     "precision": 1.0,
     "recall": 0.667,
     "f1": 0.8,
     "precision_ci95": [
-     0.342,
+     0.3424,
      1.0
     ],
     "recall_ci95": [
-     0.208,
-     0.939
+     0.2077,
+     0.9385
     ],
-    "support": 3
+    "tp": 2,
+    "fp": 0,
+    "fn": 1
    },
    "digital_marketing": {
     "precision": 0.0,
@@ -1062,83 +1192,95 @@
     "f1": 0.0,
     "precision_ci95": [
      0.0,
-     0.793
+     0.7935
     ],
     "recall_ci95": [
      0.0,
-     0.793
+     0.7935
     ],
-    "support": 1
+    "tp": 0,
+    "fp": 1,
+    "fn": 1
    },
    "frontend_developer": {
     "precision": 1.0,
     "recall": 0.857,
     "f1": 0.923,
     "precision_ci95": [
-     0.61,
+     0.6097,
      1.0
     ],
     "recall_ci95": [
-     0.487,
-     0.974
+     0.4869,
+     0.9743
     ],
-    "support": 7
+    "tp": 6,
+    "fp": 0,
+    "fn": 1
    },
    "fullstack_developer": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.741,
+     0.7412,
      1.0
     ],
     "recall_ci95": [
-     0.741,
+     0.7412,
      1.0
     ],
-    "support": 11
+    "tp": 11,
+    "fp": 0,
+    "fn": 0
    },
    "mobile_developer": {
     "precision": 0.8,
     "recall": 0.667,
     "f1": 0.727,
     "precision_ci95": [
-     0.376,
-     0.964
+     0.3755,
+     0.9638
     ],
     "recall_ci95": [
      0.3,
-     0.903
+     0.9032
     ],
-    "support": 6
+    "tp": 4,
+    "fp": 1,
+    "fn": 2
    },
    "qa_engineer": {
     "precision": 0.8,
     "recall": 1.0,
     "f1": 0.889,
     "precision_ci95": [
-     0.548,
-     0.93
+     0.5481,
+     0.9295
     ],
     "recall_ci95": [
-     0.758,
+     0.7575,
      1.0
     ],
-    "support": 12
+    "tp": 12,
+    "fp": 3,
+    "fn": 0
    },
    "ui_ux_designer": {
     "precision": 0.8,
     "recall": 1.0,
     "f1": 0.889,
     "precision_ci95": [
-     0.376,
-     0.964
+     0.3755,
+     0.9638
     ],
     "recall_ci95": [
-     0.51,
+     0.5101,
      1.0
     ],
-    "support": 4
+    "tp": 4,
+    "fp": 1,
+    "fn": 0
    }
   },
   "per_cluster": {
@@ -1147,84 +1289,96 @@
     "recall": 0.857,
     "f1": 0.857,
     "precision_ci95": [
-     0.685,
+     0.6851,
      0.943
     ],
     "recall_ci95": [
-     0.685,
+     0.6851,
      0.943
     ],
-    "support": 28
+    "tp": 24,
+    "fp": 4,
+    "fn": 4
    },
    "bi_tools": {
     "precision": 0.667,
     "recall": 1.0,
     "f1": 0.8,
     "precision_ci95": [
-     0.208,
-     0.939
+     0.2077,
+     0.9385
     ],
     "recall_ci95": [
-     0.342,
+     0.3424,
      1.0
     ],
-    "support": 2
+    "tp": 2,
+    "fp": 1,
+    "fn": 0
    },
    "business_analysis": {
     "precision": 0.769,
     "recall": 0.909,
     "f1": 0.833,
     "precision_ci95": [
-     0.497,
-     0.918
+     0.4974,
+     0.9182
     ],
     "recall_ci95": [
-     0.623,
-     0.984
+     0.6226,
+     0.9838
     ],
-    "support": 11
+    "tp": 10,
+    "fp": 3,
+    "fn": 1
    },
    "data_analytics": {
     "precision": 0.75,
     "recall": 0.882,
     "f1": 0.811,
     "precision_ci95": [
-     0.531,
-     0.888
+     0.5313,
+     0.8881
     ],
     "recall_ci95": [
-     0.657,
-     0.967
+     0.6566,
+     0.9671
     ],
-    "support": 17
+    "tp": 15,
+    "fp": 5,
+    "fn": 2
    },
    "data_eng": {
     "precision": 1.0,
     "recall": 0.8,
     "f1": 0.889,
     "precision_ci95": [
-     0.51,
+     0.5101,
      1.0
     ],
     "recall_ci95": [
-     0.376,
-     0.964
+     0.3755,
+     0.9638
     ],
-    "support": 5
+    "tp": 4,
+    "fp": 0,
+    "fn": 1
    },
    "data_ml": {
     "precision": 0.75,
     "recall": 0.75,
     "f1": 0.75,
     "precision_ci95": [
-     0.301,
-     0.954
+     0.3006,
+     0.9544
     ],
     "recall_ci95": [
-     0.301,
-     0.954
+     0.3006,
+     0.9544
     ],
-    "support": 4
+    "tp": 3,
+    "fp": 1,
+    "fn": 1
    },
    "design": {
     "precision": 0.667,
@@ -1232,41 +1386,47 @@
     "f1": 0.8,
     "precision_ci95": [
      0.3,
-     0.903
+     0.9032
     ],
     "recall_ci95": [
-     0.51,
+     0.5101,
      1.0
     ],
-    "support": 4
+    "tp": 4,
+    "fp": 2,
+    "fn": 0
    },
    "devops": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.741,
+     0.7412,
      1.0
     ],
     "recall_ci95": [
-     0.741,
+     0.7412,
      1.0
     ],
-    "support": 11
+    "tp": 11,
+    "fp": 0,
+    "fn": 0
    },
    "finance": {
     "precision": 0.875,
     "recall": 1.0,
     "f1": 0.933,
     "precision_ci95": [
-     0.529,
-     0.978
+     0.5291,
+     0.9776
     ],
     "recall_ci95": [
-     0.646,
+     0.6457,
      1.0
     ],
-    "support": 7
+    "tp": 7,
+    "fp": 1,
+    "fn": 0
    },
    "marketing": {
     "precision": 0.0,
@@ -1278,9 +1438,11 @@
     ],
     "recall_ci95": [
      0.0,
-     0.793
+     0.7935
     ],
-    "support": 1
+    "tp": 0,
+    "fp": 0,
+    "fn": 1
    },
    "mobile": {
     "precision": 0.5,
@@ -1291,52 +1453,60 @@
      0.85
     ],
     "recall_ci95": [
-     0.208,
-     0.939
+     0.2077,
+     0.9385
     ],
-    "support": 3
+    "tp": 2,
+    "fp": 2,
+    "fn": 1
    },
    "security": {
     "precision": 1.0,
     "recall": 0.5,
     "f1": 0.667,
     "precision_ci95": [
-     0.207,
+     0.2065,
      1.0
     ],
     "recall_ci95": [
-     0.095,
-     0.905
+     0.0945,
+     0.9055
     ],
-    "support": 2
+    "tp": 1,
+    "fp": 0,
+    "fn": 1
    },
    "testing": {
     "precision": 0.875,
     "recall": 1.0,
     "f1": 0.933,
     "precision_ci95": [
-     0.529,
-     0.978
+     0.5291,
+     0.9776
     ],
     "recall_ci95": [
-     0.646,
+     0.6457,
      1.0
     ],
-    "support": 7
+    "tp": 7,
+    "fp": 1,
+    "fn": 0
    },
    "web_frontend": {
     "precision": 1.0,
     "recall": 1.0,
     "f1": 1.0,
     "precision_ci95": [
-     0.61,
+     0.6097,
      1.0
     ],
     "recall_ci95": [
-     0.61,
+     0.6097,
      1.0
     ],
-    "support": 6
+    "tp": 6,
+    "fp": 0,
+    "fn": 0
    }
   },
   "top_false_positives": [
@@ -1353,11 +1523,11 @@
     2
    ],
    [
-    "android_kotlin",
+    "ios_swift",
     1
    ],
    [
-    "ios_swift",
+    "android_kotlin",
     1
    ],
    [
@@ -1373,11 +1543,11 @@
     1
    ],
    [
-    "git_version_control",
+    "java_spring",
     1
    ],
    [
-    "java_spring",
+    "git_version_control",
     1
    ],
    [
@@ -1426,8 +1596,7 @@
     "system_modeling_uml",
     1
    ]
-  ],
-  "extractor": "lexicon"
+  ]
  },
  "provenance": {
   "taxonomy_sha": "d887be8bb360",

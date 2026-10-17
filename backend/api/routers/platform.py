@@ -13,12 +13,13 @@ from sqlalchemy.orm import Session
 
 from pathsync.db import AuditLog, Evidence, Feedback, ProductEvent, Student, Waitlist, utcnow
 from pathsync.security import (
+    SESSION_PREFIX,
     STAFF_COOKIE,
-    STAFF_TOKEN_DAYS,
     audit,
     audit_admin_writes,
     db_session,
     hash_token,
+    issue_session,
     new_token,
     rate_limit,
     require_admin,
@@ -41,15 +42,14 @@ def staff_login(body: StaffLogin, response: Response, s: Session = Depends(db_se
     row = staff_token_row(s, body.token.strip())
     if row is None:
         raise HTTPException(401, "Unknown, expired or revoked staff token.")
-    max_age = STAFF_TOKEN_DAYS * 86400
-    if row.expires_at is not None:
-        max_age = max(60, int((row.expires_at - utcnow()).total_seconds()))
-    response.set_cookie(STAFF_COOKIE, body.token.strip(), max_age=max_age, httponly=True, secure=SECURE_COOKIE,
+    token, session = issue_session(s, row)
+    max_age = max(60, int((session.expires_at - utcnow()).total_seconds()))
+    response.set_cookie(STAFF_COOKIE, token, max_age=max_age, httponly=True, secure=SECURE_COOKIE,
                         samesite="strict", path="/api")
     audit(s, f"{row.role}:{row.label or row.id}", "staff sign-in")
     s.commit()
     return {"role": row.role, "subject_id": row.subject_id, "label": row.label,
-            "expires_at": row.expires_at.isoformat() if row.expires_at else None}
+            "expires_at": session.expires_at.isoformat()}
 
 
 @router.get("/staff/session")
@@ -62,7 +62,12 @@ def staff_me(request: Request, s: Session = Depends(db_session)):
 
 
 @router.delete("/staff/session")
-def staff_logout(response: Response):
+def staff_logout(request: Request, response: Response, s: Session = Depends(db_session)):
+    """Sign out: the session token behind the cookie is revoked server-side, not only forgotten by the browser."""
+    row = staff_token_row(s, request.cookies.get(STAFF_COOKIE))
+    if row is not None and row.label.startswith(SESSION_PREFIX):
+        row.revoked_at = utcnow()
+        s.commit()
     response.delete_cookie(STAFF_COOKIE, path="/api")
     return {"ok": True}
 
@@ -224,50 +229,18 @@ def metrics(days: int = 14, s: Session = Depends(db_session)):
 
 @admin.get("/item-analysis")
 def item_analysis(min_n: int = 20, s: Session = Depends(db_session)):
-    """Classical item analysis from real responses: difficulty, discrimination and how often each distractor is chosen.
-
-    Discrimination is the point-biserial correlation between getting the item right and the student's accuracy on the
-    other items. Items that almost everyone gets right, that nobody gets right, or that do not separate stronger from
-    weaker students (r < 0.10) are flagged for rewriting."""
-    import numpy as np
-
+    """Classical item analysis from real responses (plan A5): proportion correct, point-biserial against the
+    student's other answers on the same skill, distractor shares, and KR-20 per skill. Flags follow the plan's
+    rule: p outside 0.20-0.90, point-biserial below 0.15, or a distractor chosen by fewer than 5% of answers.
+    The full calibration (Rasch difficulty, BKT re-estimate) is `python -m pipeline.calibrate_items`."""
     from pathsync.db import AssessmentResponse
+    from pathsync.item_analysis import item_stats, reliability_by_skill
 
     rows = s.execute(select(AssessmentResponse.student_id, AssessmentResponse.item_id, AssessmentResponse.skill_id,
                             AssessmentResponse.correct, AssessmentResponse.choice_canon)).all()
-    by_student: dict[str, list] = {}
-    for sid, iid, skill, ok, canon in rows:
-        by_student.setdefault(sid, []).append((iid, skill, bool(ok), canon))
-    per_item: dict[str, dict] = {}
-    for answers in by_student.values():
-        total = sum(a[2] for a in answers)
-        for iid, skill, ok, canon in answers:
-            d = per_item.setdefault(iid, {"skill_id": skill, "n": 0, "right": 0, "rest": [], "ok": [], "choices": {0: 0, 1: 0, 2: 0, 3: 0}})
-            d["n"] += 1
-            d["right"] += ok
-            if len(answers) > 1:
-                d["rest"].append((total - ok) / (len(answers) - 1))
-                d["ok"].append(float(ok))
-            if canon is not None:
-                d["choices"][canon] = d["choices"].get(canon, 0) + 1
-    out = []
-    for iid, d in per_item.items():
-        r = None
-        if d["n"] >= min_n and len(set(d["ok"])) > 1 and len(set(d["rest"])) > 1:
-            r = float(np.corrcoef(d["ok"], d["rest"])[0, 1])
-        p = d["right"] / d["n"]
-        flags = []
-        if d["n"] >= min_n:
-            if p > 0.92:
-                flags.append("too_easy")
-            if p < 0.15:
-                flags.append("too_hard_or_miskeyed")
-            if r is not None and r < 0.10:
-                flags.append("low_discrimination")
-            wrong = [d["choices"].get(i, 0) for i in (1, 2, 3)]
-            if sum(wrong) >= 10 and min(wrong) == 0:
-                flags.append("dead_distractor")
-        out.append({"item_id": iid, "skill_id": d["skill_id"], "n": d["n"], "p_correct": round(p, 3),
-                    "discrimination": None if r is None else round(r, 3), "choices": d["choices"], "flags": flags})
-    out.sort(key=lambda x: (-len(x["flags"]), x["item_id"]))
-    return {"min_n": min_n, "items": out, "flagged": sum(bool(x["flags"]) for x in out)}
+    rows = [tuple(r) for r in rows]
+    out = item_stats(rows, min_n=min_n)
+    for x in out:                       # names used before plan A5, kept for existing clients
+        x["discrimination"], x["choices"] = x["point_biserial"], x["choice_shares"]
+    return {"min_n": min_n, "items": out, "flagged": sum(bool(x["flags"]) for x in out),
+            "reliability": reliability_by_skill(rows)}

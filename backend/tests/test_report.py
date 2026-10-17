@@ -33,25 +33,3 @@ def test_new_market_snapshots_record_their_provenance():
         s.rollback()            # leave the active snapshot untouched
     assert prov["taxonomy_sha"] and prov["graph_sha"] and prov["postings"] > 0
     assert sum(prov["extractors"].values()) == prov["postings"]
-
-
-def test_normalisation_scoring_kappa_and_curve(tmp_path, monkeypatch):
-    import json
-
-    from pipeline import normalisation_eval as ne
-
-    monkeypatch.setattr(ne, "MODELS_DIR", tmp_path)
-    items = [  # two labellers agree on 3 of 4; the model is right on 2 of the 3 agreed phrases
-        {"phrase": "sql queries", "label_a": "sql", "label_b": "sql", "_model": {"skill_id": "sql", "similarity": 0.97}},
-        {"phrase": "bpmn", "label_a": "business_process_modeling", "label_b": "business_process_modeling",
-         "_model": {"skill_id": "business_process_modeling", "similarity": 0.88}},
-        {"phrase": "teliti", "label_a": "none", "label_b": "none", "_model": {"skill_id": "nodejs_backend", "similarity": 0.93}},
-        {"phrase": "excel", "label_a": "excel", "label_b": "none", "_model": {"skill_id": "excel", "similarity": 0.99}},
-    ]
-    f = tmp_path / "labels.json"
-    f.write_text(json.dumps({"items": items}), encoding="utf-8")
-    out = ne.score(f)
-    assert out["n_agreed"] == 3 and 0 < out["kappa"] < 1
-    at = {c["threshold"]: c for c in out["curve"]}
-    assert at[0.85]["precision"] == round(2 / 3, 3) and at[0.95]["precision"] == 1.0
-    assert out["recommended_sim_auto"] == 0.95

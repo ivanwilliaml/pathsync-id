@@ -1,0 +1,788 @@
+{
+ "penetration_testing-1": {
+  "new": {
+   "skill_id": "penetration_testing",
+   "difficulty": 1,
+   "stem_en": "What must be agreed before a penetration test starts?",
+   "expl_en": "Written authorisation and a defined scope and rules of engagement."
+  },
+  "en": [
+   "Written authorisation, scope and rules of engagement",
+   "Verbal approval from the IT team and a rough list of targets",
+   "Written authorisation, with the scope agreed after the first findings",
+   "A scope and rules of engagement agreed with the testers only"
+  ]
+ },
+ "test_design_techniques-1": {
+  "new": {
+   "skill_id": "test_design_techniques",
+   "difficulty": 1,
+   "stem_en": "What should a good bug report contain?",
+   "expl_en": "Steps to reproduce, expected and actual result, environment and evidence such as screenshots."
+  },
+  "en": [
+   "Steps to reproduce, expected and actual results, and environment",
+   "Steps to reproduce, the suspected cause in the code, and severity",
+   "Expected and actual results, and the developer to assign it to",
+   "A screenshot, the environment, and the date the error happened"
+  ]
+ },
+ "api_testing-2": {
+  "new": {
+   "skill_id": "api_testing",
+   "difficulty": 1,
+   "stem_en": "What should a test check about the response of a successful GET request?",
+   "expl_en": "The status code, headers and body content or schema."
+  },
+  "en": [
+   "The status code, headers and body",
+   "The status code and the response time only",
+   "The body, compared with the last response received",
+   "The headers and the size of the response"
+  ]
+ },
+ "vulnerability_assessment-4": {
+  "new": {
+   "skill_id": "vulnerability_assessment",
+   "difficulty": 2,
+   "stem_en": "Two findings have the same CVSS score. Which should be fixed first?",
+   "expl_en": "The one on an internet-facing, business-critical asset with a known exploit."
+  },
+  "en": [
+   "The one on an exposed, critical system with a public exploit",
+   "The one on an internal test system with a public exploit",
+   "The one reported first, since it has been open the longest",
+   "The one on a critical system that the scanner flagged twice"
+  ]
+ },
+ "marketplace_ecommerce-5": {
+  "new": {
+   "skill_id": "marketplace_ecommerce",
+   "difficulty": 3,
+   "stem_en": "A flash sale sells out in an hour and the seller cancels many orders. What is the main marketplace risk?",
+   "expl_en": "Cancellations and late shipments hurt seller metrics, ranking and account standing."
+  },
+  "en": [
+   "Poor seller metrics that lower ranking and account standing",
+   "Lower visibility only for the products that were cancelled",
+   "Higher commission fees on the next flash sale campaign",
+   "Refund costs for the orders, with no effect on ranking"
+  ]
+ },
+ "design_systems-4": {
+  "new": {
+   "skill_id": "design_systems",
+   "difficulty": 2,
+   "stem_en": "Why should a design system document when not to use a component?",
+   "expl_en": "Usage guidance prevents misuse and keeps products consistent."
+  },
+  "en": [
+   "It prevents misuse and keeps products consistent",
+   "It keeps the library smaller and easier to maintain",
+   "It replaces design reviews for new components",
+   "It lets developers skip the usage examples"
+  ]
+ },
+ "data_warehousing-3": {
+  "new": {
+   "skill_id": "data_warehousing",
+   "difficulty": 2,
+   "stem_en": "A customer changes city and the warehouse must keep the full history of cities. Which technique is used?",
+   "expl_en": "Slowly changing dimension type 2 adds a new row with validity dates."
+  },
+  "en": [
+   "Slowly changing dimension type 2 with validity dates",
+   "Slowly changing dimension type 1 that overwrites the city",
+   "A new city column added to the customer dimension each time",
+   "A snapshot of the fact table taken whenever a city changes"
+  ]
+ },
+ "prototyping_interaction-5": {
+  "new": {
+   "skill_id": "prototyping_interaction",
+   "difficulty": 3,
+   "stem_en": "Which screen states should be designed for a list that loads data from a server?",
+   "expl_en": "Loading, empty, error and populated states."
+  },
+  "en": [
+   "Loading, empty, error and populated",
+   "Loading and populated, since errors are rare",
+   "Empty, populated and a hover state for each row",
+   "Populated and error, with loading handled by the server"
+  ]
+ },
+ "social_media_ads-5": {
+  "new": {
+   "skill_id": "social_media_ads",
+   "difficulty": 3,
+   "stem_en": "An ad's click-through rate falls while frequency rises over weeks. What is the likely cause and fix?",
+   "expl_en": "Ad fatigue; refresh creatives and widen or rotate the audience."
+  },
+  "en": [
+   "Ad fatigue, fixed by new creatives and a wider audience",
+   "Ad fatigue, fixed by raising the frequency cap further",
+   "Audience overlap, fixed by narrowing to one interest",
+   "A tracking error, fixed by resetting the conversion pixel"
+  ]
+ },
+ "prototyping_interaction-1": {
+  "new": {
+   "skill_id": "prototyping_interaction",
+   "difficulty": 1,
+   "stem_en": "What is a clickable prototype?",
+   "expl_en": "A simulation of a product in which users can tap through screens without real code."
+  },
+  "en": [
+   "A simulation users can tap through without real code",
+   "A static mockup of each screen, without any interaction",
+   "A first build of the app with real code and test data",
+   "A user flow diagram that shows how screens connect"
+  ]
+ },
+ "search_ads-2": {
+  "new": {
+   "skill_id": "search_ads",
+   "difficulty": 1,
+   "stem_en": "What is a negative keyword?",
+   "expl_en": "A word that stops your ad from showing for irrelevant searches."
+  },
+  "en": [
+   "A word that stops ads showing for irrelevant searches",
+   "A word that lowers the bid for irrelevant searches",
+   "A word that the platform marks as low quality",
+   "A word that competitors bid on against your brand"
+  ]
+ },
+ "excel-4": {
+  "en": [
+   "Summarise data quickly, for example total sales by region and by month",
+   "Clean the data quickly, for example removing duplicate rows by region",
+   "Look up values quickly, for example a price for each product code",
+   "Chart data quickly, for example a line of sales by month and region"
+  ]
+ },
+ "cloud_security-4": {
+  "new": {
+   "skill_id": "cloud_security",
+   "difficulty": 2,
+   "stem_en": "What does a dependency scanner such as Snyk or Trivy find?",
+   "expl_en": "Known vulnerabilities in third-party libraries and container images."
+  },
+  "en": [
+   "Known vulnerabilities in libraries and images",
+   "Secrets and passwords committed in the code",
+   "Misconfigured cloud permissions and open ports",
+   "Bugs in the application logic before release"
+  ]
+ },
+ "conversion_optimization-2": {
+  "new": {
+   "skill_id": "conversion_optimization",
+   "difficulty": 1,
+   "stem_en": "What is an A/B test?",
+   "expl_en": "Showing two versions to randomly split audiences to see which performs better."
+  },
+  "en": [
+   "Showing two versions to random halves of the audience",
+   "Showing two versions to the audience one week after another",
+   "Showing one version to new visitors and one to returning ones",
+   "Showing two versions to a panel and asking which is better"
+  ]
+ },
+ "sdlc-2": {
+  "en": [
+   "Requirements analysis, where needs are elicited and documented",
+   "Testing, where needs are checked against the finished system",
+   "Design, where the documented needs become the system architecture",
+   "Deployment, where users are trained on the system that was built"
+  ]
+ },
+ "usability_testing-4": {
+  "new": {
+   "skill_id": "usability_testing",
+   "difficulty": 2,
+   "stem_en": "What is a heuristic evaluation?",
+   "expl_en": "Experts review an interface against recognised usability principles."
+  },
+  "en": [
+   "Experts review an interface against usability principles",
+   "Users complete tasks while experts watch and take notes",
+   "Experts compare the interface with competitors' products",
+   "Users rate the interface against a list of principles"
+  ]
+ },
+ "caching_messaging-2": {
+  "new": {
+   "skill_id": "caching_messaging",
+   "difficulty": 1,
+   "stem_en": "What does a message queue such as RabbitMQ allow?",
+   "expl_en": "It decouples producers and consumers so work can be processed asynchronously."
+  },
+  "en": [
+   "Producers and consumers work independently of each other",
+   "Producers and consumers share one database table directly",
+   "Consumers read the same data faster from memory",
+   "Producers wait until each consumer has finished the work"
+  ]
+ },
+ "information_architecture-3": {
+  "new": {
+   "skill_id": "information_architecture",
+   "difficulty": 2,
+   "stem_en": "What does tree testing evaluate?",
+   "expl_en": "Whether people can find items in a proposed structure, without visual design."
+  },
+  "en": [
+   "Whether people can find items in a proposed structure",
+   "Whether people understand the labels on a finished screen",
+   "How people group items into categories of their own",
+   "Which items people visit most in the current structure"
+  ]
+ },
+ "user_research-5": {
+  "new": {
+   "skill_id": "user_research",
+   "difficulty": 3,
+   "stem_en": "Interviewees say they would pay for a feature, but few do after launch. What does this show about research?",
+   "expl_en": "What people say they will do often differs from what they do; observe behaviour and test willingness to pay."
+  },
+  "en": [
+   "Stated intent differs from behaviour, so observe real actions",
+   "The interviews were too short, so run longer sessions",
+   "The price was wrong, so ask interviewees what they would pay",
+   "The sample was biased, so repeat the same questions with more people"
+  ]
+ },
+ "content_creation_tools-1": {
+  "new": {
+   "skill_id": "content_creation_tools",
+   "difficulty": 1,
+   "stem_en": "What is a content calendar?",
+   "expl_en": "A schedule of what content will be published, when and on which channel."
+  },
+  "en": [
+   "A schedule of what to publish, when and where",
+   "A report of what was published, when and where",
+   "A list of content ideas without dates or channels",
+   "A schedule of when each team member posts"
+  ]
+ },
+ "php_laravel-5": {
+  "new": {
+   "skill_id": "php_laravel",
+   "difficulty": 3,
+   "stem_en": "A page loads posts and prints each post's author name, causing many queries. Which Eloquent feature solves this?",
+   "expl_en": "Eager loading with with('author') loads the relation in one extra query."
+  },
+  "en": [
+   "Eager loading with Post::with('author')",
+   "Lazy loading with $post->author in the loop",
+   "Caching each author with Cache::remember()",
+   "Pagination with Post::paginate(10)"
+  ]
+ },
+ "content_creation_tools-3": {
+  "new": {
+   "skill_id": "content_creation_tools",
+   "difficulty": 2,
+   "stem_en": "Why use a social media scheduling tool such as Metricool or Buffer-like platforms?",
+   "expl_en": "To plan and publish posts across channels at the best times and track performance in one place."
+  },
+  "en": [
+   "To plan and publish across channels and track results",
+   "To publish on each channel at the same moment",
+   "To create the posts and their designs automatically",
+   "To reply to every comment on each channel automatically"
+  ]
+ },
+ "html_css-3": {
+  "new": {
+   "skill_id": "html_css",
+   "difficulty": 2,
+   "stem_en": "You want three cards in one row that wrap onto the next line on narrow screens. Which CSS fits best?",
+   "expl_en": "A flex container with flex-wrap lets items share a row and wrap when space runs out."
+  },
+  "en": [
+   "display: flex with flex-wrap: wrap on the parent",
+   "display: flex with flex-wrap: nowrap on the parent",
+   "display: inline-block with a fixed width on each card",
+   "display: grid with three fixed 400px columns on the parent"
+  ]
+ },
+ "marketplace_ecommerce-4": {
+  "new": {
+   "skill_id": "marketplace_ecommerce",
+   "difficulty": 2,
+   "stem_en": "A product has high views but a low conversion rate. What should you check first?",
+   "expl_en": "Price, reviews, photos and description: the listing quality and offer."
+  },
+  "en": [
+   "Price, reviews, photos and description",
+   "Ad budget, keywords and the number of views",
+   "Shipping options and the delivery partner",
+   "Store followers and the number of products listed"
+  ]
+ },
+ "financial_analysis-4": {
+  "en": [
+   "Many credit sales have not been collected from customers yet",
+   "Many credit purchases have not been paid to suppliers yet",
+   "Depreciation on its assets was higher than expected this year",
+   "Many cash sales were recorded in the wrong period this year"
+  ]
+ },
+ "mobile_backend_services-5": {
+  "new": {
+   "skill_id": "mobile_backend_services",
+   "difficulty": 3,
+   "stem_en": "Where should an API secret key used to call a paid service be kept?",
+   "expl_en": "On your own server, which proxies the call; keys inside the app can be extracted."
+  },
+  "en": [
+   "On your own server that makes the call for the app",
+   "In the app, encrypted with a key also stored in the app",
+   "In a config file that the app downloads at launch",
+   "In the app's secure keychain, set during the build"
+  ]
+ },
+ "design_systems-1": {
+  "new": {
+   "skill_id": "design_systems",
+   "difficulty": 1,
+   "stem_en": "What is a design system?",
+   "expl_en": "A shared set of components, styles and guidelines for building consistent products."
+  },
+  "en": [
+   "A shared set of components, styles and guidelines",
+   "A shared folder of finished screens for each product",
+   "A set of brand colours and fonts for marketing",
+   "A component library used only by the developers"
+  ]
+ },
+ "audit_internal_control-2": {
+  "new": {
+   "skill_id": "audit_internal_control",
+   "difficulty": 1,
+   "stem_en": "What is segregation of duties?",
+   "expl_en": "Splitting tasks such as authorising, recording and custody between different people."
+  },
+  "en": [
+   "Splitting authorising, recording and custody between people",
+   "Splitting one task into steps done by the same person",
+   "Having the auditor approve each transaction before recording",
+   "Recording and custody done by one person, approval by another"
+  ]
+ },
+ "email_marketing_automation-1": {
+  "new": {
+   "skill_id": "email_marketing_automation",
+   "difficulty": 1,
+   "stem_en": "What is a welcome flow in marketing automation?",
+   "expl_en": "An automated series of emails triggered when someone subscribes."
+  },
+  "en": [
+   "An automated email series triggered by a new subscription",
+   "A one-time email sent by hand to each new subscriber",
+   "An automated email series sent to all subscribers monthly",
+   "An automated discount shown on the website to new visitors"
+  ]
+ },
+ "testing_uat-3": {
+  "en": [
+   "The steps to reproduce it, the actual and expected result, and the severity",
+   "A short title for the tracker, the date it happened, and the tester's name",
+   "A screenshot of the error, the browser used, and a guess at the cause",
+   "The expected result, the developer to assign, and how urgent it feels"
+  ]
+ },
+ "erp_crm-1": {
+  "en": [
+   "Integrate finance, procurement, inventory and HR in one shared system",
+   "Manage customer contacts, sales pipelines and campaigns in one system",
+   "Integrate the website, the mobile apps and the payment gateway in one system",
+   "Store reports from finance, sales and HR in one shared folder"
+  ]
+ },
+ "data_warehousing-4": {
+  "new": {
+   "skill_id": "data_warehousing",
+   "difficulty": 2,
+   "stem_en": "How does a data lakehouse differ from a classic data warehouse?",
+   "expl_en": "A lakehouse keeps data in open file formats on cheap storage but adds warehouse-style tables, transactions and SQL."
+  },
+  "en": [
+   "It keeps data in open formats on cheap storage with table features",
+   "It keeps data in a proprietary format on fast storage with table features",
+   "It keeps only raw files on cheap storage with no table features",
+   "It keeps data in open formats but cannot be queried with SQL"
+  ]
+ },
+ "email_marketing_automation-5": {
+  "new": {
+   "skill_id": "email_marketing_automation",
+   "difficulty": 3,
+   "stem_en": "Which practice most improves email deliverability?",
+   "expl_en": "Authenticate the domain (SPF, DKIM, DMARC) and keep a clean, engaged list."
+  },
+  "en": [
+   "Authenticate the domain with SPF, DKIM and DMARC",
+   "Send from a new domain each month to avoid filters",
+   "Send at the same hour each day to the whole list",
+   "Add more links and images to look professional"
+  ]
+ },
+ "cms_wordpress-5": {
+  "new": {
+   "skill_id": "cms_wordpress",
+   "difficulty": 3,
+   "stem_en": "A WordPress site is slow. Which combination gives the biggest improvement for the least effort?",
+   "expl_en": "Page caching, image optimisation and removing unused plugins address the most common causes."
+  },
+  "en": [
+   "Page caching, optimised images and fewer unused plugins",
+   "A new theme, more plugins and a bigger database",
+   "Page caching only, keeping the original images",
+   "A faster server, with the plugins and images unchanged"
+  ]
+ },
+ "ci_cd_pipelines-3": {
+  "new": {
+   "skill_id": "ci_cd_pipelines",
+   "difficulty": 2,
+   "stem_en": "What is the difference between continuous delivery and continuous deployment?",
+   "expl_en": "Delivery keeps every change releasable with a manual release step; deployment releases every passing change automatically."
+  },
+  "en": [
+   "Delivery needs a manual release step, deployment releases automatically",
+   "Deployment needs a manual release step, delivery releases automatically",
+   "Delivery runs the tests, deployment skips them to release faster",
+   "Delivery builds the code, deployment only runs the tests"
+  ]
+ },
+ "mobile_backend_services-3": {
+  "new": {
+   "skill_id": "mobile_backend_services",
+   "difficulty": 2,
+   "stem_en": "An app must keep working without internet and sync later. What is this called?",
+   "expl_en": "Offline-first design with local storage and background sync."
+  },
+  "en": [
+   "Offline-first with local storage and later sync",
+   "Server-first with requests retried until online",
+   "Offline mode that disables editing until online",
+   "Local storage that replaces the server completely"
+  ]
+ },
+ "data_cleaning-4": {
+  "en": [
+   "Check whether the missing values are random before choosing imputation or exclusion",
+   "Fill the missing values with the mean before checking why they are missing",
+   "Drop every respondent with a missing value before any other analysis",
+   "Fill the missing values with the median of the other respondents right away"
+  ]
+ },
+ "visual_design_fundamentals-4": {
+  "new": {
+   "skill_id": "visual_design_fundamentals",
+   "difficulty": 2,
+   "stem_en": "Why do designers use an 8-point spacing scale?",
+   "expl_en": "A consistent scale creates rhythm and makes layouts predictable and easy to implement."
+  },
+  "en": [
+   "It creates consistent rhythm and easier implementation",
+   "It makes every element exactly the same size",
+   "It is the only scale that browsers can render",
+   "It removes the need for a grid in the layout"
+  ]
+ },
+ "testing_uat-5": {
+  "en": [
+   "Confirm that new changes have not broken features that worked before",
+   "Confirm that new features work as specified before they are merged",
+   "Confirm that the system still performs well under heavy user load",
+   "Confirm that users accept the new changes before the release"
+  ]
+ },
+ "business_process_modeling-5": {
+  "en": [
+   "A parallel gateway to split the flow and another to join it",
+   "An exclusive gateway to split the flow and another to join it",
+   "An inclusive gateway to split the flow and none to join it",
+   "A parallel gateway to split the flow and no gateway to join it"
+  ]
+ },
+ "git_version_control-5": {
+  "new": {
+   "skill_id": "git_version_control",
+   "difficulty": 3,
+   "stem_en": "You already pushed a commit that introduced a bug to a shared branch. Which approach is safest?",
+   "expl_en": "git revert creates a new commit that undoes the change without rewriting shared history."
+  },
+  "en": [
+   "git revert, which adds a commit that undoes the change",
+   "git reset --hard, then a force push to the shared branch",
+   "git commit --amend, then a force push of the fixed commit",
+   "git checkout of the old commit, then pushing that state"
+  ]
+ },
+ "test_design_techniques-4": {
+  "new": {
+   "skill_id": "test_design_techniques",
+   "difficulty": 2,
+   "stem_en": "What does equivalence partitioning do?",
+   "expl_en": "It groups inputs that the system should treat the same way and tests one value per group."
+  },
+  "en": [
+   "Groups inputs treated alike and tests one value per group",
+   "Groups inputs treated alike and tests every value in each group",
+   "Tests only the values at the edges of each input range",
+   "Groups test cases by feature and runs one per feature"
+  ]
+ },
+ "sdlc-5": {
+  "en": [
+   "Validate requirements early with user reviews and prototypes",
+   "Write longer requirement documents so nothing is missed",
+   "Let testers validate the requirements before the release",
+   "Freeze requirements early and refuse later changes"
+  ]
+ },
+ "cloud_aws-5": {
+  "new": {
+   "skill_id": "cloud_aws",
+   "difficulty": 3,
+   "stem_en": "A web tier must stay available if one data centre fails. What should you do?",
+   "expl_en": "Deploy across multiple Availability Zones behind a load balancer."
+  },
+  "en": [
+   "Run instances in several Availability Zones behind a load balancer",
+   "Run one larger instance with automatic restarts in a single zone",
+   "Run instances in one Availability Zone behind a load balancer",
+   "Take frequent snapshots so the instance can be restored quickly"
+  ]
+ },
+ "system_design_architecture-1": {
+  "new": {
+   "skill_id": "system_design_architecture",
+   "difficulty": 1,
+   "stem_en": "What does a load balancer do?",
+   "expl_en": "It spreads incoming requests over several servers to improve capacity and availability."
+  },
+  "en": [
+   "Spreads incoming requests across several servers",
+   "Stores copies of responses to serve them faster",
+   "Sends each request to the newest server first",
+   "Queues incoming requests until a server is free"
+  ]
+ },
+ "accessibility_design-5": {
+  "new": {
+   "skill_id": "accessibility_design",
+   "difficulty": 3,
+   "stem_en": "An icon-only button has no text. How do screen-reader users know its purpose?",
+   "expl_en": "It needs an accessible name, such as an aria-label or visually hidden text."
+  },
+  "en": [
+   "Give it an accessible name such as an aria-label",
+   "Give it a tooltip that appears on mouse hover",
+   "Give it a title in a colour with strong contrast",
+   "Give it a role of img so it is read aloud"
+  ]
+ },
+ "performance_testing-3": {
+  "new": {
+   "skill_id": "performance_testing",
+   "difficulty": 2,
+   "stem_en": "The average response time is 300 ms but the 95th percentile is 4 seconds. What does this show?",
+   "expl_en": "Some users have a much slower experience; percentiles reveal outliers that the average hides."
+  },
+  "en": [
+   "A share of users gets a much slower experience",
+   "Most users get a much slower experience",
+   "The average is wrong and should be recalculated",
+   "The test had too few users to be meaningful"
+  ]
+ },
+ "design_systems-5": {
+  "new": {
+   "skill_id": "design_systems",
+   "difficulty": 3,
+   "stem_en": "Designers and developers keep creating slightly different buttons. What is the most effective fix?",
+   "expl_en": "A single source of truth: a shared component library and tokens, with contribution and versioning rules."
+  },
+  "en": [
+   "A shared component library with tokens and versioning",
+   "A shared style guide document with screenshots",
+   "A review meeting before each button is built",
+   "A shared folder of exported button images"
+  ]
+ },
+ "infrastructure_as_code-1": {
+  "new": {
+   "skill_id": "infrastructure_as_code",
+   "difficulty": 1,
+   "stem_en": "What is infrastructure as code?",
+   "expl_en": "Managing infrastructure through versioned, declarative definition files instead of manual clicks."
+  },
+  "en": [
+   "Defining infrastructure in versioned files instead of manual steps",
+   "Defining infrastructure in a wiki page instead of manual steps",
+   "Running manual setup steps from a recorded shell history",
+   "Defining application code in files that also configure servers"
+  ]
+ },
+ "data_warehousing-1": {
+  "new": {
+   "skill_id": "data_warehousing",
+   "difficulty": 1,
+   "stem_en": "What is a data warehouse mainly designed for?",
+   "expl_en": "Storing integrated historical data for analysis and reporting (OLAP)."
+  },
+  "en": [
+   "Analysis and reporting over integrated historical data",
+   "Recording many small transactions as they happen",
+   "Storing raw files from each source without integration",
+   "Serving live data to the application in real time"
+  ]
+ },
+ "flutter_dart-5": {
+  "new": {
+   "skill_id": "flutter_dart",
+   "difficulty": 3,
+   "stem_en": "Several screens need to share and react to the same app data. Which approach is idiomatic in Flutter?",
+   "expl_en": "Use a state-management solution such as Provider, Riverpod or Bloc rather than passing data through every constructor."
+  },
+  "en": [
+   "Use a state-management package such as Provider, Riverpod or Bloc",
+   "Pass the data down through the constructor of every screen",
+   "Store the data in a global variable that each screen reads",
+   "Reload the data from the server whenever a screen is built"
+  ]
+ },
+ "performance_testing-5": {
+  "new": {
+   "skill_id": "performance_testing",
+   "difficulty": 3,
+   "stem_en": "Throughput stops growing as users increase while response time climbs. What is the likely situation?",
+   "expl_en": "A bottleneck: some resource (CPU, database connections, locks) is saturated."
+  },
+  "en": [
+   "A resource is saturated and has become the bottleneck",
+   "The load generator has run out of virtual users",
+   "The system scales well and needs no change",
+   "The response times are cached and not real"
+  ]
+ },
+ "email_marketing_automation-3": {
+  "new": {
+   "skill_id": "email_marketing_automation",
+   "difficulty": 2,
+   "stem_en": "Why segment an email list?",
+   "expl_en": "Relevant messages to specific groups raise engagement and reduce unsubscribes."
+  },
+  "en": [
+   "Relevant messages to groups raise engagement",
+   "Fewer messages to the list lower the sending cost",
+   "Identical messages to everyone keep the brand consistent",
+   "Messages to small groups avoid spam filters entirely"
+  ]
+ },
+ "design_systems-2": {
+  "new": {
+   "skill_id": "design_systems",
+   "difficulty": 1,
+   "stem_en": "What are design tokens?",
+   "expl_en": "Named values such as colours and spacing that are shared between design and code."
+  },
+  "en": [
+   "Named values such as colours and spacing shared with code",
+   "Named components such as buttons and cards shared with code",
+   "Fixed values such as hex codes written into each screen",
+   "Named files such as icons and logos shared with marketing"
+  ]
+ },
+ "big_data_spark-1": {
+  "new": {
+   "skill_id": "big_data_spark",
+   "difficulty": 1,
+   "stem_en": "What is Apache Spark mainly used for?",
+   "expl_en": "Distributed processing of large datasets in memory across a cluster."
+  },
+  "en": [
+   "Processing large datasets in parallel across a cluster",
+   "Storing large datasets as files across a cluster",
+   "Processing small transactions one at a time on a server",
+   "Scheduling jobs that run on a single machine"
+  ]
+ },
+ "user_research-4": {
+  "new": {
+   "skill_id": "user_research",
+   "difficulty": 2,
+   "stem_en": "What is affinity mapping?",
+   "expl_en": "Grouping similar observations from research into themes."
+  },
+  "en": [
+   "Grouping similar observations into themes",
+   "Ranking observations by how often they occur",
+   "Mapping each observation to a product feature",
+   "Grouping users into personas by demographics"
+  ]
+ },
+ "deep_learning-4": {
+  "new": {
+   "skill_id": "deep_learning",
+   "difficulty": 2,
+   "stem_en": "What is the purpose of dropout?",
+   "expl_en": "Dropout randomly disables units during training to reduce overfitting."
+  },
+  "en": [
+   "To reduce overfitting by randomly disabling units in training",
+   "To reduce overfitting by removing units permanently after training",
+   "To speed up training by skipping some batches in each epoch",
+   "To normalise the activations of each layer during training"
+  ]
+ },
+ "frontend_testing-3": {
+  "new": {
+   "skill_id": "frontend_testing",
+   "difficulty": 2,
+   "stem_en": "With React Testing Library, how should you usually find a button in a test?",
+   "expl_en": "Queries by role and accessible name mirror how users find elements and keep tests resilient."
+  },
+  "en": [
+   "By its role and accessible name, such as getByRole('button', { name: 'Save' })",
+   "By its test id, such as getByTestId('save-button') on every element",
+   "By its CSS class, such as container.querySelector('.btn-save')",
+   "By its position, such as getAllByRole('button')[2] in the list"
+  ]
+ },
+ "test_design_techniques-2": {
+  "new": {
+   "skill_id": "test_design_techniques",
+   "difficulty": 1,
+   "stem_en": "What is regression testing?",
+   "expl_en": "Re-testing existing features after a change to make sure nothing broke."
+  },
+  "en": [
+   "Re-testing existing features after a change",
+   "Testing a new feature for the first time",
+   "Testing the system under very heavy load",
+   "Testing the changed code by reading it"
+  ]
+ },
+ "responsive_accessible_web-1": {
+  "new": {
+   "skill_id": "responsive_accessible_web",
+   "difficulty": 1,
+   "stem_en": "Which meta tag lets a page scale correctly on a phone screen?",
+   "expl_en": "The viewport meta tag sets the layout width to the device width."
+  },
+  "en": [
+   "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">",
+   "<meta name=\"viewport\" content=\"width=1024, initial-scale=1\">",
+   "<meta name=\"viewport\" content=\"width=device-width, user-scalable=no\">",
+   "<meta name=\"viewport\" content=\"initial-scale=2, maximum-scale=1\">"
+  ]
+ }
+}

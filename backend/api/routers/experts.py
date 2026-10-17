@@ -95,14 +95,16 @@ def propose_edge(body: EdgeIn, tok: ApiToken = Depends(require_expert), s: Sessi
 
 
 @router.get("/scenarios")
-def scenarios(expert_id: str | None = None, tok: ApiToken = Depends(require_expert), s: Session = Depends(db_session)):
+def scenarios(expert_id: str | None = None, role: str = "business_analyst", tok: ApiToken = Depends(require_expert),
+              s: Session = Depends(db_session)):
+    """Scenarios of one role family (plan A4: experts rank per role, Business Analyst by default)."""
     who = tok.subject_id if tok.role == "expert" else expert_id
-    rows = s.scalars(select(Scenario).order_by(Scenario.base_id, Scenario.id)).all()
+    rows = s.scalars(select(Scenario).where(Scenario.role == role).order_by(Scenario.base_id, Scenario.id)).all()
     done = set(s.scalars(select(ScenarioRanking.scenario_id).where(ScenarioRanking.expert_id == who)).all()) if who else set()
     counts = dict(s.execute(select(ScenarioRanking.scenario_id, func.count()).where(ScenarioRanking.simulated.is_(False))
                             .group_by(ScenarioRanking.scenario_id)).all())
-    return [{"id": r.id, "base_id": r.base_id, "variant": r.variant, "title": r.title, "done": r.id in done,
-             "n_rankings": counts.get(r.id, 0)} for r in rows]
+    return [{"id": r.id, "base_id": r.base_id, "variant": r.variant, "title": r.title, "role": r.role,
+             "done": r.id in done, "n_rankings": counts.get(r.id, 0)} for r in rows]
 
 
 @router.get("/scenarios/{scid}")

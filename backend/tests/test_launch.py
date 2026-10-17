@@ -33,6 +33,24 @@ def test_staff_cookie_session_and_csrf(client):
     assert client.get("/api/admin/whoami").status_code == 401
 
 
+def test_staff_cookie_is_a_revocable_session_not_the_staff_token(client):
+    """Sign-in puts a short-lived session token in the cookie (never the staff token itself); signing out
+    revokes it server-side, so a copied cookie stops working, while the staff token keeps working."""
+    from pathsync.security import STAFF_COOKIE, STAFF_SESSION_HOURS
+
+    r = client.post("/api/staff/session", json={"token": ADMIN_TOKEN})
+    session = r.cookies.get(STAFF_COOKIE) or client.cookies.get(STAFF_COOKIE)
+    assert session and session != ADMIN_TOKEN and ADMIN_TOKEN not in r.headers["set-cookie"]
+    import re
+
+    max_age = int(re.search(r"max-age=(\d+)", r.headers["set-cookie"].lower()).group(1))
+    assert STAFF_SESSION_HOURS * 3600 - 5 <= max_age <= STAFF_SESSION_HOURS * 3600
+    client.delete("/api/staff/session")
+    stolen = {"Cookie": f"{STAFF_COOKIE}={session}"}
+    assert client.get("/api/admin/whoami", headers=stolen).status_code == 401
+    assert client.get("/api/admin/whoami", headers={"Authorization": f"Bearer {ADMIN_TOKEN}"}).status_code == 200
+
+
 def test_admin_writes_are_audited(client):
     client.post("/api/admin/feedback/999999/resolve", headers={**ADMIN})
     log = client.get("/api/admin/audit-log", headers=ADMIN).json()

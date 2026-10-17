@@ -1,0 +1,28 @@
+{
+ "base": "http://backend:8000",
+ "students": 200,
+ "concurrency": 40,
+ "seconds": 13.0,
+ "errors": 0,
+ "error_kinds": [],
+ "steps": {
+  "signup": {
+   "n": 200,
+   "p50_ms": 359,
+   "p95_ms": 739,
+   "max_ms": 795
+  },
+  "transcript": {
+   "n": 200,
+   "p50_ms": 848,
+   "p95_ms": 1347,
+   "max_ms": 1570
+  },
+  "dashboard": {
+   "n": 200,
+   "p50_ms": 444,
+   "p95_ms": 751,
+   "max_ms": 920
+  }
+ }
+}

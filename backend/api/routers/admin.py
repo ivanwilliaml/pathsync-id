@@ -9,7 +9,6 @@ import sys
 import threading
 from collections import defaultdict
 from datetime import datetime
-from itertools import combinations
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
@@ -41,6 +40,8 @@ from pathsync.db import (
 from pathsync.demand import MarketMap, apply_market_shift
 from pathsync.engine import graph_from_db, propagate_market_change
 from pathsync.extraction.llm import llm_configured
+from pathsync.gold import agreement as annotator_agreement
+from pathsync.gold import load_split, prf
 from pathsync.security import audit_admin_writes, db_session, issue_token, require_admin, revoke
 from pathsync.study import DEFAULT_ARMS, analyse, join_code
 from pathsync.taxonomy import CycleError, load_skills
@@ -54,6 +55,29 @@ def whoami():
 
 
 # ------------------------------------------------------------------- stats
+@router.get("/runtime")
+def runtime(s: Session = Depends(db_session)):
+    """Plan C4: p95 and error rate per route (this worker), database and market-snapshot health,
+    and the alerts an operator should act on."""
+    from pathsync.observability import STATS, health
+
+    ok, h = health(s)
+    routes = STATS.snapshot()
+    alerts = []
+    if not ok:
+        alerts.append("database unreachable")
+    if h.get("market_stale"):
+        alerts.append(f"market snapshot older than {h.get('market_max_age_days')} days (age {h.get('market_age_days')})")
+    alerts += [f"{r}: p95 {v['p95_ms']} ms" for r, v in routes.items() if v["requests"] >= 20 and v["p95_ms"] > 1000]
+    alerts += [f"{r}: error rate {v['error_rate']:.1%}" for r, v in routes.items() if v["requests"] >= 20 and v["error_rate"] > 0.01]
+    from pathsync.security import limiter
+
+    if limiter.fallbacks:
+        alerts.append(f"rate limiter fell back to per-worker memory {limiter.fallbacks} times (Redis unreachable)")
+    return {"worker_pid": os.getpid(), "health": {"ok": ok, **h}, "routes": routes, "alerts": alerts,
+            "rate_limiter": {"backend": limiter.backend, "fallbacks": limiter.fallbacks}}
+
+
 @router.get("/stats")
 def stats(s: Session = Depends(db_session)):
     def cnt(stmt):
@@ -160,7 +184,8 @@ def simulate_market(body: ShiftIn, s: Session = Depends(db_session)):
     name = load_skills()[body.skill_id].name
     new = MarketSnapshot(version=f"{snap.version.split('+')[0]}+sim{datetime.now():%H%M%S}", role=body.role,
                          reference_date=snap.reference_date, data=m.to_dict(), required=snap.required, sources=snap.sources,
-                         note=f"SIMULATION: demand for {name} {body.demand_delta:+.0%}", simulated=True, active=True)
+                         note=f"SIMULATION: demand for {name} {body.demand_delta:+.0%}", simulated=True, active=True,
+                         provenance={**(snap.provenance or {}), "simulated_from": snap.version})
     s.add(new)
     bump_epoch(s)
     s.commit()
@@ -251,7 +276,17 @@ def decide_project(eid: int, body: ProjectReviewIn, s: Session = Depends(db_sess
 # ---------------------------------------------------------------- annotation
 @router.get("/annotation/next")
 def annotation_next(annotator: str, s: Session = Depends(db_session)):
-    done = select(Annotation.posting_id).where(Annotation.annotator == annotator)
+    """Next posting for this annotator. The locked gold split (plan A1) is served first, in a fixed
+    order, so every annotator labels the same postings; only the posting text is returned, never the
+    extractor output."""
+    done = set(s.scalars(select(Annotation.posting_id).where(Annotation.annotator == annotator)).all())
+    split = load_split()
+    if split:
+        todo = [pid for pid in split["dev"] + split["test"] if pid not in done]
+        if todo:
+            p = s.get(Posting, todo[0])
+            return {"posting_id": p.id, "title": p.title, "company": p.company, "description": p.description,
+                    "remaining": len(todo), "set": "gold_split"}
     p = s.scalars(select(Posting).where(Posting.duplicate_of.is_(None), Posting.id.not_in(done)).order_by(Posting.id)).first()
     if p is None:
         return {"posting_id": None}
@@ -297,25 +332,11 @@ def annotation_eval(s: Session = Depends(db_session)):
         tp += len(pred[pid] & gold)
         fp += len(pred[pid] - gold)
         fn += len(gold - pred[pid])
-    prec = tp / (tp + fp) if tp + fp else 0.0
-    rec = tp / (tp + fn) if tp + fn else 0.0
-    f1 = 2 * prec * rec / (prec + rec) if prec + rec else 0.0
-    kappas = []
-    skills = list(load_skills())
-    names = sorted({n for anns in by_post.values() for n in anns})
-    for a, b in combinations(names, 2):
-        both = [anns for anns in by_post.values() if a in anns and b in anns]
-        if len(both) < 3:
-            continue
-        x = [int(k in an[a]) for an in both for k in skills]
-        y = [int(k in an[b]) for an in both for k in skills]
-        po = sum(i == j for i, j in zip(x, y, strict=False)) / len(x)
-        pa, pb = sum(x) / len(x), sum(y) / len(y)
-        pe = pa * pb + (1 - pa) * (1 - pb)
-        kappas.append({"annotators": [a, b], "postings": len(both), "kappa": round((po - pe) / (1 - pe), 4) if pe < 1 else 1.0})
-    return {"n_postings": len(by_post), "precision": round(prec, 4), "recall": round(rec, 4), "f1": round(f1, 4),
+    m = prf(tp, fp, fn)
+    return {"n_postings": len(by_post), "precision": m["precision"], "recall": m["recall"], "f1": m["f1"],
+            "precision_ci95": m["precision_ci95"], "recall_ci95": m["recall_ci95"],
             "target_f1": 0.75, "tp": tp, "fp": fp, "fn": fn, "gold_rule": "majority of annotators",
-            "inter_annotator": kappas}
+            "inter_annotator": annotator_agreement(by_post, list(load_skills())), "target_kappa": 0.70}
 
 
 # ------------------------------------------------------------------- models
@@ -341,34 +362,48 @@ def activate_model(mid: int, s: Session = Depends(db_session)):
 class TrainIn(BaseModel):
     use_simulated: bool = False
     activate_if_passes: bool = True
+    role: str = "business_analyst"     # the active ranker serves Business Analyst; other roles are report-only
 
 
 @router.post("/train")
 def train(body: TrainIn, s: Session = Depends(db_session)):
-    from pathsync.evaluation import NON_INFERIORITY, adaptivity, cross_validate, passes_rule, train_full
+    from pathsync.evaluation import (
+        NON_INFERIORITY,
+        adaptivity,
+        cross_validate,
+        leave_one_expert_out,
+        passes_rule,
+        train_full,
+    )
     from pathsync.ranker import aggregate_orders
     by = defaultdict(list)
+    per_expert: dict[str, dict[str, list[str]]] = defaultdict(dict)
     for rr in s.scalars(select(ScenarioRanking).where(ScenarioRanking.simulated.is_(body.use_simulated))).all():
         by[rr.scenario_id].append(rr.order)
-    scen = {r.id: r.payload for r in s.scalars(select(Scenario)).all()}
+        per_expert[rr.expert_id][rr.scenario_id] = rr.order
+    scen = {r.id: r.payload for r in s.scalars(select(Scenario).where(Scenario.role == body.role)).all()}
     data = [scen[k] for k in by if k in scen]
     if len({d["base_id"] for d in data}) < 3:
         raise HTTPException(400, "Expert rankings are needed for at least 3 base scenarios before training.")
     refs = {k: aggregate_orders(v) for k, v in by.items() if k in scen}
     cv = cross_validate(data, refs, k=min(5, len({d["base_id"] for d in data})))
     w, lam = train_full(data, refs)
-    ok = passes_rule(cv)
-    activate = ok and body.activate_if_passes
+    # simulated experts: non-inferiority to formula (5); real experts: plan A4, leave-one-expert-out,
+    # LTR must beat formula (5) by >= 0.02 with a bootstrap CI that excludes zero
+    loeo = None if body.use_simulated else leave_one_expert_out(data, per_expert)
+    ok = passes_rule(cv) if body.use_simulated else bool(loeo and loeo.get("passes"))
+    activate = ok and body.activate_if_passes and body.role == "business_analyst"
     if activate:
         s.execute(update(RankerModel).values(active=False))
         bump_epoch(s)
     m = RankerModel(name=f"LTR {'simulated' if body.use_simulated else 'expert'} {datetime.now():%Y-%m-%d %H:%M}",
                     source="simulated" if body.use_simulated else "expert", weights=w, active=activate,
                     metrics={"cv": cv["methods"], "l2": lam, "passes_rule": ok, "margin": NON_INFERIORITY,
-                             "adaptivity": adaptivity(data, refs, w)})
+                             "leave_one_expert_out": loeo, "adaptivity": adaptivity(data, refs, w)})
     s.add(m)
     s.commit()
-    return {"model_id": m.id, "weights": w, "active": activate, "passes_rule": ok, "cv": cv["methods"]}
+    return {"model_id": m.id, "weights": w, "active": activate, "passes_rule": ok, "cv": cv["methods"],
+            "leave_one_expert_out": loeo}
 
 
 @router.get("/expert-agreement")

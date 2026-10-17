@@ -1,4 +1,4 @@
-"""Career Map (docs/CAREER_VIZ_DISCOVERY.md): every role at once, from the same evidence and formula as the target role.
+"""Career Map (docs/design/CAREER_VIZ_DISCOVERY.md): every role at once, from the same evidence and formula as the target role.
 
 - `career_graph`: roles as nodes, linked when their posting-backed requirements overlap (Jaccard). Market data only.
 - `careers_for`: one student's readiness for every role, using coverage (eq. 6), the same number the dashboard shows

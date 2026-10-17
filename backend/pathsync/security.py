@@ -11,6 +11,7 @@ from __future__ import annotations
 import hashlib
 import hmac
 import ipaddress
+import logging
 import os
 import secrets
 import threading
@@ -97,11 +98,26 @@ STAFF_COOKIE = "ps_staff"
 CSRF_HEADER = "x-pathsync"     # custom header: browsers cannot send it cross-site without a CORS preflight
 
 
-def issue_token(s: Session, role: str, subject_id: str = "", label: str = "") -> str:
+STAFF_SESSION_HOURS = int(os.getenv("PATHSYNC_STAFF_SESSION_HOURS", "12"))
+SESSION_PREFIX = "session of #"     # label of a browser session token; the number is the staff token it came from
+
+
+def issue_token(s: Session, role: str, subject_id: str = "", label: str = "", expires_at=None) -> str:
     token = new_token()
     s.add(ApiToken(role=role, subject_id=subject_id, token_hash=hash_token(token), label=label,
-                   expires_at=utcnow() + timedelta(days=STAFF_TOKEN_DAYS)))
+                   expires_at=expires_at or utcnow() + timedelta(days=STAFF_TOKEN_DAYS)))
     return token
+
+
+def issue_session(s: Session, parent: ApiToken) -> tuple[str, ApiToken]:
+    """Browser sign-in: a short-lived session token derived from a staff token. The cookie carries this,
+    never the staff token itself, so signing out can revoke it without touching the staff token."""
+    ends = utcnow() + timedelta(hours=STAFF_SESSION_HOURS)
+    if parent.expires_at is not None:
+        ends = min(ends, parent.expires_at)
+    token = issue_token(s, parent.role, parent.subject_id, f"{SESSION_PREFIX}{parent.id} {parent.label}"[:120], ends)
+    s.flush()
+    return token, s.scalars(select(ApiToken).where(ApiToken.token_hash == hash_token(token))).one()
 
 
 def staff_token_row(s: Session, token: str | None) -> ApiToken | None:
@@ -110,6 +126,13 @@ def staff_token_row(s: Session, token: str | None) -> ApiToken | None:
     row = s.scalars(select(ApiToken).where(ApiToken.token_hash == hash_token(token), ApiToken.revoked_at.is_(None))).first()
     if row is None or (row.expires_at is not None and row.expires_at < utcnow()):
         return None
+    if row.label.startswith(SESSION_PREFIX):          # a session dies with the staff token it came from
+        try:
+            parent = s.get(ApiToken, int(row.label[len(SESSION_PREFIX):].split(" ", 1)[0]))
+        except ValueError:
+            return None
+        if parent is None or parent.revoked_at is not None or (parent.expires_at is not None and parent.expires_at < utcnow()):
+            return None
     return row
 
 
@@ -206,26 +229,38 @@ class RateLimiter:
     """Sliding-window limiter, in-process. With PATHSYNC_REDIS_URL set, a shared fixed-window counter in Redis is used
     instead so the limit holds across several workers or containers."""
 
-    def __init__(self):
+    def __init__(self, url: str | None = None):
         self._hits: dict[tuple[str, str], deque] = defaultdict(deque)
         self._lock = threading.Lock()
         self._redis = None
-        url = os.getenv("PATHSYNC_REDIS_URL")
+        self.fallbacks = 0            # checks answered locally because Redis failed (shown in /api/admin/runtime)
+        self._warned_at = 0.0
+        url = url if url is not None else os.getenv("PATHSYNC_REDIS_URL")
         if url:
             import redis  # optional dependency, only needed for multi-worker deployments
 
-            self._redis = redis.Redis.from_url(url, socket_timeout=0.5)
+            self._redis = redis.Redis.from_url(url, socket_timeout=0.5, socket_connect_timeout=0.5)
+
+    @property
+    def backend(self) -> str:
+        return "redis" if self._redis is not None else "memory"
 
     def check(self, key: tuple[str, str], limit: int, window: float) -> bool:
         if self._redis is not None:
             try:
                 k = f"rl:{key[1]}:{key[0]}:{int(time.time() // window)}"
-                n = self._redis.incr(k)
-                if n == 1:
-                    self._redis.expire(k, int(window) + 1)
+                pipe = self._redis.pipeline()
+                pipe.incr(k)
+                pipe.expire(k, int(window) + 1, nx=True)
+                n = pipe.execute()[0]
                 return n <= limit
-            except Exception:  # noqa: BLE001 - Redis down: fall back to the local window rather than failing requests
-                pass
+            except Exception as e:  # noqa: BLE001 - Redis down: fall back to the local window rather than failing requests
+                # the fallback limit is per worker, so it is looser than the shared one: say so, at most once a minute
+                self.fallbacks += 1
+                if time.monotonic() - self._warned_at > 60:
+                    self._warned_at = time.monotonic()
+                    logging.getLogger("pathsync").warning(
+                        '{"event":"rate_limit_fallback","reason":"%s","fallbacks":%d}', type(e).__name__, self.fallbacks)
         now = time.monotonic()
         with self._lock:
             q = self._hits[key]
@@ -265,6 +300,13 @@ def read_upload(file, max_bytes: int = MAX_UPLOAD_BYTES) -> tuple[bytes, str]:
     data = file.file.read(max_bytes + 1)
     if len(data) > max_bytes:
         raise HTTPException(413, f"File too large (max {max_bytes // (1024 * 1024)} MB).")
+    # the extension must match the content: a renamed binary is refused before any parser sees it
+    magic = {".pdf": b"%PDF-", ".docx": b"PK\x03\x04"}
+    for ext, head in magic.items():
+        if name.endswith(ext) and not data.startswith(head):
+            raise HTTPException(415, f"This file is not a valid {ext} file.")
+    if not name.endswith((".pdf", ".docx")) and b"\x00" in data[:4096]:
+        raise HTTPException(415, "Text uploads must be plain text.")
     return data, name
 
 

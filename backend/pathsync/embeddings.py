@@ -71,16 +71,66 @@ def encode(texts: list[str], batch_size: int = 64) -> np.ndarray:
             out[i] = np.frombuffer(row[0], dtype=np.float32)
     missing = [i for i, v in enumerate(out) if v is None]
     if missing:
-        model = get_model()
-        with _encode_slots:
-            vecs = model.encode([texts[i] for i in missing], batch_size=batch_size,
-                                normalize_embeddings=True, show_progress_bar=False)
-        for i, v in zip(missing, vecs, strict=False):
-            v = np.asarray(v, dtype=np.float32)
-            out[i] = v
-            conn.execute("INSERT OR REPLACE INTO emb VALUES (?, ?)", (keys[i], v.tobytes()))
-        conn.commit()
+        mine, waits = _claim([keys[i] for i in missing])
+        try:
+            todo = [i for i in missing if keys[i] in mine]
+            if todo:
+                model = get_model()
+                with _encode_slots:
+                    vecs = model.encode([texts[i] for i in todo], batch_size=batch_size,
+                                        normalize_embeddings=True, show_progress_bar=False)
+                for i, v in zip(todo, vecs, strict=False):
+                    v = np.asarray(v, dtype=np.float32)
+                    out[i] = v
+                    conn.execute("INSERT OR REPLACE INTO emb VALUES (?, ?)", (keys[i], v.tobytes()))
+                conn.commit()
+        finally:
+            _release(mine, {keys[i]: out[i] for i in missing if keys[i] in mine and out[i] is not None})
+        for i in missing:
+            if out[i] is None:                    # another thread was already encoding this text: use its result
+                out[i] = _wait_for(keys[i], waits.get(keys[i]))
+                if out[i] is None:                # that thread failed: encode it here
+                    out[i] = encode([texts[i]], batch_size)[0]
     return np.vstack(out)
+
+
+# Single flight (plan B4): after a restart, 40 concurrent uploads of the same course name all missed the cache
+# and encoded the same text one after another behind _encode_slots (about 20 s for the last one). Now the
+# first thread encodes a text and the others wait for its result.
+_inflight_lock = threading.Lock()
+_inflight: dict[str, threading.Event] = {}
+_results: dict[str, np.ndarray] = {}
+
+
+def _claim(keys: list[str]) -> tuple[set[str], dict[str, threading.Event]]:
+    mine, waits = set(), {}
+    with _inflight_lock:
+        for k in keys:
+            if k in _inflight:
+                waits[k] = _inflight[k]
+            else:
+                _inflight[k] = threading.Event()
+                mine.add(k)
+    return mine, waits
+
+
+def _release(mine: set[str], done: dict[str, np.ndarray]) -> None:
+    with _inflight_lock:
+        for k in mine:
+            if k in done:
+                _results[k] = done[k]
+            ev = _inflight.pop(k, None)
+            if ev is not None:
+                ev.set()
+        if len(_results) > 4096:
+            _results.clear()
+
+
+def _wait_for(key: str, ev: threading.Event | None, timeout: float = 60.0) -> np.ndarray | None:
+    if ev is not None:
+        ev.wait(timeout)
+    with _inflight_lock:
+        return _results.get(key)
 
 
 class SkillIndex:

@@ -1,13 +1,34 @@
 """Skill extraction pipeline: extractor -> quote verification -> embedding normalisation."""
 from __future__ import annotations
 
+import hashlib
 from functools import lru_cache
+from pathlib import Path
 
 from ..embeddings import SkillIndex, once
 from ..taxonomy import load_skills
 from .base import ExtractionResult, Mention, apply_gates
 from .lexicon import LexiconExtractor
 from .llm import ClaudeExtractor, LLMUnavailable, llm_configured
+
+_HERE = Path(__file__).resolve().parent
+
+
+@lru_cache(maxsize=4)
+def cache_tag(extractor: str) -> str:
+    """Extraction-cache key suffix: extractor, taxonomy version and a hash of everything that changes
+    the output (taxonomy file with its aliases, and for the lexicon its code and the gates). Editing
+    aliases without bumping the taxonomy version used to reuse stale cached extractions."""
+    from ..config import SEED_DIR
+    from ..taxonomy import load_taxonomy
+
+    files = [SEED_DIR / "taxonomy.json"]
+    if extractor != "llm":                      # llm results are gated at import; the prompt is the taxonomy
+        files += [_HERE / "lexicon.py", _HERE / "base.py"]
+    h = hashlib.sha256()
+    for f in files:
+        h.update(f.read_bytes().replace(b"\r\n", b"\n"))
+    return f"{extractor}|{load_taxonomy()['version']}|{h.hexdigest()[:12]}"
 
 
 @once
@@ -49,4 +70,4 @@ def extract_skills(text: str, prefer: str | None = None, kind: str = "posting") 
     return res
 
 
-__all__ = ["extract_skills", "ExtractionResult", "Mention", "skill_index", "LLMUnavailable", "llm_configured"]
+__all__ = ["cache_tag", "extract_skills", "ExtractionResult", "Mention", "skill_index", "LLMUnavailable", "llm_configured"]

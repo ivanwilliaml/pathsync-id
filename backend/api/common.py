@@ -1,6 +1,10 @@
 """Helpers shared by the routers."""
 from __future__ import annotations
 
+import json
+from datetime import date, datetime
+
+from fastapi.responses import Response
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
@@ -30,3 +34,20 @@ def after_change(s: Session, st: Student, trigger: str, note: str) -> None:
     s.refresh(st)
     rec = recommend_for(s, st)
     record_history(s, st, trigger if has_history(s, st.id) else "initial", note=note, rec=rec)
+
+
+def _plain(o):
+    if isinstance(o, (datetime, date)):
+        return o.isoformat()
+    if isinstance(o, (set, frozenset, tuple)):
+        return list(o)
+    if hasattr(o, "item"):                      # numpy scalars
+        return o.item()
+    raise TypeError(f"{type(o).__name__} is not JSON serialisable")
+
+
+def fast_json(payload) -> Response:
+    """Serialise an already-plain payload directly (plan B4). FastAPI's jsonable_encoder walks every
+    value of the large recommendation payload and took about a quarter of the dashboard's CPU time."""
+    return Response(json.dumps(payload, ensure_ascii=False, separators=(",", ":"), default=_plain),
+                    media_type="application/json")
