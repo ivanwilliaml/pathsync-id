@@ -21,6 +21,7 @@ import { ErrorNote, LinkButton, MasteryBar, Panel, Tag } from "./kit";
 import { ReadinessRing } from "./readiness-ring";
 import { Mascot, type MascotName } from "./mascot";
 import type { CareersData } from "./career-map";
+import { ChangeList } from "./change-list";
 
 interface SubmitResult {
   results: { item_id: string; skill_id: string; correct: boolean; choice: number | null; answer: number; explanation: string }[];
@@ -281,19 +282,7 @@ function CareerShift({ sid, before }: { sid: string; before: CareersData | null 
     <Panel aria-live="polite">
       <h2 className="text-lg font-semibold text-ink">What This Check Moved</h2>
       <p className="mt-1 text-sm text-muted-foreground">How much of what employers ask you can now show, per career.</p>
-      <ul className="mt-4 space-y-2">
-        {moved.map((c) => (
-          <li key={c.id} className="flex items-center justify-between gap-3 text-sm">
-            <span className="text-ink">
-              {c.name}
-              {c.is_target ? <span className="ml-2 text-xs text-muted-foreground">(your target)</span> : null}
-            </span>
-            <span className={cn("tabular shrink-0 text-xs font-medium", c.delta > 0 ? "text-mint-ink" : "text-destructive")}>
-              {pct(c.readiness - c.delta)} {c.delta > 0 ? "↑" : "↓"} {pct(c.readiness)}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <ChangeList className="mt-3" items={moved.map((c) => ({ id: c.id, name: c.name, before: c.readiness - c.delta, now: c.readiness, target: c.is_target }))} />
       <LinkButton href="/skill-map?tab=careers" variant="outline" size="lg" className="mt-5 h-10">
         Open My Career Map
       </LinkButton>

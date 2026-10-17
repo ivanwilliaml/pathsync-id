@@ -368,6 +368,8 @@ class RecommendationHistory(Base):
     coverage: Mapped[float] = mapped_column(Float, default=0.0)
     market_version: Mapped[str] = mapped_column(String(40), default="")
     model_name: Mapped[str] = mapped_column(String(80), default="")
+    # readiness for every role at this moment (Career Map), so Path History can show which other careers moved
+    careers: Mapped[dict | None] = mapped_column(JSON, nullable=True)
 
 
 class Annotation(Base):

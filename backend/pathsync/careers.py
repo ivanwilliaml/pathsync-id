@@ -77,6 +77,14 @@ def careers_for(s: Session, student: Student) -> dict:
             "n_postings": n, "limited_data": n < LIMITED_DATA_POSTINGS, "clusters": clusters,
             "top_gaps": [{"skill_id": k, "name": ctx.names[k], "level_now": level_label(p.get(k, 0.0)),
                           "level_needed": level_label(req[k])} for k, gap in top_gaps if gap > 0],
+            # skills the role's postings ask for from Basic up: what two careers have in common (compare view)
+            "skills": sorted(({"skill_id": k, "name": ctx.names[k]} for k, v in req.items() if v >= REQUIRED_FLOOR),
+                             key=lambda x: x["name"]),
         })
     out.sort(key=lambda r: -r["readiness"])
     return {"careers": out, "any_evidence": any(st.has_evidence for st in (states or {}).values())}
+
+
+def career_readiness(s: Session, student: Student) -> dict[str, float]:
+    """{role: readiness} for the history log (Path History shows which other careers moved)."""
+    return {c["id"]: c["readiness"] for c in careers_for(s, student)["careers"]}

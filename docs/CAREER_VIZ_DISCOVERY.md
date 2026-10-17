@@ -91,4 +91,19 @@ Semua butir tahap 1 sudah dibangun dan diuji:
 - **Quick Check:** kartu "What This Check Moved" berisi perubahan readiness per karier. Sudah diuji end-to-end dengan jawaban acak; readiness BA turun 59% → 39%, sesuai bukti barunya.
 - **Tab:** padding lebih lega untuk semua `Tabs`.
 
-Belum dibuat (tahap 2): animasi perubahan di konstelasi, radar, perbandingan dua peran, Path History lintas peran.
+## Status tahap 2 (17 Okt 2026)
+
+- **Konstelasi ditata ulang** atas masukan tim: satu kolom per keluarga, karier diurutkan dari yang paling dekat, node kecil, dan label berisi readiness serta jumlah lowongan.
+- **Gerak saat berubah:**
+  - Peran yang readiness-nya berubah sejak kunjungan terakhir berdenyut tiga kali (hanya transform dan opacity). Nilai kunjungan terakhir disimpan di perangkat.
+  - Daftar "Since Your Last Visit" ada di bawah peta.
+- **Radar per peran** di panel. Area yang belum terukur digambar dengan sumbu putus-putus dan tidak pernah dihitung nol. Bentuk radar butuh minimal 3 area terukur; di bawah itu hanya titik.
+- **Bandingkan dua peran:**
+  - Pilih peran kedua, lalu radar menampilkan lapisan putus-putus.
+  - Tabel per area berdampingan.
+  - Daftar skill yang diminta keduanya (dari `skills` di `/careers`).
+- **Path History lintas peran:**
+  - Kolom baru `recommendation_history.careers` (migrasi 0006) menyimpan readiness semua peran di setiap entri.
+  - Entri tetap dicatat kalau peran lain berubah meski ranking target sama.
+  - Halaman /history menampilkan "Other careers that moved".
+- **Satu komponen `ChangeList`** (nama, bar sebelum → sesudah, perubahan dalam poin) dipakai di Career Map, hasil Quick Check, dan Path History.

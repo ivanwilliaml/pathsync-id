@@ -398,10 +398,13 @@ def _reasons(prev: list[dict], cur: list[dict], rec: dict, names: dict[str, str]
 
 def record_history(s: Session, student: Student, trigger: str, note: str = "", rec: dict | None = None,
                    force: bool = False) -> RecommendationHistory | None:
+    from .careers import career_readiness  # local import: careers builds on this module
+
     rec = rec or recommend(s, student)
     last = s.scalars(select(RecommendationHistory).where(RecommendationHistory.student_id == student.id)
                      .order_by(RecommendationHistory.id.desc())).first()
     cur = _snapshot(rec)
+    careers = career_readiness(s, student)
     names = {c["skill_id"]: c["name"] for c in rec["competencies"]} | {r["skill_id"]: r["name"] for r in rec["ranking"]}
     if last is None:
         trigger = "initial"
@@ -410,13 +413,16 @@ def record_history(s: Session, student: Student, trigger: str, note: str = "", r
     else:
         same = [r["skill_id"] for r in last.ranking[:5]] == [r["skill_id"] for r in cur[:5]] and \
             all(abs(a["priority"] - b["priority"]) < 0.005 for a, b in zip(last.ranking[:5], cur[:5], strict=False))
-        if same and not force and last.market_version == rec["market_version"]:
+        # entries written before careers were tracked have no snapshot: record one so later changes have a baseline
+        careers_moved = last.careers is None or any(abs(careers.get(r, 0.0) - v) >= 0.01 for r, v in last.careers.items())
+        if same and not careers_moved and not force and last.market_version == rec["market_version"]:
             return None
         summary, reasons = _reasons(last.ranking, cur, rec, names, trigger, note)
     h = RecommendationHistory(student_id=student.id, trigger=trigger, summary=summary, reasons=reasons, ranking=cur,
                               path=[{"skill_id": p["skill_id"], "name": p["name"], "role_in_path": p["role_in_path"]}
                                     for p in rec["path"]],
-                              coverage=rec["coverage"], market_version=rec["market_version"], model_name=rec["model"]["name"])
+                              coverage=rec["coverage"], market_version=rec["market_version"], model_name=rec["model"]["name"],
+                              careers=careers)
     s.add(h)
     s.commit()
     return h

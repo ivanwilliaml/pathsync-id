@@ -271,3 +271,15 @@
 @media (prefers-contrast: more), (forced-colors: active) {
   .sync-word { background-image: none; color: inherit; }
 }
+
+/* Career Map: a role whose readiness changed since the last visit pulses three times (transform + opacity only) */
+.career-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: career-pulse 1.6s ease-out 3;
+  opacity: 0;
+}
+@keyframes career-pulse {
+  0% { transform: scale(0.9); opacity: 0.85; }
+  100% { transform: scale(1.45); opacity: 0; }
+}

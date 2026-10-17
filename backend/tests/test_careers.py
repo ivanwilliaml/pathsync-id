@@ -40,3 +40,18 @@ def test_target_readiness_matches_dashboard(client):
 def test_careers_need_the_students_token(client):
     sid, _ = _student(client)
     assert client.get(f"/api/students/{sid}/careers").status_code in (401, 403)
+
+
+def test_careers_list_required_skills(client):
+    sid, h = _student(client)
+    c = client.get(f"/api/students/{sid}/careers", headers=h).json()["careers"]
+    ba = next(x for x in c if x["id"] == "business_analyst")
+    assert ba["skills"] and all({"skill_id", "name"} <= set(s) for s in ba["skills"])
+
+
+def test_history_records_readiness_for_every_career(client):
+    sid, h = _student(client)
+    hist = client.get(f"/api/students/{sid}/history", headers=h).json()
+    assert hist and hist[0]["careers"] and "business_analyst" in hist[0]["careers"]
+    careers = client.get(f"/api/students/{sid}/careers", headers=h).json()["careers"]
+    assert len(hist[0]["careers"]) == len(careers)

@@ -3,6 +3,8 @@
 import { Briefcase, FilePlus2, Flag, RefreshCw, Shuffle } from "lucide-react";
 import { fmtDateTime, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
+import type { Meta } from "@/lib/api";
+import { ChangeList } from "@/components/change-list";
 import { RequireStudent } from "@/components/require-student";
 import { EmptyState, ErrorNote, LinkButton, Loading, PageHeader, Tag } from "@/components/kit";
 
@@ -14,6 +16,7 @@ interface HistoryRow {
   reasons: string[];
   path: { skill_id: string; name: string; role_in_path: string }[];
   coverage: number;
+  careers: Record<string, number> | null;
 }
 
 const TRIGGER: Record<string, { label: string; icon: typeof Flag; tone: "neutral" | "indigo" | "ember" | "mint" }> = {
@@ -30,6 +33,8 @@ export default function HistoryPage() {
 
 function History({ sid }: { sid: string }) {
   const h = useApi<HistoryRow[]>(`/students/${sid}/history`);
+  const meta = useApi<Meta>("/meta");
+  const roleName = Object.fromEntries((meta.data?.roles ?? []).map((r) => [r.id, r.name]));
   if (h.error) return <ErrorNote error={h.error} />;
   if (!h.data) return <Loading />;
   return (
@@ -43,8 +48,17 @@ function History({ sid }: { sid: string }) {
         <div className="relative">
           <div className="absolute bottom-3 left-[15px] top-3 w-[3px] rounded-full bg-route-v" aria-hidden="true" />
           <ol className="relative space-y-5 pl-10">
-          {h.data.map((r) => {
+          {h.data.map((r, idx) => {
             const t = TRIGGER[r.trigger] ?? TRIGGER.manual;
+            // other careers that moved since the previous (older) entry, biggest change first
+            const prev = h.data![idx + 1]?.careers;
+            const moved = r.careers && prev
+              ? Object.entries(r.careers)
+                  .map(([id, v]) => ({ id, now: v, before: prev[id] ?? 0 }))
+                  .filter((m) => Math.abs(m.now - m.before) >= 0.01 && Math.abs(m.now - r.coverage) > 1e-4)
+                  .sort((a, b) => Math.abs(b.now - b.before) - Math.abs(a.now - a.before))
+                  .slice(0, 4)
+              : [];
             const Icon = t.icon;
             const [head, ...rest] = r.summary.split(": ");
             return (
@@ -65,6 +79,12 @@ function History({ sid }: { sid: string }) {
                         <li key={i}>{x}</li>
                       ))}
                     </ul>
+                  ) : null}
+                  {moved.length ? (
+                    <div className="mt-4 rounded-xl border px-4 pt-3 pb-1">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Other careers that moved</p>
+                      <ChangeList items={moved.map((m) => ({ id: m.id, name: roleName[m.id] ?? titleCase(m.id.replace(/_/g, " ")), before: m.before, now: m.now }))} />
+                    </div>
                   ) : null}
                   <ol className="mt-3 flex flex-wrap gap-1.5" aria-label="Route at that time">
                     {r.path.map((p, i) => (

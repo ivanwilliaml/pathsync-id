@@ -309,7 +309,7 @@ def history(st: Student = Depends(student_access), s: Session = Depends(db_sessi
                      .order_by(RecommendationHistory.id.desc())).all()
     return [{"id": h.id, "created_at": h.created_at.isoformat(), "trigger": h.trigger, "summary": h.summary,
              "reasons": h.reasons, "ranking": h.ranking, "path": h.path, "coverage": h.coverage,
-             "market_version": h.market_version, "model_name": h.model_name} for h in rows]
+             "market_version": h.market_version, "model_name": h.model_name, "careers": h.careers} for h in rows]
 
 
 @router.get("/students/{sid}/graph")
