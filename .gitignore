@@ -35,3 +35,6 @@ backend/data/processed/embedding_cache.sqlite-wal
 # test coverage data
 .coverage
 backend/.coverage
+
+# Vercel CLI link
+frontend/.vercel/
