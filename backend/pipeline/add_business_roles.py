@@ -16,6 +16,8 @@ candidate alias that an older skill or a soft skill already owns is dropped here
 from __future__ import annotations
 
 import json
+import random
+import re
 import sys
 
 from pathsync.config import SEED_DIR
@@ -70,7 +72,6 @@ def merge_skills() -> None:
 
 
 def grounding() -> None:
-    from sqlalchemy import select
 
     from pathsync.db import get_session, init_db
     from pathsync.governance import GROUNDING_MIN_SHARE
@@ -124,9 +125,6 @@ def prune() -> None:
     print(f"kept {len(keep)} of {len(cand)} candidates")
     print(", ".join(keep))
 
-
-import random
-import re
 
 FILL_ID = [" dalam praktik sehari-hari", " pada kebanyakan organisasi", " menurut kebiasaan umum", " pada tahap awal",
            " dalam banyak kasus", " di lingkungan kerja", " sebagai langkah rutin", " pada umumnya"]

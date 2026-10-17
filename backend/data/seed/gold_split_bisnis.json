@@ -1,0 +1,65 @@
+{
+ "seed": 20261017,
+ "note": "Locked supplement to gold_split.json for the six business roles (plan A9). Same rules: tune on dev only.",
+ "excluded_earlier_gold": 76,
+ "per_role": {
+  "financial_analyst": {
+   "dev": 3,
+   "test": 2
+  },
+  "hr_specialist": {
+   "dev": 2,
+   "test": 3
+  },
+  "internal_auditor": {
+   "dev": 3,
+   "test": 2
+  },
+  "project_coordinator": {
+   "dev": 2,
+   "test": 3
+  },
+  "supply_chain_analyst": {
+   "dev": 3,
+   "test": 2
+  },
+  "tax_specialist": {
+   "dev": 2,
+   "test": 3
+  }
+ },
+ "dev": [
+  "kalibrr:231627",
+  "kalibrr:262223",
+  "kalibrr:272934",
+  "kalibrr:272987",
+  "kalibrr:273479",
+  "kalibrr:274311",
+  "karirhub:01a01e17-fc43-73af-9759-fbfdc75ee598",
+  "karirhub:01a05c50-1045-701e-8f79-98d13f066479",
+  "karirhub:01a0f396-80c7-70e5-b1e2-1608b57362f0",
+  "karirhub:01a12c2c-f9cd-70f5-9320-06f59b246467",
+  "karirhub:01a13150-7e69-711a-822a-bd63276f4f29",
+  "karirhub:01a13b9d-aa15-72b9-9b0d-cbbb88d6f066",
+  "karirhub:d527e393-3f73-4166-af13-c867fb9889e6",
+  "karirhub:f32dca07-440e-4d0e-a230-40893246a202",
+  "karirhub:f455952e-54c8-4be3-96e2-6285f23ca2ad"
+ ],
+ "test": [
+  "kalibrr:246659",
+  "kalibrr:271232",
+  "kalibrr:271829",
+  "kalibrr:273196",
+  "karirhub:01a02aba-3f61-7231-b5f9-6bcae77c558b",
+  "karirhub:01a03361-91d4-72a7-ace1-a1935db10f8b",
+  "karirhub:01a08f27-108d-732c-87f4-7c67d96cad9f",
+  "karirhub:01a0d9c0-c355-732d-8ae5-cc9624e0075c",
+  "karirhub:01a11cb5-6f75-7009-88a8-6a07ed2e2a95",
+  "karirhub:01a13266-5097-73ce-8199-f6d7546608d4",
+  "karirhub:01a140c2-ac8c-72b3-8a22-8b1fed9c019c",
+  "karirhub:01a140d4-787f-7327-b47f-270d3d16185e",
+  "karirhub:4149b67e-f86a-4c59-8a2d-eb36f21df8d9",
+  "karirhub:c11951d9-c3f1-491d-a9fe-a51cb323d590",
+  "karirhub:dfc8bcd0-ff4f-4665-83bb-4dedfc13b933"
+ ]
+}

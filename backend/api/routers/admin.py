@@ -41,7 +41,7 @@ from pathsync.demand import MarketMap, apply_market_shift
 from pathsync.engine import graph_from_db, propagate_market_change
 from pathsync.extraction.llm import llm_configured
 from pathsync.gold import agreement as annotator_agreement
-from pathsync.gold import load_split, prf
+from pathsync.gold import load_split_all, prf
 from pathsync.security import audit_admin_writes, db_session, issue_token, require_admin, revoke
 from pathsync.study import DEFAULT_ARMS, analyse, join_code
 from pathsync.taxonomy import CycleError, load_skills
@@ -280,7 +280,7 @@ def annotation_next(annotator: str, s: Session = Depends(db_session)):
     order, so every annotator labels the same postings; only the posting text is returned, never the
     extractor output."""
     done = set(s.scalars(select(Annotation.posting_id).where(Annotation.annotator == annotator)).all())
-    split = load_split()
+    split = load_split_all()
     if split:
         todo = [pid for pid in split["dev"] + split["test"] if pid not in done]
         if todo:

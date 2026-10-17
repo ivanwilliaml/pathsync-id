@@ -63,10 +63,10 @@ def _gold_plus_random(n_random: int, seed: int = 20261014) -> set[str]:
     other postings, drawn with a fixed seed, for a stability check."""
     import random
 
-    from pathsync.gold import earlier_gold_ids, load_split
+    from pathsync.gold import earlier_gold_ids, load_split_all
     from pipeline.build_market import load_raw
 
-    split = load_split() or {"dev": [], "test": []}
+    split = load_split_all() or {"dev": [], "test": []}
     gold = set(split["dev"]) | set(split["test"]) | earlier_gold_ids()
     rest = sorted(f"{r['source']}:{r['source_id']}" for r in load_raw()
                   if r.get("role") in ROLES and len(r.get("description_text", "")) >= 200)

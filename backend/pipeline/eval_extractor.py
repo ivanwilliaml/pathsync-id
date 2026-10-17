@@ -26,7 +26,7 @@ from collections import Counter
 
 from pathsync.config import MODELS_DIR, PROCESSED_DIR, RAW_DIR, SEED_DIR
 from pathsync.extraction import cache_tag, extract_skills
-from pathsync.gold import CONSENSUS_FILE, load_split, prf, wilson  # noqa: F401  (wilson re-exported for callers)
+from pathsync.gold import CONSENSUS_FILE, load_split_all, prf, wilson  # noqa: F401  (wilson re-exported for callers)
 from pathsync.taxonomy import load_skills
 
 EXTRACTORS = ("lexicon", "llm", "union", "intersection")
@@ -96,7 +96,7 @@ def evaluate(prefer: str = "lexicon", goldfile: str = "gold_pilot.json", split: 
     doc = json.loads((SEED_DIR / goldfile).read_text(encoding="utf-8"))
     gold, cap = doc["postings"], doc.get("max_chars")
     if split:
-        locked = load_split()
+        locked = load_split_all()
         if not locked:
             raise SystemExit("no gold_split.json; run python -m pipeline.gold split")
         keep = set(locked[split])

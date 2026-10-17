@@ -1,6 +1,7 @@
 """Human gold set workflow (plan A1).
 
     python -m pipeline.gold split       # writes data/seed/gold_split.json once (refuses to overwrite)
+    python -m pipeline.gold split-bisnis   # writes data/seed/gold_split_bisnis.json once (6 business roles, 5 each)
     python -m pipeline.gold status      # progress per annotator on the split
     python -m pipeline.gold consensus   # annotations -> gold_consensus.json + open disputes
     python -m pipeline.gold sheet <name> [out.xlsx]        # Excel sheet for one annotator (offline)
@@ -21,7 +22,18 @@ from sqlalchemy import select
 
 from pathsync.config import MODELS_DIR
 from pathsync.db import Annotation, Posting, SessionLocal, init_db
-from pathsync.gold import ADJUDICATION_FILE, CONSENSUS_FILE, SPLIT_FILE, agreement, consensus, load_split, make_split
+from pathsync.gold import (
+    ADJUDICATION_FILE,
+    CONSENSUS_FILE,
+    EXTRA_SPLIT_FILE,
+    EXTRA_SPLIT_SEED,
+    SPLIT_FILE,
+    agreement,
+    consensus,
+    load_split,
+    load_split_all,
+    make_split,
+)
 from pathsync.taxonomy import load_skills
 
 
@@ -43,8 +55,24 @@ def cmd_split() -> None:
     print(f"dev {len(doc['dev'])}, test {len(doc['test'])} -> {SPLIT_FILE}")
 
 
+def cmd_split_bisnis() -> None:
+    from pipeline.add_business_roles import BUSINESS_ROLES
+
+    if EXTRA_SPLIT_FILE.exists():
+        raise SystemExit(f"{EXTRA_SPLIT_FILE.name} already exists; the split is locked.")
+    main = load_split() or {"dev": [], "test": []}
+    taken = set(main["dev"]) | set(main["test"])
+    with SessionLocal() as s:
+        rows = s.execute(select(Posting.id, Posting.role).where(Posting.duplicate_of.is_(None),
+                                                                Posting.role.in_(BUSINESS_ROLES))).all()
+    doc = make_split({pid: role for pid, role in rows if pid not in taken}, seed=EXTRA_SPLIT_SEED)
+    doc["note"] = "Locked supplement to gold_split.json for the six business roles (plan A9). Same rules: tune on dev only."
+    EXTRA_SPLIT_FILE.write_text(json.dumps(doc, indent=1), encoding="utf-8")
+    print(f"dev {len(doc['dev'])}, test {len(doc['test'])} -> {EXTRA_SPLIT_FILE}")
+
+
 def cmd_status() -> None:
-    split = load_split() or {"dev": [], "test": []}
+    split = load_split_all() or {"dev": [], "test": []}
     ids = set(split["dev"]) | set(split["test"])
     with SessionLocal() as s:
         by_post = _annotations(s, ids)
@@ -57,7 +85,7 @@ def cmd_status() -> None:
 
 
 def cmd_consensus() -> None:
-    split = load_split()
+    split = load_split_all()
     if not split:
         raise SystemExit("run `python -m pipeline.gold split` first")
     ids = set(split["dev"]) | set(split["test"])
@@ -91,7 +119,7 @@ def cmd_sheet(name: str, out: str | None = None) -> None:
 
     from pathsync.config import PROCESSED_DIR
 
-    split = load_split()
+    split = load_split_all()
     if not split:
         raise SystemExit("run `python -m pipeline.gold split` first")
     order = split["dev"] + split["test"]
@@ -173,7 +201,7 @@ def main() -> None:
         return cmd_sheet(args[0], args[1] if len(args) > 1 else None)
     if cmd == "import-sheet" and len(args) == 2:
         return cmd_import_sheet(args[0], args[1])
-    {"split": cmd_split, "status": cmd_status, "consensus": cmd_consensus}.get(cmd, lambda: sys.exit(__doc__))()
+    {"split": cmd_split, "split-bisnis": cmd_split_bisnis, "status": cmd_status, "consensus": cmd_consensus}.get(cmd, lambda: sys.exit(__doc__))()
 
 
 if __name__ == "__main__":
