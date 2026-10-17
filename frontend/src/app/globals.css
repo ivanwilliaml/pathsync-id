@@ -190,25 +190,30 @@
   .sync-run-color {
     display: block;
     mix-blend-mode: multiply;
-    /* one period of colour bands; the start and end match so the sweep loops seamlessly */
-    background: repeating-linear-gradient(
-      105deg,
-      #4aa548 0px,
-      #3fb57a calc(var(--sync-w) * 0.35),
-      #14a39a calc(var(--sync-w) * 0.7),
-      #1d6fd8 calc(var(--sync-w) * 1.05),
-      #5eb0f0 calc(var(--sync-w) * 1.4),
-      #6cc24a calc(var(--sync-w) * 1.75),
-      #a8d43c calc(var(--sync-w) * 2.05),
-      #f5c542 calc(var(--sync-w) * 2.4),
-      #9bd34a calc(var(--sync-w) * 2.75),
-      #4aa548 calc(var(--sync-w) * 3.1)
-    );
+    /* a large diagonal sweep of colours, plus soft patches, drifting back and forth (no tiling, so no seams) */
+    background:
+      radial-gradient(circle at 30% 35%, rgb(94 176 240 / 0.55), transparent 22%),
+      radial-gradient(circle at 70% 65%, rgb(245 197 66 / 0.5), transparent 20%),
+      linear-gradient(
+        125deg,
+        #4aa548 0%,
+        #3fb57a 12%,
+        #14a39a 24%,
+        #1d6fd8 36%,
+        #5eb0f0 46%,
+        #6cc24a 58%,
+        #a8d43c 68%,
+        #f5c542 80%,
+        #9bd34a 90%,
+        #4aa548 100%
+      );
+    background-size: 260% 260%, 300% 300%, 450% 450%;
+    background-repeat: no-repeat;
     -webkit-mask: url(/mascot/sync-run-mask.webp) no-repeat 0 0 / calc(var(--sync-w) * 30) var(--sync-h);
     mask: url(/mascot/sync-run-mask.webp) no-repeat 0 0 / calc(var(--sync-w) * 30) var(--sync-h);
     animation:
       sync-run-mask-steps 1.4s steps(30) infinite,
-      sync-run-colour 7s linear infinite;
+      sync-run-colour 9s ease-in-out infinite alternate;
   }
 }
 @keyframes sync-run-steps {
@@ -218,7 +223,9 @@
   to { -webkit-mask-position: calc(var(--sync-w) * -30) 0; mask-position: calc(var(--sync-w) * -30) 0; }
 }
 @keyframes sync-run-colour {
-  to { background-position: calc(var(--sync-w) * 3.1 / 0.9659) 0; }
+  0% { background-position: 0% 0%, 100% 20%, 0% 0%; }
+  50% { background-position: 80% 70%, 10% 90%, 55% 45%; }
+  100% { background-position: 20% 100%, 90% 0%, 100% 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   .sync-run-base { animation: none; background-image: url(/mascot/sync-run-green.webp); }
