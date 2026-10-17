@@ -21,7 +21,7 @@ function SkillCheck({ sid, skill }: { sid: string; skill: string }) {
   const r = useApi<{ session_id: string; skill_id: string; skill_name: string; p: number; items: Item[] }>(`/students/${sid}/assessment/reassess/${skill}`);
   if (r.error instanceof ApiError && r.error.status === 409)
     return (
-      <EmptyState title="No Questions Left for This Skill" action={<LinkButton href="/evidence?step=projects">Add a Project</LinkButton>}>
+      <EmptyState title="No Questions Left for This Skill" mascot="portfolio" action={<LinkButton href="/evidence?step=projects">Add a Project</LinkButton>}>
         {r.error.message}
       </EmptyState>
     );
@@ -37,7 +37,7 @@ function SkillCheck({ sid, skill }: { sid: string; skill: string }) {
         </p>
       </header>
       {r.data.items.length === 0 ? (
-        <EmptyState title="No Questions Left for This Skill" action={<LinkButton href="/evidence?step=projects">Add a Project</LinkButton>}>
+        <EmptyState title="No Questions Left for This Skill" mascot="portfolio" action={<LinkButton href="/evidence?step=projects">Add a Project</LinkButton>}>
           You&rsquo;ve answered every question we have for {name}. A project that shows this skill is the next best proof.
         </EmptyState>
       ) : (

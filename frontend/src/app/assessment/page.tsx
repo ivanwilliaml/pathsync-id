@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { RequireStudent } from "@/components/require-student";
 import { Quiz } from "@/components/quiz";
 import { EmptyState, ErrorNote, LinkButton, Loading } from "@/components/kit";
+import { Mascot } from "@/components/mascot";
 
 export default function AssessmentPage() {
   return <RequireStudent>{(sid) => <Assessment sid={sid} />}</RequireStudent>;
@@ -43,14 +44,15 @@ function Assessment({ sid }: { sid: string }) {
             Start the Check
           </Button>
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/study.webp" alt="A student working on a laptop in a library" width={1600} height={1067} className="aspect-[4/3] w-full rounded-3xl object-cover" />
+        <div className="flex aspect-[4/3] w-full items-center justify-center rounded-3xl bg-route-soft">
+          <Mascot name="stopwatch" size={280} priority />
+        </div>
       </div>
     );
   }
   if (plan.error instanceof ApiError && plan.error.status === 409)
     return (
-      <EmptyState title="You've Answered Every Question" action={<LinkButton href="/dashboard">Back to Dashboard</LinkButton>}>
+      <EmptyState title="You've Answered Every Question" mascot="celebrate" action={<LinkButton href="/dashboard">Back to Dashboard</LinkButton>}>
         To show progress on one skill, add a project from one of your courses: it is the next best proof.
       </EmptyState>
     );
@@ -58,7 +60,7 @@ function Assessment({ sid }: { sid: string }) {
   if (!plan.data) return <Loading label="Picking your questions…" />;
   if (plan.data.items.length === 0)
     return (
-      <EmptyState title="You've Answered Every Question" action={<LinkButton href="/dashboard">Back to Dashboard</LinkButton>}>
+      <EmptyState title="You've Answered Every Question" mascot="celebrate" action={<LinkButton href="/dashboard">Back to Dashboard</LinkButton>}>
         To show progress on one skill, open it from your dashboard and choose &ldquo;Prove You Know It&rdquo;, or add a project.
       </EmptyState>
     );

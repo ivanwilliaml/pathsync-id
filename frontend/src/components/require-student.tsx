@@ -12,7 +12,7 @@ export function RequireStudent({ children }: { children: (id: string) => ReactNo
     return (
       <EmptyState
         title="Create Your Profile First"
-        image="/images/hero.webp"
+        mascot="wave"
         action={<LinkButton href="/" size="lg">Start Your Path</LinkButton>}
       >
         This page shows your personal learning path. It takes about two minutes to set up.

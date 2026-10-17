@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { ErrorNote, LinkButton, MasteryBar, Panel, Tag } from "./kit";
 import { ReadinessRing } from "./readiness-ring";
+import { Mascot, type MascotName } from "./mascot";
 
 interface SubmitResult {
   results: { item_id: string; skill_id: string; correct: boolean; choice: number | null; answer: number; explanation: string }[];
@@ -116,7 +117,7 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
                 aria-checked={sel}
                 onClick={() => setAnswers({ ...answers, [it.id]: k })}
                 className={cn(
-                  "flex w-full items-start gap-4 rounded-xl border-2 p-4 text-left text-[15px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  "flex w-full items-start gap-4 rounded-xl border-2 p-4 text-left text-[15px] transition-[color,background-color,border-color,transform] duration-100 active:scale-[0.985] active:bg-secondary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                   sel ? "border-indigo bg-secondary/60 text-ink" : "border-border bg-card text-ink/85 hover:border-indigo/30 hover:bg-muted/50",
                 )}
               >
@@ -180,6 +181,12 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
   );
 }
 
+/** Celebrate a strong score, think it over in the middle, comfort a low one: the route moves either way. */
+function resultMascot(correct: number, total: number): MascotName {
+  const share = total ? correct / total : 0;
+  return share >= 0.7 ? "celebrate" : share >= 0.4 ? "thinking" : "sad";
+}
+
 function Results({ items, result }: { items: Item[]; result: SubmitResult }) {
   const byId = Object.fromEntries(items.map((i) => [i.id, i]));
   const changes = Object.entries(result.skills).sort((a, b) => b[1].p_after - b[1].p_before - (a[1].p_after - a[1].p_before));
@@ -196,6 +203,7 @@ function Results({ items, result }: { items: Item[]; result: SubmitResult }) {
             See My Updated Route
           </LinkButton>
         </div>
+        <Mascot name={resultMascot(result.correct, result.total)} size={140} className="sm:ml-auto" />
       </section>
 
       <Panel>

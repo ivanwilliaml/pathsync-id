@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { RequireStudent } from "@/components/require-student";
 import { ReadinessRing } from "@/components/readiness-ring";
+import { Mascot } from "@/components/mascot";
 import { SkillSheet, type SkillDetail } from "@/components/skill-sheet";
 import { EmptyState, ErrorNote, LinkButton, Loading, MasteryBar, Panel, SectionTitle, Tag } from "@/components/kit";
 
@@ -62,7 +63,8 @@ function DashboardView({ sid }: { sid: string }) {
             Your route to <span className="font-semibold text-ink">{d.role.name}</span>, based on {d.role.n_postings} real job postings.
           </p>
           {!hasEvidence ? (
-            <div className="mt-6 rounded-2xl bg-card p-5 shadow-sm">
+            <div className="relative mt-6 rounded-2xl bg-card p-5 shadow-sm sm:pr-36">
+              <Mascot name="checklist" size={112} className="absolute right-4 bottom-3 hidden sm:block" />
               <h2 className="text-lg font-semibold text-ink">Make This Route Yours</h2>
               <p className="mt-1 text-sm text-ink/70">
                 Right now everyone starts from zero. Add your transcript or take the quick check so we know what you can already do.
@@ -77,7 +79,8 @@ function DashboardView({ sid }: { sid: string }) {
               </div>
             </div>
           ) : top ? (
-            <div className="mt-6 rounded-2xl bg-card p-5 shadow-sm">
+            <div className="relative mt-6 rounded-2xl bg-card p-5 shadow-sm sm:pr-36">
+              <Mascot name="compass" size={112} className="absolute right-4 bottom-3 hidden sm:block" />
               <p className="text-sm font-medium text-indigo">Your Next Step</p>
               <h2 className="mt-1 text-[22px] font-bold leading-snug text-ink">{titleCase(top.name)}</h2>
               <p className="mt-1.5 text-sm text-ink/75">{top.explanation ? firstSentence(top.explanation.why_now) : null}</p>
@@ -91,7 +94,10 @@ function DashboardView({ sid }: { sid: string }) {
               </div>
             </div>
           ) : (
-            <p className="mt-6 rounded-2xl bg-card p-5 text-ink/80">You meet every requirement we track for this role. Nice work.</p>
+            <div className="mt-6 flex items-center gap-4 rounded-2xl bg-card p-5 text-ink/80">
+              <Mascot name="trophy" size={88} />
+              <p>You meet every requirement we track for this role. Nice work.</p>
+            </div>
           )}
         </div>
         <div className="flex items-center gap-5 lg:flex-col lg:text-center">
@@ -240,7 +246,7 @@ function PriorityRow({ r, comp, onOpen }: { r: RankRow; comp?: Competency; onOpe
       <button
         type="button"
         onClick={onOpen}
-        className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 p-4 text-left transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:p-5"
+        className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 p-4 text-left transition-colors duration-100 hover:bg-muted/60 active:bg-secondary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:p-5"
       >
         <span className="flex size-9 items-center justify-center rounded-full bg-secondary text-sm font-bold text-secondary-foreground">{r.rank}</span>
         <span className="min-w-0">
@@ -363,9 +369,12 @@ function WhyOrder({ d, names }: { d: Dashboard; names: Record<string, string> })
   const cf = d.counterfactual;
   return (
     <Panel>
-      <p className="mb-5 max-w-2xl text-sm text-ink/75">
-        We compared your route with simpler ways of ordering the same skills. &ldquo;Stuck&rdquo; means a step comes before something it depends on.
-      </p>
+      <div className="mb-5 flex items-center gap-4">
+        <Mascot name="scale" size={80} className="hidden sm:block" />
+        <p className="max-w-2xl text-sm text-ink/75">
+          We compared your route with simpler ways of ordering the same skills. &ldquo;Stuck&rdquo; means a step comes before something it depends on.
+        </p>
+      </div>
       <ul className="space-y-3">
         {cf.alternatives.map((a, i) => (
           <li key={a.label} className={`rounded-xl border p-4 ${i === 0 ? "border-indigo/40 bg-secondary/40" : ""}`}>
@@ -386,9 +395,12 @@ function HowRanked({ ranking }: { ranking: RankRow[] }) {
   const f = ["G", "R", "D", "U", "K"] as const;
   return (
     <Panel className="overflow-x-auto">
-      <p className="mb-4 max-w-2xl text-sm text-ink/75">
-        Each skill gets a priority score from these signals. Bigger gaps, higher demand, and skills that unlock others rank higher.
-      </p>
+      <div className="mb-4 flex items-center gap-4">
+        <Mascot name="magnifier" size={80} className="hidden sm:block" />
+        <p className="max-w-2xl text-sm text-ink/75">
+          Each skill gets a priority score from these signals. Bigger gaps, higher demand, and skills that unlock others rank higher.
+        </p>
+      </div>
       <table className="w-full min-w-[560px] text-left text-sm">
         <thead className="text-xs text-ink/60">
           <tr>

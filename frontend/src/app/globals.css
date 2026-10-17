@@ -231,3 +231,29 @@
   .sync-run-base { animation: none; background-image: url(/mascot/sync-run-green.webp); }
   .sync-run-color { display: none; }
 }
+
+/* Large headings: tighter tracking and leading as size grows (docs/APPLE_DESIGN_AUDIT.md) */
+@layer base {
+  h1 { letter-spacing: -0.02em; }
+  h2 { letter-spacing: -0.01em; }
+}
+
+/* Users who ask for less transparency get solid surfaces instead of blurred, see-through ones */
+@media (prefers-reduced-transparency: reduce) {
+  .backdrop-blur, .backdrop-blur-xs, .backdrop-blur-sm, [class*="supports-backdrop-filter:backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .bg-background\/90 { background-color: var(--background) !important; }
+  [data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"], [data-slot="sheet-overlay"] { background-color: rgb(15 36 66 / 0.55) !important; }
+}
+
+/* Users who ask for more contrast get darker secondary text and visible borders */
+@media (prefers-contrast: more) {
+  :root {
+    --muted-foreground: #2c3a50;
+    --border: #9fb0c6;
+    --input: #8a9cb4;
+  }
+  .text-ink\/60, .text-ink\/70, .text-ink\/75, .text-ink\/80 { color: var(--ink) !important; }
+}

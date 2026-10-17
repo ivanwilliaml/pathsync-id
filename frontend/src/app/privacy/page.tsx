@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
+import { Mascot } from "@/components/mascot";
 
 export const metadata: Metadata = {
   title: "Kebijakan Privasi",
@@ -31,7 +32,10 @@ export default function PrivacyPage() {
         </Link>
       </header>
       <main className="mx-auto max-w-3xl px-4 pb-20 sm:px-6" lang="id">
-        <h1 className="text-[32px] font-extrabold leading-tight text-ink">Kebijakan Privasi</h1>
+        <div className="flex items-end gap-4">
+          <Mascot name="shield" size={88} priority />
+          <h1 className="text-[32px] font-extrabold leading-tight text-ink">Kebijakan Privasi</h1>
+        </div>
         <p className="mt-2 text-sm text-muted-foreground">Diperbarui {UPDATED} · versi persetujuan 2026-10b</p>
         <p className="mt-6 text-[15px] leading-relaxed text-ink/80">
           PathSync membantu Anda menentukan keterampilan apa yang perlu dipelajari berikutnya. Untuk itu kami memproses data Anda. Halaman ini

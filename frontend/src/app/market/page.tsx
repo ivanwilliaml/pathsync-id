@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ErrorNote, Loading, Panel, Tag } from "@/components/kit";
+import { Mascot } from "@/components/mascot";
 
 interface MarketRow {
   skill_id: string;
@@ -74,6 +75,7 @@ export default function MarketPage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/market.webp" alt="" width={1600} height={1067} className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/30" aria-hidden="true" />
+        <Mascot name="job-board" size={190} priority className="absolute right-6 bottom-0 hidden md:block" />
         <div className="relative p-7 sm:p-10">
           <h1 className="text-[30px] font-extrabold text-white sm:text-[36px]">Job Market</h1>
           <p className="mt-2 max-w-lg text-white/80">

@@ -42,7 +42,7 @@ export default function SkillMapPage() {
   if (!id) return <Connections />;
   return (
     <div>
-      <PageHeader
+      <PageHeader mascot="nodes"
         title="Skill Map"
         description="See which skills are already strong, which are close, and which to fix first, then how the skills connect."
       />
@@ -89,7 +89,7 @@ function Connections({ embedded }: { embedded?: boolean }) {
   return (
     <div>
       {embedded ? null : (
-        <PageHeader
+        <PageHeader mascot="nodes"
           title="Skill Map"
           description="See what each skill builds on and what it opens up. Pick any skill to explore."
         />

@@ -51,18 +51,18 @@ export default function AdvisorPage() {
   if (!token || cohorts.error)
     return (
       <div className="mx-auto max-w-md">
-        <PageHeader title="Lecturer View" description="Class-level insight: where your students stand against what employers ask for." />
+        <PageHeader mascot="advisor" title="Lecturer View" description="Class-level insight: where your students stand against what employers ask for." />
         <Panel>
           <StaffLogin role="advisor" error={cohorts.error} hint="Use the lecturer key you received when your class was created." />
         </Panel>
       </div>
     );
   if (!cohorts.data) return <Loading />;
-  if (!cohorts.data.length) return <EmptyState title="No Classes Yet">Ask the PathSync team to create a class for you.</EmptyState>;
+  if (!cohorts.data.length) return <EmptyState title="No Classes Yet" mascot="group">Ask the PathSync team to create a class for you.</EmptyState>;
   const co = cohorts.data.find((c) => c.id === current)!;
   return (
     <div className="space-y-8">
-      <PageHeader
+      <PageHeader mascot="advisor"
         title="Lecturer View"
         description="Anonymous, class-level gaps against the job market. Use it to plan class sessions, assignments and electives."
         actions={
@@ -95,7 +95,7 @@ export default function AdvisorPage() {
         </span>
       </Panel>
       {report.error ? <ErrorNote error={report.error} /> : !report.data ? <Loading /> : report.data.hidden ? (
-        <EmptyState title={`${report.data.n_students} Student${report.data.n_students === 1 ? "" : "s"} So Far`}>
+        <EmptyState mascot="group" title={`${report.data.n_students} Student${report.data.n_students === 1 ? "" : "s"} So Far`}>
           <span className="inline-flex items-center gap-1">
             <Lock className="size-4" aria-hidden="true" /> {report.data.message}
           </span>

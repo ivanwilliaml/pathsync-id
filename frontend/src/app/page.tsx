@@ -11,6 +11,7 @@ import { api, type Meta } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
 import { parseAccessKey, setStudent, useStudentId } from "@/lib/student";
 import { Button } from "@/components/ui/button";
+import { Mascot } from "@/components/mascot";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -113,6 +114,7 @@ export default function Landing() {
             fetchPriority="high"
             className="aspect-[4/3.6] w-full rounded-[28px] object-cover object-[45%_70%]"
           />
+          <Mascot name="wave" size={150} priority className="absolute -top-10 -left-6 hidden drop-shadow-md sm:block" />
           <RoutePreview n={n} />
         </div>
       </section>
@@ -120,7 +122,10 @@ export default function Landing() {
       {/* Roles */}
       <section className="border-y bg-card" id="roles">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <h2 className="text-[28px] font-bold text-ink">Choose Your Target Career</h2>
+          <div className="flex items-end gap-4">
+            <Mascot name="signpost" size={96} className="hidden sm:block" />
+            <h2 className="text-[28px] font-bold text-ink">Choose Your Target Career</h2>
+          </div>
           <p className="mt-2 max-w-2xl text-ink/70">
             {meta.data ? `${meta.data.roles.length} technical careers` : "Technical careers"}, each built from real Indonesian job postings. PathSync teaches hard skills only: the tools and methods that
             courses can teach and a quick check can measure. Careers with fewer postings are marked Beta.

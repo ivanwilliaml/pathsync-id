@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RequireStudent } from "@/components/require-student";
 import { ErrorNote, LinkButton, Loading, NativeSelect, PageHeader, Panel, Tag } from "@/components/kit";
+import { Mascot, type MascotName } from "@/components/mascot";
 
 type StepId = "transcript" | "certificates" | "projects" | "cv" | "preferences";
 const STEPS: { id: StepId; label: string; icon: typeof GraduationCap; kind?: string; hint: string }[] = [
@@ -77,7 +78,7 @@ function Evidence({ sid }: { sid: string }) {
 
   return (
     <div>
-      <PageHeader
+      <PageHeader mascot="upload"
         title="My Evidence"
         description="Add whatever you have. Every step is optional, and the more you add, the more accurate your route gets."
         actions={
@@ -222,11 +223,16 @@ function EvidenceList({ sid, student, onChange }: { sid: string; student: Studen
 }
 
 // ------------------------------------------------------------------ shared bits
-function StepPanel({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
+function StepPanel({ title, description, children, mascot }: { title: string; description: string; children: React.ReactNode; mascot?: MascotName }) {
   return (
     <Panel>
-      <h2 className="text-xl font-bold text-ink">{title}</h2>
-      <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+      <div className="flex items-center gap-4">
+        {mascot ? <Mascot name={mascot} size={84} className="hidden sm:block" /> : null}
+        <div>
+          <h2 className="text-xl font-bold text-ink">{title}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+        </div>
+      </div>
       <div className="mt-5">{children}</div>
     </Panel>
   );
@@ -331,7 +337,7 @@ function Transcript({ sid, catalog, names, onSaved }: { sid: string; catalog: Ca
   }
 
   return (
-    <StepPanel title="Add Your Transcript" description="Paste your grades or upload your transcript. Grades count as background knowledge, not proof, so they carry the lightest weight.">
+    <StepPanel mascot="transcript" title="Add Your Transcript" description="Paste your grades or upload your transcript. Grades count as background knowledge, not proof, so they carry the lightest weight.">
       {rows.length === 0 ? (
         <>
           <PasteOrUpload
@@ -425,7 +431,7 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
     }
   }
   return (
-    <StepPanel title="Add Certificates" description="Pick from our list or type any course name, and paste the credential link (Coursera, Dicoding, Credly, Google, Microsoft…). A certificate with a verifiable link counts fully; one without a link counts as a claim, at half weight.">
+    <StepPanel mascot="certificate" title="Add Certificates" description="Pick from our list or type any course name, and paste the credential link (Coursera, Dicoding, Credly, Google, Microsoft…). A certificate with a verifiable link counts fully; one without a link counts as a claim, at half weight.">
       <datalist id="certs">
         {catalog?.certificates.map((c) => <option key={c.name} value={c.name} />)}
       </datalist>
@@ -521,7 +527,7 @@ function Projects({ sid, names, onSaved }: { sid: string; names: Record<string, 
     }
   }
   return (
-    <StepPanel title="Add a Project" description="A report, notebook, SQL file, or requirements document. Each skill is rated from what the work actually shows, with a quote as proof.">
+    <StepPanel mascot="portfolio" title="Add a Project" description="A report, notebook, SQL file, or requirements document. Each skill is rated from what the work actually shows, with a quote as proof.">
       <div className="space-y-4">
         <div className="space-y-1.5">
           <Label htmlFor="ptitle">Project Title</Label>
@@ -595,7 +601,7 @@ function CV({ sid, names, onSaved }: { sid: string; names: Record<string, string
     }
   }
   return (
-    <StepPanel title="Add Your CV" description="Skills on your CV don't raise your level. They tell us where a quick check could prove what you already know.">
+    <StepPanel mascot="thinking" title="Add Your CV" description="Skills on your CV don't raise your level. They tell us where a quick check could prove what you already know.">
       <PasteOrUpload id="cv" label="CV Content" text={text} setText={setText} file={file} setFile={setFile} accept=".pdf,.docx,.txt" placeholder="Paste your CV…" />
       <Button size="lg" className="mt-5 h-10" onClick={save} disabled={busy || (!file && text.trim().length < 20)}>
         {busy ? "Reading…" : "Read My CV"}
@@ -670,7 +676,7 @@ function Preferences({ student, meta, names, onSaved }: { student: Student; meta
   const rated = Object.keys(ratings).length;
 
   return (
-    <StepPanel title="Set Your Preferences" description="We use these to size your route and choose materials. Changing your role rebuilds your route.">
+    <StepPanel mascot="calendar" title="Set Your Preferences" description="We use these to size your route and choose materials. Changing your role rebuilds your route.">
       <div className="space-y-6">
         <fieldset>
           <legend className="mb-2 text-sm font-medium text-ink">Target Role</legend>

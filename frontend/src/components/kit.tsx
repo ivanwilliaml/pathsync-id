@@ -7,6 +7,7 @@ import type { VariantProps } from "class-variance-authority";
 import { AlertCircle } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Mascot, type MascotName } from "./mascot";
 import { MascotLoader } from "./mascot-loader";
 
 /** Navigation that looks like a button (keeps <a> semantics for Cmd/Ctrl-click). */
@@ -25,12 +26,21 @@ export function LinkButton({
   );
 }
 
-export function PageHeader({ title, description, actions, className }: { title: string; description?: ReactNode; actions?: ReactNode; className?: string }) {
+export function PageHeader({ title, description, actions, className, mascot }: {
+  title: string;
+  description?: ReactNode;
+  actions?: ReactNode;
+  className?: string;
+  mascot?: MascotName;
+}) {
   return (
     <header className={cn("mb-8 flex flex-wrap items-end justify-between gap-4", className)}>
-      <div className="min-w-0 max-w-2xl">
-        <h1 className="text-[28px] font-bold leading-tight text-ink sm:text-[32px]">{title}</h1>
-        {description ? <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">{description}</p> : null}
+      <div className="flex min-w-0 max-w-3xl items-end gap-4">
+        {mascot ? <Mascot name={mascot} size={88} priority className="-mb-1 hidden sm:block" /> : null}
+        <div className="min-w-0 max-w-2xl">
+          <h1 className="text-[28px] font-bold leading-tight text-ink sm:text-[32px]">{title}</h1>
+          {description ? <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">{description}</p> : null}
+        </div>
       </div>
       {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
     </header>
@@ -76,13 +86,22 @@ export function ErrorNote({ error }: { error: unknown }) {
   );
 }
 
-export function EmptyState({ title, children, action, image }: { title: string; children?: ReactNode; action?: ReactNode; image?: string }) {
+/** Empty or finished states. Shows Sync with an empty box unless another pose (or a photo via `image`) is given. */
+export function EmptyState({ title, children, action, image, mascot = "empty-box" }: {
+  title: string;
+  children?: ReactNode;
+  action?: ReactNode;
+  image?: string;
+  mascot?: MascotName;
+}) {
   return (
     <div className="flex flex-col items-center rounded-2xl border border-dashed bg-card px-6 py-12 text-center">
       {image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={image} alt="" width={160} height={107} loading="lazy" className="mb-5 h-[107px] w-40 rounded-xl object-cover" />
-      ) : null}
+      ) : (
+        <Mascot name={mascot} size={128} className="mb-4" />
+      )}
       <h3 className="text-base font-semibold text-ink">{title}</h3>
       {children ? <p className="mt-1.5 max-w-md text-sm text-muted-foreground">{children}</p> : null}
       {action ? <div className="mt-5 flex flex-wrap justify-center gap-2">{action}</div> : null}

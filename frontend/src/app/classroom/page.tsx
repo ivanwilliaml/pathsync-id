@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RequireStudent } from "@/components/require-student";
 import { EmptyState, ErrorNote, LinkButton, Loading, MasteryBar, PageHeader, Panel, SectionTitle, Tag } from "@/components/kit";
+import { Mascot } from "@/components/mascot";
 
 interface CourseSkill {
   skill_id: string;
@@ -81,7 +82,7 @@ function ClassroomView({ sid }: { sid: string }) {
   const d = c.data;
   return (
     <div className="space-y-10">
-      <PageHeader
+      <PageHeader mascot="board"
         title="My Classes"
         description="Your route, anchored in the courses you take this semester: which skills each course builds, which assignments can prove them, and a weekly plan you reflect on."
       />
@@ -90,7 +91,7 @@ function ClassroomView({ sid }: { sid: string }) {
         <SectionTitle id="courses-title">This Semester&rsquo;s Courses</SectionTitle>
         <AddCourse sid={sid} enrolled={courses.data ?? []} onChange={reload} />
         {d.courses.length === 0 ? (
-          <EmptyState title="Add the Courses You Are Taking">
+          <EmptyState title="Add the Courses You Are Taking" mascot="checklist">
             We map each course to skills and show which assignments can become evidence for your route.
           </EmptyState>
         ) : (
@@ -243,7 +244,7 @@ function WeekPlan({ sid, data, onChange }: { sid: string; data: Classroom; onCha
         </span>
       </SectionTitle>
       {goals.length === 0 ? (
-        <EmptyState title="No Route Steps Yet">Add evidence or take the quick check so we can suggest goals.</EmptyState>
+        <EmptyState title="No Route Steps Yet" mascot="calendar">Add evidence or take the quick check so we can suggest goals.</EmptyState>
       ) : (
         <Panel>
           <p className="mb-3 text-sm text-ink/70">
@@ -383,7 +384,11 @@ function Progress({ data }: { data: Classroom }) {
   if (!s.weeks_reflected) return null;
   return (
     <section aria-labelledby="progress-title">
-      <SectionTitle id="progress-title">Your Learning Rhythm</SectionTitle>
+      <SectionTitle id="progress-title">
+        <span className="inline-flex items-center gap-2">
+          <Mascot name="journal" size={56} /> Your Learning Rhythm
+        </span>
+      </SectionTitle>
       <dl className="grid gap-3 sm:grid-cols-4">
         {[
           ["Weeks reflected", `${s.weeks_reflected} of ${s.weeks_planned}`],

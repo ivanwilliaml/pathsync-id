@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RequireStudent } from "@/components/require-student";
 import { ErrorNote, Loading, NativeSelect, PageHeader, Panel, SectionTitle, Tag } from "@/components/kit";
+import { Mascot } from "@/components/mascot";
 
 export default function SettingsPage() {
   return <RequireStudent>{(sid) => <Settings sid={sid} />}</RequireStudent>;
@@ -37,7 +38,7 @@ function Settings({ sid }: { sid: string }) {
   const s = st.data;
   return (
     <div className="space-y-8">
-      <PageHeader title="Settings & Data" description="Your profile, your access key, classes and studies you join, and control over your personal data." />
+      <PageHeader mascot="key" title="Settings & Data" description="Your profile, your access key, classes and studies you join, and control over your personal data." />
       <Profile sid={sid} s={s} onSaved={st.reload} />
       <AccessKey />
       <Research sid={sid} on={!!(s as { research_consent_at?: string | null }).research_consent_at} onChange={st.reload} />
@@ -247,11 +248,14 @@ function Privacy({ sid, consentAt, version }: { sid: string; consentAt: string |
           <ShieldCheck className="size-5 text-indigo" aria-hidden="true" /> Your Personal Data
         </span>
       </SectionTitle>
+      <div className="flex items-start gap-4">
+      <Mascot name="export" size={84} className="hidden sm:block" />
       <p className="text-sm text-ink/75">
         Under Indonesia&rsquo;s Personal Data Protection Law (UU No. 27/2022) you can see everything we store and delete it. We use your data to build your own route; a
         sample of uploaded projects is read by a PathSync reviewer for quality, and lecturers see class totals only if you join a class.{" "}
         <a href="/privacy" className="font-medium text-indigo underline">Read the privacy policy</a>. Consent given {consentAt ? new Date(consentAt + "Z").toLocaleDateString() : "–"} (policy version {version || "–"}).
       </p>
+      </div>
       <div className="mt-4 flex flex-wrap gap-2">
         <Button variant="outline" onClick={exportData}>
           <Download /> Download My Data
@@ -263,6 +267,7 @@ function Privacy({ sid, consentAt, version }: { sid: string; consentAt: string |
       <AlertDialog open={confirm} onOpenChange={setConfirm}>
         <AlertDialogContent>
           <AlertDialogHeader>
+            <Mascot name="delete" size={96} />
             <AlertDialogTitle>Delete your profile?</AlertDialogTitle>
             <AlertDialogDescription>
               Your evidence, answers, plans, reflections and route history are deleted permanently. This cannot be undone.

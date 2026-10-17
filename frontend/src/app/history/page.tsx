@@ -34,9 +34,9 @@ function History({ sid }: { sid: string }) {
   if (!h.data) return <Loading />;
   return (
     <div>
-      <PageHeader title="Path History" description="Every time your route changes, we keep a record of what triggered it and why." />
+      <PageHeader mascot="map-route" title="Path History" description="Every time your route changes, we keep a record of what triggered it and why." />
       {h.data.length === 0 ? (
-        <EmptyState title="No Changes Yet" action={<LinkButton href="/assessment">Take the Quick Check</LinkButton>}>
+        <EmptyState title="No Changes Yet" mascot="map-route" action={<LinkButton href="/assessment">Take the Quick Check</LinkButton>}>
           Your history starts once you add evidence or take the quick check.
         </EmptyState>
       ) : (

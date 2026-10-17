@@ -72,7 +72,7 @@ export default function HowItWorksPage() {
   const evals = useApi<EvalReport>("/evaluation");
   return (
     <div className="space-y-12">
-      <PageHeader
+      <PageHeader mascot="shift-route"
         title="How the AI Works"
         description="Which AI does what, how a recommendation is decided, why the skill list is final, and why evidence is weighted the way it is."
       />
