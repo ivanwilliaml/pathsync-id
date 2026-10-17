@@ -168,13 +168,22 @@ def build() -> dict:
             "constants": {"sim_auto": SIM_AUTO, "sim_review": SIM_REVIEW,
                           "bkt": {"slip": BKT_SLIP, "guess": BKT_GUESS, "transit": BKT_TRANSIT}},
             "extraction": _extraction(), "assessment_items": _items(), "ranker": _ranker(s),
-            "market": _market(s), "validation": _validation(s), "taxonomy_final": _taxonomy_final(s),
+            "market": _market(s), "validation": _validation(s), "pilot": _pilot(), "taxonomy_final": _taxonomy_final(s),
             "evidence_weights": _evidence_weights(s), "normalisation": _load("normalisation_eval.json") or None,
             "item_calibration": {k: v for k, v in _load("item_calibration.json").items()
                                  if k in ("generated_at", "n_answers", "n_items_calibrated", "active",
                                           "author_vs_empirical_spearman")} or None,
             "performance": _load("loadtest.json") or None,
         }
+
+
+def _pilot() -> dict | None:
+    p = MODELS_DIR / "pilot_eval.json"
+    if not p.exists():
+        return None
+    d = json.loads(p.read_text(encoding="utf-8"))
+    return {k: d[k] for k in ("n", "provenance", "session_dates", "tasks", "times", "ratings_pathsync_vs_generic", "sus",
+                              "meets", "note")}
 
 
 def main() -> None:

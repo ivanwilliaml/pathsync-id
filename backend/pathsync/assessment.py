@@ -91,10 +91,20 @@ def diagnostic_plan(market: MarketMap, states: dict[str, SkillState], answered: 
         boost = 1.35 if st is not None and (st.claimed or "paparan_akademik_tanpa_bukti_langsung" in st.flags) else 1.0
         scored.append((sd.demand * (1.0 - 0.7 * conf) * boost, s))
     chosen = [s for _, s in sorted(scored, reverse=True) if any(it["id"] not in answered for it in items_for(s))][:n_skills]
+    k3 = set(chosen[:max(0, target_items - 2 * len(chosen))])        # the top skills get a third item
+    # Pilot finding (V3): students quit when topics jumped back and forth. Same-cluster skills now sit together; the
+    # cluster of the most important skill comes first, and within a cluster the order of importance is kept.
+    from .taxonomy import load_skills
+
+    skills = load_skills()
+    first_pos: dict[str, int] = {}
+    for i, s in enumerate(chosen):
+        first_pos.setdefault(skills[s].cluster, i)
+    chosen = sorted(chosen, key=lambda s: (first_pos[skills[s].cluster], chosen.index(s)))
     plan: list[dict] = []
-    for rank, s in enumerate(chosen):
+    for s in chosen:
         pool = sorted((it for it in items_for(s) if it["id"] not in answered), key=lambda it: (it["difficulty"], it["id"]))
-        k = 3 if rank < max(0, target_items - 2 * len(chosen)) else 2
+        k = 3 if s in k3 else 2
         # one easy + one harder item (+ a third for the top skills) gives a spread for e_assessment
         picked = pool[:1] + [it for it in pool[1:] if it["difficulty"] >= 2][: k - 1]
         if len(picked) < k:

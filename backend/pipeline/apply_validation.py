@@ -5,7 +5,8 @@
 The sheets are frozen copies in data/seed/_validasi/ (sha256 printed). Provenance, as stated by the team on 17 Oct 2026:
   V1 and V4: two LLM passes, checked and corrected by one team member (Ivan). Not independent human annotators.
   V2: internal team review (kind "tim"); never counts as expert validation.
-V3 (pilot) is not applied: its sheet is marked as simulated and waits for the raw survey data.
+  V3: pilot responses collected by the team in Google Sheets and entered into the template (raw export not in the repo);
+      analysed by pipeline.pilot_analysis.
 """
 from __future__ import annotations
 
@@ -22,6 +23,7 @@ STEPS = [
     ["pipeline.normalisation", "import", str(DIR / "normalisation_sheet_llm1_verifikasi_ivan.xlsx"),
      str(DIR / "normalisation_sheet_llm2_verifikasi_ivan.xlsx")],
     ["pipeline.normalisation", "eval"],
+    ["pipeline.pilot_analysis"],
     ["pipeline.expert_sheet", "import", str(DIR / "V2_tinjauan_internal_ivan.xlsx"), "--name", "Ivan (tinjauan internal tim)",
      "--affiliation", "Tim PathSync", "--kind", "tim"],
 ]

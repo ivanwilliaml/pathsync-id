@@ -28,7 +28,7 @@ Semua angka di bawah ada di `backend/data/models/metrics.json` (`python -m pipel
 | AI-11 soal Indonesia | Selesai (A7 Jonathan) | Bank soal Indonesia dipakai otomatis saat permintaan berbahasa Indonesia |
 | AI-12 soal BA | Ditinjau, tidak diubah | 27 dari 30 soal menguji notasi atau metode; 3 soal situasional berbasis teknik BABOK |
 | Ekstraksi bisnis (baru) | Diukur | Set buta 18 lowongan bisnis: presisi 0,85, recall 0,68, satu anotator, tidak dipakai menyetel |
-| Pilot (V3) | Belum bisa dipakai | Lembar yang ada bertanda simulasi AI; menunggu data mentah survei (ekspor formulir atau catatan sesi) |
+| Pilot (V3) | Selesai (dengan catatan) | 20 mahasiswa, 13-17 Okt, urutan diselang-seling. Data dari Google Sheets diinput tim ke template; ekspor mentah belum ada di repo. T1 95%, T2 90% (median 3,9 menit), T3 80%, T4 90%, T5 55% (istilah Bottleneck dan Prove It belum dipahami), SUS 71,1. PathSync dinilai lebih jelas daripada saran umum di Q1-Q3 (semua p < 0,05), tetapi Q1 PathSync 3,75 di bawah target 4,0. Temuan asesmen (topik lompat) sudah ditindaklanjuti: soal diagnostik dikelompokkan per klaster |
 | BE-01 CI GitHub | Tidak bisa dicek dari sini | `gh` tidak terpasang dan repo privat; cek tab Actions |
 | BE-02 deploy publik | Belum | Butuh VPS dan kredensial |
 | BE-03 sumber data | Selesai (dokumen), menunggu keputusan | `docs/ops/DATA_SOURCES.md`: syarat layanan Kalibrr melarang penyalinan tanpa izin tertulis; Karirhub tanpa syarat layanan yang bisa ditemukan. `PATHSYNC_EXCLUDED_SOURCES` untuk mengeluarkan sumber; kontak perekrut disamarkan saat dimuat |
