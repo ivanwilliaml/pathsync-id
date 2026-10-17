@@ -22,6 +22,10 @@ LANG = os.getenv("PATHSYNC_LANG", "en")
 EXCLUDED_SOURCES = frozenset(x.strip() for x in os.getenv("PATHSYNC_EXCLUDED_SOURCES", "").split(",") if x.strip())
 
 DATABASE_URL = os.getenv("PATHSYNC_DATABASE_URL", f"sqlite:///{(DATA_DIR / 'pathsync.db').as_posix()}")
+# hosted Postgres (Neon, Supabase) hands out postgres:// or postgresql:// URLs; use the psycopg 3 driver for both
+for _p in ("postgres://", "postgresql://"):
+    if DATABASE_URL.startswith(_p):
+        DATABASE_URL = "postgresql+psycopg://" + DATABASE_URL[len(_p):]
 
 # ---------------------------------------------------------------- embeddings
 # Open-source multilingual sentence embedding model that handles mixed ID/EN terms [III.B]

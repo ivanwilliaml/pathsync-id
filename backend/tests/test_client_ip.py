@@ -20,3 +20,15 @@ def test_trusted_proxy_appends_real_peer_after_spoofed_value():
 def test_chain_of_trusted_proxies():
     assert client_ip(req("127.0.0.1", "198.51.100.7, 127.0.0.1")) == "198.51.100.7"
     assert client_ip(req("127.0.0.1")) == "127.0.0.1"
+
+
+def test_frontend_header_needs_the_shared_secret(monkeypatch):
+    import pathsync.security as sec
+    monkeypatch.setattr(sec, "PROXY_SECRET", "s3cret")
+    h = {"x-pathsync-client-ip": "198.51.100.7", "x-pathsync-proxy-secret": "s3cret"}
+    assert client_ip(SimpleNamespace(client=SimpleNamespace(host="76.76.21.1"), headers=h)) == "198.51.100.7"
+    h["x-pathsync-proxy-secret"] = "wrong"
+    assert client_ip(SimpleNamespace(client=SimpleNamespace(host="76.76.21.1"), headers=h)) == "76.76.21.1"
+    monkeypatch.setattr(sec, "PROXY_SECRET", "")
+    h["x-pathsync-proxy-secret"] = ""
+    assert client_ip(SimpleNamespace(client=SimpleNamespace(host="76.76.21.1"), headers=h)) == "76.76.21.1"

@@ -14,6 +14,8 @@ import re
 import time
 from datetime import datetime
 
+import os as _os
+_os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
@@ -69,8 +71,19 @@ def parse(text: str):
     return json.loads(text[a:b + 1])
 
 
-@torch.no_grad()
 def generate(batch: list[dict], max_new: int, sample: bool) -> list[str]:
+    # long postings in one batch can exhaust a 16 GB T4: retry one at a time, then mark as failed
+    try:
+        return _generate(batch, max_new, sample)
+    except torch.OutOfMemoryError:
+        torch.cuda.empty_cache()
+        if len(batch) > 1:
+            return [t for it in batch for t in generate([it], max_new, sample)]
+        return ["OOM"]
+
+
+@torch.no_grad()
+def _generate(batch: list[dict], max_new: int, sample: bool) -> list[str]:
     enc = tok([prompt(it) for it in batch], return_tensors="pt", padding=True).to(model.device)
     kw = dict(max_new_tokens=max_new, pad_token_id=tok.pad_token_id)
     kw.update(dict(do_sample=True, temperature=0.3, top_p=0.9) if sample else dict(do_sample=False))
