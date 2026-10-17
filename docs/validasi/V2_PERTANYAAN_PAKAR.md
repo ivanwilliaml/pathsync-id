@@ -115,6 +115,15 @@ Jawab singkat, satu sampai tiga kalimat per pertanyaan.
 2. Dokumentasi Kebutuhan (BRD/FSD/User Story)
 3. SQL & Kueri Basis Data
 
+## Bagian E. Pertanyaan lanjutan (opsional, ±5 menit)
+
+| No | Pertanyaan | Jawaban |
+|---|---|---|
+| E1 | Untuk pernyataan Bagian A yang Anda setujui, mana yang **wajib** (B tidak bisa dimulai tanpa A) dan mana yang hanya **membantu**? Tulis nomornya. Wajib: … / Membantu: … |  |
+| E2 | Apakah prasyarat berikut perlu ditambahkan? (Setuju / Tidak / Ragu) — (a) analisis pemangku kepentingan → elisitasi; (b) acceptance criteria → UAT; (c) kebutuhan fungsional & nonfungsional → dokumentasi kebutuhan |  |
+| E3 | Apakah skill berikut layak jadi skill tersendiri untuk BA junior? (Wajib / Penting / Pelengkap / Tidak) — root-cause & gap analysis; acceptance criteria; requirements traceability |  |
+| E4 | Apakah rute belajar sebaiknya dibedakan per jenis BA (proses/bisnis, sistem/teknis, data)? Bila ya, skill mana yang berbeda kedalamannya? |  |
+
 ## Bagian D. Identitas dan persetujuan
 
 | Pertanyaan | Jawaban |

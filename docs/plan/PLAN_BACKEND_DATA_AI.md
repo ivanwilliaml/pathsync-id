@@ -21,8 +21,8 @@ Semua angka di bawah ada di `backend/data/models/metrics.json` (`python -m pipel
 | AI-04 normalisasi | Selesai | Label 274 frasa (pra-anotasi LLM, diverifikasi Ivan). Pada ambang 0,85 pemetaan otomatis hanya benar 0,4237; tidak ada ambang yang mencapai 0,95. Sesuai aturan yang ditulis sebelumnya, pemetaan embedding otomatis dimatikan (`PATHSYNC_EMBEDDING_AUTO=0`): frasa bebas masuk antrean tinjauan dan tidak dihitung di peta pasar |
 | AI-05 kesiapan terbukti | Selesai (backend) | `p_proven`, `evidence_kinds`, `coverage_proven` di API dashboard; nilai kuliah tidak pernah dihitung sebagai terbukti. Frontend belum memakainya |
 | AI-06 ranker | Selesai | Model aktif: Formula (5). Model dari pakar simulasi tidak pernah aktif |
-| AI-07 graf pakar | Tinjauan internal selesai, pakar independen belum | Ivan (jenis `tim`): 23 dari 25 prasyarat disetujui, 2 ditolak, 8 usulan baru; relevansi skill teratas BA precision@20 0,6. Jenis `tim` tidak dihitung sebagai pakar dan tidak memvalidasi sisi (aturan 2 dari 3 pakar). Pakar independen: 0 |
-| AI-08 data | Ditahan | Scraping tambahan ditunda sampai keputusan sumber data (lihat `docs/ops/DATA_SOURCES.md`) |
+| AI-07 graf pakar | Tinjauan internal selesai, pakar independen belum | Ivan (jenis `tim`): 23 dari 25 prasyarat disetujui, 2 ditolak, 8 usulan baru; relevansi skill teratas BA precision@20 0,6. Jenis `tim` tidak dihitung sebagai pakar dan tidak memvalidasi sisi (aturan 2 dari 3 pakar). Pakar independen: 0. Draf jawaban buatan AI (18 Okt) dicatat di `docs/validasi/V2_draf_AI_bukan_pakar.md`, tidak dihitung |
+| AI-08 data | Sebagian | 20 tenant Workday ditambah (pencarian per lokasi Indonesia): 113 lowongan, total 1.323. BA bertambah hanya 5 |
 | AI-09 tren | Selesai | API menjelaskan kenapa tren belum ada (jumlah lowongan per periode), dalam dua bahasa |
 | AI-10 kalibrasi asesmen | Menunggu pilot | Alat siap |
 | AI-11 soal Indonesia | Selesai (A7 Jonathan) | Bank soal Indonesia dipakai otomatis saat permintaan berbahasa Indonesia |
