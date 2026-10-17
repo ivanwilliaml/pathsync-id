@@ -12,6 +12,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { RequireStudent } from "@/components/require-student";
 import { EmptyState, ErrorNote, LinkButton, Loading, MasteryBar, PageHeader, Panel, SectionTitle, Tag } from "@/components/kit";
+import { Mascot } from "@/components/mascot";
+import { useT } from "@/lib/i18n";
 
 interface CourseSkill {
   skill_id: string;
@@ -72,38 +74,44 @@ export default function ClassroomPage() {
 function ClassroomView({ sid }: { sid: string }) {
   const c = useApi<Classroom>(`/students/${sid}/classroom`);
   const courses = useApi<EnrolledCourse[]>(`/students/${sid}/courses`);
+  const t = useT();
   const reload = () => {
     c.reload();
     courses.reload();
   };
   if (c.error) return <ErrorNote error={c.error} />;
-  if (!c.data) return <Loading label="Linking your courses to your route…" />;
+  if (!c.data) return <Loading label={t("Linking your courses to your route…", "Menghubungkan mata kuliahmu ke rutemu…")} />;
   const d = c.data;
   return (
-    <div className="space-y-10">
-      <PageHeader
-        title="My Classes"
-        description="Your route, anchored in the courses you take this semester: which skills each course builds, which assignments can prove them, and a weekly plan you reflect on."
+    <div className="space-y-12">
+      <PageHeader mascot="board"
+        title={t("My Classes", "Kelas Saya")}
+        description={t(
+          "Your route, anchored in the courses you take this semester: which skills each course builds, which assignments can prove them, and a weekly plan you reflect on.",
+          "Rutemu, terhubung dengan mata kuliah semester ini: skill apa yang dibangun tiap mata kuliah, tugas mana yang bisa jadi buktinya, dan rencana mingguan yang kamu refleksikan.",
+        )}
       />
       {d.needs_reflection ? <Reflection sid={sid} plan={d.needs_reflection} onDone={reload} late /> : null}
-      <section aria-labelledby="courses-title">
-        <SectionTitle id="courses-title">This Semester&rsquo;s Courses</SectionTitle>
+      <section aria-labelledby="courses-title" className="space-y-4">
+        <SectionTitle id="courses-title">{t("This Semester\u2019s Courses", "Mata Kuliah Semester Ini")}</SectionTitle>
         <AddCourse sid={sid} enrolled={courses.data ?? []} onChange={reload} />
         {d.courses.length === 0 ? (
-          <EmptyState title="Add the Courses You Are Taking">
-            We map each course to skills and show which assignments can become evidence for your route.
+          <EmptyState title={t("Add the Courses You Are Taking", "Tambahkan Mata Kuliah yang Kamu Ambil")} mascot="checklist">
+            {t("We map each course to skills and show which assignments can become evidence for your route.", "Kami memetakan tiap mata kuliah ke skill dan menunjukkan tugas mana yang bisa jadi evidence untuk rutemu.")}
           </EmptyState>
         ) : (
-          <div className="mt-4 grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-6 lg:grid-cols-2">
             {d.courses.map((co) => (
               <CourseCompanion key={co.course} co={co} />
             ))}
           </div>
         )}
         {d.courses.length > 0 && d.unlinked_path_steps.length > 0 ? (
-          <p className="mt-3 text-sm text-ink/70">
-            {d.unlinked_path_steps.length} step{d.unlinked_path_steps.length > 1 ? "s" : ""} of your route have no supporting course this semester: plan them
-            as self-study below.
+          <p className="text-sm text-ink/70">
+            {t(
+              `${d.unlinked_path_steps.length} step${d.unlinked_path_steps.length > 1 ? "s" : ""} of your route have no supporting course this semester: plan them as self-study below.`,
+              `${d.unlinked_path_steps.length} langkah rutemu tidak didukung mata kuliah semester ini: rencanakan sebagai belajar mandiri di bawah.`,
+            )}
           </p>
         ) : null}
       </section>
@@ -122,6 +130,7 @@ function AddCourse({ sid, enrolled, onChange }: { sid: string; enrolled: Enrolle
   const catalog = useApi<{ courses: { name: string }[] }>("/catalog");
   const [name, setName] = useState("");
   const [err, setErr] = useState<unknown>(null);
+  const t = useT();
   async function add(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
@@ -134,14 +143,14 @@ function AddCourse({ sid, enrolled, onChange }: { sid: string; enrolled: Enrolle
     }
   }
   return (
-    <div>
+    <div className="space-y-3">
       <form onSubmit={add} className="flex flex-wrap gap-2">
         <Input
-          aria-label="Course name"
+          aria-label={t("Course name", "Nama mata kuliah")}
           list="course-catalog"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="e.g. Sistem Basis Data…"
+          placeholder={t("e.g. Sistem Basis Data…", "mis. Sistem Basis Data…")}
           className="h-10 min-w-0 flex-1"
         />
         <datalist id="course-catalog">
@@ -150,18 +159,18 @@ function AddCourse({ sid, enrolled, onChange }: { sid: string; enrolled: Enrolle
           ))}
         </datalist>
         <Button type="submit" className="h-10" disabled={name.trim().length < 3}>
-          <Plus /> Add Course
+          <Plus /> {t("Add Course", "Tambah Mata Kuliah")}
         </Button>
       </form>
       <ErrorNote error={err} />
       {enrolled.length ? (
-        <ul className="mt-3 flex flex-wrap gap-2">
+        <ul className="flex flex-wrap gap-2">
           {enrolled.map((c) => (
             <li key={c.id} className="flex items-center gap-1 rounded-full border bg-card py-1 pl-3 pr-1 text-sm">
               {c.name}
               <button
                 type="button"
-                aria-label={`Remove ${c.name}`}
+                aria-label={t(`Remove ${c.name}`, `Hapus ${c.name}`)}
                 className="rounded-full p-1 text-ink/60 hover:bg-muted hover:text-ink"
                 onClick={async () => {
                   await api.del(`/students/${sid}/courses/${c.id}`);
@@ -180,6 +189,7 @@ function AddCourse({ sid, enrolled, onChange }: { sid: string; enrolled: Enrolle
 
 function CourseCompanion({ co }: { co: CourseCard }) {
   const [open, setOpen] = useState<string | null>(null);
+  const t = useT();
   return (
     <Panel>
       <div className="flex items-start justify-between gap-3">
@@ -187,29 +197,29 @@ function CourseCompanion({ co }: { co: CourseCard }) {
           <BookOpen className="size-5 text-indigo" aria-hidden="true" />
           <h3 className="font-semibold text-ink">{co.course}</h3>
         </div>
-        <Tag tone={co.alignment >= 0.5 ? "mint" : "neutral"}>{Math.round(co.alignment * 100)}% on your route</Tag>
+        <Tag tone={co.alignment >= 0.5 ? "mint" : "neutral"}>{t(`${Math.round(co.alignment * 100)}% on your route`, `${Math.round(co.alignment * 100)}% di rutemu`)}</Tag>
       </div>
       {co.skills.length === 0 ? (
-        <p className="mt-3 text-sm text-ink/70">We could not link this course to tracked skills.</p>
+        <p className="mt-3 text-sm text-ink/70">{t("We could not link this course to tracked skills.", "Kami belum bisa menghubungkan mata kuliah ini ke skill yang dilacak.")}</p>
       ) : (
         <ul className="mt-3 space-y-2">
           {co.skills.map((s) => (
             <li key={s.skill_id} className="rounded-lg bg-muted p-3">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-sm font-medium text-ink">{titleCase(s.name)}</span>
-                {s.on_path ? <Tag tone="indigo">Route step {s.path_step}</Tag> : s.rank ? <Tag>Priority #{s.rank}</Tag> : null}
+                {s.on_path ? <Tag tone="indigo">{t("Route step", "Langkah rute")} {s.path_step}</Tag> : s.rank ? <Tag>{t("Priority", "Prioritas")} #{s.rank}</Tag> : null}
               </div>
               {s.p != null ? <MasteryBar value={s.p} target={s.required} className="mt-2" /> : null}
               {s.on_path || (s.rank && s.rank <= 6) ? (
                 <button type="button" className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-indigo hover:underline" onClick={() => setOpen(open === s.skill_id ? null : s.skill_id)}>
-                  <Lightbulb className="size-3.5" aria-hidden="true" /> Use an assignment as proof
+                  <Lightbulb className="size-3.5" aria-hidden="true" /> {t("Use an assignment as proof", "Pakai tugas sebagai bukti")}
                 </button>
               ) : null}
               {open === s.skill_id ? (
                 <div className="mt-2 text-xs text-ink/80">
                   <p>{s.evidence_tip}</p>
                   <LinkButton href={`/evidence?step=projects`} size="sm" variant="outline" className="mt-2">
-                    Upload Assignment
+                    {t("Upload Assignment", "Unggah Tugas")}
                   </LinkButton>
                 </div>
               ) : null}
@@ -224,12 +234,13 @@ function CourseCompanion({ co }: { co: CourseCard }) {
 function WeekPlan({ sid, data, onChange }: { sid: string; data: Classroom; onChange: () => void }) {
   const [goals, setGoals] = useState<Goal[]>(data.plan?.goals ?? data.suggested_goals ?? []);
   const [busy, setBusy] = useState(false);
+  const t = useT();
   const total = useMemo(() => goals.reduce((a, g) => a + (g.minutes || 0), 0), [goals]);
   async function save() {
     setBusy(true);
     try {
       await api.post(`/students/${sid}/plans`, { goals });
-      toast.success("Plan saved for this week");
+      toast.success(t("Plan saved for this week", "Rencana minggu ini tersimpan"));
       onChange();
     } finally {
       setBusy(false);
@@ -239,25 +250,25 @@ function WeekPlan({ sid, data, onChange }: { sid: string; data: Classroom; onCha
     <section aria-labelledby="week-title">
       <SectionTitle id="week-title">
         <span className="inline-flex items-center gap-2">
-          <CalendarCheck className="size-5 text-indigo" aria-hidden="true" /> Plan for the Week of {fmtDate(data.week_start)}
+          <CalendarCheck className="size-5 text-indigo" aria-hidden="true" /> {t("Plan for the Week of", "Rencana Minggu")} {fmtDate(data.week_start)}
         </span>
       </SectionTitle>
       {goals.length === 0 ? (
-        <EmptyState title="No Route Steps Yet">Add evidence or take the quick check so we can suggest goals.</EmptyState>
+        <EmptyState title={t("No Route Steps Yet", "Belum Ada Langkah Rute")} mascot="calendar">{t("Add evidence or take the quick check so we can suggest goals.", "Tambahkan evidence atau ikuti Quick Check supaya kami bisa menyarankan target.")}</EmptyState>
       ) : (
         <Panel>
           <p className="mb-3 text-sm text-ink/70">
-            {data.plan ? "Your saved goals." : "Suggested from your next route steps and the courses that support them. Adjust the minutes, then save."}
+            {data.plan ? t("Your saved goals.", "Target yang sudah kamu simpan.") : t("Suggested from your next route steps and the courses that support them. Adjust the minutes, then save.", "Disarankan dari langkah rute berikutnya dan mata kuliah yang mendukungnya. Atur menitnya, lalu simpan.")}
           </p>
           <ul className="space-y-3">
             {goals.map((g, i) => (
               <li key={g.skill_id + i} className="grid gap-3 rounded-lg border p-3 sm:grid-cols-[1fr_auto] sm:items-center">
                 <div className="min-w-0">
                   <p className="font-medium text-ink">
-                    {g.kind === "prove" ? "Prove" : "Learn"}: {titleCase(g.name)}
+                    {g.kind === "prove" ? t("Prove", "Buktikan") : t("Learn", "Pelajari")}: {titleCase(g.name)}
                   </p>
                   <p className="text-xs text-ink/70">
-                    {g.course ? `Together with ${g.course}. ` : "Self-study. "}
+                    {g.course ? t(`Together with ${g.course}. `, `Bersama ${g.course}. `) : t("Self-study. ", "Belajar mandiri. ")}
                     {g.material ? (
                       <a href={g.material.url} target="_blank" rel="noreferrer" className="text-indigo hover:underline">
                         {g.material.title}
@@ -273,17 +284,17 @@ function WeekPlan({ sid, data, onChange }: { sid: string; data: Classroom; onCha
                     value={g.minutes}
                     onChange={(e) => setGoals((gs) => gs.map((x, j) => (j === i ? { ...x, minutes: Number(e.target.value) } : x)))}
                     className="h-9 w-24"
-                    aria-label={`Minutes for ${g.name}`}
+                    aria-label={t(`Minutes for ${g.name}`, `Menit untuk ${g.name}`)}
                   />
-                  min
+                  {t("min", "menit")}
                 </label>
               </li>
             ))}
           </ul>
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
-            <span className="tabular text-sm text-ink/70">{Math.round(total / 6) / 10} hours planned</span>
+            <span className="tabular text-sm text-ink/70">{t(`${Math.round(total / 6) / 10} hours planned`, `${Math.round(total / 6) / 10} jam direncanakan`)}</span>
             <Button onClick={save} disabled={busy}>
-              {data.plan ? "Update Plan" : "Save This Plan"}
+              {data.plan ? t("Update Plan", "Perbarui Rencana") : t("Save This Plan", "Simpan Rencana Ini")}
             </Button>
           </div>
         </Panel>
@@ -304,6 +315,7 @@ function Reflection({ sid, plan, onDone, late }: { sid: string; plan: Plan; onDo
   const [clarity, setClarity] = useState(0);
   const [obstacle, setObstacle] = useState("");
   const [err, setErr] = useState<unknown>(null);
+  const t = useT();
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
@@ -315,8 +327,8 @@ function Reflection({ sid, plan, onDone, late }: { sid: string; plan: Plan; onDo
         obstacle,
         clarity: clarity || null,
       });
-      toast.success("Reflection saved", {
-        description: r.suggest_skill_checks.length ? "You finished a learning goal: take its skill check to update your route." : undefined,
+      toast.success(t("Reflection saved", "Refleksi tersimpan"), {
+        description: r.suggest_skill_checks.length ? t("You finished a learning goal: take its skill check to update your route.", "Kamu menyelesaikan target belajar: ikuti skill check-nya untuk memperbarui rutemu.") : undefined,
       });
       onDone();
     } catch (x) {
@@ -341,11 +353,11 @@ function Reflection({ sid, plan, onDone, late }: { sid: string; plan: Plan; onDo
   );
   return (
     <Panel className={late ? "border-ember/40" : undefined}>
-      <h3 className="font-semibold text-ink">{late ? `Reflect on the week of ${fmtDate(plan.week_start)}` : "End-of-Week Reflection"}</h3>
-      <p className="mt-1 text-sm text-ink/70">Two minutes. Reflection is the step of self-regulated learning that turns effort into a better next plan.</p>
+      <h3 className="font-semibold text-ink">{late ? t(`Reflect on the week of ${fmtDate(plan.week_start)}`, `Refleksikan minggu ${fmtDate(plan.week_start)}`) : t("End-of-Week Reflection", "Refleksi Akhir Minggu")}</h3>
+      <p className="mt-1 text-sm text-ink/70">{t("Two minutes. Reflection is the step of self-regulated learning that turns effort into a better next plan.", "Dua menit. Refleksi adalah tahap self-regulated learning yang mengubah usaha menjadi rencana berikutnya yang lebih baik.")}</p>
       <form onSubmit={submit} className="mt-4 space-y-4">
         <fieldset>
-          <legend className="mb-2 text-sm font-medium">Which goals did you finish?</legend>
+          <legend className="mb-2 text-sm font-medium">{t("Which goals did you finish?", "Target mana yang sudah selesai?")}</legend>
           {plan.goals.map((g, i) => (
             <label key={i} className="flex items-center gap-2 py-1 text-sm">
               <input type="checkbox" checked={done.includes(i)} onChange={(e) => setDone((d) => (e.target.checked ? [...d, i] : d.filter((x) => x !== i)))} />
@@ -353,26 +365,26 @@ function Reflection({ sid, plan, onDone, late }: { sid: string; plan: Plan; onDo
             </label>
           ))}
         </fieldset>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <Label htmlFor={`min-${plan.id}`}>Minutes actually spent</Label>
+            <Label htmlFor={`min-${plan.id}`}>{t("Minutes actually spent", "Menit yang benar-benar dipakai")}</Label>
             <Input id={`min-${plan.id}`} type="number" min={0} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} className="h-10" />
           </div>
           <div className="space-y-1.5">
-            <span className="text-sm font-medium">How confident do you feel now? (1-5)</span>
-            {scale(confidence, setConfidence, "Confidence")}
+            <span className="text-sm font-medium">{t("How confident do you feel now? (1-5)", "Seberapa yakin kamu sekarang? (1-5)")}</span>
+            {scale(confidence, setConfidence, t("Confidence", "Keyakinan"))}
           </div>
         </div>
         <div className="space-y-1.5">
-          <span className="text-sm font-medium">&ldquo;{"I know which skill to learn next and why."}&rdquo; (1 disagree, 5 agree)</span>
-          {scale(clarity, setClarity, "Direction clarity")}
+          <span className="text-sm font-medium">{t("\u201cI know which skill to learn next and why.\u201d (1 disagree, 5 agree)", "\u201cAku tahu skill mana yang harus dipelajari berikutnya dan kenapa.\u201d (1 tidak setuju, 5 setuju)")}</span>
+          {scale(clarity, setClarity, t("Direction clarity", "Kejelasan arah"))}
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor={`obs-${plan.id}`}>What got in the way? (optional)</Label>
+          <Label htmlFor={`obs-${plan.id}`}>{t("What got in the way? (optional)", "Apa yang menghambat? (opsional)")}</Label>
           <Textarea id={`obs-${plan.id}`} value={obstacle} onChange={(e) => setObstacle(e.target.value)} maxLength={300} rows={2} />
         </div>
         <ErrorNote error={err} />
-        <Button type="submit">Save Reflection</Button>
+        <Button type="submit">{t("Save Reflection", "Simpan Refleksi")}</Button>
       </form>
     </Panel>
   );
@@ -380,16 +392,21 @@ function Reflection({ sid, plan, onDone, late }: { sid: string; plan: Plan; onDo
 
 function Progress({ data }: { data: Classroom }) {
   const s = data.summary;
+  const t = useT();
   if (!s.weeks_reflected) return null;
   return (
     <section aria-labelledby="progress-title">
-      <SectionTitle id="progress-title">Your Learning Rhythm</SectionTitle>
-      <dl className="grid gap-3 sm:grid-cols-4">
+      <SectionTitle id="progress-title">
+        <span className="inline-flex items-center gap-2">
+          <Mascot name="journal" size={56} /> {t("Your Learning Rhythm", "Ritme Belajarmu")}
+        </span>
+      </SectionTitle>
+      <dl className="grid gap-4 sm:grid-cols-4">
         {[
-          ["Weeks reflected", `${s.weeks_reflected} of ${s.weeks_planned}`],
-          ["Time done vs planned", s.minutes_done_vs_planned != null ? `${Math.round(s.minutes_done_vs_planned * 100)}%` : "–"],
-          ["Goals completed", s.goals_completed != null ? `${Math.round(s.goals_completed * 100)}%` : "–"],
-          ["Direction clarity", data.clarity.length ? `${num(data.clarity[data.clarity.length - 1].value, 0)} / 5` : "–"],
+          [t("Weeks reflected", "Minggu direfleksikan"), t(`${s.weeks_reflected} of ${s.weeks_planned}`, `${s.weeks_reflected} dari ${s.weeks_planned}`)],
+          [t("Time done vs planned", "Waktu terpakai vs rencana"), s.minutes_done_vs_planned != null ? `${Math.round(s.minutes_done_vs_planned * 100)}%` : "–"],
+          [t("Goals completed", "Target selesai"), s.goals_completed != null ? `${Math.round(s.goals_completed * 100)}%` : "–"],
+          [t("Direction clarity", "Kejelasan arah"), data.clarity.length ? `${num(data.clarity[data.clarity.length - 1].value, 0)} / 5` : "–"],
         ].map(([k, v]) => (
           <div key={k} className="rounded-2xl border bg-card p-4">
             <dt className="text-sm text-ink/70">{k}</dt>

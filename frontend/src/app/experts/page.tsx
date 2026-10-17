@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ErrorNote, Loading, MasteryBar, NativeSelect, Panel, Tag } from "@/components/kit";
+import { useT } from "@/lib/i18n";
 
 interface Expert {
   id: string;
@@ -48,8 +49,11 @@ interface ScenarioDetail {
   candidates: { skill_id: string; name: string; p: number; r: number; D: number; prereqs: { skill_id: string; name: string; p: number | null }[] }[];
 }
 
-const VARIANT: Record<string, string> = { base: "Base Profile", competency: "After Learning a Skill", market: "After a Market Change" };
-const KIND: Record<string, string> = { dosen: "Lecturer", praktisi: "Practitioner", rekruter: "Recruiter" };
+const VARIANT: Record<string, [string, string]> = {
+  base: ["Base Profile", "Profil Dasar"],
+  competency: ["After Learning a Skill", "Setelah Mempelajari Skill"],
+  market: ["After a Market Change", "Setelah Perubahan Pasar"],
+};
 
 export default function ExpertsPage() {
   return (
@@ -66,7 +70,8 @@ function Experts() {
   const { token, ready } = useStaffToken("expert");
   const who = useApi<WhoAmI>(token ? "/expert/me" : null);
   const [actingFor, setActingFor] = useState("");
-  const go = (t: string | null) => router.replace(t ? `${pathname}?task=${t}` : pathname, { scroll: false });
+  const t = useT();
+  const go = (k: string | null) => router.replace(k ? `${pathname}?task=${k}` : pathname, { scroll: false });
   const me: Expert | undefined =
     who.data?.role === "expert" ? who.data.expert : who.data?.experts?.find((e) => e.id === actingFor);
 
@@ -75,37 +80,40 @@ function Experts() {
   if (me && task === "scenarios") return <ScenarioRanking me={me} onBack={() => go(null)} />;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <section className="grid items-center gap-8 lg:grid-cols-[1.1fr_1fr]">
         <div>
-          <h1 className="text-[32px] font-extrabold leading-tight text-ink sm:text-[38px]">Expert Panel</h1>
+          <h1 className="text-[32px] font-extrabold leading-tight text-ink sm:text-[38px]">{t("Expert Panel", "Panel Pakar")}</h1>
           <p className="mt-3 max-w-lg text-lg text-ink/75">
-            Lecturers, practitioners, and recruiters check the prerequisite map and rank example students. Your judgement trains how PathSync orders skills.
+            {t(
+              "Lecturers, practitioners, and recruiters check the prerequisite map and rank example students. Your judgement trains how PathSync orders skills.",
+              "Dosen, praktisi, dan rekruter memeriksa peta prasyarat dan meranking contoh mahasiswa. Penilaianmu melatih cara PathSync mengurutkan skill.",
+            )}
           </p>
           <Panel className="mt-6">
             {!token || who.error ? (
-              <StaffLogin role="expert" error={who.error} hint="Use the personal sign-in key the PathSync team sent you." />
+              <StaffLogin role="expert" error={who.error} hint={t("Use the personal sign-in key the PathSync team sent you.", "Gunakan key masuk pribadi yang dikirim tim PathSync.")} />
             ) : who.data?.role === "admin" ? (
               <div className="space-y-1.5">
-                <Label htmlFor="who">Facilitating for</Label>
+                <Label htmlFor="who">{t("Facilitating for", "Memfasilitasi untuk")}</Label>
                 <NativeSelect id="who" value={actingFor} onChange={(e) => setActingFor(e.target.value)}>
-                  <option value="">Select an expert…</option>
+                  <option value="">{t("Select an expert…", "Pilih pakar…")}</option>
                   {who.data.experts?.map((e) => (
                     <option key={e.id} value={e.id}>
                       {e.name}
                     </option>
                   ))}
                 </NativeSelect>
-                <p className="text-xs text-muted-foreground">Add experts and send them their keys from Admin, Team.</p>
+                <p className="text-xs text-muted-foreground">{t("Add experts and send them their keys from Admin, Team.", "Tambahkan pakar dan kirim key mereka dari Admin, Tim.")}</p>
               </div>
             ) : me ? (
               <div className="flex items-center justify-between gap-3">
                 <p className="text-ink/80">
-                  Signed in as <span className="font-semibold text-ink">{me.name}</span>
+                  {t("Signed in as", "Masuk sebagai")} <span className="font-semibold text-ink">{me.name}</span>
                   {me.affiliation ? `, ${me.affiliation}` : ""}
                 </p>
                 <Button variant="outline" onClick={() => setStaffToken("expert", null)}>
-                  Sign Out
+                  {t("Sign Out", "Keluar")}
                 </Button>
               </div>
             ) : (
@@ -114,7 +122,7 @@ function Experts() {
           </Panel>
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/images/experts.webp" alt="Two people mapping ideas on a whiteboard" width={1600} height={1067} className="aspect-[16/10] w-full rounded-3xl object-cover" />
+        <img src="/images/experts.webp" alt={t("Two people mapping ideas on a whiteboard", "Dua orang memetakan ide di papan tulis")} width={1600} height={1067} className="aspect-[16/10] w-full rounded-3xl object-cover" />
       </section>
 
       {me ? <Tasks me={me} onStart={go} /> : null}
@@ -127,6 +135,7 @@ function Tasks({ me, onStart }: { me: Expert; onStart: (t: string) => void }) {
   const scen = useApi<ScenarioRow[]>(`/expert/scenarios?expert_id=${me.id}`);
   const voted = edges.data?.filter((e) => e.my_vote !== null).length ?? 0;
   const ranked = scen.data?.filter((s) => s.done).length ?? 0;
+  const t = useT();
   const card = (icon: React.ReactNode, title: string, body: string, done: number, total: number | undefined, time: string, onClick: () => void) => (
     <Panel className="flex flex-col">
       <div className="flex items-center gap-3">
@@ -138,37 +147,38 @@ function Tasks({ me, onStart }: { me: Expert; onStart: (t: string) => void }) {
         <div className="mb-1.5 flex justify-between text-sm">
           <span className="text-ink/70">{time}</span>
           <span className="tabular font-medium text-ink">
-            {done} of {total ?? "…"}
+            {t(`${done} of ${total ?? "…"}`, `${done} dari ${total ?? "…"}`)}
           </span>
         </div>
         <MasteryBar value={total ? done / total : 0} />
       </div>
       <Button size="lg" className="mt-5 h-11 self-start px-6" onClick={onClick}>
-        {done === 0 ? "Start" : total && done >= total ? "Review Again" : "Continue"}
+        {done === 0 ? t("Start", "Mulai") : total && done >= total ? t("Review Again", "Tinjau Lagi") : t("Continue", "Lanjut")}
       </Button>
     </Panel>
   );
   return (
-    <section aria-label="Your tasks">
-      <h2 className="mb-4 text-lg font-semibold text-ink">Your Tasks, {me.name.split(" ")[0]}</h2>
+    <section aria-label={t("Your tasks", "Tugasmu")}>
+      <h2 className="mb-4 text-lg font-semibold text-ink">{t("Your Tasks", "Tugasmu")}, {me.name.split(" ")[0]}</h2>
       <div className="grid gap-5 md:grid-cols-2">
-        {card(<GitBranch className="size-5" aria-hidden="true" />, "Review Prerequisites", "For each pair of skills, say whether one should be learned before the other. A link is kept when 2 of 3 experts agree.", voted, edges.data?.length, "About 15 minutes", () => onStart("edges"))}
-        {card(<ListOrdered className="size-5" aria-hidden="true" />, "Rank Example Students", "For each student profile, order the skills by what they should learn first. You won't see the system's answer.", ranked, scen.data?.length, "About 2 hours in total", () => onStart("scenarios"))}
+        {card(<GitBranch className="size-5" aria-hidden="true" />, t("Review Prerequisites", "Tinjau Prasyarat"), t("For each pair of skills, say whether one should be learned before the other. A link is kept when 2 of 3 experts agree.", "Untuk tiap pasangan skill, tentukan apakah satu perlu dipelajari sebelum yang lain. Sebuah tautan dipertahankan bila 2 dari 3 pakar setuju."), voted, edges.data?.length, t("About 15 minutes", "Sekitar 15 menit"), () => onStart("edges"))}
+        {card(<ListOrdered className="size-5" aria-hidden="true" />, t("Rank Example Students", "Ranking Contoh Mahasiswa"), t("For each student profile, order the skills by what they should learn first. You won't see the system's answer.", "Untuk tiap profil mahasiswa, urutkan skill dari yang harus dipelajari lebih dulu. Kamu tidak akan melihat jawaban sistem."), ranked, scen.data?.length, t("About 2 hours in total", "Sekitar 2 jam total"), () => onStart("scenarios"))}
       </div>
     </section>
   );
 }
 
 function TaskHeader({ title, onBack, done, total }: { title: string; onBack: () => void; done: number; total: number }) {
+  const t = useT();
   return (
     <div className="mb-6">
       <Button variant="ghost" onClick={onBack} className="-ml-2 mb-3">
-        <ArrowLeft /> All Tasks
+        <ArrowLeft /> {t("All Tasks", "Semua Tugas")}
       </Button>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <h1 className="text-[28px] font-extrabold text-ink">{title}</h1>
         <span className="tabular text-sm text-ink/70">
-          {done} of {total} done
+          {t(`${done} of ${total} done`, `${done} dari ${total} selesai`)}
         </span>
       </div>
       <div className="mt-3 h-2 overflow-hidden rounded-full bg-muted">
@@ -183,6 +193,7 @@ function EdgeReview({ me, onBack }: { me: Expert; onBack: () => void }) {
   const edges = useApi<EdgeRow[]>(`/expert/edges?expert_id=${me.id}`);
   const [skipped, setSkipped] = useState<number[]>([]);
   const [suggest, setSuggest] = useState(false);
+  const t = useT();
   const mine = useCallback((e: EdgeRow) => (e.my_vote === null ? undefined : { approve: e.my_vote }), []);
   const queue = useMemo(() => (edges.data ?? []).filter((e) => !mine(e) && !skipped.includes(e.id)), [edges.data, mine, skipped]);
   const current = queue[0];
@@ -212,50 +223,50 @@ function EdgeReview({ me, onBack }: { me: Expert; onBack: () => void }) {
   if (!edges.data) return <Loading />;
   return (
     <div className="mx-auto max-w-2xl">
-      <TaskHeader title="Review Prerequisites" onBack={onBack} done={done} total={edges.data.length} />
+      <TaskHeader title={t("Review Prerequisites", "Tinjau Prasyarat")} onBack={onBack} done={done} total={edges.data.length} />
       {current ? (
         <Panel className="p-6 sm:p-8">
-          <p className="text-sm font-medium text-indigo">Should someone learn</p>
+          <p className="text-sm font-medium text-indigo">{t("Should someone learn", "Apakah seseorang perlu mempelajari")}</p>
           <p className="mt-1 text-2xl font-bold leading-snug text-ink">{titleCase(current.from_name)}</p>
-          <p className="mt-2 text-sm font-medium text-indigo">before</p>
+          <p className="mt-2 text-sm font-medium text-indigo">{t("before", "sebelum")}</p>
           <p className="mt-1 text-2xl font-bold leading-snug text-ink">{titleCase(current.to_name)}?</p>
           <div className="mt-5 rounded-xl bg-muted/70 p-4 text-sm text-ink/80">
-            <span className="font-medium text-ink">Current reasoning: </span>
+            <span className="font-medium text-ink">{t("Current reasoning: ", "Alasan saat ini: ")}</span>
             {current.rationale}
           </div>
           <div className="mt-6 grid grid-cols-3 gap-2">
             <Button size="lg" className="h-12" onClick={() => vote(true)}>
-              Yes
+              {t("Yes", "Ya")}
             </Button>
             <Button size="lg" variant="outline" className="h-12" onClick={() => vote(false)}>
-              No
+              {t("No", "Tidak")}
             </Button>
             <Button size="lg" variant="ghost" className="h-12" onClick={() => setSkipped((s) => [...s, current.id])}>
-              Not Sure
+              {t("Not Sure", "Tidak Yakin")}
             </Button>
           </div>
-          <p className="mt-4 text-center text-xs text-muted-foreground">Shortcuts: Y for yes, N for no, S to skip</p>
+          <p className="mt-4 text-center text-xs text-muted-foreground">{t("Shortcuts: Y for yes, N for no, S to skip", "Pintasan: Y untuk ya, N untuk tidak, S untuk lewati")}</p>
         </Panel>
       ) : (
         <Panel className="text-center">
           <Check className="mx-auto size-10 rounded-full bg-mint p-2 text-white" aria-hidden="true" />
-          <h2 className="mt-4 text-xl font-bold text-ink">{skipped.length ? "You've Seen Every Link" : "All Links Reviewed"}</h2>
+          <h2 className="mt-4 text-xl font-bold text-ink">{skipped.length ? t("You've Seen Every Link", "Semua Tautan Sudah Kamu Lihat") : t("All Links Reviewed", "Semua Tautan Sudah Ditinjau")}</h2>
           <p className="mt-1 text-sm text-ink/70">
-            {skipped.length ? `${skipped.length} skipped. You can come back to them anytime.` : "Thank you. Your votes are saved."}
+            {skipped.length ? t(`${skipped.length} skipped. You can come back to them anytime.`, `${skipped.length} dilewati. Kamu bisa kembali kapan saja.`) : t("Thank you. Your votes are saved.", "Terima kasih. Suaramu tersimpan.")}
           </p>
           <div className="mt-5 flex justify-center gap-2">
             {skipped.length ? (
               <Button variant="outline" onClick={() => setSkipped([])}>
-                <RotateCcw /> Review Skipped
+                <RotateCcw /> {t("Review Skipped", "Tinjau yang Dilewati")}
               </Button>
             ) : null}
-            <Button onClick={onBack}>Back to Tasks</Button>
+            <Button onClick={onBack}>{t("Back to Tasks", "Kembali ke Tugas")}</Button>
           </div>
         </Panel>
       )}
       <div className="mt-6 text-center">
         <Button variant="ghost" onClick={() => setSuggest(true)}>
-          <Plus /> Suggest a Missing Link
+          <Plus /> {t("Suggest a Missing Link", "Usulkan Tautan yang Hilang")}
         </Button>
       </div>
       <SuggestDialog open={suggest} onOpenChange={setSuggest} onAdded={edges.reload} />
@@ -269,12 +280,13 @@ function SuggestDialog({ open, onOpenChange, onAdded }: { open: boolean; onOpenC
   const [dst, setDst] = useState("");
   const [why, setWhy] = useState("");
   const [err, setErr] = useState<unknown>(null);
+  const t = useT();
   async function add(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
     try {
       await api.post("/expert/edges", { src, dst, rationale: why });
-      toast.success("Link suggested", { description: "Other experts will review it." });
+      toast.success(t("Link suggested", "Tautan diusulkan"), { description: t("Other experts will review it.", "Pakar lain akan meninjaunya.") });
       setSrc("");
       setDst("");
       setWhy("");
@@ -289,14 +301,14 @@ function SuggestDialog({ open, onOpenChange, onAdded }: { open: boolean; onOpenC
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Suggest a Missing Link</DialogTitle>
-          <DialogDescription>Links that would create a loop are rejected automatically.</DialogDescription>
+          <DialogTitle>{t("Suggest a Missing Link", "Usulkan Tautan yang Hilang")}</DialogTitle>
+          <DialogDescription>{t("Links that would create a loop are rejected automatically.", "Tautan yang membentuk loop otomatis ditolak.")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={add} className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="src">Learn This First</Label>
+            <Label htmlFor="src">{t("Learn This First", "Pelajari Ini Dulu")}</Label>
             <NativeSelect id="src" value={src} onChange={(e) => setSrc(e.target.value)} required>
-              <option value="">Choose a skill…</option>
+              <option value="">{t("Choose a skill…", "Pilih skill…")}</option>
               {options.map((s) => (
                 <option key={s.id} value={s.id}>
                   {titleCase(s.name)}
@@ -305,9 +317,9 @@ function SuggestDialog({ open, onOpenChange, onAdded }: { open: boolean; onOpenC
             </NativeSelect>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="dst">Before This</Label>
+            <Label htmlFor="dst">{t("Before This", "Sebelum Ini")}</Label>
             <NativeSelect id="dst" value={dst} onChange={(e) => setDst(e.target.value)} required>
-              <option value="">Choose a skill…</option>
+              <option value="">{t("Choose a skill…", "Pilih skill…")}</option>
               {options.map((s) => (
                 <option key={s.id} value={s.id}>
                   {titleCase(s.name)}
@@ -316,12 +328,12 @@ function SuggestDialog({ open, onOpenChange, onAdded }: { open: boolean; onOpenC
             </NativeSelect>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="why">Why?</Label>
-            <Textarea id="why" value={why} onChange={(e) => setWhy(e.target.value)} placeholder="One sentence is enough…" />
+            <Label htmlFor="why">{t("Why?", "Kenapa?")}</Label>
+            <Textarea id="why" value={why} onChange={(e) => setWhy(e.target.value)} placeholder={t("One sentence is enough…", "Satu kalimat sudah cukup…")} />
           </div>
           <ErrorNote error={err} />
           <Button type="submit" size="lg" className="h-11 w-full" disabled={!src || !dst}>
-            Suggest Link
+            {t("Suggest Link", "Usulkan Tautan")}
           </Button>
         </form>
       </DialogContent>
@@ -337,6 +349,7 @@ function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
   const [order, setOrder] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
+  const t = useT();
 
   useEffect(() => {
     if (!list.data || sel) return;
@@ -355,7 +368,7 @@ function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
     setErr(null);
     try {
       await api.post(`/expert/scenarios/${sel}/rank`, { expert_id: me.id, order });
-      toast.success("Ranking saved");
+      toast.success(t("Ranking saved", "Ranking tersimpan"));
       list.reload();
       const next = list.data?.find((s) => !s.done && s.id !== sel);
       setSel(next?.id ?? null);
@@ -368,9 +381,9 @@ function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
 
   return (
     <div>
-      <TaskHeader title="Rank Example Students" onBack={onBack} done={done} total={list.data.length} />
+      <TaskHeader title={t("Rank Example Students", "Ranking Contoh Mahasiswa")} onBack={onBack} done={done} total={list.data.length} />
       <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,1fr)]">
-        <nav aria-label="Scenarios" className="max-h-[70vh] overflow-y-auto rounded-2xl border bg-card p-2">
+        <nav aria-label={t("Scenarios", "Skenario")} className="max-h-[70vh] overflow-y-auto rounded-2xl border bg-card p-2">
           <ul className="space-y-0.5">
             {list.data.map((s, i) => (
               <li key={s.id}>
@@ -383,8 +396,8 @@ function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
                     s.id === sel ? "bg-secondary font-semibold text-secondary-foreground" : "text-ink/80 hover:bg-muted",
                   )}
                 >
-                  <span>Student {i + 1}</span>
-                  {s.done ? <Check className="size-4 text-mint" aria-label="Ranked" /> : null}
+                  <span>{t("Student", "Mahasiswa")} {i + 1}</span>
+                  {s.done ? <Check className="size-4 text-mint" aria-label={t("Ranked", "Sudah diranking")} /> : null}
                 </button>
               </li>
             ))}
@@ -394,10 +407,10 @@ function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
           <Loading />
         ) : (
           <Panel>
-            <p className="text-sm font-medium text-indigo">Student Profile</p>
+            <p className="text-sm font-medium text-indigo">{t("Student Profile", "Profil Mahasiswa")}</p>
             <h2 className="mt-1 text-xl font-bold text-ink">{detail.data.title}</h2>
-            <p className="mt-2 text-sm text-ink/70">Click the skills in the order this student should learn them. Click a numbered skill to undo back to it.</p>
-            <ul className="mt-5 grid gap-3 md:grid-cols-2">
+            <p className="mt-2 text-sm text-ink/70">{t("Click the skills in the order this student should learn them. Click a numbered skill to undo back to it.", "Klik skill sesuai urutan yang harus dipelajari mahasiswa ini. Klik skill bernomor untuk mundur ke sana.")}</p>
+            <ul className="mt-5 grid gap-4 md:grid-cols-2">
               {cands.map((c) => {
                 const pos = order.indexOf(c.skill_id);
                 return (
@@ -417,11 +430,11 @@ function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
                       <span className="min-w-0">
                         <span className="block font-semibold text-ink">{titleCase(c.name)}</span>
                         <span className="mt-1 block text-xs text-ink/70">
-                          Level {num(c.p)}, role needs {num(c.r)}, in {pct(c.D)} of postings
+                          {t(`Level ${num(c.p)}, role needs ${num(c.r)}, in ${pct(c.D)} of postings`, `Level ${num(c.p)}, role butuh ${num(c.r)}, di ${pct(c.D)} posting`)}
                         </span>
                         {c.prereqs.length ? (
                           <span className="mt-1 block text-xs text-ink/60">
-                            Builds on {c.prereqs.map((q) => `${titleCase(q.name)} (${q.p != null ? num(q.p) : "–"})`).join(", ")}
+                            {t("Builds on", "Dibangun di atas")} {c.prereqs.map((q) => `${titleCase(q.name)} (${q.p != null ? num(q.p) : "–"})`).join(", ")}
                           </span>
                         ) : null}
                       </span>
@@ -432,12 +445,12 @@ function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
             </ul>
             <div className="mt-6 flex flex-wrap items-center gap-2">
               <Button size="lg" className="h-11 px-6" onClick={save} disabled={!complete || busy}>
-                {busy ? "Saving…" : complete ? "Save and Next" : `Rank ${cands.length - order.length} More`}
+                {busy ? t("Saving…", "Menyimpan…") : complete ? t("Save and Next", "Simpan dan Lanjut") : t(`Rank ${cands.length - order.length} More`, `Ranking ${cands.length - order.length} Lagi`)}
               </Button>
               <Button variant="ghost" size="lg" className="h-11" onClick={() => setOrder(order.slice(0, -1))} disabled={!order.length}>
-                <Undo2 /> Undo
+                <Undo2 /> {t("Undo", "Urungkan")}
               </Button>
-              <Tag tone="neutral">{VARIANT[list.data.find((s) => s.id === sel)?.variant ?? "base"] ?? "Base Profile"}</Tag>
+              <Tag tone="neutral">{t(...(VARIANT[list.data.find((s) => s.id === sel)?.variant ?? "base"] ?? VARIANT.base))}</Tag>
             </div>
             <div className="mt-4">
               <ErrorNote error={err} />

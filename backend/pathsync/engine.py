@@ -31,11 +31,20 @@ from .db import (
 )
 from .demand import MarketMap
 from .evidence import EvidenceItem, Response, SkillState, diagnose, recommendation_type
-from .i18n import get_lang, t
+from .i18n import get_lang, t, tr
 from .market import esco_status, load_market
 from .pathing import blocked_steps, build_path, counterfactuals, coverage, explain, level_label
 from .ranker import RankingModel, build_candidates
-from .taxonomy import Edge, Skill, SkillGraph, cluster_names, load_draft_edges, load_skills, seed_rationales
+from .taxonomy import (
+    Edge,
+    Skill,
+    SkillGraph,
+    cluster_names,
+    display_rationale,
+    display_skills,
+    load_draft_edges,
+    seed_rationales,
+)
 
 FLAGS = ("paparan_akademik_tanpa_bukti_langsung", "klaim_cv_belum_terbukti", "bukti_bertentangan",
          "persepsi_lebih_tinggi_dari_bukti")
@@ -86,8 +95,8 @@ def ensure_seed(s: Session) -> None:
 
 def graph_from_db(s: Session) -> SkillGraph:
     rows = s.scalars(select(GraphEdge)).all()
-    edges = [Edge(r.src, r.dst, r.source, r.rationale, r.status) for r in rows] or load_draft_edges()
-    return SkillGraph(load_skills(), edges)
+    edges = [Edge(r.src, r.dst, r.source, display_rationale(r.src, r.dst, r.rationale), r.status) for r in rows] or load_draft_edges()
+    return SkillGraph(display_skills(), edges)
 
 
 def active_model(s: Session) -> tuple[RankingModel, int | None]:
@@ -124,7 +133,7 @@ _CTX_LOCK = threading.Lock()
 def load_context(s: Session, role: str) -> Context:
     """Shared, read-only decision context for a role.
 
-    Built once per (role, active snapshot, active model, cache epoch) and reused by every student:
+    Built once per (role, active snapshot, active model, cache epoch, display language) and reused by every student:
     the paper notes the demand map is computed once per update and shared, so adding users does not
     add proportional compute (III.B). Any change to snapshot, model or graph bumps the epoch.
     """
@@ -135,7 +144,7 @@ def load_context(s: Session, role: str) -> Context:
         hit = _CTX_CACHE.get(key)
     if hit is not None:
         return hit
-    skills = load_skills()
+    skills = display_skills()
     market, req, version = load_market(s, role)
     model, model_id = active_model(s)
     ctx = Context(role=role, role_name=ROLES[role]["name"], skills=skills, names={k: v.name for k, v in skills.items()},
@@ -397,10 +406,13 @@ def _reasons(prev: list[dict], cur: list[dict], rec: dict, names: dict[str, str]
 
 def record_history(s: Session, student: Student, trigger: str, note: str = "", rec: dict | None = None,
                    force: bool = False) -> RecommendationHistory | None:
+    from .careers import career_readiness  # local import: careers builds on this module
+
     rec = rec or recommend(s, student)
     last = s.scalars(select(RecommendationHistory).where(RecommendationHistory.student_id == student.id)
                      .order_by(RecommendationHistory.id.desc())).first()
     cur = _snapshot(rec)
+    careers = career_readiness(s, student)
     names = {c["skill_id"]: c["name"] for c in rec["competencies"]} | {r["skill_id"]: r["name"] for r in rec["ranking"]}
     if last is None:
         trigger = "initial"
@@ -409,13 +421,16 @@ def record_history(s: Session, student: Student, trigger: str, note: str = "", r
     else:
         same = [r["skill_id"] for r in last.ranking[:5]] == [r["skill_id"] for r in cur[:5]] and \
             all(abs(a["priority"] - b["priority"]) < 0.005 for a, b in zip(last.ranking[:5], cur[:5], strict=False))
-        if same and not force and last.market_version == rec["market_version"]:
+        # entries written before careers were tracked have no snapshot: record one so later changes have a baseline
+        careers_moved = last.careers is None or any(abs(careers.get(r, 0.0) - v) >= 0.01 for r, v in last.careers.items())
+        if same and not careers_moved and not force and last.market_version == rec["market_version"]:
             return None
         summary, reasons = _reasons(last.ranking, cur, rec, names, trigger, note)
     h = RecommendationHistory(student_id=student.id, trigger=trigger, summary=summary, reasons=reasons, ranking=cur,
                               path=[{"skill_id": p["skill_id"], "name": p["name"], "role_in_path": p["role_in_path"]}
                                     for p in rec["path"]],
-                              coverage=rec["coverage"], market_version=rec["market_version"], model_name=rec["model"]["name"])
+                              coverage=rec["coverage"], market_version=rec["market_version"], model_name=rec["model"]["name"],
+                              careers=careers)
     s.add(h)
     s.commit()
     return h
@@ -425,7 +440,7 @@ def check_market_trigger(s: Session, student: Student, rec: dict) -> None:
     last = s.scalars(select(RecommendationHistory).where(RecommendationHistory.student_id == student.id)
                      .order_by(RecommendationHistory.id.desc())).first()
     if last is not None and last.market_version != rec["market_version"]:
-        record_history(s, student, "market", note=f"market version {rec['market_version']}", rec=rec, force=True)
+        record_history(s, student, "market", note=tr("market version", "versi pasar") + f" {rec['market_version']}", rec=rec, force=True)
 
 
 # ------------------------------------------------------------ decision trace
@@ -465,8 +480,9 @@ def decision_trace(s: Session, student: Student, skill_id: str) -> dict:
          "inputs": [{"evidence": k, "score_e": round(v, 3), "weight_w": used[k], "sources": st.sources.get(k, [])}
                     for k, v in comps.items()],
          "result": round(st.p0, 4),
-         "note": "No evidence yet: prior 0.10." if not comps else
-                 "CV claims and self-ratings are shown for confirmation only and never enter this sum."},
+         "note": tr("No evidence yet: prior 0.10.", "Belum ada evidence: prior 0.10.") if not comps else
+                 tr("CV claims and self-ratings are shown for confirmation only and never enter this sum.",
+                    "Klaim CV dan penilaian diri hanya ditampilkan untuk konfirmasi dan tidak pernah masuk ke penjumlahan ini.")},
         {"stage": "2. New answers -> mastery p (eq. 3, Bayesian knowledge tracing)",
          "formula": "correct: p' = p(1-S)/(p(1-S)+(1-p)G); wrong: p' = pS/(pS+(1-p)(1-G)); then p = p' + (1-p')T",
          "inputs": {"S_slip": 0.10, "G_guess": 0.25, "T_learn": 0.10, "trace": [round(x, 4) for x in st.bkt_trace]},
@@ -485,7 +501,8 @@ def decision_trace(s: Session, student: Student, skill_id: str) -> dict:
                        "result": {"score": row["score"], "priority_exp_score": row["priority"], "rank": row["rank"],
                                   "of_candidates": len(rec["ranking"]), "model": ctx.model.name}})
     else:
-        stages.append({"stage": "3. Ranking", "result": "Not ranked: no gap left for this role (p >= required level)."})
+        stages.append({"stage": "3. Ranking", "result": tr("Not ranked: no gap left for this role (p >= required level).",
+                                                          "Tidak diranking: tidak ada gap tersisa untuk role ini (p >= level yang dibutuhkan).")})
     stages.append({"stage": "5. Learning path rule (III.A.5)",
                    "formula": "top-3 ranked skills + their prerequisites with p < 0.6, in topological order",
                    "result": {"in_path": step is not None, "position": rec["path"].index(step) + 1 if step else None,

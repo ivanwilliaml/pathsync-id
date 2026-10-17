@@ -31,7 +31,7 @@ export default function AboutPage() {
             Dibangun oleh Team cupuu. Sumber data: Karirhub (Kemnaker) dan halaman karier perusahaan. Cara kerja lengkap, termasuk model yang
             dipakai dan batasannya, ada di{" "}
             <Link href="/how-it-works" className="font-medium text-indigo underline">
-              How the AI Works
+              Cara Kerja AI
             </Link>
             .
           </p>
@@ -42,7 +42,7 @@ export default function AboutPage() {
         </div>
         <h2 className="mt-10 text-xl font-bold text-ink">Kontak</h2>
         <p className="mt-3 text-[15px] text-ink/80">
-          Ada masalah atau saran? Pakai tombol <em>Report a Problem</em> di dalam aplikasi, atau email{" "}
+          Ada masalah atau saran? Pakai tombol <em>Laporkan Masalah</em> di dalam aplikasi, atau email{" "}
           <a className="font-medium text-indigo underline" href={`mailto:${CONTACT}`}>
             {CONTACT}
           </a>

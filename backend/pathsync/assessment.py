@@ -14,7 +14,7 @@ from functools import lru_cache
 from .config import SEED_DIR
 from .demand import MarketMap
 from .evidence import SkillState
-from .i18n import get_lang
+from .i18n import get_lang, tr
 
 
 def item_bank(lang: str | None = None) -> dict[str, dict]:
@@ -146,13 +146,13 @@ def validate_submission(issued: list[str], answers: list[dict]) -> list[dict]:
     for a in answers:
         iid = str(a.get("item_id", ""))
         if iid not in issued_set:
-            raise SubmissionError(f"Item {iid!r} was not part of this check.")
+            raise SubmissionError(tr(f"Item {iid!r} was not part of this check.", f"Soal {iid!r} bukan bagian dari check ini."))
         if iid in seen:
-            raise SubmissionError(f"Item {iid!r} was answered twice.")
+            raise SubmissionError(tr(f"Item {iid!r} was answered twice.", f"Soal {iid!r} dijawab dua kali."))
         seen.add(iid)
         choice = a.get("choice")
         if choice is not None and not (isinstance(choice, int) and 0 <= choice < 4):
-            raise SubmissionError("Each answer must be one of the four options.")
+            raise SubmissionError(tr("Each answer must be one of the four options.", "Setiap jawaban harus salah satu dari empat pilihan."))
         clean.append({"item_id": iid, "choice": choice})
     return clean
 

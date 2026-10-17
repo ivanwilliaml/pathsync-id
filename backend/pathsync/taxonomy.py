@@ -153,10 +153,28 @@ def _load_skills(lang: str) -> dict[str, Skill]:
     return out
 
 
+def display_skills() -> dict[str, Skill]:
+    """Taxonomy for display: names and texts in the current request's language (the same as load_skills())."""
+    return load_skills()
+
+
 def load_draft_edges() -> list[Edge]:
     g = _load_json("graph.json")
     key = "rationale_en" if get_lang() == "en" else "rationale"
     return [Edge(e["from"], e["to"], e.get("source", "tim"), e.get(key) or e.get("rationale", "")) for e in g["edges"]]
+
+
+@lru_cache(maxsize=1)
+def rationale_variants() -> dict[tuple[str, str], dict[str, str]]:
+    """(src, dst) -> {"id": ..., "en": ...} for seed edges, so a stored rationale can be shown in either language."""
+    return {(e["from"], e["to"]): {"id": e.get("rationale", ""), "en": e.get("rationale_en") or e.get("rationale", "")}
+            for e in _load_json("graph.json")["edges"]}
+
+
+def display_rationale(src: str, dst: str, stored: str) -> str:
+    """A seed rationale in the request's language; text an expert wrote stays as written."""
+    v = rationale_variants().get((src, dst))
+    return v[get_lang()] if v and stored in v.values() else stored
 
 
 def seed_rationales() -> dict[tuple[str, str], tuple[str, str]]:
@@ -171,5 +189,6 @@ def load_graph(edges: list[Edge] | None = None) -> SkillGraph:
 
 
 def cluster_names() -> dict[str, str]:
+    """Area labels in the current request's language."""
     tax = load_taxonomy()
     return tax.get("clusters_en", tax["clusters"]) if get_lang() == "en" else tax["clusters"]

@@ -16,6 +16,8 @@ for _d in (RAW_DIR, SEED_DIR, PROCESSED_DIR, MODELS_DIR):
 
 # Display language of everything the API returns (skill names, explanations, assessment items).
 # Seed data keeps the Indonesian originals; extraction prompts always use them.
+# LANG is the server default; a request can ask for its own ("X-PathSync-Lang: id|en", set by the web app's
+# language switch), which display code reads through lang() / tr(). Matching and extraction never depend on it.
 LANG = os.getenv("PATHSYNC_LANG", "en")
 # posting sources left out of the market map, comma-separated (e.g. "kalibrr" while permission is pending; see
 # docs/ops/DATA_SOURCES.md). Raw files stay on disk; only the market build ignores them.

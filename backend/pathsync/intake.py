@@ -19,6 +19,7 @@ from .embeddings import encode, once
 from .evidence import EvidenceItem, rubric_score
 from .extraction import extract_skills, skill_index
 from .extraction.llm import LLMUnavailable, llm_configured
+from .i18n import tr
 from .taxonomy import load_skills
 from .text import normalize_for_match, verify_quote
 
@@ -42,7 +43,8 @@ def document_to_text(data: bytes, filename: str) -> str:
 
         with pdfplumber.open(io.BytesIO(data)) as pdf:
             if len(pdf.pages) > MAX_PDF_PAGES:
-                raise DocumentRejected(f"This PDF has {len(pdf.pages)} pages; the limit is {MAX_PDF_PAGES}.")
+                raise DocumentRejected(tr(f"This PDF has {len(pdf.pages)} pages; the limit is {MAX_PDF_PAGES}.",
+                                          f"PDF ini punya {len(pdf.pages)} halaman; batasnya {MAX_PDF_PAGES}."))
             return "\n".join((p.extract_text() or "") for p in pdf.pages)
     if name.endswith(".docx"):
         import zipfile
@@ -52,9 +54,9 @@ def document_to_text(data: bytes, filename: str) -> str:
         try:
             unzipped = sum(i.file_size for i in zipfile.ZipFile(io.BytesIO(data)).infolist())
         except zipfile.BadZipFile as e:
-            raise DocumentRejected("This .docx file is damaged or is not a Word document.") from e
+            raise DocumentRejected(tr("This .docx file is damaged or is not a Word document.", "File .docx ini rusak atau bukan dokumen Word.")) from e
         if unzipped > MAX_DOCX_UNZIPPED:
-            raise DocumentRejected("This .docx expands to more than 40 MB. Save it again, or paste the text instead.")
+            raise DocumentRejected(tr("This .docx expands to more than 40 MB. Save it again, or paste the text instead.", "File .docx ini membengkak lebih dari 40 MB. Simpan ulang, atau tempel teksnya."))
         d = docx.Document(io.BytesIO(data))
         parts = [p.text for p in d.paragraphs]
         for t in d.tables:
@@ -425,8 +427,10 @@ def project_evidence(text: str, title: str, candidate_ids: list[str] | None = No
     checks = artifact_checks(text)
     if "copy_of_job_posting" in checks["flags"] or "reads_like_job_requirements" in checks["flags"]:
         detail = {"method": "rejected", "ratings": [], "rejected": [], "checks": checks, "review_status": "rejected",
-                  "message": "This looks like a job posting or a list of requirements, not work you did. "
-                             "Upload your own report, notebook, query file or document."}
+                  "message": tr("This looks like a job posting or a list of requirements, not work you did. "
+                                "Upload your own report, notebook, query file or document.",
+                                "Ini terlihat seperti lowongan kerja atau daftar syarat, bukan karyamu. "
+                                "Unggah laporan, notebook, file query, atau dokumen buatanmu sendiri.")}
         return EvidenceItem("project", title or "Project", {}, {}), detail
     method = "heuristik"
     ratings: list[dict] = []

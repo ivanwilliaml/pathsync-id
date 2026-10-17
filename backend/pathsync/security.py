@@ -25,6 +25,7 @@ from sqlalchemy.orm import Session
 
 from .config import DATA_DIR
 from .db import ApiToken, AuditLog, Student, get_session, utcnow
+from .i18n import tr
 
 MAX_UPLOAD_BYTES = int(os.getenv("PATHSYNC_MAX_UPLOAD_MB", "5")) * 1024 * 1024
 MAX_TEXT_CHARS = 200_000
@@ -60,12 +61,12 @@ def student_access(sid: str, authorization: str | None = Header(default=None),
     """Load the student and verify the caller holds its token (404 if unknown, 401/403 otherwise)."""
     st = s.get(Student, sid)
     if st is None:
-        raise HTTPException(404, "Student not found.")
+        raise HTTPException(404, tr("Student not found.", "Mahasiswa tidak ditemukan."))
     token = _bearer(authorization)
     if token is None:
-        raise HTTPException(401, "Sign in again: this request has no access token.")
+        raise HTTPException(401, tr("Sign in again: this request has no access token.", "Masuk lagi: permintaan ini tidak membawa access token."))
     if st.token_hash is None or not hmac.compare_digest(st.token_hash, hash_token(token)):
-        raise HTTPException(403, "This access token does not belong to this profile.")
+        raise HTTPException(403, tr("This access token does not belong to this profile.", "Access token ini bukan milik profil ini."))
     return st
 
 
@@ -287,7 +288,7 @@ def rate_limit(group: str, limit: int, window: float = 60.0):
             keys.append((f"student:{sid}", group))
         for k in keys:
             if not limiter.check(k, limit, window):
-                raise HTTPException(429, "Too many requests. Wait a minute and try again.")
+                raise HTTPException(429, tr("Too many requests. Wait a minute and try again.", "Terlalu banyak permintaan. Tunggu satu menit lalu coba lagi."))
     return dep
 
 
@@ -296,21 +297,23 @@ def read_upload(file, max_bytes: int = MAX_UPLOAD_BYTES) -> tuple[bytes, str]:
     """Read an UploadFile (sync), enforcing type and size limits."""
     name = (file.filename or "upload.txt").lower()
     if not name.endswith(ALLOWED_UPLOADS):
-        raise HTTPException(415, f"Unsupported file type. Use one of: {', '.join(ALLOWED_UPLOADS)}.")
+        kinds = ", ".join(ALLOWED_UPLOADS)
+        raise HTTPException(415, tr(f"Unsupported file type. Use one of: {kinds}.", f"Jenis file tidak didukung. Gunakan salah satu: {kinds}."))
     data = file.file.read(max_bytes + 1)
     if len(data) > max_bytes:
-        raise HTTPException(413, f"File too large (max {max_bytes // (1024 * 1024)} MB).")
+        mb = max_bytes // (1024 * 1024)
+        raise HTTPException(413, tr(f"File too large (max {mb} MB).", f"File terlalu besar (maks {mb} MB)."))
     # the extension must match the content: a renamed binary is refused before any parser sees it
     magic = {".pdf": b"%PDF-", ".docx": b"PK\x03\x04"}
     for ext, head in magic.items():
         if name.endswith(ext) and not data.startswith(head):
-            raise HTTPException(415, f"This file is not a valid {ext} file.")
+            raise HTTPException(415, tr(f"This file is not a valid {ext} file.", f"File ini bukan file {ext} yang valid."))
     if not name.endswith((".pdf", ".docx")) and b"\x00" in data[:4096]:
-        raise HTTPException(415, "Text uploads must be plain text.")
+        raise HTTPException(415, tr("Text uploads must be plain text.", "Unggahan teks harus berupa teks biasa."))
     return data, name
 
 
 def clip_text(text: str) -> str:
     if len(text) > MAX_TEXT_CHARS:
-        raise HTTPException(413, f"Text too long (max {MAX_TEXT_CHARS:,} characters).")
+        raise HTTPException(413, tr(f"Text too long (max {MAX_TEXT_CHARS:,} characters).", f"Teks terlalu panjang (maks {MAX_TEXT_CHARS:,} karakter)."))
     return text

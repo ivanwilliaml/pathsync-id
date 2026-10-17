@@ -144,3 +144,13 @@ MESSAGES: dict[str, dict[str, str]] = {
 def t(key: str, **values) -> str:
     entry = MESSAGES[key]
     return entry.get(get_lang(), entry["en"]).format(**values)
+
+
+def lang() -> str:
+    """Display language of the current request (same value as get_lang)."""
+    return get_lang()
+
+
+def tr(en: str, id_: str) -> str:
+    """Inline English/Indonesian pair for short one-off sentences (errors, hints) that are not worth a catalogue key."""
+    return id_ if get_lang() == "id" else en

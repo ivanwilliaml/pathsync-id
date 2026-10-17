@@ -8,14 +8,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ErrorNote } from "./kit";
+import { useT } from "@/lib/i18n";
 
-const TITLE: Record<StaffRole, string> = { admin: "Admin Sign-In", expert: "Expert Sign-In", advisor: "Lecturer Sign-In" };
+const TITLE: Record<StaffRole, [string, string]> = { admin: ["Admin Sign-In", "Masuk Admin"], expert: ["Expert Sign-In", "Masuk Pakar"], advisor: ["Lecturer Sign-In", "Masuk Dosen"] };
 
 /** Paste-a-key sign-in for staff roles. The key becomes an HttpOnly session cookie; the page does not keep it. */
 export function StaffLogin({ role, hint }: { role: StaffRole; hint?: string; error?: unknown }) {
   const [value, setValue] = useState("");
   const [failed, setFailed] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
+  const t = useT();
   const rejected = failed instanceof ApiError && (failed.status === 401 || failed.status === 403);
   return (
     <form
@@ -33,11 +35,11 @@ export function StaffLogin({ role, hint }: { role: StaffRole; hint?: string; err
     >
       <div className="flex items-center gap-2 text-ink">
         <KeyRound className="size-4 text-indigo" aria-hidden="true" />
-        <h2 className="font-semibold">{TITLE[role]}</h2>
+        <h2 className="font-semibold">{t(...TITLE[role])}</h2>
       </div>
       {hint ? <p className="text-sm text-ink/70">{hint}</p> : null}
       <div className="space-y-1.5">
-        <Label htmlFor={`key-${role}`}>Sign-in key</Label>
+        <Label htmlFor={`key-${role}`}>{t("Sign-in key", "Key masuk")}</Label>
         <Input
           id={`key-${role}`}
           type="password"
@@ -48,10 +50,10 @@ export function StaffLogin({ role, hint }: { role: StaffRole; hint?: string; err
           className="h-10 font-mono"
         />
       </div>
-      {rejected ? <ErrorNote error={new Error("That key was not accepted. Check it, or ask an admin for a new one.")} /> : null}
+      {rejected ? <ErrorNote error={new Error(t("That key was not accepted. Check it, or ask an admin for a new one.", "Key itu tidak diterima. Periksa lagi, atau minta key baru ke admin."))} /> : null}
       {failed && !rejected ? <ErrorNote error={failed} /> : null}
       <Button type="submit" size="lg" className="h-10" disabled={!value.trim() || busy}>
-        {busy ? "Signing in…" : "Sign In"}
+        {busy ? t("Signing in…", "Masuk…") : t("Sign In", "Masuk")}
       </Button>
     </form>
   );

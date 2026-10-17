@@ -16,7 +16,7 @@ from sqlalchemy.orm import Session
 from pathsync.db import NON_EXPERT_KINDS, ApiToken, EdgeVote, Expert, GraphEdge, Scenario, ScenarioRanking, StudyPlan, bump_epoch
 from pathsync.engine import graph_from_db
 from pathsync.security import db_session, require_expert
-from pathsync.taxonomy import CycleError, Edge, SkillGraph, load_skills
+from pathsync.taxonomy import CycleError, Edge, SkillGraph, display_rationale, display_skills, load_skills
 
 router = APIRouter(prefix="/api/expert", tags=["experts"])
 
@@ -41,12 +41,12 @@ def me(tok: ApiToken = Depends(require_expert), s: Session = Depends(db_session)
 @router.get("/edges")
 def edges(expert_id: str | None = None, tok: ApiToken = Depends(require_expert), s: Session = Depends(db_session)):
     who = tok.subject_id if tok.role == "expert" else expert_id
-    skills = load_skills()
+    skills = display_skills()
     out = []
     for e in s.scalars(select(GraphEdge).order_by(GraphEdge.id)).all():
         votes = list(e.votes)
         out.append({"id": e.id, "from": e.src, "to": e.dst, "from_name": skills[e.src].name, "to_name": skills[e.dst].name,
-                    "source": e.source, "rationale": e.rationale, "status": e.status,
+                    "source": e.source, "rationale": display_rationale(e.src, e.dst, e.rationale), "status": e.status,
                     "approve": sum(v.approve for v in votes), "reject": sum(not v.approve for v in votes),
                     "my_vote": next((v.approve for v in votes if v.expert_id == who), None)})
     return out
@@ -112,7 +112,7 @@ def scenario(scid: str, tok: ApiToken = Depends(require_expert), s: Session = De
     r = s.get(Scenario, scid)
     if not r:
         raise HTTPException(404, "Scenario not found.")
-    skills = load_skills()
+    skills = display_skills()
     pl = r.payload
     g = graph_from_db(s)
     cands = [{"skill_id": c, "name": skills[c].name, "p": pl["student"][c]["p"], "r": pl["student"][c]["r"],

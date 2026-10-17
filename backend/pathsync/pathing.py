@@ -13,7 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .config import PATH_TOP_K, READINESS_THRESHOLD
-from .i18n import t
+from .i18n import t, tr
 from .ranker import Candidate
 from .taxonomy import SkillGraph
 
@@ -62,13 +62,13 @@ def counterfactuals(path: list[PathStep], ranked: list[tuple[Candidate, float]],
     order = [st.skill_id for st in path]
     cand = {c.skill_id: c for c, _ in ranked}
     alts = {
-        "PathSync order": order,
-        "Biggest gap first": sorted(order, key=lambda s: -(cand[s].G if s in cand else 0.0)),
-        "Most in-demand first": sorted(order, key=lambda s: -(cand[s].D if s in cand else 0.0)),
+        tr("PathSync order", "Urutan PathSync"): order,
+        tr("Biggest gap first", "Gap terbesar dulu"): sorted(order, key=lambda s: -(cand[s].G if s in cand else 0.0)),
+        tr("Most in-demand first", "Paling dicari dulu"): sorted(order, key=lambda s: -(cand[s].D if s in cand else 0.0)),
     }
     for c, _ in ranked[1:PATH_TOP_K]:
         if c.skill_id in order and c.blocked_by:
-            alts[f"{names[c.skill_id]} first"] = [c.skill_id] + [s for s in order if s != c.skill_id]
+            alts[tr(f"{names[c.skill_id]} first", f"{names[c.skill_id]} dulu")] = [c.skill_id] + [s for s in order if s != c.skill_id]
     rows = []
     for label, o in alts.items():
         b = blocked_steps(o, graph, p)
@@ -77,8 +77,11 @@ def counterfactuals(path: list[PathStep], ranked: list[tuple[Candidate, float]],
     notes = []
     for r in rows[1:]:
         for d in r["blocked_detail"][:1]:
-            notes.append(f"With \"{r['label'].lower()}\", you would get stuck on {names[d['skill_id']]} because "
-                         f"{', '.join(names[m] for m in d['waiting_for'])} is not mastered yet.")
+            waiting = ", ".join(names[m] for m in d["waiting_for"])
+            notes.append(tr(f"With \"{r['label'].lower()}\", you would get stuck on {names[d['skill_id']]} because "
+                            f"{waiting} is not mastered yet.",
+                            f"Dengan \"{r['label'].lower()}\", kamu akan macet di {names[d['skill_id']]} karena "
+                            f"{waiting} belum dikuasai."))
     best = min(rows, key=lambda r: r["blocked"])
     return {"alternatives": rows, "notes": notes[:3], "recommended_blocked": rows[0]["blocked"],
             "recommended_is_minimal": rows[0]["blocked"] == best["blocked"]}
