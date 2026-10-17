@@ -15,6 +15,7 @@ import { Mascot } from "@/components/mascot";
 import type { CareersData } from "@/components/career-map";
 import { SkillSheet, type SkillDetail } from "@/components/skill-sheet";
 import { EmptyState, ErrorNote, LinkButton, Loading, MasteryBar, Panel, SectionTitle, Tag } from "@/components/kit";
+import { useT } from "@/lib/i18n";
 
 export default function DashboardPage() {
   return <RequireStudent>{(sid) => <DashboardView sid={sid} />}</RequireStudent>;
@@ -23,13 +24,14 @@ export default function DashboardPage() {
 function DashboardView({ sid }: { sid: string }) {
   const { data: d, error } = useApi<Dashboard>(`/students/${sid}/dashboard`);
   const [detail, setDetail] = useState<SkillDetail | null>(null);
+  const t = useT();
   const pulseReady = usePulseReady();
   useEffect(() => trackOnce("next_step_viewed", `next-${sid}`), [sid]);
   const comps = useMemo(() => Object.fromEntries((d?.competencies ?? []).map((c) => [c.skill_id, c])), [d]);
   const ranks = useMemo(() => Object.fromEntries((d?.ranking ?? []).map((r) => [r.skill_id, r])), [d]);
 
   if (error) return <ErrorNote error={error} />;
-  if (!d) return <Loading label="Building your route…" />;
+  if (!d) return <Loading label={t("Building your route…", "Menyusun rutemu…")} />;
 
   const hasEvidence = d.diagnostic_done || Object.entries(d.evidence_summary).some(([, v]) => v > 0);
   const names = Object.fromEntries(d.competencies.map((c) => [c.skill_id, titleCase(c.name)]));
@@ -61,52 +63,55 @@ function DashboardView({ sid }: { sid: string }) {
         <div className="min-w-0">
           <h1 className="text-[30px] font-extrabold leading-tight text-ink sm:text-[36px]">Hi, {d.student.display_name}</h1>
           <p className="mt-1 text-ink/70">
-            Your route to <span className="font-semibold text-ink">{d.role.name}</span>, based on {d.role.n_postings} real job postings.
+            {t("Your route to", "Rutemu menuju")} <span className="font-semibold text-ink">{d.role.name}</span>, {t(`based on ${d.role.n_postings} real job postings.`, `berdasarkan ${d.role.n_postings} job posting nyata.`)}
           </p>
           {!hasEvidence ? (
             <div className="relative mt-6 rounded-2xl bg-card p-5 shadow-sm sm:pr-36">
               <Mascot name="checklist" size={112} className="absolute right-4 bottom-3 hidden sm:block" />
-              <h2 className="text-lg font-semibold text-ink">Make This Route Yours</h2>
+              <h2 className="text-lg font-semibold text-ink">{t("Make This Route Yours", "Jadikan Rute Ini Milikmu")}</h2>
               <p className="mt-1 text-sm text-ink/70">
-                Right now everyone starts from zero. Add your transcript or take the quick check so we know what you can already do.
+                {t(
+                  "Right now everyone starts from zero. Add your transcript or take the quick check so we know what you can already do.",
+                  "Saat ini semua orang mulai dari nol. Tambahkan transkripmu atau ikuti Quick Check supaya kami tahu apa yang sudah bisa kamu lakukan.",
+                )}
               </p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <LinkButton href="/assessment" size="lg" className="h-10">
-                  Take the Quick Check
+                  {t("Take the Quick Check", "Ikuti Quick Check")}
                 </LinkButton>
                 <LinkButton href="/evidence" variant="outline" size="lg" className="h-10">
-                  Add My Evidence
+                  {t("Add My Evidence", "Tambah Evidence-ku")}
                 </LinkButton>
               </div>
             </div>
           ) : top ? (
             <div className="relative mt-6 rounded-2xl bg-card p-5 shadow-sm sm:pr-36">
               <Mascot name="compass" size={112} className="absolute right-4 bottom-3 hidden sm:block" />
-              <p className="text-sm font-medium text-indigo">Your Next Step</p>
+              <p className="text-sm font-medium text-indigo">{t("Your Next Step", "Langkah Berikutnya")}</p>
               <h2 className="mt-1 text-[22px] font-bold leading-snug text-ink">{titleCase(top.name)}</h2>
               <p className="mt-1.5 text-sm text-ink/75">{top.explanation ? firstSentence(top.explanation.why_now) : null}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 <Button size="lg" className="h-10" onClick={() => open(top.skill_id)}>
-                  See Why and How
+                  {t("See Why and How", "Lihat Alasan dan Caranya")}
                 </Button>
                 <LinkButton href={`/assessment/${top.skill_id}`} variant="outline" size="lg" className="h-10">
-                  I Already Know This
+                  {t("I Already Know This", "Aku Sudah Bisa Ini")}
                 </LinkButton>
               </div>
             </div>
           ) : (
             <div className="mt-6 flex items-center gap-4 rounded-2xl bg-card p-5 text-ink/80">
               <Mascot name="trophy" size={88} />
-              <p>You meet every requirement we track for this role. Nice work.</p>
+              <p>{t("You meet every requirement we track for this role. Nice work.", "Kamu memenuhi semua syarat yang kami lacak untuk role ini. Mantap.")}</p>
             </div>
           )}
         </div>
         <div className="flex items-center gap-5 lg:flex-col lg:text-center">
-          {f.evidence ? <ReadinessRing value={hasEvidence ? d.coverage : null} label="Role Readiness" /> : null}
+          {f.evidence ? <ReadinessRing value={hasEvidence ? d.coverage : null} label={t("Role Readiness", "Readiness Role")} /> : null}
           <p className="max-w-[220px] text-sm text-ink/70">
             {hasEvidence
-              ? "How much of what employers ask for you can already show."
-              : "Not measured yet. Your readiness appears after your first evidence or quick check."}
+              ? t("How much of what employers ask for you can already show.", "Seberapa banyak yang diminta employer yang sudah bisa kamu tunjukkan.")
+              : t("Not measured yet. Your readiness appears after your first evidence or quick check.", "Belum terukur. Readiness-mu muncul setelah evidence atau Quick Check pertamamu.")}
           </p>
         </div>
       </section>
@@ -119,7 +124,7 @@ function DashboardView({ sid }: { sid: string }) {
       <LearningRoute steps={d.path} names={names} onOpen={open} totalHours={d.path_hours} weekly={weekly} />
 
       <section aria-labelledby="priorities">
-        <SectionTitle id="priorities">Top Priorities</SectionTitle>
+        <SectionTitle id="priorities">{t("Top Priorities", "Prioritas Utama")}</SectionTitle>
         <ul className="divide-y rounded-2xl border bg-card">
           {d.ranking.slice(0, 3).map((r) => (
             <PriorityRow key={r.skill_id} r={r} comp={comps[r.skill_id]} onOpen={() => open(r.skill_id)} />
@@ -130,13 +135,13 @@ function DashboardView({ sid }: { sid: string }) {
       {hasEvidence ? <AlsoClose sid={sid} /> : null}
 
       <section aria-labelledby="explore">
-        <SectionTitle id="explore">Explore Your Profile</SectionTitle>
+        <SectionTitle id="explore">{t("Explore Your Profile", "Jelajahi Profilmu")}</SectionTitle>
         <Tabs defaultValue="areas">
           <TabsList className="mb-4 flex-wrap">
-            <TabsTrigger value="areas">Skills by Area</TabsTrigger>
-            <TabsTrigger value="all">All Skills</TabsTrigger>
-            <TabsTrigger value="order">Why This Order</TabsTrigger>
-            <TabsTrigger value="ranking">How We Ranked</TabsTrigger>
+            <TabsTrigger value="areas">{t("Skills by Area", "Skill per Area")}</TabsTrigger>
+            <TabsTrigger value="all">{t("All Skills", "Semua Skill")}</TabsTrigger>
+            <TabsTrigger value="order">{t("Why This Order", "Kenapa Urutan Ini")}</TabsTrigger>
+            <TabsTrigger value="ranking">{t("How We Ranked", "Cara Kami Meranking")}</TabsTrigger>
           </TabsList>
           <TabsContent value="areas">
             <Areas d={d} measured={hasEvidence} />
@@ -159,10 +164,11 @@ function DashboardView({ sid }: { sid: string }) {
 }
 
 function Attention({ items, onOpen }: { items: Dashboard["confirmations"]; onOpen: (id: string) => void }) {
+  const t = useT();
   return (
     <section aria-labelledby="attention" className="rounded-2xl border border-ember/30 bg-[#fff7f1] p-5">
       <h2 id="attention" className="flex items-center gap-2 font-semibold text-ember-ink">
-        <AlertTriangle className="size-4" aria-hidden="true" /> Worth Confirming
+        <AlertTriangle className="size-4" aria-hidden="true" /> {t("Worth Confirming", "Perlu Dikonfirmasi")}
       </h2>
       <ul className="mt-3 space-y-2">
         {items.slice(0, 4).map((c, i) => (
@@ -174,7 +180,7 @@ function Attention({ items, onOpen }: { items: Dashboard["confirmations"]; onOpe
               : {c.message}
             </span>
             <LinkButton href={`/assessment/${c.skill_id}`} variant="outline" size="sm">
-              Prove It
+              {t("Prove It", "Buktikan")}
             </LinkButton>
           </li>
         ))}
@@ -185,6 +191,7 @@ function Attention({ items, onOpen }: { items: Dashboard["confirmations"]; onOpe
 
 /** The signature element: the route, drawn with the brand gradient. */
 function LearningRoute({ steps, names, onOpen, totalHours, weekly }: { steps: PathStep[]; names: Record<string, string>; onOpen: (id: string) => void; totalHours: number; weekly: number }) {
+  const t = useT();
   if (!steps.length) return null;
   const weeks = weekly ? Math.max(1, Math.round(totalHours / weekly)) : null;
   return (
@@ -193,12 +200,12 @@ function LearningRoute({ steps, names, onOpen, totalHours, weekly }: { steps: Pa
         id="route"
         action={
           <span className="flex items-center gap-1.5 text-sm text-ink/70">
-            <Clock className="size-4" aria-hidden="true" /> About {hours(totalHours)}
-            {weeks ? `, ${weeks} week${weeks > 1 ? "s" : ""} at ${weekly} h a week` : ""}
+            <Clock className="size-4" aria-hidden="true" /> {t("About", "Sekitar")} {hours(totalHours)}
+            {weeks ? t(`, ${weeks} week${weeks > 1 ? "s" : ""} at ${weekly} h a week`, `, ${weeks} minggu dengan ${weekly} jam per minggu`) : ""}
           </span>
         }
       >
-        Your Learning Route
+        {t("Your Learning Route", "Rute Belajarmu")}
       </SectionTitle>
       <ol className="relative grid gap-4 md:grid-cols-[repeat(var(--steps),minmax(0,1fr))] md:gap-3" style={{ ["--steps" as string]: steps.length }}>
         {steps.map((s, i) => {
@@ -223,15 +230,18 @@ function LearningRoute({ steps, names, onOpen, totalHours, weekly }: { steps: Pa
                 className="ml-3 flex-1 rounded-2xl border bg-card p-4 text-left transition-[border-color,box-shadow] hover:border-indigo/40 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:ml-0 md:mt-3"
               >
                 <span className="flex flex-wrap gap-1.5">
-                  <Tag tone={prereq ? "ember" : "indigo"}>{prereq ? "Prerequisite" : `Priority #${s.rank}`}</Tag>
+                  <Tag tone={prereq ? "ember" : "indigo"}>{prereq ? t("Prerequisite", "Prasyarat") : `${t("Priority", "Prioritas")} #${s.rank}`}</Tag>
                 </span>
                 <span className="mt-2 block font-semibold leading-snug text-ink">{titleCase(s.name)}</span>
                 <span className="mt-1 block text-xs text-ink/65">
-                  Start with a ~{hours(s.first_module_hours ?? s.hours)} first module. Full gap: {LEVEL[s.level_now]} to {LEVEL[s.level_target]}, about {hours(s.hours)}
+                  {t(
+                    `Start with a ~${hours(s.first_module_hours ?? s.hours)} first module. Full gap: ${t(...LEVEL[s.level_now])} to ${t(...LEVEL[s.level_target])}, about ${hours(s.hours)}`,
+                    `Mulai dengan modul pertama ~${hours(s.first_module_hours ?? s.hours)}. Gap penuh: ${t(...LEVEL[s.level_now])} ke ${t(...LEVEL[s.level_target])}, sekitar ${hours(s.hours)}`,
+                  )}
                 </span>
                 {s.waiting_for.length ? (
                   <span className="mt-2 flex items-center gap-1 text-xs text-ember-ink">
-                    <Lock className="size-3" aria-hidden="true" /> After {s.waiting_for.map((w) => names[w] ?? w).join(", ")}
+                    <Lock className="size-3" aria-hidden="true" /> {t("After", "Setelah")} {s.waiting_for.map((w) => names[w] ?? w).join(", ")}
                   </span>
                 ) : null}
               </button>
@@ -244,6 +254,7 @@ function LearningRoute({ steps, names, onOpen, totalHours, weekly }: { steps: Pa
 }
 
 function PriorityRow({ r, comp, onOpen }: { r: RankRow; comp?: Competency; onOpen: () => void }) {
+  const t = useT();
   return (
     <li>
       <button
@@ -256,7 +267,7 @@ function PriorityRow({ r, comp, onOpen }: { r: RankRow; comp?: Competency; onOpe
           <span className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-ink">{titleCase(r.name)}</span>
             {r.explanation?.bottleneck ? <Tag tone="ember">Bottleneck</Tag> : null}
-            <Tag tone={r.rec_type === "buktikan" ? "mint" : "neutral"}>{REC[r.rec_type]}</Tag>
+            <Tag tone={r.rec_type === "buktikan" ? "mint" : "neutral"}>{t(...REC[r.rec_type])}</Tag>
           </span>
           {r.explanation ? <span className="mt-1 block truncate text-sm text-ink/65">{firstSentence(r.explanation.why)}</span> : null}
           {comp ? <MasteryBar value={comp.p} target={comp.required} className="mt-3 max-w-md" /> : null}
@@ -269,47 +280,54 @@ function PriorityRow({ r, comp, onOpen }: { r: RankRow; comp?: Competency; onOpe
 
 /** Shown only on one-click demo profiles: what to try, in the order that shows the adaptive cycle. */
 function DemoGuide({ topId, topName }: { topId?: string; topName?: string }) {
+  const t = useT();
   return (
     <section aria-labelledby="demo-guide" className="rounded-2xl border border-indigo/30 bg-card p-5">
       <h2 id="demo-guide" className="font-semibold text-ink">
-        You are looking at a demo student
+        {t("You are looking at a demo student", "Kamu sedang melihat mahasiswa demo")}
       </h2>
       <p className="mt-1 text-sm text-ink/75">
-        Rani studies Information Systems (semester 6) and wants to become a Business Analyst. Her transcript is already in. Three
-        things to try:
+        {t(
+          "Rani studies Information Systems (semester 6) and wants to become a Business Analyst. Her transcript is already in. Three things to try:",
+          "Rani kuliah Sistem Informasi (semester 6) dan ingin menjadi Business Analyst. Transkripnya sudah masuk. Tiga hal untuk dicoba:",
+        )}
       </p>
       <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-ink/80">
-        <li>Open the first priority and read why it comes first: the job-ad quotes, what it unlocks, and what would change the order.</li>
+        <li>{t("Open the first priority and read why it comes first: the job-ad quotes, what it unlocks, and what would change the order.", "Buka prioritas pertama dan baca kenapa ia didahulukan: kutipan lowongan, apa yang dibukanya, dan apa yang bisa mengubah urutannya.")}</li>
         <li>
           {topId ? (
             <Link href={`/assessment/${topId}`} className="font-medium text-indigo underline-offset-4 hover:underline">
-              Take the short check for {topName}
+              {t(`Take the short check for ${topName}`, `Ikuti check singkat untuk ${topName}`)}
             </Link>
           ) : (
-            "Take a short skill check"
+            t("Take a short skill check", "Ikuti skill check singkat")
           )}{" "}
-          and watch the route reorder from the new evidence.
+          {t("and watch the route reorder from the new evidence.", "dan lihat rutenya tersusun ulang dari evidence baru.")}
         </li>
         <li>
-          Open{" "}
+          {t("Open", "Buka")}{" "}
           <Link href="/history" className="font-medium text-indigo underline-offset-4 hover:underline">
             Path History
           </Link>{" "}
-          to see every change and the reason for it.
+          {t("to see every change and the reason for it.", "untuk melihat setiap perubahan dan alasannya.")}
         </li>
       </ol>
-      <p className="mt-3 text-xs text-muted-foreground">Demo profiles are deleted automatically after 2 days and are never used in research.</p>
+      <p className="mt-3 text-xs text-muted-foreground">{t("Demo profiles are deleted automatically after 2 days and are never used in research.", "Profil demo otomatis dihapus setelah 2 hari dan tidak pernah dipakai untuk riset.")}</p>
     </section>
   );
 }
 
 function Areas({ d, measured }: { d: Dashboard; measured: boolean }) {
+  const t = useT();
   const order = CLUSTER_ORDER.filter((k) => d.coverage_by_cluster[k]);
   if (!measured)
     return (
       <Panel>
         <p className="text-sm text-ink/70">
-          Nothing measured yet. Add your transcript, a certificate or a project, or take the quick check, and your coverage per area appears here.
+          {t(
+            "Nothing measured yet. Add your transcript, a certificate or a project, or take the quick check, and your coverage per area appears here.",
+            "Belum ada yang terukur. Tambahkan transkrip, sertifikat atau project, atau ikuti Quick Check, dan coverage per area-mu muncul di sini.",
+          )}
         </p>
       </Panel>
     );
@@ -322,7 +340,7 @@ function Areas({ d, measured }: { d: Dashboard; measured: boolean }) {
             <li key={k}>
               <div className="mb-2 flex items-baseline justify-between">
                 <span className="font-medium text-ink">{c.label}</span>
-                <span className="tabular text-sm font-semibold text-ink">{c.measured === false ? "Not measured" : pct(c.coverage)}</span>
+                <span className="tabular text-sm font-semibold text-ink">{c.measured === false ? t("Not measured", "Belum terukur") : pct(c.coverage)}</span>
               </div>
               <MasteryBar value={c.measured === false ? 0 : c.coverage} tone="indigo" />
             </li>
@@ -335,14 +353,15 @@ function Areas({ d, measured }: { d: Dashboard; measured: boolean }) {
 
 function AllSkills({ comps, onOpen }: { comps: Competency[]; onOpen: (id: string) => void }) {
   const [onlyGaps, setOnlyGaps] = useState(true);
+  const t = useT();
   const rows = (onlyGaps ? comps.filter((c) => c.gap > 0.01) : comps).slice().sort((a, b) => b.demand - a.demand);
   return (
     <Panel className="p-0 sm:p-0">
       <div className="flex items-center justify-between border-b px-5 py-3">
-        <p className="text-sm text-ink/70">{rows.length} skills, most in-demand first</p>
+        <p className="text-sm text-ink/70">{t(`${rows.length} skills, most in-demand first`, `${rows.length} skill, paling dicari dulu`)}</p>
         <label className="flex items-center gap-2 text-sm text-ink/80">
           <input type="checkbox" checked={onlyGaps} onChange={(e) => setOnlyGaps(e.target.checked)} className="size-4 accent-indigo" />
-          Only skills to improve
+          {t("Only skills to improve", "Hanya skill yang perlu ditingkatkan")}
         </label>
       </div>
       <ul className="divide-y">
@@ -356,7 +375,7 @@ function AllSkills({ comps, onOpen }: { comps: Competency[]; onOpen: (id: string
               <span className="min-w-0">
                 <span className="block truncate text-sm font-medium text-ink">{titleCase(c.name)}</span>
                 <span className="block text-xs text-ink/60">
-                  {LEVEL[c.level]}, asked in {pct(c.demand)} of postings{c.low_confidence ? ", little evidence yet" : ""}
+                  {t(...LEVEL[c.level])}, {t(`asked in ${pct(c.demand)} of postings`, `diminta di ${pct(c.demand)} posting`)}{c.low_confidence ? t(", little evidence yet", ", evidence masih sedikit") : ""}
                 </span>
               </span>
               <MasteryBar value={c.p} target={c.required} tone="indigo" />
@@ -369,23 +388,27 @@ function AllSkills({ comps, onOpen }: { comps: Competency[]; onOpen: (id: string
 }
 
 function WhyOrder({ d, names }: { d: Dashboard; names: Record<string, string> }) {
+  const t = useT();
   const cf = d.counterfactual;
   return (
     <Panel>
       <div className="mb-5 flex items-center gap-4">
         <Mascot name="scale" size={80} className="hidden sm:block" />
         <p className="max-w-2xl text-sm text-ink/75">
-          We compared your route with simpler ways of ordering the same skills. &ldquo;Stuck&rdquo; means a step comes before something it depends on.
+          {t(
+            "We compared your route with simpler ways of ordering the same skills. \u201cStuck\u201d means a step comes before something it depends on.",
+            "Kami membandingkan rutemu dengan cara yang lebih sederhana untuk mengurutkan skill yang sama. \u201cMacet\u201d berarti sebuah langkah datang sebelum hal yang dibutuhkannya.",
+          )}
         </p>
       </div>
       <ul className="space-y-3">
         {cf.alternatives.map((a, i) => (
           <li key={a.label} className={`rounded-xl border p-4 ${i === 0 ? "border-indigo/40 bg-secondary/40" : ""}`}>
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-semibold text-ink">{i === 0 ? "Your Route" : titleCase(a.label)}</span>
-              <Tag tone={a.blocked ? "red" : "mint"}>{a.blocked ? `Stuck ${a.blocked}×` : "Never stuck"}</Tag>
+              <span className="font-semibold text-ink">{i === 0 ? t("Your Route", "Rutemu") : titleCase(a.label)}</span>
+              <Tag tone={a.blocked ? "red" : "mint"}>{a.blocked ? t(`Stuck ${a.blocked}×`, `Macet ${a.blocked}×`) : t("Never stuck", "Tidak pernah macet")}</Tag>
             </div>
-            <p className="mt-1.5 text-sm text-ink/70">{a.order.map((s) => names[s] ?? s).join(", then ")}</p>
+            <p className="mt-1.5 text-sm text-ink/70">{a.order.map((s) => names[s] ?? s).join(t(", then ", ", lalu "))}</p>
           </li>
         ))}
       </ul>
@@ -396,12 +419,16 @@ function WhyOrder({ d, names }: { d: Dashboard; names: Record<string, string> })
 
 function HowRanked({ ranking }: { ranking: RankRow[] }) {
   const f = ["G", "R", "D", "U", "K"] as const;
+  const t = useT();
   return (
     <Panel className="overflow-x-auto">
       <div className="mb-4 flex items-center gap-4">
         <Mascot name="magnifier" size={80} className="hidden sm:block" />
         <p className="max-w-2xl text-sm text-ink/75">
-          Each skill gets a priority score from these signals. Bigger gaps, higher demand, and skills that unlock others rank higher.
+          {t(
+            "Each skill gets a priority score from these signals. Bigger gaps, higher demand, and skills that unlock others rank higher.",
+            "Setiap skill mendapat skor prioritas dari sinyal-sinyal ini. Gap lebih besar, demand lebih tinggi, dan skill yang membuka skill lain berada lebih atas.",
+          )}
         </p>
       </div>
       <table className="w-full min-w-[560px] text-left text-sm">
@@ -438,24 +465,26 @@ function HowRanked({ ranking }: { ranking: RankRow[] }) {
 // ------------------------------------------------------------- study arm A (control: skill list only)
 function ControlListView({ d, sid }: { d: Dashboard; sid: string }) {
   const rows = [...d.competencies].sort((a, b) => b.demand - a.demand).slice(0, 15);
+  const t = useT();
   return (
     <div className="space-y-12">
       <section className="rounded-3xl bg-route-soft p-6 sm:p-8">
         <h1 className="text-[30px] font-extrabold leading-tight text-ink">Hi, {d.student.display_name}</h1>
         <p className="mt-1 text-ink/70">
-          Skills employers ask for in {d.role.n_postings} real <span className="font-semibold text-ink">{d.role.name}</span> job postings. Use this list to plan
-          your own learning.
+          {t(`Skills employers ask for in ${d.role.n_postings} real`, `Skill yang diminta employer di ${d.role.n_postings} job posting nyata`)}{" "}
+          <span className="font-semibold text-ink">{d.role.name}</span>
+          {t(" job postings. Use this list to plan your own learning.", ". Gunakan daftar ini untuk merencanakan belajarmu sendiri.")}
         </p>
       </section>
       {d.study_arm ? <StudyPlanCard sid={sid} /> : null}
       <ClarityPulse sid={sid} />
       <section>
-        <SectionTitle>Most Requested Skills</SectionTitle>
+        <SectionTitle>{t("Most Requested Skills", "Skill Paling Banyak Diminta")}</SectionTitle>
         <ul className="divide-y rounded-2xl border bg-card">
           {rows.map((c) => (
             <li key={c.skill_id} className="flex items-center justify-between gap-3 p-4">
               <span className="font-medium text-ink">{titleCase(c.name)}</span>
-              <span className="tabular text-sm text-ink/70">in {pct(c.demand)} of postings</span>
+              <span className="tabular text-sm text-ink/70">{t(`in ${pct(c.demand)} of postings`, `di ${pct(c.demand)} posting`)}</span>
             </li>
           ))}
         </ul>
@@ -472,6 +501,7 @@ function ClarityPulse({ sid }: { sid: string }) {
     return `${d.getFullYear()}-${Math.ceil(((d.getTime() - onejan.getTime()) / 86400000 + onejan.getDay() + 1) / 7)}`;
   })();
   const key = `pathsync.pulse.${sid}.${week}`;
+  const t = useT();
   const [done, setDone] = useState(() => {
     try {
       return localStorage.getItem(key) === "1";
@@ -488,11 +518,11 @@ function ClarityPulse({ sid }: { sid: string }) {
     setDone(true);
   }
   return (
-    <section aria-label="Quick question" className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-4">
+    <section aria-label={t("Quick question", "Pertanyaan singkat")} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-4">
       <p className="text-sm text-ink/85">
-        <span className="font-medium text-ink">Quick question:</span> &ldquo;I know which skill to learn next and why.&rdquo;
+        <span className="font-medium text-ink">{t("Quick question:", "Pertanyaan singkat:")}</span> {t("\u201cI know which skill to learn next and why.\u201d", "\u201cAku tahu skill mana yang harus dipelajari berikutnya dan kenapa.\u201d")}
       </p>
-      <div role="group" aria-label="1 strongly disagree, 5 strongly agree" className="flex gap-1">
+      <div role="group" aria-label={t("1 strongly disagree, 5 strongly agree", "1 sangat tidak setuju, 5 sangat setuju")} className="flex gap-1">
         {[1, 2, 3, 4, 5].map((v) => (
           <button key={v} type="button" onClick={() => answer(v)} className="size-9 rounded-lg border text-sm font-medium hover:border-indigo hover:bg-secondary">
             {v}
@@ -508,6 +538,7 @@ function StudyPlanCard({ sid }: { sid: string }) {
   const [text, setText] = useState("");
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState<unknown>(null);
+  const t = useT();
   if (sent) return null;
   async function start() {
     const r = await api.post<{ started_at: string }>(`/students/${sid}/study/plan/start`);
@@ -524,18 +555,21 @@ function StudyPlanCard({ sid }: { sid: string }) {
   }
   return (
     <Panel>
-      <h2 className="font-semibold text-ink">Study Task: Write Your Learning Plan</h2>
+      <h2 className="font-semibold text-ink">{t("Study Task: Write Your Learning Plan", "Tugas Studi: Tulis Rencana Belajarmu")}</h2>
       <p className="mt-1 text-sm text-ink/70">
-        Write what you will learn over the next four weeks, in what order and why. Experts rate plans without knowing who wrote them.
+        {t(
+          "Write what you will learn over the next four weeks, in what order and why. Experts rate plans without knowing who wrote them.",
+          "Tulis apa yang akan kamu pelajari empat minggu ke depan, dengan urutan apa dan kenapa. Pakar menilai rencana tanpa tahu siapa penulisnya.",
+        )}
       </p>
       {!started ? (
         <Button className="mt-3" onClick={start}>
-          Start Writing
+          {t("Start Writing", "Mulai Menulis")}
         </Button>
       ) : (
         <div className="mt-3 space-y-2">
           <textarea
-            aria-label="Your learning plan"
+            aria-label={t("Your learning plan", "Rencana belajarmu")}
             value={text}
             onChange={(e) => setText(e.target.value)}
             rows={6}
@@ -544,7 +578,7 @@ function StudyPlanCard({ sid }: { sid: string }) {
           />
           <ErrorNote error={err} />
           <Button onClick={submit} disabled={text.trim().length < 40}>
-            Submit Plan
+            {t("Submit Plan", "Kirim Rencana")}
           </Button>
         </div>
       )}
@@ -591,13 +625,14 @@ function usePulseReady() {
 /** Careers the same evidence already brings the student close to (links to the Career Map). */
 function AlsoClose({ sid }: { sid: string }) {
   const careers = useApi<CareersData>(`/students/${sid}/careers`);
+  const t = useT();
   const others = (careers.data?.careers ?? []).filter((c) => !c.is_target && c.n_measured > 0).slice(0, 3);
   if (!others.length) return null;
   return (
     <section aria-labelledby="also-close" className="flex flex-col gap-4 rounded-2xl border bg-card p-6 sm:flex-row sm:items-center sm:p-8">
       <Mascot name="signpost" size={88} className="hidden sm:block" />
       <div className="min-w-0 flex-1">
-        <h2 id="also-close" className="text-lg font-semibold text-ink">Your Skills Also Bring You Close To</h2>
+        <h2 id="also-close" className="text-lg font-semibold text-ink">{t("Your Skills Also Bring You Close To", "Skill-mu Juga Mendekatkanmu ke")}</h2>
         <ul className="mt-3 flex flex-wrap gap-2">
           {others.map((c) => (
             <li key={c.id} className="rounded-full bg-secondary px-3 py-1 text-sm text-secondary-foreground">
@@ -607,7 +642,7 @@ function AlsoClose({ sid }: { sid: string }) {
         </ul>
       </div>
       <LinkButton href="/skill-map?tab=careers" variant="outline" size="lg" className="h-10 shrink-0">
-        Explore Careers
+        {t("Explore Careers", "Jelajahi Karier")}
       </LinkButton>
     </section>
   );

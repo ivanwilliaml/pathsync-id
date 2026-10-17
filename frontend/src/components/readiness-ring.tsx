@@ -1,8 +1,12 @@
+"use client";
+
 import { useId } from "react";
+import { useT } from "@/lib/i18n";
 
 /** Circular progress with the route gradient. `value: null` = not measured yet (no evidence), shown as a dash, not 0%. */
 export function ReadinessRing({ value, size = 148, stroke = 14, label }: { value: number | null; size?: number; stroke?: number; label?: string }) {
   const id = useId();
+  const t = useT();
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
   const v = value === null ? 0 : Math.max(0, Math.min(1, value));
@@ -12,7 +16,7 @@ export function ReadinessRing({ value, size = 148, stroke = 14, label }: { value
       className="relative inline-flex shrink-0"
       style={{ width: size, height: size }}
       role="img"
-      aria-label={value === null ? `${label ?? "Progress"}: not measured yet` : `${label ?? "Progress"}: ${text}`}
+      aria-label={value === null ? `${label ?? t("Progress", "Progres")}: ${t("not measured yet", "belum terukur")}` : `${label ?? t("Progress", "Progres")}: ${text}`}
     >
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
         <defs>

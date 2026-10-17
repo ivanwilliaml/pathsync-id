@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { LangSync } from "@/lib/i18n";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", display: "swap" });
@@ -21,8 +22,9 @@ export const viewport: Viewport = { themeColor: "#f0f6ff" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={jakarta.variable}>
+    <html lang="id" className={jakarta.variable}>
       <body className="min-h-screen antialiased">
+        <LangSync />
         <TooltipProvider>
           <AppShell>{children}</AppShell>
           <Toaster position="bottom-right" />

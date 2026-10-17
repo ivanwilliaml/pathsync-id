@@ -8,6 +8,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DecisionTrace } from "./decision-trace";
 import { LinkButton, MasteryBar, Tag } from "./kit";
+import { useT } from "@/lib/i18n";
 
 export interface SkillDetail {
   skill_id: string;
@@ -26,6 +27,7 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
   const e = d?.explanation;
   const comp = d?.competency;
   const step = d?.step;
+  const t = useT();
   return (
     <Sheet open={d !== null} onOpenChange={onOpenChange}>
       <SheetContent side="right" className="w-full gap-0 p-0 sm:max-w-lg">
@@ -33,21 +35,21 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
           <>
             <SheetHeader className="border-b bg-route-soft p-6">
               <div className="flex flex-wrap gap-2">
-                {d.rank ? <Tag tone="indigo">Priority #{d.rank}</Tag> : null}
-                {step && step.role_in_path !== "prioritas" ? <Tag tone="ember">Prerequisite</Tag> : null}
+                {d.rank ? <Tag tone="indigo">{t("Priority", "Prioritas")} #{d.rank}</Tag> : null}
+                {step && step.role_in_path !== "prioritas" ? <Tag tone="ember">{t("Prerequisite", "Prasyarat")}</Tag> : null}
                 {d.bottleneck ? <Tag tone="ember">Bottleneck</Tag> : null}
-                {d.rec_type ? <Tag tone={d.rec_type === "buktikan" ? "mint" : "neutral"}>{REC[d.rec_type]}</Tag> : null}
+                {d.rec_type ? <Tag tone={d.rec_type === "buktikan" ? "mint" : "neutral"}>{t(...REC[d.rec_type])}</Tag> : null}
               </div>
               <SheetTitle className="mt-3 text-2xl font-bold text-ink">{titleCase(d.name)}</SheetTitle>
-              <SheetDescription className="sr-only">Why this skill is on your route and how to learn it.</SheetDescription>
+              <SheetDescription className="sr-only">{t("Why this skill is on your route and how to learn it.", "Kenapa skill ini ada di rutemu dan cara mempelajarinya.")}</SheetDescription>
               {comp ? (
                 <div className="mt-4">
                   <MasteryBar value={comp.p} target={comp.required} />
                   <div className="mt-2 flex justify-between text-xs text-ink/70">
                     <span>
-                      You: {LEVEL[comp.level] ?? comp.level} ({num(comp.p)})
+                      {t("You", "Kamu")}: {LEVEL[comp.level] ? t(...LEVEL[comp.level]) : comp.level} ({num(comp.p)})
                     </span>
-                    <span>Role needs: {num(comp.required)}</span>
+                    <span>{t("Role needs", "Dibutuhkan role")}: {num(comp.required)}</span>
                   </div>
                 </div>
               ) : null}
@@ -56,8 +58,8 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
               <div className="space-y-7 p-6">
                 {e ? (
                   <>
-                    <Block title="What to Learn">{e.what}</Block>
-                    <Block title="Why It Matters">{e.why}</Block>
+                    <Block title={t("What to Learn", "Yang Perlu Dipelajari")}>{e.what}</Block>
+                    <Block title={t("Why It Matters", "Kenapa Penting")}>{e.why}</Block>
                     {e.quotes.length ? (
                       <div className="space-y-2">
                         {e.quotes.slice(0, 3).map((q) => (
@@ -77,17 +79,17 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
                         ))}
                       </div>
                     ) : null}
-                    <Block title="Why Now">{e.why_now}</Block>
-                    <Block title="What Comes Next">{e.next}</Block>
+                    <Block title={t("Why Now", "Kenapa Sekarang")}>{e.why_now}</Block>
+                    <Block title={t("What Comes Next", "Setelah Ini")}>{e.next}</Block>
                   </>
                 ) : step?.why_prereq ? (
-                  <Block title="Why It's on Your Route">{step.why_prereq}</Block>
+                  <Block title={t("Why It's on Your Route", "Kenapa Ada di Rutemu")}>{step.why_prereq}</Block>
                 ) : null}
                 {step ? (
                   <div>
-                    <h3 className="text-sm font-semibold text-ink">Free Materials</h3>
+                    <h3 className="text-sm font-semibold text-ink">{t("Free Materials", "Materi Gratis")}</h3>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      Focus on {step.learn_what}. About {hours(step.hours)} to reach the target.
+                      {t("Focus on", "Fokus pada")} {step.learn_what}. {t("About", "Sekitar")} {hours(step.hours)} {t("to reach the target.", "untuk mencapai target.")}
                     </p>
                     <ul className="mt-3 space-y-2">
                       {step.materials.map((m) => (
@@ -103,8 +105,8 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
                             <span className="min-w-0">
                               <span className="block text-sm font-medium text-ink">{m.title}</span>
                               <span className="mt-0.5 block text-xs text-muted-foreground">
-                                {m.provider}, {FORMAT[m.format] ?? m.format}, {DIFFICULTY[m.difficulty] ?? m.difficulty}, {m.hours} h
-                                {m.language === "id" ? ", in Indonesian" : ""}
+                                {m.provider}, {FORMAT[m.format] ? t(...FORMAT[m.format]) : m.format}, {DIFFICULTY[m.difficulty] ? t(...DIFFICULTY[m.difficulty]) : m.difficulty}, {m.hours} {t("h", "jam")}
+                                {m.language === "id" ? t(", in Indonesian", ", berbahasa Indonesia") : ""}
                               </span>
                             </span>
                           </a>
@@ -116,7 +118,7 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
                 {d.rank ? <DecisionTrace skillId={d.skill_id} /> : null}
                 {comp && Object.values(comp.sources).flat().length ? (
                   <div>
-                    <h3 className="text-sm font-semibold text-ink">Evidence So Far</h3>
+                    <h3 className="text-sm font-semibold text-ink">{t("Evidence So Far", "Evidence Sejauh Ini")}</h3>
                     <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-ink/80">
                       {Object.values(comp.sources)
                         .flat()
@@ -130,7 +132,7 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
             </ScrollArea>
             <div className="border-t p-4">
               <LinkButton href={`/assessment/${d.skill_id}`} size="lg" className="h-11 w-full">
-                Prove You Know It
+                {t("Prove You Know It", "Buktikan Kamu Bisa")}
               </LinkButton>
             </div>
           </>

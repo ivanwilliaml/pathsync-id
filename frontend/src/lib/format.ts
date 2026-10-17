@@ -21,13 +21,14 @@ export function titleCase(s: string): string {
     .join("");
 }
 
-export const LEVEL: Record<string, string> = { awal: "Beginner", dasar: "Basic", mandiri: "Proficient", mahir: "Advanced" };
-export const REC: Record<string, string> = { pelajari: "Learn", buktikan: "Prove It" };
-export const PATH_ROLE: Record<string, string> = { prioritas: "Priority", prasyarat: "Prerequisite" };
-export const RUBRIC: Record<number, string> = { 0: "Not Shown", 1: "Basic", 2: "Proficient", 3: "Advanced" };
-export const DIFFICULTY: Record<string, string> = { dasar: "Beginner", menengah: "Intermediate", lanjut: "Advanced" };
-export const FORMAT: Record<string, string> = { teks: "Article", kursus: "Course", video: "Video", latihan: "Practice" };
-export const EDGE_STATUS: Record<string, string> = { draft: "Draft", approved: "Approved", rejected: "Rejected" };
+// [English, Indonesian]; render with t(...LEVEL[code])
+export const LEVEL: Record<string, [string, string]> = { awal: ["Beginner", "Pemula"], dasar: ["Basic", "Dasar"], mandiri: ["Proficient", "Mandiri"], mahir: ["Advanced", "Mahir"] };
+export const REC: Record<string, [string, string]> = { pelajari: ["Learn", "Pelajari"], buktikan: ["Prove It", "Buktikan"] };
+export const PATH_ROLE: Record<string, [string, string]> = { prioritas: ["Priority", "Prioritas"], prasyarat: ["Prerequisite", "Prasyarat"] };
+export const RUBRIC: Record<number, [string, string]> = { 0: ["Not Shown", "Belum Tampak"], 1: ["Basic", "Dasar"], 2: ["Proficient", "Mandiri"], 3: ["Advanced", "Mahir"] };
+export const DIFFICULTY: Record<string, [string, string]> = { dasar: ["Beginner", "Pemula"], menengah: ["Intermediate", "Menengah"], lanjut: ["Advanced", "Lanjut"] };
+export const FORMAT: Record<string, [string, string]> = { teks: ["Article", "Artikel"], kursus: ["Course", "Kursus"], video: ["Video", "Video"], latihan: ["Practice", "Latihan"] };
+export const EDGE_STATUS: Record<string, [string, string]> = { draft: ["Draft", "Draf"], approved: ["Approved", "Disetujui"], rejected: ["Rejected", "Ditolak"] };
 export const SOURCE: Record<string, string> = {
   karirhub: "Karirhub (Kemnaker)", workable: "Workable", workday: "Workday", lever: "Lever", greenhouse: "Greenhouse",
   smartrecruiters: "SmartRecruiters", ashby: "Ashby", recruitee: "Recruitee",

@@ -1,4 +1,5 @@
 // Thin client for the FastAPI backend. Requests go to /api/* which next.config.mjs proxies.
+import { tNow } from "./i18n";
 import { getStudentToken } from "./student";
 
 export class ApiError extends Error {
@@ -49,18 +50,21 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
       throw new ApiError(
         408,
         method === "GET"
-          ? "This is taking longer than expected. Check your connection and try again."
-          : "Still processing… your change may already be saved. Reload the page to check before trying again.",
+          ? tNow("This is taking longer than expected. Check your connection and try again.", "Ini lebih lama dari biasanya. Cek koneksimu dan coba lagi.")
+          : tNow(
+              "Still processing… your change may already be saved. Reload the page to check before trying again.",
+              "Masih diproses… perubahanmu mungkin sudah tersimpan. Muat ulang halaman untuk mengecek sebelum mencoba lagi.",
+            ),
       );
     }
-    throw new ApiError(0, "Can't reach PathSync. Check your internet connection and try again.");
+    throw new ApiError(0, tNow("Can't reach PathSync. Check your internet connection and try again.", "Tidak bisa terhubung ke PathSync. Cek koneksi internetmu dan coba lagi."));
   } finally {
     clearTimeout(timer);
   }
   lastRequestId = res.headers.get("x-request-id") ?? lastRequestId;
   if (!res.ok) {
     const rid = res.headers.get("x-request-id");
-    let msg = res.status >= 500 ? "Something went wrong on the server. Try again in a moment." : `${res.status} ${res.statusText}`;
+    let msg = res.status >= 500 ? tNow("Something went wrong on the server. Try again in a moment.", "Ada masalah di server. Coba lagi sebentar.") : `${res.status} ${res.statusText}`;
     try {
       const j = await res.json();
       if (typeof j.detail === "string") msg = j.detail;

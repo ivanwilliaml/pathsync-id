@@ -1,5 +1,8 @@
+"use client";
+
 import { pct } from "@/lib/format";
 import { cn } from "@/lib/utils";
+import { useT } from "@/lib/i18n";
 
 export interface Change {
   id: string;
@@ -12,6 +15,7 @@ export interface Change {
 /** Readiness changes per career as aligned rows: name, a before→after bar, and the change in percentage points.
  * Used by the Career Map ("since your last visit"), the Quick Check result and Path History, so they read the same. */
 export function ChangeList({ items, className }: { items: Change[]; className?: string }) {
+  const t = useT();
   return (
     <ul className={cn("divide-y", className)}>
       {items.map((c) => {
@@ -22,7 +26,7 @@ export function ChangeList({ items, className }: { items: Change[]; className?: 
             <div className="min-w-0">
               <p className="truncate text-sm font-medium text-ink">
                 {c.name}
-                {c.target ? <span className="ml-2 text-xs font-normal text-muted-foreground">your target</span> : null}
+                {c.target ? <span className="ml-2 text-xs font-normal text-muted-foreground">{t("your target", "target-mu")}</span> : null}
               </p>
               <p className="tabular text-xs text-muted-foreground">
                 {pct(c.before)} → {pct(c.now)}

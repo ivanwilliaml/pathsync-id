@@ -102,7 +102,7 @@ export default function PrivacyPage() {
           </p>
           <ul className="list-disc space-y-1.5 pl-5">
             <li>Peristiwa penggunaan (misalnya &ldquo;membuka dasbor&rdquo;): 180 hari.</li>
-            <li>Laporan galat otomatis dari peramban: 90 hari. Pesan yang Anda tulis sendiri lewat &ldquo;Report a problem&rdquo; disimpan sampai ditangani.</li>
+            <li>Laporan galat otomatis dari peramban: 90 hari. Pesan yang Anda tulis sendiri lewat &ldquo;Laporkan Masalah&rdquo; disimpan sampai ditangani.</li>
             <li>Catatan aktivitas staf: 365 hari.</li>
             <li>Saat Anda menghapus profil, peristiwa penggunaan Anda ikut dihapus dan laporan yang pernah Anda kirim dilepas dari profil Anda.</li>
           </ul>
@@ -110,8 +110,8 @@ export default function PrivacyPage() {
 
         <Section title="7. Hak Anda">
           <ul className="list-disc space-y-1.5 pl-5">
-            <li>Melihat dan mengunduh semua data Anda (Pengaturan → Download My Data).</li>
-            <li>Menghapus profil dan seluruh data terkait (Pengaturan → Delete My Profile).</li>
+            <li>Melihat dan mengunduh semua data Anda (Pengaturan → Unduh Data-ku).</li>
+            <li>Menghapus profil dan seluruh data terkait (Pengaturan → Hapus Profilku).</li>
             <li>Mencabut persetujuan penelitian, mengganti kunci akses, dan menanyakan cara data Anda diproses.</li>
           </ul>
           <p>

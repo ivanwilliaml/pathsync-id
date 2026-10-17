@@ -7,6 +7,7 @@ import type { Meta } from "@/lib/api";
 import { ChangeList } from "@/components/change-list";
 import { RequireStudent } from "@/components/require-student";
 import { EmptyState, ErrorNote, LinkButton, Loading, PageHeader, Tag } from "@/components/kit";
+import { useT } from "@/lib/i18n";
 
 interface HistoryRow {
   id: number;
@@ -19,12 +20,12 @@ interface HistoryRow {
   careers: Record<string, number> | null;
 }
 
-const TRIGGER: Record<string, { label: string; icon: typeof Flag; tone: "neutral" | "indigo" | "ember" | "mint" }> = {
-  initial: { label: "Route Created", icon: Flag, tone: "neutral" },
-  evidence: { label: "New Evidence", icon: FilePlus2, tone: "mint" },
-  market: { label: "Market Update", icon: RefreshCw, tone: "ember" },
-  role: { label: "Role Changed", icon: Briefcase, tone: "indigo" },
-  manual: { label: "Manual Update", icon: Shuffle, tone: "neutral" },
+const TRIGGER: Record<string, { label: [string, string]; icon: typeof Flag; tone: "neutral" | "indigo" | "ember" | "mint" }> = {
+  initial: { label: ["Route Created", "Rute Dibuat"], icon: Flag, tone: "neutral" },
+  evidence: { label: ["New Evidence", "Evidence Baru"], icon: FilePlus2, tone: "mint" },
+  market: { label: ["Market Update", "Update Pasar"], icon: RefreshCw, tone: "ember" },
+  role: { label: ["Role Changed", "Role Berubah"], icon: Briefcase, tone: "indigo" },
+  manual: { label: ["Manual Update", "Update Manual"], icon: Shuffle, tone: "neutral" },
 };
 
 export default function HistoryPage() {
@@ -34,15 +35,16 @@ export default function HistoryPage() {
 function History({ sid }: { sid: string }) {
   const h = useApi<HistoryRow[]>(`/students/${sid}/history`);
   const meta = useApi<Meta>("/meta");
+  const tr = useT();
   const roleName = Object.fromEntries((meta.data?.roles ?? []).map((r) => [r.id, r.name]));
   if (h.error) return <ErrorNote error={h.error} />;
   if (!h.data) return <Loading />;
   return (
     <div>
-      <PageHeader mascot="map-route" title="Path History" description="Every time your route changes, we keep a record of what triggered it and why." />
+      <PageHeader mascot="map-route" title="Path History" description={tr("Every time your route changes, we keep a record of what triggered it and why.", "Setiap kali rutemu berubah, kami mencatat apa pemicunya dan kenapa.")} />
       {h.data.length === 0 ? (
-        <EmptyState title="No Changes Yet" mascot="map-route" action={<LinkButton href="/assessment">Take the Quick Check</LinkButton>}>
-          Your history starts once you add evidence or take the quick check.
+        <EmptyState title={tr("No Changes Yet", "Belum Ada Perubahan")} mascot="map-route" action={<LinkButton href="/assessment">{tr("Take the Quick Check", "Ikuti Quick Check")}</LinkButton>}>
+          {tr("Your history starts once you add evidence or take the quick check.", "Riwayatmu dimulai setelah kamu menambah evidence atau mengikuti Quick Check.")}
         </EmptyState>
       ) : (
         <div className="relative">
@@ -68,7 +70,7 @@ function History({ sid }: { sid: string }) {
                 </span>
                 <article className="rounded-2xl border bg-card p-5">
                   <div className="flex flex-wrap items-center gap-2 text-xs text-ink/60">
-                    <Tag tone={t.tone}>{t.label}</Tag>
+                    <Tag tone={t.tone}>{tr(...t.label)}</Tag>
                     <time dateTime={r.created_at}>{fmtDateTime(r.created_at)}</time>
                     <span>Readiness {pct(r.coverage)}</span>
                   </div>
@@ -82,11 +84,11 @@ function History({ sid }: { sid: string }) {
                   ) : null}
                   {moved.length ? (
                     <div className="mt-4 rounded-xl border px-4 pt-3 pb-1">
-                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Other careers that moved</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{tr("Other careers that moved", "Karier lain yang bergerak")}</p>
                       <ChangeList items={moved.map((m) => ({ id: m.id, name: roleName[m.id] ?? titleCase(m.id.replace(/_/g, " ")), before: m.before, now: m.now }))} />
                     </div>
                   ) : null}
-                  <ol className="mt-3 flex flex-wrap gap-1.5" aria-label="Route at that time">
+                  <ol className="mt-3 flex flex-wrap gap-1.5" aria-label={tr("Route at that time", "Rute saat itu")}>
                     {r.path.map((p, i) => (
                       <li key={p.skill_id}>
                         <Tag tone={p.role_in_path === "prioritas" ? "indigo" : "ember"}>

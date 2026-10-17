@@ -9,6 +9,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Mascot, type MascotName } from "./mascot";
 import { MascotLoader } from "./mascot-loader";
+import { useT } from "@/lib/i18n";
 
 /** Navigation that looks like a button (keeps <a> semantics for Cmd/Ctrl-click). */
 export function LinkButton({
@@ -66,11 +67,12 @@ export function Panel({ children, className, ...props }: ComponentProps<"section
   );
 }
 
-export function Loading({ label = "Loading…" }: { label?: string }) {
+export function Loading({ label }: { label?: string }) {
+  const t = useT();
   return (
     <div role="status" aria-live="polite" className="flex flex-col items-center justify-center gap-3 py-16 text-sm text-muted-foreground">
       <MascotLoader size={72} />
-      {label}
+      {label ?? t("Loading…", "Memuat…")}
     </div>
   );
 }

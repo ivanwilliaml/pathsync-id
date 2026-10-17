@@ -22,6 +22,7 @@ import { ReadinessRing } from "./readiness-ring";
 import { Mascot, type MascotName } from "./mascot";
 import type { CareersData } from "./career-map";
 import { ChangeList } from "./change-list";
+import { useT } from "@/lib/i18n";
 
 interface SubmitResult {
   results: { item_id: string; skill_id: string; correct: boolean; choice: number | null; answer: number; explanation: string }[];
@@ -39,6 +40,7 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
   const [busy, setBusy] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [err, setErr] = useState<unknown>(null);
+  const t = useT();
 
   useEffect(() => track("check_started", { items: items.length }), [items.length]);
   // readiness for every career before the check, to show what the new evidence moved (Career Map feedback)
@@ -77,8 +79,8 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
   useEffect(() => {
     if (result) return;
     const onKey = (e: KeyboardEvent) => {
-      const t = e.target as HTMLElement;
-      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA") || e.metaKey || e.ctrlKey || e.altKey) return;
+      const el = e.target as HTMLElement;
+      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA") || e.metaKey || e.ctrlKey || e.altKey) return;
       const k = e.key.toUpperCase();
       const n = "1234".indexOf(k) >= 0 ? "1234".indexOf(k) : LETTERS.indexOf(k);
       if (n >= 0 && n < it.options.length) {
@@ -101,11 +103,11 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
       <div className="mb-6">
         <div className="mb-2 flex items-center justify-between text-sm">
           <span className="font-medium text-ink">
-            Question {idx + 1} of {items.length}
+            {t(`Question ${idx + 1} of ${items.length}`, `Soal ${idx + 1} dari ${items.length}`)}
           </span>
-          <span className="text-ink/60">{answered} answered</span>
+          <span className="text-ink/60">{t(`${answered} answered`, `${answered} terjawab`)}</span>
         </div>
-        <div className="h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuemin={0} aria-valuemax={items.length} aria-valuenow={idx + 1} aria-label="Progress">
+        <div className="h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuemin={0} aria-valuemax={items.length} aria-valuenow={idx + 1} aria-label={t("Progress", "Progres")}>
           <div className="h-2 rounded-full bg-route transition-[width] duration-300" style={{ width: `${((idx + 1) / items.length) * 100}%` }} />
         </div>
       </div>
@@ -113,7 +115,7 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
       <Panel className="p-6 sm:p-8">
         <Tag tone="indigo">{titleCase(it.skill_name)}</Tag>
         <h2 className="mt-4 text-[20px] font-semibold leading-snug text-ink sm:text-[22px]">{it.stem}</h2>
-        <div role="radiogroup" aria-label="Answer options" className="mt-6 space-y-3">
+        <div role="radiogroup" aria-label={t("Answer options", "Pilihan jawaban")} className="mt-6 space-y-3">
           {it.options.map((o, k) => {
             const sel = answers[it.id] === k;
             return (
@@ -146,16 +148,16 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
 
       <div className="mt-6 flex items-center justify-between gap-3">
         <Button variant="ghost" size="lg" className="h-11" disabled={idx === 0} onClick={() => setIdx(idx - 1)}>
-          <ArrowLeft /> Back
+          <ArrowLeft /> {t("Back", "Kembali")}
         </Button>
-        <p className="hidden text-xs text-muted-foreground sm:block">Press 1–4 to answer and Enter to continue</p>
+        <p className="hidden text-xs text-muted-foreground sm:block">{t("Press 1–4 to answer and Enter to continue", "Tekan 1–4 untuk menjawab dan Enter untuk lanjut")}</p>
         {last ? (
           <Button size="lg" className="h-11 px-6" onClick={finish} disabled={busy}>
-            {busy ? "Submitting…" : "Submit Answers"}
+            {busy ? t("Submitting…", "Mengirim…") : t("Submit Answers", "Kirim Jawaban")}
           </Button>
         ) : (
           <Button size="lg" className="h-11 px-6" onClick={() => setIdx(idx + 1)}>
-            Next <ArrowRight />
+            {t("Next", "Lanjut")} <ArrowRight />
           </Button>
         )}
       </div>
@@ -167,9 +169,9 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {items.length - answered} Question{items.length - answered > 1 ? "s" : ""} Left Blank
+              {t(`${items.length - answered} Question${items.length - answered > 1 ? "s" : ""} Left Blank`, `${items.length - answered} Soal Belum Dijawab`)}
             </AlertDialogTitle>
-            <AlertDialogDescription>Blank answers count as wrong. You can go back and answer them, or submit now.</AlertDialogDescription>
+            <AlertDialogDescription>{t("Blank answers count as wrong. You can go back and answer them, or submit now.", "Jawaban kosong dihitung salah. Kamu bisa kembali dan menjawabnya, atau kirim sekarang.")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel
@@ -178,9 +180,9 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
                 if (first >= 0) setIdx(first);
               }}
             >
-              Answer Them
+              {t("Answer Them", "Jawab Dulu")}
             </AlertDialogCancel>
-            <AlertDialogAction onClick={submit}>Submit Anyway</AlertDialogAction>
+            <AlertDialogAction onClick={submit}>{t("Submit Anyway", "Tetap Kirim")}</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
@@ -196,18 +198,19 @@ function resultMascot(correct: number, total: number): MascotName {
 
 function Results({ items, result, sid, before }: { items: Item[]; result: SubmitResult; sid: string; before: CareersData | null }) {
   const byId = Object.fromEntries(items.map((i) => [i.id, i]));
+  const t = useT();
   const changes = Object.entries(result.skills).sort((a, b) => b[1].p_after - b[1].p_before - (a[1].p_after - a[1].p_before));
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <section className="flex flex-col items-center gap-6 rounded-3xl bg-route-soft p-8 text-center sm:flex-row sm:text-left">
-        <ReadinessRing value={result.total ? result.correct / result.total : 0} label="Correct" />
+        <ReadinessRing value={result.total ? result.correct / result.total : 0} label={t("Correct", "Benar")} />
         <div>
           <h1 className="text-[28px] font-extrabold text-ink">
-            {result.correct} of {result.total} Correct
+            {t(`${result.correct} of ${result.total} Correct`, `${result.correct} dari ${result.total} Benar`)}
           </h1>
-          <p className="mt-1 text-ink/70">Your route has been updated with these results.</p>
+          <p className="mt-1 text-ink/70">{t("Your route has been updated with these results.", "Rutemu sudah diperbarui dengan hasil ini.")}</p>
           <LinkButton href="/dashboard" size="lg" className="mt-4 h-11 px-6">
-            See My Updated Route
+            {t("See My Updated Route", "Lihat Rute Terbaruku")}
           </LinkButton>
         </div>
         <Mascot name={resultMascot(result.correct, result.total)} size={140} className="sm:ml-auto" />
@@ -215,8 +218,8 @@ function Results({ items, result, sid, before }: { items: Item[]; result: Submit
       <CareerShift sid={sid} before={before} />
 
       <Panel>
-        <h2 className="text-lg font-semibold text-ink">What Changed</h2>
-        <p className="mt-1 text-sm text-ink/70">Estimated mastery per skill, before and after this check.</p>
+        <h2 className="text-lg font-semibold text-ink">{t("What Changed", "Yang Berubah")}</h2>
+        <p className="mt-1 text-sm text-ink/70">{t("Estimated mastery per skill, before and after this check.", "Perkiraan mastery per skill, sebelum dan sesudah check ini.")}</p>
         <ul className="mt-4 space-y-4">
           {changes.map(([k, s]) => {
             const up = s.p_after >= s.p_before;
@@ -235,7 +238,7 @@ function Results({ items, result, sid, before }: { items: Item[]; result: Submit
 
       <details className="group rounded-2xl border bg-card">
         <summary className="cursor-pointer list-none p-5 font-semibold text-ink marker:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring">
-          Review Your Answers
+          {t("Review Your Answers", "Tinjau Jawabanmu")}
         </summary>
         <ol className="space-y-4 border-t p-5">
           {result.results.map((r, i) => {
@@ -243,16 +246,16 @@ function Results({ items, result, sid, before }: { items: Item[]; result: Submit
             return (
               <li key={r.item_id} className="flex gap-3">
                 {r.correct ? (
-                  <Check className="mt-0.5 size-5 shrink-0 text-mint" aria-label="Correct" />
+                  <Check className="mt-0.5 size-5 shrink-0 text-mint" aria-label={t("Correct", "Benar")} />
                 ) : (
-                  <X className="mt-0.5 size-5 shrink-0 text-destructive" aria-label="Incorrect" />
+                  <X className="mt-0.5 size-5 shrink-0 text-destructive" aria-label={t("Incorrect", "Salah")} />
                 )}
                 <div className="text-sm">
                   <p className="font-medium text-ink">
                     {i + 1}. {it?.stem}
                   </p>
                   <p className="mt-1 text-ink/70">
-                    Answer: <span className="font-medium text-ink">{it?.options[r.answer]}</span>. {r.explanation}
+                    {t("Answer", "Jawaban")}: <span className="font-medium text-ink">{it?.options[r.answer]}</span>. {r.explanation}
                   </p>
                 </div>
               </li>
@@ -267,6 +270,7 @@ function Results({ items, result, sid, before }: { items: Item[]; result: Submit
 /** "What your check moved": readiness change per career, the text form of the Career Map feedback (works without motion). */
 function CareerShift({ sid, before }: { sid: string; before: CareersData | null }) {
   const [after, setAfter] = useState<CareersData | null>(null);
+  const t = useT();
   useEffect(() => {
     api.get<CareersData>(`/students/${sid}/careers`).then(setAfter, () => setAfter(null));
   }, [sid]);
@@ -280,11 +284,11 @@ function CareerShift({ sid, before }: { sid: string; before: CareersData | null 
   if (!moved.length) return null;
   return (
     <Panel aria-live="polite">
-      <h2 className="text-lg font-semibold text-ink">What This Check Moved</h2>
-      <p className="mt-1 text-sm text-muted-foreground">How much of what employers ask you can now show, per career.</p>
+      <h2 className="text-lg font-semibold text-ink">{t("What This Check Moved", "Yang Digerakkan Check Ini")}</h2>
+      <p className="mt-1 text-sm text-muted-foreground">{t("How much of what employers ask you can now show, per career.", "Seberapa banyak yang diminta employer yang kini bisa kamu tunjukkan, per karier.")}</p>
       <ChangeList className="mt-3" items={moved.map((c) => ({ id: c.id, name: c.name, before: c.readiness - c.delta, now: c.readiness, target: c.is_target }))} />
       <LinkButton href="/skill-map?tab=careers" variant="outline" size="lg" className="mt-5 h-10">
-        Open My Career Map
+        {t("Open My Career Map", "Buka Career Map-ku")}
       </LinkButton>
     </Panel>
   );

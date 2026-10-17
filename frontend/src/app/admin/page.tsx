@@ -25,6 +25,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { EmptyState, ErrorNote, Loading, NativeSelect, PageHeader, Panel, Tag } from "@/components/kit";
+import { useT } from "@/lib/i18n";
 
 interface Stats {
   postings_total: number;
@@ -51,18 +52,23 @@ interface Job {
   n_steps: number;
 }
 
-const STEPS = ["Collecting Karirhub postings", "Collecting company career-site postings", "Rebuilding the market map"];
+const STEPS: [string, string][] = [
+  ["Collecting Karirhub postings", "Mengumpulkan posting Karirhub"],
+  ["Collecting company career-site postings", "Mengumpulkan posting situs karier perusahaan"],
+  ["Rebuilding the market map", "Menyusun ulang peta pasar"],
+];
 
 export default function AdminPage() {
   const { token, ready } = useStaffToken("admin");
   const who = useApi<{ role: string }>(token ? "/admin/whoami" : null);
+  const t = useT();
   if (!ready) return <Loading />;
   if (!token || who.error)
     return (
       <div className="mx-auto max-w-md">
-        <PageHeader title="Admin" description="Team-only console for market data, reviews, models, experts, classes and studies." />
+        <PageHeader title="Admin" description={t("Team-only console for market data, reviews, models, experts, classes and studies.", "Konsol khusus tim untuk data pasar, review, model, pakar, kelas, dan studi.")} />
         <Panel>
-          <StaffLogin role="admin" error={who.error} hint="Staff only. Enter your admin key." />
+          <StaffLogin role="admin" error={who.error} hint={t("Staff only. Enter your admin key.", "Khusus staf. Masukkan key admin-mu.")} />
         </Panel>
       </div>
     );
@@ -75,28 +81,40 @@ function AdminConsole() {
   const meta = useApi<Meta>("/meta");
   const names = useMemo(() => Object.fromEntries((meta.data?.skills ?? []).map((s) => [s.id, titleCase(s.name)])), [meta.data]);
   const s = stats.data;
+  const t = useT();
   return (
     <div>
-      <PageHeader title="Admin" description="Keep the job market data fresh, review uncertain skill matches, and check how well the models perform." />
+      <PageHeader title="Admin" description={t("Keep the job market data fresh, review uncertain skill matches, and check how well the models perform.", "Jaga data pasar kerja tetap segar, tinjau kecocokan skill yang meragukan, dan cek seberapa baik kinerja model.")} />
       {s ? (
         <dl className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <Fact label="Unique Postings" value={int(s.postings_total - s.duplicates)} note={`${Object.keys(s.in_window_by_role).length} careers; largest ${Math.max(0, ...Object.values(s.in_window_by_role) as number[])} postings`} />
-          <Fact label="Skill Matches" value={int(s.mentions_by_status.auto ?? 0)} note={`${s.mentions_by_status.review ?? 0} waiting for review`} />
-          <Fact label="Students" value={int(s.students)} note={`${s.experts} experts, ${s.cohorts ?? 0} classes, ${s.pending_project_reviews ?? 0} projects to review`} />
-          <Fact label="Last Market Build" value={s.last_build ?? "–"} note={`Extractor: ${s.extractor === "llm" ? "LLM" : "lexicon"}`} small />
+          <Fact
+            label={t("Unique Postings", "Posting Unik")}
+            value={int(s.postings_total - s.duplicates)}
+            note={t(
+              `${Object.keys(s.in_window_by_role).length} careers; largest ${Math.max(0, ...(Object.values(s.in_window_by_role) as number[]))} postings`,
+              `${Object.keys(s.in_window_by_role).length} karier; terbanyak ${Math.max(0, ...(Object.values(s.in_window_by_role) as number[]))} posting`,
+            )}
+          />
+          <Fact label={t("Skill Matches", "Kecocokan Skill")} value={int(s.mentions_by_status.auto ?? 0)} note={t(`${s.mentions_by_status.review ?? 0} waiting for review`, `${s.mentions_by_status.review ?? 0} menunggu review`)} />
+          <Fact
+            label={t("Students", "Mahasiswa")}
+            value={int(s.students)}
+            note={t(`${s.experts} experts, ${s.cohorts ?? 0} classes, ${s.pending_project_reviews ?? 0} projects to review`, `${s.experts} pakar, ${s.cohorts ?? 0} kelas, ${s.pending_project_reviews ?? 0} project untuk direview`)}
+          />
+          <Fact label={t("Last Market Build", "Build Pasar Terakhir")} value={s.last_build ?? "–"} note={`Extractor: ${s.extractor === "llm" ? "LLM" : "lexicon"}`} small />
         </dl>
       ) : null}
       <Tabs defaultValue="launch">
         <TabsList className="mb-5 flex-wrap">
-          <TabsTrigger value="launch">Launch Metrics</TabsTrigger>
-          <TabsTrigger value="market">Market Data</TabsTrigger>
-          <TabsTrigger value="review">Review Queue</TabsTrigger>
-          <TabsTrigger value="annotate">Annotation</TabsTrigger>
-          <TabsTrigger value="models">Models &amp; Evaluation</TabsTrigger>
-          <TabsTrigger value="projects">Project Reviews</TabsTrigger>
-          <TabsTrigger value="team">Team &amp; Classes</TabsTrigger>
-          <TabsTrigger value="studies">User Studies</TabsTrigger>
-          <TabsTrigger value="activity">Activity &amp; Reports</TabsTrigger>
+          <TabsTrigger value="launch">{t("Launch Metrics", "Metrik Peluncuran")}</TabsTrigger>
+          <TabsTrigger value="market">{t("Market Data", "Data Pasar")}</TabsTrigger>
+          <TabsTrigger value="review">{t("Review Queue", "Antrean Review")}</TabsTrigger>
+          <TabsTrigger value="annotate">{t("Annotation", "Anotasi")}</TabsTrigger>
+          <TabsTrigger value="models">{t("Models & Evaluation", "Model & Evaluasi")}</TabsTrigger>
+          <TabsTrigger value="projects">{t("Project Reviews", "Review Project")}</TabsTrigger>
+          <TabsTrigger value="team">{t("Team & Classes", "Tim & Kelas")}</TabsTrigger>
+          <TabsTrigger value="studies">{t("User Studies", "User Study")}</TabsTrigger>
+          <TabsTrigger value="activity">{t("Activity & Reports", "Aktivitas & Laporan")}</TabsTrigger>
         </TabsList>
         <TabsContent value="launch">
           <LaunchMetrics />
@@ -148,11 +166,12 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
   const [role, setRole] = useState("business_analyst");
   const [skill, setSkill] = useState("sql");
   const [delta, setDelta] = useState("0.2");
+  const t = useT();
 
   useEffect(() => {
     if (!job.data?.running) return;
-    const t = setInterval(job.reload, 2000);
-    return () => clearInterval(t);
+    const timer = setInterval(job.reload, 2000);
+    return () => clearInterval(timer);
   }, [job.data?.running, job.reload]);
   const finished = job.data?.finished;
   useEffect(() => {
@@ -172,7 +191,7 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
   async function stop() {
     try {
       await api.post("/admin/market/refresh/cancel");
-      toast("Stopping the update…");
+      toast(t("Stopping the update…", "Menghentikan update…"));
       job.reload();
     } catch (e) {
       setErr(e);
@@ -182,7 +201,7 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
     setErr(null);
     try {
       const r = await api.post<{ version: string }>("/admin/market/simulate", { role, skill_id: skill, demand_delta: Number(delta), trend: 0.5 });
-      toast.success("Simulated market is now active", { description: r.version });
+      toast.success(t("Simulated market is now active", "Pasar simulasi sekarang aktif"), { description: r.version });
       onChange();
     } catch (e) {
       setErr(e);
@@ -191,7 +210,7 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
   async function reset() {
     try {
       const r = await api.post<{ version: string }>(`/admin/market/reset?role=${role}`);
-      toast.success("Back to real market data", { description: r.version });
+      toast.success(t("Back to real market data", "Kembali ke data pasar nyata"), { description: r.version });
       onChange();
     } catch (e) {
       setErr(e);
@@ -209,14 +228,14 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       <Panel>
-        <h2 className="text-lg font-semibold text-ink">Monthly Market Update</h2>
-        <p className="mt-1 text-sm text-ink/70">Collects new postings, finds the skills they ask for, and rebuilds the market map. Students whose route changes get a history entry.</p>
+        <h2 className="text-lg font-semibold text-ink">{t("Monthly Market Update", "Update Pasar Bulanan")}</h2>
+        <p className="mt-1 text-sm text-ink/70">{t("Collects new postings, finds the skills they ask for, and rebuilds the market map. Students whose route changes get a history entry.", "Mengumpulkan posting baru, menemukan skill yang diminta, dan menyusun ulang peta pasar. Mahasiswa yang rutenya berubah mendapat entri riwayat.")}</p>
         {j && (j.running || j.finished) ? (
           <ol className="mt-5 space-y-2.5" aria-live="polite">
-            {STEPS.map((label, i) => {
+            {STEPS.map(([en, id], i) => {
               const state = stepState(i);
               return (
-                <li key={label} className="flex items-center gap-3 text-sm">
+                <li key={en} className="flex items-center gap-3 text-sm">
                   {state === "done" ? (
                     <CircleCheck className="size-5 text-mint" aria-hidden="true" />
                   ) : state === "active" ? (
@@ -226,7 +245,7 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
                   ) : (
                     <CircleDashed className="size-5 text-ink/30" aria-hidden="true" />
                   )}
-                  <span className={state === "todo" ? "text-ink/60" : "text-ink"}>{label}</span>
+                  <span className={state === "todo" ? "text-ink/60" : "text-ink"}>{t(en, id)}</span>
                 </li>
               );
             })}
@@ -234,46 +253,49 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
         ) : null}
         {j && !j.running && j.finished ? (
           <p className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-            {j.ok ? <Tag tone="mint">Finished</Tag> : j.cancelled ? <Tag tone="ember">Stopped</Tag> : <Tag tone="red">Failed</Tag>}
+            {j.ok ? <Tag tone="mint">{t("Finished", "Selesai")}</Tag> : j.cancelled ? <Tag tone="ember">{t("Stopped", "Dihentikan")}</Tag> : <Tag tone="red">{t("Failed", "Gagal")}</Tag>}
             <span className="text-ink/70">{fmtDateTime(j.finished)}</span>
           </p>
         ) : null}
         <div className="mt-5 flex flex-wrap gap-2">
           {j?.running ? (
             <Button variant="destructive" size="lg" className="h-10" onClick={stop} disabled={j.cancelled}>
-              <Square /> {j.cancelled ? "Stopping…" : "Stop Update"}
+              <Square /> {j.cancelled ? t("Stopping…", "Menghentikan…") : t("Stop Update", "Hentikan Update")}
             </Button>
           ) : (
             <Button size="lg" className="h-10" onClick={() => setConfirm(true)}>
-              <Play /> Run Update Now
+              <Play /> {t("Run Update Now", "Jalankan Update Sekarang")}
             </Button>
           )}
         </div>
         {j?.log.length ? (
           <details className="mt-4">
-            <summary className="cursor-pointer text-sm font-medium text-ink/80">Technical Log</summary>
+            <summary className="cursor-pointer text-sm font-medium text-ink/80">{t("Technical Log", "Log Teknis")}</summary>
             <pre className="mt-2 max-h-56 overflow-auto rounded-xl bg-ink p-3 text-[11px] leading-relaxed text-white/90">{j.log.join("\n")}</pre>
           </details>
         ) : null}
         <AlertDialog open={confirm} onOpenChange={setConfirm}>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Run the Market Update?</AlertDialogTitle>
+              <AlertDialogTitle>{t("Run the Market Update?", "Jalankan Update Pasar?")}</AlertDialogTitle>
               <AlertDialogDescription>
-                This collects new postings from the web and replaces the active market map. It usually takes 5 to 15 minutes, and you can stop it at any time.
+                {t(
+                  "This collects new postings from the web and replaces the active market map. It usually takes 5 to 15 minutes, and you can stop it at any time.",
+                  "Ini mengumpulkan posting baru dari web dan mengganti peta pasar yang aktif. Biasanya butuh 5 sampai 15 menit, dan bisa kamu hentikan kapan saja.",
+                )}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={start}>Run Update</AlertDialogAction>
+              <AlertDialogCancel>{t("Cancel", "Batal")}</AlertDialogCancel>
+              <AlertDialogAction onClick={start}>{t("Run Update", "Jalankan Update")}</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
       </Panel>
 
       <Panel>
-        <h2 className="text-lg font-semibold text-ink">Simulate a Market Change</h2>
-        <p className="mt-1 text-sm text-ink/70">Test how student routes react when demand for a skill shifts. The simulated map stays labelled until you switch back.</p>
+        <h2 className="text-lg font-semibold text-ink">{t("Simulate a Market Change", "Simulasikan Perubahan Pasar")}</h2>
+        <p className="mt-1 text-sm text-ink/70">{t("Test how student routes react when demand for a skill shifts. The simulated map stays labelled until you switch back.", "Uji bagaimana rute mahasiswa bereaksi saat demand sebuah skill bergeser. Peta simulasi tetap diberi label sampai kamu kembalikan.")}</p>
         <div className="mt-5 grid gap-4">
           <div className="space-y-1.5">
             <Label htmlFor="srole">Role</Label>
@@ -296,12 +318,12 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
             </NativeSelect>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="sdelta">Demand Change</Label>
+            <Label htmlFor="sdelta">{t("Demand Change", "Perubahan Demand")}</Label>
             <NativeSelect id="sdelta" value={delta} onChange={(e) => setDelta(e.target.value)}>
               {["0.4", "0.2", "0.1", "-0.1", "-0.2", "-0.4"].map((v) => (
                 <option key={v} value={v}>
                   {Number(v) > 0 ? "+" : ""}
-                  {Math.round(Number(v) * 100)} points
+                  {Math.round(Number(v) * 100)} {t("points", "poin")}
                 </option>
               ))}
             </NativeSelect>
@@ -309,10 +331,10 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
         </div>
         <div className="mt-5 flex flex-wrap gap-2">
           <Button size="lg" className="h-10" onClick={simulate}>
-            Apply Simulation
+            {t("Apply Simulation", "Terapkan Simulasi")}
           </Button>
           <Button variant="outline" size="lg" className="h-10" onClick={reset}>
-            Switch Back to Real Data
+            {t("Switch Back to Real Data", "Kembali ke Data Nyata")}
           </Button>
         </div>
       </Panel>
@@ -336,6 +358,7 @@ interface ReviewRow {
 function ReviewQueue({ names, meta }: { names: Record<string, string>; meta: Meta | null }) {
   const [status, setStatus] = useState("review");
   const q = useApi<ReviewRow[]>(`/admin/review-queue?status=${status}&limit=100`);
+  const t = useT();
   async function decide(id: number, decision: string) {
     await api.post(`/admin/review-queue/${id}`, { decision });
     q.setData((q.data ?? []).filter((r) => r.id !== id));
@@ -344,19 +367,19 @@ function ReviewQueue({ names, meta }: { names: Record<string, string>; meta: Met
     <Panel className="p-0 sm:p-0">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b p-5">
         <div>
-          <h2 className="text-lg font-semibold text-ink">Uncertain Skill Matches</h2>
-          <p className="text-sm text-ink/70">Phrases from postings that look like a known skill, but not clearly enough to count automatically.</p>
+          <h2 className="text-lg font-semibold text-ink">{t("Uncertain Skill Matches", "Kecocokan Skill yang Meragukan")}</h2>
+          <p className="text-sm text-ink/70">{t("Phrases from postings that look like a known skill, but not clearly enough to count automatically.", "Frasa dari posting yang mirip skill yang dikenal, tapi tidak cukup jelas untuk dihitung otomatis.")}</p>
         </div>
-        <NativeSelect aria-label="Queue" value={status} onChange={(e) => setStatus(e.target.value)} className="w-auto">
-          <option value="review">Close Matches</option>
-          <option value="new">Possible New Skills</option>
+        <NativeSelect aria-label={t("Queue", "Antrean")} value={status} onChange={(e) => setStatus(e.target.value)} className="w-auto">
+          <option value="review">{t("Close Matches", "Kecocokan Dekat")}</option>
+          <option value="new">{t("Possible New Skills", "Kemungkinan Skill Baru")}</option>
         </NativeSelect>
       </div>
       {!q.data ? (
         <Loading />
       ) : q.data.length === 0 ? (
         <div className="p-5">
-          <EmptyState title="Queue Is Empty">Nothing needs a decision right now.</EmptyState>
+          <EmptyState title={t("Queue Is Empty", "Antrean Kosong")}>{t("Nothing needs a decision right now.", "Tidak ada yang perlu diputuskan saat ini.")}</EmptyState>
         </div>
       ) : (
         <ul className="divide-y">
@@ -367,7 +390,7 @@ function ReviewQueue({ names, meta }: { names: Record<string, string>; meta: Met
                 {r.skill_id ? (
                   <span className="text-ink/70">
                     {" "}
-                    looks like <span className="font-medium text-ink">{names[r.skill_id] ?? r.skill_id}</span> ({num(r.similarity)})
+                    {t("looks like", "mirip")} <span className="font-medium text-ink">{names[r.skill_id] ?? r.skill_id}</span> ({num(r.similarity)})
                   </span>
                 ) : null}
               </p>
@@ -376,11 +399,11 @@ function ReviewQueue({ names, meta }: { names: Record<string, string>; meta: Met
               <div className="mt-3 flex flex-wrap gap-2">
                 {r.skill_id ? (
                   <Button variant="outline" onClick={() => decide(r.id, "accept")}>
-                    Accept Match
+                    {t("Accept Match", "Terima Kecocokan")}
                   </Button>
                 ) : null}
-                <NativeSelect aria-label="Map to another skill" defaultValue="" onChange={(e) => e.target.value && decide(r.id, e.target.value)} className="h-8 w-auto text-xs">
-                  <option value="">Map to another skill…</option>
+                <NativeSelect aria-label={t("Map to another skill", "Petakan ke skill lain")} defaultValue="" onChange={(e) => e.target.value && decide(r.id, e.target.value)} className="h-8 w-auto text-xs">
+                  <option value="">{t("Map to another skill…", "Petakan ke skill lain…")}</option>
                   {meta?.skills.map((s) => (
                     <option key={s.id} value={s.id}>
                       {titleCase(s.name)}
@@ -388,7 +411,7 @@ function ReviewQueue({ names, meta }: { names: Record<string, string>; meta: Met
                   ))}
                 </NativeSelect>
                 <Button variant="ghost" onClick={() => decide(r.id, "reject")}>
-                  Reject
+                  {t("Reject", "Tolak")}
                 </Button>
               </div>
             </li>
@@ -430,6 +453,7 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
   const f1 = useApi<F1>("/admin/annotation/eval");
   const cmp = useApi<Comparison>("/evaluation/extractors");
   const [picked, setPicked] = useState<Set<string>>(new Set());
+  const t = useT();
   const [err, setErr] = useState<unknown>(null);
 
   useEffect(() => {
@@ -456,15 +480,15 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
     <div className="space-y-8">
       <div className="grid gap-6 lg:grid-cols-2">
         <Panel>
-          <h2 className="text-lg font-semibold text-ink">Extraction Quality</h2>
-          <p className="mt-1 text-sm text-ink/70">Compared with human annotations. The target is an F1 of {num(f1.data?.target_f1 ?? 0.75)} on 150 postings.</p>
+          <h2 className="text-lg font-semibold text-ink">{t("Extraction Quality", "Kualitas Ekstraksi")}</h2>
+          <p className="mt-1 text-sm text-ink/70">{t(`Compared with human annotations. The target is an F1 of ${num(f1.data?.target_f1 ?? 0.75)} on 150 postings.`, `Dibandingkan dengan anotasi manusia. Targetnya F1 ${num(f1.data?.target_f1 ?? 0.75)} pada 150 posting.`)}</p>
           {f1.data ? (
             <dl className="mt-4 grid grid-cols-4 gap-3 text-center">
               {[
                 ["F1", num(f1.data.f1)],
                 ["Precision", num(f1.data.precision)],
                 ["Recall", num(f1.data.recall)],
-                ["Postings", int(f1.data.n_postings)],
+                [t("Postings", "Posting"), int(f1.data.n_postings)],
               ].map(([l, v]) => (
                 <div key={l} className="rounded-xl bg-muted/70 p-3">
                   <dt className="text-xs text-ink/60">{l}</dt>
@@ -478,16 +502,18 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
         </Panel>
         {cmp.data ? (
           <Panel>
-            <h2 className="text-lg font-semibold text-ink">Lexicon vs LLM Extractor</h2>
+            <h2 className="text-lg font-semibold text-ink">{t("Lexicon vs LLM Extractor", "Extractor Lexicon vs LLM")}</h2>
             <p className="mt-1 text-sm text-ink/70">
-              Agreement on {cmp.data.n_postings} postings: overlap {num(cmp.data.mean_jaccard)}, rank agreement {num(cmp.data.spearman_skill_frequency)}. The lexicon finds{" "}
-              {num(cmp.data.mentions_per_posting.lexicon, 1)} skills per posting and the LLM {num(cmp.data.mentions_per_posting.llm, 1)}.
+              {t(
+                `Agreement on ${cmp.data.n_postings} postings: overlap ${num(cmp.data.mean_jaccard)}, rank agreement ${num(cmp.data.spearman_skill_frequency)}. The lexicon finds ${num(cmp.data.mentions_per_posting.lexicon, 1)} skills per posting and the LLM ${num(cmp.data.mentions_per_posting.llm, 1)}.`,
+                `Kesepakatan pada ${cmp.data.n_postings} posting: overlap ${num(cmp.data.mean_jaccard)}, kesepakatan ranking ${num(cmp.data.spearman_skill_frequency)}. Lexicon menemukan ${num(cmp.data.mentions_per_posting.lexicon, 1)} skill per posting dan LLM ${num(cmp.data.mentions_per_posting.llm, 1)}.`,
+              )}
             </p>
             <div className="mt-4 grid grid-cols-2 gap-4 text-sm">
               {(
                 [
-                  ["Only the Lexicon Found", cmp.data.top_only_lexicon],
-                  ["Only the LLM Found", cmp.data.top_only_llm],
+                  [t("Only the Lexicon Found", "Hanya Ditemukan Lexicon"), cmp.data.top_only_lexicon],
+                  [t("Only the LLM Found", "Hanya Ditemukan LLM"), cmp.data.top_only_llm],
                 ] as const
               ).map(([title, rows]) => (
                 <div key={title}>
@@ -507,7 +533,7 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
       </div>
 
       <Panel>
-        <h2 className="text-lg font-semibold text-ink">Annotate Postings</h2>
+        <h2 className="text-lg font-semibold text-ink">{t("Annotate Postings", "Anotasi Posting")}</h2>
         {!active ? (
           <form
             className="mt-4 flex max-w-md flex-wrap items-end gap-2"
@@ -520,27 +546,27 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
             }}
           >
             <div className="min-w-0 flex-1 space-y-1.5">
-              <Label htmlFor="ann">Your Name</Label>
+              <Label htmlFor="ann">{t("Your Name", "Namamu")}</Label>
               <Input id="ann" autoComplete="name" value={annotator} onChange={(e) => setAnnotator(e.target.value)} className="h-10" />
             </div>
             <Button type="submit" size="lg" className="h-10" disabled={!annotator.trim()}>
-              Start Annotating
+              {t("Start Annotating", "Mulai Anotasi")}
             </Button>
           </form>
         ) : !next.data ? (
           <Loading />
         ) : !next.data.posting_id ? (
-          <EmptyState title="All Done">You&rsquo;ve annotated every posting.</EmptyState>
+          <EmptyState title={t("All Done", "Semua Selesai")}>{t("You\u2019ve annotated every posting.", "Kamu sudah menganotasi semua posting.")}</EmptyState>
         ) : (
           <div className="mt-4 grid gap-6 lg:grid-cols-2">
             <div className="min-w-0">
-              <p className="text-xs text-muted-foreground">{next.data.remaining} postings left</p>
+              <p className="text-xs text-muted-foreground">{t(`${next.data.remaining} postings left`, `${next.data.remaining} posting tersisa`)}</p>
               <h3 className="mt-1 font-semibold text-ink">{next.data.title}</h3>
               <p className="text-sm text-ink/70">{next.data.company}</p>
               <div className="mt-3 max-h-[60vh] overflow-y-auto whitespace-pre-wrap rounded-xl bg-muted/70 p-4 text-sm leading-relaxed text-ink/85">{next.data.description}</div>
             </div>
             <div>
-              <p className="text-sm text-ink/70">Tick every skill this posting asks for, without looking at the extractor&rsquo;s answer.</p>
+              <p className="text-sm text-ink/70">{t("Tick every skill this posting asks for, without looking at the extractor\u2019s answer.", "Centang setiap skill yang diminta posting ini, tanpa melihat jawaban extractor.")}</p>
               <div className="mt-3 max-h-[60vh] space-y-4 overflow-y-auto pr-1">
                 {meta
                   ? Object.entries(meta.clusters).map(([cid, label]) => (
@@ -571,7 +597,7 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
                   : null}
               </div>
               <Button size="lg" className="mt-4 h-10" onClick={submit}>
-                Save and Next ({picked.size} skills)
+                {t(`Save and Next (${picked.size} skills)`, `Simpan dan Lanjut (${picked.size} skill)`)}
               </Button>
               <div className="mt-3">
                 <ErrorNote error={err} />
@@ -601,17 +627,17 @@ interface EvalReport {
   conditions: Record<string, EvalCondition>;
 }
 
-const METHOD: Record<string, string> = {
-  model: "PathSync Model",
-  formula5: "Formula (5)",
-  kesenjangan_terbesar: "Biggest Gap First",
-  kesenjangan_x_permintaan: "Gap × Demand",
-  llm_umum: "Generic LLM",
+const METHOD: Record<string, [string, string]> = {
+  model: ["PathSync Model", "Model PathSync"],
+  formula5: ["Formula (5)", "Formula (5)"],
+  kesenjangan_terbesar: ["Biggest Gap First", "Gap Terbesar Dulu"],
+  kesenjangan_x_permintaan: ["Gap × Demand", "Gap × Demand"],
+  llm_umum: ["Generic LLM", "LLM Umum"],
 };
-const CONDITION: Record<string, string> = {
-  titik_hambat: "Experts Favour Bottlenecks",
-  kesenjangan_permintaan: "Experts Favour Gap × Demand",
-  campuran: "Mixed Expert Styles",
+const CONDITION: Record<string, [string, string]> = {
+  titik_hambat: ["Experts Favour Bottlenecks", "Pakar Mengutamakan Bottleneck"],
+  kesenjangan_permintaan: ["Experts Favour Gap × Demand", "Pakar Mengutamakan Gap × Demand"],
+  campuran: ["Mixed Expert Styles", "Gaya Pakar Campuran"],
 };
 
 function Models() {
@@ -621,14 +647,15 @@ function Models() {
   const report = useApi<EvalReport>("/evaluation");
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
+  const t = useT();
 
   async function train() {
     setBusy(true);
     setErr(null);
     try {
       const r = await api.post<{ active: boolean; passes_rule: boolean }>("/admin/train", { use_simulated: simulated, activate_if_passes: true });
-      toast.success(r.active ? "New model trained and activated" : "Model trained, not activated", {
-        description: r.passes_rule ? "It matches or beats Formula (5)." : "It didn't beat Formula (5), so the current model stays.",
+      toast.success(r.active ? t("New model trained and activated", "Model baru dilatih dan diaktifkan") : t("Model trained, not activated", "Model dilatih, tidak diaktifkan"), {
+        description: r.passes_rule ? t("It matches or beats Formula (5).", "Setara atau mengalahkan Formula (5).") : t("It didn't beat Formula (5), so the current model stays.", "Tidak mengalahkan Formula (5), jadi model saat ini tetap dipakai."),
       });
       models.reload();
     } catch (e) {
@@ -640,7 +667,7 @@ function Models() {
   async function finalize() {
     try {
       const r = await api.post<Record<string, number>>("/admin/edges/finalize");
-      toast.success("Prerequisite map updated", { description: `${r.approved} approved, ${r.rejected} rejected, ${r.draft} still open` });
+      toast.success(t("Prerequisite map updated", "Peta prasyarat diperbarui"), { description: t(`${r.approved} approved, ${r.rejected} rejected, ${r.draft} still open`, `${r.approved} disetujui, ${r.rejected} ditolak, ${r.draft} masih terbuka`) });
     } catch (e) {
       setErr(e);
     }
@@ -655,23 +682,26 @@ function Models() {
     <div className="space-y-8">
       <div className="grid gap-6 lg:grid-cols-2">
         <Panel>
-          <h2 className="text-lg font-semibold text-ink">Expert Agreement</h2>
+          <h2 className="text-lg font-semibold text-ink">{t("Expert Agreement", "Kesepakatan Pakar")}</h2>
           <label className="mt-2 flex items-center gap-2 text-sm text-ink/80">
             <input type="checkbox" className="size-4 accent-indigo" checked={simulated} onChange={(e) => setSimulated(e.target.checked)} />
-            Use simulated experts
+            {t("Use simulated experts", "Pakai pakar simulasi")}
           </label>
           {agree.data ? (
             <p className="mt-3 text-sm text-ink/75">
-              Kendall&rsquo;s W is <span className="font-semibold text-ink">{agree.data.mean_w != null ? num(agree.data.mean_w) : "not available yet"}</span> across{" "}
-              {agree.data.n_with_2plus} scenarios ranked by 2 or more experts. A value of 0.7 or higher means strong agreement.
+              Kendall&rsquo;s W {t("is", "=")} <span className="font-semibold text-ink">{agree.data.mean_w != null ? num(agree.data.mean_w) : t("not available yet", "belum tersedia")}</span>{" "}
+              {t(
+                `across ${agree.data.n_with_2plus} scenarios ranked by 2 or more experts. A value of 0.7 or higher means strong agreement.`,
+                `pada ${agree.data.n_with_2plus} skenario yang diranking 2 pakar atau lebih. Nilai 0,7 atau lebih berarti kesepakatan kuat.`,
+              )}
             </p>
           ) : null}
           <div className="mt-4 flex flex-wrap gap-2">
             <Button size="lg" className="h-10" onClick={train} disabled={busy}>
-              {busy ? "Training…" : `Train From ${simulated ? "Simulated" : "Expert"} Rankings`}
+              {busy ? t("Training…", "Melatih…") : simulated ? t("Train From Simulated Rankings", "Latih dari Ranking Simulasi") : t("Train From Expert Rankings", "Latih dari Ranking Pakar")}
             </Button>
             <Button variant="outline" size="lg" className="h-10" onClick={finalize}>
-              Apply the 2-of-3 Rule to Links
+              {t("Apply the 2-of-3 Rule to Links", "Terapkan Aturan 2-dari-3 ke Tautan")}
             </Button>
           </div>
           <div className="mt-3">
@@ -679,7 +709,7 @@ function Models() {
           </div>
         </Panel>
         <Panel>
-          <h2 className="text-lg font-semibold text-ink">Ranking Models</h2>
+          <h2 className="text-lg font-semibold text-ink">{t("Ranking Models", "Model Ranking")}</h2>
           {!models.data ? (
             <Loading />
           ) : (
@@ -691,10 +721,10 @@ function Models() {
                     <p className="text-xs text-ink/60">{(["G", "D", "U", "R"] as const).map((k) => `${FEATURE_LABELS[k]} ${num(m.weights[k])}`).join(", ")}</p>
                   </div>
                   {m.active ? (
-                    <Tag tone="mint">Active</Tag>
+                    <Tag tone="mint">{t("Active", "Aktif")}</Tag>
                   ) : (
                     <Button variant="outline" size="sm" onClick={() => activate(m.id)}>
-                      Activate
+                      {t("Activate", "Aktifkan")}
                     </Button>
                   )}
                 </li>
@@ -706,18 +736,21 @@ function Models() {
 
       {report.data ? (
         <Panel>
-          <h2 className="text-lg font-semibold text-ink">Ranking Quality (Simulation)</h2>
+          <h2 className="text-lg font-semibold text-ink">{t("Ranking Quality (Simulation)", "Kualitas Ranking (Simulasi)")}</h2>
           <p className="mt-1 max-w-3xl text-sm text-ink/70">
-            NDCG@5 against simulated expert rankings over {report.data.n_scenarios} scenarios, where 1.00 is a perfect match. These are feasibility results, not real expert performance.
+            {t(
+              `NDCG@5 against simulated expert rankings over ${report.data.n_scenarios} scenarios, where 1.00 is a perfect match. These are feasibility results, not real expert performance.`,
+              `NDCG@5 terhadap ranking pakar simulasi atas ${report.data.n_scenarios} skenario, di mana 1,00 berarti cocok sempurna. Ini hasil uji kelayakan, bukan kinerja pakar nyata.`,
+            )}
           </p>
           <div className="mt-5 overflow-x-auto">
             <table className="w-full min-w-[640px] text-left text-sm">
               <thead className="text-xs text-ink/60">
                 <tr>
-                  <th className="py-2 pr-3 font-medium">Method</th>
+                  <th className="py-2 pr-3 font-medium">{t("Method", "Metode")}</th>
                   {conds.map(([c]) => (
                     <th key={c} className="py-2 pr-3 text-right font-medium">
-                      {CONDITION[c] ?? c}
+                      {CONDITION[c] ? t(...CONDITION[c]) : c}
                     </th>
                   ))}
                 </tr>
@@ -727,7 +760,7 @@ function Models() {
                   .filter((m) => conds.some(([, c]) => c.cv.methods[m]))
                   .map((m) => (
                     <tr key={m} className={cn("border-t", m === "model" && "font-semibold")}>
-                      <td className="py-2 pr-3 text-ink">{METHOD[m]}</td>
+                      <td className="py-2 pr-3 text-ink">{t(...METHOD[m])}</td>
                       {conds.map(([k, c]) => (
                         <td key={k} className="py-2 pr-3 text-right text-ink/80">
                           {c.cv.methods[m] ? num(c.cv.methods[m].ndcg5.mean, 3) : "–"}
@@ -736,7 +769,7 @@ function Models() {
                     </tr>
                   ))}
                 <tr className="border-t text-ink/60">
-                  <td className="py-2 pr-3">Model Without Prerequisite Signals</td>
+                  <td className="py-2 pr-3">{t("Model Without Prerequisite Signals", "Model Tanpa Sinyal Prasyarat")}</td>
                   {conds.map(([k, c]) => (
                     <td key={k} className="py-2 pr-3 text-right">
                       {num(c.ablation.tanpa_fitur_graf?.mean, 3)}

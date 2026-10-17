@@ -5,13 +5,14 @@ import { toast } from "sonner";
 import { Target } from "lucide-react";
 import { api } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
-import { pct } from "@/lib/format";
+import { LEVEL, pct } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ErrorNote, LinkButton, Loading, NativeSelect, Panel, Tag } from "./kit";
 import { Mascot } from "./mascot";
 import { MascotLoader } from "./mascot-loader";
 import { ChangeList } from "./change-list";
+import { useT, type T } from "@/lib/i18n";
 
 // Career Map (docs/design/CAREER_VIZ_DISCOVERY.md): the 14 roles as a constellation. Families are clusters, lines join roles whose
 // postings ask for many of the same skills, node size is how many postings back the role, and brightness is how much of
@@ -99,6 +100,7 @@ export function CareerMap({ sid }: { sid: string }) {
   const mine = useApi<CareersData>(`/students/${sid}/careers`);
   const [selected, setSelected] = useState<string | null>(null);
   const [hover, setHover] = useState<string | null>(null);
+  const t = useT();
   // readiness the student saw last time, kept on this device only; differences pulse on the map and are listed in text
   const [seen, setSeen] = useState<Record<string, number> | null>(null);
   const seenKey = `pathsync.careers.seen.${sid}`;
@@ -121,7 +123,7 @@ export function CareerMap({ sid }: { sid: string }) {
   );
 
   if (mine.error) return <ErrorNote error={mine.error} />;
-  if (!mine.data || !sc) return <Loading label="Drawing your career map…" />;
+  if (!mine.data || !sc) return <Loading label={t("Drawing your career map…", "Menggambar career map-mu…")} />;
 
   const target = mine.data.careers.find((c) => c.is_target);
   const focus = selected ?? target?.id ?? null;
@@ -140,40 +142,42 @@ export function CareerMap({ sid }: { sid: string }) {
   return (
     <div className="space-y-6">
       <p className="max-w-3xl text-sm text-muted-foreground">
-        Each dot is a career. Further right means you can already show more of what its job postings ask for; higher means more postings ask
-        for it. Hover a dot for its areas, click or tap it for the full picture.
-        {!mine.data.any_evidence ? " Add evidence or take the quick check to move the dots." : ""}
+        {t(
+          "Each dot is a career. Further right means you can already show more of what its job postings ask for; higher means more postings ask for it. Hover a dot for its areas, click or tap it for the full picture.",
+          "Setiap titik adalah satu karier. Makin ke kanan, makin banyak yang diminta job posting-nya yang sudah bisa kamu tunjukkan; makin ke atas, makin banyak posting yang memintanya. Arahkan kursor ke titik untuk melihat area-nya, klik atau tap untuk gambaran lengkap.",
+        )}
+        {!mine.data.any_evidence ? t(" Add evidence or take the quick check to move the dots.", " Tambahkan evidence atau ikuti Quick Check untuk menggerakkan titiknya.") : ""}
       </p>
       <Panel className="p-0 sm:p-0">
         {/* below ~680px the labels would shrink past legibility, so the chart keeps its size and scrolls sideways */}
         <div className="overflow-x-auto">
         <div className="relative min-w-[680px]" onMouseLeave={() => setHover(null)}>
-          <svg viewBox={`0 0 ${VW} ${VH}`} className="block h-auto w-full" role="group" aria-label="Opportunity matrix of careers">
+          <svg viewBox={`0 0 ${VW} ${VH}`} className="block h-auto w-full" role="group" aria-label={t("Opportunity matrix of careers", "Matriks peluang karier")}>
             <rect x={xs} y={PT} width={VW - PR - xs} height={ys - PT} rx={14} style={{ fill: "var(--secondary)" }} aria-hidden="true" />
             <text x={VW - PR - 14} y={PT + 22} textAnchor="end" className="text-[13px] font-semibold" style={{ fill: "var(--secondary-foreground)" }} aria-hidden="true">
-              Close and in demand
+              {t("Close and in demand", "Dekat dan banyak dicari")}
             </text>
             <rect x={PL} y={ys} width={VW - PL - PR} height={VH - PB - ys} style={{ fill: "var(--muted)", opacity: 0.6 }} aria-hidden="true" />
             <text x={PL + 10} y={VH - PB - 10} className="fill-muted-foreground text-[11.5px]" aria-hidden="true">
-              Beta: fewer than {DEMAND_SPLIT} postings, read with care
+              {t(`Beta: fewer than ${DEMAND_SPLIT} postings, read with care`, `Beta: kurang dari ${DEMAND_SPLIT} posting, baca dengan hati-hati`)}
             </text>
-            {sc.xTicks.map((t) => (
-              <g key={`x${t}`} aria-hidden="true">
-                <line x1={sc.x(t)} x2={sc.x(t)} y1={PT} y2={VH - PB} style={{ stroke: "var(--border)" }} />
-                <text x={sc.x(t)} y={VH - PB + 20} textAnchor="middle" className="fill-muted-foreground text-[12px]">{Math.round(t * 100)}%</text>
+            {sc.xTicks.map((v) => (
+              <g key={`x${v}`} aria-hidden="true">
+                <line x1={sc.x(v)} x2={sc.x(v)} y1={PT} y2={VH - PB} style={{ stroke: "var(--border)" }} />
+                <text x={sc.x(v)} y={VH - PB + 20} textAnchor="middle" className="fill-muted-foreground text-[12px]">{Math.round(v * 100)}%</text>
               </g>
             ))}
-            {sc.yTicks.map((t) => (
-              <g key={`y${t}`} aria-hidden="true">
-                <line x1={PL} x2={VW - PR} y1={sc.y(t)} y2={sc.y(t)} style={{ stroke: "var(--border)" }} />
-                <text x={PL - 10} y={sc.y(t) + 4} textAnchor="end" className="fill-muted-foreground text-[12px]">{t}</text>
+            {sc.yTicks.map((v) => (
+              <g key={`y${v}`} aria-hidden="true">
+                <line x1={PL} x2={VW - PR} y1={sc.y(v)} y2={sc.y(v)} style={{ stroke: "var(--border)" }} />
+                <text x={PL - 10} y={sc.y(v) + 4} textAnchor="end" className="fill-muted-foreground text-[12px]">{v}</text>
               </g>
             ))}
             <text x={(PL + VW - PR) / 2} y={VH - 14} textAnchor="middle" className="fill-ink text-[12.5px] font-medium" aria-hidden="true">
-              How much of what employers ask you can show →
+              {t("How much of what employers ask you can show →", "Seberapa banyak permintaan employer yang bisa kamu tunjukkan →")}
             </text>
             <text x={18} y={(PT + VH - PB) / 2} textAnchor="middle" transform={`rotate(-90 18 ${(PT + VH - PB) / 2})`} className="fill-ink text-[12.5px] font-medium" aria-hidden="true">
-              Job postings →
+              {t("Job postings →", "Job posting →")}
             </text>
             {mine.data.careers.map((c) => {
               const cx = sc.x(c.readiness);
@@ -194,7 +198,10 @@ export function CareerMap({ sid }: { sid: string }) {
                     r={on ? r + 2 : r}
                     role="button"
                     tabIndex={0}
-                    aria-label={`${c.name}: you can show ${pct(c.readiness)} of what employers ask, ${c.n_postings} postings${c.limited_data ? ", limited data" : ""}${c.is_target ? ", your target" : ""}`}
+                    aria-label={t(
+                      `${c.name}: you can show ${pct(c.readiness)} of what employers ask, ${c.n_postings} postings${c.limited_data ? ", limited data" : ""}${c.is_target ? ", your target" : ""}`,
+                      `${c.name}: kamu bisa menunjukkan ${pct(c.readiness)} dari yang diminta employer, ${c.n_postings} posting${c.limited_data ? ", data terbatas" : ""}${c.is_target ? ", target-mu" : ""}`,
+                    )}
                     aria-pressed={focus === c.id}
                     onClick={() => setSelected(c.id)}
                     onKeyDown={(ev) => (ev.key === "Enter" || ev.key === " ") && (ev.preventDefault(), setSelected(c.id))}
@@ -225,8 +232,8 @@ export function CareerMap({ sid }: { sid: string }) {
           <div className="flex items-center gap-3">
             <MascotLoader size={44} className="shrink-0" />
             <div>
-              <h3 id="since-last" className="text-base font-semibold text-ink">Since Your Last Visit</h3>
-              <p className="text-xs text-muted-foreground">Careers your new evidence moved, biggest change first.</p>
+              <h3 id="since-last" className="text-base font-semibold text-ink">{t("Since Your Last Visit", "Sejak Kunjungan Terakhirmu")}</h3>
+              <p className="text-xs text-muted-foreground">{t("Careers your new evidence moved, biggest change first.", "Karier yang bergerak karena evidence barumu, perubahan terbesar dulu.")}</p>
             </div>
           </div>
           <ChangeList className="mt-3" items={changes.slice(0, 5).map((x) => ({ ...x, target: byId[x.id]?.is_target }))} />
@@ -243,6 +250,7 @@ export function CareerMap({ sid }: { sid: string }) {
 /** Floating details for the hovered dot: readiness, sample size, a small radar of the areas and the biggest gap. */
 function HoverCard({ c, x, y }: { c: Career; x: number; y: number }) {
   const left = x > 0.55;
+  const t = useT();
   return (
     <div
       className="pointer-events-none absolute z-10 hidden w-[280px] rounded-2xl border bg-card p-4 shadow-lg sm:block"
@@ -251,13 +259,14 @@ function HoverCard({ c, x, y }: { c: Career; x: number; y: number }) {
     >
       <p className="font-semibold text-ink">{c.name}</p>
       <p className="mt-0.5 text-xs text-muted-foreground">
-        <span className="font-semibold text-ink">{c.n_measured ? pct(c.readiness) : "Not measured"}</span> · {c.n_measured} of {c.n_skills} skills measured · {c.n_postings} postings
+        <span className="font-semibold text-ink">{c.n_measured ? pct(c.readiness) : t("Not measured", "Belum terukur")}</span> ·{" "}
+        {t(`${c.n_measured} of ${c.n_skills} skills measured · ${c.n_postings} postings`, `${c.n_measured} dari ${c.n_skills} skill terukur · ${c.n_postings} posting`)}
         {c.limited_data ? " · Beta" : ""}
       </p>
       <Radar a={c} b={null} size={220} />
       {c.top_gaps[0] ? (
         <p className="mt-1 text-xs text-muted-foreground">
-          Biggest gap: <span className="text-ink">{c.top_gaps[0].name}</span> ({c.top_gaps[0].level_now} → {c.top_gaps[0].level_needed})
+          {t("Biggest gap", "Gap terbesar")}: <span className="text-ink">{c.top_gaps[0].name}</span> ({lvl(t, c.top_gaps[0].level_now)} → {lvl(t, c.top_gaps[0].level_needed)})
         </p>
       ) : null}
     </div>
@@ -265,12 +274,13 @@ function HoverCard({ c, x, y }: { c: Career; x: number; y: number }) {
 }
 
 function Legend() {
+  const t = useT();
   return (
     <ul className="flex flex-wrap gap-x-6 gap-y-2 border-t px-5 py-4 text-xs text-muted-foreground">
-      <li className="flex items-center gap-2"><span className="size-3 rounded-full" style={{ background: "var(--indigo)" }} /> Career</li>
-      <li className="flex items-center gap-2"><span className="size-3 rounded-full border-2" style={{ borderColor: "var(--iris)" }} /> Your target</li>
-      <li className="flex items-center gap-2"><span className="size-3 rounded-full border-2 border-dashed" style={{ borderColor: "var(--indigo)" }} /> Beta: fewer than 30 postings</li>
-      <li className="flex items-center gap-2"><span className="h-3 w-5 rounded" style={{ background: "var(--secondary)" }} /> Close and in demand</li>
+      <li className="flex items-center gap-2"><span className="size-3 rounded-full" style={{ background: "var(--indigo)" }} /> {t("Career", "Karier")}</li>
+      <li className="flex items-center gap-2"><span className="size-3 rounded-full border-2" style={{ borderColor: "var(--iris)" }} /> {t("Your target", "Target-mu")}</li>
+      <li className="flex items-center gap-2"><span className="size-3 rounded-full border-2 border-dashed" style={{ borderColor: "var(--indigo)" }} /> {t("Beta: fewer than 30 postings", "Beta: kurang dari 30 posting")}</li>
+      <li className="flex items-center gap-2"><span className="h-3 w-5 rounded" style={{ background: "var(--secondary)" }} /> {t("Close and in demand", "Dekat dan banyak dicari")}</li>
     </ul>
   );
 }
@@ -278,15 +288,16 @@ function Legend() {
 function CareerPanel({ sid, c, all, onTargetChanged }: { sid: string; c: Career; all: Career[]; onTargetChanged: () => void }) {
   const [busy, setBusy] = useState(false);
   const [otherId, setOtherId] = useState("");
+  const t = useT();
   const other = all.find((x) => x.id === otherId && x.id !== c.id) ?? null;
   const makeTarget = async () => {
     setBusy(true);
     try {
       await api.patch(`/students/${sid}`, { target_role: c.id });
-      toast.success(`${c.name} is now your target. Your route was rebuilt.`);
+      toast.success(t(`${c.name} is now your target. Your route was rebuilt.`, `${c.name} sekarang target-mu. Rutemu sudah disusun ulang.`));
       onTargetChanged();
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Couldn't change your target.");
+      toast.error(e instanceof Error ? e.message : t("Couldn't change your target.", "Gagal mengganti target-mu."));
     } finally {
       setBusy(false);
     }
@@ -297,21 +308,21 @@ function CareerPanel({ sid, c, all, onTargetChanged }: { sid: string; c: Career;
       <div>
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="text-lg font-bold text-ink">{c.name}</h3>
-          {c.is_target ? <Tag tone="indigo">Your target</Tag> : null}
+          {c.is_target ? <Tag tone="indigo">{t("Your target", "Target-mu")}</Tag> : null}
           {c.limited_data ? <Tag tone="ember">Beta</Tag> : null}
         </div>
         <p className="mt-1 text-sm text-muted-foreground">
-          {c.n_measured === 0 ? "Not measured yet" : `You can show ${pct(c.readiness)} of what employers ask`} · {c.n_measured} of {c.n_skills} skills
-          measured · {c.n_postings} postings
+          {c.n_measured === 0 ? t("Not measured yet", "Belum terukur") : t(`You can show ${pct(c.readiness)} of what employers ask`, `Kamu bisa menunjukkan ${pct(c.readiness)} dari yang diminta employer`)} ·{" "}
+          {t(`${c.n_measured} of ${c.n_skills} skills measured · ${c.n_postings} postings`, `${c.n_measured} dari ${c.n_skills} skill terukur · ${c.n_postings} posting`)}
         </p>
       </div>
       <Radar a={c} b={other} />
       <div>
         <label htmlFor="compare-role" className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Compare with
+          {t("Compare with", "Bandingkan dengan")}
         </label>
         <NativeSelect id="compare-role" value={otherId} onChange={(e) => setOtherId(e.target.value)} className="mt-1.5">
-          <option value="">No comparison</option>
+          <option value="">{t("No comparison", "Tanpa perbandingan")}</option>
           {all
             .filter((x) => x.id !== c.id)
             .map((x) => (
@@ -322,11 +333,11 @@ function CareerPanel({ sid, c, all, onTargetChanged }: { sid: string; c: Career;
         </NativeSelect>
       </div>
       <table className="w-full text-sm">
-        <caption className="sr-only">Readiness by area{other ? ` compared with ${other.name}` : ""}</caption>
+        <caption className="sr-only">{t("Readiness by area", "Readiness per area")}{other ? t(` compared with ${other.name}`, ` dibandingkan dengan ${other.name}`) : ""}</caption>
         <thead className="text-left text-xs text-muted-foreground">
           <tr>
             <th className="pb-2 font-medium">Area</th>
-            <th className="pb-2 text-right font-medium">{other ? shortName(c.name) : "You"}</th>
+            <th className="pb-2 text-right font-medium">{other ? shortName(c.name) : t("You", "Kamu")}</th>
             {other ? <th className="pb-2 pl-3 text-right font-medium">{shortName(other.name)}</th> : null}
           </tr>
         </thead>
@@ -334,8 +345,8 @@ function CareerPanel({ sid, c, all, onTargetChanged }: { sid: string; c: Career;
           {areaRows(c, other).map((row) => (
             <tr key={row.id} className="border-t">
               <td className="py-2 pr-3 text-ink">{row.label}</td>
-              <td className="tabular py-2 text-right">{cell(row.a)}</td>
-              {other ? <td className="tabular py-2 pl-3 text-right">{cell(row.b)}</td> : null}
+              <td className="tabular py-2 text-right">{cell(row.a, t)}</td>
+              {other ? <td className="tabular py-2 pl-3 text-right">{cell(row.b, t)}</td> : null}
             </tr>
           ))}
         </tbody>
@@ -343,21 +354,21 @@ function CareerPanel({ sid, c, all, onTargetChanged }: { sid: string; c: Career;
       {other ? (
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-            {shared.length} skill{shared.length === 1 ? "" : "s"} both ask for
+            {t(`${shared.length} skill${shared.length === 1 ? "" : "s"} both ask for`, `${shared.length} skill diminta keduanya`)}
           </p>
           <p className="mt-1.5 text-sm text-ink/80">
-            {shared.length ? shared.slice(0, 8).map((s) => s.name).join(", ") + (shared.length > 8 ? ", …" : "") : "None at Basic level or above."}
+            {shared.length ? shared.slice(0, 8).map((s) => s.name).join(", ") + (shared.length > 8 ? ", …" : "") : t("None at Basic level or above.", "Tidak ada di level Dasar atau lebih.")}
           </p>
         </div>
       ) : c.top_gaps.length ? (
         <div>
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Biggest gaps</p>
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t("Biggest gaps", "Gap terbesar")}</p>
           <ul className="space-y-1.5 text-sm">
             {c.top_gaps.map((g) => (
               <li key={g.skill_id} className="flex justify-between gap-3">
                 <span className="text-ink">{g.name}</span>
                 <span className="shrink-0 text-xs capitalize text-muted-foreground">
-                  {g.level_now} → {g.level_needed}
+                  {lvl(t, g.level_now)} → {lvl(t, g.level_needed)}
                 </span>
               </li>
             ))}
@@ -367,24 +378,25 @@ function CareerPanel({ sid, c, all, onTargetChanged }: { sid: string; c: Career;
       <div className="flex flex-wrap gap-2">
         {c.is_target ? (
           <LinkButton href="/dashboard" size="lg" className="h-10">
-            See My Route
+            {t("See My Route", "Lihat Ruteku")}
           </LinkButton>
         ) : (
           <Button size="lg" className="h-10" onClick={makeTarget} disabled={busy}>
-            <Target /> Make This My Target
+            <Target /> {t("Make This My Target", "Jadikan Target-ku")}
           </Button>
         )}
         <LinkButton href={`/market?role=${c.id}`} variant="outline" size="lg" className="h-10">
-          See the Postings
+          {t("See the Postings", "Lihat Posting-nya")}
         </LinkButton>
       </div>
-      {!c.is_target ? <p className="text-xs text-muted-foreground">Changing your target rebuilds your route. Your evidence stays.</p> : null}
+      {!c.is_target ? <p className="text-xs text-muted-foreground">{t("Changing your target rebuilds your route. Your evidence stays.", "Mengganti target akan menyusun ulang rutemu. Evidence-mu tetap.")}</p> : null}
     </Panel>
   );
 }
 
 type Cell = { coverage: number; measured: boolean } | null;
-const cell = (x: Cell) => (x === null ? "–" : x.measured ? pct(x.coverage) : "Not measured");
+const cell = (x: Cell, t: T) => (x === null ? "–" : x.measured ? pct(x.coverage) : t("Not measured", "Belum terukur"));
+const lvl = (t: T, code: string) => (LEVEL[code] ? t(...LEVEL[code]) : code);
 
 /** One row per area either career asks for; null = that career's postings never ask for the area. */
 function areaRows(a: Career, b: Career | null) {
@@ -399,6 +411,7 @@ function areaRows(a: Career, b: Career | null) {
 
 /** Readiness per area as a radar. Only measured areas are joined by the shape; unmeasured axes are dashed, never drawn as zero. */
 function Radar({ a, b, size = 320 }: { a: Career; b: Career | null; size?: number }) {
+  const t = useT();
   const rows = areaRows(a, b).slice(0, 7);
   if (rows.length < 3) return null;
   const S = size;
@@ -421,7 +434,7 @@ function Radar({ a, b, size = 320 }: { a: Career; b: Career | null; size?: numbe
   const sb = b ? shape("b") : [];
   return (
     <figure>
-      <svg viewBox={`0 0 ${S} ${S}`} className="mx-auto h-auto w-full" style={{ maxWidth: S }} role="img" aria-label={`Readiness by area for ${a.name}${b ? ` and ${b.name}` : ""}`}>
+      <svg viewBox={`0 0 ${S} ${S}`} className="mx-auto h-auto w-full" style={{ maxWidth: S }} role="img" aria-label={t(`Readiness by area for ${a.name}${b ? ` and ${b.name}` : ""}`, `Readiness per area untuk ${a.name}${b ? ` dan ${b.name}` : ""}`)}>
         {[0.25, 0.5, 0.75, 1].map((f) => (
           <polygon key={f} points={poly(rows.map((_, i) => pt(i, f)))} fill="none" style={{ stroke: "var(--border)" }} />
         ))}
@@ -464,18 +477,19 @@ function Radar({ a, b, size = 320 }: { a: Career; b: Career | null; size?: numbe
             <span className="w-4 border-t-2 border-dashed" style={{ borderColor: "var(--ember-ink)" }} /> {shortName(b.name)}
           </span>
         ) : null}
-        <span>Dashed axis = not measured yet</span>
+        <span>{t("Dashed axis = not measured yet", "Sumbu putus-putus = belum terukur")}</span>
       </figcaption>
     </figure>
   );
 }
 
 function CareerList({ careers, selected, onSelect }: { careers: Career[]; selected: string | null; onSelect: (id: string) => void }) {
+  const t = useT();
   return (
     <section aria-labelledby="career-list">
       <div className="mb-4 flex items-center gap-3">
         <Mascot name="signpost" size={56} />
-        <h3 id="career-list" className="text-base font-semibold text-ink">All Careers, Closest First</h3>
+        <h3 id="career-list" className="text-base font-semibold text-ink">{t("All Careers, Closest First", "Semua Karier, Terdekat Dulu")}</h3>
       </div>
       <ul className="divide-y rounded-2xl border bg-card">
         {careers.map((c) => (
@@ -496,7 +510,7 @@ function CareerList({ careers, selected, onSelect }: { careers: Career[]; select
                   {c.limited_data ? <Tag tone="ember">Beta</Tag> : null}
                 </span>
                 <span className="mt-1 block text-xs text-muted-foreground">
-                  {c.n_measured} of {c.n_skills} skills measured · {c.n_postings} postings
+                  {t(`${c.n_measured} of ${c.n_skills} skills measured · ${c.n_postings} postings`, `${c.n_measured} dari ${c.n_skills} skill terukur · ${c.n_postings} posting`)}
                 </span>
               </span>
               <span className="flex items-center gap-3">
