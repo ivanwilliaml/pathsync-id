@@ -961,6 +961,198 @@
    "source": "tim",
    "rationale": "Ratios and analysis are computed from the statements.",
    "rationale_en": "Ratios and analysis are computed from the statements."
+  },
+  {
+   "from": "financial_statements",
+   "to": "credit_analysis",
+   "source": "tim",
+   "rationale": "Menilai kredit perlu membaca laporan keuangan peminjam.",
+   "rationale_en": "Judging credit requires reading the borrower's financial statements.",
+   "added_in": "a9"
+  },
+  {
+   "from": "financial_analysis",
+   "to": "credit_analysis",
+   "source": "tim",
+   "rationale": "Rasio keuangan menjadi dasar analisis kemampuan bayar.",
+   "rationale_en": "Financial ratios are the basis of repayment analysis.",
+   "added_in": "a9"
+  },
+  {
+   "from": "tax_compliance_id",
+   "to": "pph_corporate_withholding",
+   "source": "tim",
+   "rationale": "Pemotongan PPh 22/23/26 dibangun di atas dasar kepatuhan pajak.",
+   "rationale_en": "Withholding of PPh 22/23/26 builds on tax compliance basics.",
+   "added_in": "a9"
+  },
+  {
+   "from": "tax_compliance_id",
+   "to": "vat_ppn_mechanics",
+   "source": "tim",
+   "rationale": "Mekanisme PPN membutuhkan pemahaman dasar kewajiban perpajakan.",
+   "rationale_en": "VAT mechanics need a basic grasp of tax obligations.",
+   "added_in": "a9"
+  },
+  {
+   "from": "pph_corporate_withholding",
+   "to": "tax_dispute_audit",
+   "source": "tim",
+   "rationale": "Sengketa sering berasal dari pemotongan dan pelaporan PPh.",
+   "rationale_en": "Disputes often arise from withholding and reporting of PPh.",
+   "added_in": "a9"
+  },
+  {
+   "from": "vat_ppn_mechanics",
+   "to": "tax_dispute_audit",
+   "source": "tim",
+   "rationale": "Koreksi PPN adalah sumber umum surat ketetapan pajak.",
+   "rationale_en": "VAT corrections are a common source of tax assessments.",
+   "added_in": "a9"
+  },
+  {
+   "from": "audit_internal_control",
+   "to": "audit_planning_fieldwork",
+   "source": "tim",
+   "rationale": "Perencanaan audit bertumpu pada pemahaman pengendalian internal.",
+   "rationale_en": "Audit planning rests on understanding internal control.",
+   "added_in": "a9"
+  },
+  {
+   "from": "enterprise_risk_management",
+   "to": "audit_planning_fieldwork",
+   "source": "tim",
+   "rationale": "Audit berbasis risiko memakai hasil penilaian risiko.",
+   "rationale_en": "Risk-based audit uses the results of risk assessment.",
+   "added_in": "a9"
+  },
+  {
+   "from": "audit_planning_fieldwork",
+   "to": "audit_reporting_followup",
+   "source": "tim",
+   "rationale": "Temuan dilaporkan setelah bukti dikumpulkan di lapangan.",
+   "rationale_en": "Findings are reported after evidence is gathered in the field.",
+   "added_in": "a9"
+  },
+  {
+   "from": "hris_systems",
+   "to": "payroll_processing",
+   "source": "tim",
+   "rationale": "Payroll mengambil data karyawan dan absensi dari HRIS.",
+   "rationale_en": "Payroll takes employee and attendance data from the HRIS.",
+   "added_in": "a9"
+  },
+  {
+   "from": "labor_law_id",
+   "to": "payroll_processing",
+   "source": "tim",
+   "rationale": "Lembur, THR, dan upah minimum diatur oleh hukum ketenagakerjaan.",
+   "rationale_en": "Overtime, THR and minimum wage are set by labour law.",
+   "added_in": "a9"
+  },
+  {
+   "from": "performance_management",
+   "to": "learning_development",
+   "source": "tim",
+   "rationale": "Hasil penilaian kinerja menunjukkan kebutuhan pelatihan.",
+   "rationale_en": "Appraisal results reveal training needs.",
+   "added_in": "a9"
+  },
+  {
+   "from": "recruitment_selection",
+   "to": "performance_management",
+   "source": "tim",
+   "rationale": "Kriteria jabatan yang dipakai merekrut juga dasar penilaian kinerja.",
+   "rationale_en": "The job criteria used to recruit also underpin performance appraisal.",
+   "added_in": "a9"
+  },
+  {
+   "from": "cost_accounting",
+   "to": "inventory_management",
+   "source": "tim",
+   "rationale": "Penilaian persediaan dan biaya simpan berasal dari akuntansi biaya.",
+   "rationale_en": "Inventory valuation and holding cost come from cost accounting.",
+   "added_in": "a9"
+  },
+  {
+   "from": "excel",
+   "to": "inventory_management",
+   "source": "tim",
+   "rationale": "Perhitungan EOQ, safety stock, dan ABC umumnya dilakukan di spreadsheet.",
+   "rationale_en": "EOQ, safety stock and ABC calculations are usually done in a spreadsheet.",
+   "added_in": "a9"
+  },
+  {
+   "from": "inventory_management",
+   "to": "production_planning_mrp",
+   "source": "tim",
+   "rationale": "MRP memakai data persediaan untuk menghitung kebutuhan bersih.",
+   "rationale_en": "MRP uses inventory data to compute net requirements.",
+   "added_in": "a9"
+  },
+  {
+   "from": "inventory_management",
+   "to": "warehouse_logistics",
+   "source": "tim",
+   "rationale": "Pengelolaan stok bertumpu pada operasi gudang yang tertib.",
+   "rationale_en": "Stock control depends on orderly warehouse operations.",
+   "added_in": "a9"
+  },
+  {
+   "from": "procurement_sourcing",
+   "to": "vendor_supplier_management",
+   "source": "tim",
+   "rationale": "Pemasok yang dipilih lewat pengadaan perlu dinilai kinerjanya.",
+   "rationale_en": "Suppliers chosen through procurement need performance evaluation.",
+   "added_in": "a9"
+  },
+  {
+   "from": "project_planning_wbs",
+   "to": "project_scheduling",
+   "source": "tim",
+   "rationale": "Jadwal disusun dari paket kerja pada WBS.",
+   "rationale_en": "The schedule is built from the work packages in the WBS.",
+   "added_in": "a9"
+  },
+  {
+   "from": "project_planning_wbs",
+   "to": "project_risk_change",
+   "source": "tim",
+   "rationale": "Perubahan ruang lingkup dinilai terhadap WBS yang disepakati.",
+   "rationale_en": "Scope changes are judged against the agreed WBS.",
+   "added_in": "a9"
+  },
+  {
+   "from": "project_scheduling",
+   "to": "release_delivery_management",
+   "source": "tim",
+   "rationale": "Rilis dan go-live mengikuti jadwal proyek.",
+   "rationale_en": "Releases and go-live follow the project schedule.",
+   "added_in": "a9"
+  },
+  {
+   "from": "project_risk_change",
+   "to": "release_delivery_management",
+   "source": "tim",
+   "rationale": "Rencana rollback dan pengendalian perubahan menjaga rilis aman.",
+   "rationale_en": "Rollback plans and change control keep a release safe.",
+   "added_in": "a9"
+  },
+  {
+   "from": "kpi_metrics",
+   "to": "product_roadmap_prioritization",
+   "source": "tim",
+   "rationale": "Prioritas produk dinilai dengan metrik dampak yang terukur.",
+   "rationale_en": "Product priorities are judged with measurable impact metrics.",
+   "added_in": "a9"
+  },
+  {
+   "from": "requirements_elicitation",
+   "to": "product_roadmap_prioritization",
+   "source": "tim",
+   "rationale": "Kebutuhan pengguna yang digali menjadi masukan roadmap.",
+   "rationale_en": "Elicited user needs feed the roadmap.",
+   "added_in": "a9"
   }
  ]
 }

@@ -43,6 +43,7 @@ FAMILIES = {
     "business": "Business & Analysis",
     "marketing": "Marketing",
     "finance": "Finance & Accounting",
+    "management": "Management & Operations",
 }
 
 CATALOG: list[Role] = [
@@ -124,12 +125,52 @@ CATALOG: list[Role] = [
          ("digital marketing", "performance marketing", "seo specialist", "marketing specialist", "ecommerce specialist",
           "social media specialist"),
          exclude=r"field\s+sales|sales\s+(?:executive|staff)|\bsales\b\s*$"),
+    Role("financial_analyst", "Financial Analyst", "finance",
+         "Models company finances, forecasts results and supports investment and budgeting decisions.",
+         r"financial\s+analy[sz]|finance\s+analy[sz]|fp\s*&\s*a|\bfpa\b|analis\s+keuangan|investment\s+analy[sz]|credit\s+analy[sz]|"
+         r"treasury\s+(?:analyst|staff|officer)|corporate\s+finance|business\s+finance|financial\s+planning|financial\s+model",
+         ("financial analyst", "finance analyst", "fp&a", "analis keuangan", "investment analyst", "credit analyst", "corporate finance"),
+         exclude=r"account\s+executive|sales"),
+    Role("tax_specialist", "Tax Specialist", "finance",
+         "Calculates, withholds and reports Indonesian taxes (PPh, PPN) and keeps the company compliant.",
+         r"\btax\b|taxation|staff\s+pajak|staf\s+pajak|perpajakan|\bpajak\b|pph\s*21|\bppn\b",
+         ("tax staff", "tax specialist", "tax accountant", "tax analyst", "staff pajak", "perpajakan", "tax officer"),
+         exclude=r"tax\s+collector"),
+    Role("internal_auditor", "Internal Auditor & Risk", "finance",
+         "Tests controls, audits processes and assesses risk so management can trust the numbers.",
+         r"auditor|internal\s+audit|audit\s+(?:staff|officer|associate|senior|junior|assistant)|risk\s+(?:analy[sz]t|officer|management|staff|assurance)|"
+         r"compliance\s+(?:officer|analy[sz]t|staff)|manajemen\s+risiko|audit\s+internal",
+         ("internal auditor", "auditor", "audit staff", "risk analyst", "risk management", "compliance officer", "internal audit"),
+         exclude=r"\bk3\b|\bhse\b|quality\s+auditor|iso\s*\d+|food\s+safety|halal|smk3|mutu"),
+    Role("hr_specialist", "HR Specialist", "management",
+         "Runs recruitment, payroll, BPJS, employee records and people reporting.",
+         r"\bhr\b|\bhrd\b|\bhris\b|human\s+(?:resource|capital)|recruit(?:er|ment)|talent\s+(?:acquisition|management)|payroll|"
+         r"compensation\s*(?:&|and)\s*benefit|\bc\s*&\s*b\b|people\s+(?:operations|partner|analytics)|learning\s*(?:&|and)\s*development|"
+         r"sumber\s+daya\s+manusia|personalia|kepegawaian|hubungan\s+industrial|industrial\s+relation",
+         ("hr staff", "hr generalist", "recruiter", "payroll", "talent acquisition", "human resources", "hrd", "hr officer",
+          "compensation and benefits", "learning and development", "hris"),
+         exclude=r"hr[\s-]*tech\s+sales|sales"),
+    Role("supply_chain_analyst", "Supply Chain & Operations Analyst", "management",
+         "Plans demand, inventory and purchasing, and keeps operations flowing with ERP data.",
+         r"supply\s+chain|procurement|purchasing|inventory|demand\s+plan|logistic[s]?\s+(?:analyst|staff|officer|coordinator|admin|planner)|"
+         r"warehouse\s+(?:staff|admin|analyst|coordinator|planner)|operations?\s+(?:analyst|staff|coordinator|specialist|planner)|"
+         r"production\s+planning|\bppic\b|\bsourcing\b|vendor\s+management|admin\s+gudang|pengadaan|material\s+planner",
+         ("supply chain", "procurement", "purchasing staff", "inventory control", "logistics analyst", "demand planner", "ppic",
+          "operations analyst", "warehouse admin", "sourcing specialist"),
+         exclude=r"driver|courier|kurir|picker|packer|operator|mechanic|teknisi|loader|helper|sales"),
+    Role("project_coordinator", "Product / Project Coordinator", "management",
+         "Plans scope, schedules and backlogs, tracks delivery and reports progress to stakeholders.",
+         r"project\s+(?:coordinator|administrator|admin|officer|assistant|analy[sz]t|controller|manager)|\bpmo\b|"
+         r"product\s+(?:coordinator|owner|operations|assistant|manager)|program\s+(?:coordinator|officer)|scrum\s+master|"
+         r"delivery\s+(?:coordinator|lead)|koordinator\s+proyek",
+         ("project coordinator", "project administrator", "project manager", "product owner", "product manager", "pmo",
+          "scrum master", "program coordinator"),
+         exclude=r"construction|konstruksi|civil|sipil|mep|site\s+engineer|interior|marketing\s+project"),
     Role("accountant", "Accountant / Finance Staff", "finance",
          "Records transactions, prepares financial statements and handles tax.",
-         r"accounting|accountant|akuntan|akuntansi|finance\s+(?:staff|officer|admin|accounting|executive|analyst)|"
-         r"financial\s+analyst|tax\s+(?:staff|officer|specialist|accountant)|staff\s+pajak|perpajakan|"
-         r"account\s+(?:payable|receivable)|\bap\b\s*/?\s*ar|auditor|staff\s+keuangan|admin\s+keuangan|finance\s*&\s*accounting",
-         ("akuntan", "accounting staff", "finance staff", "tax staff", "auditor", "financial analyst"),
+         r"accounting|accountant|akuntan|akuntansi|finance\s+(?:staff|officer|admin|accounting|executive)|"
+         r"account\s+(?:payable|receivable)|\bap\b\s*/?\s*ar|staff\s+keuangan|admin\s+keuangan|finance\s*&\s*accounting",
+         ("akuntan", "accounting staff", "finance staff"),
          exclude=r"account\s+(?:executive|manager|officer\s+sales)|key\s+account"),
 ]
 
@@ -152,6 +193,12 @@ SCOPE: dict[str, tuple[str, ...]] = {
     "ui_ux_designer": ("design", "html_css", "responsive_accessible_web", "web_analytics"),
     "digital_marketing": ("marketing", "figma_design_tools", "visual_design_fundamentals", "excel", "kpi_metrics", "erp_crm", "data_analysis", "data_visualization", "dashboard_reporting", "cms_wordpress", "html_css"),
     "accountant": ("finance", "excel", "data_analysis", "dashboard_reporting", "erp_crm", "power_bi", "sql"),
+    "financial_analyst": ("corp_finance", "financial_analysis", "budgeting_forecasting", "financial_statements", "accounting_fundamentals", "excel", "power_bi", "sql", "data_visualization", "kpi_metrics"),
+    "tax_specialist": ("tax", "tax_compliance_id", "accounting_fundamentals", "financial_statements", "accounting_software", "excel", "erp_crm"),
+    "internal_auditor": ("audit_risk", "audit_internal_control", "financial_statements", "accounting_fundamentals", "excel", "sql", "data_analysis", "erp_crm"),
+    "hr_specialist": ("hr", "excel", "power_bi", "data_analysis", "dashboard_reporting", "kpi_metrics"),
+    "supply_chain_analyst": ("supply_chain", "excel", "erp_crm", "sql", "power_bi", "data_analysis", "dashboard_reporting", "kpi_metrics", "cost_accounting"),
+    "project_coordinator": ("product_project", "jira_confluence", "kpi_metrics", "excel", "data_analysis", "requirements_elicitation", "diagramming_tools", "web_analytics"),
 }
 
 

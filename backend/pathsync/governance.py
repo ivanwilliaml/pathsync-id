@@ -35,6 +35,8 @@ CHANGELOG = [
      "ICT business analyst and data analyst profiles plus frequent extraction terms."},
     {"version": "2026.10-v2", "date": "2026-10-01", "change": "Added 'API & system integration': most frequent "
      "new-skill candidate cluster (REST API, JSON, Swagger, system integration) in IT BA postings."},
+    {"version": "2026.10-v4", "date": "2026-10-17", "change": "Plan A9: six business roles. 52 candidate skills were proposed "
+     "and the 24 that reach 10% of postings in at least one business role were kept (114 -> 138 skills, 14 -> 20 clusters)."},
 ]
 
 

@@ -251,7 +251,7 @@ Tinjauan akhir sebelum beku: `pip-audit` dan `npm audit` (sudah di CI), pemeriks
 |---|---|---|
 | `pytest` (114 tes) | domain, API, migrasi, retensi, observabilitas, soft skill, BPS | harus hijau |
 | `test_extractor_meets_precision_target_on_blind_gold` | presisi dan recall ≥ 0,80 di set uji | diarahkan ke gold konsensus (AI-01) |
-| `test_item_bank.py` | akurasi pola jawaban ≤ batas | turun ke 0,30 untuk bank saat ini (0,258) |
+| `test_item_bank.py` | akurasi pola jawaban ≤ batas | turun ke 0,30 untuk bank saat ini (0,328) |
 | `test_paper_fidelity.py` | persamaan paper dan Tabel 4 | harus tetap hijau saat AI-05 |
 | Playwright (BE-06) | alur demo di dua bahasa | CI |
 | `deploy/loadtest.py` | 200 siswa, 40 konkuren | 0 galat |

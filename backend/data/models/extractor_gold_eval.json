@@ -5,6 +5,7 @@
   "gold_sha": "fd1d3a9c620a",
   "split": null,
   "extractor": "lexicon",
+  "skills_outside_gold_scope": 24,
   "n_postings": 24,
   "skipped_no_llm_result": [],
   "overall": {
@@ -405,11 +406,11 @@
     1
    ],
    [
-    "test_design_techniques",
+    "api_integration",
     1
    ],
    [
-    "api_integration",
+    "test_design_techniques",
     1
    ],
    [
@@ -421,15 +422,15 @@
     1
    ],
    [
-    "siem_monitoring",
-    1
-   ],
-   [
     "security_frameworks_compliance",
     1
    ],
    [
-    "networking_fundamentals",
+    "siem_monitoring",
+    1
+   ],
+   [
+    "penetration_testing",
     1
    ]
   ],
@@ -459,11 +460,11 @@
     1
    ],
    [
-    "testing_uat",
+    "requirements_documentation",
     1
    ],
    [
-    "requirements_documentation",
+    "testing_uat",
     1
    ],
    [
@@ -482,6 +483,7 @@
   "gold_sha": "7a7b67a79a7e",
   "split": null,
   "extractor": "lexicon",
+  "skills_outside_gold_scope": 24,
   "n_postings": 26,
   "skipped_no_llm_result": [],
   "overall": {
@@ -954,11 +956,11 @@
     1
    ],
    [
-    "cloud_security",
+    "sdlc",
     1
    ],
    [
-    "sdlc",
+    "cloud_security",
     1
    ],
    [
@@ -1000,11 +1002,11 @@
     1
    ],
    [
-    "diagramming_tools",
+    "requirements_documentation",
     1
    ],
    [
-    "requirements_documentation",
+    "diagramming_tools",
     1
    ],
    [
@@ -1035,6 +1037,7 @@
   "gold_sha": "6109aca0cc28",
   "split": null,
   "extractor": "lexicon",
+  "skills_outside_gold_scope": 24,
   "n_postings": 26,
   "skipped_no_llm_result": [],
   "overall": {
@@ -1543,11 +1546,11 @@
     1
    ],
    [
-    "java_spring",
+    "git_version_control",
     1
    ],
    [
-    "git_version_control",
+    "java_spring",
     1
    ],
    [
@@ -1599,7 +1602,7 @@
   ]
  },
  "provenance": {
-  "taxonomy_sha": "d887be8bb360",
+  "taxonomy_sha": "300f64e6c78d",
   "extractor": "lexicon"
  }
 }

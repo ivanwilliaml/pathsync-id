@@ -2,7 +2,7 @@
 
 Purwarupa kerja dari metodologi paper semifinal *PathSync: Navigator Belajar Adaptif Berbasis Kecerdasan Buatan*. PathSync membaca lowongan kerja nyata Indonesia, memeriksa apa yang sudah bisa dibuktikan mahasiswa, lalu menyusun rute belajar berurutan untuk **hard skill**, lengkap dengan alasan dan materi gratis.
 
-**Cakupan sekarang:** 14 role (Business Analyst sebagai role yang divalidasi penuh, 13 role lain berlabel Beta), 114 hard skill di 14 klaster, 137 prasyarat, 570 soal Cek Cepat, dan 9 soft skill berbasis pengalaman (tanpa kuis, tidak masuk ranking).
+**Cakupan sekarang:** 20 role (Business Analyst sebagai role yang divalidasi penuh, 19 role lain berlabel Beta), 138 hard skill di 20 klaster, 161 prasyarat, 690 soal Cek Cepat, dan 9 soft skill berbasis pengalaman (tanpa kuis, tidak masuk ranking).
 
 **Mulai dari sini:**
 - Rencana produk dan prioritas: **[PLAN.md](PLAN.md)**
