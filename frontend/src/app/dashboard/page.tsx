@@ -332,7 +332,7 @@ function AllSkills({ comps, onOpen }: { comps: Competency[]; onOpen: (id: string
       <div className="flex items-center justify-between border-b px-5 py-3">
         <p className="text-sm text-ink/70">{rows.length} skills, most in-demand first</p>
         <label className="flex items-center gap-2 text-sm text-ink/80">
-          <input type="checkbox" checked={onlyGaps} onChange={(e) => setOnlyGaps(e.target.checked)} className="size-4 accent-[#4338ca]" />
+          <input type="checkbox" checked={onlyGaps} onChange={(e) => setOnlyGaps(e.target.checked)} className="size-4 accent-indigo" />
           Only skills to improve
         </label>
       </div>

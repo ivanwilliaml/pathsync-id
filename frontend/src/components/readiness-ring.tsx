@@ -17,9 +17,9 @@ export function ReadinessRing({ value, size = 148, stroke = 14, label }: { value
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
         <defs>
           <linearGradient id={`ring-${id}`} x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stopColor="#4338ca" />
-            <stop offset="0.55" stopColor="#7c6cf6" />
-            <stop offset="1" stopColor="#f2711c" />
+            <stop offset="0" style={{ stopColor: "var(--indigo)" }} />
+            <stop offset="0.55" style={{ stopColor: "var(--iris)" }} />
+            <stop offset="1" style={{ stopColor: "var(--ember)" }} />
           </linearGradient>
         </defs>
         <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e7e5f3" strokeWidth={stroke} />

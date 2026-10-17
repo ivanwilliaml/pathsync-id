@@ -208,7 +208,7 @@ function Taxonomy({ g }: { g: Governance }) {
     <div className="space-y-4">
       <Panel>
         <div className="flex flex-wrap items-center gap-3">
-          {g.final ? <CheckCircle2 className="size-6 text-mint" aria-hidden="true" /> : <XCircle className="size-6 text-ember" aria-hidden="true" />}
+          {g.final ? <CheckCircle2 className="size-6 text-mint" aria-hidden="true" /> : <XCircle className="size-6 text-ember-ink" aria-hidden="true" />}
           <p className="text-lg font-semibold text-ink">
             {g.final ? "Final" : "Not final yet"}: {g.n_core} core skills for {g.role_name}, plus {g.adjacent_skills.length} adjacent skills
           </p>

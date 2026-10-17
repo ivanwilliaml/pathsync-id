@@ -680,7 +680,7 @@ function Preferences({ student, meta, names, onSaved }: { student: Student; meta
           <Label htmlFor="hours" className="mb-2 block">
             Study Time per Week: <span className="tabular font-semibold">{hoursPerWeek} hours</span>
           </Label>
-          <input id="hours" type="range" min={1} max={20} step={1} value={hoursPerWeek} onChange={(e) => setHours(Number(e.target.value))} className="w-full max-w-md accent-[#4338ca]" />
+          <input id="hours" type="range" min={1} max={20} step={1} value={hoursPerWeek} onChange={(e) => setHours(Number(e.target.value))} className="w-full max-w-md accent-indigo" />
         </div>
         <fieldset>
           <legend className="mb-2 text-sm font-medium text-ink">Preferred Format</legend>

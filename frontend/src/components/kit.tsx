@@ -4,9 +4,10 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import type { VariantProps } from "class-variance-authority";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { MascotLoader } from "./mascot-loader";
 
 /** Navigation that looks like a button (keeps <a> semantics for Cmd/Ctrl-click). */
 export function LinkButton({
@@ -57,8 +58,9 @@ export function Panel({ children, className, ...props }: ComponentProps<"section
 
 export function Loading({ label = "Loading…" }: { label?: string }) {
   return (
-    <div role="status" aria-live="polite" className="flex items-center gap-2 py-16 text-sm text-muted-foreground">
-      <Loader2 className="size-4 animate-spin" aria-hidden="true" /> {label}
+    <div role="status" aria-live="polite" className="flex flex-col items-center justify-center gap-3 py-16 text-sm text-muted-foreground">
+      <MascotLoader size={72} />
+      {label}
     </div>
   );
 }
@@ -106,8 +108,8 @@ export function Tag({ children, tone = "neutral", className }: { children: React
   const t = {
     neutral: "bg-muted text-ink/80",
     indigo: "bg-secondary text-secondary-foreground",
-    ember: "bg-[#fff1e8] text-ember-ink",
-    mint: "bg-[#e3f6f2] text-mint-ink",
+    ember: "bg-[#fff6d9] text-ember-ink",
+    mint: "bg-[#e3f5ea] text-mint-ink",
     red: "bg-destructive/10 text-destructive",
   }[tone];
   return <span className={cn("inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium", t, className)}>{children}</span>;

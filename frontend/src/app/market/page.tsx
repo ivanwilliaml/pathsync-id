@@ -124,7 +124,7 @@ export default function MarketPage() {
       ) : null}
 
       {m.data?.simulated ? (
-        <p role="note" className="rounded-xl border border-ember/30 bg-[#fff7f1] px-4 py-3 text-sm text-ember-ink">
+        <p role="note" className="rounded-xl border border-ember/30 bg-[#fff8e1] px-4 py-3 text-sm text-ember-ink">
           You&rsquo;re viewing a simulated market ({m.data.note}). An admin can switch back to real data.
         </p>
       ) : null}

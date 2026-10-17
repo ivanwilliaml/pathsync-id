@@ -188,21 +188,21 @@ export default function Landing() {
             <h2 className="text-[26px] font-bold">Built on Evidence, Not Guesses</h2>
             <ul className="mt-6 space-y-5">
               <li className="flex gap-3">
-                <Briefcase className="mt-0.5 size-5 shrink-0 text-ember" aria-hidden="true" />
+                <Briefcase className="mt-0.5 size-5 shrink-0 text-ember-ink" aria-hidden="true" />
                 <p className="text-white/80">
                   <span className="font-semibold text-white">Real job postings.</span> {n ? `${n} unique postings` : "Postings"} across the careers above, from Karirhub
                   (Kemnaker) and company career sites, refreshed monthly.
                 </p>
               </li>
               <li className="flex gap-3">
-                <BadgeCheck className="mt-0.5 size-5 shrink-0 text-ember" aria-hidden="true" />
+                <BadgeCheck className="mt-0.5 size-5 shrink-0 text-ember-ink" aria-hidden="true" />
                 <p className="text-white/80">
                   <span className="font-semibold text-white">Proof over claims.</span> Assessments and projects count more than grades. CV
                   claims and self-ratings never count as mastery.
                 </p>
               </li>
               <li className="flex gap-3">
-                <RouteIcon className="mt-0.5 size-5 shrink-0 text-ember" aria-hidden="true" />
+                <RouteIcon className="mt-0.5 size-5 shrink-0 text-ember-ink" aria-hidden="true" />
                 <p className="text-white/80">
                   <span className="font-semibold text-white">The right order.</span> Skills that unlock others come first, so you never get stuck on
                   something you aren&rsquo;t ready for.
@@ -290,7 +290,7 @@ function RoutePreview({ n }: { n?: number }) {
           <li key={s.name} className="relative flex items-baseline justify-between gap-3">
             <span
               className="absolute -left-6 top-1 size-[17px] rounded-full border-[3px] border-white"
-              style={{ background: ["#4338ca", "#7c6cf6", "#f2711c"][i] }}
+              style={{ background: ["var(--indigo)", "var(--iris)", "var(--ember)"][i] }}
               aria-hidden="true"
             />
             <span className="text-sm font-medium text-ink">{s.name}</span>

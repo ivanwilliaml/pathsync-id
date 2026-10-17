@@ -9,16 +9,16 @@ export function Logo({ light = false }: { light?: boolean }) {
       <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
         <defs>
           <linearGradient id={gid} x1="0" y1="1" x2="1" y2="0">
-            <stop offset="0" stopColor="#4338ca" />
-            <stop offset="0.55" stopColor="#7c6cf6" />
-            <stop offset="1" stopColor="#f2711c" />
+            <stop offset="0" style={{ stopColor: "var(--indigo)" }} />
+            <stop offset="0.55" style={{ stopColor: "var(--iris)" }} />
+            <stop offset="1" style={{ stopColor: "var(--ember)" }} />
           </linearGradient>
         </defs>
-        <rect width="30" height="30" rx="9" fill={light ? "#ffffff" : "#1b1740"} />
+        <rect width="30" height="30" rx="9" style={{ fill: light ? "#ffffff" : "var(--ink)" }} />
         <path d="M7 21 C 11 21, 11 15, 15 15 S 19 9, 23 9" fill="none" stroke={`url(#${gid})`} strokeWidth="2.6" strokeLinecap="round" />
-        <circle cx="7" cy="21" r="2.4" fill="#4338ca" />
-        <circle cx="15" cy="15" r="2.4" fill="#7c6cf6" />
-        <circle cx="23" cy="9" r="2.4" fill="#f2711c" />
+        <circle cx="7" cy="21" r="2.4" style={{ fill: "var(--indigo)" }} />
+        <circle cx="15" cy="15" r="2.4" style={{ fill: "var(--iris)" }} />
+        <circle cx="23" cy="9" r="2.4" style={{ fill: "var(--ember)" }} />
       </svg>
       <span className={`text-[17px] font-bold tracking-tight ${light ? "text-white" : "text-ink"}`} translate="no">
         PathSync

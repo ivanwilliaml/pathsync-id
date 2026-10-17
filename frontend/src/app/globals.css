@@ -5,22 +5,24 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * PathSync design system (docs/UI_AUDIT.md)
- *   Ink #1B1740 · Indigo #4338CA · Iris #7C6CF6 · Ember #F2711C · Mint #0E9F8A · Paper #F6F6FB
- * The "route" gradient (indigo → iris → ember) is the one signature element: it is reserved for the
+ * PathSync design system, theme "Langit pagi" (morning sky, chosen 16 Oct 2026 to sit with the green chameleon mascot)
+ *   Ink #0F2442 · Primary blue #1D6FD8 · Leaf green #4AA548 · Sun yellow #F5C542 · Success #2BA66A · Paper #F0F6FF
+ * Token names are historical (indigo = primary, iris = middle accent, ember = warm accent).
+ * The "route" gradient (blue → green → yellow) is the one signature element: it is reserved for the
  * learning path, the readiness ring, assessment progress and hero panels. Everything else stays quiet.
+ * Yellow is too light for text or icons on white; use text-ember-ink for those.
  */
 :root {
-  --ink: #1b1740;
-  --indigo: #4338ca;
-  --iris: #7c6cf6;
-  --ember: #f2711c;
-  --ember-ink: #9a3412;
-  --mint: #0e9f8a;
-  --mint-ink: #0b6e60;
-  --paper: #f6f6fb;
-  --route: linear-gradient(90deg, #4338ca 0%, #7c6cf6 55%, #f2711c 100%);
-  --route-soft: linear-gradient(135deg, #eef0ff 0%, #f3efff 55%, #fff1e8 100%);
+  --ink: #0f2442;
+  --indigo: #1d6fd8;
+  --iris: #4aa548;
+  --ember: #f5c542;
+  --ember-ink: #8a5b00;
+  --mint: #2ba66a;
+  --mint-ink: #1c7a4b;
+  --paper: #f0f6ff;
+  --route: linear-gradient(90deg, #1d6fd8 0%, #4aa548 55%, #f5c542 100%);
+  --route-soft: linear-gradient(135deg, #e8f1fe 0%, #edf7ec 55%, #fff8e1 100%);
 
   --background: var(--paper);
   --foreground: var(--ink);
@@ -30,28 +32,28 @@
   --popover-foreground: var(--ink);
   --primary: var(--indigo);
   --primary-foreground: #ffffff;
-  --secondary: #eceaff;
-  --secondary-foreground: #2e2a8a;
-  --muted: #efeff6;
-  --muted-foreground: #5a5878;
-  --accent: #eceaff;
-  --accent-foreground: #2e2a8a;
+  --secondary: #e6f0fc;
+  --secondary-foreground: #134e9c;
+  --muted: #edf2f8;
+  --muted-foreground: #4a5b75;
+  --accent: #e6f0fc;
+  --accent-foreground: #134e9c;
   --destructive: #c81e1e;
-  --border: #e2e1ee;
-  --input: #d8d6e8;
-  --ring: #4338ca;
-  --chart-1: #4338ca;
-  --chart-2: #7c6cf6;
-  --chart-3: #f2711c;
-  --chart-4: #0e9f8a;
-  --chart-5: #a9a6c4;
+  --border: #dce5f0;
+  --input: #cfdae8;
+  --ring: #1d6fd8;
+  --chart-1: #1d6fd8;
+  --chart-2: #4aa548;
+  --chart-3: #f5c542;
+  --chart-4: #2ba66a;
+  --chart-5: #a7b4c8;
   --radius: 0.75rem;
   --sidebar: #ffffff;
   --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--indigo);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eceaff;
-  --sidebar-accent-foreground: #2e2a8a;
+  --sidebar-accent: #e6f0fc;
+  --sidebar-accent-foreground: #134e9c;
   --sidebar-border: var(--border);
   --sidebar-ring: var(--ring);
   color-scheme: light;
@@ -142,7 +144,7 @@
   background-image: var(--route);
 }
 @utility bg-route-v {
-  background-image: linear-gradient(180deg, #4338ca 0%, #7c6cf6 55%, #f2711c 100%);
+  background-image: linear-gradient(180deg, var(--indigo) 0%, var(--iris) 55%, var(--ember) 100%);
 }
 @utility bg-route-soft {
   background-image: var(--route-soft);
@@ -160,4 +162,44 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Mascot loader (components/mascot-loader.tsx): 30-frame run cycle, colour cross-fade every 6 s */
+.sync-run {
+  position: relative;
+  display: inline-block;
+  width: var(--sync-w);
+  height: var(--sync-h);
+}
+.sync-run-layer {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: calc(var(--sync-w) * 30) var(--sync-h);
+  animation: sync-run-steps 1.4s steps(30) infinite;
+}
+.sync-run-blue {
+  opacity: 0;
+  animation: sync-run-steps 1.4s steps(30) infinite, sync-run-blue 6s ease-in-out infinite;
+}
+.sync-run-yellow {
+  opacity: 0;
+  animation: sync-run-steps 1.4s steps(30) infinite, sync-run-yellow 6s ease-in-out infinite;
+}
+@keyframes sync-run-steps {
+  to { background-position: calc(var(--sync-w) * -30) 0; }
+}
+@keyframes sync-run-blue {
+  0%, 12% { opacity: 0; }
+  25%, 42% { opacity: 1; }
+  55%, 100% { opacity: 0; }
+}
+@keyframes sync-run-yellow {
+  0%, 45% { opacity: 0; }
+  58%, 75% { opacity: 1; }
+  90%, 100% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sync-run-layer { animation: none; }
+  .sync-run-blue, .sync-run-yellow { display: none; }
 }

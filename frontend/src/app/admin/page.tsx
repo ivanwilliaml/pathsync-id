@@ -553,7 +553,7 @@ function Annotation({ meta, onChange }: { meta: Meta | null; onChange: () => voi
                               <label key={s.id} className="flex min-h-9 cursor-pointer items-center gap-2 rounded-lg px-2 text-sm hover:bg-muted">
                                 <input
                                   type="checkbox"
-                                  className="size-4 accent-[#4338ca]"
+                                  className="size-4 accent-indigo"
                                   checked={picked.has(s.id)}
                                   onChange={(e) => {
                                     const n = new Set(picked);
@@ -657,7 +657,7 @@ function Models() {
         <Panel>
           <h2 className="text-lg font-semibold text-ink">Expert Agreement</h2>
           <label className="mt-2 flex items-center gap-2 text-sm text-ink/80">
-            <input type="checkbox" className="size-4 accent-[#4338ca]" checked={simulated} onChange={(e) => setSimulated(e.target.checked)} />
+            <input type="checkbox" className="size-4 accent-indigo" checked={simulated} onChange={(e) => setSimulated(e.target.checked)} />
             Use simulated experts
           </label>
           {agree.data ? (
