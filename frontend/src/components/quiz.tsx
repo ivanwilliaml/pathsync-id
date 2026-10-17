@@ -108,7 +108,7 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
           <span className="text-ink/60">{t(`${answered} answered`, `${answered} terjawab`)}</span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuemin={0} aria-valuemax={items.length} aria-valuenow={idx + 1} aria-label={t("Progress", "Progres")}>
-          <div className="h-2 rounded-full bg-route transition-[width] duration-300" style={{ width: `${((idx + 1) / items.length) * 100}%` }} />
+          <div className="h-2 rounded-full bg-indigo transition-[width] duration-300" style={{ width: `${((idx + 1) / items.length) * 100}%` }} />
         </div>
       </div>
 
