@@ -6,16 +6,10 @@ import pytest
 
 
 @pytest.fixture(params=["en", "id"])
-def bank(request, monkeypatch):
+def bank(request):
     import pathsync.assessment as assessment
-    import pathsync.config as config
 
-    monkeypatch.setattr(config, "LANG", request.param)
-    monkeypatch.setattr(assessment, "LANG", request.param)
-    assessment.item_bank.cache_clear()
-    yield assessment.item_bank()
-    assessment.item_bank.cache_clear()
-    importlib.reload(assessment)
+    return assessment.item_bank(request.param)
 
 
 def _share(bank, pick) -> float:
@@ -57,19 +51,14 @@ def test_cue_only_model_cannot_find_the_key(bank):
         assert 0.12 <= single_cue_rates(items)[cue] <= 0.36, cue
 
 
-def _bank(lang, monkeypatch):
+def _bank(lang, monkeypatch=None):
     import pathsync.assessment as assessment
-    import pathsync.config as config
 
-    monkeypatch.setattr(config, "LANG", lang)
-    monkeypatch.setattr(assessment, "LANG", lang)
-    assessment.item_bank.cache_clear()
-    return assessment.item_bank()
+    return assessment.item_bank(lang)
 
 
 def test_both_languages_hold_the_same_items(monkeypatch):
     """Plan A7: the Indonesian and English banks differ only in text, never in structure or in which option is the key."""
-    import importlib
 
     import pathsync.assessment as assessment
 
@@ -87,7 +76,6 @@ def test_both_languages_hold_the_same_items(monkeypatch):
 
 def test_indonesian_bank_is_translated(monkeypatch):
     """No item of the Indonesian bank may still be its English text (the 440 x_* items started out in English)."""
-    import importlib
 
     import pathsync.assessment as assessment
 

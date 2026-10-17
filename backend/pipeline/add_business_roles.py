@@ -9,6 +9,7 @@ flow is:
     python -m pipeline.add_business_roles grounding    # posting share of every candidate per business role
     python -m pipeline.add_business_roles prune        # drop candidates that no role grounds, list kept ones
     python -m pipeline.add_business_roles content      # edges, items and materials of the kept skills
+    python -m pipeline.add_business_roles fix-aliases  # move contested aliases to the more specific new skill
 
 Aliases are unique across the taxonomy and the soft-skill layer ("first owner wins" in the lexicon extractor), so a
 candidate alias that an older skill or a soft skill already owns is dropped here and reported.
@@ -25,6 +26,37 @@ from pathsync.config import SEED_DIR
 A9_DIR = SEED_DIR / "_a9"
 BUSINESS_ROLES = ("financial_analyst", "tax_specialist", "internal_auditor", "hr_specialist", "supply_chain_analyst",
                   "project_coordinator")
+
+
+# "first owner wins" left the general tax skill holding aliases that name a specific new skill ("pph 23" went to
+# tax_compliance_id while "pph23" went to pph_corporate_withholding). The more specific skill owns them.
+ALIAS_TRANSFERS = {
+    ("tax_compliance_id", "pph_corporate_withholding"): ("pph 23", "pph 25", "pph 29", "pph 4(2)"),
+    ("tax_compliance_id", "vat_ppn_mechanics"): ("ppn", "ppn masukan", "faktur pajak"),
+    ("tax_compliance_id", "tax_dispute_audit"): ("tax audit",),
+}
+
+
+def transfer_aliases(tax: dict) -> list[str]:
+    by_id = {s["id"]: s for s in tax["skills"]}
+    moved = []
+    for (src, dst), aliases in ALIAS_TRANSFERS.items():
+        if src not in by_id or dst not in by_id:
+            continue
+        for a in aliases:
+            if a in by_id[src]["aliases"]:
+                by_id[src]["aliases"].remove(a)
+                moved.append(f"{a}: {src} -> {dst}")
+            if a not in by_id[dst]["aliases"]:
+                by_id[dst]["aliases"].append(a)
+    return moved
+
+
+def fix_aliases() -> None:
+    tax = _load("taxonomy.json")
+    moved = transfer_aliases(tax)
+    _dump("taxonomy.json", tax)
+    print(f"{len(moved)} aliases moved" + (": " + "; ".join(moved) if moved else " (already in place)"))
 
 
 def _load(name: str) -> dict:
@@ -65,6 +97,7 @@ def merge_skills() -> None:
                  "esco": [], "description_en": sk["description_en"], "learn_what_en": sk["learn_what_en"],
                  "added_in": "2026.10-v4"}
         tax["skills"].append(entry)
+    transfer_aliases(tax)
     _dump("taxonomy.json", tax)
     print(f"merged {len(cand['skills'])} candidate skills; dropped {len(dropped)} aliases already owned elsewhere")
     for d in dropped:
@@ -230,4 +263,4 @@ def content() -> None:
 
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "skills"
-    {"skills": merge_skills, "grounding": grounding, "prune": prune, "content": content}[cmd]()
+    {"skills": merge_skills, "grounding": grounding, "prune": prune, "content": content, "fix-aliases": fix_aliases}[cmd]()

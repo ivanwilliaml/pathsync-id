@@ -63,7 +63,9 @@ PATTERN_CUE = re.compile(
 )
 _ITEM_SPLIT = re.compile(r",|/|\band\b|\bdan\b|\batau\b|\bor\b|\(|\)|\betc\b|\bdll\b|\bdsb\b", re.I)
 _STOP_ITEM = re.compile(r"^(?:the|a|an|of|in|with|yang|untuk|dengan|di|ke|dari|serta|terkait|related|other|lainnya|"
-                        r"various|berbagai|similar|sejenis|tools?|tool|software|aplikasi|sistem|system|good|strong)$"
+                        r"various|berbagai|similar|sejenis|tools?|tool|software|aplikasi|sistem|system|good|strong|"
+                        r"solutions?|platforms?|roles?|field|enhancement|import|distribution|relationships?)$"
+                        r"|\bsuch as\b|\brelated (?:field|roles?)\b|\bsimilar (?:platforms?|tools?)\b|\bthe it field\b"
                         r"|^(?:tools?|software|aplikasi)\b|nilai tambah|\bplus\b|preferred|diutamakan|advantage|"
                         r"\b(?:tahun|years?|bulan|months?)\b|\d", re.I)
 

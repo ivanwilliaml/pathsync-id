@@ -13,6 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from .config import PATH_TOP_K, READINESS_THRESHOLD
+from .i18n import t
 from .ranker import Candidate
 from .taxonomy import SkillGraph
 
@@ -83,7 +84,8 @@ def counterfactuals(path: list[PathStep], ranked: list[tuple[Candidate, float]],
             "recommended_is_minimal": rows[0]["blocked"] == best["blocked"]}
 
 
-LEVEL_TEXT = {"awal": "beginner", "dasar": "basic", "mandiri": "proficient", "mahir": "advanced"}
+def level_text(level: str) -> str:
+    return t(f"level.{level}")
 
 
 def level_label(x: float) -> str:
@@ -103,36 +105,35 @@ def explain(c: Candidate, rank: int, contrib: dict[str, float], ctx: dict) -> di
     role_name = ctx["role_name"]
     p, r = ctx["p"].get(c.skill_id, 0.0), ctx["req"].get(c.skill_id, 0.0)
 
-    lv = LEVEL_TEXT
-    what = (f"Focus on {sk.learn_what}. You are at {lv[level_label(p)]} level ({p:.2f}); "
-            f"the role expects {lv[level_label(r)]} ({r:.2f}).")
+    what = t("explain.what", learn=sk.learn_what, now=level_text(level_label(p)), p=p, need=level_text(level_label(r)), r=r)
     why_parts = []
     if md and ctx["market"].n_postings:
-        why_parts.append(f"Asked for in {md.count} of {ctx['market'].n_postings} {role_name} job postings ({md.share:.0%}).")
+        why_parts.append(t("explain.why.postings", count=md.count, n=ctx["market"].n_postings, role=role_name, share=md.share))
         if ctx["market"].trend_status == "ok" and abs(md.trend) >= 0.05:
-            why_parts.append(f"Demand is {'rising' if md.trend > 0 else 'falling'} {abs(md.trend):.0%} over the last 6 months.")
+            why_parts.append(t("explain.why.trend_up" if md.trend > 0 else "explain.why.trend_down", pct=abs(md.trend)))
     esco = ctx["esco"].get(c.skill_id)
     if esco:
-        why_parts.append(f"Listed as {'essential' if esco == 'essential' else 'optional'} for this occupation in ESCO.")
+        why_parts.append(t("explain.why.esco_essential" if esco == "essential" else "explain.why.esco_optional"))
     quotes = ctx["quotes"].get(c.skill_id, [])[:2]
 
     if c.blocked_by:
-        now = (f"Not ready yet: {', '.join(names[q] for q in c.blocked_by)} must reach 0.6 first, "
-               f"so your path covers {'it' if len(c.blocked_by) == 1 else 'them'} before this.")
+        now = t("explain.now.blocked_one" if len(c.blocked_by) == 1 else "explain.now.blocked_many",
+                names=", ".join(names[q] for q in c.blocked_by))
     else:
-        now = "You already have the prerequisites, so you can start now."
+        now = t("explain.now.ready")
     if c.unlocks:
         k = len(c.unlocks)
-        now += (f" It unlocks {k} other skill{'s' if k > 1 else ''} you still need: "
-                f"{', '.join(names[t] for t in c.unlocks[:4])}{'' if k <= 4 else ', and more'}.")
+        shown = ", ".join(names[x] for x in c.unlocks[:4])
+        now += (t("explain.now.unlocks_one", names=shown) if k == 1 else
+                t("explain.now.unlocks_many", k=k, names=shown, more="" if k <= 4 else t("explain.and_more")))
     bottleneck = len(c.unlocks) >= 2 and not c.blocked_by
 
     nxt = ctx["next_step"].get(c.skill_id)
     if nxt:
-        nxt_txt = f"{names[nxt]}, once your {names[c.skill_id]} evidence reaches 0.6."
+        nxt_txt = t("explain.next.after", nxt=names[nxt], cur=names[c.skill_id])
     elif c.unlocks:
-        nxt_txt = f"{names[c.unlocks[0]]}, which builds on this skill."
+        nxt_txt = t("explain.next.builds", nxt=names[c.unlocks[0]])
     else:
-        nxt_txt = "Add new evidence (a re-check or a project) to refresh your path."
-    return {"what": what, "why": " ".join(why_parts) or "Required by your target role.", "why_now": now, "next": nxt_txt,
+        nxt_txt = t("explain.next.refresh")
+    return {"what": what, "why": " ".join(why_parts) or t("explain.why.default"), "why_now": now, "next": nxt_txt,
             "quotes": quotes, "bottleneck": bottleneck, "contributions": contrib, "rank": rank}

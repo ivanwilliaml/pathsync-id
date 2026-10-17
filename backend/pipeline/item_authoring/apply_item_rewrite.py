@@ -86,8 +86,16 @@ def main() -> None:
         by_cluster.setdefault(cluster_of[n["skill_id"]], []).append(
             (item, {"stem": stem_en, "options": r["en"], "explanation": expl_en}))
         seen.add(iid)
-    for old in glob.glob(str(SEED_DIR / "items" / "x_*.json")) + glob.glob(str(SEED_DIR / "items_en" / "x_*.json")):
+    # remove only the x_ files this script generates; x_ files built elsewhere (x_bisnis from add_business_roles)
+    # hold no item that comes from a rewrite file and must survive a re-run
+    for old in glob.glob(str(SEED_DIR / "items" / "x_*.json")):
+        ids = {it["id"] for it in json.load(open(old, encoding="utf-8"))}
+        if ids and not ids & set(rewrites):
+            continue
         os.remove(old)
+        en_old = SEED_DIR / "items_en" / os.path.basename(old)
+        if en_old.exists():
+            os.remove(en_old)
     for cluster, pairs in by_cluster.items():
         pairs.sort(key=lambda p: (p[0]["skill_id"], p[0]["difficulty"], p[0]["id"]))
         _write_items(SEED_DIR / "items" / f"x_{cluster}.json", [p[0] for p in pairs])

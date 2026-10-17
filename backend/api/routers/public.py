@@ -19,11 +19,14 @@ from pathsync.config import (
     ROLES,
     SIM_AUTO,
     SIM_REVIEW,
+    TREND_MIN_POSTINGS,
+    TREND_WINDOW_MONTHS,
 )
 from pathsync.db import Expert, GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot, utcnow
 from pathsync.embeddings import WARM
 from pathsync.engine import graph_from_db
 from pathsync.extraction.llm import llm_configured
+from pathsync.i18n import t
 from pathsync.roles import FAMILIES
 from pathsync.security import db_session, rate_limit
 from pathsync.taxonomy import cluster_names, load_skills, load_taxonomy
@@ -71,9 +74,11 @@ def model_card(s: Session) -> dict:
     mpath = MODELS_DIR / "metrics.json"     # plan D2: the single source of reported numbers (python -m pipeline.report)
     metrics = json.loads(mpath.read_text(encoding="utf-8")) if mpath.exists() else {}
     return {
-        "decision_model": {"type": "linear learning-to-rank (eq. 4), not an LLM",
+        "decision_model": {"type": ("formula (5): G x D x T x U x R, the special case of eq. 4; not an LLM"
+                                    if not ranker or ranker.source == "formula5" else "linear learning-to-rank (eq. 4), not an LLM"),
                            "name": ranker.name if ranker else "Formula (5)", "weights": ranker.weights if ranker else None,
-                           "why": "few training rankings and every weight must be inspectable and explainable"},
+                           "why": "every weight must be inspectable and explainable; a trained model replaces the formula only "
+                                  "when real experts' rankings show it is better (models trained on simulated experts never do)"},
         "extraction_llm": {"runtime": LLM_MODEL if llm_configured() else None,
                            "runtime_provider": "Anthropic Claude API (structured output, taxonomy-constrained)",
                            "offline_run": offline or "Qwen3-8B (Apache-2.0), Kaggle T4 x2",
@@ -152,6 +157,10 @@ def market(role: str, s: Session = Depends(db_session)):
     return {"role": role, "role_name": ROLES[role]["name"], "version": snap.version, "simulated": snap.simulated,
             "note": snap.note, "reference_date": data["reference_date"], "n_postings": data["n_postings"],
             "n_recent": data["n_recent"], "n_previous": data["n_previous"], "trend_status": data["trend_status"],
+            # why the trend is missing, in the request's language (shown instead of a flat 0; plan AI-09)
+            "trend_reason": "" if data["trend_status"] == "ok" else t("market.trend_missing", recent=data["n_recent"],
+                                                                         previous=data["n_previous"], w=TREND_WINDOW_MONTHS,
+                                                                         need=TREND_MIN_POSTINGS),
             "sources": snap.sources, "skills": rows,
             "snapshots": [{"id": h.id, "version": h.version, "created_at": h.created_at.isoformat(), "active": h.active,
                            "simulated": h.simulated, "note": h.note} for h in hist]}

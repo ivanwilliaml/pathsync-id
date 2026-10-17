@@ -44,7 +44,7 @@ Tujuan: dua anotator manusia melabeli skill pada 130 lowongan yang sama secara i
 | Teks lowongan | Label |
 |---|---|
 | "perpajakan", lapor SPT, e-Faktur, e-Bupot, Coretax, kepatuhan pajak umum | `tax_compliance_id` |
-| Menghitung atau memotong PPh badan, PPh 22, 23, 26, PPh final (tulisan "PPh 23" maupun "PPh23") | `pph_corporate_withholding` (tambahkan `tax_compliance_id` hanya bila pelaporan umum juga disebut) |
+| Menghitung atau memotong PPh badan, PPh 22, 23, 25, 26, 29, PPh final (tulisan "PPh 23" maupun "PPh23") | `pph_corporate_withholding` (tambahkan `tax_compliance_id` hanya bila pelaporan umum juga disebut) |
 | Mekanisme PPN: faktur pajak, PKP, PPN masukan dan keluaran, PPnBM | `vat_ppn_mechanics` |
 | PPh 21 karyawan dalam konteks penggajian | `payroll_processing` (tambahkan `tax_compliance_id` bila pelaporan pajak juga disebut) |
 | Pemeriksaan, keberatan, banding pajak | `tax_dispute_audit` |

@@ -32,9 +32,12 @@ export const SOURCE: Record<string, string> = {
   karirhub: "Karirhub (Kemnaker)", workable: "Workable", workday: "Workday", lever: "Lever", greenhouse: "Greenhouse",
   smartrecruiters: "SmartRecruiters", ashby: "Ashby", recruitee: "Recruitee",
 };
+// every taxonomy cluster must be listed here, or its skills never show under "Skills by Area" or on the Skill Map
+// (backend test test_frontend_cluster_order_covers_taxonomy keeps the two in sync)
 export const CLUSTER_ORDER = [
   "data_analytics", "bi_tools", "business_analysis", "data_ml", "data_eng", "web_frontend", "backend", "mobile",
-  "testing", "devops", "security", "design", "marketing", "finance",
+  "testing", "devops", "security", "design", "marketing", "finance", "corp_finance", "tax", "audit_risk", "hr",
+  "supply_chain", "product_project",
 ];
 
 const nf0 = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });

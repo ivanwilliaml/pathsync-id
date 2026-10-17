@@ -58,16 +58,30 @@ def _trigrams(t: str) -> set[str]:
     return {t[i:i + 3] for i in range(len(t) - 2)}
 
 
+# Words too general to show that a phrase and a skill form mean the same thing: sharing "data" or "bisnis" let
+# "Data Science" map to data warehousing and "bisnis komersial" to business process modelling (audit AI-3).
+GENERIC_WORDS = {
+    "data", "media", "bisnis", "business", "security", "keamanan", "bidang", "proses", "process", "processes",
+    "system", "systems", "sistem", "management", "manajemen", "analysis", "analisis", "analisa", "development",
+    "pengembangan", "report", "reports", "reporting", "laporan", "design", "desain", "digital", "online", "tools",
+    "tool", "skills", "skill", "kemampuan", "information", "informasi", "service", "services", "layanan", "project",
+    "projects", "proyek", "financial", "keuangan", "basic", "dasar", "advanced", "lanjutan", "and", "dan", "of", "the",
+    "untuk", "for", "with", "dengan", "di", "in", "planning", "perencanaan", "solution", "solutions", "operation",
+    "operations", "operasional", "technical", "teknis", "application", "applications", "aplikasi", "software",
+}
+
+
 def lexical_support(surface: str, form: str) -> float:
-    """Character-trigram Jaccard, 1.0 when they share a whole word. Embeddings alone rate unrelated short words ("teliti",
-    "ollama", "odi") close to some skill name; a mapping must also look like the form it maps to."""
-    if set(surface.lower().split()) & set(form.lower().split()):
+    """Character-trigram Jaccard, 1.0 when they share a meaningful whole word (not one of GENERIC_WORDS). Embeddings
+    alone rate unrelated short words ("teliti", "ollama", "odi") close to some skill name; a mapping must also look like
+    the form it maps to."""
+    if (set(surface.lower().split()) & set(form.lower().split())) - GENERIC_WORDS:
         return 1.0
     a, b = _trigrams(surface), _trigrams(form)
     return len(a & b) / len(a | b) if a | b else 0.0
 
 
-MIN_LEXICAL_SUPPORT = 0.2
+MIN_LEXICAL_SUPPORT = 0.35   # below this an embedding match goes to review, not to the market map (recalibrate with V4 labels)
 
 
 def apply_gates(raw: list[Mention], source_text: str, index, valid_ids: set[str]) -> ExtractionResult:

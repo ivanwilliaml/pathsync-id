@@ -392,7 +392,8 @@ def train(body: TrainIn, s: Session = Depends(db_session)):
     # LTR must beat formula (5) by >= 0.02 with a bootstrap CI that excludes zero
     loeo = None if body.use_simulated else leave_one_expert_out(data, per_expert)
     ok = passes_rule(cv) if body.use_simulated else bool(loeo and loeo.get("passes"))
-    activate = ok and body.activate_if_passes and body.role == "business_analyst"
+    # models trained on simulated experts are never activated (plan AI-06); they only exercise the pipeline
+    activate = ok and body.activate_if_passes and body.role == "business_analyst" and not body.use_simulated
     if activate:
         s.execute(update(RankerModel).values(active=False))
         bump_epoch(s)

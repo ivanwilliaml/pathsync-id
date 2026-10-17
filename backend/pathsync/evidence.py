@@ -58,6 +58,9 @@ class SkillState:
     claimed: bool = False
     self_rating: int | None = None
     flags: list[str] = field(default_factory=list)
+    # mastery from direct proof only (Quick Check answers, reviewed projects, certificates): None when there is none.
+    # Grades and CV claims move p but never p_proven, so "strong" and "proven readiness" mean what they say (audit AI-7)
+    p_proven: float | None = None
 
     @property
     def has_evidence(self) -> bool:
@@ -74,6 +77,8 @@ class SkillState:
             "components": {k: round(v, 4) for k, v in self.components.items()}, "sources": self.sources,
             "n_items": self.n_items, "n_correct": self.n_correct, "bkt_trace": [round(x, 4) for x in self.bkt_trace],
             "claimed": self.claimed, "self_rating": self.self_rating, "flags": self.flags,
+            "p_proven": None if self.p_proven is None else round(self.p_proven, 4),
+            "evidence_kinds": sorted(set(self.components) | ({"assessment"} if self.n_items else set())),
         }
 
 
@@ -93,6 +98,9 @@ class Response:
     correct: bool
     phase: str                    # diagnostic | reassessment
     guess: float = BKT_GUESS      # chance of a correct answer without the skill (higher for items with surface cues)
+
+
+DIRECT_KINDS = ("assessment", "project", "certificate")
 
 
 def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list[Response],
@@ -149,9 +157,15 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
             st.p0 = sum(wk[k] * v for k, v in st.components.items()) / sum(wk.values())
         st.p = st.p0
         st.bkt_trace = [st.p]
+        direct = {k: v for k, v in st.components.items() if k in DIRECT_KINDS}
+        if direct:
+            wd = {k: w[k] * factor.get((s, k), 1.0) for k in direct}
+            st.p_proven = sum(wd[k] * v for k, v in direct.items()) / sum(wd.values())
         for correct, guess in reassess.get(s, []):       # eq. (3) for every new answer
             st.p = bkt_update(st.p, correct, guess=guess)
             st.bkt_trace.append(st.p)
+            # a re-assessment answer is direct proof too; it updates the proven estimate from wherever it stands
+            st.p_proven = bkt_update(st.p_proven if st.p_proven is not None else PRIOR_NO_EVIDENCE, correct, guess=guess)
         answers = d + [c for c, _ in reassess.get(s, [])]
         st.n_items, st.n_correct = len(answers), sum(answers)
         if answers:

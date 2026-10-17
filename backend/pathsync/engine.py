@@ -31,17 +31,14 @@ from .db import (
 )
 from .demand import MarketMap
 from .evidence import EvidenceItem, Response, SkillState, diagnose, recommendation_type
+from .i18n import get_lang, t
 from .market import esco_status, load_market
 from .pathing import blocked_steps, build_path, counterfactuals, coverage, explain, level_label
 from .ranker import RankingModel, build_candidates
 from .taxonomy import Edge, Skill, SkillGraph, cluster_names, load_draft_edges, load_skills, seed_rationales
 
-FLAG_TEXT = {
-    "paparan_akademik_tanpa_bukti_langsung": "Strong course grades, but no project or assessment evidence yet.",
-    "klaim_cv_belum_terbukti": "Mentioned on your CV, but there is no evidence we can check yet.",
-    "bukti_bertentangan": "Your course grades are much higher than your assessment result.",
-    "persepsi_lebih_tinggi_dari_bukti": "You rated yourself higher than your evidence shows.",
-}
+FLAGS = ("paparan_akademik_tanpa_bukti_langsung", "klaim_cv_belum_terbukti", "bukti_bertentangan",
+         "persepsi_lebih_tinggi_dari_bukti")
 
 
 @lru_cache(maxsize=1)
@@ -133,7 +130,7 @@ def load_context(s: Session, role: str) -> Context:
     """
     snap = active_snapshot(s, role)
     model_row = s.scalars(select(RankerModel.id).where(RankerModel.active.is_(True)).order_by(RankerModel.id.desc())).first()
-    key = (role, snap.id if snap else None, model_row, cache_epoch(s))
+    key = (role, snap.id if snap else None, model_row, cache_epoch(s), get_lang())   # names are per language
     with _CTX_LOCK:
         hit = _CTX_CACHE.get(key)
     if hit is not None:
@@ -286,12 +283,15 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
             "first_module_hours": round(min(hours, mats[0]["hours"]) if mats else min(hours, 2.0), 1),
             "waiting_for": waiting, "learn_what": ctx.skills[sid].learn_what,
             "why_prereq": None if stp.role_in_path == "prioritas" else
-            f"Needed before {', '.join(ctx.names[t] for t in graph.dependents.get(sid, []) if t in order)}.",
+            t("path.needed_before", names=", ".join(ctx.names[d] for d in graph.dependents.get(sid, []) if d in order)),
             "explanation": rank_of.get(sid, {}).get("explanation"),
         })
 
     cf = counterfactuals(path, ranked, graph, p, ctx.names)
     cov = coverage(p, {k: v for k, v in ctx.req.items() if demand.get(k, 0) > 0}, demand)
+    # readiness from direct proof only (Quick Check, reviewed projects, certificates); grades never count here
+    p_proven = {k: (st.p_proven or 0.0) for k, st in states.items()}
+    cov_proven = coverage(p_proven, {k: v for k, v in ctx.req.items() if demand.get(k, 0) > 0}, demand)
     by_cluster = {}
     for cl, label in cluster_names().items():
         ids = [k for k in ctx.req if ctx.skills[k].cluster == cl and demand.get(k, 0) > 0]
@@ -312,8 +312,8 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
             "rec_type": recommendation_type(st), "level": level_label(st.p), "esco": ctx.esco.get(k, ""),
         })
     competencies.sort(key=lambda c: -c["demand"])
-    confirmations = [{"skill_id": c["skill_id"], "name": c["name"], "flag": f, "message": FLAG_TEXT[f]}
-                     for c in competencies for f in c["flags"] if f in FLAG_TEXT]
+    confirmations = [{"skill_id": c["skill_id"], "name": c["name"], "flag": f, "message": t(f"flag.{f}")}
+                     for c in competencies for f in c["flags"] if f in FLAGS]
     perception = [{"skill_id": c["skill_id"], "name": c["name"], "self_rating": c["self_rating"], "p": c["p"]}
                   for c in competencies if c["self_rating"] is not None]
     ev_count: dict[str, int] = {}
@@ -328,7 +328,7 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
                  "trend_status": ctx.market.trend_status, "reference_date": ctx.market.reference_date},
         "market_version": ctx.market_version,
         "model": {"id": ctx.model_id, "name": ctx.model.name, "weights": ctx.model.weights},
-        "coverage": round(cov, 4), "coverage_by_cluster": by_cluster,
+        "coverage": round(cov, 4), "coverage_proven": round(cov_proven, 4), "coverage_by_cluster": by_cluster,
         "ranking": ranking, "path": path_out, "path_hours": round(total_hours, 1),
         "path_weeks": round(total_hours / weekly, 1) if weekly else None,
         "counterfactual": cf, "competencies": competencies, "confirmations": confirmations[:8], "perception": perception,
@@ -357,40 +357,39 @@ def _reasons(prev: list[dict], cur: list[dict], rec: dict, names: dict[str, str]
         a, b = pm.get(sid), cm.get(sid)
         nm = names.get(sid, sid)
         if a and not b:
-            reasons.append(f"{nm} left your priorities: the gap is closed (mastery {comp.get(sid, {}).get('p', 0):.2f}).")
+            reasons.append(t("history.left", name=nm, p=comp.get(sid, {}).get("p", 0)))
             continue
         if b and not a:
-            reasons.append(f"{nm} joined your priorities at #{b['rank']}.")
+            reasons.append(t("history.joined", name=nm, rank=b["rank"]))
             continue
         if a["rank"] == b["rank"] and abs(a["priority"] - b["priority"]) < 0.01:
             continue
         causes = []
         if a.get("p") is not None and b.get("p") is not None and abs(a["p"] - b["p"]) >= 0.02:
-            causes.append(f"your mastery {'rose' if b['p'] > a['p'] else 'fell'} {a['p']:.2f} to {b['p']:.2f}")
+            causes.append(t("history.cause.mastery_up" if b["p"] > a["p"] else "history.cause.mastery_down", a=a["p"], b=b["p"]))
         elif abs(a["G"] - b["G"]) >= 0.02:
-            causes.append(f"gap {'narrowed' if b['G'] < a['G'] else 'widened'} {a['G']:.2f} to {b['G']:.2f}")
+            causes.append(t("history.cause.gap_narrowed" if b["G"] < a["G"] else "history.cause.gap_widened", a=a["G"], b=b["G"]))
         if a["R"] != b["R"]:
-            causes.append("prerequisites now met" if b["R"] > a["R"] else "prerequisites not met yet")
+            causes.append(t("history.cause.prereq_met" if b["R"] > a["R"] else "history.cause.prereq_not_met"))
         if abs(a["D"] - b["D"]) >= 0.01:
-            causes.append(f"market demand {'rose' if b['D'] > a['D'] else 'fell'} {a['D']:.0%} to {b['D']:.0%}")
+            causes.append(t("history.cause.demand_up" if b["D"] > a["D"] else "history.cause.demand_down", a=a["D"], b=b["D"]))
         if abs(a["T"] - b["T"]) >= 0.01:
-            causes.append(f"trend {'strengthened' if b['T'] > a['T'] else 'weakened'}")
+            causes.append(t("history.cause.trend_up" if b["T"] > a["T"] else "history.cause.trend_down"))
         if not causes:
-            causes.append("changes in skills that depend on it")
-        move = "moved up" if b["rank"] < a["rank"] else "moved down" if b["rank"] > a["rank"] else "stayed"
-        reasons.append(f"{nm} {move} #{a['rank']} to #{b['rank']}: {', '.join(causes)}.")
+            causes.append(t("history.cause.dependents"))
+        move = t("history.move_up") if b["rank"] < a["rank"] else t("history.move_down") if b["rank"] > a["rank"] else t("history.stayed")
+        reasons.append(t("history.moved", name=nm, move=move, a=a["rank"], b=b["rank"], causes=", ".join(causes)))
     top_prev = prev[0]["skill_id"] if prev else None
     top_cur = cur[0]["skill_id"] if cur else None
-    label = {"initial": "First path created", "evidence": "New evidence added", "market": "Job market updated",
-             "role": "Target role changed", "manual": "Manual update"}[trigger]
+    label = t(f"history.trigger.{trigger}")
     if top_cur and not top_prev:
-        summary = f"{label}: your top priority is {names[top_cur]}."
+        summary = t("history.summary.first", label=label, name=names[top_cur])
     elif top_prev and top_cur and top_prev != top_cur:
-        summary = f"{label}: your top priority moved from {names[top_prev]} to {names[top_cur]}."
+        summary = t("history.summary.moved", label=label, a=names[top_prev], b=names[top_cur])
     elif top_cur:
-        summary = f"{label}: {names[top_cur]} is still your top priority."
+        summary = t("history.summary.same", label=label, name=names[top_cur])
     else:
-        summary = f"{label}: no gaps left for this role."
+        summary = t("history.summary.none", label=label)
     if note:
         summary += f" ({note})"
     return summary, reasons[:8]

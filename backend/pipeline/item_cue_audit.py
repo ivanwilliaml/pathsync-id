@@ -10,13 +10,14 @@ from datetime import date
 
 from pathsync import assessment
 from pathsync.config import MODELS_DIR
+from pathsync.i18n import use_lang
 from pathsync.item_audit import audit, item_cue_probabilities
 
 
 def audit_language(lang: str) -> dict:
-    assessment.LANG = lang
     assessment.item_bank.cache_clear()
-    items = list(assessment.item_bank().values())
+    with use_lang(lang):
+        items = list(assessment.item_bank().values())
     report = audit(items)
     p = item_cue_probabilities(items)
     out = {"generated": date.today().isoformat(), "n_items": len(items), "language": lang, **report, "p_cue": p,
@@ -33,7 +34,6 @@ def main() -> None:
         out = audit_language(lang)
         first = first or out
         print(lang, json.dumps({k: out[k] for k in ("n_items", "classifier")}))
-    assessment.LANG = "en"
     assessment.item_bank.cache_clear()
 
 

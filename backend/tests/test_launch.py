@@ -219,3 +219,44 @@ def test_governance_counts_soft_skill_phrases_as_covered():
     assert rep["new_skill_candidates"], "the report should still list real candidates"
     assert not [c["label"] for c in rep["new_skill_candidates"] if detect(c["label"])]
     assert rep["criteria"]["C2_no_frequent_candidate"]["pass"] and 0.5 < rep["criteria"]["C1_coverage"]["value"] <= 1
+
+
+def test_frontend_cluster_order_covers_taxonomy():
+    """Regression: clusters missing from CLUSTER_ORDER are silently hidden on the dashboard and Skill Map."""
+    import re
+
+    from pathsync.config import BACKEND_DIR
+    from pathsync.taxonomy import load_skills
+
+    src = (BACKEND_DIR.parent / "frontend" / "src" / "lib" / "format.ts").read_text(encoding="utf-8")
+    block = src[src.index("export const CLUSTER_ORDER"):]
+    listed = set(re.findall(r'"([a-z_]+)"', block[: block.index("];")]))
+    missing = {s.cluster for s in load_skills().values()} - listed
+    assert not missing, f"add to CLUSTER_ORDER in frontend/src/lib/format.ts: {sorted(missing)}"
+
+
+def test_formula5_is_the_active_ranker_until_real_experts_beat_it(client):
+    """Plan AI-06: a model trained on simulated experts is registered but never activated."""
+    card = client.get("/api/model-card").json()
+    assert card["decision_model"]["name"] == "Formula (5)"
+    assert card["decision_model"]["type"].startswith("formula (5)")
+
+
+def test_market_explains_a_missing_trend(client):
+    """A role without enough postings in both windows says why, instead of showing a flat 0 trend (plan AI-09)."""
+    m = client.get("/api/market/business_analyst").json()
+    if m["trend_status"] != "ok":
+        assert "needed" in m["trend_reason"] and str(m["n_previous"]) in m["trend_reason"]
+
+
+def test_grades_alone_never_count_as_proven_readiness(client):
+    """Audit AI-7: a transcript raises p but not p_proven; proven readiness stays 0 until there is direct proof."""
+    sid, h = new_student(client)
+    r = client.post(f"/api/students/{sid}/evidence/academic", headers=h,
+                    json={"courses": [{"name": "Basis Data", "grade": "A"}, {"name": "Analisis dan Perancangan Sistem", "grade": "A"}]})
+    assert r.status_code == 200, r.text
+    d = client.get(f"/api/students/{sid}/dashboard", headers=h).json()
+    assert d["coverage_proven"] == 0.0
+    graded = [c for c in d["competencies"] if "academic" in c["evidence_kinds"]]
+    assert graded and all(c["p_proven"] is None for c in graded)
+    assert d["coverage"] > d["coverage_proven"]

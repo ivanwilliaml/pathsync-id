@@ -108,7 +108,24 @@ def cue_classifier_accuracy(items: list[dict], folds: int = 5, seed: int = 0) ->
                 c += int(yt[m][s[m].argmax()] == 1)
         null.append(c / len(items))
     return {"n_items": len(items), "accuracy": round(acc, 3), "chance": 0.25,
-            "null_mean": round(float(np.mean(null)), 3), "null_p95": round(float(np.percentile(null, 95)), 3)}
+            "null_mean": round(float(np.mean(null)), 3), "null_p95": round(float(np.percentile(null, 95)), 3),
+            "_null": null}
+
+
+AUDIT_SEEDS = (0, 1, 2, 3, 4)
+
+
+def cue_classifier_accuracy_multi(items: list[dict], seeds: tuple[int, ...] = AUDIT_SEEDS) -> dict:
+    """Mean over several fold splits. One split is noisy (the same 570 items gave 0.258 to 0.314 across seeds), so the
+    reported accuracy and its null are both averaged over `seeds`; the null p95 is the 95th percentile of the averaged
+    permutation runs, which is the right yardstick for an averaged accuracy."""
+    runs = [cue_classifier_accuracy(items, seed=s) for s in seeds]
+    accs = [r["accuracy"] for r in runs]
+    null = np.mean(np.array([r["_null"] for r in runs]), axis=0)
+    return {"n_items": len(items), "accuracy": round(float(np.mean(accs)), 3), "accuracy_by_seed": accs,
+            "accuracy_sd": round(float(np.std(accs)), 3), "chance": 0.25,
+            "null_mean": round(float(np.mean(null)), 3), "null_p95": round(float(np.percentile(null, 95)), 3),
+            "seeds": list(seeds)}
 
 
 def single_cue_rates(items: list[dict]) -> dict[str, float]:
@@ -131,7 +148,7 @@ def single_cue_rates(items: list[dict]) -> dict[str, float]:
 
 
 def audit(items: list[dict]) -> dict:
-    return {"single_cues": single_cue_rates(items), "classifier": cue_classifier_accuracy(items)}
+    return {"single_cues": single_cue_rates(items), "classifier": cue_classifier_accuracy_multi(items)}
 
 
 def item_cue_probabilities(items: list[dict], folds: int = 5, seed: int = 0) -> dict[str, float]:
@@ -167,11 +184,17 @@ from functools import lru_cache  # noqa: E402
 GUESS_FLOOR, GUESS_CEIL = 0.25, 0.60
 
 
-@lru_cache(maxsize=1)
 def _guess_table() -> dict[str, float]:
-    from .config import LANG, MODELS_DIR
+    from .i18n import get_lang
 
-    path = MODELS_DIR / ("item_cue_audit_id.json" if LANG == "id" else "item_cue_audit.json")
+    return _guess_table_for(get_lang())
+
+
+@lru_cache(maxsize=4)
+def _guess_table_for(lang: str) -> dict[str, float]:
+    from .config import MODELS_DIR
+
+    path = MODELS_DIR / ("item_cue_audit_id.json" if lang == "id" else "item_cue_audit.json")
     if not path.exists():
         return {}
     return _json.loads(path.read_text(encoding="utf-8")).get("p_cue", {})

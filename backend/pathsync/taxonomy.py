@@ -6,7 +6,8 @@ from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from functools import lru_cache
 
-from .config import LANG, SEED_DIR
+from .config import SEED_DIR
+from .i18n import get_lang
 
 
 @dataclass(frozen=True)
@@ -131,13 +132,17 @@ def load_taxonomy() -> dict:
     return _load_json("taxonomy.json")
 
 
-@lru_cache(maxsize=1)
-def load_skills() -> dict[str, Skill]:
-    """Frozen taxonomy as Skill objects (cached; treat the returned dict as read-only)."""
+def load_skills(lang: str | None = None) -> dict[str, Skill]:
+    """Frozen taxonomy as Skill objects in the request's display language (cached per language; read-only)."""
+    return _load_skills(lang or get_lang())
+
+
+@lru_cache(maxsize=4)
+def _load_skills(lang: str) -> dict[str, Skill]:
     tax = load_taxonomy()
     out = {}
     for s in tax["skills"]:
-        en = LANG == "en"
+        en = lang == "en"
         out[s["id"]] = Skill(
             id=s["id"], name=s["name_en"] if en else s["name"], name_en=s["name_en"], cluster=s["cluster"], kind=s["kind"],
             description=s.get("description_en", s["description"]) if en else s["description"],
@@ -150,13 +155,13 @@ def load_skills() -> dict[str, Skill]:
 
 def load_draft_edges() -> list[Edge]:
     g = _load_json("graph.json")
-    key = "rationale_en" if LANG == "en" else "rationale"
+    key = "rationale_en" if get_lang() == "en" else "rationale"
     return [Edge(e["from"], e["to"], e.get("source", "tim"), e.get(key) or e.get("rationale", "")) for e in g["edges"]]
 
 
 def seed_rationales() -> dict[tuple[str, str], tuple[str, str]]:
     """(src, dst) -> (Indonesian rationale, display rationale) for edges that came from the seed graph."""
-    key = "rationale_en" if LANG == "en" else "rationale"
+    key = "rationale_en" if get_lang() == "en" else "rationale"
     return {(e["from"], e["to"]): (e.get("rationale", ""), e.get(key) or e.get("rationale", ""))
             for e in _load_json("graph.json")["edges"]}
 
@@ -167,4 +172,4 @@ def load_graph(edges: list[Edge] | None = None) -> SkillGraph:
 
 def cluster_names() -> dict[str, str]:
     tax = load_taxonomy()
-    return tax.get("clusters_en", tax["clusters"]) if LANG == "en" else tax["clusters"]
+    return tax.get("clusters_en", tax["clusters"]) if get_lang() == "en" else tax["clusters"]

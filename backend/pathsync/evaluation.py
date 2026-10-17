@@ -200,3 +200,25 @@ def leave_one_expert_out(scenarios: list[dict], orders: dict[str, dict[str, list
 
 def formula5() -> dict[str, float]:
     return dict(FORMULA5_WEIGHTS)
+
+
+def activate_formula5(s) -> None:
+    """Make formula (5) the active ranker (creating its row if needed). Models trained on simulated experts are never
+    activated: they only show the pipeline works. A trained model replaces the formula only when real experts' rankings
+    beat it by the leave-one-expert-out rule (plan AI-06)."""
+    from sqlalchemy import select, update
+
+    from .config import FORMULA5_WEIGHTS
+    from .db import RankerModel, bump_epoch
+
+    row = s.scalars(select(RankerModel).where(RankerModel.source == "formula5")).first()
+    if row is None:
+        row = RankerModel(name="Formula (5)", source="formula5", weights=dict(FORMULA5_WEIGHTS), active=False,
+                          metrics={"note": "G x D x T x U x R, active until real expert rankings beat it"})
+        s.add(row)
+        s.flush()
+    if not row.active:
+        s.execute(update(RankerModel).values(active=False))
+        row.active = True
+        bump_epoch(s)
+

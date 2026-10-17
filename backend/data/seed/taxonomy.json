@@ -3315,12 +3315,6 @@
     "tax",
     "taxation",
     "pph 21",
-    "pph 23",
-    "pph 25",
-    "pph 29",
-    "pph 4(2)",
-    "ppn",
-    "ppn masukan",
     "e-faktur",
     "efaktur",
     "spt tahunan",
@@ -3331,12 +3325,10 @@
     "tax compliance",
     "tax reporting",
     "tax planning",
-    "faktur pajak",
     "e-bupot",
     "ebupot",
     "tax review",
-    "transfer pricing",
-    "tax audit"
+    "transfer pricing"
    ],
    "esco": [],
    "description_en": "Calculate, withhold and report Indonesian taxes: PPh 21/23/25, PPN, e-Faktur and SPT.",
@@ -3574,7 +3566,11 @@
     "pph pasal 4 ayat 2",
     "tax withholding",
     "pemotongan pajak",
-    "pemungutan pajak"
+    "pemungutan pajak",
+    "pph 23",
+    "pph 25",
+    "pph 29",
+    "pph 4(2)"
    ],
    "esco": [],
    "description_en": "Compute corporate income tax and withhold PPh Articles 22, 23, 26 and final tax.",
@@ -3604,7 +3600,10 @@
     "ppnbm",
     "nomor seri faktur pajak",
     "faktur pajak pengganti",
-    "dpp nilai lain"
+    "dpp nilai lain",
+    "ppn",
+    "ppn masukan",
+    "faktur pajak"
    ],
    "esco": [],
    "description_en": "Handle VAT: output tax, input tax, tax invoices and PKP status.",
@@ -3638,7 +3637,8 @@
     "tax refund",
     "tax objection",
     "tax litigation",
-    "tax investigation"
+    "tax investigation",
+    "tax audit"
    ],
    "esco": [],
    "description_en": "Prepare data for a tax examination and file objections, appeals and refund claims.",

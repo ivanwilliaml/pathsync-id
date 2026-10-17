@@ -9,23 +9,23 @@
   "n_postings": 24,
   "skipped_no_llm_result": [],
   "overall": {
-   "precision": 0.844,
+   "precision": 0.854,
    "recall": 0.918,
-   "f1": 0.88,
+   "f1": 0.885,
    "precision_ci95": [
-    0.7824,
-    0.8905
+    0.7931,
+    0.899
    ],
    "recall_ci95": [
     0.8651,
     0.9516
    ],
    "tp": 146,
-   "fp": 27,
+   "fp": 25,
    "fn": 13,
    "f1_ci95": [
-    0.839,
-    0.916
+    0.844,
+    0.923
    ]
   },
   "per_role": {
@@ -62,35 +62,35 @@
     "fn": 0
    },
    "business_analyst": {
-    "precision": 0.889,
+    "precision": 0.941,
     "recall": 0.667,
-    "f1": 0.762,
+    "f1": 0.78,
     "precision_ci95": [
-     0.672,
-     0.969
+     0.7302,
+     0.9895
     ],
     "recall_ci95": [
      0.4671,
      0.8203
     ],
     "tp": 16,
-    "fp": 2,
+    "fp": 1,
     "fn": 8
    },
    "cybersecurity_analyst": {
-    "precision": 0.722,
+    "precision": 0.765,
     "recall": 0.929,
-    "f1": 0.813,
+    "f1": 0.839,
     "precision_ci95": [
-     0.4913,
-     0.875
+     0.5274,
+     0.9045
     ],
     "recall_ci95": [
      0.6853,
      0.9873
     ],
     "tp": 13,
-    "fp": 5,
+    "fp": 4,
     "fn": 1
    },
    "data_analyst": {
@@ -192,19 +192,19 @@
     "fn": 0
    },
    "business_analysis": {
-    "precision": 0.706,
+    "precision": 0.75,
     "recall": 0.706,
-    "f1": 0.706,
+    "f1": 0.727,
     "precision_ci95": [
-     0.4687,
-     0.8672
+     0.505,
+     0.8982
     ],
     "recall_ci95": [
      0.4687,
      0.8672
     ],
     "tp": 12,
-    "fp": 5,
+    "fp": 4,
     "fn": 5
    },
    "data_analytics": {
@@ -336,19 +336,19 @@
     "fn": 0
    },
    "security": {
-    "precision": 0.647,
+    "precision": 0.688,
     "recall": 0.917,
-    "f1": 0.759,
+    "f1": 0.786,
     "precision_ci95": [
-     0.413,
-     0.8269
+     0.444,
+     0.8584
     ],
     "recall_ci95": [
      0.6461,
      0.9851
     ],
     "tp": 11,
-    "fp": 6,
+    "fp": 5,
     "fn": 1
    },
    "testing": {
@@ -390,10 +390,6 @@
     2
    ],
    [
-    "cloud_security",
-    2
-   ],
-   [
     "kpi_metrics",
     2
    ],
@@ -406,15 +402,11 @@
     1
    ],
    [
-    "api_integration",
-    1
-   ],
-   [
     "test_design_techniques",
     1
    ],
    [
-    "system_modeling_uml",
+    "api_integration",
     1
    ],
    [
@@ -422,15 +414,23 @@
     1
    ],
    [
-    "security_frameworks_compliance",
-    1
-   ],
-   [
     "siem_monitoring",
     1
    ],
    [
+    "security_frameworks_compliance",
+    1
+   ],
+   [
+    "networking_fundamentals",
+    1
+   ],
+   [
     "penetration_testing",
+    1
+   ],
+   [
+    "requirements_elicitation",
     1
    ]
   ],
@@ -464,11 +464,11 @@
     1
    ],
    [
-    "testing_uat",
+    "wireframing",
     1
    ],
    [
-    "wireframing",
+    "testing_uat",
     1
    ],
    [
@@ -487,23 +487,23 @@
   "n_postings": 26,
   "skipped_no_llm_result": [],
   "overall": {
-   "precision": 0.855,
+   "precision": 0.87,
    "recall": 0.917,
-   "f1": 0.885,
+   "f1": 0.893,
    "precision_ci95": [
-    0.7796,
-    0.9073
+    0.7959,
+    0.9193
    ],
    "recall_ci95": [
     0.8505,
     0.956
    ],
    "tp": 100,
-   "fp": 17,
+   "fp": 15,
    "fn": 9,
    "f1_ci95": [
-    0.85,
-    0.915
+    0.86,
+    0.922
    ]
   },
   "per_role": {
@@ -556,19 +556,19 @@
     "fn": 3
    },
    "cybersecurity_analyst": {
-    "precision": 0.7,
+    "precision": 0.778,
     "recall": 0.875,
-    "f1": 0.778,
+    "f1": 0.824,
     "precision_ci95": [
-     0.3968,
-     0.8922
+     0.4526,
+     0.9368
     ],
     "recall_ci95": [
      0.5291,
      0.9776
     ],
     "tp": 7,
-    "fp": 3,
+    "fp": 2,
     "fn": 1
    },
    "data_analyst": {
@@ -700,37 +700,37 @@
     "fn": 0
    },
    "qa_engineer": {
-    "precision": 0.5,
+    "precision": 0.667,
     "recall": 1.0,
-    "f1": 0.667,
+    "f1": 0.8,
     "precision_ci95": [
-     0.15,
-     0.85
+     0.2077,
+     0.9385
     ],
     "recall_ci95": [
      0.3424,
      1.0
     ],
     "tp": 2,
-    "fp": 2,
+    "fp": 1,
     "fn": 0
    }
   },
   "per_cluster": {
    "backend": {
-    "precision": 0.871,
+    "precision": 0.9,
     "recall": 1.0,
-    "f1": 0.931,
+    "f1": 0.947,
     "precision_ci95": [
-     0.7115,
-     0.9487
+     0.7438,
+     0.9654
     ],
     "recall_ci95": [
      0.8754,
      1.0
     ],
     "tp": 27,
-    "fp": 4,
+    "fp": 3,
     "fn": 0
    },
    "bi_tools": {
@@ -894,19 +894,19 @@
     "fn": 0
    },
    "security": {
-    "precision": 0.727,
+    "precision": 0.8,
     "recall": 0.889,
-    "f1": 0.8,
+    "f1": 0.842,
     "precision_ci95": [
-     0.4343,
-     0.9025
+     0.4902,
+     0.9433
     ],
     "recall_ci95": [
      0.565,
      0.9801
     ],
     "tp": 8,
-    "fp": 3,
+    "fp": 2,
     "fn": 1
    },
    "testing": {
@@ -960,19 +960,15 @@
     1
    ],
    [
-    "cloud_security",
-    1
-   ],
-   [
     "siem_monitoring",
     1
    ],
    [
-    "data_modeling",
+    "dashboard_reporting",
     1
    ],
    [
-    "dashboard_reporting",
+    "data_modeling",
     1
    ],
    [
@@ -989,6 +985,10 @@
    ],
    [
     "machine_learning",
+    1
+   ],
+   [
+    "testing_uat",
     1
    ]
   ],
@@ -1526,11 +1526,11 @@
     2
    ],
    [
-    "ios_swift",
+    "android_kotlin",
     1
    ],
    [
-    "android_kotlin",
+    "ios_swift",
     1
    ],
    [
@@ -1602,7 +1602,7 @@
   ]
  },
  "provenance": {
-  "taxonomy_sha": "300f64e6c78d",
+  "taxonomy_sha": "9158b31362c3",
   "extractor": "lexicon"
  }
 }

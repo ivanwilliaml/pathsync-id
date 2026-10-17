@@ -11,19 +11,28 @@ import json
 import random
 from functools import lru_cache
 
-from .config import LANG, SEED_DIR
+from .config import SEED_DIR
 from .demand import MarketMap
 from .evidence import SkillState
+from .i18n import get_lang
 
 
-@lru_cache(maxsize=1)
-def item_bank() -> dict[str, dict]:
-    """Load all items; the correct option is written first in the seed and shuffled deterministically here."""
+def item_bank(lang: str | None = None) -> dict[str, dict]:
+    """All items in the request's display language. The key's position is the same in both languages, because the
+    shuffle is seeded by the item id and both files list the correct option first."""
+    return _item_bank(lang or get_lang())
+
+
+item_bank.cache_clear = lambda: _item_bank.cache_clear()     # callers that reload the bank after editing it
+
+
+@lru_cache(maxsize=4)
+def _item_bank(lang: str) -> dict[str, dict]:
     bank = {}
     for f in sorted((SEED_DIR / "items").glob("*.json")):
         overlay = {}
         tr = SEED_DIR / "items_en" / f.name
-        if LANG == "en" and tr.exists():
+        if lang == "en" and tr.exists():
             overlay = json.loads(tr.read_text(encoding="utf-8"))
         for it in json.loads(f.read_text(encoding="utf-8")):
             if it["id"] in overlay:
