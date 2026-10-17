@@ -94,9 +94,11 @@ MESSAGES: dict[str, dict[str, str]] = {
                                 "id": "Nilai kuliahmu jauh lebih tinggi daripada hasil asesmenmu."},
     "flag.persepsi_lebih_tinggi_dari_bukti": {"en": "You rated yourself higher than your evidence shows.",
                                               "id": "Penilaian dirimu lebih tinggi daripada yang ditunjukkan buktimu."},
+    "source.diagnostic": {"en": "Diagnostic assessment ({k}/{n} correct)", "id": "Asesmen diagnostik ({k}/{n} benar)"},
     # path history (adaptive cycle)
     "history.left": {"en": "{name} left your priorities: the gap is closed (mastery {p:.2f}).",
                      "id": "{name} keluar dari prioritasmu: kesenjangannya sudah tertutup (penguasaan {p:.2f})."},
+    "history.initial_reason": {"en": "{name} is priority #{rank}.", "id": "{name} menjadi prioritas #{rank}."},
     "history.joined": {"en": "{name} joined your priorities at #{rank}.", "id": "{name} masuk ke prioritasmu di #{rank}."},
     "history.cause.mastery_up": {"en": "your mastery rose {a:.2f} to {b:.2f}", "id": "penguasaanmu naik {a:.2f} ke {b:.2f}"},
     "history.cause.mastery_down": {"en": "your mastery fell {a:.2f} to {b:.2f}", "id": "penguasaanmu turun {a:.2f} ke {b:.2f}"},

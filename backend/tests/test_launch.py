@@ -260,3 +260,30 @@ def test_grades_alone_never_count_as_proven_readiness(client):
     graded = [c for c in d["competencies"] if "academic" in c["evidence_kinds"]]
     assert graded and all(c["p_proven"] is None for c in graded)
     assert d["coverage"] > d["coverage_proven"]
+
+
+def test_recruiter_contacts_are_redacted_and_sources_can_be_excluded(monkeypatch):
+    """Plan BE-03: contacts never reach the market map; a source can be dropped without code changes."""
+    from pathsync.text import redact_contacts
+
+    out = redact_contacts("Kirim CV ke hrd@contoh.co.id atau WA 0812-3456-7890. Gaji 5.000.000 per bulan, 2026.")
+    assert "@" not in out and "0812" not in out and "5.000.000" in out and "2026" in out
+
+    import pipeline.build_market as bm
+
+    monkeypatch.setattr(bm, "EXCLUDED_SOURCES", frozenset({"kalibrr"}))
+    rows = bm.load_raw()
+    assert rows and not any(r["source"] == "kalibrr" for r in rows)
+    assert not any("@" in r["description_text"] and ".co" in r["description_text"].split("@")[-1][:20] for r in rows)
+
+
+def test_pilot_survey_and_targets(client):
+    """Plan BE-08: the V3 survey is stored as first-party events and the launch metrics report pilot targets."""
+    sid, h = new_student(client)
+    ok = client.post("/api/events", headers=h, json={"name": "pilot_survey", "student_id": sid,
+                                                    "props": {"condition": "pathsync", "q1": 5, "q2": 4, "q3": 4}})
+    assert ok.status_code == 204
+    bad = client.post("/api/events", headers=h, json={"name": "pilot_survey", "student_id": sid, "props": {"condition": "x", "q1": 9}})
+    assert bad.status_code == 422
+    m = client.get("/api/admin/metrics", headers=ADMIN).json()["pilot"]
+    assert m["targets"]["quick_check_completion"] == 0.6 and m["survey"]["pathsync"]["n"] >= 1

@@ -153,7 +153,8 @@ def main() -> None:
         r = evaluate(a.extractor, a.gold, a.split)
         print(json.dumps(r if a.json else {"n": r["n_postings"], **r["overall"]}, indent=None if not a.json else 1))
         return
-    out = {"dev": evaluate(), "heldout": evaluate(goldfile="gold_heldout.json"), "blind": evaluate(goldfile="gold_blind.json")}
+    out = {"dev": evaluate(), "heldout": evaluate(goldfile="gold_heldout.json"), "blind": evaluate(goldfile="gold_blind.json"),
+           "blind_bisnis": evaluate(goldfile="gold_blind_bisnis.json")}
     if CONSENSUS_FILE.exists():
         for half in ("dev", "test"):
             out[f"consensus_{half}"] = evaluate(goldfile=CONSENSUS_FILE.name, split=half)

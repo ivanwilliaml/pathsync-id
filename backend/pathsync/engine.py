@@ -405,7 +405,7 @@ def record_history(s: Session, student: Student, trigger: str, note: str = "", r
     if last is None:
         trigger = "initial"
         summary, reasons = _reasons([], cur, rec, names, trigger, note)
-        reasons = [f"{r['name']} is priority #{r['rank']}." for r in rec["ranking"][:3]]
+        reasons = [t("history.initial_reason", name=r["name"], rank=r["rank"]) for r in rec["ranking"][:3]]
     else:
         same = [r["skill_id"] for r in last.ranking[:5]] == [r["skill_id"] for r in cur[:5]] and \
             all(abs(a["priority"] - b["priority"]) < 0.005 for a, b in zip(last.ranking[:5], cur[:5], strict=False))

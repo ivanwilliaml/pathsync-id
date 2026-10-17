@@ -17,6 +17,9 @@ for _d in (RAW_DIR, SEED_DIR, PROCESSED_DIR, MODELS_DIR):
 # Display language of everything the API returns (skill names, explanations, assessment items).
 # Seed data keeps the Indonesian originals; extraction prompts always use them.
 LANG = os.getenv("PATHSYNC_LANG", "en")
+# posting sources left out of the market map, comma-separated (e.g. "kalibrr" while permission is pending; see
+# docs/ops/DATA_SOURCES.md). Raw files stay on disk; only the market build ignores them.
+EXCLUDED_SOURCES = frozenset(x.strip() for x in os.getenv("PATHSYNC_EXCLUDED_SOURCES", "").split(",") if x.strip())
 
 DATABASE_URL = os.getenv("PATHSYNC_DATABASE_URL", f"sqlite:///{(DATA_DIR / 'pathsync.db').as_posix()}")
 

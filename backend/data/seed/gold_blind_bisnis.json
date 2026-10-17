@@ -1,0 +1,144 @@
+{
+ "note": "Blind gold set for the six business roles (plan A3): 18 postings (3 per role) never used in any other gold set or split, annotated from the first 1100 characters before the extractor was run on them. Single annotator (Claude), so the result is indicative until the two-annotator consensus (V1) covers business skills.",
+ "max_chars": 1100,
+ "postings": {
+  "karirhub:01a0deea-5f17-71b4-9e38-61caf880eadb": {
+   "role": "financial_analyst",
+   "skills": [
+    "financial_analysis",
+    "credit_analysis"
+   ]
+  },
+  "karirhub:d601964b-c81d-4752-b010-a2b35d61a667": {
+   "role": "financial_analyst",
+   "skills": [
+    "financial_statements",
+    "credit_analysis",
+    "financial_analysis"
+   ]
+  },
+  "kalibrr:76122": {
+   "role": "financial_analyst",
+   "skills": [
+    "credit_analysis",
+    "financial_analysis"
+   ]
+  },
+  "karirhub:920f1b72-52ac-4970-81de-7a89847e2113": {
+   "role": "hr_specialist",
+   "skills": [
+    "recruitment_selection",
+    "labor_law_id"
+   ]
+  },
+  "karirhub:01a06682-4b52-70cd-99eb-4c98d7f7ff9f": {
+   "role": "hr_specialist",
+   "skills": [
+    "recruitment_selection",
+    "hris_systems",
+    "excel"
+   ]
+  },
+  "karirhub:01a0b098-ba3e-71e4-b25b-df4f599bdddd": {
+   "role": "hr_specialist",
+   "skills": [
+    "recruitment_selection",
+    "labor_law_id",
+    "excel"
+   ]
+  },
+  "karirhub:01a0defa-ff0b-72eb-82a5-fb3b4a98315d": {
+   "role": "internal_auditor",
+   "skills": [
+    "audit_internal_control",
+    "audit_reporting_followup"
+   ]
+  },
+  "karirhub:01a07fa9-11ce-7203-9bd8-bfbb96e42f16": {
+   "role": "internal_auditor",
+   "skills": [
+    "audit_internal_control",
+    "audit_planning_fieldwork",
+    "enterprise_risk_management",
+    "audit_reporting_followup"
+   ]
+  },
+  "karirhub:a518d51b-f142-4098-86e1-235312c37200": {
+   "role": "internal_auditor",
+   "skills": [
+    "enterprise_risk_management"
+   ]
+  },
+  "karirhub:2ec6eed5-0bf2-47c8-9804-16d07d241c47": {
+   "role": "project_coordinator",
+   "skills": []
+  },
+  "kalibrr:266044": {
+   "role": "project_coordinator",
+   "skills": [
+    "project_planning_wbs",
+    "system_design_architecture",
+    "api_integration",
+    "data_warehousing",
+    "etl_pipelines",
+    "vendor_supplier_management",
+    "requirements_elicitation"
+   ]
+  },
+  "karirhub:01a01e17-f8e6-73f6-a53d-054a9a6c58d9": {
+   "role": "project_coordinator",
+   "skills": []
+  },
+  "kalibrr:274099": {
+   "role": "supply_chain_analyst",
+   "skills": [
+    "kpi_metrics",
+    "warehouse_logistics"
+   ]
+  },
+  "karirhub:01a13151-944c-70b1-a052-b910110831ee": {
+   "role": "supply_chain_analyst",
+   "skills": [
+    "inventory_management",
+    "cost_accounting",
+    "accounting_software"
+   ]
+  },
+  "karirhub:01a055c5-8a68-72ca-a17b-18fdc9598485": {
+   "role": "supply_chain_analyst",
+   "skills": [
+    "inventory_management",
+    "warehouse_logistics"
+   ]
+  },
+  "karirhub:01a13672-f71f-71f3-97c4-27ab1fdb140f": {
+   "role": "tax_specialist",
+   "skills": [
+    "financial_statements",
+    "tax_compliance_id",
+    "budgeting_forecasting",
+    "financial_analysis",
+    "excel",
+    "accounting_software",
+    "ap_ar_reconciliation"
+   ]
+  },
+  "karirhub:01a0e937-f8b2-70e1-a94f-61347a73304f": {
+   "role": "tax_specialist",
+   "skills": [
+    "accounting_fundamentals",
+    "financial_statements",
+    "ap_ar_reconciliation",
+    "budgeting_forecasting",
+    "tax_compliance_id"
+   ]
+  },
+  "kalibrr:273066": {
+   "role": "tax_specialist",
+   "skills": [
+    "tax_compliance_id",
+    "excel"
+   ]
+  }
+ }
+}

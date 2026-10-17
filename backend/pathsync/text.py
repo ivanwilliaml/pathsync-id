@@ -92,3 +92,13 @@ ABOUT_COMPANY = re.compile(
 def is_boilerplate(segment: str) -> bool:
     """Company description, benefits and legal boilerplate carry no skill demand."""
     return bool(ABOUT_COMPANY.search(segment))
+
+
+_EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
+_PHONE = re.compile(r"(?<!\d)(?:\+?62|0)[\s.-]?8(?:[\s.-]?\d){7,11}(?!\d)")
+
+
+def redact_contacts(text: str) -> str:
+    """Remove recruiter e-mail addresses and Indonesian mobile numbers from posting text (UU PDP: personal data that the
+    market map never needs). Applied when raw postings are loaded, so it also covers files scraped earlier."""
+    return _PHONE.sub("[nomor disamarkan]", _EMAIL.sub("[email disamarkan]", text or ""))

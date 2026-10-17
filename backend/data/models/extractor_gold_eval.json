@@ -398,11 +398,11 @@
     2
    ],
    [
-    "data_structures_algorithms",
+    "test_design_techniques",
     1
    ],
    [
-    "test_design_techniques",
+    "data_structures_algorithms",
     1
    ],
    [
@@ -452,19 +452,19 @@
     1
    ],
    [
-    "requirements_elicitation",
-    1
-   ],
-   [
     "data_analysis",
     1
    ],
    [
-    "requirements_documentation",
+    "requirements_elicitation",
     1
    ],
    [
     "wireframing",
+    1
+   ],
+   [
+    "requirements_documentation",
     1
    ],
    [
@@ -1526,11 +1526,11 @@
     2
    ],
    [
-    "android_kotlin",
+    "ios_swift",
     1
    ],
    [
-    "ios_swift",
+    "android_kotlin",
     1
    ],
    [
@@ -1597,6 +1597,452 @@
    ],
    [
     "system_modeling_uml",
+    1
+   ]
+  ]
+ },
+ "blind_bisnis": {
+  "gold": "gold_blind_bisnis.json",
+  "gold_file": "gold_blind_bisnis.json",
+  "gold_sha": "9ff852cf5705",
+  "split": null,
+  "extractor": "lexicon",
+  "skills_outside_gold_scope": 13,
+  "n_postings": 18,
+  "skipped_no_llm_result": [],
+  "overall": {
+   "precision": 0.783,
+   "recall": 0.72,
+   "f1": 0.75,
+   "precision_ci95": [
+    0.6443,
+    0.8774
+   ],
+   "recall_ci95": [
+    0.5833,
+    0.8253
+   ],
+   "tp": 36,
+   "fp": 10,
+   "fn": 14,
+   "f1_ci95": [
+    0.627,
+    0.853
+   ]
+  },
+  "per_role": {
+   "financial_analyst": {
+    "precision": 1.0,
+    "recall": 0.714,
+    "f1": 0.833,
+    "precision_ci95": [
+     0.5655,
+     1.0
+    ],
+    "recall_ci95": [
+     0.3589,
+     0.9178
+    ],
+    "tp": 5,
+    "fp": 0,
+    "fn": 2
+   },
+   "hr_specialist": {
+    "precision": 0.714,
+    "recall": 0.625,
+    "f1": 0.667,
+    "precision_ci95": [
+     0.3589,
+     0.9178
+    ],
+    "recall_ci95": [
+     0.3057,
+     0.8632
+    ],
+    "tp": 5,
+    "fp": 2,
+    "fn": 3
+   },
+   "internal_auditor": {
+    "precision": 0.8,
+    "recall": 0.571,
+    "f1": 0.667,
+    "precision_ci95": [
+     0.3755,
+     0.9638
+    ],
+    "recall_ci95": [
+     0.2505,
+     0.8418
+    ],
+    "tp": 4,
+    "fp": 1,
+    "fn": 3
+   },
+   "project_coordinator": {
+    "precision": 1.0,
+    "recall": 0.571,
+    "f1": 0.727,
+    "precision_ci95": [
+     0.5101,
+     1.0
+    ],
+    "recall_ci95": [
+     0.2505,
+     0.8418
+    ],
+    "tp": 4,
+    "fp": 0,
+    "fn": 3
+   },
+   "supply_chain_analyst": {
+    "precision": 0.455,
+    "recall": 0.714,
+    "f1": 0.556,
+    "precision_ci95": [
+     0.2127,
+     0.7199
+    ],
+    "recall_ci95": [
+     0.3589,
+     0.9178
+    ],
+    "tp": 5,
+    "fp": 6,
+    "fn": 2
+   },
+   "tax_specialist": {
+    "precision": 0.929,
+    "recall": 0.929,
+    "f1": 0.929,
+    "precision_ci95": [
+     0.6853,
+     0.9873
+    ],
+    "recall_ci95": [
+     0.6853,
+     0.9873
+    ],
+    "tp": 13,
+    "fp": 1,
+    "fn": 1
+   }
+  },
+  "per_cluster": {
+   "audit_risk": {
+    "precision": 0.667,
+    "recall": 0.4,
+    "f1": 0.5,
+    "precision_ci95": [
+     0.2077,
+     0.9385
+    ],
+    "recall_ci95": [
+     0.1176,
+     0.7693
+    ],
+    "tp": 2,
+    "fp": 1,
+    "fn": 3
+   },
+   "backend": {
+    "precision": 1.0,
+    "recall": 0.5,
+    "f1": 0.667,
+    "precision_ci95": [
+     0.2065,
+     1.0
+    ],
+    "recall_ci95": [
+     0.0945,
+     0.9055
+    ],
+    "tp": 1,
+    "fp": 0,
+    "fn": 1
+   },
+   "bi_tools": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.5101,
+     1.0
+    ],
+    "recall_ci95": [
+     0.5101,
+     1.0
+    ],
+    "tp": 4,
+    "fp": 0,
+    "fn": 0
+   },
+   "business_analysis": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.2065,
+     1.0
+    ],
+    "recall_ci95": [
+     0.2065,
+     1.0
+    ],
+    "tp": 1,
+    "fp": 0,
+    "fn": 0
+   },
+   "corp_finance": {
+    "precision": 1.0,
+    "recall": 0.667,
+    "f1": 0.8,
+    "precision_ci95": [
+     0.3424,
+     1.0
+    ],
+    "recall_ci95": [
+     0.2077,
+     0.9385
+    ],
+    "tp": 2,
+    "fp": 0,
+    "fn": 1
+   },
+   "data_analytics": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.2065,
+     1.0
+    ],
+    "recall_ci95": [
+     0.2065,
+     1.0
+    ],
+    "tp": 1,
+    "fp": 0,
+    "fn": 0
+   },
+   "data_eng": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "precision_ci95": [
+     0.3424,
+     1.0
+    ],
+    "recall_ci95": [
+     0.3424,
+     1.0
+    ],
+    "tp": 2,
+    "fp": 0,
+    "fn": 0
+   },
+   "devops": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "precision_ci95": [
+     0.0,
+     0.6576
+    ],
+    "recall_ci95": [
+     0.0,
+     1.0
+    ],
+    "tp": 0,
+    "fp": 2,
+    "fn": 0
+   },
+   "finance": {
+    "precision": 0.81,
+    "recall": 0.85,
+    "f1": 0.829,
+    "precision_ci95": [
+     0.6,
+     0.9233
+    ],
+    "recall_ci95": [
+     0.6396,
+     0.9476
+    ],
+    "tp": 17,
+    "fp": 4,
+    "fn": 3
+   },
+   "hr": {
+    "precision": 0.75,
+    "recall": 0.5,
+    "f1": 0.6,
+    "precision_ci95": [
+     0.3006,
+     0.9544
+    ],
+    "recall_ci95": [
+     0.1876,
+     0.8124
+    ],
+    "tp": 3,
+    "fp": 1,
+    "fn": 3
+   },
+   "marketing": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "precision_ci95": [
+     0.0,
+     0.7935
+    ],
+    "recall_ci95": [
+     0.0,
+     1.0
+    ],
+    "tp": 0,
+    "fp": 1,
+    "fn": 0
+   },
+   "product_project": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "precision_ci95": [
+     0.0,
+     1.0
+    ],
+    "recall_ci95": [
+     0.0,
+     0.7935
+    ],
+    "tp": 0,
+    "fp": 0,
+    "fn": 1
+   },
+   "security": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0,
+    "precision_ci95": [
+     0.0,
+     0.7935
+    ],
+    "recall_ci95": [
+     0.0,
+     1.0
+    ],
+    "tp": 0,
+    "fp": 1,
+    "fn": 0
+   },
+   "supply_chain": {
+    "precision": 1.0,
+    "recall": 0.6,
+    "f1": 0.75,
+    "precision_ci95": [
+     0.4385,
+     1.0
+    ],
+    "recall_ci95": [
+     0.2307,
+     0.8824
+    ],
+    "tp": 3,
+    "fp": 0,
+    "fn": 2
+   }
+  },
+  "top_false_positives": [
+   [
+    "labor_law_id",
+    1
+   ],
+   [
+    "networking_fundamentals",
+    1
+   ],
+   [
+    "vulnerability_assessment",
+    1
+   ],
+   [
+    "budgeting_forecasting",
+    1
+   ],
+   [
+    "audit_internal_control",
+    1
+   ],
+   [
+    "ap_ar_reconciliation",
+    1
+   ],
+   [
+    "enterprise_risk_management",
+    1
+   ],
+   [
+    "search_ads",
+    1
+   ],
+   [
+    "infrastructure_as_code",
+    1
+   ],
+   [
+    "accounting_fundamentals",
+    1
+   ]
+  ],
+  "top_misses": [
+   [
+    "audit_reporting_followup",
+    2
+   ],
+   [
+    "financial_analysis",
+    1
+   ],
+   [
+    "credit_analysis",
+    1
+   ],
+   [
+    "hris_systems",
+    1
+   ],
+   [
+    "labor_law_id",
+    1
+   ],
+   [
+    "recruitment_selection",
+    1
+   ],
+   [
+    "audit_planning_fieldwork",
+    1
+   ],
+   [
+    "system_design_architecture",
+    1
+   ],
+   [
+    "vendor_supplier_management",
+    1
+   ],
+   [
+    "project_planning_wbs",
+    1
+   ],
+   [
+    "warehouse_logistics",
+    1
+   ],
+   [
+    "accounting_software",
     1
    ]
   ]

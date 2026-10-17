@@ -1,6 +1,7 @@
-# Monthly market update (paper III.A.6, trigger 2): scrape new postings and commit the raw snapshot.
-# The demand map itself is rebuilt by the backend (Admin -> "Jalankan sekarang", or
-# `python -m pipeline.build_market`), so the 6-vs-6-month trend fills in as snapshots accumulate.
+# Monthly scrape check (paper III.A.6, trigger 2). Production scrapes on the server itself (compose service
+# `market-refresh`, pipeline.scheduled_refresh); this workflow only proves the scrapers still work and keeps the
+# snapshot as a build artifact for 90 days. It no longer commits raw postings to git: the history would grow every
+# month and the raw text is third-party content whose reuse terms are still under review (docs/ops/DATA_SOURCES.md).
 name: Scraping bulanan
 
 on:
@@ -9,7 +10,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   scrape:
@@ -27,14 +28,12 @@ jobs:
         run: python -m scrapers.karirhub
       - name: ATS publik
         run: python -m scrapers.ats
-      - name: Commit snapshot
+      - name: Count new postings
         run: |
-          git config user.name "pathsync-bot"
-          git config user.email "pathsync-bot@users.noreply.github.com"
-          git add data/raw
-          if git diff --cached --quiet; then
-            echo "tidak ada lowongan baru"
-          else
-            git commit -m "data: snapshot lowongan $(date -u +%Y-%m-%d)"
-            git push
-          fi
+          for f in $(git ls-files --others --exclude-standard data/raw); do echo "$f: $(wc -l < "$f") postings"; done
+      - name: Keep the snapshot as an artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-postings-${{ github.run_id }}
+          path: backend/data/raw/*_*.jsonl
+          retention-days: 90

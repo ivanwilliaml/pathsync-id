@@ -6,6 +6,35 @@ Kolom "Pemilik" adalah usulan peran, bukan penunjukan. "Kapan" mengacu ke jadwal
 
 ---
 
+## Status 17 Okt 2026 (branch `perbaikan-be-ai`)
+
+Semua angka di bawah ada di `backend/data/models/metrics.json` (`python -m pipeline.report`).
+
+| ID | Status | Hasil |
+|---|---|---|
+| Regresi lint | Selesai | `ruff` bersih |
+| Regresi pola jawaban | Sebagian | 120 soal bisnis diperbaiki isinya (72 pengecoh ditulis ulang, frasa pengisi dibuang, kunci PPh 23 dikoreksi ke tanggal 15). Audit sekarang rata-rata 5 pembagian lipat: Inggris 0,298, Indonesia 0,321, keduanya masih di atas batas acak. Sisa petunjuk ada di seluruh bank dan menunggu analisis butir dari pilot (AI-10) |
+| Regresi klaster frontend | Selesai | `CLUSTER_ORDER` memuat 20 klaster, dijaga tes |
+| AI-01, AI-02, AI-04 (validasi manusia, LLM) | Menunggu orang dan Kaggle | Alat dan lembar siap di `docs/validasi/` |
+| AI-03 taksonomi BA | Selesai | BA lolos 3 dari 3 (cakupan 0,9739, kandidat 0,035), begitu juga DevOps dan Tax. Frasa di luar cakupan dikeluarkan dari penyebut dan dicantumkan di laporan |
+| AI-04 penjaga normalisasi | Selesai (kode), menunggu label | Kata generik tidak lagi dihitung, ambang dukungan leksikal 0,35. Pasangan lowongan-skill dari embedding saja turun dari 6,1% ke 4,7% (BA 9,7% ke 7,7%). Ambang dikalibrasi ulang setelah label V4 |
+| AI-05 kesiapan terbukti | Selesai (backend) | `p_proven`, `evidence_kinds`, `coverage_proven` di API dashboard; nilai kuliah tidak pernah dihitung sebagai terbukti. Frontend belum memakainya |
+| AI-06 ranker | Selesai | Model aktif: Formula (5). Model dari pakar simulasi tidak pernah aktif |
+| AI-07 graf pakar | Menunggu pakar | Lembar V2 siap |
+| AI-08 data | Ditahan | Scraping tambahan ditunda sampai keputusan sumber data (lihat `docs/ops/DATA_SOURCES.md`) |
+| AI-09 tren | Selesai | API menjelaskan kenapa tren belum ada (jumlah lowongan per periode), dalam dua bahasa |
+| AI-10 kalibrasi asesmen | Menunggu pilot | Alat siap |
+| AI-11 soal Indonesia | Selesai (A7 Jonathan) | Bank soal Indonesia dipakai otomatis saat permintaan berbahasa Indonesia |
+| AI-12 soal BA | Ditinjau, tidak diubah | 27 dari 30 soal menguji notasi atau metode; 3 soal situasional berbasis teknik BABOK |
+| Ekstraksi bisnis (baru) | Diukur | Set buta 18 lowongan bisnis: presisi 0,783, recall 0,72, satu anotator, tidak dipakai menyetel |
+| BE-01 CI GitHub | Tidak bisa dicek dari sini | `gh` tidak terpasang dan repo privat; cek tab Actions |
+| BE-02 deploy publik | Belum | Butuh VPS dan kredensial |
+| BE-03 sumber data | Selesai (dokumen), menunggu keputusan | `docs/ops/DATA_SOURCES.md`: syarat layanan Kalibrr melarang penyalinan tanpa izin tertulis; Karirhub tanpa syarat layanan yang bisa ditemukan. `PATHSYNC_EXCLUDED_SOURCES` untuk mengeluarkan sumber; kontak perekrut disamarkan saat dimuat |
+| BE-05 latensi | Diukur | Satu permintaan: transkrip 12 kueri, dashboard 6 kueri. Beban 200 siswa, 40 konkuren, 1 worker SQLite: 0 galat, p95 transkrip sekitar 1 detik karena antrean penulis tunggal, bukan CPU. Ukur ulang di PostgreSQL dengan beberapa worker |
+| BE-07 workflow bulanan | Selesai | Tidak lagi meng-commit berkas mentah; snapshot disimpan sebagai artifact 90 hari |
+| BE-08 metrik pilot | Selesai | Event `pilot_survey` tervalidasi, target pilot di Admin > Launch Metrics |
+| BE-12 bahasa per permintaan | Selesai | `?lang=` atau `Accept-Language`, katalog pesan dua bahasa untuk semua kalimat mesin, header `Content-Language`, tes paritas |
+
 ## 0. Prinsip kerja Data/AI
 
 Prinsip ini berlaku untuk semua tugas di bawah dan bisa dibantah hanya dengan alasan tertulis.
@@ -251,7 +280,7 @@ Tinjauan akhir sebelum beku: `pip-audit` dan `npm audit` (sudah di CI), pemeriks
 |---|---|---|
 | `pytest` (114 tes) | domain, API, migrasi, retensi, observabilitas, soft skill, BPS | harus hijau |
 | `test_extractor_meets_precision_target_on_blind_gold` | presisi dan recall ≥ 0,80 di set uji | diarahkan ke gold konsensus (AI-01) |
-| `test_item_bank.py` | akurasi pola jawaban ≤ batas | turun ke 0,30 untuk bank saat ini (0,328) |
+| `test_item_bank.py` | akurasi pola jawaban ≤ batas | rata-rata 5 pembagian saat ini 0,298 (Inggris) dan 0,321 (Indonesia); batas tes 0,35 |
 | `test_paper_fidelity.py` | persamaan paper dan Tabel 4 | harus tetap hijau saat AI-05 |
 | Playwright (BE-06) | alur demo di dua bahasa | CI |
 | `deploy/loadtest.py` | 200 siswa, 40 konkuren | 0 galat |

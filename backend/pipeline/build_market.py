@@ -16,11 +16,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sqlalchemy import delete
 
-from pathsync.config import PROCESSED_DIR, RAW_DIR, ROLES
+from pathsync.config import EXCLUDED_SOURCES, PROCESSED_DIR, RAW_DIR, ROLES
 from pathsync.db import Posting, PostingMention, get_session, init_db
 from pathsync.extraction import cache_tag, extract_skills
 from pathsync.market import build_snapshot, provenance
 from pathsync.roles import classify_role
+from pathsync.text import redact_contacts
 
 DUP_THRESHOLD = 0.90
 EXTRACTION_CACHE = PROCESSED_DIR / "extraction_cache.json"
@@ -34,6 +35,9 @@ def load_raw() -> list[dict]:
             if not line.strip():
                 continue
             r = json.loads(line)
+            if r.get("source") in EXCLUDED_SOURCES:
+                continue
+            r["description_text"] = redact_contacts(r.get("description_text", ""))
             r["role"] = classify_role(r.get("title", ""))  # re-apply the current role catalogue to old files too
             key = f"{r['source']}:{r['source_id']}"
             first_seen = r.get("fetched_at", "")[:10]

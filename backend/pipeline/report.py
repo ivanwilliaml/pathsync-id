@@ -27,7 +27,8 @@ from pathsync.db import Annotation, Expert, GraphEdge, Posting, RankerModel, act
 
 OUT = MODELS_DIR / "metrics.json"
 CRLF, LF = bytes([13, 10]), bytes([10])     # hashes ignore line endings (Windows checkouts vs CI)
-GOLD_FILES = ("gold_pilot.json", "gold_heldout.json", "gold_blind.json", "gold_split.json",
+GOLD_FILES = ("gold_pilot.json", "gold_heldout.json", "gold_blind.json", "gold_blind_bisnis.json", "gold_split.json",
+              "gold_split_bisnis.json",
               "gold_consensus.json", "gold_adjudication.json", "normalisation_gold.json")
 
 
@@ -45,7 +46,8 @@ def _extraction() -> dict:
     sets = {k: {"n_postings": v["n_postings"], **{m: v["overall"][m] for m in
                 ("precision", "precision_ci95", "recall", "recall_ci95", "f1") if m in v["overall"]},
                 "f1_ci95": v["overall"].get("f1_ci95"), "gold_sha": v.get("gold_sha"),
-                "tuned_on": k == "dev"}
+                # dev and held-out were both used to tune aliases (held-out after its first measurement, 12 Oct)
+                "tuned_on": k in ("dev", "heldout")}
             for k, v in ev.items() if k != "provenance"}
     from pathsync.gold import CONSENSUS_FILE
     if CONSENSUS_FILE.exists():                     # plan A2: every extractor on the two-annotator test half
@@ -61,7 +63,8 @@ def _extraction() -> dict:
             "annotators": 1, "target_precision": 0.80,
             "target_met": {"point_estimate": blind.get("precision", 0) >= 0.80,
                            "lower_ci_bound": lo is not None and lo >= 0.80},
-            "note": "dev was used to tune aliases and must not be quoted as performance; blind is the reportable set"}
+            "note": "dev and heldout were used to tune aliases and must not be quoted as performance; blind (14 original roles) "
+                    "and blind_bisnis (6 business roles, never tuned on) are the reportable sets; all single-annotator"}
 
 
 def _items() -> dict:
@@ -69,7 +72,8 @@ def _items() -> dict:
         a = _load(name)
         c = a.get("classifier", {})
         return {"generated": a.get("generated"), "n_items": a.get("n_items"), "language": a.get("language"),
-                "answer_pattern_accuracy": c.get("accuracy"), "chance": c.get("chance"), "random_p95": c.get("null_p95")}
+                "answer_pattern_accuracy": c.get("accuracy"), "accuracy_sd": c.get("accuracy_sd"),
+                "seeds": c.get("seeds"), "chance": c.get("chance"), "random_p95": c.get("null_p95")}
 
     en, idn = one("item_cue_audit.json"), one("item_cue_audit_id.json")
     return {**en, "indonesian": idn,
