@@ -17,7 +17,7 @@ Semua angka di bawah ada di `backend/data/models/metrics.json` (`python -m pipel
 | Regresi klaster frontend | Selesai | `CLUSTER_ORDER` memuat 20 klaster, dijaga tes |
 | AI-01 gold ekstraksi | Selesai (dengan catatan) | 130 lowongan: pra-anotasi LLM dua putaran, diverifikasi satu anggota tim (Ivan). Bukan dua anotator independen, jadi kesepakatan antar-lembar tidak dilaporkan sebagai kappa antar-manusia. Label yang berbeda antar-lembar dikeluarkan. Paruh uji: presisi 0,792 [0,7478-0,8294], recall 0,817; target 0,80 belum tercapai di titik tengah. Paruh dev dipakai menyetel |
 | AI-02 LLM vs lexicon | Menunggu Kaggle | Ekspor siap |
-| AI-03 taksonomi BA | Selesai | BA lolos 3 dari 3 (cakupan 0,9739, kandidat 0,035), begitu juga DevOps dan Tax. Frasa di luar cakupan dikeluarkan dari penyebut dan dicantumkan di laporan |
+| AI-03 taksonomi BA | Selesai | BA lolos 3 dari 3 (cakupan 0,957, kandidat 0,031), begitu juga DevOps dan Tax. Frasa di luar cakupan dikeluarkan dari penyebut dan dicantumkan di laporan |
 | AI-04 normalisasi | Selesai | Label 274 frasa (pra-anotasi LLM, diverifikasi Ivan). Pada ambang 0,85 pemetaan otomatis hanya benar 0,4237; tidak ada ambang yang mencapai 0,95. Sesuai aturan yang ditulis sebelumnya, pemetaan embedding otomatis dimatikan (`PATHSYNC_EMBEDDING_AUTO=0`): frasa bebas masuk antrean tinjauan dan tidak dihitung di peta pasar |
 | AI-05 kesiapan terbukti | Selesai (backend) | `p_proven`, `evidence_kinds`, `coverage_proven` di API dashboard; nilai kuliah tidak pernah dihitung sebagai terbukti. Frontend belum memakainya |
 | AI-06 ranker | Selesai | Model aktif: Formula (5). Model dari pakar simulasi tidak pernah aktif |
