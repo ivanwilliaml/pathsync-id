@@ -30,6 +30,7 @@ from pathsync.db import (
     GraphEdge,
     Posting,
     RankerModel,
+    ScenarioRanking,
     active_snapshot,
     get_session,
     init_db,
@@ -101,7 +102,9 @@ def _ranker(s) -> dict:
     for name, c in (rep.get("conditions") or {}).items():
         methods = ((c.get("cv") or {}).get("methods") or {})
         conds[name] = {m: (v.get("ndcg5") or {}) for m, v in methods.items()}
-    real = s.scalar(select(func.count(Expert.id)).where(Expert.kind.not_in(NON_EXPERT_KINDS))) or 0
+    # the ranker is judged on scenario rankings, so only experts who ranked scenarios count here (graph reviewers do not)
+    real = s.scalar(select(func.count(func.distinct(ScenarioRanking.expert_id))).join(Expert, Expert.id == ScenarioRanking.expert_id)
+                    .where(ScenarioRanking.simulated.is_(False), Expert.kind.not_in(NON_EXPERT_KINDS))) or 0
     return {"generated": rep.get("generated_at"), "role": rep.get("role"), "n_scenarios": rep.get("n_scenarios"),
             "experts": "real" if real >= 3 else "simulated", "real_experts": real,
             "active_model": active.name if active else "Formula (5)",
@@ -168,13 +171,22 @@ def build() -> dict:
             "constants": {"sim_auto": SIM_AUTO, "sim_review": SIM_REVIEW,
                           "bkt": {"slip": BKT_SLIP, "guess": BKT_GUESS, "transit": BKT_TRANSIT}},
             "extraction": _extraction(), "assessment_items": _items(), "ranker": _ranker(s),
-            "market": _market(s), "validation": _validation(s), "taxonomy_final": _taxonomy_final(s),
+            "market": _market(s), "validation": _validation(s), "pilot": _pilot(), "taxonomy_final": _taxonomy_final(s),
             "evidence_weights": _evidence_weights(s), "normalisation": _load("normalisation_eval.json") or None,
             "item_calibration": {k: v for k, v in _load("item_calibration.json").items()
                                  if k in ("generated_at", "n_answers", "n_items_calibrated", "active",
                                           "author_vs_empirical_spearman")} or None,
             "performance": _load("loadtest.json") or None,
         }
+
+
+def _pilot() -> dict | None:
+    p = MODELS_DIR / "pilot_eval.json"
+    if not p.exists():
+        return None
+    d = json.loads(p.read_text(encoding="utf-8"))
+    return {k: d[k] for k in ("n", "provenance", "session_dates", "tasks", "times", "ratings_pathsync_vs_generic", "sus",
+                              "meets", "note")}
 
 
 def main() -> None:

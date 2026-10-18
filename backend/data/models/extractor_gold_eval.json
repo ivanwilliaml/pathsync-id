@@ -9,23 +9,23 @@
   "n_postings": 24,
   "skipped_no_llm_result": [],
   "overall": {
-   "precision": 0.899,
+   "precision": 0.916,
    "recall": 0.893,
-   "f1": 0.896,
+   "f1": 0.904,
    "precision_ci95": [
-    0.8418,
-    0.9367
+    0.8618,
+    0.9503
    ],
    "recall_ci95": [
     0.8354,
     0.9322
    ],
    "tp": 142,
-   "fp": 16,
+   "fp": 13,
    "fn": 17,
    "f1_ci95": [
-    0.853,
-    0.934
+    0.863,
+    0.939
    ]
   },
   "per_role": {
@@ -94,19 +94,19 @@
     "fn": 1
    },
    "data_analyst": {
-    "precision": 0.818,
+    "precision": 0.871,
     "recall": 1.0,
-    "f1": 0.9,
+    "f1": 0.931,
     "precision_ci95": [
-     0.6561,
-     0.9139
+     0.7115,
+     0.9487
     ],
     "recall_ci95": [
      0.8754,
      1.0
     ],
     "tp": 27,
-    "fp": 6,
+    "fp": 4,
     "fn": 0
    },
    "data_engineer": {
@@ -142,19 +142,19 @@
     "fn": 1
    },
    "devops_engineer": {
-    "precision": 0.917,
+    "precision": 0.957,
     "recall": 0.957,
-    "f1": 0.936,
+    "f1": 0.957,
     "precision_ci95": [
-     0.7415,
-     0.9768
+     0.7901,
+     0.9923
     ],
     "recall_ci95": [
      0.7901,
      0.9923
     ],
     "tp": 22,
-    "fp": 2,
+    "fp": 1,
     "fn": 1
    }
   },
@@ -309,14 +309,14 @@
     "f1": 0.0,
     "precision_ci95": [
      0.0,
-     0.5615
+     0.7935
     ],
     "recall_ci95": [
      0.0,
      1.0
     ],
     "tp": 0,
-    "fp": 3,
+    "fp": 1,
     "fn": 0
    },
    "mobile": {
@@ -368,19 +368,19 @@
     "fn": 1
    },
    "web_frontend": {
-    "precision": 0.75,
+    "precision": 1.0,
     "recall": 1.0,
-    "f1": 0.857,
+    "f1": 1.0,
     "precision_ci95": [
-     0.3006,
-     0.9544
+     0.4385,
+     1.0
     ],
     "recall_ci95": [
      0.4385,
      1.0
     ],
     "tp": 3,
-    "fp": 1,
+    "fp": 0,
     "fn": 0
    }
   },
@@ -410,10 +410,6 @@
     1
    ],
    [
-    "incident_response_forensics",
-    1
-   ],
-   [
     "requirements_elicitation",
     1
    ],
@@ -422,7 +418,7 @@
     1
    ],
    [
-    "conversion_optimization",
+    "incident_response_forensics",
     1
    ],
    [
@@ -430,7 +426,11 @@
     1
    ],
    [
-    "email_marketing_automation",
+    "marketplace_ecommerce",
+    1
+   ],
+   [
+    "cloud_security",
     1
    ]
   ],
@@ -464,11 +464,11 @@
     1
    ],
    [
-    "requirements_documentation",
+    "wireframing",
     1
    ],
    [
-    "wireframing",
+    "requirements_documentation",
     1
    ],
    [
@@ -1014,11 +1014,11 @@
     1
    ],
    [
-    "etl_pipelines",
+    "data_warehousing",
     1
    ],
    [
-    "data_warehousing",
+    "etl_pipelines",
     1
    ],
    [
@@ -1538,11 +1538,11 @@
     1
    ],
    [
-    "java_spring",
+    "git_version_control",
     1
    ],
    [
-    "git_version_control",
+    "java_spring",
     1
    ],
    [
@@ -1550,11 +1550,11 @@
     1
    ],
    [
-    "deep_learning",
+    "information_architecture",
     1
    ],
    [
-    "information_architecture",
+    "deep_learning",
     1
    ]
   ],
@@ -1928,11 +1928,11 @@
     1
    ],
    [
-    "budgeting_forecasting",
+    "audit_internal_control",
     1
    ],
    [
-    "audit_internal_control",
+    "budgeting_forecasting",
     1
    ],
    [
@@ -1958,11 +1958,11 @@
     2
    ],
    [
-    "financial_analysis",
+    "credit_analysis",
     1
    ],
    [
-    "credit_analysis",
+    "financial_analysis",
     1
    ],
    [
@@ -1970,11 +1970,11 @@
     1
    ],
    [
-    "labor_law_id",
+    "recruitment_selection",
     1
    ],
    [
-    "recruitment_selection",
+    "labor_law_id",
     1
    ],
    [
@@ -2005,56 +2005,56 @@
   "n_postings": 65,
   "skipped_no_llm_result": [],
   "overall": {
-   "precision": 0.796,
+   "precision": 0.848,
    "recall": 0.807,
-   "f1": 0.801,
+   "f1": 0.827,
    "precision_ci95": [
-    0.7537,
-    0.8319
+    0.8082,
+    0.8804
    ],
    "recall_ci95": [
     0.766,
     0.8431
    ],
    "tp": 323,
-   "fp": 83,
+   "fp": 58,
    "fn": 77,
    "f1_ci95": [
-    0.771,
-    0.831
+    0.798,
+    0.856
    ]
   },
   "per_role": {
    "accountant": {
-    "precision": 0.778,
+    "precision": 0.824,
     "recall": 0.778,
-    "f1": 0.778,
+    "f1": 0.8,
     "precision_ci95": [
-     0.5478,
-     0.91
+     0.5897,
+     0.9381
     ],
     "recall_ci95": [
      0.5478,
      0.91
     ],
     "tp": 14,
-    "fp": 4,
+    "fp": 3,
     "fn": 4
    },
    "backend_developer": {
-    "precision": 0.795,
+    "precision": 0.897,
     "recall": 0.745,
-    "f1": 0.769,
+    "f1": 0.814,
     "precision_ci95": [
-     0.655,
-     0.8885
+     0.7642,
+     0.9594
     ],
     "recall_ci95": [
      0.6049,
      0.8475
     ],
     "tp": 35,
-    "fp": 9,
+    "fp": 4,
     "fn": 12
    },
    "business_analyst": {
@@ -2074,67 +2074,67 @@
     "fn": 4
    },
    "cybersecurity_analyst": {
-    "precision": 0.6,
+    "precision": 0.667,
     "recall": 0.462,
-    "f1": 0.522,
+    "f1": 0.545,
     "precision_ci95": [
-     0.3127,
-     0.8318
+     0.3542,
+     0.8794
     ],
     "recall_ci95": [
      0.2321,
      0.7086
     ],
     "tp": 6,
-    "fp": 4,
+    "fp": 3,
     "fn": 7
    },
    "data_analyst": {
-    "precision": 0.667,
+    "precision": 0.786,
     "recall": 0.733,
-    "f1": 0.698,
+    "f1": 0.759,
     "precision_ci95": [
-     0.4961,
-     0.8025
+     0.6046,
+     0.8979
     ],
     "recall_ci95": [
      0.5555,
      0.8582
     ],
     "tp": 22,
-    "fp": 11,
+    "fp": 6,
     "fn": 8
    },
    "data_engineer": {
-    "precision": 0.769,
+    "precision": 0.833,
     "recall": 0.833,
-    "f1": 0.8,
+    "f1": 0.833,
     "precision_ci95": [
-     0.4974,
-     0.9182
+     0.552,
+     0.953
     ],
     "recall_ci95": [
      0.552,
      0.953
     ],
     "tp": 10,
-    "fp": 3,
+    "fp": 2,
     "fn": 2
    },
    "data_scientist": {
-    "precision": 0.667,
+    "precision": 0.741,
     "recall": 0.909,
-    "f1": 0.769,
+    "f1": 0.816,
     "precision_ci95": [
-     0.4878,
-     0.8077
+     0.5532,
+     0.8683
     ],
     "recall_ci95": [
      0.7218,
      0.9747
     ],
     "tp": 20,
-    "fp": 10,
+    "fp": 7,
     "fn": 2
    },
    "devops_engineer": {
@@ -2170,51 +2170,51 @@
     "fn": 4
    },
    "financial_analyst": {
-    "precision": 0.875,
+    "precision": 0.933,
     "recall": 0.7,
-    "f1": 0.778,
+    "f1": 0.8,
     "precision_ci95": [
-     0.6398,
-     0.965
+     0.7018,
+     0.9881
     ],
     "recall_ci95": [
      0.481,
      0.8545
     ],
     "tp": 14,
-    "fp": 2,
+    "fp": 1,
     "fn": 6
    },
    "frontend_developer": {
-    "precision": 0.895,
+    "precision": 0.944,
     "recall": 0.85,
-    "f1": 0.872,
+    "f1": 0.895,
     "precision_ci95": [
-     0.6861,
-     0.9706
+     0.7424,
+     0.9901
     ],
     "recall_ci95": [
      0.6396,
      0.9476
     ],
     "tp": 17,
-    "fp": 2,
+    "fp": 1,
     "fn": 3
    },
    "fullstack_developer": {
-    "precision": 0.889,
+    "precision": 0.966,
     "recall": 0.889,
-    "f1": 0.889,
+    "f1": 0.926,
     "precision_ci95": [
-     0.788,
-     0.9451
+     0.8827,
+     0.9905
     ],
     "recall_ci95": [
      0.788,
      0.9451
     ],
     "tp": 56,
-    "fp": 7,
+    "fp": 2,
     "fn": 7
    },
    "hr_specialist": {
@@ -2266,19 +2266,19 @@
     "fn": 1
    },
    "project_coordinator": {
-    "precision": 0.667,
+    "precision": 1.0,
     "recall": 0.5,
-    "f1": 0.571,
+    "f1": 0.667,
     "precision_ci95": [
-     0.2077,
-     0.9385
+     0.3424,
+     1.0
     ],
     "recall_ci95": [
      0.15,
      0.85
     ],
     "tp": 2,
-    "fp": 1,
+    "fp": 0,
     "fn": 2
    },
    "qa_engineer": {
@@ -2330,19 +2330,19 @@
     "fn": 2
    },
    "ui_ux_designer": {
-    "precision": 0.706,
+    "precision": 0.75,
     "recall": 0.857,
-    "f1": 0.774,
+    "f1": 0.8,
     "precision_ci95": [
-     0.4687,
-     0.8672
+     0.505,
+     0.8982
     ],
     "recall_ci95": [
      0.6006,
      0.9599
     ],
     "tp": 12,
-    "fp": 5,
+    "fp": 4,
     "fn": 2
    }
   },
@@ -2364,19 +2364,19 @@
     "fn": 4
    },
    "backend": {
-    "precision": 0.812,
+    "precision": 0.833,
     "recall": 0.783,
-    "f1": 0.798,
+    "f1": 0.807,
     "precision_ci95": [
-     0.7134,
-     0.8829
+     0.7354,
+     0.8999
     ],
     "recall_ci95": [
      0.683,
      0.8582
     ],
     "tp": 65,
-    "fp": 15,
+    "fp": 13,
     "fn": 18
    },
    "bi_tools": {
@@ -2428,19 +2428,19 @@
     "fn": 2
    },
    "data_analytics": {
-    "precision": 0.782,
+    "precision": 0.811,
     "recall": 0.741,
-    "f1": 0.761,
+    "f1": 0.775,
     "precision_ci95": [
-     0.6563,
-     0.8705
+     0.6864,
+     0.8941
     ],
     "recall_ci95": [
      0.6162,
      0.8365
     ],
     "tp": 43,
-    "fp": 12,
+    "fp": 10,
     "fn": 15
    },
    "data_eng": {
@@ -2476,115 +2476,115 @@
     "fn": 0
    },
    "design": {
-    "precision": 0.643,
+    "precision": 0.75,
     "recall": 0.818,
-    "f1": 0.72,
+    "f1": 0.783,
     "precision_ci95": [
-     0.3876,
-     0.8366
+     0.4677,
+     0.9111
     ],
     "recall_ci95": [
      0.523,
      0.9486
     ],
     "tp": 9,
-    "fp": 5,
+    "fp": 3,
     "fn": 2
    },
    "devops": {
-    "precision": 0.872,
+    "precision": 0.944,
     "recall": 0.919,
-    "f1": 0.895,
+    "f1": 0.932,
     "precision_ci95": [
-     0.7329,
-     0.944
+     0.8186,
+     0.9846
     ],
     "recall_ci95": [
      0.787,
      0.972
     ],
     "tp": 34,
-    "fp": 5,
+    "fp": 2,
     "fn": 3
    },
    "finance": {
-    "precision": 0.818,
+    "precision": 0.857,
     "recall": 0.766,
-    "f1": 0.791,
+    "f1": 0.809,
     "precision_ci95": [
-     0.6804,
-     0.9049
+     0.7216,
+     0.9328
     ],
     "recall_ci95": [
      0.6278,
      0.864
     ],
     "tp": 36,
-    "fp": 8,
+    "fp": 6,
     "fn": 11
    },
    "hr": {
-    "precision": 0.4,
+    "precision": 0.5,
     "recall": 0.5,
-    "f1": 0.444,
+    "f1": 0.5,
     "precision_ci95": [
-     0.1176,
-     0.7693
+     0.15,
+     0.85
     ],
     "recall_ci95": [
      0.15,
      0.85
     ],
     "tp": 2,
-    "fp": 3,
+    "fp": 2,
     "fn": 2
    },
    "marketing": {
-    "precision": 0.652,
+    "precision": 0.938,
     "recall": 0.882,
-    "f1": 0.75,
+    "f1": 0.909,
     "precision_ci95": [
-     0.4489,
-     0.8119
+     0.7167,
+     0.9889
     ],
     "recall_ci95": [
      0.6566,
      0.9671
     ],
     "tp": 15,
-    "fp": 8,
+    "fp": 1,
     "fn": 2
    },
    "mobile": {
-    "precision": 0.917,
+    "precision": 1.0,
     "recall": 1.0,
-    "f1": 0.957,
+    "f1": 1.0,
     "precision_ci95": [
-     0.6461,
-     0.9851
+     0.7412,
+     1.0
     ],
     "recall_ci95": [
      0.7412,
      1.0
     ],
     "tp": 11,
-    "fp": 1,
+    "fp": 0,
     "fn": 0
    },
    "product_project": {
-    "precision": 0.667,
+    "precision": 1.0,
     "recall": 0.667,
-    "f1": 0.667,
+    "f1": 0.8,
     "precision_ci95": [
-     0.2077,
-     0.9385
+     0.3424,
+     1.0
     ],
     "recall_ci95": [
      0.2077,
      0.9385
     ],
     "tp": 2,
-    "fp": 1,
+    "fp": 0,
     "fn": 1
    },
    "security": {
@@ -2604,19 +2604,19 @@
     "fn": 6
    },
    "supply_chain": {
-    "precision": 0.625,
+    "precision": 0.714,
     "recall": 0.714,
-    "f1": 0.667,
+    "f1": 0.714,
     "precision_ci95": [
-     0.3057,
-     0.8632
+     0.3589,
+     0.9178
     ],
     "recall_ci95": [
      0.3589,
      0.9178
     ],
     "tp": 5,
-    "fp": 3,
+    "fp": 2,
     "fn": 2
    },
    "tax": {
@@ -2652,19 +2652,19 @@
     "fn": 2
    },
    "web_frontend": {
-    "precision": 0.821,
+    "precision": 0.92,
     "recall": 0.92,
-    "f1": 0.868,
+    "f1": 0.92,
     "precision_ci95": [
-     0.6441,
-     0.9212
+     0.7503,
+     0.9778
     ],
     "recall_ci95": [
      0.7503,
      0.9778
     ],
     "tp": 23,
-    "fp": 5,
+    "fp": 2,
     "fn": 2
    }
   },
@@ -2680,18 +2680,6 @@
    [
     "workflow_orchestration",
     3
-   ],
-   [
-    "marketplace_ecommerce",
-    3
-   ],
-   [
-    "email_marketing_automation",
-    3
-   ],
-   [
-    "statistics",
-    2
    ],
    [
     "financial_analysis",
@@ -2710,11 +2698,23 @@
     2
    ],
    [
-    "networking_fundamentals",
+    "dashboard_reporting",
     2
    ],
    [
-    "dashboard_reporting",
+    "deep_learning",
+    2
+   ],
+   [
+    "accounting_software",
+    2
+   ],
+   [
+    "python_programming",
+    2
+   ],
+   [
+    "api_integration",
     2
    ]
   ],
@@ -2779,23 +2779,23 @@
   "n_postings": 65,
   "skipped_no_llm_result": [],
   "overall": {
-   "precision": 0.792,
+   "precision": 0.796,
    "recall": 0.817,
-   "f1": 0.804,
+   "f1": 0.806,
    "precision_ci95": [
-    0.7478,
-    0.8294
+    0.7522,
+    0.8334
    ],
    "recall_ci95": [
     0.7747,
     0.8536
    ],
    "tp": 300,
-   "fp": 79,
+   "fp": 77,
    "fn": 67,
    "f1_ci95": [
-    0.764,
-    0.84
+    0.766,
+    0.843
    ]
   },
   "per_role": {
@@ -2848,19 +2848,19 @@
     "fn": 6
    },
    "cybersecurity_analyst": {
-    "precision": 0.857,
+    "precision": 1.0,
     "recall": 0.667,
-    "f1": 0.75,
+    "f1": 0.8,
     "precision_ci95": [
-     0.4869,
-     0.9743
+     0.6097,
+     1.0
     ],
     "recall_ci95": [
      0.3542,
      0.8794
     ],
     "tp": 6,
-    "fp": 1,
+    "fp": 0,
     "fn": 3
    },
    "data_analyst": {
@@ -3040,19 +3040,19 @@
     "fn": 1
    },
    "project_coordinator": {
-    "precision": 0.636,
+    "precision": 0.7,
     "recall": 0.778,
-    "f1": 0.7,
+    "f1": 0.737,
     "precision_ci95": [
-     0.3538,
-     0.8483
+     0.3968,
+     0.8922
     ],
     "recall_ci95": [
      0.4526,
      0.9368
     ],
     "tp": 7,
-    "fp": 4,
+    "fp": 3,
     "fn": 2
    },
    "qa_engineer": {
@@ -3282,19 +3282,19 @@
     "fn": 3
    },
    "finance": {
-    "precision": 0.684,
+    "precision": 0.703,
     "recall": 0.703,
-    "f1": 0.693,
+    "f1": 0.703,
     "precision_ci95": [
-     0.5254,
-     0.8092
+     0.5422,
+     0.8251
     ],
     "recall_ci95": [
      0.5422,
      0.8251
     ],
     "tp": 26,
-    "fp": 12,
+    "fp": 11,
     "fn": 11
    },
    "hr": {
@@ -3314,19 +3314,19 @@
     "fn": 1
    },
    "marketing": {
-    "precision": 0.842,
+    "precision": 0.889,
     "recall": 0.889,
-    "f1": 0.865,
+    "f1": 0.889,
     "precision_ci95": [
-     0.6243,
-     0.9448
+     0.672,
+     0.969
     ],
     "recall_ci95": [
      0.672,
      0.969
     ],
     "tp": 16,
-    "fp": 3,
+    "fp": 2,
     "fn": 2
    },
    "mobile": {
@@ -3510,15 +3510,15 @@
     3
    ],
    [
-    "data_structures_algorithms",
-    3
-   ],
-   [
     "python_analytics",
     3
    ],
    [
     "data_analysis",
+    3
+   ],
+   [
+    "data_structures_algorithms",
     3
    ],
    [
@@ -3544,7 +3544,7 @@
   ]
  },
  "provenance": {
-  "taxonomy_sha": "97b396bb278d",
+  "taxonomy_sha": "1326d0eec1db",
   "extractor": "lexicon"
  }
 }

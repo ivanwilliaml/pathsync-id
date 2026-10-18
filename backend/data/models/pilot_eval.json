@@ -1,0 +1,131 @@
+{
+ "generated": "2026-10-18T19:57:20",
+ "provenance": "Responses collected by the team in Google Sheets and entered into the V3 template; raw export not in the repository. Session dates as recorded in the sheet.",
+ "n": 20,
+ "session_dates": [
+  "2026-10-13",
+  "2026-10-14",
+  "2026-10-15",
+  "2026-10-16",
+  "2026-10-17"
+ ],
+ "programmes": {
+  "Sistem Informasi": 9,
+  "Teknik Industri": 3,
+  "Manajemen": 4,
+  "Informatika": 4
+ },
+ "order": {
+  "Saran umum dulu": 10,
+  "PathSync dulu": 10
+ },
+ "tasks": {
+  "T1_understands_purpose": {
+   "yes": 19,
+   "n": 20,
+   "share": 0.95
+  },
+  "T2_reaches_first_step": {
+   "yes": 18,
+   "n": 20,
+   "share": 0.9
+  },
+  "T3_finishes_quick_check": {
+   "yes": 16,
+   "n": 20,
+   "share": 0.8
+  },
+  "T4_finds_strong_and_urgent": {
+   "yes": 18,
+   "n": 20,
+   "share": 0.9
+  },
+  "T5a_explains_bottleneck": {
+   "yes": 15,
+   "n": 20,
+   "share": 0.75
+  },
+  "T5b_explains_prove_it": {
+   "yes": 12,
+   "n": 20,
+   "share": 0.6
+  },
+  "T5_both_terms": {
+   "yes": 11,
+   "n": 20,
+   "share": 0.55
+  }
+ },
+ "times": {
+  "T2_minutes_median_all": 3.9,
+  "T2_minutes_median_successful": 3.9,
+  "T3_minutes_median_finished": 7.15,
+  "T4_seconds_median": 21.5
+ },
+ "ratings_pathsync_vs_generic": {
+  "Q1": {
+   "n": 20,
+   "generic_mean": 3.15,
+   "pathsync_mean": 3.75,
+   "mean_diff": 0.6,
+   "pathsync_higher": 9,
+   "equal": 9,
+   "generic_higher": 2,
+   "wilcoxon_W": 8.0,
+   "p": 0.0219,
+   "rank_biserial": 0.909
+  },
+  "Q2": {
+   "n": 20,
+   "generic_mean": 2.45,
+   "pathsync_mean": 3.6,
+   "mean_diff": 1.15,
+   "pathsync_higher": 14,
+   "equal": 4,
+   "generic_higher": 2,
+   "wilcoxon_W": 7.0,
+   "p": 0.0012,
+   "rank_biserial": 0.868
+  },
+  "Q3": {
+   "n": 20,
+   "generic_mean": 3,
+   "pathsync_mean": 3.75,
+   "mean_diff": 0.75,
+   "pathsync_higher": 12,
+   "equal": 5,
+   "generic_higher": 3,
+   "wilcoxon_W": 15.0,
+   "p": 0.0083,
+   "rank_biserial": 0.683
+  }
+ },
+ "sus": {
+  "n": 20,
+  "mean": 71.1,
+  "median": 72.5,
+  "min": 52.5,
+  "max": 87.5
+ },
+ "targets": {
+  "T1": 0.8,
+  "T2": 0.8,
+  "T3": 0.6,
+  "T4": 0.8,
+  "T5": 0.8,
+  "median_T2_minutes": 5.0,
+  "Q1_pathsync_mean": 4.0,
+  "SUS_mean": 70.0
+ },
+ "note": "Usability pilot with one session per student; questions answered right after use. Not evidence of learning or job outcomes. Ratings compare PathSync with a fixed generic advice page in counterbalanced order.",
+ "meets": {
+  "T1": true,
+  "T2": true,
+  "T3": true,
+  "T4": true,
+  "T5": false,
+  "median_T2_minutes": true,
+  "Q1_pathsync_mean": false,
+  "SUS_mean": true
+ }
+}

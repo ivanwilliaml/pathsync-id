@@ -4,47 +4,47 @@
  "curve": [
   {
    "threshold": 0.6,
-   "auto": 104,
-   "precision": 0.3365,
+   "auto": 106,
+   "precision": 0.3302,
    "precision_ci95": [
-    0.253,
-    0.4317
+    0.248,
+    0.4243
    ],
    "coverage": 0.2431,
-   "non_skill_kept_out": 0.6923
+   "non_skill_kept_out": 0.6769
   },
   {
    "threshold": 0.65,
-   "auto": 100,
-   "precision": 0.34,
+   "auto": 103,
+   "precision": 0.3301,
    "precision_ci95": [
-    0.2546,
-    0.4372
+    0.2468,
+    0.4256
    ],
    "coverage": 0.2361,
-   "non_skill_kept_out": 0.7
+   "non_skill_kept_out": 0.6846
   },
   {
    "threshold": 0.7,
-   "auto": 90,
-   "precision": 0.3556,
+   "auto": 92,
+   "precision": 0.3478,
    "precision_ci95": [
-    0.2644,
-    0.4585
+    0.2584,
+    0.4495
    ],
    "coverage": 0.2222,
-   "non_skill_kept_out": 0.7538
+   "non_skill_kept_out": 0.7385
   },
   {
    "threshold": 0.75,
-   "auto": 79,
-   "precision": 0.3671,
+   "auto": 81,
+   "precision": 0.358,
    "precision_ci95": [
-    0.2693,
-    0.4772
+    0.2622,
+    0.4667
    ],
    "coverage": 0.2014,
-   "non_skill_kept_out": 0.8
+   "non_skill_kept_out": 0.7846
   },
   {
    "threshold": 0.8,
@@ -59,13 +59,13 @@
   },
   {
    "threshold": 0.85,
-   "auto": 59,
-   "precision": 0.4237,
+   "auto": 60,
+   "precision": 0.4333,
    "precision_ci95": [
-    0.3061,
-    0.5507
+    0.3157,
+    0.559
    ],
-   "coverage": 0.1736,
+   "coverage": 0.1806,
    "non_skill_kept_out": 0.8538
   },
   {
@@ -94,8 +94,8 @@
  "rule": "lowest threshold with precision >= 0.95",
  "chosen_threshold": null,
  "current_threshold": 0.85,
- "current_auto_precision": 0.4237,
- "cluster_purity": 0.635,
+ "current_auto_precision": 0.4333,
+ "cluster_purity": 0.6314,
  "labellers": {
   "labellers": [
    "llm1_verifikasi_ivan",

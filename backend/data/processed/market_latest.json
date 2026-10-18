@@ -1,10 +1,10 @@
 {
- "version": "2026-10-17-lexicon",
- "reference_date": "2026-10-17",
+ "version": "2026-10-18-lexicon",
+ "reference_date": "2026-10-18",
  "mention_status": {
-  "auto": 19195,
-  "review": 4808,
-  "new": 2356,
+  "auto": 19961,
+  "review": 5120,
+  "new": 2541,
   "rejected": 2
  },
  "roles": {
@@ -15,8 +15,8 @@
     "karirhub": 11,
     "workable": 1,
     "smartrecruiters": 1,
-    "kalibrr": 9,
-    "workday": 1
+    "workday": 1,
+    "kalibrr": 9
    },
    "top": [
     [
@@ -70,63 +70,64 @@
    ]
   },
   "data_scientist": {
-   "n_postings": 22,
+   "n_postings": 23,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 11,
     "workable": 2,
     "smartrecruiters": 3,
     "lever": 2,
-    "kalibrr": 4
+    "kalibrr": 4,
+    "workday": 1
    },
    "top": [
     [
      "machine_learning",
-     0.8156
+     0.8241
     ],
     [
      "python_programming",
-     0.8095
+     0.8183
     ],
     [
      "deep_learning",
-     0.6875
-    ],
-    [
-     "nlp_computer_vision",
-     0.4359
-    ],
-    [
-     "mlops_deployment",
-     0.4352
+     0.6557
     ],
     [
      "statistics",
-     0.4114
+     0.4386
     ],
     [
-     "cloud_aws",
-     0.3325
+     "nlp_computer_vision",
+     0.4157
+    ],
+    [
+     "mlops_deployment",
+     0.4151
     ],
     [
      "sql",
-     0.3051
+     0.3372
+    ],
+    [
+     "cloud_aws",
+     0.3172
     ],
     [
      "cloud_gcp_azure",
-     0.2871
+     0.2739
     ],
     [
      "big_data_spark",
-     0.2693
+     0.2568
     ],
     [
      "docker_containers",
-     0.2536
+     0.2419
     ],
     [
      "data_analysis",
-     0.2262
+     0.2158
     ]
    ]
   },
@@ -162,12 +163,12 @@
      0.4083
     ],
     [
-     "statistics",
-     0.3736
-    ],
-    [
      "python_programming",
      0.3663
+    ],
+    [
+     "statistics",
+     0.2907
     ],
     [
      "bi_tools_other",
@@ -192,186 +193,187 @@
    ]
   },
   "business_analyst": {
-   "n_postings": 64,
+   "n_postings": 65,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 29,
     "workable": 5,
-    "workday": 1,
+    "workday": 2,
     "lever": 3,
     "kalibrr": 26
    },
    "top": [
     [
      "requirements_elicitation",
-     0.5709
+     0.5736
     ],
     [
      "requirements_documentation",
-     0.4736
+     0.4769
     ],
     [
      "business_process_modeling",
-     0.3879
+     0.3918
     ],
     [
      "testing_uat",
-     0.3616
+     0.3594
     ],
     [
      "sdlc",
-     0.3451
+     0.3429
     ],
     [
      "sql",
-     0.2927
+     0.2909
     ],
     [
      "api_integration",
-     0.2431
+     0.2415
     ],
     [
      "excel",
-     0.199
+     0.204
     ],
     [
      "erp_crm",
-     0.1965
+     0.2016
     ],
     [
      "jira_confluence",
-     0.1743
+     0.1795
     ],
     [
      "data_modeling",
-     0.1434
+     0.1425
     ],
     [
      "diagramming_tools",
-     0.1364
+     0.1355
     ]
    ]
   },
   "cybersecurity_analyst": {
-   "n_postings": 48,
+   "n_postings": 49,
    "trend_status": "insufficient",
    "sources": {
+    "karirhub": 14,
     "workable": 6,
     "smartrecruiters": 2,
     "lever": 1,
-    "kalibrr": 23,
-    "karirhub": 14,
-    "workday": 1,
-    "greenhouse": 1
+    "workday": 2,
+    "greenhouse": 1,
+    "kalibrr": 23
    },
    "top": [
     [
      "network_security",
-     0.5921
+     0.5827
     ],
     [
      "siem_monitoring",
-     0.5669
+     0.5579
     ],
     [
      "penetration_testing",
-     0.4652
+     0.4578
     ],
     [
      "incident_response_forensics",
-     0.4334
+     0.4265
     ],
     [
      "vulnerability_assessment",
-     0.3949
+     0.3886
     ],
     [
      "cloud_security",
-     0.3784
+     0.3724
     ],
     [
      "security_frameworks_compliance",
-     0.3662
+     0.3603
     ],
     [
      "networking_fundamentals",
-     0.3543
+     0.3486
     ],
     [
      "linux_administration",
-     0.3016
+     0.2968
     ],
     [
      "cloud_aws",
-     0.2254
+     0.2219
     ],
     [
      "python_programming",
-     0.2029
+     0.1997
     ],
     [
      "cloud_gcp_azure",
-     0.1342
+     0.1321
     ]
    ]
   },
   "devops_engineer": {
-   "n_postings": 33,
+   "n_postings": 34,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 17,
     "workable": 7,
     "smartrecruiters": 1,
-    "kalibrr": 8
+    "kalibrr": 8,
+    "workday": 1
    },
    "top": [
     [
      "ci_cd_pipelines",
-     0.7296
+     0.7341
     ],
     [
      "networking_fundamentals",
-     0.5697
+     0.5602
     ],
     [
      "kubernetes",
-     0.548
+     0.5389
     ],
     [
      "docker_containers",
-     0.5471
+     0.538
     ],
     [
      "cloud_aws",
-     0.5178
+     0.5257
     ],
     [
      "monitoring_observability",
-     0.4816
+     0.4736
     ],
     [
      "linux_administration",
-     0.4734
+     0.4655
     ],
     [
      "cloud_gcp_azure",
-     0.4169
+     0.4266
     ],
     [
      "git_version_control",
-     0.3791
+     0.3894
     ],
     [
      "python_programming",
-     0.3057
+     0.3172
     ],
     [
      "infrastructure_as_code",
-     0.3005
+     0.3121
     ],
     [
      "cloud_security",
-     0.2057
+     0.2023
     ]
    ]
   },
@@ -410,12 +412,12 @@
      0.2784
     ],
     [
-     "git_version_control",
-     0.2421
-    ],
-    [
      "javascript",
      0.2317
+    ],
+    [
+     "git_version_control",
+     0.2166
     ],
     [
      "java_spring",
@@ -442,8 +444,8 @@
     "karirhub": 10,
     "workable": 7,
     "smartrecruiters": 3,
-    "kalibrr": 12,
-    "workday": 1
+    "workday": 1,
+    "kalibrr": 12
    },
    "top": [
     [
@@ -452,11 +454,11 @@
     ],
     [
      "git_version_control",
-     0.5403
+     0.5027
     ],
     [
      "ios_swift",
-     0.5353
+     0.5006
     ],
     [
      "rest_api_design",
@@ -500,10 +502,10 @@
    "n_postings": 60,
    "trend_status": "insufficient",
    "sources": {
-    "karirhub": 43,
+    "karirhub": 42,
     "workable": 8,
     "smartrecruiters": 1,
-    "kalibrr": 8
+    "kalibrr": 9
    },
    "top": [
     [
@@ -524,7 +526,7 @@
     ],
     [
      "javascript",
-     0.5294
+     0.4944
     ],
     [
      "docker_containers",
@@ -567,7 +569,7 @@
    "top": [
     [
      "javascript",
-     0.6968
+     0.6473
     ],
     [
      "html_css",
@@ -622,8 +624,8 @@
     "karirhub": 40,
     "workable": 5,
     "smartrecruiters": 9,
-    "kalibrr": 30,
-    "workday": 3
+    "workday": 3,
+    "kalibrr": 30
    },
    "top": [
     [
@@ -639,12 +641,12 @@
      0.4346
     ],
     [
-     "git_version_control",
-     0.3972
-    ],
-    [
      "java_spring",
      0.3964
+    ],
+    [
+     "git_version_control",
+     0.3774
     ],
     [
      "nosql_databases",
@@ -680,11 +682,11 @@
    "n_postings": 19,
    "trend_status": "insufficient",
    "sources": {
+    "karirhub": 9,
     "workable": 1,
     "smartrecruiters": 1,
-    "kalibrr": 5,
-    "karirhub": 9,
-    "greenhouse": 3
+    "greenhouse": 3,
+    "kalibrr": 5
    },
    "top": [
     [
@@ -744,8 +746,8 @@
     "karirhub": 208,
     "workable": 16,
     "smartrecruiters": 1,
-    "kalibrr": 19,
-    "workday": 1
+    "workday": 1,
+    "kalibrr": 19
    },
    "top": [
     [
@@ -793,47 +795,48 @@
      0.0874
     ],
     [
-     "email_marketing_automation",
-     0.0855
+     "excel",
+     0.0798
     ]
    ]
   },
   "financial_analyst": {
-   "n_postings": 15,
+   "n_postings": 17,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 8,
     "workable": 2,
-    "kalibrr": 5
+    "kalibrr": 5,
+    "workday": 2
    },
    "top": [
     [
      "excel",
-     0.5753
+     0.5321
     ],
     [
      "financial_statements",
-     0.4759
+     0.4956
     ],
     [
      "financial_analysis",
-     0.4
+     0.37
     ],
     [
      "accounting_fundamentals",
-     0.3023
+     0.2796
     ],
     [
      "budgeting_forecasting",
-     0.2605
+     0.2409
     ],
     [
      "credit_analysis",
-     0.1265
+     0.117
     ],
     [
      "sql",
-     0.0813
+     0.0752
     ],
     [
      "data_visualization",
@@ -850,13 +853,13 @@
    ]
   },
   "tax_specialist": {
-   "n_postings": 84,
+   "n_postings": 87,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 67,
     "workable": 4,
-    "kalibrr": 12,
-    "workday": 1
+    "workday": 4,
+    "kalibrr": 12
    },
    "top": [
     [
@@ -865,83 +868,84 @@
     ],
     [
      "accounting_fundamentals",
-     0.7519
+     0.7444
     ],
     [
      "excel",
-     0.5514
+     0.5471
     ],
     [
      "financial_statements",
-     0.5399
+     0.5259
     ],
     [
      "vat_ppn_mechanics",
-     0.5061
+     0.505
     ],
     [
      "accounting_software",
-     0.311
+     0.3029
     ],
     [
      "pph_corporate_withholding",
-     0.2094
+     0.216
     ],
     [
      "erp_crm",
-     0.1726
+     0.1681
     ],
     [
      "tax_dispute_audit",
-     0.1584
+     0.1543
     ]
    ]
   },
   "internal_auditor": {
-   "n_postings": 43,
+   "n_postings": 53,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 27,
     "workable": 3,
     "lever": 3,
-    "kalibrr": 10
+    "kalibrr": 10,
+    "workday": 10
    },
    "top": [
     [
      "audit_internal_control",
-     0.8793
+     0.8469
     ],
     [
      "excel",
-     0.3212
-    ],
-    [
-     "audit_reporting_followup",
-     0.2564
+     0.2897
     ],
     [
      "enterprise_risk_management",
-     0.2385
+     0.2746
     ],
     [
-     "audit_planning_fieldwork",
-     0.2186
-    ],
-    [
-     "accounting_fundamentals",
-     0.1882
+     "audit_reporting_followup",
+     0.2356
     ],
     [
      "data_analysis",
-     0.1858
+     0.2287
+    ],
+    [
+     "audit_planning_fieldwork",
+     0.2249
+    ],
+    [
+     "accounting_fundamentals",
+     0.1785
     ],
     [
      "financial_statements",
-     0.1776
+     0.1769
     ],
     [
      "erp_crm",
-     0.0215
+     0.025
     ],
     [
      "sql",
@@ -950,52 +954,53 @@
    ]
   },
   "hr_specialist": {
-   "n_postings": 130,
+   "n_postings": 138,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 113,
-    "kalibrr": 17
+    "kalibrr": 17,
+    "workday": 8
    },
    "top": [
     [
      "recruitment_selection",
-     0.5124
+     0.506
     ],
     [
      "excel",
-     0.3571
+     0.3423
     ],
     [
      "labor_law_id",
-     0.3042
+     0.3166
     ],
     [
      "payroll_processing",
-     0.2215
+     0.2163
     ],
     [
      "hris_systems",
-     0.2158
-    ],
-    [
-     "kpi_metrics",
-     0.1412
+     0.2035
     ],
     [
      "performance_management",
-     0.1411
+     0.1688
     ],
     [
-     "data_analysis",
-     0.0982
+     "kpi_metrics",
+     0.1332
     ],
     [
      "learning_development",
-     0.0694
+     0.0959
+    ],
+    [
+     "data_analysis",
+     0.0926
     ],
     [
      "dashboard_reporting",
-     0.0078
+     0.0073
     ],
     [
      "power_bi",
@@ -1004,181 +1009,183 @@
    ]
   },
   "supply_chain_analyst": {
-   "n_postings": 72,
+   "n_postings": 96,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 44,
-    "kalibrr": 28
+    "kalibrr": 28,
+    "workday": 24
    },
    "top": [
     [
      "procurement_sourcing",
-     0.6341
+     0.6012
     ],
     [
      "excel",
-     0.5608
+     0.4914
     ],
     [
      "inventory_management",
-     0.3124
+     0.2603
     ],
     [
      "cost_accounting",
-     0.2756
-    ],
-    [
-     "production_planning_mrp",
-     0.24
+     0.2223
     ],
     [
      "vendor_supplier_management",
-     0.202
+     0.1888
+    ],
+    [
+     "production_planning_mrp",
+     0.187
     ],
     [
      "data_analysis",
-     0.1824
+     0.1603
     ],
     [
      "erp_crm",
-     0.1767
+     0.1519
     ],
     [
      "warehouse_logistics",
-     0.1162
+     0.1111
     ],
     [
      "kpi_metrics",
-     0.0815
+     0.0748
     ],
     [
      "dashboard_reporting",
-     0.0445
+     0.0347
     ],
     [
      "sql",
-     0.0414
+     0.0322
     ]
    ]
   },
   "project_coordinator": {
-   "n_postings": 45,
+   "n_postings": 53,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 28,
-    "kalibrr": 17
+    "kalibrr": 17,
+    "workday": 8
    },
    "top": [
     [
      "requirements_elicitation",
-     0.2068
-    ],
-    [
-     "project_planning_wbs",
-     0.1749
+     0.1765
     ],
     [
      "project_scheduling",
-     0.1534
-    ],
-    [
-     "jira_confluence",
-     0.1518
+     0.151
     ],
     [
      "project_tools_workspace",
-     0.1423
+     0.1426
+    ],
+    [
+     "jira_confluence",
+     0.1296
+    ],
+    [
+     "project_planning_wbs",
+     0.1293
     ],
     [
      "product_roadmap_prioritization",
-     0.114
-    ],
-    [
-     "project_risk_change",
-     0.112
+     0.1137
     ],
     [
      "data_analysis",
-     0.0984
+     0.1051
+    ],
+    [
+     "project_risk_change",
+     0.0956
     ],
     [
      "excel",
-     0.0725
-    ],
-    [
-     "kpi_metrics",
-     0.0479
+     0.083
     ],
     [
      "release_delivery_management",
-     0.0449
+     0.0583
+    ],
+    [
+     "kpi_metrics",
+     0.0572
     ],
     [
      "diagramming_tools",
-     0.0446
+     0.0381
     ]
    ]
   },
   "accountant": {
-   "n_postings": 133,
+   "n_postings": 136,
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 91,
     "workable": 8,
     "lever": 3,
     "greenhouse": 1,
-    "kalibrr": 26,
-    "workday": 3,
-    "smartrecruiters": 1
+    "workday": 6,
+    "smartrecruiters": 1,
+    "kalibrr": 26
    },
    "top": [
     [
      "accounting_fundamentals",
-     0.8303
+     0.8343
     ],
     [
      "financial_statements",
-     0.6942
+     0.7014
     ],
     [
      "excel",
-     0.568
+     0.5554
     ],
     [
      "tax_compliance_id",
-     0.5393
+     0.5346
     ],
     [
      "ap_ar_reconciliation",
-     0.3571
+     0.3487
     ],
     [
      "audit_internal_control",
-     0.2974
+     0.3059
     ],
     [
      "financial_analysis",
-     0.2955
+     0.2886
     ],
     [
      "accounting_software",
-     0.2938
+     0.2869
     ],
     [
      "erp_crm",
-     0.1741
+     0.17
     ],
     [
      "budgeting_forecasting",
-     0.1061
+     0.1111
     ],
     [
      "cost_accounting",
-     0.067
+     0.0655
     ],
     [
      "dashboard_reporting",
-     0.024
+     0.0234
     ]
    ]
   }
@@ -1188,12 +1195,12 @@
   "taxonomy_sha": "1326d0eec1dbd09f",
   "graph_sha": "96b2947f46f6651c",
   "esco_sha": "b027e6c19853f013",
-  "postings": 1749,
+  "postings": 1831,
   "extractors": {
-   "lexicon": 1749
+   "lexicon": 1831
   },
   "cache_tags": {
-   "lexicon": "lexicon|2026.10-v4|34361ed4395c"
+   "lexicon": "lexicon|2026.10-v4|95ebfd92940c"
   },
   "gold_sha": {
    "gold_blind.json": "6109aca0cc2883c0",

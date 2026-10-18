@@ -38,6 +38,15 @@ Dilakukan di PostgreSQL 17 lokal (produksi memakai `postgres:16`; format dump te
 
 Ulangi latihan ini setiap ada migrasi baru dan sebelum final.
 
+### Produksi gratis (Neon), 18 Okt 2026
+
+- **Cadangan:** `.github/workflows/backup-neon.yml`, harian 02:30 WIB, `pg_dump --no-owner --no-acl` ke artifact 14 hari.
+  Perlu secret repo `NEON_DATABASE_URL`; jadwal hanya berjalan dari branch default. Selain itu Neon Free menyimpan riwayat
+  6 jam untuk pemulihan titik waktu (dashboard Neon → Restore).
+- **Latihan pemulihan** (dump Neon PostgreSQL 18 → `postgres:18` kosong, `ON_ERROR_STOP=1`): dump 1,9 MB dalam 4 detik,
+  pulih 2 detik, kueri kontrol identik `1831 | 27758 | 20 | 0 | 0005`. Tanpa `--no-acl` muncul galat peran
+  `neon_superuser` (hak akses khusus Neon), jadi opsi itu wajib.
+
 ## Retensi data (plan B3)
 
 Setiap worker API menjalankan `pathsync.retention.purge` sekali sehari di latar belakang (aman dijalankan beberapa kali). Manual: `python -m pipeline.retention` (`--dry-run` untuk menghitung saja). Angkanya satu sumber di `backend/pathsync/retention.py` dan dikutip di halaman Privacy (dicek `tests/test_retention.py`).
@@ -106,3 +115,13 @@ Pemeriksaan pada deploy 2:
 - Kunci admin lemah ditolak saat start di produksi (`PATHSYNC_ADMIN_TOKEN` harus 32+ karakter acak).
 - `X-Forwarded-For` palsu dari luar diabaikan: 30 pendaftaran lewat domain dengan alamat palsu berbeda, 20 diterima dan 10 ditolak sesuai batas 20/menit per IP asli.
 - Uji beban dari dalam jaringan `edge` (alamat klien dipercaya seperti dari Caddy): 200 mahasiswa, 40 bersamaan, 0 galat. p95 pendaftaran 926 ms, transkrip 2.763 ms, dashboard 1.171 ms (2 worker); dua yang terakhir di atas target 1 detik dan ditangani di B4.
+
+## Tinjauan keamanan sebelum beku (BE-09), 18 Okt 2026
+
+| Pemeriksaan | Hasil |
+|---|---|
+| `pip-audit -r requirements.txt` dan `-r requirements-slim.txt` | tidak ada kerentanan diketahui |
+| `npm audit --omit=dev` (frontend) | 0 kerentanan |
+| Cookie staf berisi sesi pendek yang bisa dicabut, bukan token staf | dijaga `tests/test_launch.py::test_staff_cookie_is_a_revocable_session_not_the_staff_token` |
+| IP klien untuk rate limit di belakang Vercel | header `x-pathsync-client-ip` hanya dipercaya dengan `PATHSYNC_PROXY_SECRET` yang cocok (`tests/test_client_ip.py`); `frontend/src/proxy.ts` membuang header itu bila dikirim browser |
+| Rahasia produksi | `PATHSYNC_ADMIN_TOKEN` dibangkitkan Render (`generateValue`), connection string Neon dan secret proxy hanya di variabel lingkungan Render/Vercel, tidak di repo |

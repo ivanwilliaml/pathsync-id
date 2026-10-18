@@ -287,3 +287,20 @@ def test_pilot_survey_and_targets(client):
     assert bad.status_code == 422
     m = client.get("/api/admin/metrics", headers=ADMIN).json()["pilot"]
     assert m["targets"]["quick_check_completion"] == 0.6 and m["survey"]["pathsync"]["n"] >= 1
+
+
+def test_diagnostic_keeps_related_topics_together(client):
+    """Pilot finding (V3): the Quick Check groups same-cluster skills instead of jumping between topics."""
+    from pathsync.assessment import diagnostic_plan
+    from pathsync.db import SessionLocal
+    from pathsync.engine import load_context
+    from pathsync.taxonomy import load_skills
+
+    with SessionLocal() as s:
+        ctx = load_context(s, "business_analyst")
+    plan = diagnostic_plan(ctx.market, {}, set())
+    skills = load_skills()
+    clusters = [skills[it["skill_id"]].cluster for it in plan]
+    runs = [c for i, c in enumerate(clusters) if i == 0 or c != clusters[i - 1]]
+    assert len(runs) == len(set(runs)), runs           # each cluster appears as one block
+    assert 20 <= len(plan) <= 26

@@ -84,7 +84,10 @@ ABOUT_COMPANY = re.compile(
     r"\b(we are|we're|kami adalah|kami merupakan|merupakan perusahaan|is a leading|is one of the|founded in|didirikan|"
     r"about us|tentang kami|our mission|misi kami|visi kami|our vision|what we offer|benefit[s]?\b|keuntungan|"
     r"fasilitas|why join|mengapa bergabung|equal opportunity|we offer|kami menawarkan|salary|gaji|tunjangan|"
-    r"bpjs|asuransi kesehatan|health insurance|annual leave|cuti)\b",
+    r"bpjs|asuransi kesehatan|health insurance|annual leave|cuti|"
+    # company introductions and recruitment notices (dev-half error analysis, 18 Oct 2026)
+    r"trusted by|backed by|proudly|our ecosystem|the ecosystem also|yuk join|join bareng|lagi cari talenta|"
+    r"tidak dipungut biaya|free of charge)\b",
     re.I,
 )
 

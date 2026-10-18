@@ -2,7 +2,7 @@
 
 ## Konteks singkat (untuk dibaca pakar)
 
-PathSync adalah aplikasi yang membantu mahasiswa Indonesia menyusun rute belajar menuju pekerjaan pertama. Sistem membaca lowongan kerja nyata, memeriksa bukti kemampuan mahasiswa (nilai, proyek, tes singkat), lalu menyarankan urutan skill yang sebaiknya dipelajari. Untuk peran **Business Analyst (BA)**, peta kebutuhan disusun dari **64 lowongan BA** di Indonesia (snapshot 2026-10-17-lexicon).
+PathSync adalah aplikasi yang membantu mahasiswa Indonesia menyusun rute belajar menuju pekerjaan pertama. Sistem membaca lowongan kerja nyata, memeriksa bukti kemampuan mahasiswa (nilai, proyek, tes singkat), lalu menyarankan urutan skill yang sebaiknya dipelajari. Untuk peran **Business Analyst (BA)**, peta kebutuhan disusun dari **57 lowongan BA** di Indonesia (snapshot 2026-10-12-lexicon).
 
 Ada dua hal yang dibuat tim dan perlu dinilai oleh orang yang paham pekerjaan BA:
 
@@ -49,13 +49,13 @@ Kolom "alasan tim" hanya penjelasan dari kami, boleh diabaikan. Komentar singkat
 | A22 | Dokumentasi Kebutuhan (BRD/FSD/User Story) | Pengujian Sistem & UAT | Test case dan UAT diturunkan dari kebutuhan dan acceptance criteria. |  |  |
 | A23 | Siklus Pengembangan Sistem (SDLC) | Pengujian Sistem & UAT | Pengujian adalah tahap dalam siklus pengembangan. |  |  |
 | A24 | Pemodelan Proses Bisnis (BPMN/Flowchart) | Alat Diagram (Visio/Lucidchart/draw.io) | Notasi proses dipelajari sebelum alat penggambarnya. |  |  |
-| A25 | Elisitasi Kebutuhan | Wireframe & Prototipe (Figma) | ESCO: 'menerjemahkan konsep kebutuhan menjadi desain visual'. |  |  |
+| A25 | Elisitasi Kebutuhan | Wireframe & Prototipe (Figma) | ESCO: 'translate requirement concepts into visual design'. |  |  |
 | A26 | Pemodelan Proses Bisnis (BPMN/Flowchart) | Sistem ERP & CRM | Modul ERP mengotomasi proses bisnis yang harus dipahami lebih dahulu. |  |  |
 | A27 | Siklus Pengembangan Sistem (SDLC) | API & Integrasi Sistem | Kebutuhan integrasi dirumuskan dalam konteks siklus pengembangan sistem. |  |  |
 | A28 | Pemodelan Data & Basis Data | API & Integrasi Sistem | ESCO: 'integrate ICT data' bertumpu pada pemahaman struktur data. |  |  |
-| A29 | Dasar pemrograman & OOP | Desain & pengembangan REST API | Membangun API membutuhkan kode yang berjalan dalam suatu bahasa. |  |  |
-| A30 | Pemrograman Python | Python/R untuk Analisis | pandas dan NumPy adalah pustaka Python. |  |  |
-| A31 | Desain tes & kasus uji | Pengujian Sistem & UAT | Skrip UAT disusun dari teknik desain tes. |  |  |
+| A29 | Programming fundamentals & OOP | REST API design & development | Building APIs needs working code in some language. |  |  |
+| A30 | Python programming | Python/R untuk Analisis | pandas and NumPy are Python libraries. |  |  |
+| A31 | Test design & test cases | Pengujian Sistem & UAT | UAT scripts are built from test design techniques. |  |  |
 
 **A-tambahan.** Adakah prasyarat penting yang belum ada di daftar? Tulis pasangan "skill A sebelum skill B" beserta alasannya (maksimal 5).
 
@@ -75,26 +75,26 @@ Kolom "diminta di lowongan" adalah porsi lowongan BA yang menyebut skill itu. Un
 
 | No | Skill | Diminta di lowongan | Jawaban (Wajib / Penting / Pelengkap / Tidak relevan) | Komentar |
 |---|---|---|---|---|
-| B1 | Elisitasi Kebutuhan | 57% |  |  |
-| B2 | Dokumentasi Kebutuhan (BRD/FSD/User Story) | 47% |  |  |
-| B3 | Pemodelan Proses Bisnis (BPMN/Flowchart) | 39% |  |  |
-| B4 | Pengujian Sistem & UAT | 36% |  |  |
-| B5 | Siklus Pengembangan Sistem (SDLC) | 35% |  |  |
+| B1 | Elisitasi Kebutuhan | 59% |  |  |
+| B2 | Dokumentasi Kebutuhan (BRD/FSD/User Story) | 48% |  |  |
+| B3 | Pemodelan Proses Bisnis (BPMN/Flowchart) | 38% |  |  |
+| B4 | Pengujian Sistem & UAT | 35% |  |  |
+| B5 | Siklus Pengembangan Sistem (SDLC) | 31% |  |  |
 | B6 | SQL & Kueri Basis Data | 29% |  |  |
 | B7 | API & Integrasi Sistem | 24% |  |  |
-| B8 | Microsoft Excel & Spreadsheet | 20% |  |  |
+| B8 | Microsoft Excel & Spreadsheet | 21% |  |  |
 | B9 | Sistem ERP & CRM | 20% |  |  |
-| B10 | Jira/Confluence & Alat Kolaborasi | 17% |  |  |
+| B10 | Alat Diagram (Visio/Lucidchart/draw.io) | 16% |  |  |
 | B11 | Pemodelan Data & Basis Data | 14% |  |  |
-| B12 | Alat Diagram (Visio/Lucidchart/draw.io) | 14% |  |  |
-| B13 | Pemodelan Sistem (UML/Use Case) | 13% |  |  |
-| B14 | Analisis Data | 12% |  |  |
-| B15 | Desain & pengembangan REST API | 8% |  |  |
-| B16 | Persiapan & Kualitas Data | 7% |  |  |
-| B17 | Pelaporan & Dashboard BI | 6% |  |  |
-| B18 | Metrik & KPI Bisnis | 6% |  |  |
-| B19 | Wireframe & Prototipe (Figma) | 4% |  |  |
-| B20 | Power BI | 4% |  |  |
+| B12 | Jira/Confluence & Alat Kolaborasi | 12% |  |  |
+| B13 | Pemodelan Sistem (UML/Use Case) | 11% |  |  |
+| B14 | REST API design & development | 9% |  |  |
+| B15 | Analisis Data | 8% |  |  |
+| B16 | Metrik & KPI Bisnis | 7% |  |  |
+| B17 | Persiapan & Kualitas Data | 5% |  |  |
+| B18 | Pelaporan & Dashboard BI | 5% |  |  |
+| B19 | Wireframe & Prototipe (Figma) | 5% |  |  |
+| B20 | Power BI | 5% |  |  |
 
 ## Bagian C. Pertanyaan terbuka
 

@@ -215,7 +215,30 @@ def _trusted(ip: str) -> bool:
     return any(addr in net for net in TRUSTED_PROXIES)
 
 
+# Frontend proxy on a host whose IP addresses change (Vercel): its middleware forwards the visitor's address in
+# X-PathSync-Client-IP together with a shared secret. The header is trusted only when the secret matches, so a
+# visitor cannot spoof it by sending the header directly.
+PROXY_SECRET = os.getenv("PATHSYNC_PROXY_SECRET", "")
+
+
+def _from_trusted_frontend(request: Request) -> str | None:
+    if not PROXY_SECRET:
+        return None
+    given = request.headers.get("x-pathsync-proxy-secret", "")
+    if not given or not hmac.compare_digest(given, PROXY_SECRET):
+        return None
+    ip = request.headers.get("x-pathsync-client-ip", "").split(",")[0].strip()
+    try:
+        ipaddress.ip_address(ip)
+    except ValueError:
+        return None
+    return ip
+
+
 def client_ip(request: Request) -> str:
+    forwarded = _from_trusted_frontend(request)
+    if forwarded:
+        return forwarded
     peer = request.client.host if request.client else "?"
     if not _trusted(peer):
         return peer

@@ -19,7 +19,9 @@ from . import soft
 from .calibration import active_evidence_weights
 from .config import FORMULA5_WEIGHTS, READINESS_THRESHOLD, ROLES, SEED_DIR
 from .db import (
+    NON_EXPERT_KINDS,
     AssessmentResponse,
+    Expert,
     GraphEdge,
     Posting,
     PostingMention,
@@ -97,6 +99,21 @@ def graph_from_db(s: Session) -> SkillGraph:
     rows = s.scalars(select(GraphEdge)).all()
     edges = [Edge(r.src, r.dst, r.source, display_rationale(r.src, r.dst, r.rationale), r.status) for r in rows] or load_draft_edges()
     return SkillGraph(display_skills(), edges)
+
+
+def finalize_edges(s: Session) -> dict:
+    """Keep a link when at least two experts approve it and drop it when two reject it (paper III.A.3). Internal team
+    and simulated reviews never count. Raises CycleError (nothing committed by the caller) if approved links form a loop."""
+    summary = {"approved": 0, "rejected": 0, "draft": 0}
+    counted = {x.id for x in s.scalars(select(Expert).where(Expert.kind.not_in(NON_EXPERT_KINDS))).all()}
+    for e in s.scalars(select(GraphEdge)).all():
+        votes = [v for v in e.votes if v.expert_id in counted]
+        a = sum(v.approve for v in votes)
+        r = sum(not v.approve for v in votes)
+        e.status = "approved" if a >= 2 else "rejected" if r >= 2 else "draft"
+        summary[e.status] += 1
+    graph_from_db(s).check_acyclic()
+    return summary
 
 
 def active_model(s: Session) -> tuple[RankingModel, int | None]:

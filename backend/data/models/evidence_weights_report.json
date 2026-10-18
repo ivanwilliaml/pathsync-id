@@ -11,7 +11,7 @@
   "project": 1.291,
   "assessment": 1.0
  },
- "n_calibration_pairs": 2,
+ "n_calibration_pairs": 1,
  "min_pairs": 30,
  "sensitivity": {
   "assumption": "synthetic cohort; source noise follows the error ratios implied by the prior weights",
@@ -29,34 +29,34 @@
     "mastery_mae": 0.106
    },
    "random weights near the prior (Dirichlet, concentration 100)": {
-    "top3_overlap": 0.9883,
-    "kendall_tau": 0.9739,
+    "top3_overlap": 0.9763,
+    "kendall_tau": 0.9735,
     "mastery_mae": 0.1068
    },
    "random weights near the prior (Dirichlet, concentration 30)": {
-    "top3_overlap": 0.9725,
-    "kendall_tau": 0.9554,
+    "top3_overlap": 0.9593,
+    "kendall_tau": 0.9571,
     "mastery_mae": 0.1076
    },
    "equal weights": {
-    "top3_overlap": 0.9167,
-    "kendall_tau": 0.9218,
+    "top3_overlap": 0.9444,
+    "kendall_tau": 0.9267,
     "mastery_mae": 0.1114
    },
    "no assessment weight boost (assessment = project)": {
     "top3_overlap": 0.9667,
-    "kendall_tau": 0.9629,
+    "kendall_tau": 0.965,
     "mastery_mae": 0.108
    },
    "grades weigh most (reversed)": {
-    "top3_overlap": 0.8722,
-    "kendall_tau": 0.8699,
+    "top3_overlap": 0.8778,
+    "kendall_tau": 0.8731,
     "mastery_mae": 0.1232
    }
   }
  },
  "calibration": {
   "status": "waiting for data",
-  "message": "2 of 30 pairs collected; the documented prior stays active."
+  "message": "1 of 30 pairs collected; the documented prior stays active."
  }
 }

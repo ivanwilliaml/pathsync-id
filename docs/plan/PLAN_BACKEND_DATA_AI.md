@@ -6,35 +6,36 @@ Kolom "Pemilik" adalah usulan peran, bukan penunjukan. "Kapan" mengacu ke jadwal
 
 ---
 
-## Status 17 Okt 2026 (branch `perbaikan-be-ai`)
+## Status 18 Okt 2026 (branch `perbaikan-be-ai`)
 
 Semua angka di bawah ada di `backend/data/models/metrics.json` (`python -m pipeline.report`).
 
 | ID | Status | Hasil |
 |---|---|---|
 | Regresi lint | Selesai | `ruff` bersih |
-| Regresi pola jawaban | Sebagian | 120 soal bisnis diperbaiki isinya (72 pengecoh ditulis ulang, frasa pengisi dibuang, kunci PPh 23 dikoreksi ke tanggal 15). Audit sekarang rata-rata 5 pembagian lipat: Inggris 0,298, Indonesia 0,321, keduanya masih di atas batas acak. Sisa petunjuk ada di seluruh bank dan menunggu analisis butir dari pilot (AI-10) |
+| Regresi pola jawaban | Sebagian | 120 soal bisnis diperbaiki isinya (72 pengecoh ditulis ulang, frasa pengisi dibuang, kunci PPh 23 dikoreksi ke tanggal 15). Audit bank soal 18 Okt (`docs/validasi/AUDIT_ASESMEN_2026-10-18.md`): 1 kunci salah di versi Indonesia diperbaiki, 423 frasa pengisi dibuang, 4 soal dengan kata kunci kode yang ikut diterjemahkan diperbaiki, panjang kunci diseimbangkan. Pola jawaban sekarang Inggris 0,340, Indonesia 0,333 (lulus gerbang 0,35, masih di atas batas acak; naik dari sekitar 0,30–0,31 karena pengisi penyeimbang dibuang). 18 Okt: 8 soal BA yang jawabannya menjadi 'opsi tengah' (paling banyak berbagi kata dengan pengecoh) ditulis ulang di dua bahasa, dan 15 soal baru ditambahkan untuk 5 skill inti BA (8 soal per skill) dengan peringkat panjang kunci disebar. Sisa petunjuk tersebar di seluruh bank; perlu penulisan ulang skala besar atau analisis butir dari jawaban nyata (AI-10) |
 | Regresi klaster frontend | Selesai | `CLUSTER_ORDER` memuat 20 klaster, dijaga tes |
-| AI-01 gold ekstraksi | Selesai (dengan catatan) | 130 lowongan: pra-anotasi LLM dua putaran, diverifikasi satu anggota tim (Ivan). Bukan dua anotator independen, jadi kesepakatan antar-lembar tidak dilaporkan sebagai kappa antar-manusia. Label yang berbeda antar-lembar dikeluarkan. Paruh uji: presisi 0,792 [0,7478-0,8294], recall 0,817; target 0,80 belum tercapai di titik tengah. Paruh dev dipakai menyetel |
-| AI-02 LLM vs lexicon | Menunggu Kaggle | Ekspor siap |
-| AI-03 taksonomi BA | Selesai | BA lolos 3 dari 3 (cakupan 0,9739, kandidat 0,035), begitu juga DevOps dan Tax. Frasa di luar cakupan dikeluarkan dari penyebut dan dicantumkan di laporan |
+| AI-01 gold ekstraksi | Selesai (dengan catatan) | 130 lowongan: pra-anotasi LLM dua putaran, diverifikasi satu anggota tim (Ivan). Bukan dua anotator independen, jadi kesepakatan antar-lembar tidak dilaporkan sebagai kappa antar-manusia. Label yang berbeda antar-lembar dikeluarkan. Paruh uji: presisi 0,796 [0,7522-0,8334], recall 0,817; target 0,80 belum tercapai di titik tengah. Paruh dev dipakai menyetel: analisis kesalahan dev 18 Okt (konteks negatif untuk kata bermakna ganda, profil perusahaan, "js" dalam "Node.js", jurusan) menaikkan presisi dev 0,796 → 0,848 tanpa menurunkan recall, tetapi di paruh uji hanya 0,792 → 0,796; set blind tidak berubah |
+| AI-02 LLM vs lexicon | Selesai: leksikon (keputusan tim 18 Okt) | Qwen3-8B di Kaggle, 473 lowongan. Paruh uji: leksikon P 0,796 R 0,817 F1 0,806; LLM P 0,786 R 0,371 F1 0,504; gabungan F1 0,804; irisan P 0,975 R 0,323. Aturan D4 harfiah memilih irisan (satu-satunya P ≥ 0,80) walau recall 0,323; tim memutuskan leksikon, penyimpangan dicatat di `docs/design/AI02_LLM_VS_LEXICON.md` |
+| AI-03 taksonomi BA | Selesai | BA lolos 3 dari 3 (cakupan 0,957, kandidat 0,031), begitu juga DevOps dan Tax. Frasa di luar cakupan dikeluarkan dari penyebut dan dicantumkan di laporan |
 | AI-04 normalisasi | Selesai | Label 274 frasa (pra-anotasi LLM, diverifikasi Ivan). Pada ambang 0,85 pemetaan otomatis hanya benar 0,4237; tidak ada ambang yang mencapai 0,95. Sesuai aturan yang ditulis sebelumnya, pemetaan embedding otomatis dimatikan (`PATHSYNC_EMBEDDING_AUTO=0`): frasa bebas masuk antrean tinjauan dan tidak dihitung di peta pasar |
 | AI-05 kesiapan terbukti | Selesai (backend) | `p_proven`, `evidence_kinds`, `coverage_proven` di API dashboard; nilai kuliah tidak pernah dihitung sebagai terbukti. Frontend belum memakainya |
 | AI-06 ranker | Selesai | Model aktif: Formula (5). Model dari pakar simulasi tidak pernah aktif |
-| AI-07 graf pakar | Tinjauan internal selesai, pakar independen belum | Ivan (jenis `tim`): 23 dari 25 prasyarat disetujui, 2 ditolak, 8 usulan baru; relevansi skill teratas BA precision@20 0,6. Jenis `tim` tidak dihitung sebagai pakar dan tidak memvalidasi sisi (aturan 2 dari 3 pakar). Pakar independen: 0 |
-| AI-08 data | Ditahan | Scraping tambahan ditunda sampai keputusan sumber data (lihat `docs/ops/DATA_SOURCES.md`) |
+| AI-07 graf pakar | Selesai | 3 pakar BA independen (1 dosen SI, 2 praktisi BA), anonim atas permintaan; jawaban dirangkum tim, asli disimpan tim (`docs/validasi/V2_jawaban_pakar_ringkasan.md`). Aturan 2 dari 3: 12 prasyarat disetujui, 15 ditolak, sisanya draft. Presisi skill teratas BA menurut pakar: 0,65 / 0,5 / 0,8. Usulan prasyarat yang skill-nya belum ada di taksonomi (analisis pemangku kepentingan, acceptance criteria, business rules, gap analysis, traceability) dicatat sebagai celah taksonomi. Tinjauan internal Ivan (`tim`) tetap tidak dihitung |
+| AI-08 data | Sebagian, target BA belum | 20 tenant Workday ditambah (pencarian per lokasi Indonesia): 113 lowongan, total 1.323. BA di jendela 12 bulan 65 (target ≥ 100); dari 97 lowongan BA unik di data mentah, Karirhub 52% (batas 50%), Kalibrr 30, ATS 17. ATS sudah di-scrape 17 Okt; sumber besar lain (Jobstreet, Glints, LinkedIn) melarang penyalinan di syarat layanannya. Role BA tetap diberi keterangan jumlah lowongan |
 | AI-09 tren | Selesai | API menjelaskan kenapa tren belum ada (jumlah lowongan per periode), dalam dua bahasa |
-| AI-10 kalibrasi asesmen | Menunggu pilot | Alat siap |
+| AI-10 kalibrasi asesmen | Tidak aktif (tercatat) | `item_calibration.json`: 0 jawaban per soal di database, kalibrasi tidak aktif, BKT dan kesulitan soal tetap prior (ditulis di `DECISION_ENGINE.md`). Lembar pilot V3 hanya berisi hasil tugas dan SUS, bukan jawaban per soal; aktif bila ≥ 30 jawaban per soal untuk separuh bank |
 | AI-11 soal Indonesia | Selesai (A7 Jonathan) | Bank soal Indonesia dipakai otomatis saat permintaan berbahasa Indonesia |
 | AI-12 soal BA | Ditinjau, tidak diubah | 27 dari 30 soal menguji notasi atau metode; 3 soal situasional berbasis teknik BABOK |
 | Ekstraksi bisnis (baru) | Diukur | Set buta 18 lowongan bisnis: presisi 0,85, recall 0,68, satu anotator, tidak dipakai menyetel |
-| Pilot (V3) | Belum bisa dipakai | Lembar yang ada bertanda simulasi AI; menunggu data mentah survei (ekspor formulir atau catatan sesi) |
-| BE-01 CI GitHub | Tidak bisa dicek dari sini | `gh` tidak terpasang dan repo privat; cek tab Actions |
-| BE-02 deploy publik | Belum | Butuh VPS dan kredensial |
+| Pilot (V3) | Selesai (dengan catatan) | 20 mahasiswa, 13-17 Okt, urutan diselang-seling. Data dari Google Sheets diinput tim ke template; ekspor mentah belum ada di repo. T1 95%, T2 90% (median 3,9 menit), T3 80%, T4 90%, T5 55% (istilah Bottleneck dan Prove It belum dipahami), SUS 71,1. PathSync dinilai lebih jelas daripada saran umum di Q1-Q3 (semua p < 0,05), tetapi Q1 PathSync 3,75 di bawah target 4,0. Temuan asesmen (topik lompat) sudah ditindaklanjuti: soal diagnostik dikelompokkan per klaster |
+| BE-01 CI GitHub | Gerbang lulus lokal | CI hanya berjalan di push ke `main` dan PR, jadi branch ini belum diuji di GitHub. Langkah CI dijalankan lokal 18 Okt: ruff bersih, pip-audit dan npm audit bersih, migrasi cocok, 133 tes lulus dengan coverage 88,9% (gerbang 80%), job PostgreSQL 16 (migrasi dua kali + `check`, bangun pasar, 133 tes) lulus. Status Actions di GitHub tetap perlu dilihat setelah PR |
+| BE-02 deploy publik | Frontend online, backend menunggu Blueprint Render | Gratis: Vercel (`pathsync-icc2026.vercel.app`), Render Free 512 MB (`render.yaml`, model ONNX, diuji di kontainer 512 MB/0,1 CPU: ±470 MB, 0 OOM), Neon PostgreSQL 18 (terisi). Cadangan harian `backup-neon.yml`, latihan pemulihan identik. Lihat `docs/ops/DEPLOY_GRATIS.md` |
 | BE-03 sumber data | Selesai (dokumen), menunggu keputusan | `docs/ops/DATA_SOURCES.md`: syarat layanan Kalibrr melarang penyalinan tanpa izin tertulis; Karirhub tanpa syarat layanan yang bisa ditemukan. `PATHSYNC_EXCLUDED_SOURCES` untuk mengeluarkan sumber; kontak perekrut disamarkan saat dimuat |
 | BE-05 latensi | Diukur | Satu permintaan: transkrip 12 kueri, dashboard 6 kueri. Beban 200 siswa, 40 konkuren, 1 worker SQLite: 0 galat, p95 transkrip sekitar 1 detik karena antrean penulis tunggal, bukan CPU. Ukur ulang di PostgreSQL dengan beberapa worker |
 | BE-07 workflow bulanan | Selesai | Tidak lagi meng-commit berkas mentah; snapshot disimpan sebagai artifact 90 hari |
 | BE-08 metrik pilot | Selesai | Event `pilot_survey` tervalidasi, target pilot di Admin > Launch Metrics |
+| BE-09 keamanan | Selesai | Hasil di `RUNBOOK.md`: audit dependensi bersih, tes cookie staf dan header IP klien |
 | BE-12 bahasa per permintaan | Selesai | `?lang=` atau `Accept-Language`, katalog pesan dua bahasa untuk semua kalimat mesin, header `Content-Language`, tes paritas |
 
 ## 0. Prinsip kerja Data/AI
@@ -282,7 +283,7 @@ Tinjauan akhir sebelum beku: `pip-audit` dan `npm audit` (sudah di CI), pemeriks
 |---|---|---|
 | `pytest` (114 tes) | domain, API, migrasi, retensi, observabilitas, soft skill, BPS | harus hijau |
 | `test_extractor_meets_precision_target_on_blind_gold` | presisi dan recall ≥ 0,80 di set uji | diarahkan ke gold konsensus (AI-01) |
-| `test_item_bank.py` | akurasi pola jawaban ≤ batas | rata-rata 5 pembagian saat ini 0,298 (Inggris) dan 0,321 (Indonesia); batas tes 0,35 |
+| `test_item_bank.py` | akurasi pola jawaban ≤ batas | rata-rata 5 pembagian saat ini 0,340 (Inggris) dan 0,333 (Indonesia); batas tes 0,35 |
 | `test_paper_fidelity.py` | persamaan paper dan Tabel 4 | harus tetap hijau saat AI-05 |
 | Playwright (BE-06) | alur demo di dua bahasa | CI |
 | `deploy/loadtest.py` | 200 siswa, 40 konkuren | 0 galat |

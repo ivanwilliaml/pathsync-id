@@ -1,0 +1,24 @@
+# Render Blueprint: PathSync API on the free plan (512 MB, ONNX embeddings). See docs/ops/DEPLOY_GRATIS.md.
+services:
+  - type: web
+    name: pathsync-api
+    runtime: docker
+    plan: free
+    region: singapore
+    branch: perbaikan-be-ai
+    dockerfilePath: ./deploy/render/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: PATHSYNC_DATABASE_URL     # Neon connection string
+        sync: false
+      - key: PATHSYNC_ADMIN_TOKEN
+        generateValue: true
+      - key: PATHSYNC_PROXY_SECRET     # same value on Vercel
+        sync: false
+      - key: PATHSYNC_CORS_ORIGINS
+        value: https://pathsync-icc2026.vercel.app
+      - key: PATHSYNC_REF_DATE
+        value: "2026-10-18"
+      - key: PATHSYNC_WARMUP           # load indexes in the background so the port opens at once
+        value: "1"

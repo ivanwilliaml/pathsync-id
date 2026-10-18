@@ -1,0 +1,14 @@
+{
+ "generated_at": "2026-10-18T19:59:42",
+ "n_answers": 0,
+ "n_items_in_bank": 705,
+ "n_items_calibrated": 0,
+ "min_answers_per_item": 30,
+ "active": false,
+ "items": [],
+ "flagged": [],
+ "reliability": {},
+ "rasch": {},
+ "author_vs_empirical_spearman": null,
+ "bkt": null
+}
