@@ -84,6 +84,7 @@ export function LangSwitch({ className }: { className?: string }) {
 // them when the visitor picked English. Kept in step with the metadata in each app/*/layout.tsx.
 const TITLES: [string, [string, string]][] = [
   ["/dashboard", ["Dashboard", "Dashboard"]],
+  ["/learn", ["Learn", "Belajar"]],
   ["/classroom", ["My Classes", "Kelas Saya"]],
   ["/evidence", ["My Evidence", "Evidence Saya"]],
   ["/assessment", ["Quick Check", "Quick Check"]],

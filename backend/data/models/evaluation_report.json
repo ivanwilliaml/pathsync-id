@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-17T22:34:21",
+ "generated_at": "2026-10-18T19:47:35",
  "role": "business_analyst",
  "note": "Simulasi kelayakan dengan pakar tersimulasi (bukan kinerja pada pakar nyata). Peringkat pakar nyata dikumpulkan melalui Panel Pakar dan dilatih dengan pipeline yang sama.",
  "conditions": {
@@ -9,190 +9,190 @@
     "titik_hambat",
     "titik_hambat"
    ],
-   "kendall_w_mean": 0.9694,
+   "kendall_w_mean": 0.9758,
    "cv": {
     "methods": {
      "model": {
       "ndcg5": {
-       "mean": 0.9744,
+       "mean": 0.9799,
        "ci95": [
-        0.9585,
-        0.9886
+        0.9688,
+        0.991
        ],
        "n": 45
       },
       "kendall_tau": {
        "mean": 0.9302,
        "ci95": [
-        0.9063,
-        0.9524
+        0.8984,
+        0.9587
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.9556,
+       "mean": 0.9037,
        "ci95": [
-        0.9111,
-        0.9926
+        0.8519,
+        0.9556
        ],
        "n": 45
       }
      },
      "kesenjangan_terbesar": {
       "ndcg5": {
-       "mean": 0.7545,
+       "mean": 0.719,
        "ci95": [
-        0.6892,
-        0.8177
+        0.6264,
+        0.7995
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.3857,
+       "mean": 0.3349,
        "ci95": [
-        0.281,
-        0.4921
+        0.2175,
+        0.4365
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.5778,
+       "mean": 0.4889,
        "ci95": [
-        0.4963,
-        0.6593
+        0.4296,
+        0.5481
        ],
        "n": 45
       }
      },
      "kesenjangan_x_permintaan": {
       "ndcg5": {
-       "mean": 0.9072,
+       "mean": 0.9087,
        "ci95": [
-        0.8586,
-        0.9529
+        0.8676,
+        0.9453
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.7159,
+       "mean": 0.7063,
        "ci95": [
-        0.646,
-        0.7857
+        0.6492,
+        0.7603
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.7407,
+       "mean": 0.6519,
        "ci95": [
-        0.6741,
-        0.8148
+        0.5778,
+        0.7259
        ],
        "n": 45
       }
      },
      "formula5": {
       "ndcg5": {
-       "mean": 0.9755,
+       "mean": 0.9821,
        "ci95": [
-        0.9631,
-        0.9875
+        0.9721,
+        0.9919
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.9032,
+       "mean": 0.9175,
        "ci95": [
-        0.8587,
-        0.9381
+        0.8857,
+        0.9492
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.9333,
+       "mean": 0.9111,
        "ci95": [
-        0.8815,
-        0.9778
+        0.8519,
+        0.9704
        ],
        "n": 45
       }
      }
     },
     "fold_weights_mean": {
-     "G": 2.0979,
-     "R": 2.6038,
-     "K": 0.0778,
-     "D": 2.3651,
-     "T": 0.896,
-     "U": 2.1569,
-     "B": 0.5624
+     "G": 1.6828,
+     "R": 2.1748,
+     "K": 0.1757,
+     "D": 2.0056,
+     "T": 0.9154,
+     "U": 1.9291,
+     "B": 0.4122
     },
     "n_folds": 5,
     "n_scenarios": 45,
     "n_base": 15,
     "l2_selected": [
      0.05,
+     1.0,
      0.01,
-     0.05,
-     0.05,
-     0.01
+     0.01,
+     1.0
     ]
    },
    "ablation": {
     "tanpa_fitur_graf": {
-     "mean": 0.8996,
+     "mean": 0.9209,
      "ci95": [
-      0.8475,
-      0.9489
+      0.8819,
+      0.9516
      ],
      "n": 45
     },
     "tanpa_fitur_tren": {
-     "mean": 0.9746,
+     "mean": 0.9826,
      "ci95": [
-      0.9588,
-      0.9889
+      0.9705,
+      0.9927
      ],
      "n": 45
     },
     "lengkap": {
-     "mean": 0.9744,
+     "mean": 0.9799,
      "ci95": [
-      0.9585,
-      0.9886
+      0.9688,
+      0.991
      ],
      "n": 45
     }
    },
    "weights_full": {
-    "G": 1.8278,
-    "R": 2.3527,
-    "K": 0.0482,
-    "D": 2.1,
-    "T": 0.9424,
-    "U": 1.6701,
-    "B": 0.3092
+    "G": 1.6785,
+    "R": 2.5079,
+    "K": 0.197,
+    "D": 2.1446,
+    "T": 0.9417,
+    "U": 1.698,
+    "B": 0.3174
    },
    "l2_full": 0.05,
    "adaptivity": {
     "competency": {
      "n": 15,
-     "model_moved_expected": 15,
+     "model_moved_expected": 14,
      "agrees_with_experts": 14,
-     "share_expected": 1.0,
+     "share_expected": 0.9333,
      "share_agree": 0.9333
     },
     "market": {
      "n": 15,
      "model_moved_expected": 10,
-     "agrees_with_experts": 14,
+     "agrees_with_experts": 13,
      "share_expected": 0.6667,
-     "share_agree": 0.9333
+     "share_agree": 0.8667
     }
    },
    "ndcg5_by_n_base": {
-    "8": 0.9814,
-    "15": 0.9858,
-    "30": 0.9759
+    "8": 0.9724,
+    "15": 0.972,
+    "30": 0.9782
    }
   },
   "kesenjangan_permintaan": {
@@ -201,30 +201,30 @@
     "kesenjangan_permintaan",
     "kesenjangan_permintaan"
    ],
-   "kendall_w_mean": 0.9498,
+   "kendall_w_mean": 0.9517,
    "cv": {
     "methods": {
      "model": {
       "ndcg5": {
-       "mean": 0.9629,
+       "mean": 0.975,
        "ci95": [
-        0.9442,
-        0.9807
+        0.9606,
+        0.9864
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.9095,
+       "mean": 0.9349,
        "ci95": [
-        0.8714,
-        0.9429
+        0.9079,
+        0.9571
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.9407,
+       "mean": 0.9333,
        "ci95": [
-        0.8963,
+        0.8889,
         0.9778
        ],
        "n": 45
@@ -232,78 +232,78 @@
      },
      "kesenjangan_terbesar": {
       "ndcg5": {
-       "mean": 0.8212,
+       "mean": 0.8294,
        "ci95": [
-        0.7697,
-        0.872
+        0.7475,
+        0.8987
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.519,
+       "mean": 0.527,
        "ci95": [
-        0.4397,
-        0.5937
+        0.4111,
+        0.627
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.7185,
+       "mean": 0.7111,
        "ci95": [
-        0.6444,
-        0.8074
+        0.6222,
+        0.8
        ],
        "n": 45
       }
      },
      "kesenjangan_x_permintaan": {
       "ndcg5": {
-       "mean": 0.9604,
+       "mean": 0.9756,
        "ci95": [
-        0.9368,
-        0.9802
+        0.9616,
+        0.9865
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.919,
+       "mean": 0.9302,
        "ci95": [
-        0.8825,
-        0.9492
+        0.9016,
+        0.9556
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.9407,
+       "mean": 0.9556,
        "ci95": [
-        0.8963,
-        0.9778
+        0.9259,
+        0.9852
        ],
        "n": 45
       }
      },
      "formula5": {
       "ndcg5": {
-       "mean": 0.9271,
+       "mean": 0.9175,
        "ci95": [
-        0.8922,
-        0.9584
+        0.8858,
+        0.9493
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.7889,
+       "mean": 0.7794,
        "ci95": [
-        0.7397,
-        0.8333
+        0.7349,
+        0.819
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.8222,
+       "mean": 0.7111,
        "ci95": [
-        0.763,
-        0.8815
+        0.6741,
+        0.7407
        ],
        "n": 45
       }
@@ -311,12 +311,12 @@
     },
     "fold_weights_mean": {
      "G": 3.0,
-     "R": 0.0019,
-     "K": 0.0603,
+     "R": 0.1108,
+     "K": -0.0613,
      "D": 3.0,
-     "T": 1.2436,
-     "U": 1.1026,
-     "B": 0.0575
+     "T": 0.9774,
+     "U": 0.6787,
+     "B": 0.0
     },
     "n_folds": 5,
     "n_scenarios": 45,
@@ -331,38 +331,38 @@
    },
    "ablation": {
     "tanpa_fitur_graf": {
-     "mean": 0.9586,
+     "mean": 0.9684,
      "ci95": [
-      0.9335,
-      0.9805
+      0.9547,
+      0.9808
      ],
      "n": 45
     },
     "tanpa_fitur_tren": {
-     "mean": 0.9627,
+     "mean": 0.9748,
      "ci95": [
-      0.9436,
-      0.9806
+      0.9605,
+      0.9862
      ],
      "n": 45
     },
     "lengkap": {
-     "mean": 0.9629,
+     "mean": 0.975,
      "ci95": [
-      0.9442,
-      0.9807
+      0.9606,
+      0.9864
      ],
      "n": 45
     }
    },
    "weights_full": {
     "G": 3.0,
-    "R": 0.0,
-    "K": 0.0601,
+    "R": 0.1106,
+    "K": -0.0611,
     "D": 3.0,
-    "T": 1.2424,
-    "U": 1.11,
-    "B": 0.0265
+    "T": 0.9743,
+    "U": 0.6712,
+    "B": 0.0
    },
    "l2_full": 0.01,
    "adaptivity": {
@@ -375,16 +375,16 @@
     },
     "market": {
      "n": 15,
-     "model_moved_expected": 12,
-     "agrees_with_experts": 15,
-     "share_expected": 0.8,
-     "share_agree": 1.0
+     "model_moved_expected": 14,
+     "agrees_with_experts": 13,
+     "share_expected": 0.9333,
+     "share_agree": 0.8667
     }
    },
    "ndcg5_by_n_base": {
-    "8": 0.9889,
-    "15": 0.9597,
-    "30": 0.9767
+    "8": 0.9651,
+    "15": 0.9519,
+    "30": 0.9457
    }
   },
   "campuran": {
@@ -393,211 +393,211 @@
     "kesenjangan_permintaan",
     "kesiapan"
    ],
-   "kendall_w_mean": 0.8915,
+   "kendall_w_mean": 0.8882,
    "cv": {
     "methods": {
      "model": {
       "ndcg5": {
-       "mean": 0.9661,
+       "mean": 0.9779,
        "ci95": [
-        0.9453,
-        0.9861
+        0.9632,
+        0.9891
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.8937,
+       "mean": 0.9095,
        "ci95": [
-        0.8556,
-        0.9302
+        0.8905,
+        0.9286
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.9407,
+       "mean": 0.8889,
        "ci95": [
-        0.8889,
-        0.9778
+        0.8444,
+        0.9333
        ],
        "n": 45
       }
      },
      "kesenjangan_terbesar": {
       "ndcg5": {
-       "mean": 0.7515,
+       "mean": 0.7534,
        "ci95": [
-        0.6884,
-        0.8143
+        0.6736,
+        0.8251
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.4111,
+       "mean": 0.3873,
        "ci95": [
-        0.3095,
-        0.5143
+        0.2794,
+        0.4825
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.6148,
+       "mean": 0.563,
        "ci95": [
-        0.5259,
-        0.7037
+        0.5111,
+        0.6148
        ],
        "n": 45
       }
      },
      "kesenjangan_x_permintaan": {
       "ndcg5": {
-       "mean": 0.9099,
+       "mean": 0.9367,
        "ci95": [
-        0.8605,
-        0.9546
+        0.9101,
+        0.9599
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.7508,
+       "mean": 0.7651,
        "ci95": [
-        0.6873,
-        0.8143
+        0.7238,
+        0.8048
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.8,
+       "mean": 0.7407,
        "ci95": [
-        0.7333,
-        0.8815
+        0.6815,
+        0.8074
        ],
        "n": 45
       }
      },
      "formula5": {
       "ndcg5": {
-       "mean": 0.9698,
+       "mean": 0.9797,
        "ci95": [
-        0.9518,
-        0.9875
+        0.9677,
+        0.9894
        ],
        "n": 45
       },
       "kendall_tau": {
-       "mean": 0.9,
+       "mean": 0.9159,
        "ci95": [
-        0.8587,
-        0.9349
+        0.8921,
+        0.9397
        ],
        "n": 45
       },
       "top3": {
-       "mean": 0.9481,
+       "mean": 0.8815,
        "ci95": [
-        0.9111,
-        0.9778
+        0.837,
+        0.9259
        ],
        "n": 45
       }
      }
     },
     "fold_weights_mean": {
-     "G": 1.7929,
-     "R": 1.849,
-     "K": -0.0903,
-     "D": 2.017,
-     "T": 0.97,
-     "U": 1.5649,
-     "B": 0.2364
+     "G": 1.9003,
+     "R": 1.925,
+     "K": -0.1693,
+     "D": 2.1096,
+     "T": 0.9907,
+     "U": 1.343,
+     "B": 0.1274
     },
     "n_folds": 5,
     "n_scenarios": 45,
     "n_base": 15,
     "l2_selected": [
      0.2,
-     0.01,
-     0.2,
      0.05,
-     0.2
+     0.05,
+     0.01,
+     1.0
     ]
    },
    "ablation": {
     "tanpa_fitur_graf": {
-     "mean": 0.9077,
+     "mean": 0.9173,
      "ci95": [
-      0.8595,
-      0.9516
+      0.8823,
+      0.9481
      ],
      "n": 45
     },
     "tanpa_fitur_tren": {
-     "mean": 0.9698,
+     "mean": 0.98,
      "ci95": [
-      0.949,
-      0.9894
+      0.9663,
+      0.9906
      ],
      "n": 45
     },
     "lengkap": {
-     "mean": 0.9661,
+     "mean": 0.9779,
      "ci95": [
-      0.9453,
-      0.9861
+      0.9632,
+      0.9891
      ],
      "n": 45
     }
    },
    "weights_full": {
-    "G": 2.7595,
-    "R": 3.0,
-    "K": -0.2099,
-    "D": 3.0,
-    "T": 0.9431,
-    "U": 2.3674,
-    "B": 0.5009
+    "G": 1.4432,
+    "R": 1.3968,
+    "K": -0.0595,
+    "D": 1.6801,
+    "T": 0.9978,
+    "U": 1.1782,
+    "B": 0.0767
    },
-   "l2_full": 0.01,
+   "l2_full": 0.2,
    "adaptivity": {
     "competency": {
      "n": 15,
-     "model_moved_expected": 15,
-     "agrees_with_experts": 14,
-     "share_expected": 1.0,
-     "share_agree": 0.9333
+     "model_moved_expected": 14,
+     "agrees_with_experts": 15,
+     "share_expected": 0.9333,
+     "share_agree": 1.0
     },
     "market": {
      "n": 15,
-     "model_moved_expected": 10,
-     "agrees_with_experts": 12,
-     "share_expected": 0.6667,
-     "share_agree": 0.8
+     "model_moved_expected": 12,
+     "agrees_with_experts": 14,
+     "share_expected": 0.8,
+     "share_agree": 0.9333
     }
    },
    "ndcg5_by_n_base": {
-    "8": 0.9898,
-    "15": 0.9749,
-    "30": 0.9643
+    "8": 0.9755,
+    "15": 0.9767,
+    "30": 0.9752
    }
   }
  },
  "n_scenarios": 45,
  "n_base": 15,
- "market_version": "2026-10-12-lexicon",
+ "market_version": "2026-10-18-lexicon",
  "llm_baseline": "tidak dijalankan (urutan LLM luring tidak lengkap/kedaluwarsa; ekspor ulang skenario)",
  "registered_model": {
   "weights": {
-   "G": 2.7595,
-   "R": 3.0,
-   "K": -0.2099,
-   "D": 3.0,
-   "T": 0.9431,
-   "U": 2.3674,
-   "B": 0.5009
+   "G": 1.4432,
+   "R": 1.3968,
+   "K": -0.0595,
+   "D": 1.6801,
+   "T": 0.9978,
+   "U": 1.1782,
+   "B": 0.0767
   },
   "active": false,
   "non_inferior_to_formula5": true,
-  "cv_ndcg5": 0.9661,
-  "formula5_ndcg5": 0.9698,
+  "cv_ndcg5": 0.9779,
+  "formula5_ndcg5": 0.9797,
   "active_ranker": "Formula (5)"
  }
 }

@@ -207,6 +207,12 @@ function LearningRoute({ steps, names, onOpen, totalHours, weekly }: { steps: Pa
       >
         {t("Your Learning Route", "Rute Belajarmu")}
       </SectionTitle>
+      <p className="-mt-2 mb-5 text-sm text-ink/70">
+        {t("Every step comes with free materials.", "Setiap langkah dilengkapi materi gratis.")}{" "}
+        <Link href="/learn" className="font-medium text-indigo underline-offset-4 hover:underline">
+          {t("Start learning", "Mulai belajar")} →
+        </Link>
+      </p>
       <ol className="relative grid gap-4 md:grid-cols-[repeat(var(--steps),minmax(0,1fr))] md:gap-3" style={{ ["--steps" as string]: steps.length }}>
         {steps.map((s, i) => {
           const prereq = s.role_in_path !== "prioritas";

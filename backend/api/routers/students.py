@@ -26,7 +26,7 @@ from pathsync.db import (
     WeeklyPlan,
     utcnow,
 )
-from pathsync.engine import decision_trace, record_history
+from pathsync.engine import decision_trace, materials_by_skill, record_history
 from pathsync.i18n import tr
 from pathsync.intake import (
     DocumentRejected,
@@ -147,6 +147,29 @@ def put_soft_experience(body: SoftExperienceIn, st: Student = Depends(student_ac
     st.preferences = prefs
     s.commit()
     return {"ok": True, "soft_experience": exp}
+
+
+class MaterialIn(BaseModel):
+    done: bool
+
+
+@router.put("/students/{sid}/materials/{mid}")
+def put_material(mid: str, body: MaterialIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
+    """Ticks a free learning material as done (Learn page). Study progress only: finishing a material never raises
+    mastery, the skill check or a project does."""
+    if not any(m["id"] == mid for mats in materials_by_skill().values() for m in mats):
+        raise HTTPException(404, tr("Unknown material.", "Materi tidak dikenal."))
+    st = s.merge(st)
+    prefs = dict(st.preferences or {})
+    done = dict(prefs.get("materials_done") or {})
+    if body.done:
+        done.setdefault(mid, utcnow().date().isoformat())
+    else:
+        done.pop(mid, None)
+    prefs["materials_done"] = done
+    st.preferences = prefs
+    s.commit()
+    return {"ok": True, "materials_done": done}
 
 
 # ----------------------------------------------------------- personal data (UU PDP No. 27/2022)

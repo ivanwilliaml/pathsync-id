@@ -256,6 +256,7 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
     next_step = {order[i]: order[i + 1] for i in range(len(order) - 1)}
     prefs = student.preferences or {}
     weekly = float(prefs.get("weekly_hours") or 6)
+    done_materials = prefs.get("materials_done") or {}
 
     ectx = {"skills": ctx.skills, "names": ctx.names, "market": ctx.market, "role_name": ctx.role_name, "p": p,
             "req": ctx.req, "esco": ctx.esco, "quotes": ctx.quotes, "next_step": next_step}
@@ -287,7 +288,8 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
         path_out.append({
             "skill_id": sid, "name": ctx.names[sid], "role_in_path": stp.role_in_path, "rank": stp.rank,
             "p": round(st.p, 3), "target": round(target, 3), "level_now": level_label(st.p), "level_target": level_label(target),
-            "rec_type": recommendation_type(st), "hours": hours, "materials": (mats := _pick_materials(sid, st.p, prefs)),
+            "rec_type": recommendation_type(st), "hours": hours,
+            "materials": (mats := [{**m, "done": m["id"] in done_materials} for m in _pick_materials(sid, st.p, prefs)]),
             # the commitment now is the first module, not "beginner to advanced" (PM audit AI-2)
             "first_module_hours": round(min(hours, mats[0]["hours"]) if mats else min(hours, 2.0), 1),
             "waiting_for": waiting, "learn_what": ctx.skills[sid].learn_what,
