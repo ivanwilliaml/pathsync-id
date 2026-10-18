@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   BarChart3,
   BookOpen,
+  BookOpenCheck,
   Cpu,
   GraduationCap,
   ClipboardCheck,
@@ -35,6 +36,7 @@ type NavItem = { href: string; label: [string, string]; icon: typeof LayoutDashb
 
 const JOURNEY: NavItem[] = [
   { href: "/dashboard", label: ["Dashboard", "Dashboard"], icon: LayoutDashboard },
+  { href: "/learn", label: ["Learn", "Belajar"], icon: BookOpenCheck },
   { href: "/classroom", label: ["My Classes", "Kelas Saya"], icon: BookOpen },
   { href: "/evidence", label: ["My Evidence", "Evidence Saya"], icon: FolderOpen },
   { href: "/assessment", label: ["Assessment", "Assessment"], icon: ClipboardCheck },

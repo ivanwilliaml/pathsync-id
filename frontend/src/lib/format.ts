@@ -1,4 +1,5 @@
 // Display helpers: English labels for the backend's internal codes, title case, Intl formatting.
+import { tNow } from "./i18n";
 
 const SMALL = new Set(["a", "an", "and", "as", "at", "but", "by", "for", "in", "nor", "of", "on", "or", "the", "to", "vs", "via", "with"]);
 
@@ -44,7 +45,8 @@ export const pct = (x: number | null | undefined, digits = 0) =>
 export const num = (x: number | null | undefined, digits = 2) =>
   x == null ? "–" : new Intl.NumberFormat("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(x);
 export const int = (x: number | null | undefined) => (x == null ? "–" : nf0.format(x));
-export const hours = (h: number) => `${new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 }).format(h)} h`;
+export const hours = (h: number) =>
+  `${new Intl.NumberFormat(tNow("en-US", "id-ID"), { maximumFractionDigits: 1 }).format(h)} ${tNow("h", "jam")}`;
 
 const dateFmt = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", year: "numeric" });
 const dateTimeFmt = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });

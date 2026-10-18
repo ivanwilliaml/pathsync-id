@@ -135,6 +135,8 @@ export interface Material {
   language: string;
   hours: number;
   verified: boolean;
+  /** ticked as finished on the Learn page (study progress only, never mastery) */
+  done?: boolean;
 }
 
 export interface PathStep {
