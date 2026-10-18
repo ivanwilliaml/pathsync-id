@@ -5,6 +5,9 @@
 The sheets are frozen copies in data/seed/_validasi/ (sha256 printed). Provenance, as stated by the team on 17 Oct 2026:
   V1 and V4: two LLM passes, checked and corrected by one team member (Ivan). Not independent human annotators.
   V2: internal team review (kind "tim"); never counts as expert validation.
+  V2 experts (18 Oct): three independent BA experts (1 lecturer in Information Systems, 1 process BA practitioner, 1 systems
+      BA practitioner), anonymous at their request. A team member (Ivan) collected and summarised their answers into the
+      sheets; the original answers and identities are kept by the team, not in the repository.
   V3: pilot responses collected by the team in Google Sheets and entered into the template (raw export not in the repo);
       analysed by pipeline.pilot_analysis.
 """
@@ -26,6 +29,14 @@ STEPS = [
     ["pipeline.pilot_analysis"],
     ["pipeline.expert_sheet", "import", str(DIR / "V2_tinjauan_internal_ivan.xlsx"), "--name", "Ivan (tinjauan internal tim)",
      "--affiliation", "Tim PathSync", "--kind", "tim"],
+    # Three independent BA experts (18 Oct 2026), anonymous at their request; answers collected and summarised by the team.
+    ["pipeline.expert_sheet", "import", str(DIR / "V2_pakar1_dosen_si.xlsx"), "--name", "Pakar 1 (anonim)",
+     "--affiliation", "Dosen Sistem Informasi (dirahasiakan)", "--kind", "dosen"],
+    ["pipeline.expert_sheet", "import", str(DIR / "V2_pakar2_ba_proses.xlsx"), "--name", "Pakar 2 (anonim)",
+     "--affiliation", "Praktisi BA proses (dirahasiakan)", "--kind", "praktisi"],
+    ["pipeline.expert_sheet", "import", str(DIR / "V2_pakar3_ba_sistem.xlsx"), "--name", "Pakar 3 (anonim)",
+     "--affiliation", "Praktisi BA sistem (dirahasiakan)", "--kind", "praktisi"],
+    ["pipeline.expert_sheet", "finalize"],
 ]
 
 

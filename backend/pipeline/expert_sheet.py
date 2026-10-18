@@ -208,17 +208,30 @@ def cmd_import(path: str, name: str, affiliation: str, kind: str, role: str) -> 
           f"{len(relevance)} relevance ratings -> {RELEVANCE_FILE.name}")
 
 
+def cmd_finalize() -> None:
+    """Apply the 2-of-3 rule to every link (same as Admin > Experts > Finalize)."""
+    from pathsync.engine import finalize_edges
+
+    with SessionLocal() as s:
+        summary = finalize_edges(s)
+        bump_epoch(s)
+        s.commit()
+    print("links after the 2-of-3 rule:", summary)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("cmd", choices=["sheet", "import"])
-    ap.add_argument("arg", help="expert name (sheet) or path to the filled .xlsx (import)")
+    ap.add_argument("cmd", choices=["sheet", "import", "finalize"])
+    ap.add_argument("arg", nargs="?", help="expert name (sheet) or path to the filled .xlsx (import)")
     ap.add_argument("--role", default="business_analyst", choices=sorted(ROLES))
     ap.add_argument("--name")
     ap.add_argument("--affiliation", default="")
     ap.add_argument("--kind", default="dosen")
     a = ap.parse_args()
     init_db()
-    if a.cmd == "sheet":
+    if a.cmd == "finalize":
+        cmd_finalize()
+    elif a.cmd == "sheet":
         cmd_sheet(a.arg, a.role)
     else:
         if not a.name:

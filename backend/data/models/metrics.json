@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-18T05:33:44+00:00",
+ "generated_at": "2026-10-18T11:44:48+00:00",
  "inputs": {
   "taxonomy_sha": "97b396bb278d",
   "graph_sha": "b6fed258f5d1",
@@ -898,7 +898,9 @@
  },
  "validation": {
   "graph_edges": {
-   "draft": 169
+   "approved": 12,
+   "draft": 142,
+   "rejected": 15
   },
   "annotators_in_app": 2,
   "annotated_postings_in_app": 130,
@@ -911,9 +913,21 @@
    {
     "name": "Ivan (tinjauan internal tim)",
     "kind": "tim"
+   },
+   {
+    "name": "Pakar 1 (anonim)",
+    "kind": "dosen"
+   },
+   {
+    "name": "Pakar 2 (anonim)",
+    "kind": "praktisi"
+   },
+   {
+    "name": "Pakar 3 (anonim)",
+    "kind": "praktisi"
    }
   ],
-  "independent_experts": 0
+  "independent_experts": 3
  },
  "pilot": {
   "n": 20,
@@ -1202,10 +1216,10 @@
   },
   "sensitivity_top3": {
    "documented prior (0.20/0.25/0.30/0.50)": 1.0,
-   "random weights near the prior (Dirichlet, concentration 100)": 0.9864,
-   "random weights near the prior (Dirichlet, concentration 30)": 0.9739,
-   "equal weights": 0.9667,
-   "no assessment weight boost (assessment = project)": 0.9833,
+   "random weights near the prior (Dirichlet, concentration 100)": 0.9763,
+   "random weights near the prior (Dirichlet, concentration 30)": 0.9593,
+   "equal weights": 0.9444,
+   "no assessment weight boost (assessment = project)": 0.9667,
    "grades weigh most (reversed)": 0.8778
   }
  },

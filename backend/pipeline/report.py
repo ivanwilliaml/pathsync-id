@@ -30,6 +30,7 @@ from pathsync.db import (
     GraphEdge,
     Posting,
     RankerModel,
+    ScenarioRanking,
     active_snapshot,
     get_session,
     init_db,
@@ -101,7 +102,9 @@ def _ranker(s) -> dict:
     for name, c in (rep.get("conditions") or {}).items():
         methods = ((c.get("cv") or {}).get("methods") or {})
         conds[name] = {m: (v.get("ndcg5") or {}) for m, v in methods.items()}
-    real = s.scalar(select(func.count(Expert.id)).where(Expert.kind.not_in(NON_EXPERT_KINDS))) or 0
+    # the ranker is judged on scenario rankings, so only experts who ranked scenarios count here (graph reviewers do not)
+    real = s.scalar(select(func.count(func.distinct(ScenarioRanking.expert_id))).join(Expert, Expert.id == ScenarioRanking.expert_id)
+                    .where(ScenarioRanking.simulated.is_(False), Expert.kind.not_in(NON_EXPERT_KINDS))) or 0
     return {"generated": rep.get("generated_at"), "role": rep.get("role"), "n_scenarios": rep.get("n_scenarios"),
             "experts": "real" if real >= 3 else "simulated", "real_experts": real,
             "active_model": active.name if active else "Formula (5)",

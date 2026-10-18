@@ -23,7 +23,6 @@ from pathsync.db import (
     Cohort,
     Evidence,
     Expert,
-    GraphEdge,
     MarketSnapshot,
     Posting,
     PostingMention,
@@ -39,7 +38,8 @@ from pathsync.db import (
     utcnow,
 )
 from pathsync.demand import MarketMap, apply_market_shift
-from pathsync.engine import graph_from_db, propagate_market_change
+from pathsync.engine import finalize_edges as engine_finalize_edges
+from pathsync.engine import propagate_market_change
 from pathsync.extraction.llm import llm_configured
 from pathsync.gold import agreement as annotator_agreement
 from pathsync.gold import load_split_all, prf
@@ -422,16 +422,8 @@ def agreement(simulated: bool = False, s: Session = Depends(db_session)):
 @router.post("/edges/finalize")
 def finalize_edges(s: Session = Depends(db_session)):
     """Keep an edge when at least two of three experts approve it (paper III.A.3)."""
-    summary = {"approved": 0, "rejected": 0, "draft": 0}
-    counted = {x.id for x in s.scalars(select(Expert).where(Expert.kind.not_in(NON_EXPERT_KINDS))).all()}
-    for e in s.scalars(select(GraphEdge)).all():
-        votes = [v for v in e.votes if v.expert_id in counted]       # internal and simulated reviews never validate a link
-        a = sum(v.approve for v in votes)
-        r = sum(not v.approve for v in votes)
-        e.status = "approved" if a >= 2 else "rejected" if r >= 2 else "draft"
-        summary[e.status] += 1
     try:
-        graph_from_db(s).check_acyclic()
+        summary = engine_finalize_edges(s)          # internal and simulated reviews never validate a link
     except CycleError:
         s.rollback()
         raise HTTPException(400, "The approved links form a loop. Reject one of them and try again.") from None
