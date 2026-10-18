@@ -12,7 +12,7 @@ import threading
 from dataclasses import dataclass
 from functools import lru_cache
 
-from sqlalchemy import select
+from sqlalchemy import event, select
 from sqlalchemy.orm import Session
 
 from . import soft
@@ -147,6 +147,12 @@ _CTX_CACHE: dict[tuple, Context] = {}
 _CTX_LOCK = threading.Lock()
 
 
+@event.listens_for(Session, "after_commit")
+@event.listens_for(Session, "after_rollback")
+def _clear_key_memo(s: Session) -> None:
+    s.info.pop("ctx_keys", None)
+
+
 def load_context(s: Session, role: str) -> Context:
     """Shared, read-only decision context for a role.
 
@@ -154,9 +160,17 @@ def load_context(s: Session, role: str) -> Context:
     the paper notes the demand map is computed once per update and shared, so adding users does not
     add proportional compute (III.B). Any change to snapshot, model or graph bumps the epoch.
     """
-    snap = active_snapshot(s, role)
-    model_row = s.scalars(select(RankerModel.id).where(RankerModel.active.is_(True)).order_by(RankerModel.id.desc())).first()
-    key = (role, snap.id if snap else None, model_row, cache_epoch(s), get_lang())   # names are per language
+    # the key lookups are memoised per transaction: careers_for asks for every role, and three round trips per role
+    # to a remote database added ~20 s per call on the hosted demo. Cleared on commit/rollback (_clear_key_memo).
+    memo = s.info.setdefault("ctx_keys", {})
+    if "shared" not in memo:
+        memo["shared"] = (s.scalars(select(RankerModel.id).where(RankerModel.active.is_(True))
+                                    .order_by(RankerModel.id.desc())).first(), cache_epoch(s))
+    if role not in memo:
+        snap = active_snapshot(s, role)
+        memo[role] = snap.id if snap else None
+    model_row, epoch = memo["shared"]
+    key = (role, memo[role], model_row, epoch, get_lang())   # names are per language
     with _CTX_LOCK:
         hit = _CTX_CACHE.get(key)
     if hit is not None:
