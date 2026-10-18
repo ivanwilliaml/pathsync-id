@@ -97,7 +97,24 @@ items = sorted(jobs["items"], key=lambda it: len(it["text"]))      # similar len
 key = "fingerprint" if KIND == "postings" else "id"
 results: dict[str, dict] = {}
 t0 = time.time()
+# Kaggle stops a session at 12 h and keeps nothing; stop ourselves before that and always leave a results file
+TIME_BUDGET_S = float(os.getenv("PATHSYNC_TIME_BUDGET_H", "11")) * 3600
+path = f"/kaggle/working/llm_results_{KIND}.json"
+
+
+def save(final: bool) -> None:
+    out = {"kind": KIND, "model": MODEL_NAME, "generated_at": datetime.now().isoformat(timespec="seconds"),
+           "taxonomy_version": jobs.get("taxonomy_version"), "complete": final and len(results) == len(items),
+           "results": results}
+    with open(path + ".tmp", "w", encoding="utf-8") as f:
+        json.dump(out, f, ensure_ascii=False)
+    os.replace(path + ".tmp", path)
+
+
 for i in range(0, len(items), BATCH):
+    if time.time() - t0 > TIME_BUDGET_S:
+        print(f"batas waktu tercapai setelah {len(results)} item; hasil sebagian disimpan", flush=True)
+        break
     batch = items[i:i + BATCH]
     texts = generate(batch, MAX_NEW, sample=False)
     for it, txt in zip(batch, texts):
@@ -118,10 +135,8 @@ for i in range(0, len(items), BATCH):
             results[it[key]]["fingerprint"] = it.get("fingerprint")
     done = min(i + BATCH, len(items))
     print(f"{done}/{len(items)} selesai, {time.time() - t0:.0f} dtk, gagal {sum('error' in r for r in results.values())}", flush=True)
+    save(final=False)
 
-out = {"kind": KIND, "model": MODEL_NAME, "generated_at": datetime.now().isoformat(timespec="seconds"),
-       "taxonomy_version": jobs.get("taxonomy_version"), "results": results}
-path = f"/kaggle/working/llm_results_{KIND}.json"
-with open(path, "w", encoding="utf-8") as f:
-    json.dump(out, f, ensure_ascii=False)
-print("ditulis:", path, "| gagal:", sum("error" in r for r in results.values()), "| waktu:", round(time.time() - t0), "dtk")
+save(final=True)
+print("ditulis:", path, "| item:", len(results), "dari", len(items), "| gagal:", sum("error" in r for r in results.values()),
+      "| waktu:", round(time.time() - t0), "dtk")

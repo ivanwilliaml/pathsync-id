@@ -24,14 +24,17 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("kind", choices=["postings", "scenarios"])
     ap.add_argument("--user", required=True)
+    ap.add_argument("--jobs", help="job file (default offline_llm/jobs/<kind>.json)")
+    ap.add_argument("--name", help="kernel name suffix, e.g. gold -> pathsync-llm-postings-gold")
     a = ap.parse_args()
-    jobs = (HERE / "jobs" / f"{a.kind}.json").read_bytes()
+    jobs = Path(a.jobs).read_bytes() if a.jobs else (HERE / "jobs" / f"{a.kind}.json").read_bytes()
+    name = f"pathsync-llm-{a.kind}" + (f"-{a.name}" if a.name else "")
     b64 = base64.b64encode(gzip.compress(jobs, 9)).decode()
-    out = HERE / "build" / a.kind
+    out = HERE / "build" / name
     out.mkdir(parents=True, exist_ok=True)
     src = (HERE / "pathsync_llm.py").read_text(encoding="utf-8").replace("__JOBS__", b64)
     (out / "pathsync_llm.py").write_text(src, encoding="utf-8")
-    meta = {"id": f"{a.user}/pathsync-llm-{a.kind}", "title": f"pathsync-llm-{a.kind}", "code_file": "pathsync_llm.py",
+    meta = {"id": f"{a.user}/{name}", "title": name, "code_file": "pathsync_llm.py",
             "language": "python", "kernel_type": "script", "is_private": True, "enable_gpu": True, "enable_tpu": False,
             "enable_internet": False, "dataset_sources": [], "competition_sources": [], "kernel_sources": [],
             "model_sources": MODELS, "machine_shape": "NvidiaTeslaT4"}
