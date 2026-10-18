@@ -14,7 +14,7 @@ Tenggat: **23 Okt** karya ilmiah lengkap dan demo, **27 Okt** TM luring, **28 Ok
 Pekerjaan backend, data, AI, asesmen, dan validasi 16–18 Okt ada di branch **`perbaikan-be-ai`** (22 commit, belum di-merge ke
 `main`). Rincian dan angka: `docs/plan/PLAN_BACKEND_DATA_AI.md` dan `backend/data/models/metrics.json` di branch itu.
 
-**Progres kasar:** keseluruhan ±75%; backend/data/AI/asesmen/validasi ±90%; syarat wajib MVP ±55–60% (2 dari 7 penuh).
+**Progres kasar:** keseluruhan ±75%; backend/data/AI/asesmen/validasi ±90%; syarat wajib MVP ±65% (3 dari 7 penuh).
 
 ### Status syarat MVP
 
@@ -25,7 +25,7 @@ Pekerjaan backend, data, AI, asesmen, dan validasi 16–18 Okt ada di branch **`
 | M3 | Sebagian | Backend dua bahasa per permintaan dan bank soal Indonesia siap; **UI frontend masih bahasa Inggris, belum ada tombol bahasa** |
 | M4 | Sebagian | Frontend online (Vercel, HTTPS); database Neon terisi; cadangan harian siap. **Backend belum online**, belum ada uji otomatis alur demo, video cadangan belum ada |
 | M5 | Belum dicek | Proposal Bab I–III belum dicocokkan dengan `metrics.json` |
-| M6 | Sebagian | Pilot 20 mahasiswa selesai; **pakar BA independen 0** (perlu ≥ 1) |
+| M6 | **Selesai** | Pilot 20 mahasiswa; 3 pakar BA independen (anonim atas permintaan, jawaban dirangkum tim). Aturan 2 dari 3: 12 prasyarat disetujui, 15 ditolak |
 | M7 | Hampir | `DATA_SOURCES.md` dan halaman About ada; izin Kalibrr belum (draf email `docs/ops/EMAIL_IZIN_KALIBRR.md`) |
 | S1 | Selesai | Leksikon F1 ±0,81 vs LLM Qwen3-8B ±0,50; tim memutuskan leksikon |
 | S2 | Selesai | Pita otomatis tidak mencapai 0,95, jadi dimatikan sesuai aturan |
@@ -39,7 +39,7 @@ Pekerjaan backend, data, AI, asesmen, dan validasi 16–18 Okt ada di branch **`
 | # | Pekerjaan | Pemilik | Catatan |
 |---|---|---|---|
 | 1 | **Backend online** | Ivan + Claude | Render minta kartu dan kartu ditolak. Rencana: **Railway trial** (tanpa kartu, kredit $5 ≈ 30 hari, cukup sampai final 28 Okt) atau laptop + Cloudflare Tunnel untuk demo. Image `deploy/render/Dockerfile` sudah teruji di 512 MB. Setelah online: bangun ulang isi Neon, arahkan `PATHSYNC_API` di Vercel, uji ujung ke ujung |
-| 2 | **1–3 pakar BA independen** mengisi lembar V2 | Tim | `docs/validasi/V2_PERTANYAAN_PAKAR.md`; draf jawaban AI tidak dihitung sebagai pakar |
+| 2 | ~~1–3 pakar BA independen mengisi lembar V2~~ **Selesai 18 Okt** (3 pakar) | Tim | Simpan jawaban asli dan identitas pakar di tempat aman untuk verifikasi juri |
 | 3 | Frontend menampilkan "dari nilai" vs "dibuktikan" (M2) | Frontend | Data dari API dashboard sudah ada |
 | 4 | Frontend bahasa Indonesia + tombol bahasa (M3) | Frontend | Backend menerima `?lang=id` atau `Accept-Language` |
 | 5 | Uji otomatis alur demo di browser (Playwright) | Frontend + Claude | Setelah backend online |
