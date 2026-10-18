@@ -9,6 +9,63 @@ Tenggat: **23 Okt** karya ilmiah lengkap dan demo, **27 Okt** TM luring, **28 Ok
 
 ---
 
+## 0. Status 18 Okt dan sisa pekerjaan
+
+Pekerjaan backend, data, AI, asesmen, dan validasi 16–18 Okt ada di branch **`perbaikan-be-ai`** (22 commit, belum di-merge ke
+`main`). Rincian dan angka: `docs/plan/PLAN_BACKEND_DATA_AI.md` dan `backend/data/models/metrics.json` di branch itu.
+
+**Progres kasar:** keseluruhan ±75%; backend/data/AI/asesmen/validasi ±90%; syarat wajib MVP ±65% (3 dari 7 penuh).
+
+### Status syarat MVP
+
+| ID | Status | Yang kurang |
+|---|---|---|
+| M1 | Sebagian | Presisi uji ekstraksi sedikit di bawah target 0,80 (selang kepercayaan mencakup 0,80). Gold = pra-anotasi LLM + 1 verifikator, bukan 2 anotator manusia dengan kappa. Taksonomi BA lolos 3/3 |
+| M2 | Sebagian | Backend sudah memberi `p_proven` dan `coverage_proven`; **frontend belum menampilkan "dari nilai" vs "dibuktikan"** |
+| M3 | Sebagian | Backend dua bahasa per permintaan dan bank soal Indonesia siap; **UI frontend masih bahasa Inggris, belum ada tombol bahasa** |
+| M4 | Sebagian | Frontend online (Vercel, HTTPS); database Neon terisi; cadangan harian siap. **Backend belum online**, belum ada uji otomatis alur demo, video cadangan belum ada |
+| M5 | Belum dicek | Proposal Bab I–III belum dicocokkan dengan `metrics.json` |
+| M6 | **Selesai** | Pilot 20 mahasiswa; 3 pakar BA independen (anonim atas permintaan, jawaban dirangkum tim). Aturan 2 dari 3: 12 prasyarat disetujui, 15 ditolak |
+| M7 | Hampir | `DATA_SOURCES.md` dan halaman About ada; izin Kalibrr belum (draf email `docs/ops/EMAIL_IZIN_KALIBRR.md`) |
+| S1 | Selesai | Leksikon F1 ±0,81 vs LLM Qwen3-8B ±0,50; tim memutuskan leksikon |
+| S2 | Selesai | Pita otomatis tidak mencapai 0,95, jadi dimatikan sesuai aturan |
+| S3 | Selesai | Backend Developer 87 lowongan, Fullstack 60 |
+| S4, S5 | Frontend | Belum dicek di sisi frontend (S5 backend sudah) |
+
+### Sisa pekerjaan
+
+**P0, wajib untuk MVP**
+
+| # | Pekerjaan | Pemilik | Catatan |
+|---|---|---|---|
+| 1 | **Backend online** | Ivan + Claude | Render minta kartu dan kartu ditolak. Rencana: **Railway trial** (tanpa kartu, kredit $5 ≈ 30 hari, cukup sampai final 28 Okt) atau laptop + Cloudflare Tunnel untuk demo. Image `deploy/render/Dockerfile` sudah teruji di 512 MB. Setelah online: bangun ulang isi Neon, arahkan `PATHSYNC_API` di Vercel, uji ujung ke ujung |
+| 2 | ~~1–3 pakar BA independen mengisi lembar V2~~ **Selesai 18 Okt** (3 pakar) | Tim | Simpan jawaban asli dan identitas pakar di tempat aman untuk verifikasi juri |
+| 3 | Frontend menampilkan "dari nilai" vs "dibuktikan" (M2) | Frontend | Data dari API dashboard sudah ada |
+| 4 | Frontend bahasa Indonesia + tombol bahasa (M3) | Frontend | Backend menerima `?lang=id` atau `Accept-Language` |
+| 5 | Uji otomatis alur demo di browser (Playwright) | Frontend + Claude | Setelah backend online |
+| 6 | Video demo cadangan | Tim | Setelah backend online |
+| 7 | Cocokkan proposal Bab I–III dengan `metrics.json` (M5) | Tim + Claude | Kirim draf proposal |
+| 8 | Merge `perbaikan-be-ai` ke `main` lewat PR agar CI GitHub berjalan | Ivan + Claude | Gerbang CI sudah lulus lokal (SQLite + PostgreSQL, coverage 89%) |
+
+**P1, memperkuat**
+
+| # | Pekerjaan | Pemilik |
+|---|---|---|
+| 9 | Kirim email izin ke Kalibrr | Tim |
+| 10 | Lowongan BA dari 65 ke ≥ 100 (bergantung izin Kalibrr atau sumber legal lain) | Data/AI |
+| 11 | Ekspor jawaban Quick Check per soal dari pilot untuk kalibrasi asesmen (AI-10) | Tim |
+| 12 | Tambah secret `NEON_DATABASE_URL` di GitHub agar cadangan harian jalan | Ivan |
+| 13 | Putuskan 10 berkas `docs/validasi/` dari sesi lain (lembar validator yang diisi AI): pindah ke folder berlabel, buang, atau simpan | Ivan |
+
+**P2, setelah final**
+
+| # | Pekerjaan |
+|---|---|
+| 14 | Tinjauan isi manual soal ±80 skill non-BA; kurangi petunjuk kata absolut di pengecoh (audit pola jawaban ±0,34 EN / ±0,33 ID, batas acak ±0,26) |
+| 15 | Hentikan kernel Kaggle `pathsync-llm-postings-gold` yang tidak dipakai |
+
+---
+
 ## 1. Produk dalam satu paragraf
 
 PathSync membaca lowongan kerja nyata Indonesia, memeriksa apa yang sudah bisa dibuktikan mahasiswa (nilai, sertifikat, proyek, Quick Check), lalu menyusun rute belajar berurutan untuk hard skill, lengkap dengan alasan dan materi gratis. Sistem AI-nya sengaja sempit: AI membaca teks lowongan, **formula yang bisa dijelaskan** yang menentukan prioritas, dan setiap angka kembali ke bukti.
