@@ -13,9 +13,9 @@ Semua angka di bawah ada di `backend/data/models/metrics.json` (`python -m pipel
 | ID | Status | Hasil |
 |---|---|---|
 | Regresi lint | Selesai | `ruff` bersih |
-| Regresi pola jawaban | Sebagian | 120 soal bisnis diperbaiki isinya (72 pengecoh ditulis ulang, frasa pengisi dibuang, kunci PPh 23 dikoreksi ke tanggal 15). Audit sekarang rata-rata 5 pembagian lipat: Inggris 0,298, Indonesia 0,321, keduanya masih di atas batas acak. Sisa petunjuk ada di seluruh bank dan menunggu analisis butir dari pilot (AI-10) |
+| Regresi pola jawaban | Sebagian | 120 soal bisnis diperbaiki isinya (72 pengecoh ditulis ulang, frasa pengisi dibuang, kunci PPh 23 dikoreksi ke tanggal 15). Audit sekarang rata-rata 5 pembagian lipat: Inggris 0,304, Indonesia 0,312, keduanya masih di atas batas acak. 18 Okt: 8 soal BA yang jawabannya menjadi 'opsi tengah' (paling banyak berbagi kata dengan pengecoh) ditulis ulang di dua bahasa, dan 15 soal baru ditambahkan untuk 5 skill inti BA (8 soal per skill) dengan peringkat panjang kunci disebar. Sisa petunjuk tersebar di seluruh bank; perlu penulisan ulang skala besar atau analisis butir dari jawaban nyata (AI-10) |
 | Regresi klaster frontend | Selesai | `CLUSTER_ORDER` memuat 20 klaster, dijaga tes |
-| AI-01 gold ekstraksi | Selesai (dengan catatan) | 130 lowongan: pra-anotasi LLM dua putaran, diverifikasi satu anggota tim (Ivan). Bukan dua anotator independen, jadi kesepakatan antar-lembar tidak dilaporkan sebagai kappa antar-manusia. Label yang berbeda antar-lembar dikeluarkan. Paruh uji: presisi 0,792 [0,7478-0,8294], recall 0,817; target 0,80 belum tercapai di titik tengah. Paruh dev dipakai menyetel |
+| AI-01 gold ekstraksi | Selesai (dengan catatan) | 130 lowongan: pra-anotasi LLM dua putaran, diverifikasi satu anggota tim (Ivan). Bukan dua anotator independen, jadi kesepakatan antar-lembar tidak dilaporkan sebagai kappa antar-manusia. Label yang berbeda antar-lembar dikeluarkan. Paruh uji: presisi 0,796 [0,7522-0,8334], recall 0,817; target 0,80 belum tercapai di titik tengah. Paruh dev dipakai menyetel: analisis kesalahan dev 18 Okt (konteks negatif untuk kata bermakna ganda, profil perusahaan, "js" dalam "Node.js", jurusan) menaikkan presisi dev 0,796 → 0,848 tanpa menurunkan recall, tetapi di paruh uji hanya 0,792 → 0,796; set blind tidak berubah |
 | AI-02 LLM vs lexicon | Menunggu Kaggle | Ekspor siap |
 | AI-03 taksonomi BA | Selesai | BA lolos 3 dari 3 (cakupan 0,957, kandidat 0,031), begitu juga DevOps dan Tax. Frasa di luar cakupan dikeluarkan dari penyebut dan dicantumkan di laporan |
 | AI-04 normalisasi | Selesai | Label 274 frasa (pra-anotasi LLM, diverifikasi Ivan). Pada ambang 0,85 pemetaan otomatis hanya benar 0,4237; tidak ada ambang yang mencapai 0,95. Sesuai aturan yang ditulis sebelumnya, pemetaan embedding otomatis dimatikan (`PATHSYNC_EMBEDDING_AUTO=0`): frasa bebas masuk antrean tinjauan dan tidak dihitung di peta pasar |
@@ -283,7 +283,7 @@ Tinjauan akhir sebelum beku: `pip-audit` dan `npm audit` (sudah di CI), pemeriks
 |---|---|---|
 | `pytest` (114 tes) | domain, API, migrasi, retensi, observabilitas, soft skill, BPS | harus hijau |
 | `test_extractor_meets_precision_target_on_blind_gold` | presisi dan recall ≥ 0,80 di set uji | diarahkan ke gold konsensus (AI-01) |
-| `test_item_bank.py` | akurasi pola jawaban ≤ batas | rata-rata 5 pembagian saat ini 0,298 (Inggris) dan 0,321 (Indonesia); batas tes 0,35 |
+| `test_item_bank.py` | akurasi pola jawaban ≤ batas | rata-rata 5 pembagian saat ini 0,304 (Inggris) dan 0,312 (Indonesia); batas tes 0,35 |
 | `test_paper_fidelity.py` | persamaan paper dan Tabel 4 | harus tetap hijau saat AI-05 |
 | Playwright (BE-06) | alur demo di dua bahasa | CI |
 | `deploy/loadtest.py` | 200 siswa, 40 konkuren | 0 galat |

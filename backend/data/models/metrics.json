@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-18T00:45:04+00:00",
+ "generated_at": "2026-10-18T04:23:32+00:00",
  "inputs": {
   "taxonomy_sha": "97b396bb278d",
   "graph_sha": "b6fed258f5d1",
@@ -28,20 +28,20 @@
   "sets": {
    "dev": {
     "n_postings": 24,
-    "precision": 0.899,
+    "precision": 0.916,
     "precision_ci95": [
-     0.8418,
-     0.9367
+     0.8618,
+     0.9503
     ],
     "recall": 0.893,
     "recall_ci95": [
      0.8354,
      0.9322
     ],
-    "f1": 0.896,
+    "f1": 0.904,
     "f1_ci95": [
-     0.853,
-     0.934
+     0.863,
+     0.939
     ],
     "gold_sha": "fd1d3a9c620a",
     "tuned_on": true
@@ -108,63 +108,63 @@
    },
    "consensus_dev": {
     "n_postings": 65,
-    "precision": 0.796,
+    "precision": 0.848,
     "precision_ci95": [
-     0.7537,
-     0.8319
+     0.8082,
+     0.8804
     ],
     "recall": 0.807,
     "recall_ci95": [
      0.766,
      0.8431
     ],
-    "f1": 0.801,
+    "f1": 0.827,
     "f1_ci95": [
-     0.771,
-     0.831
+     0.798,
+     0.856
     ],
     "gold_sha": "d3172551f33f",
     "tuned_on": true
    },
    "consensus_test": {
     "n_postings": 65,
-    "precision": 0.792,
+    "precision": 0.796,
     "precision_ci95": [
-     0.7478,
-     0.8294
+     0.7522,
+     0.8334
     ],
     "recall": 0.817,
     "recall_ci95": [
      0.7747,
      0.8536
     ],
-    "f1": 0.804,
+    "f1": 0.806,
     "f1_ci95": [
-     0.764,
-     0.84
+     0.766,
+     0.843
     ],
     "gold_sha": "d3172551f33f",
     "tuned_on": false
    },
    "consensus_test_lexicon": {
     "n_postings": 65,
-    "precision": 0.792,
+    "precision": 0.796,
     "recall": 0.817,
-    "f1": 0.804,
+    "f1": 0.806,
     "precision_ci95": [
-     0.7478,
-     0.8294
+     0.7522,
+     0.8334
     ],
     "recall_ci95": [
      0.7747,
      0.8536
     ],
     "tp": 300,
-    "fp": 79,
+    "fp": 77,
     "fn": 67,
     "f1_ci95": [
-     0.764,
-     0.84
+     0.766,
+     0.843
     ],
     "tuned_on": false,
     "annotators": "LLM pre-annotation (2 passes), verified by 1 team member (Ivan)",
@@ -181,11 +181,11 @@
   "note": "dev and heldout were used to tune aliases and must not be quoted as performance; blind (14 original roles) and blind_bisnis (6 business roles, never tuned on) are the reportable sets; all single-annotator"
  },
  "assessment_items": {
-  "generated": "2026-10-17",
-  "n_items": 690,
+  "generated": "2026-10-18",
+  "n_items": 705,
   "language": "en",
-  "answer_pattern_accuracy": 0.298,
-  "accuracy_sd": 0.003,
+  "answer_pattern_accuracy": 0.304,
+  "accuracy_sd": 0.008,
   "seeds": [
    0,
    1,
@@ -194,12 +194,12 @@
    4
   ],
   "chance": 0.25,
-  "random_p95": 0.266,
+  "random_p95": 0.267,
   "indonesian": {
-   "generated": "2026-10-17",
-   "n_items": 690,
+   "generated": "2026-10-18",
+   "n_items": 705,
    "language": "id",
-   "answer_pattern_accuracy": 0.321,
+   "answer_pattern_accuracy": 0.312,
    "accuracy_sd": 0.006,
    "seeds": [
     0,
@@ -209,12 +209,12 @@
     4
    ],
    "chance": 0.25,
-   "random_p95": 0.263
+   "random_p95": 0.264
   },
   "note": "accuracy of a model that sees only option surface features; at or below random_p95 means no usable cue. The Indonesian bank (plan A7) is audited separately because translation changes option lengths."
  },
  "ranker": {
-  "generated": "2026-10-18T02:22:58",
+  "generated": "2026-10-18T11:14:14",
   "role": "business_analyst",
   "n_scenarios": 45,
   "experts": "simulated",
@@ -352,7 +352,7 @@
       "lexicon": 23
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -376,7 +376,7 @@
       "lexicon": 24
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -400,7 +400,7 @@
       "lexicon": 42
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -424,7 +424,7 @@
       "lexicon": 69
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -448,7 +448,7 @@
       "lexicon": 52
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -472,7 +472,7 @@
       "lexicon": 35
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -496,7 +496,7 @@
       "lexicon": 43
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -520,7 +520,7 @@
       "lexicon": 34
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -544,7 +544,7 @@
       "lexicon": 60
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -568,7 +568,7 @@
       "lexicon": 23
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -592,7 +592,7 @@
       "lexicon": 94
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -616,7 +616,7 @@
       "lexicon": 22
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -640,7 +640,7 @@
       "lexicon": 246
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -664,7 +664,7 @@
       "lexicon": 18
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -688,7 +688,7 @@
       "lexicon": 90
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -712,7 +712,7 @@
       "lexicon": 55
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -736,7 +736,7 @@
       "lexicon": 139
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -760,7 +760,7 @@
       "lexicon": 99
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -784,7 +784,7 @@
       "lexicon": 53
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -808,7 +808,7 @@
       "lexicon": 142
      },
      "cache_tags": {
-      "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+      "lexicon": "lexicon|2026.10-v4|69f119b0726b"
      },
      "gold_sha": {
       "gold_blind.json": "6109aca0cc2883c0",
@@ -955,7 +955,7 @@
    "n_postings": 23,
    "final": false,
    "n_core": 20,
-   "C1_coverage": 0.9255,
+   "C1_coverage": 0.925,
    "C2_no_frequent_candidate": 0.087,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -963,7 +963,7 @@
    "n_postings": 23,
    "final": false,
    "n_core": 21,
-   "C1_coverage": 0.8818,
+   "C1_coverage": 0.8797,
    "C2_no_frequent_candidate": 0.174,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -971,7 +971,7 @@
    "n_postings": 41,
    "final": false,
    "n_core": 16,
-   "C1_coverage": 0.9211,
+   "C1_coverage": 0.9176,
    "C2_no_frequent_candidate": 0.024,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -987,7 +987,7 @@
    "n_postings": 49,
    "final": false,
    "n_core": 14,
-   "C1_coverage": 0.8915,
+   "C1_coverage": 0.8912,
    "C2_no_frequent_candidate": 0.143,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -995,7 +995,7 @@
    "n_postings": 34,
    "final": true,
    "n_core": 14,
-   "C1_coverage": 0.9549,
+   "C1_coverage": 0.9548,
    "C2_no_frequent_candidate": 0.059,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1003,7 +1003,7 @@
    "n_postings": 43,
    "final": false,
    "n_core": 12,
-   "C1_coverage": 0.9341,
+   "C1_coverage": 0.9337,
    "C2_no_frequent_candidate": 0.093,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1011,7 +1011,7 @@
    "n_postings": 33,
    "final": false,
    "n_core": 14,
-   "C1_coverage": 0.8798,
+   "C1_coverage": 0.8793,
    "C2_no_frequent_candidate": 0.303,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1019,7 +1019,7 @@
    "n_postings": 60,
    "final": false,
    "n_core": 25,
-   "C1_coverage": 0.9405,
+   "C1_coverage": 0.94,
    "C2_no_frequent_candidate": 0.083,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1027,7 +1027,7 @@
    "n_postings": 21,
    "final": false,
    "n_core": 12,
-   "C1_coverage": 0.8676,
+   "C1_coverage": 0.8672,
    "C2_no_frequent_candidate": 0.19,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1035,7 +1035,7 @@
    "n_postings": 87,
    "final": false,
    "n_core": 19,
-   "C1_coverage": 0.9165,
+   "C1_coverage": 0.916,
    "C2_no_frequent_candidate": 0.103,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1043,7 +1043,7 @@
    "n_postings": 19,
    "final": false,
    "n_core": 10,
-   "C1_coverage": 0.8947,
+   "C1_coverage": 0.8939,
    "C2_no_frequent_candidate": 0.105,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1051,7 +1051,7 @@
    "n_postings": 245,
    "final": false,
    "n_core": 11,
-   "C1_coverage": 0.8862,
+   "C1_coverage": 0.8858,
    "C2_no_frequent_candidate": 0.049,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1059,7 +1059,7 @@
    "n_postings": 17,
    "final": false,
    "n_core": 7,
-   "C1_coverage": 0.9456,
+   "C1_coverage": 0.9452,
    "C2_no_frequent_candidate": 0.059,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1067,7 +1067,7 @@
    "n_postings": 87,
    "final": true,
    "n_core": 10,
-   "C1_coverage": 0.9755,
+   "C1_coverage": 0.9754,
    "C2_no_frequent_candidate": 0.057,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1075,7 +1075,7 @@
    "n_postings": 53,
    "final": false,
    "n_core": 9,
-   "C1_coverage": 0.8835,
+   "C1_coverage": 0.8831,
    "C2_no_frequent_candidate": 0.075,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1083,7 +1083,7 @@
    "n_postings": 138,
    "final": false,
    "n_core": 8,
-   "C1_coverage": 0.8876,
+   "C1_coverage": 0.8874,
    "C2_no_frequent_candidate": 0.051,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1091,7 +1091,7 @@
    "n_postings": 96,
    "final": false,
    "n_core": 10,
-   "C1_coverage": 0.9008,
+   "C1_coverage": 0.9007,
    "C2_no_frequent_candidate": 0.062,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1099,7 +1099,7 @@
    "n_postings": 53,
    "final": false,
    "n_core": 7,
-   "C1_coverage": 0.8961,
+   "C1_coverage": 0.8948,
    "C2_no_frequent_candidate": 0.019,
    "C3_grounding": "138/138 grounded in at least one role"
   },
@@ -1107,7 +1107,7 @@
    "n_postings": 136,
    "final": false,
    "n_core": 11,
-   "C1_coverage": 0.9379,
+   "C1_coverage": 0.9377,
    "C2_no_frequent_candidate": 0.029,
    "C3_grounding": "138/138 grounded in at least one role"
   }
@@ -1242,7 +1242,7 @@
   }
  },
  "item_calibration": {
-  "generated_at": "2026-10-18T07:45:03",
+  "generated_at": "2026-10-18T11:14:48",
   "n_answers": 0,
   "n_items_calibrated": 0,
   "active": false,

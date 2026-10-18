@@ -2,7 +2,7 @@
  "version": "2026-10-18-lexicon",
  "reference_date": "2026-10-18",
  "mention_status": {
-  "auto": 20095,
+  "auto": 19961,
   "review": 5105,
   "new": 2556,
   "rejected": 2
@@ -163,12 +163,12 @@
      0.4083
     ],
     [
-     "statistics",
-     0.3736
-    ],
-    [
      "python_programming",
      0.3663
+    ],
+    [
+     "statistics",
+     0.2907
     ],
     [
      "bi_tools_other",
@@ -412,12 +412,12 @@
      0.2784
     ],
     [
-     "git_version_control",
-     0.2421
-    ],
-    [
      "javascript",
      0.2317
+    ],
+    [
+     "git_version_control",
+     0.2166
     ],
     [
      "java_spring",
@@ -454,11 +454,11 @@
     ],
     [
      "git_version_control",
-     0.5403
+     0.5027
     ],
     [
      "ios_swift",
-     0.5353
+     0.5006
     ],
     [
      "rest_api_design",
@@ -526,7 +526,7 @@
     ],
     [
      "javascript",
-     0.5294
+     0.4944
     ],
     [
      "docker_containers",
@@ -569,7 +569,7 @@
    "top": [
     [
      "javascript",
-     0.6968
+     0.6473
     ],
     [
      "html_css",
@@ -641,12 +641,12 @@
      0.4346
     ],
     [
-     "git_version_control",
-     0.3972
-    ],
-    [
      "java_spring",
      0.3964
+    ],
+    [
+     "git_version_control",
+     0.3774
     ],
     [
      "nosql_databases",
@@ -795,8 +795,8 @@
      0.0874
     ],
     [
-     "email_marketing_automation",
-     0.0855
+     "excel",
+     0.0798
     ]
    ]
   },
@@ -1085,16 +1085,16 @@
      0.151
     ],
     [
-     "project_planning_wbs",
-     0.1493
-    ],
-    [
      "project_tools_workspace",
      0.1426
     ],
     [
      "jira_confluence",
      0.1296
+    ],
+    [
+     "project_planning_wbs",
+     0.1293
     ],
     [
      "product_roadmap_prioritization",
@@ -1149,7 +1149,7 @@
     ],
     [
      "excel",
-     0.5627
+     0.5554
     ],
     [
      "tax_compliance_id",
@@ -1200,7 +1200,7 @@
    "lexicon": 1831
   },
   "cache_tags": {
-   "lexicon": "lexicon|2026.10-v4|43b41e07b9f0"
+   "lexicon": "lexicon|2026.10-v4|69f119b0726b"
   },
   "gold_sha": {
    "gold_blind.json": "6109aca0cc2883c0",
