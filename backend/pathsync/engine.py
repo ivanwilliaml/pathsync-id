@@ -168,7 +168,9 @@ def load_context(s: Session, role: str) -> Context:
                   graph=graph_from_db(s), market=market, req=req, market_version=version, model=model, model_id=model_id,
                   esco=esco_status().get(role, {}), quotes=skill_quotes(s, role), soft_demand=soft.role_demand(s, role))
     with _CTX_LOCK:
-        if len(_CTX_CACHE) > 16:
+        # room for every role in both languages: careers_for walks all roles, and a smaller cap cleared the cache
+        # mid-walk, rebuilding every context on each call (~50 s per demo profile on a 0.1-CPU host)
+        if len(_CTX_CACHE) >= 2 * len(ROLES) + 4:
             _CTX_CACHE.clear()
         _CTX_CACHE[key] = ctx
     return ctx
