@@ -189,7 +189,7 @@
    "from": "requirements_elicitation",
    "to": "wireframing",
    "source": "esco",
-   "rationale": "ESCO: 'translate requirement concepts into visual design'.",
+   "rationale": "ESCO: 'menerjemahkan konsep kebutuhan menjadi desain visual'.",
    "rationale_en": "ESCO: 'translate requirement concepts into visual design'."
   },
   {
@@ -217,749 +217,749 @@
    "from": "html_css",
    "to": "javascript",
    "source": "tim",
-   "rationale": "The DOM that JavaScript manipulates is built from HTML and styled with CSS.",
+   "rationale": "DOM yang dimanipulasi JavaScript dibangun dari HTML dan ditata dengan CSS.",
    "rationale_en": "The DOM that JavaScript manipulates is built from HTML and styled with CSS."
   },
   {
    "from": "html_css",
    "to": "responsive_accessible_web",
    "source": "tim",
-   "rationale": "Responsive and accessible design is applied through HTML structure and CSS.",
+   "rationale": "Desain responsif dan mudah diakses diterapkan lewat struktur HTML dan CSS.",
    "rationale_en": "Responsive and accessible design is applied through HTML structure and CSS."
   },
   {
    "from": "html_css",
    "to": "cms_wordpress",
    "source": "tim",
-   "rationale": "Themes and page builders assume HTML and CSS knowledge.",
+   "rationale": "Tema dan page builder mengandaikan pengetahuan HTML dan CSS.",
    "rationale_en": "Themes and page builders assume HTML and CSS knowledge."
   },
   {
    "from": "html_css",
    "to": "web_performance",
    "source": "tim",
-   "rationale": "Page speed work starts from how markup, styles and assets are delivered.",
+   "rationale": "Perbaikan kecepatan halaman dimulai dari cara markup, gaya, dan aset dikirim.",
    "rationale_en": "Page speed work starts from how markup, styles and assets are delivered."
   },
   {
    "from": "javascript",
    "to": "typescript",
    "source": "tim",
-   "rationale": "TypeScript is JavaScript with types, so JavaScript comes first.",
+   "rationale": "TypeScript adalah JavaScript dengan tipe, jadi JavaScript dipelajari lebih dulu.",
    "rationale_en": "TypeScript is JavaScript with types, so JavaScript comes first."
   },
   {
    "from": "javascript",
    "to": "react",
    "source": "tim",
-   "rationale": "React components are written in JavaScript.",
+   "rationale": "Komponen React ditulis dalam JavaScript.",
    "rationale_en": "React components are written in JavaScript."
   },
   {
    "from": "javascript",
    "to": "frontend_frameworks_other",
    "source": "tim",
-   "rationale": "Vue, Angular and Svelte are JavaScript or TypeScript frameworks.",
+   "rationale": "Vue, Angular, dan Svelte adalah framework JavaScript atau TypeScript.",
    "rationale_en": "Vue, Angular and Svelte are JavaScript or TypeScript frameworks."
   },
   {
    "from": "javascript",
    "to": "nodejs_backend",
    "source": "tim",
-   "rationale": "Node.js runs JavaScript on the server.",
+   "rationale": "Node.js menjalankan JavaScript di sisi server.",
    "rationale_en": "Node.js runs JavaScript on the server."
   },
   {
    "from": "javascript",
    "to": "web_performance",
    "source": "tim",
-   "rationale": "Bundling, lazy loading and runtime cost are JavaScript topics.",
+   "rationale": "Bundling, lazy loading, dan biaya runtime adalah topik JavaScript.",
    "rationale_en": "Bundling, lazy loading and runtime cost are JavaScript topics."
   },
   {
    "from": "react",
    "to": "react_native",
    "source": "tim",
-   "rationale": "React Native reuses React concepts for mobile.",
+   "rationale": "React Native memakai ulang konsep React untuk mobile.",
    "rationale_en": "React Native reuses React concepts for mobile."
   },
   {
    "from": "react",
    "to": "frontend_testing",
    "source": "tim",
-   "rationale": "Component tests target React or similar components.",
+   "rationale": "Tes komponen menyasar komponen React atau sejenisnya.",
    "rationale_en": "Component tests target React or similar components."
   },
   {
    "from": "javascript",
    "to": "frontend_testing",
    "source": "tim",
-   "rationale": "Front-end tests are written in JavaScript.",
+   "rationale": "Tes front-end ditulis dalam JavaScript.",
    "rationale_en": "Front-end tests are written in JavaScript."
   },
   {
    "from": "programming_fundamentals",
    "to": "data_structures_algorithms",
    "source": "tim",
-   "rationale": "Data structures are implemented with basic programming constructs.",
+   "rationale": "Struktur data diimplementasikan dengan konstruksi dasar pemrograman.",
    "rationale_en": "Data structures are implemented with basic programming constructs."
   },
   {
    "from": "programming_fundamentals",
    "to": "python_programming",
    "source": "tim",
-   "rationale": "General programming ideas make a first language easier.",
+   "rationale": "Konsep pemrograman umum membuat bahasa pertama lebih mudah dipelajari.",
    "rationale_en": "General programming ideas make a first language easier."
   },
   {
    "from": "programming_fundamentals",
    "to": "java_spring",
    "source": "tim",
-   "rationale": "Spring builds on Java and object-oriented design.",
+   "rationale": "Spring dibangun di atas Java dan desain berorientasi objek.",
    "rationale_en": "Spring builds on Java and object-oriented design."
   },
   {
    "from": "programming_fundamentals",
    "to": "php_laravel",
    "source": "tim",
-   "rationale": "Laravel builds on PHP and object-oriented design.",
+   "rationale": "Laravel dibangun di atas PHP dan desain berorientasi objek.",
    "rationale_en": "Laravel builds on PHP and object-oriented design."
   },
   {
    "from": "programming_fundamentals",
    "to": "golang_backend",
    "source": "tim",
-   "rationale": "Go builds on core programming concepts.",
+   "rationale": "Go dibangun di atas konsep inti pemrograman.",
    "rationale_en": "Go builds on core programming concepts."
   },
   {
    "from": "programming_fundamentals",
    "to": "dotnet_csharp",
    "source": "tim",
-   "rationale": "C# is an object-oriented language.",
+   "rationale": "C# adalah bahasa berorientasi objek.",
    "rationale_en": "C# is an object-oriented language."
   },
   {
    "from": "programming_fundamentals",
    "to": "unit_testing_tdd",
    "source": "tim",
-   "rationale": "Tests are written against functions and classes.",
+   "rationale": "Tes ditulis terhadap fungsi dan kelas.",
    "rationale_en": "Tests are written against functions and classes."
   },
   {
    "from": "programming_fundamentals",
    "to": "rest_api_design",
    "source": "tim",
-   "rationale": "Building APIs needs working code in some language.",
+   "rationale": "Membangun API membutuhkan kode yang berjalan dalam suatu bahasa.",
    "rationale_en": "Building APIs needs working code in some language."
   },
   {
    "from": "python_programming",
    "to": "python_backend",
    "source": "tim",
-   "rationale": "Django, FastAPI and Flask are Python frameworks.",
+   "rationale": "Django, FastAPI, dan Flask adalah framework Python.",
    "rationale_en": "Django, FastAPI and Flask are Python frameworks."
   },
   {
    "from": "python_programming",
    "to": "python_analytics",
    "source": "tim",
-   "rationale": "pandas and NumPy are Python libraries.",
+   "rationale": "pandas dan NumPy adalah pustaka Python.",
    "rationale_en": "pandas and NumPy are Python libraries."
   },
   {
    "from": "rest_api_design",
    "to": "auth_security_basics",
    "source": "tim",
-   "rationale": "Authentication protects the endpoints of an API.",
+   "rationale": "Autentikasi melindungi endpoint sebuah API.",
    "rationale_en": "Authentication protects the endpoints of an API."
   },
   {
    "from": "rest_api_design",
    "to": "api_testing",
    "source": "tim",
-   "rationale": "API tests call and check HTTP endpoints.",
+   "rationale": "Tes API memanggil dan memeriksa endpoint HTTP.",
    "rationale_en": "API tests call and check HTTP endpoints."
   },
   {
    "from": "rest_api_design",
    "to": "mobile_backend_services",
    "source": "tim",
-   "rationale": "Mobile apps consume back-end APIs.",
+   "rationale": "Aplikasi mobile memakai API back-end.",
    "rationale_en": "Mobile apps consume back-end APIs."
   },
   {
    "from": "rest_api_design",
    "to": "system_design_architecture",
    "source": "tim",
-   "rationale": "Service boundaries are defined through their APIs.",
+   "rationale": "Batas layanan ditentukan lewat API-nya.",
    "rationale_en": "Service boundaries are defined through their APIs."
   },
   {
    "from": "sql",
    "to": "nosql_databases",
    "source": "tim",
-   "rationale": "Relational concepts make it clear when a NoSQL store fits.",
+   "rationale": "Konsep relasional membuat jelas kapan penyimpanan NoSQL cocok.",
    "rationale_en": "Relational concepts make it clear when a NoSQL store fits."
   },
   {
    "from": "nosql_databases",
    "to": "caching_messaging",
    "source": "tim",
-   "rationale": "Redis is both a NoSQL store and the most common cache.",
+   "rationale": "Redis adalah penyimpanan NoSQL sekaligus cache yang paling umum.",
    "rationale_en": "Redis is both a NoSQL store and the most common cache."
   },
   {
    "from": "rest_api_design",
    "to": "caching_messaging",
    "source": "tim",
-   "rationale": "Caching and queues sit behind API endpoints.",
+   "rationale": "Caching dan antrean berada di balik endpoint API.",
    "rationale_en": "Caching and queues sit behind API endpoints."
   },
   {
    "from": "caching_messaging",
    "to": "system_design_architecture",
    "source": "tim",
-   "rationale": "Caches and queues are core building blocks of scalable systems.",
+   "rationale": "Cache dan antrean adalah blok bangunan inti sistem yang skalabel.",
    "rationale_en": "Caches and queues are core building blocks of scalable systems."
   },
   {
    "from": "git_version_control",
    "to": "ci_cd_pipelines",
    "source": "tim",
-   "rationale": "Pipelines are triggered by commits and merges.",
+   "rationale": "Pipeline dipicu oleh commit dan merge.",
    "rationale_en": "Pipelines are triggered by commits and merges."
   },
   {
    "from": "cryptography_basics",
    "to": "auth_security_basics",
    "source": "tim",
-   "rationale": "Password hashing, tokens and TLS rely on cryptographic basics.",
+   "rationale": "Hashing kata sandi, token, dan TLS bergantung pada dasar kriptografi.",
    "rationale_en": "Password hashing, tokens and TLS rely on cryptographic basics."
   },
   {
    "from": "programming_fundamentals",
    "to": "flutter_dart",
    "source": "tim",
-   "rationale": "Dart is an object-oriented language.",
+   "rationale": "Dart adalah bahasa berorientasi objek.",
    "rationale_en": "Dart is an object-oriented language."
   },
   {
    "from": "programming_fundamentals",
    "to": "android_kotlin",
    "source": "tim",
-   "rationale": "Kotlin builds on core programming concepts.",
+   "rationale": "Kotlin dibangun di atas konsep inti pemrograman.",
    "rationale_en": "Kotlin builds on core programming concepts."
   },
   {
    "from": "programming_fundamentals",
    "to": "ios_swift",
    "source": "tim",
-   "rationale": "Swift builds on core programming concepts.",
+   "rationale": "Swift dibangun di atas konsep inti pemrograman.",
    "rationale_en": "Swift builds on core programming concepts."
   },
   {
    "from": "flutter_dart",
    "to": "mobile_release_quality",
    "source": "tim",
-   "rationale": "Release and quality work applies to a finished mobile app.",
+   "rationale": "Pekerjaan rilis dan kualitas berlaku untuk aplikasi mobile yang sudah jadi.",
    "rationale_en": "Release and quality work applies to a finished mobile app."
   },
   {
    "from": "android_kotlin",
    "to": "mobile_release_quality",
    "source": "tim",
-   "rationale": "Release and quality work applies to a finished mobile app.",
+   "rationale": "Pekerjaan rilis dan kualitas berlaku untuk aplikasi mobile yang sudah jadi.",
    "rationale_en": "Release and quality work applies to a finished mobile app."
   },
   {
    "from": "ios_swift",
    "to": "mobile_release_quality",
    "source": "tim",
-   "rationale": "Release and quality work applies to a finished mobile app.",
+   "rationale": "Pekerjaan rilis dan kualitas berlaku untuk aplikasi mobile yang sudah jadi.",
    "rationale_en": "Release and quality work applies to a finished mobile app."
   },
   {
    "from": "test_design_techniques",
    "to": "test_automation_web",
    "source": "tim",
-   "rationale": "Automate test cases only after you know what to test.",
+   "rationale": "Otomatiskan kasus uji hanya setelah kamu tahu apa yang perlu diuji.",
    "rationale_en": "Automate test cases only after you know what to test."
   },
   {
    "from": "test_design_techniques",
    "to": "performance_testing",
    "source": "tim",
-   "rationale": "Performance scenarios come from well-designed test cases.",
+   "rationale": "Skenario performa berasal dari kasus uji yang dirancang dengan baik.",
    "rationale_en": "Performance scenarios come from well-designed test cases."
   },
   {
    "from": "test_design_techniques",
    "to": "testing_uat",
    "source": "tim",
-   "rationale": "UAT scripts are built from test design techniques.",
+   "rationale": "Skrip UAT disusun dari teknik desain tes.",
    "rationale_en": "UAT scripts are built from test design techniques."
   },
   {
    "from": "programming_fundamentals",
    "to": "test_automation_web",
    "source": "tim",
-   "rationale": "Test automation is written as code.",
+   "rationale": "Otomasi tes ditulis sebagai kode.",
    "rationale_en": "Test automation is written as code."
   },
   {
    "from": "test_automation_web",
    "to": "ci_for_testing",
    "source": "tim",
-   "rationale": "Automated tests are what the pipeline runs.",
+   "rationale": "Tes otomatis adalah yang dijalankan pipeline.",
    "rationale_en": "Automated tests are what the pipeline runs."
   },
   {
    "from": "ci_cd_pipelines",
    "to": "ci_for_testing",
    "source": "tim",
-   "rationale": "Testing in CI needs a pipeline to run in.",
+   "rationale": "Pengujian di CI membutuhkan pipeline tempat tes dijalankan.",
    "rationale_en": "Testing in CI needs a pipeline to run in."
   },
   {
    "from": "statistics",
    "to": "math_for_ml",
    "source": "tim",
-   "rationale": "Probability and distributions underpin machine-learning methods.",
+   "rationale": "Probabilitas dan distribusi menopang metode machine learning.",
    "rationale_en": "Probability and distributions underpin machine-learning methods."
   },
   {
    "from": "math_for_ml",
    "to": "machine_learning",
    "source": "tim",
-   "rationale": "Models and loss functions rest on linear algebra and probability.",
+   "rationale": "Model dan fungsi loss bertumpu pada aljabar linear dan probabilitas.",
    "rationale_en": "Models and loss functions rest on linear algebra and probability."
   },
   {
    "from": "python_analytics",
    "to": "machine_learning",
    "source": "tim",
-   "rationale": "scikit-learn workflows start from pandas data.",
+   "rationale": "Alur kerja scikit-learn dimulai dari data pandas.",
    "rationale_en": "scikit-learn workflows start from pandas data."
   },
   {
    "from": "statistics",
    "to": "machine_learning",
    "source": "tim",
-   "rationale": "Model evaluation uses statistical thinking.",
+   "rationale": "Evaluasi model memakai cara berpikir statistik.",
    "rationale_en": "Model evaluation uses statistical thinking."
   },
   {
    "from": "machine_learning",
    "to": "deep_learning",
    "source": "tim",
-   "rationale": "Neural networks build on classical ML ideas.",
+   "rationale": "Jaringan saraf dibangun di atas gagasan ML klasik.",
    "rationale_en": "Neural networks build on classical ML ideas."
   },
   {
    "from": "machine_learning",
    "to": "nlp_computer_vision",
    "source": "tim",
-   "rationale": "NLP and vision pipelines use ML foundations.",
+   "rationale": "Pipeline NLP dan visi memakai fondasi ML.",
    "rationale_en": "NLP and vision pipelines use ML foundations."
   },
   {
    "from": "deep_learning",
    "to": "nlp_computer_vision",
    "source": "tim",
-   "rationale": "Modern NLP and vision use neural networks.",
+   "rationale": "NLP dan visi modern memakai jaringan saraf.",
    "rationale_en": "Modern NLP and vision use neural networks."
   },
   {
    "from": "machine_learning",
    "to": "mlops_deployment",
    "source": "tim",
-   "rationale": "There must be a model before it can be deployed.",
+   "rationale": "Harus ada model sebelum bisa di-deploy.",
    "rationale_en": "There must be a model before it can be deployed."
   },
   {
    "from": "docker_containers",
    "to": "mlops_deployment",
    "source": "tim",
-   "rationale": "Models are usually served from containers.",
+   "rationale": "Model biasanya disajikan dari container.",
    "rationale_en": "Models are usually served from containers."
   },
   {
    "from": "data_modeling",
    "to": "data_warehousing",
    "source": "tim",
-   "rationale": "Warehouse schemas apply dimensional data modelling.",
+   "rationale": "Skema warehouse menerapkan pemodelan data dimensional.",
    "rationale_en": "Warehouse schemas apply dimensional data modelling."
   },
   {
    "from": "sql",
    "to": "etl_pipelines",
    "source": "tim",
-   "rationale": "Transformations are mostly written in SQL.",
+   "rationale": "Transformasi sebagian besar ditulis dalam SQL.",
    "rationale_en": "Transformations are mostly written in SQL."
   },
   {
    "from": "python_programming",
    "to": "etl_pipelines",
    "source": "tim",
-   "rationale": "Custom pipeline steps are written in Python.",
+   "rationale": "Langkah pipeline khusus ditulis dalam Python.",
    "rationale_en": "Custom pipeline steps are written in Python."
   },
   {
    "from": "etl_pipelines",
    "to": "workflow_orchestration",
    "source": "tim",
-   "rationale": "Orchestrators schedule and monitor the pipelines.",
+   "rationale": "Orkestrator menjadwalkan dan memantau pipeline.",
    "rationale_en": "Orchestrators schedule and monitor the pipelines."
   },
   {
    "from": "python_programming",
    "to": "workflow_orchestration",
    "source": "tim",
-   "rationale": "Airflow DAGs are defined in Python.",
+   "rationale": "DAG Airflow didefinisikan dalam Python.",
    "rationale_en": "Airflow DAGs are defined in Python."
   },
   {
    "from": "etl_pipelines",
    "to": "streaming_data",
    "source": "tim",
-   "rationale": "Streaming extends batch pipelines to continuous data.",
+   "rationale": "Streaming memperluas pipeline batch ke data yang berkelanjutan.",
    "rationale_en": "Streaming extends batch pipelines to continuous data."
   },
   {
    "from": "sql",
    "to": "big_data_spark",
    "source": "tim",
-   "rationale": "Spark SQL and DataFrames work like SQL tables.",
+   "rationale": "Spark SQL dan DataFrame bekerja seperti tabel SQL.",
    "rationale_en": "Spark SQL and DataFrames work like SQL tables."
   },
   {
    "from": "python_programming",
    "to": "big_data_spark",
    "source": "tim",
-   "rationale": "PySpark is the most common way to write Spark jobs.",
+   "rationale": "PySpark adalah cara paling umum menulis job Spark.",
    "rationale_en": "PySpark is the most common way to write Spark jobs."
   },
   {
    "from": "linux_administration",
    "to": "docker_containers",
    "source": "tim",
-   "rationale": "Containers run on Linux primitives and are managed from the shell.",
+   "rationale": "Container berjalan di atas primitif Linux dan dikelola dari shell.",
    "rationale_en": "Containers run on Linux primitives and are managed from the shell."
   },
   {
    "from": "docker_containers",
    "to": "kubernetes",
    "source": "tim",
-   "rationale": "Kubernetes orchestrates containers.",
+   "rationale": "Kubernetes mengorkestrasi container.",
    "rationale_en": "Kubernetes orchestrates containers."
   },
   {
    "from": "docker_containers",
    "to": "ci_cd_pipelines",
    "source": "tim",
-   "rationale": "Pipelines build and ship container images.",
+   "rationale": "Pipeline membangun dan mengirim image container.",
    "rationale_en": "Pipelines build and ship container images."
   },
   {
    "from": "linux_administration",
    "to": "infrastructure_as_code",
    "source": "tim",
-   "rationale": "Provisioned servers are Linux machines.",
+   "rationale": "Server yang disiapkan adalah mesin Linux.",
    "rationale_en": "Provisioned servers are Linux machines."
   },
   {
    "from": "cloud_aws",
    "to": "infrastructure_as_code",
    "source": "tim",
-   "rationale": "Terraform and CloudFormation provision cloud resources.",
+   "rationale": "Terraform dan CloudFormation menyiapkan resource cloud.",
    "rationale_en": "Terraform and CloudFormation provision cloud resources."
   },
   {
    "from": "networking_fundamentals",
    "to": "cloud_aws",
    "source": "tim",
-   "rationale": "VPCs, subnets and security groups are networking concepts.",
+   "rationale": "VPC, subnet, dan security group adalah konsep jaringan.",
    "rationale_en": "VPCs, subnets and security groups are networking concepts."
   },
   {
    "from": "linux_administration",
    "to": "cloud_aws",
    "source": "tim",
-   "rationale": "EC2 instances are mostly Linux servers.",
+   "rationale": "Instance EC2 sebagian besar adalah server Linux.",
    "rationale_en": "EC2 instances are mostly Linux servers."
   },
   {
    "from": "networking_fundamentals",
    "to": "cloud_gcp_azure",
    "source": "tim",
-   "rationale": "Virtual networks work the same way in every cloud.",
+   "rationale": "Jaringan virtual bekerja dengan cara yang sama di setiap cloud.",
    "rationale_en": "Virtual networks work the same way in every cloud."
   },
   {
    "from": "linux_administration",
    "to": "cloud_gcp_azure",
    "source": "tim",
-   "rationale": "Most cloud virtual machines run Linux.",
+   "rationale": "Sebagian besar mesin virtual cloud menjalankan Linux.",
    "rationale_en": "Most cloud virtual machines run Linux."
   },
   {
    "from": "linux_administration",
    "to": "monitoring_observability",
    "source": "tim",
-   "rationale": "Metrics and logs come from hosts and services.",
+   "rationale": "Metrik dan log berasal dari host dan layanan.",
    "rationale_en": "Metrics and logs come from hosts and services."
   },
   {
    "from": "docker_containers",
    "to": "monitoring_observability",
    "source": "tim",
-   "rationale": "Container workloads need container-aware monitoring.",
+   "rationale": "Beban kerja container membutuhkan pemantauan yang sadar container.",
    "rationale_en": "Container workloads need container-aware monitoring."
   },
   {
    "from": "linux_administration",
    "to": "web_servers_proxies",
    "source": "tim",
-   "rationale": "Nginx and Apache run on Linux servers.",
+   "rationale": "Nginx dan Apache berjalan di server Linux.",
    "rationale_en": "Nginx and Apache run on Linux servers."
   },
   {
    "from": "networking_fundamentals",
    "to": "web_servers_proxies",
    "source": "tim",
-   "rationale": "Proxies and TLS are network concepts.",
+   "rationale": "Proxy dan TLS adalah konsep jaringan.",
    "rationale_en": "Proxies and TLS are network concepts."
   },
   {
    "from": "networking_fundamentals",
    "to": "network_security",
    "source": "tim",
-   "rationale": "Firewalls and segmentation apply networking knowledge.",
+   "rationale": "Firewall dan segmentasi menerapkan pengetahuan jaringan.",
    "rationale_en": "Firewalls and segmentation apply networking knowledge."
   },
   {
    "from": "network_security",
    "to": "siem_monitoring",
    "source": "tim",
-   "rationale": "SIEM rules detect the network and host events you know how to read.",
+   "rationale": "Aturan SIEM mendeteksi event jaringan dan host yang kamu tahu cara membacanya.",
    "rationale_en": "SIEM rules detect the network and host events you know how to read."
   },
   {
    "from": "networking_fundamentals",
    "to": "vulnerability_assessment",
    "source": "tim",
-   "rationale": "Scanning and rating exposures needs network basics.",
+   "rationale": "Memindai dan menilai paparan butuh dasar jaringan.",
    "rationale_en": "Scanning and rating exposures needs network basics."
   },
   {
    "from": "linux_administration",
    "to": "vulnerability_assessment",
    "source": "tim",
-   "rationale": "Most findings are on Linux hosts and services.",
+   "rationale": "Sebagian besar temuan ada di host dan layanan Linux.",
    "rationale_en": "Most findings are on Linux hosts and services."
   },
   {
    "from": "vulnerability_assessment",
    "to": "penetration_testing",
    "source": "tim",
-   "rationale": "Pen tests exploit what an assessment finds.",
+   "rationale": "Pen test mengeksploitasi apa yang ditemukan penilaian kerentanan.",
    "rationale_en": "Pen tests exploit what an assessment finds."
   },
   {
    "from": "linux_administration",
    "to": "penetration_testing",
    "source": "tim",
-   "rationale": "Exploitation and privilege escalation happen on Linux and Windows hosts.",
+   "rationale": "Eksploitasi dan eskalasi hak akses terjadi di host Linux dan Windows.",
    "rationale_en": "Exploitation and privilege escalation happen on Linux and Windows hosts."
   },
   {
    "from": "network_security",
    "to": "incident_response_forensics",
    "source": "tim",
-   "rationale": "Responders investigate network and host evidence.",
+   "rationale": "Penanggap insiden menyelidiki bukti jaringan dan host.",
    "rationale_en": "Responders investigate network and host evidence."
   },
   {
    "from": "siem_monitoring",
    "to": "incident_response_forensics",
    "source": "tim",
-   "rationale": "Incidents are usually detected through monitoring.",
+   "rationale": "Insiden biasanya terdeteksi lewat pemantauan.",
    "rationale_en": "Incidents are usually detected through monitoring."
   },
   {
    "from": "vulnerability_assessment",
    "to": "security_frameworks_compliance",
    "source": "tim",
-   "rationale": "Frameworks require risk and vulnerability management.",
+   "rationale": "Kerangka keamanan mensyaratkan manajemen risiko dan kerentanan.",
    "rationale_en": "Frameworks require risk and vulnerability management."
   },
   {
    "from": "auth_security_basics",
    "to": "cloud_security",
    "source": "tim",
-   "rationale": "Cloud security applies identity and application security.",
+   "rationale": "Keamanan cloud menerapkan keamanan identitas dan aplikasi.",
    "rationale_en": "Cloud security applies identity and application security."
   },
   {
    "from": "docker_containers",
    "to": "cloud_security",
    "source": "tim",
-   "rationale": "Container and image hardening is part of cloud security.",
+   "rationale": "Pengerasan container dan image adalah bagian dari keamanan cloud.",
    "rationale_en": "Container and image hardening is part of cloud security."
   },
   {
    "from": "cloud_aws",
    "to": "cloud_security",
    "source": "tim",
-   "rationale": "Cloud account hardening needs platform knowledge.",
+   "rationale": "Pengerasan akun cloud butuh pengetahuan platform.",
    "rationale_en": "Cloud account hardening needs platform knowledge."
   },
   {
    "from": "figma_design_tools",
    "to": "prototyping_interaction",
    "source": "tim",
-   "rationale": "Prototypes are built in design tools.",
+   "rationale": "Prototipe dibuat di alat desain.",
    "rationale_en": "Prototypes are built in design tools."
   },
   {
    "from": "wireframing",
    "to": "prototyping_interaction",
    "source": "tim",
-   "rationale": "Wireframes become interactive prototypes.",
+   "rationale": "Wireframe menjadi prototipe interaktif.",
    "rationale_en": "Wireframes become interactive prototypes."
   },
   {
    "from": "user_research",
    "to": "usability_testing",
    "source": "tim",
-   "rationale": "Usability tests use research methods.",
+   "rationale": "Tes usability memakai metode riset.",
    "rationale_en": "Usability tests use research methods."
   },
   {
    "from": "prototyping_interaction",
    "to": "usability_testing",
    "source": "tim",
-   "rationale": "You test prototypes before building them.",
+   "rationale": "Prototipe diuji sebelum dibangun.",
    "rationale_en": "You test prototypes before building them."
   },
   {
    "from": "user_research",
    "to": "information_architecture",
    "source": "tim",
-   "rationale": "Structure comes from how users think about content.",
+   "rationale": "Struktur berasal dari cara pengguna memikirkan konten.",
    "rationale_en": "Structure comes from how users think about content."
   },
   {
    "from": "figma_design_tools",
    "to": "design_systems",
    "source": "tim",
-   "rationale": "Design systems live in the design tool as components.",
+   "rationale": "Design system hidup di alat desain sebagai komponen.",
    "rationale_en": "Design systems live in the design tool as components."
   },
   {
    "from": "visual_design_fundamentals",
    "to": "design_systems",
    "source": "tim",
-   "rationale": "Tokens and components encode visual design decisions.",
+   "rationale": "Token dan komponen mengodekan keputusan desain visual.",
    "rationale_en": "Tokens and components encode visual design decisions."
   },
   {
    "from": "visual_design_fundamentals",
    "to": "accessibility_design",
    "source": "tim",
-   "rationale": "Contrast, type and spacing are visual design choices.",
+   "rationale": "Kontras, tipe huruf, dan jarak adalah pilihan desain visual.",
    "rationale_en": "Contrast, type and spacing are visual design choices."
   },
   {
    "from": "web_analytics",
    "to": "conversion_optimization",
    "source": "tim",
-   "rationale": "Experiments start from funnel and conversion data.",
+   "rationale": "Eksperimen dimulai dari data funnel dan konversi.",
    "rationale_en": "Experiments start from funnel and conversion data."
   },
   {
    "from": "web_analytics",
    "to": "search_ads",
    "source": "tim",
-   "rationale": "Campaigns are optimised with conversion tracking.",
+   "rationale": "Kampanye dioptimalkan dengan pelacakan konversi.",
    "rationale_en": "Campaigns are optimised with conversion tracking."
   },
   {
    "from": "web_analytics",
    "to": "social_media_ads",
    "source": "tim",
-   "rationale": "Campaigns are optimised with conversion tracking.",
+   "rationale": "Kampanye dioptimalkan dengan pelacakan konversi.",
    "rationale_en": "Campaigns are optimised with conversion tracking."
   },
   {
    "from": "content_creation_tools",
    "to": "social_media_ads",
    "source": "tim",
-   "rationale": "Ads need creatives made with content tools.",
+   "rationale": "Iklan butuh materi kreatif yang dibuat dengan alat konten.",
    "rationale_en": "Ads need creatives made with content tools."
   },
   {
    "from": "accounting_fundamentals",
    "to": "financial_statements",
    "source": "tim",
-   "rationale": "Statements are built from journals and ledgers.",
+   "rationale": "Laporan disusun dari jurnal dan buku besar.",
    "rationale_en": "Statements are built from journals and ledgers."
   },
   {
    "from": "accounting_fundamentals",
    "to": "ap_ar_reconciliation",
    "source": "tim",
-   "rationale": "Payables, receivables and reconciliations use double entry.",
+   "rationale": "Hutang, piutang, dan rekonsiliasi memakai pencatatan berpasangan.",
    "rationale_en": "Payables, receivables and reconciliations use double entry."
   },
   {
    "from": "accounting_fundamentals",
    "to": "accounting_software",
    "source": "tim",
-   "rationale": "Software automates journal and ledger logic.",
+   "rationale": "Perangkat lunak mengotomatiskan logika jurnal dan buku besar.",
    "rationale_en": "Software automates journal and ledger logic."
   },
   {
    "from": "accounting_fundamentals",
    "to": "tax_compliance_id",
    "source": "tim",
-   "rationale": "Tax calculations start from properly recorded transactions.",
+   "rationale": "Perhitungan pajak dimulai dari transaksi yang dicatat dengan benar.",
    "rationale_en": "Tax calculations start from properly recorded transactions."
   },
   {
    "from": "accounting_fundamentals",
    "to": "cost_accounting",
    "source": "tim",
-   "rationale": "Costing builds on basic accounting concepts.",
+   "rationale": "Penghitungan biaya dibangun di atas konsep dasar akuntansi.",
    "rationale_en": "Costing builds on basic accounting concepts."
   },
   {
    "from": "financial_statements",
    "to": "budgeting_forecasting",
    "source": "tim",
-   "rationale": "Budgets and forecasts are built from the statements.",
+   "rationale": "Anggaran dan forecast disusun dari laporan keuangan.",
    "rationale_en": "Budgets and forecasts are built from the statements."
   },
   {
    "from": "excel",
    "to": "budgeting_forecasting",
    "source": "tim",
-   "rationale": "Budgets and models are built in spreadsheets.",
+   "rationale": "Anggaran dan model dibangun di spreadsheet.",
    "rationale_en": "Budgets and models are built in spreadsheets."
   },
   {
    "from": "financial_statements",
    "to": "audit_internal_control",
    "source": "tim",
-   "rationale": "Auditors test the numbers in the statements.",
+   "rationale": "Auditor menguji angka dalam laporan keuangan.",
    "rationale_en": "Auditors test the numbers in the statements."
   },
   {
    "from": "financial_statements",
    "to": "financial_analysis",
    "source": "tim",
-   "rationale": "Ratios and analysis are computed from the statements.",
+   "rationale": "Rasio dan analisis dihitung dari laporan keuangan.",
    "rationale_en": "Ratios and analysis are computed from the statements."
   },
   {
