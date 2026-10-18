@@ -1,0 +1,312 @@
+{
+ "pairs": [
+  {
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ],
+   "postings": 130,
+   "kappa": 0.9813,
+   "per_skill": [
+    {
+     "skill": "sql",
+     "postings_labelled": 33,
+     "kappa": 0.9795
+    },
+    {
+     "skill": "excel",
+     "postings_labelled": 31,
+     "kappa": 1.0
+    },
+    {
+     "skill": "data_analysis",
+     "postings_labelled": 24,
+     "kappa": 0.9472
+    },
+    {
+     "skill": "api_integration",
+     "postings_labelled": 17,
+     "kappa": 0.9653
+    },
+    {
+     "skill": "python_programming",
+     "postings_labelled": 17,
+     "kappa": 1.0
+    },
+    {
+     "skill": "cloud_aws",
+     "postings_labelled": 16,
+     "kappa": 1.0
+    },
+    {
+     "skill": "rest_api_design",
+     "postings_labelled": 16,
+     "kappa": 1.0
+    },
+    {
+     "skill": "accounting_fundamentals",
+     "postings_labelled": 15,
+     "kappa": 1.0
+    },
+    {
+     "skill": "git_version_control",
+     "postings_labelled": 15,
+     "kappa": 1.0
+    },
+    {
+     "skill": "cloud_gcp_azure",
+     "postings_labelled": 13,
+     "kappa": 1.0
+    },
+    {
+     "skill": "kpi_metrics",
+     "postings_labelled": 13,
+     "kappa": 0.9083
+    },
+    {
+     "skill": "react",
+     "postings_labelled": 13,
+     "kappa": 1.0
+    },
+    {
+     "skill": "ap_ar_reconciliation",
+     "postings_labelled": 12,
+     "kappa": 1.0
+    },
+    {
+     "skill": "ci_cd_pipelines",
+     "postings_labelled": 12,
+     "kappa": 1.0
+    },
+    {
+     "skill": "erp_crm",
+     "postings_labelled": 12,
+     "kappa": 1.0
+    },
+    {
+     "skill": "javascript",
+     "postings_labelled": 12,
+     "kappa": 1.0
+    },
+    {
+     "skill": "programming_fundamentals",
+     "postings_labelled": 12,
+     "kappa": 0.9523
+    },
+    {
+     "skill": "system_design_architecture",
+     "postings_labelled": 12,
+     "kappa": 1.0
+    },
+    {
+     "skill": "tax_compliance_id",
+     "postings_labelled": 12,
+     "kappa": 1.0
+    },
+    {
+     "skill": "unit_testing_tdd",
+     "postings_labelled": 12,
+     "kappa": 0.9523
+    }
+   ]
+  }
+ ],
+ "open_disputes": [
+  {
+   "posting_id": "kalibrr:254916",
+   "skill": "python_analytics",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "kalibrr:254916",
+   "skill": "statistics",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "kalibrr:270000",
+   "skill": "etl_pipelines",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "kalibrr:271196",
+   "skill": "web_analytics",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "kalibrr:272230",
+   "skill": "enterprise_risk_management",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "kalibrr:272422",
+   "skill": "ci_for_testing",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "kalibrr:272709",
+   "skill": "data_analysis",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "kalibrr:272776",
+   "skill": "programming_fundamentals",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "kalibrr:272987",
+   "skill": "audit_internal_control",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "karirhub:01a02311-413d-7239-85c0-5750364e67cb",
+   "skill": "release_delivery_management",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "karirhub:01a04710-1e74-739e-90f1-031829b11d4c",
+   "skill": "mlops_deployment",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "karirhub:01a0f38f-cc00-7249-9d47-e7be6f726d94",
+   "skill": "caching_messaging",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "karirhub:01a0f38f-cc00-7249-9d47-e7be6f726d94",
+   "skill": "unit_testing_tdd",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "karirhub:01a0f396-80c7-70e5-b1e2-1608b57362f0",
+   "skill": "warehouse_logistics",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "karirhub:21cfdfa8-3d85-45b8-ba31-2d68cf760910",
+   "skill": "requirements_elicitation",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "karirhub:3e39527d-0cf9-41ce-945f-513a0e01b61a",
+   "skill": "kpi_metrics",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "karirhub:470b6c57-d9c8-4980-a6ac-93b1a004547c",
+   "skill": "api_integration",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "karirhub:805590be-7cb4-4f81-99b4-9e27066ef9ee",
+   "skill": "inventory_management",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "lever:1e6eb820-9037-4a80-bbd6-d0e50125a292",
+   "skill": "procurement_sourcing",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "lever:2d581907-e2a0-477a-b219-d0eb5b41a089",
+   "skill": "kpi_metrics",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "lever:2d581907-e2a0-477a-b219-d0eb5b41a089",
+   "skill": "usability_testing",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "lever:3340d907-1dd4-4591-93e2-d5246b5d0b61",
+   "skill": "data_visualization",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "lever:3340d907-1dd4-4591-93e2-d5246b5d0b61",
+   "skill": "sql",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "lever:d909a99d-a913-4a92-a324-031a3c499992",
+   "skill": "business_process_modeling",
+   "chosen_by": [
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "smartrecruiters:744000143637779",
+   "skill": "golang_backend",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "workable:766b08de-90ff-43d4-8ce0-c85bba27c37a",
+   "skill": "data_analysis",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "workable:9b0738ec-4e80-4994-90cc-9e0e996878f2",
+   "skill": "seo",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  },
+  {
+   "posting_id": "workable:a1a12e89-4646-49bf-9f4c-40b0ae84778c",
+   "skill": "nosql_databases",
+   "chosen_by": [
+    "llm1_verifikasi_ivan"
+   ]
+  }
+ ]
+}

@@ -11,8 +11,9 @@ import os
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from pathsync.db import Evidence, Student, utcnow
-from pathsync.intake import academic_evidence
+from pathsync.db import CourseEnrollment, Evidence, Student, utcnow
+from pathsync.i18n import tr
+from pathsync.intake import academic_evidence, map_course
 from pathsync.security import db_session, hash_token, new_token, rate_limit
 
 from ..common import after_change
@@ -32,12 +33,14 @@ DEMO_COURSES = [
     {"name": "Basis Data", "grade": "C"},
     {"name": "Sistem Informasi Manajemen", "grade": "B"},
 ]
+# What she takes this semester (semester 6), so My Classes shows how coursework can prove route skills right away.
+DEMO_CURRENT = ["Rekayasa Kebutuhan", "Business Intelligence", "Sistem Enterprise", "Interaksi Manusia dan Komputer"]
 
 
 @router.post("/demo/profile", dependencies=[Depends(rate_limit("signup", 20))])
 def demo_profile(s: Session = Depends(db_session)):
     if os.getenv("PATHSYNC_DEMO", "1") == "0":
-        raise HTTPException(404, "The demo profile is turned off on this server.")
+        raise HTTPException(404, tr("The demo profile is turned off on this server.", "Profil demo dimatikan di server ini."))
     token = new_token()
     st = Student(display_name="Rani (demo)", program="Information Systems", semester=6, target_role="business_analyst",
                  consent_at=utcnow(), consent_version="demo", token_hash=hash_token(token),
@@ -47,6 +50,9 @@ def demo_profile(s: Session = Depends(db_session)):
     item, detail = academic_evidence(DEMO_COURSES)
     s.add(Evidence(student_id=st.id, kind="academic", title="Transcript (demo)", scores=item.scores,
                    details={"strength": item.strength, "courses": detail}))
+    for name in DEMO_CURRENT:
+        s.add(CourseEnrollment(student_id=st.id, course_name=name, term="2026/2027 Ganjil", status="ongoing",
+                               mapping=map_course(name)["skills"]))
     s.commit()
     after_change(s, st, "evidence", "demo transcript")
     return {"id": st.id, "token": token}

@@ -84,7 +84,10 @@ ABOUT_COMPANY = re.compile(
     r"\b(we are|we're|kami adalah|kami merupakan|merupakan perusahaan|is a leading|is one of the|founded in|didirikan|"
     r"about us|tentang kami|our mission|misi kami|visi kami|our vision|what we offer|benefit[s]?\b|keuntungan|"
     r"fasilitas|why join|mengapa bergabung|equal opportunity|we offer|kami menawarkan|salary|gaji|tunjangan|"
-    r"bpjs|asuransi kesehatan|health insurance|annual leave|cuti)\b",
+    r"bpjs|asuransi kesehatan|health insurance|annual leave|cuti|"
+    # company introductions and recruitment notices (dev-half error analysis, 18 Oct 2026)
+    r"trusted by|backed by|proudly|our ecosystem|the ecosystem also|yuk join|join bareng|lagi cari talenta|"
+    r"tidak dipungut biaya|free of charge)\b",
     re.I,
 )
 
@@ -92,3 +95,13 @@ ABOUT_COMPANY = re.compile(
 def is_boilerplate(segment: str) -> bool:
     """Company description, benefits and legal boilerplate carry no skill demand."""
     return bool(ABOUT_COMPANY.search(segment))
+
+
+_EMAIL = re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+")
+_PHONE = re.compile(r"(?<!\d)(?:\+?62|0)[\s.-]?8(?:[\s.-]?\d){7,11}(?!\d)")
+
+
+def redact_contacts(text: str) -> str:
+    """Remove recruiter e-mail addresses and Indonesian mobile numbers from posting text (UU PDP: personal data that the
+    market map never needs). Applied when raw postings are loaded, so it also covers files scraped earlier."""
+    return _PHONE.sub("[nomor disamarkan]", _EMAIL.sub("[email disamarkan]", text or ""))

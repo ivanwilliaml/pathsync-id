@@ -9,7 +9,7 @@ it is clipped to [-0.5, 0.5] and enters the ranker as T_s = 1 + lambda * g_s.
 from __future__ import annotations
 
 import math
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, fields
 from datetime import date
 
 from .config import (
@@ -80,8 +80,11 @@ class MarketMap:
 
     @classmethod
     def from_dict(cls, d: dict) -> MarketMap:
-        m = cls(**{k: v for k, v in d.items() if k != "skills"})
-        m.skills = {k: SkillDemand(**v) for k, v in d.get("skills", {}).items()}
+        # stored snapshots outlive code changes: ignore fields this version does not know
+        known = {f.name for f in fields(cls)} - {"skills"}
+        m = cls(**{k: v for k, v in d.items() if k in known})
+        sd_known = {f.name for f in fields(SkillDemand)}
+        m.skills = {k: SkillDemand(**{f: x for f, x in v.items() if f in sd_known}) for k, v in d.get("skills", {}).items()}
         return m
 
     def D(self, s: str) -> float:

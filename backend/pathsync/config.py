@@ -16,17 +16,35 @@ for _d in (RAW_DIR, SEED_DIR, PROCESSED_DIR, MODELS_DIR):
 
 # Display language of everything the API returns (skill names, explanations, assessment items).
 # Seed data keeps the Indonesian originals; extraction prompts always use them.
+# LANG is the server default; a request can ask for its own ("X-PathSync-Lang: id|en", set by the web app's
+# language switch), which display code reads through lang() / tr(). Matching and extraction never depend on it.
 LANG = os.getenv("PATHSYNC_LANG", "en")
+# posting sources left out of the market map, comma-separated (e.g. "kalibrr" while permission is pending; see
+# docs/ops/DATA_SOURCES.md). Raw files stay on disk; only the market build ignores them.
+EXCLUDED_SOURCES = frozenset(x.strip() for x in os.getenv("PATHSYNC_EXCLUDED_SOURCES", "").split(",") if x.strip())
 
 DATABASE_URL = os.getenv("PATHSYNC_DATABASE_URL", f"sqlite:///{(DATA_DIR / 'pathsync.db').as_posix()}")
+# hosted Postgres (Neon, Supabase) hands out postgres:// or postgresql:// URLs; use the psycopg 3 driver for both
+for _p in ("postgres://", "postgresql://"):
+    if DATABASE_URL.startswith(_p):
+        DATABASE_URL = "postgresql+psycopg://" + DATABASE_URL[len(_p):]
 
 # ---------------------------------------------------------------- embeddings
 # Open-source multilingual sentence embedding model that handles mixed ID/EN terms [III.B]
 EMBEDDING_MODEL = os.getenv("PATHSYNC_EMBEDDING_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
+# "torch" (sentence-transformers) or "onnx" (onnxruntime, int8 file below; for small hosts, see docs/ops/DEPLOY_GRATIS.md)
+EMBED_BACKEND = os.getenv("PATHSYNC_EMBED_BACKEND", "torch")
+# a local path (built by deploy/render/quantize.py) or a file in the model repo
+ONNX_FILE = os.getenv("PATHSYNC_ONNX_FILE", "onnx/model.onnx")
 
 # ----------------------------------------------------- extraction / normalisation [III.A.1]
-SIM_AUTO = 0.85        # >= 0.85  -> mapped automatically
+SIM_AUTO = 0.85        # >= 0.85  -> mapped automatically (only when EMBEDDING_AUTO is on)
 SIM_REVIEW = 0.70      # 0.70-0.85 -> manual review queue ; < 0.70 -> new-skill candidate
+# Free-text phrases mapped by embedding similarity alone. The rule written before the labels existed: the automatic band
+# starts at the lowest threshold whose precision on the labelled phrases is >= 0.95. On the 274 verified phrases no
+# threshold reaches it (data/models/normalisation_eval.json), so these phrases go to the review queue and never count
+# in the market map. Turn back on only when a re-run of pipeline.normalisation eval chooses a threshold.
+EMBEDDING_AUTO = os.getenv("PATHSYNC_EMBEDDING_AUTO", "0") == "1"
 LLM_MODEL = os.getenv("PATHSYNC_LLM_MODEL", "claude-opus-5-5")
 
 # ------------------------------------------------------------ demand map [III.A.1, eq. 1]

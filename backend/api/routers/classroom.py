@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from pathsync.classroom import course_companion, reflection_summary, suggest_week, week_start
 from pathsync.db import Cohort, CourseEnrollment, Pulse, Student, Study, StudyPlan, WeeklyPlan, utcnow
 from pathsync.engine import load_context
+from pathsync.i18n import tr
 from pathsync.intake import map_course
 from pathsync.security import db_session, student_access
 from pathsync.study import assign_arm
@@ -41,7 +42,7 @@ def list_courses(st: Student = Depends(student_access), s: Session = Depends(db_
 def add_course(body: CourseIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     n = s.scalar(select(func.count(CourseEnrollment.id)).where(CourseEnrollment.student_id == st.id))
     if n >= 15:
-        raise HTTPException(400, "You can track up to 15 courses at a time.")
+        raise HTTPException(400, tr("You can track up to 15 courses at a time.", "Kamu bisa melacak maksimal 15 mata kuliah sekaligus."))
     m = map_course(body.name)
     row = CourseEnrollment(student_id=st.id, course_name=body.name.strip(), term=body.term,
                            status=body.status if body.status in ("ongoing", "completed") else "ongoing", mapping=m["skills"])
@@ -54,7 +55,7 @@ def add_course(body: CourseIn, st: Student = Depends(student_access), s: Session
 def remove_course(cid: int, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     row = s.get(CourseEnrollment, cid)
     if not row or row.student_id != st.id:
-        raise HTTPException(404, "Course not found.")
+        raise HTTPException(404, tr("Course not found.", "Mata kuliah tidak ditemukan."))
     s.delete(row)
     s.commit()
     return {"ok": True}
@@ -122,7 +123,7 @@ class ReflectIn(BaseModel):
 def reflect(pid: int, body: ReflectIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     plan = s.get(WeeklyPlan, pid)
     if not plan or plan.student_id != st.id:
-        raise HTTPException(404, "Plan not found.")
+        raise HTTPException(404, tr("Plan not found.", "Rencana tidak ditemukan."))
     goals = [dict(g, done=i in set(body.goals_done)) for i, g in enumerate(plan.goals)]
     plan.goals = goals
     plan.reflection = {"done_minutes": body.done_minutes, "confidence": body.confidence, "obstacle": body.obstacle,
@@ -145,7 +146,7 @@ class PulseIn(BaseModel):
 @router.post("/pulse")
 def pulse(body: PulseIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     if body.item not in PULSE_ITEMS:
-        raise HTTPException(400, "Unknown survey item.")
+        raise HTTPException(400, tr("Unknown survey item.", "Item survei tidak dikenal."))
     s.add(Pulse(student_id=st.id, item=body.item, value=body.value, context=body.context))
     s.commit()
     return {"ok": True}
@@ -159,7 +160,7 @@ class JoinIn(BaseModel):
 def join_cohort(body: JoinIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     c = s.scalars(select(Cohort).where(Cohort.join_code == body.join_code.strip().upper())).first()
     if c is None:
-        raise HTTPException(404, "No class matches this code.")
+        raise HTTPException(404, tr("No class matches this code.", "Tidak ada kelas dengan kode ini."))
     st.cohort_id = c.id
     s.commit()
     return {"cohort": {"id": c.id, "name": c.name, "institution": c.institution},
@@ -178,11 +179,11 @@ def leave_cohort(st: Student = Depends(student_access), s: Session = Depends(db_
 def join_study(body: JoinIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     study = s.scalars(select(Study).where(Study.join_code == body.join_code.strip().upper(), Study.active.is_(True))).first()
     if study is None:
-        raise HTTPException(404, "No active study matches this code.")
+        raise HTTPException(404, tr("No active study matches this code.", "Tidak ada studi aktif dengan kode ini."))
     if st.study_id == study.id:
         return {"study": study.name, "arm": st.study_arm}
     if st.study_id:
-        raise HTTPException(409, "You are already enrolled in a study.")
+        raise HTTPException(409, tr("You are already enrolled in a study.", "Kamu sudah terdaftar di sebuah studi."))
     counts = dict(s.execute(select(Student.study_arm, func.count()).where(Student.study_id == study.id,
                                                                           Student.program == st.program)
                             .group_by(Student.study_arm)).all())
@@ -195,7 +196,7 @@ def join_study(body: JoinIn, st: Student = Depends(student_access), s: Session =
 @router.post("/study/plan/start")
 def start_plan(st: Student = Depends(student_access)):
     if not st.study_id:
-        raise HTTPException(400, "Join a study first.")
+        raise HTTPException(400, tr("Join a study first.", "Gabung ke studi dulu."))
     return {"started_at": utcnow().isoformat()}
 
 
@@ -208,10 +209,10 @@ class StudyPlanIn(BaseModel):
 def submit_study_plan(body: StudyPlanIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
     """Learning plan for H2 (quality, rated blind) and H3 (minutes to finish)."""
     if not st.study_id:
-        raise HTTPException(400, "Join a study first.")
+        raise HTTPException(400, tr("Join a study first.", "Gabung ke studi dulu."))
     started = body.started_at.replace(tzinfo=None)
     if not (0 <= (utcnow() - started).total_seconds() < 6 * 3600):
-        raise HTTPException(400, "The plan timer is invalid. Start the plan again.")
+        raise HTTPException(400, tr("The plan timer is invalid. Start the plan again.", "Timer rencana tidak valid. Mulai rencananya lagi."))
     row = StudyPlan(student_id=st.id, study_id=st.study_id, plan_text=body.plan_text, started_at=started,
                     blind_code=secrets.token_hex(4).upper())
     s.add(row)

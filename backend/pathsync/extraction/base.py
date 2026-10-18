@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 
-from ..config import SIM_AUTO, SIM_REVIEW
+from ..config import EMBEDDING_AUTO, SIM_AUTO, SIM_REVIEW
 from ..text import verify_quote
 
 LEVELS = ("dasar", "mandiri", "mahir")
@@ -58,16 +58,31 @@ def _trigrams(t: str) -> set[str]:
     return {t[i:i + 3] for i in range(len(t) - 2)}
 
 
+# Words too general to show that a phrase and a skill form mean the same thing: sharing "data" or "bisnis" let
+# "Data Science" map to data warehousing and "bisnis komersial" to business process modelling (audit AI-3).
+GENERIC_WORDS = {
+    "data", "media", "bisnis", "business", "security", "keamanan", "bidang", "proses", "process", "processes",
+    "system", "systems", "sistem", "management", "manajemen", "analysis", "analisis", "analisa", "development",
+    "pengembangan", "report", "reports", "reporting", "laporan", "design", "desain", "digital", "online", "tools",
+    "tool", "skills", "skill", "kemampuan", "information", "informasi", "service", "services", "layanan", "project",
+    "projects", "proyek", "financial", "keuangan", "basic", "dasar", "advanced", "lanjutan", "and", "dan", "of", "the",
+    "untuk", "for", "with", "dengan", "di", "in", "planning", "perencanaan", "solution", "solutions", "operation",
+    "operations", "operasional", "technical", "teknis", "application", "applications", "aplikasi", "software",
+    "inventory", "payment", "payments", "logistics", "metrics", "revenue", "algorithms", "customer", "sales",
+}
+
+
 def lexical_support(surface: str, form: str) -> float:
-    """Character-trigram Jaccard, 1.0 when they share a whole word. Embeddings alone rate unrelated short words ("teliti",
-    "ollama", "odi") close to some skill name; a mapping must also look like the form it maps to."""
-    if set(surface.lower().split()) & set(form.lower().split()):
+    """Character-trigram Jaccard, 1.0 when they share a meaningful whole word (not one of GENERIC_WORDS). Embeddings
+    alone rate unrelated short words ("teliti", "ollama", "odi") close to some skill name; a mapping must also look like
+    the form it maps to."""
+    if (set(surface.lower().split()) & set(form.lower().split())) - GENERIC_WORDS:
         return 1.0
     a, b = _trigrams(surface), _trigrams(form)
     return len(a & b) / len(a | b) if a | b else 0.0
 
 
-MIN_LEXICAL_SUPPORT = 0.2
+MIN_LEXICAL_SUPPORT = 0.35   # below this an embedding match goes to review, not to the market map (recalibrate with V4 labels)
 
 
 def apply_gates(raw: list[Mention], source_text: str, index, valid_ids: set[str]) -> ExtractionResult:
@@ -89,9 +104,12 @@ def apply_gates(raw: list[Mention], source_text: str, index, valid_ids: set[str]
             if sim >= SIM_AUTO and lexical_support(m.surface, form) < MIN_LEXICAL_SUPPORT:
                 sim = min(sim, SIM_AUTO - 1e-3)       # looks similar to the embedding but not to the text: needs a human
                 m.reason = f"embedding match without textual overlap with '{form}'"
-            if sim >= SIM_AUTO:
+            if sim >= SIM_AUTO and EMBEDDING_AUTO:
                 m.skill_id, m.status = sid, "auto"
                 res.mentions.append(m)
+            elif sim >= SIM_AUTO:          # automatic band disabled by the labelled evaluation: a human decides
+                m.skill_id, m.status, m.reason = sid, "review", f"mirip '{form}' ({sim:.2f}); otomatis dimatikan"
+                res.review.append(m)
             elif sim >= SIM_REVIEW:
                 m.skill_id, m.status, m.reason = sid, "review", f"mirip '{form}' ({sim:.2f})"
                 res.review.append(m)

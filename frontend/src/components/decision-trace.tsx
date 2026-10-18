@@ -7,6 +7,7 @@ import { num } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { useStudentId } from "@/lib/student";
 import { ErrorNote, Loading } from "./kit";
+import { useT } from "@/lib/i18n";
 
 interface Stage {
   stage: string;
@@ -26,6 +27,7 @@ type Row = Record<string, unknown>;
 export function DecisionTrace({ skillId }: { skillId: string }) {
   const { id } = useStudentId();
   const [open, setOpen] = useState(false);
+  const tr = useT();
   const t = useApi<Trace>(open && id ? `/students/${id}/trace/${skillId}` : null);
   return (
     <div className="rounded-xl border">
@@ -36,14 +38,14 @@ export function DecisionTrace({ skillId }: { skillId: string }) {
         className="flex w-full items-center justify-between gap-2 p-3.5 text-left text-sm font-semibold text-ink"
       >
         <span className="inline-flex items-center gap-2">
-          <Calculator className="size-4 text-indigo" aria-hidden="true" /> How was this decided?
+          <Calculator className="size-4 text-indigo" aria-hidden="true" /> {tr("How was this decided?", "Bagaimana ini diputuskan?")}
         </span>
         <ChevronDown className={`size-4 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden="true" />
       </button>
       {open ? (
         <div className="space-y-4 border-t p-3.5 text-sm">
           {t.error ? <ErrorNote error={t.error} /> : !t.data ? <Loading /> : t.data.stages.map((s) => <StageView key={s.stage} s={s} />)}
-          {t.data ? <p className="text-xs text-muted-foreground">Market map {t.data.market_version}. Same inputs always give the same result.</p> : null}
+          {t.data ? <p className="text-xs text-muted-foreground">{tr("Market map", "Peta pasar")} {t.data.market_version}. {tr("Same inputs always give the same result.", "Input yang sama selalu memberi hasil yang sama.")}</p> : null}
         </div>
       ) : null}
     </div>
@@ -52,6 +54,7 @@ export function DecisionTrace({ skillId }: { skillId: string }) {
 
 function StageView({ s }: { s: Stage }) {
   const rows = Array.isArray(s.inputs) ? (s.inputs as Row[]) : null;
+  const tr = useT();
   return (
     <div>
       <p className="font-medium text-ink">{s.stage}</p>
@@ -82,7 +85,7 @@ function StageView({ s }: { s: Stage }) {
         </p>
       ) : null}
       <p className="mt-1 text-xs text-ink">
-        Result:{" "}
+        {tr("Result", "Hasil")}:{" "}
         <span className="font-semibold">
           {typeof s.result === "number"
             ? num(s.result, 3)

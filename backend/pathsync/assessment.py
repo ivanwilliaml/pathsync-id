@@ -11,19 +11,28 @@ import json
 import random
 from functools import lru_cache
 
-from .config import LANG, SEED_DIR
+from .config import SEED_DIR
 from .demand import MarketMap
 from .evidence import SkillState
+from .i18n import get_lang, tr
 
 
-@lru_cache(maxsize=1)
-def item_bank() -> dict[str, dict]:
-    """Load all items; the correct option is written first in the seed and shuffled deterministically here."""
+def item_bank(lang: str | None = None) -> dict[str, dict]:
+    """All items in the request's display language. The key's position is the same in both languages, because the
+    shuffle is seeded by the item id and both files list the correct option first."""
+    return _item_bank(lang or get_lang())
+
+
+item_bank.cache_clear = lambda: _item_bank.cache_clear()     # callers that reload the bank after editing it
+
+
+@lru_cache(maxsize=4)
+def _item_bank(lang: str) -> dict[str, dict]:
     bank = {}
     for f in sorted((SEED_DIR / "items").glob("*.json")):
         overlay = {}
         tr = SEED_DIR / "items_en" / f.name
-        if LANG == "en" and tr.exists():
+        if lang == "en" and tr.exists():
             overlay = json.loads(tr.read_text(encoding="utf-8"))
         for it in json.loads(f.read_text(encoding="utf-8")):
             if it["id"] in overlay:
@@ -82,10 +91,20 @@ def diagnostic_plan(market: MarketMap, states: dict[str, SkillState], answered: 
         boost = 1.35 if st is not None and (st.claimed or "paparan_akademik_tanpa_bukti_langsung" in st.flags) else 1.0
         scored.append((sd.demand * (1.0 - 0.7 * conf) * boost, s))
     chosen = [s for _, s in sorted(scored, reverse=True) if any(it["id"] not in answered for it in items_for(s))][:n_skills]
+    k3 = set(chosen[:max(0, target_items - 2 * len(chosen))])        # the top skills get a third item
+    # Pilot finding (V3): students quit when topics jumped back and forth. Same-cluster skills now sit together; the
+    # cluster of the most important skill comes first, and within a cluster the order of importance is kept.
+    from .taxonomy import load_skills
+
+    skills = load_skills()
+    first_pos: dict[str, int] = {}
+    for i, s in enumerate(chosen):
+        first_pos.setdefault(skills[s].cluster, i)
+    chosen = sorted(chosen, key=lambda s: (first_pos[skills[s].cluster], chosen.index(s)))
     plan: list[dict] = []
-    for rank, s in enumerate(chosen):
+    for s in chosen:
         pool = sorted((it for it in items_for(s) if it["id"] not in answered), key=lambda it: (it["difficulty"], it["id"]))
-        k = 3 if rank < max(0, target_items - 2 * len(chosen)) else 2
+        k = 3 if s in k3 else 2
         # one easy + one harder item (+ a third for the top skills) gives a spread for e_assessment
         picked = pool[:1] + [it for it in pool[1:] if it["difficulty"] >= 2][: k - 1]
         if len(picked) < k:
@@ -137,13 +156,13 @@ def validate_submission(issued: list[str], answers: list[dict]) -> list[dict]:
     for a in answers:
         iid = str(a.get("item_id", ""))
         if iid not in issued_set:
-            raise SubmissionError(f"Item {iid!r} was not part of this check.")
+            raise SubmissionError(tr(f"Item {iid!r} was not part of this check.", f"Soal {iid!r} bukan bagian dari check ini."))
         if iid in seen:
-            raise SubmissionError(f"Item {iid!r} was answered twice.")
+            raise SubmissionError(tr(f"Item {iid!r} was answered twice.", f"Soal {iid!r} dijawab dua kali."))
         seen.add(iid)
         choice = a.get("choice")
         if choice is not None and not (isinstance(choice, int) and 0 <= choice < 4):
-            raise SubmissionError("Each answer must be one of the four options.")
+            raise SubmissionError(tr("Each answer must be one of the four options.", "Setiap jawaban harus salah satu dari empat pilihan."))
         clean.append({"item_id": iid, "choice": choice})
     return clean
 

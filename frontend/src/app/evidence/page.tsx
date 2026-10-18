@@ -26,14 +26,17 @@ import {
 } from "@/components/ui/alert-dialog";
 import { RequireStudent } from "@/components/require-student";
 import { ErrorNote, LinkButton, Loading, NativeSelect, PageHeader, Panel, Tag } from "@/components/kit";
+import { Mascot, type MascotName } from "@/components/mascot";
+import { useT } from "@/lib/i18n";
 
 type StepId = "transcript" | "certificates" | "projects" | "cv" | "preferences";
-const STEPS: { id: StepId; label: string; icon: typeof GraduationCap; kind?: string; hint: string }[] = [
-  { id: "transcript", label: "Transcript", icon: GraduationCap, kind: "academic", hint: "Your course grades" },
-  { id: "certificates", label: "Certificates", icon: Award, kind: "certificate", hint: "Courses and exams" },
-  { id: "projects", label: "Projects", icon: FolderKanban, kind: "project", hint: "Work you can show" },
-  { id: "cv", label: "CV", icon: UserRound, kind: "cv", hint: "Skills you mention" },
-  { id: "preferences", label: "Preferences", icon: SlidersHorizontal, hint: "How you like to learn" },
+// label and hint: [English, Indonesian]
+const STEPS: { id: StepId; label: [string, string]; icon: typeof GraduationCap; kind?: string; hint: [string, string] }[] = [
+  { id: "transcript", label: ["Transcript", "Transkrip"], icon: GraduationCap, kind: "academic", hint: ["Your course grades", "Nilai mata kuliahmu"] },
+  { id: "certificates", label: ["Certificates", "Sertifikat"], icon: Award, kind: "certificate", hint: ["Courses and exams", "Kursus dan ujian"] },
+  { id: "projects", label: ["Projects", "Project"], icon: FolderKanban, kind: "project", hint: ["Work you can show", "Karya yang bisa ditunjukkan"] },
+  { id: "cv", label: ["CV", "CV"], icon: UserRound, kind: "cv", hint: ["Skills you mention", "Skill yang kamu sebut"] },
+  { id: "preferences", label: ["Preferences", "Preferensi"], icon: SlidersHorizontal, hint: ["How you like to learn", "Cara belajar favoritmu"] },
 ];
 
 interface Catalog {
@@ -58,6 +61,7 @@ function Evidence({ sid }: { sid: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const params = useSearchParams();
+  const t = useT();
   const step = (STEPS.find((s) => s.id === params.get("step"))?.id ?? "transcript") as StepId;
   const idx = STEPS.findIndex((s) => s.id === step);
   const student = useApi<Student>(`/students/${sid}`);
@@ -72,22 +76,22 @@ function Evidence({ sid }: { sid: string }) {
   const saved = (label: string) => {
     track("evidence_saved", { kind: label });
     student.reload();
-    toast.success(`${label} saved`, next ? { action: { label: `Next: ${next.label}`, onClick: () => go(next.id) } } : undefined);
+    toast.success(t(`${label} saved`, `${label} tersimpan`), next ? { action: { label: `${t("Next", "Lanjut")}: ${t(...next.label)}`, onClick: () => go(next.id) } } : undefined);
   };
 
   return (
     <div>
-      <PageHeader
-        title="My Evidence"
-        description="Add whatever you have. Every step is optional, and the more you add, the more accurate your route gets."
+      <PageHeader mascot="upload"
+        title={t("My Evidence", "Evidence Saya")}
+        description={t("Add whatever you have. Every step is optional, and the more you add, the more accurate your route gets.", "Tambahkan apa pun yang kamu punya. Setiap langkah opsional, dan makin banyak yang kamu tambahkan, makin akurat rutemu.")}
         actions={
           <LinkButton href="/dashboard" size="lg" className="h-10">
-            See My Route
+            {t("See My Route", "Lihat Ruteku")}
           </LinkButton>
         }
       />
 
-      <nav aria-label="Evidence steps" className="mb-8">
+      <nav aria-label={t("Evidence steps", "Langkah evidence")} className="mb-8">
         <ol className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
           {STEPS.map((s, i) => {
             const active = s.id === step;
@@ -98,7 +102,7 @@ function Evidence({ sid }: { sid: string }) {
                   type="button"
                   onClick={() => go(s.id)}
                   aria-current={active ? "step" : undefined}
-                  aria-label={`${s.label}${isDone ? ", done" : ""}`}
+                  aria-label={`${t(...s.label)}${isDone ? t(", done", ", selesai") : ""}`}
                   className={cn(
                     "flex w-full min-w-0 flex-row items-center gap-2 rounded-xl border p-2 text-left sm:p-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                     active ? "border-indigo bg-card shadow-sm" : "bg-card/60 hover:bg-card",
@@ -110,11 +114,11 @@ function Evidence({ sid }: { sid: string }) {
                       isDone ? "bg-mint text-white" : active ? "bg-indigo text-white" : "bg-muted text-ink/70",
                     )}
                   >
-                    {isDone ? <Check className="size-4" aria-label="Done" /> : i + 1}
+                    {isDone ? <Check className="size-4" aria-label={t("Done", "Selesai")} /> : i + 1}
                   </span>
                   <span className="w-full min-w-0">
-                    <span className="block text-xs font-semibold text-ink sm:text-sm">{s.label}</span>
-                    <span className="hidden truncate text-xs text-muted-foreground md:block">{s.hint}</span>
+                    <span className="block text-xs font-semibold text-ink sm:text-sm">{t(...s.label)}</span>
+                    <span className="hidden truncate text-xs text-muted-foreground md:block">{t(...s.hint)}</span>
                   </span>
                 </button>
               </li>
@@ -125,27 +129,27 @@ function Evidence({ sid }: { sid: string }) {
 
       <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div className="min-w-0">
-          {step === "transcript" && <Transcript sid={sid} catalog={catalog.data} names={names} onSaved={() => saved("Transcript")} />}
-          {step === "certificates" && <Certificates sid={sid} catalog={catalog.data} names={names} onSaved={() => saved("Certificates")} />}
+          {step === "transcript" && <Transcript sid={sid} catalog={catalog.data} names={names} onSaved={() => saved(t("Transcript", "Transkrip"))} />}
+          {step === "certificates" && <Certificates sid={sid} catalog={catalog.data} names={names} onSaved={() => saved(t("Certificates", "Sertifikat"))} />}
           {step === "projects" && <Projects sid={sid} names={names} onSaved={() => saved("Project")} />}
           {step === "cv" && <CV sid={sid} names={names} onSaved={() => saved("CV")} />}
           {step === "preferences" && student.data && meta.data && (
             <Preferences student={student.data} meta={meta.data} names={names} onSaved={() => {
               student.reload();
-              toast.success("Preferences saved", { action: { label: "See My Route", onClick: () => router.push("/dashboard") } });
+              toast.success(t("Preferences saved", "Preferensi tersimpan"), { action: { label: t("See My Route", "Lihat Ruteku"), onClick: () => router.push("/dashboard") } });
             }} />
           )}
           <div className="mt-6 flex items-center justify-between">
             <Button variant="ghost" size="lg" disabled={idx === 0} onClick={() => go(STEPS[idx - 1].id)}>
-              Back
+              {t("Back", "Kembali")}
             </Button>
             {next ? (
               <Button variant="outline" size="lg" onClick={() => go(next.id)}>
-                {done(STEPS[idx]) ? `Continue to ${next.label}` : `Skip to ${next.label}`}
+                {done(STEPS[idx]) ? t(`Continue to ${t(...next.label)}`, `Lanjut ke ${t(...next.label)}`) : t(`Skip to ${t(...next.label)}`, `Lewati ke ${t(...next.label)}`)}
               </Button>
             ) : (
               <LinkButton href="/assessment" size="lg">
-                Take the Quick Check
+                {t("Take the Quick Check", "Ikuti Quick Check")}
               </LinkButton>
             )}
           </div>
@@ -157,40 +161,42 @@ function Evidence({ sid }: { sid: string }) {
 }
 
 // ------------------------------------------------------------------ saved evidence
-const KIND: Record<string, string> = { academic: "Transcript", certificate: "Certificates", cv: "CV", project: "Project" };
+const KIND: Record<string, [string, string]> = { academic: ["Transcript", "Transkrip"], certificate: ["Certificates", "Sertifikat"], cv: ["CV", "CV"], project: ["Project", "Project"] };
 
 function EvidenceList({ sid, student, onChange }: { sid: string; student: Student | null; onChange: () => void }) {
   const [pending, setPending] = useState<{ id: number; title: string } | null>(null);
+  const t = useT();
+  const kind = (k: string) => (KIND[k] ? t(...KIND[k]) : k);
   async function remove() {
     if (!pending) return;
     await api.del(`/students/${sid}/evidence/${pending.id}`);
-    toast.success("Evidence removed");
+    toast.success(t("Evidence removed", "Evidence dihapus"));
     setPending(null);
     onChange();
   }
   return (
     <aside aria-labelledby="saved" className="h-fit rounded-2xl border bg-card p-5 lg:sticky lg:top-8">
       <h2 id="saved" className="font-semibold text-ink">
-        Saved Evidence
+        {t("Saved Evidence", "Evidence Tersimpan")}
       </h2>
       {!student ? (
         <Loading />
       ) : student.evidence.length === 0 && student.n_responses === 0 ? (
-        <p className="mt-2 text-sm text-muted-foreground">Nothing yet. What you save shows up here.</p>
+        <p className="mt-2 text-sm text-muted-foreground">{t("Nothing yet. What you save shows up here.", "Belum ada. Yang kamu simpan muncul di sini.")}</p>
       ) : (
         <ul className="mt-3 space-y-2">
           {student.evidence.map((e) => (
             <li key={e.id} className="flex items-start justify-between gap-2 rounded-xl bg-muted/70 px-3 py-2.5">
               <div className="min-w-0">
-                <p className="text-xs font-medium text-indigo">{KIND[e.kind] ?? e.kind}</p>
+                <p className="text-xs font-medium text-indigo">{kind(e.kind)}</p>
                 <p className="truncate text-sm font-medium text-ink" title={e.title}>
-                  {e.kind === "academic" ? "Transcript" : e.title}
+                  {e.kind === "academic" ? t("Transcript", "Transkrip") : e.title}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {e.kind === "cv" ? `${((e.details.claim_ids as string[]) ?? []).length} skills mentioned` : `${Object.keys(e.scores).length} skills found`}
+                  {e.kind === "cv" ? t(`${((e.details.claim_ids as string[]) ?? []).length} skills mentioned`, `${((e.details.claim_ids as string[]) ?? []).length} skill disebut`) : t(`${Object.keys(e.scores).length} skills found`, `${Object.keys(e.scores).length} skill ditemukan`)}
                 </p>
               </div>
-              <Button variant="ghost" size="icon" aria-label={`Remove ${KIND[e.kind] ?? e.kind}`} onClick={() => setPending({ id: e.id, title: KIND[e.kind] ?? e.title })}>
+              <Button variant="ghost" size="icon" aria-label={t(`Remove ${kind(e.kind)}`, `Hapus ${kind(e.kind)}`)} onClick={() => setPending({ id: e.id, title: KIND[e.kind] ? kind(e.kind) : e.title })}>
                 <Trash2 />
               </Button>
             </li>
@@ -198,7 +204,7 @@ function EvidenceList({ sid, student, onChange }: { sid: string; student: Studen
           {student.n_responses > 0 ? (
             <li className="rounded-xl bg-muted/70 px-3 py-2.5">
               <p className="text-xs font-medium text-mint-ink">Assessment</p>
-              <p className="text-sm font-medium text-ink">{student.n_responses} questions answered</p>
+              <p className="text-sm font-medium text-ink">{t(`${student.n_responses} questions answered`, `${student.n_responses} soal terjawab`)}</p>
             </li>
           ) : null}
         </ul>
@@ -206,13 +212,13 @@ function EvidenceList({ sid, student, onChange }: { sid: string; student: Studen
       <AlertDialog open={pending !== null} onOpenChange={(o) => !o && setPending(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Remove This {pending?.title}?</AlertDialogTitle>
-            <AlertDialogDescription>Your route will be recalculated without it. You can add it again later.</AlertDialogDescription>
+            <AlertDialogTitle>{t(`Remove This ${pending?.title}?`, `Hapus ${pending?.title} Ini?`)}</AlertDialogTitle>
+            <AlertDialogDescription>{t("Your route will be recalculated without it. You can add it again later.", "Rutemu akan dihitung ulang tanpanya. Kamu bisa menambahkannya lagi nanti.")}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Keep It</AlertDialogCancel>
+            <AlertDialogCancel>{t("Keep It", "Simpan Saja")}</AlertDialogCancel>
             <AlertDialogAction variant="destructive" onClick={remove}>
-              Remove
+              {t("Remove", "Hapus")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -222,11 +228,16 @@ function EvidenceList({ sid, student, onChange }: { sid: string; student: Studen
 }
 
 // ------------------------------------------------------------------ shared bits
-function StepPanel({ title, description, children }: { title: string; description: string; children: React.ReactNode }) {
+function StepPanel({ title, description, children, mascot }: { title: string; description: string; children: React.ReactNode; mascot?: MascotName }) {
   return (
     <Panel>
-      <h2 className="text-xl font-bold text-ink">{title}</h2>
-      <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+      <div className="flex items-center gap-4">
+        {mascot ? <Mascot name={mascot} size={84} className="hidden sm:block" /> : null}
+        <div>
+          <h2 className="text-xl font-bold text-ink">{title}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+        </div>
+      </div>
       <div className="mt-5">{children}</div>
     </Panel>
   );
@@ -235,13 +246,14 @@ function StepPanel({ title, description, children }: { title: string; descriptio
 function PasteOrUpload({ id, label, text, setText, file, setFile, accept, placeholder }: {
   id: string; label: string; text: string; setText: (s: string) => void; file: File | null; setFile: (f: File | null) => void; accept: string; placeholder: string;
 }) {
+  const t = useT();
   return (
     <div className="space-y-3">
       <Label htmlFor={id}>{label}</Label>
       <Textarea id={id} value={text} onChange={(e) => setText(e.target.value)} placeholder={placeholder} disabled={!!file} className="min-h-40 font-mono text-[13px]" />
       <div className="flex flex-wrap items-center gap-3 text-sm">
         <label className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-lg border bg-card px-3 font-medium text-ink hover:bg-muted focus-within:ring-2 focus-within:ring-ring">
-          <Upload className="size-4" aria-hidden="true" /> Upload a File
+          <Upload className="size-4" aria-hidden="true" /> {t("Upload a File", "Unggah File")}
           <input type="file" accept={accept} className="sr-only" onChange={(e) => setFile(e.target.files?.[0] ?? null)} />
         </label>
         <span className="text-xs text-muted-foreground">{accept.replaceAll(",", ", ")}</span>
@@ -249,7 +261,7 @@ function PasteOrUpload({ id, label, text, setText, file, setFile, accept, placeh
           <span className="flex items-center gap-2 text-ink/80">
             <FileText className="size-4" aria-hidden="true" /> {file.name}
             <button type="button" className="text-xs font-medium text-indigo underline" onClick={() => setFile(null)}>
-              Remove
+              {t("Remove", "Hapus")}
             </button>
           </span>
         ) : null}
@@ -259,8 +271,9 @@ function PasteOrUpload({ id, label, text, setText, file, setFile, accept, placeh
 }
 
 function SkillChips({ scores, names }: { scores: Record<string, number>; names: Record<string, string> }) {
+  const t = useT();
   const rows = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-  if (!rows.length) return <p className="text-sm text-muted-foreground">No skills matched.</p>;
+  if (!rows.length) return <p className="text-sm text-muted-foreground">{t("No skills matched.", "Tidak ada skill yang cocok.")}</p>;
   return (
     <ul className="flex flex-wrap gap-2">
       {rows.map(([k, v]) => (
@@ -299,6 +312,7 @@ function Transcript({ sid, catalog, names, onSaved }: { sid: string; catalog: Ca
   const [busy, setBusy] = useState<string | null>(null);
   const [err, setErr] = useState<unknown>(null);
   const grades = catalog?.grades ?? ["A", "A-", "B+", "B", "B-", "C+", "C", "D", "E"];
+  const t = useT();
 
   async function read() {
     setBusy("read");
@@ -309,7 +323,7 @@ function Transcript({ sid, catalog, names, onSaved }: { sid: string; catalog: Ca
       else fd.append("text", text);
       const r = await api.post<{ courses: CourseRow[] }>(`/students/${sid}/transcript/parse`, fd);
       setRows(r.courses);
-      if (!r.courses.length) setErr(new Error("We couldn't find any 'course, grade' lines. Check the format or add courses by hand."));
+      if (!r.courses.length) setErr(new Error(t("We couldn't find any 'course, grade' lines. Check the format or add courses by hand.", "Kami tidak menemukan baris 'mata kuliah, nilai'. Cek formatnya atau tambahkan mata kuliah secara manual.")));
     } catch (e) {
       setErr(e);
     } finally {
@@ -331,12 +345,12 @@ function Transcript({ sid, catalog, names, onSaved }: { sid: string; catalog: Ca
   }
 
   return (
-    <StepPanel title="Add Your Transcript" description="Paste your grades or upload your transcript. Grades count as background knowledge, not proof, so they carry the lightest weight.">
+    <StepPanel mascot="transcript" title={t("Add Your Transcript", "Tambahkan Transkripmu")} description={t("Paste your grades or upload your transcript. Grades count as background knowledge, not proof, so they carry the lightest weight.", "Tempel nilaimu atau unggah transkrip. Nilai dihitung sebagai pengetahuan dasar, bukan bukti, jadi bobotnya paling ringan.")}>
       {rows.length === 0 ? (
         <>
           <PasteOrUpload
             id="transcript"
-            label="Courses and Grades"
+            label={t("Courses and Grades", "Mata Kuliah dan Nilai")}
             text={text}
             setText={setText}
             file={file}
@@ -346,29 +360,29 @@ function Transcript({ sid, catalog, names, onSaved }: { sid: string; catalog: Ca
           />
           <div className="mt-5 flex flex-wrap gap-2">
             <Button size="lg" className="h-10" onClick={read} disabled={busy !== null || (!file && text.trim().length < 4)}>
-              {busy === "read" ? "Reading…" : "Read Transcript"}
+              {busy === "read" ? t("Reading…", "Membaca…") : t("Read Transcript", "Baca Transkrip")}
             </Button>
             <Button variant="ghost" size="lg" className="h-10" onClick={() => setRows([{ name: "", grade: "A" }])}>
-              <Plus /> Add Courses by Hand
+              <Plus /> {t("Add Courses by Hand", "Tambah Mata Kuliah Manual")}
             </Button>
           </div>
         </>
       ) : (
         <>
-          <p className="mb-3 text-sm text-ink/75">Check the {rows.length} courses we found, then save.</p>
+          <p className="mb-3 text-sm text-ink/75">{t(`Check the ${rows.length} courses we found, then save.`, `Cek ${rows.length} mata kuliah yang kami temukan, lalu simpan.`)}</p>
           <datalist id="courses">
             {catalog?.courses.map((c) => <option key={c.name} value={c.name} />)}
           </datalist>
           <ul className="space-y-2">
             {rows.map((r, i) => (
               <li key={i} className="flex gap-2">
-                <Input list="courses" aria-label={`Course ${i + 1}`} value={r.name} onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} className="h-10" />
-                <NativeSelect aria-label={`Grade for course ${i + 1}`} value={r.grade} onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, grade: e.target.value } : x)))} className="w-24">
+                <Input list="courses" aria-label={t(`Course ${i + 1}`, `Mata kuliah ${i + 1}`)} value={r.name} onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))} className="h-10" />
+                <NativeSelect aria-label={t(`Grade for course ${i + 1}`, `Nilai mata kuliah ${i + 1}`)} value={r.grade} onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, grade: e.target.value } : x)))} className="w-24">
                   {grades.map((g) => (
                     <option key={g}>{g}</option>
                   ))}
                 </NativeSelect>
-                <Button variant="ghost" size="icon-lg" aria-label={`Remove course ${i + 1}`} onClick={() => setRows(rows.filter((_, j) => j !== i))}>
+                <Button variant="ghost" size="icon-lg" aria-label={t(`Remove course ${i + 1}`, `Hapus mata kuliah ${i + 1}`)} onClick={() => setRows(rows.filter((_, j) => j !== i))}>
                   <Trash2 />
                 </Button>
               </li>
@@ -376,13 +390,13 @@ function Transcript({ sid, catalog, names, onSaved }: { sid: string; catalog: Ca
           </ul>
           <div className="mt-4 flex flex-wrap gap-2">
             <Button size="lg" className="h-10" onClick={save} disabled={busy !== null}>
-              {busy === "save" ? "Saving…" : "Save Transcript"}
+              {busy === "save" ? t("Saving…", "Menyimpan…") : t("Save Transcript", "Simpan Transkrip")}
             </Button>
             <Button variant="ghost" size="lg" className="h-10" onClick={() => setRows([...rows, { name: "", grade: "A" }])}>
-              <Plus /> Add a Course
+              <Plus /> {t("Add a Course", "Tambah Mata Kuliah")}
             </Button>
             <Button variant="ghost" size="lg" className="h-10" onClick={() => setRows([])}>
-              Start Over
+              {t("Start Over", "Mulai Ulang")}
             </Button>
           </div>
         </>
@@ -391,7 +405,7 @@ function Transcript({ sid, catalog, names, onSaved }: { sid: string; catalog: Ca
         <ErrorNote error={err} />
       </div>
       {result ? (
-        <ResultPanel title="Saved. These skills now count your coursework:">
+        <ResultPanel title={t("Saved. These skills now count your coursework:", "Tersimpan. Skill ini sekarang menghitung mata kuliahmu:")}>
           <SkillChips scores={result} names={names} />
         </ResultPanel>
       ) : null}
@@ -407,6 +421,7 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
   const scale = (n: string) => catalog?.certificates.find((c) => c.name === n)?.score_scale;
+  const t = useT();
 
   async function save() {
     setBusy(true);
@@ -425,7 +440,14 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
     }
   }
   return (
-    <StepPanel title="Add Certificates" description="Pick from our list or type any course name, and paste the credential link (Coursera, Dicoding, Credly, Google, Microsoft…). A certificate with a verifiable link counts fully; one without a link counts as a claim, at half weight.">
+    <StepPanel
+      mascot="certificate"
+      title={t("Add Certificates", "Tambahkan Sertifikat")}
+      description={t(
+        "Pick from our list or type any course name, and paste the credential link (Coursera, Dicoding, Credly, Google, Microsoft…). A certificate with a verifiable link counts fully; one without a link counts as a claim, at half weight.",
+        "Pilih dari daftar kami atau ketik nama kursus apa pun, lalu tempel tautan kredensialnya (Coursera, Dicoding, Credly, Google, Microsoft…). Sertifikat dengan tautan yang bisa diverifikasi dihitung penuh; tanpa tautan dihitung sebagai klaim, setengah bobot.",
+      )}
+    >
       <datalist id="certs">
         {catalog?.certificates.map((c) => <option key={c.name} value={c.name} />)}
       </datalist>
@@ -434,8 +456,8 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
           <li key={i} className="flex flex-wrap gap-2">
             <Input
               list="certs"
-              aria-label={`Certificate ${i + 1}`}
-              placeholder="e.g. Google Data Analytics Professional Certificate…"
+              aria-label={t(`Certificate ${i + 1}`, `Sertifikat ${i + 1}`)}
+              placeholder={t("e.g. Google Data Analytics Professional Certificate…", "mis. Google Data Analytics Professional Certificate…")}
               value={r.name}
               onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, name: e.target.value } : x)))}
               className="h-10"
@@ -452,13 +474,13 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
             ) : null}
             <Input
               type="url"
-              aria-label={`Credential link ${i + 1}`}
-              placeholder="Credential link, https://…"
+              aria-label={t(`Credential link ${i + 1}`, `Tautan kredensial ${i + 1}`)}
+              placeholder={t("Credential link, https://…", "Tautan kredensial, https://…")}
               value={r.url}
               onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, url: e.target.value } : x)))}
               className="h-10 min-w-0 flex-1 basis-60"
             />
-            <Button variant="ghost" size="icon-lg" aria-label={`Remove certificate ${i + 1}`} onClick={() => setRows(rows.filter((_, j) => j !== i))}>
+            <Button variant="ghost" size="icon-lg" aria-label={t(`Remove certificate ${i + 1}`, `Hapus sertifikat ${i + 1}`)} onClick={() => setRows(rows.filter((_, j) => j !== i))}>
               <Trash2 />
             </Button>
           </li>
@@ -466,20 +488,20 @@ function Certificates({ sid, catalog, names, onSaved }: { sid: string; catalog: 
       </ul>
       <div className="mt-4 flex flex-wrap gap-2">
         <Button size="lg" className="h-10" onClick={save} disabled={busy || !rows.some((r) => r.name.trim())}>
-          {busy ? "Saving…" : "Save Certificates"}
+          {busy ? t("Saving…", "Menyimpan…") : t("Save Certificates", "Simpan Sertifikat")}
         </Button>
-        {!rows.some((r) => r.name.trim()) ? <span className="self-center text-xs text-ink/60">Type or pick a certificate name first.</span> : null}
+        {!rows.some((r) => r.name.trim()) ? <span className="self-center text-xs text-ink/60">{t("Type or pick a certificate name first.", "Ketik atau pilih nama sertifikat dulu.")}</span> : null}
         <Button variant="ghost" size="lg" className="h-10" onClick={() => setRows([...rows, { name: "", score: "", url: "" }])}>
-          <Plus /> Add Another
+          <Plus /> {t("Add Another", "Tambah Lagi")}
         </Button>
       </div>
       <div className="mt-4">
         <ErrorNote error={err} />
       </div>
       {result ? (
-        <ResultPanel title="Saved. These skills now count your certificates:">
+        <ResultPanel title={t("Saved. These skills now count your certificates:", "Tersimpan. Skill ini sekarang menghitung sertifikatmu:")}>
           <SkillChips scores={result} names={names} />
-          {claimed ? <p className="mt-2 text-xs text-ink/70">{claimed} certificate(s) have no verifiable link, so they count as claims at half weight. Add the link to count them fully.</p> : null}
+          {claimed ? <p className="mt-2 text-xs text-ink/70">{t(`${claimed} certificate(s) have no verifiable link, so they count as claims at half weight. Add the link to count them fully.`, `${claimed} sertifikat tidak punya tautan yang bisa diverifikasi, jadi dihitung sebagai klaim setengah bobot. Tambahkan tautannya agar dihitung penuh.`)}</p> : null}
         </ResultPanel>
       ) : null}
     </StepPanel>
@@ -503,6 +525,7 @@ function Projects({ sid, names, onSaved }: { sid: string; names: Record<string, 
   const [err, setErr] = useState<unknown>(null);
   const [course, setCourse] = useState("");
   const courses = useApi<{ id: number; name: string }[]>(`/students/${sid}/courses`);
+  const t = useT();
   async function save() {
     setBusy(true);
     setErr(null);
@@ -521,17 +544,21 @@ function Projects({ sid, names, onSaved }: { sid: string; names: Record<string, 
     }
   }
   return (
-    <StepPanel title="Add a Project" description="A report, notebook, SQL file, or requirements document. Each skill is rated from what the work actually shows, with a quote as proof.">
+    <StepPanel
+      mascot="portfolio"
+      title={t("Add a Project", "Tambahkan Project")}
+      description={t("A report, notebook, SQL file, or requirements document. Each skill is rated from what the work actually shows, with a quote as proof.", "Laporan, notebook, file SQL, atau dokumen requirements. Setiap skill dinilai dari apa yang benar-benar ditunjukkan karyamu, dengan kutipan sebagai bukti.")}
+    >
       <div className="space-y-4">
         <div className="space-y-1.5">
-          <Label htmlFor="ptitle">Project Title</Label>
-          <Input id="ptitle" name="project-title" autoComplete="off" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Customer Churn Analysis…" className="h-10" />
+          <Label htmlFor="ptitle">{t("Project Title", "Judul Project")}</Label>
+          <Input id="ptitle" name="project-title" autoComplete="off" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("e.g. Customer Churn Analysis…", "mis. Analisis Churn Pelanggan…")} className="h-10" />
         </div>
         {courses.data?.length ? (
           <div className="space-y-1.5">
-            <Label htmlFor="pcourse">From a course? (optional)</Label>
+            <Label htmlFor="pcourse">{t("From a course? (optional)", "Dari mata kuliah? (opsional)")}</Label>
             <NativeSelect id="pcourse" value={course} onChange={(e) => setCourse(e.target.value)}>
-              <option value="">Personal or other project</option>
+              <option value="">{t("Personal or other project", "Project pribadi atau lainnya")}</option>
               {courses.data.map((c) => (
                 <option key={c.id} value={c.name}>
                   {c.name}
@@ -540,30 +567,30 @@ function Projects({ sid, names, onSaved }: { sid: string; names: Record<string, 
             </NativeSelect>
           </div>
         ) : null}
-        <PasteOrUpload id="ptext" label="Project Content" text={text} setText={setText} file={file} setFile={setFile} accept=".pdf,.docx,.txt,.ipynb,.sql,.md,.py" placeholder="Paste the content of your project…" />
+        <PasteOrUpload id="ptext" label={t("Project Content", "Isi Project")} text={text} setText={setText} file={file} setFile={setFile} accept=".pdf,.docx,.txt,.ipynb,.sql,.md,.py" placeholder={t("Paste the content of your project…", "Tempel isi project-mu…")} />
       </div>
       <Button size="lg" className="mt-5 h-10" onClick={save} disabled={busy || (!file && text.trim().length < 30)}>
-        {busy ? "Rating…" : "Rate My Project"}
+        {busy ? t("Rating…", "Menilai…") : t("Rate My Project", "Nilai Project-ku")}
       </Button>
       <div className="mt-4">
         <ErrorNote error={err} />
       </div>
       {result ? (
-        <ResultPanel title={`Saved. ${result.ratings.length} skill${result.ratings.length === 1 ? "" : "s"} shown in this project:`}>
+        <ResultPanel title={t(`Saved. ${result.ratings.length} skill${result.ratings.length === 1 ? "" : "s"} shown in this project:`, `Tersimpan. ${result.ratings.length} skill ditunjukkan di project ini:`)}>
           <ul className="space-y-3">
             {result.ratings.map((r) => (
               <li key={r.skill_id}>
                 <p className="flex flex-wrap items-center gap-2 text-sm font-semibold text-ink">
-                  {names[r.skill_id] ?? r.skill_id} <Tag tone="indigo">{RUBRIC[r.level]}</Tag>
+                  {names[r.skill_id] ?? r.skill_id} <Tag tone="indigo">{t(...RUBRIC[r.level])}</Tag>
                 </p>
                 <p className="mt-1 border-l-2 border-iris pl-3 font-mono text-xs text-ink/70">{r.quote}</p>
               </li>
             ))}
           </ul>
-          {result.rejected.length ? <p className="mt-3 text-xs text-ink/70">{result.rejected.length} rating(s) dropped because their quote wasn't in your project.</p> : null}
+          {result.rejected.length ? <p className="mt-3 text-xs text-ink/70">{t(`${result.rejected.length} rating(s) dropped because their quote wasn't in your project.`, `${result.rejected.length} penilaian dibuang karena kutipannya tidak ada di project-mu.`)}</p> : null}
           {result.review_status === "pending" ? (
             <p className="mt-3 text-xs text-ember-ink">
-              A reviewer will check this rating ({result.review_reason}). Until then it counts at half weight.
+              {t(`A reviewer will check this rating (${result.review_reason}). Until then it counts at half weight.`, `Reviewer akan memeriksa penilaian ini (${result.review_reason}). Sampai saat itu bobotnya setengah.`)}
             </p>
           ) : null}
         </ResultPanel>
@@ -577,6 +604,7 @@ function CV({ sid, names, onSaved }: { sid: string; names: Record<string, string
   const [text, setText] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [result, setResult] = useState<{ claims: { skill_id: string; quote: string }[] } | null>(null);
+  const t = useT();
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
   async function save() {
@@ -595,16 +623,20 @@ function CV({ sid, names, onSaved }: { sid: string; names: Record<string, string
     }
   }
   return (
-    <StepPanel title="Add Your CV" description="Skills on your CV don't raise your level. They tell us where a quick check could prove what you already know.">
-      <PasteOrUpload id="cv" label="CV Content" text={text} setText={setText} file={file} setFile={setFile} accept=".pdf,.docx,.txt" placeholder="Paste your CV…" />
+    <StepPanel
+      mascot="thinking"
+      title={t("Add Your CV", "Tambahkan CV-mu")}
+      description={t("Skills on your CV don't raise your level. They tell us where a quick check could prove what you already know.", "Skill di CV tidak menaikkan level-mu. Itu memberi tahu kami di mana Quick Check bisa membuktikan yang sudah kamu kuasai.")}
+    >
+      <PasteOrUpload id="cv" label={t("CV Content", "Isi CV")} text={text} setText={setText} file={file} setFile={setFile} accept=".pdf,.docx,.txt" placeholder={t("Paste your CV…", "Tempel CV-mu…")} />
       <Button size="lg" className="mt-5 h-10" onClick={save} disabled={busy || (!file && text.trim().length < 20)}>
-        {busy ? "Reading…" : "Read My CV"}
+        {busy ? t("Reading…", "Membaca…") : t("Read My CV", "Baca CV-ku")}
       </Button>
       <div className="mt-4">
         <ErrorNote error={err} />
       </div>
       {result ? (
-        <ResultPanel title={`Saved. You mention ${result.claims.length} skill${result.claims.length === 1 ? "" : "s"}:`}>
+        <ResultPanel title={t(`Saved. You mention ${result.claims.length} skill${result.claims.length === 1 ? "" : "s"}:`, `Tersimpan. Kamu menyebut ${result.claims.length} skill:`)}>
           <ul className="flex flex-wrap gap-2">
             {result.claims.map((c) => (
               <li key={c.skill_id}>
@@ -635,6 +667,7 @@ function Preferences({ student, meta, names, onSaved }: { student: Student; meta
   const [rateOpen, setRateOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
+  const t = useT();
 
   async function save(extra?: Record<string, number>) {
     setBusy(true);
@@ -670,39 +703,43 @@ function Preferences({ student, meta, names, onSaved }: { student: Student; meta
   const rated = Object.keys(ratings).length;
 
   return (
-    <StepPanel title="Set Your Preferences" description="We use these to size your route and choose materials. Changing your role rebuilds your route.">
+    <StepPanel
+      mascot="calendar"
+      title={t("Set Your Preferences", "Atur Preferensimu")}
+      description={t("We use these to size your route and choose materials. Changing your role rebuilds your route.", "Kami memakai ini untuk menakar rutemu dan memilih materi. Mengganti role akan menyusun ulang rutemu.")}
+    >
       <div className="space-y-6">
         <fieldset>
-          <legend className="mb-2 text-sm font-medium text-ink">Target Role</legend>
+          <legend className="mb-2 text-sm font-medium text-ink">{t("Target Role", "Target Role")}</legend>
           <div className="flex flex-wrap gap-2">{meta.roles.map((r) => seg(r.id, role, setRole, r.name))}</div>
         </fieldset>
         <div>
           <Label htmlFor="hours" className="mb-2 block">
-            Study Time per Week: <span className="tabular font-semibold">{hoursPerWeek} hours</span>
+            {t("Study Time per Week", "Waktu Belajar per Minggu")}: <span className="tabular font-semibold">{hoursPerWeek} {t("hours", "jam")}</span>
           </Label>
-          <input id="hours" type="range" min={1} max={20} step={1} value={hoursPerWeek} onChange={(e) => setHours(Number(e.target.value))} className="w-full max-w-md accent-[#4338ca]" />
+          <input id="hours" type="range" min={1} max={20} step={1} value={hoursPerWeek} onChange={(e) => setHours(Number(e.target.value))} className="w-full max-w-md accent-indigo" />
         </div>
         <fieldset>
-          <legend className="mb-2 text-sm font-medium text-ink">Preferred Format</legend>
+          <legend className="mb-2 text-sm font-medium text-ink">{t("Preferred Format", "Format Favorit")}</legend>
           <div className="flex flex-wrap gap-2">
-            {[["", "Any"], ["video", "Video"], ["teks", "Articles"], ["kursus", "Courses"], ["latihan", "Practice"]].map(([v, l]) => seg(v, format, setFormat, l))}
+            {[["", t("Any", "Apa saja")], ["video", "Video"], ["teks", t("Articles", "Artikel")], ["kursus", t("Courses", "Kursus")], ["latihan", t("Practice", "Latihan")]].map(([v, l]) => seg(v, format, setFormat, l))}
           </div>
         </fieldset>
         <fieldset>
-          <legend className="mb-2 text-sm font-medium text-ink">Material Language</legend>
+          <legend className="mb-2 text-sm font-medium text-ink">{t("Material Language", "Bahasa Materi")}</legend>
           <div className="flex flex-wrap gap-2">
-            {seg("id", language, setLanguage, "Prefer Indonesian")}
-            {seg("en", language, setLanguage, "English Is Fine")}
+            {seg("id", language, setLanguage, t("Prefer Indonesian", "Utamakan Bahasa Indonesia"))}
+            {seg("en", language, setLanguage, t("English Is Fine", "Bahasa Inggris Tidak Masalah"))}
           </div>
         </fieldset>
         <div className="rounded-xl bg-muted/70 p-4">
-          <p className="text-sm font-medium text-ink">Rate Yourself (Optional)</p>
+          <p className="text-sm font-medium text-ink">{t("Rate Yourself (Optional)", "Nilai Dirimu (Opsional)")}</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Doesn&rsquo;t change your level. It shows where your confidence and your evidence disagree.
-            {rated ? ` You rated ${rated} skill${rated > 1 ? "s" : ""}.` : ""}
+            {t("Doesn\u2019t change your level. It shows where your confidence and your evidence disagree.", "Tidak mengubah level-mu. Ini menunjukkan di mana keyakinanmu dan evidence-mu berbeda.")}
+            {rated ? t(` You rated ${rated} skill${rated > 1 ? "s" : ""}.`, ` Kamu sudah menilai ${rated} skill.`) : ""}
           </p>
           <Button variant="outline" size="lg" className="mt-3 h-10" onClick={() => setRateOpen(true)}>
-            {rated ? "Edit My Ratings" : "Rate My Skills"}
+            {rated ? t("Edit My Ratings", "Ubah Penilaianku") : t("Rate My Skills", "Nilai Skill-ku")}
           </Button>
         </div>
       </div>
@@ -710,7 +747,7 @@ function Preferences({ student, meta, names, onSaved }: { student: Student; meta
         <ErrorNote error={err} />
       </div>
       <Button size="lg" className="mt-4 h-10" onClick={() => save()} disabled={busy}>
-        {busy ? "Saving…" : "Save Preferences"}
+        {busy ? t("Saving…", "Menyimpan…") : t("Save Preferences", "Simpan Preferensi")}
       </Button>
       <SelfRatingDialog
         open={rateOpen}
@@ -728,13 +765,14 @@ function Preferences({ student, meta, names, onSaved }: { student: Student; meta
   );
 }
 
-const SCALE = ["Never Used", "Beginner", "Some Practice", "Confident", "Expert"];
+const SCALE: [string, string][] = [["Never Used", "Belum Pernah"], ["Beginner", "Pemula"], ["Some Practice", "Sedikit Latihan"], ["Confident", "Percaya Diri"], ["Expert", "Ahli"]];
 
 function SelfRatingDialog({ open, onOpenChange, role, names, initial, onSave }: {
   open: boolean; onOpenChange: (o: boolean) => void; role: string; names: Record<string, string>; initial: Record<string, number>; onSave: (r: Record<string, number>) => void;
 }) {
   const market = useApi<{ skills: MarketSkill[] }>(open ? `/market/${role}` : null);
   const [r, setR] = useState<Record<string, number>>(initial);
+  const t = useT();
   useEffect(() => {
     if (open) setR(initial);
   }, [open, initial]);
@@ -743,8 +781,8 @@ function SelfRatingDialog({ open, onOpenChange, role, names, initial, onSave }: 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle className="text-xl">Rate Your Skills</DialogTitle>
-          <DialogDescription>The 12 skills employers ask for most in this role. Be honest; this never lowers or raises your level.</DialogDescription>
+          <DialogTitle className="text-xl">{t("Rate Your Skills", "Nilai Skill-mu")}</DialogTitle>
+          <DialogDescription>{t("The 12 skills employers ask for most in this role. Be honest; this never lowers or raises your level.", "12 skill yang paling banyak diminta employer untuk role ini. Jujur saja; ini tidak pernah menurunkan atau menaikkan level-mu.")}</DialogDescription>
         </DialogHeader>
         {!market.data ? (
           <Loading />
@@ -756,7 +794,7 @@ function SelfRatingDialog({ open, onOpenChange, role, names, initial, onSave }: 
                 <div role="radiogroup" aria-label={names[s.skill_id] ?? s.name} className="mt-2 grid grid-cols-5 gap-1.5">
                   {SCALE.map((label, i) => (
                     <button
-                      key={label}
+                      key={label[0]}
                       type="button"
                       role="radio"
                       aria-checked={r[s.skill_id] === i + 1}
@@ -766,7 +804,7 @@ function SelfRatingDialog({ open, onOpenChange, role, names, initial, onSave }: 
                         r[s.skill_id] === i + 1 ? "border-indigo bg-indigo text-white" : "bg-card text-ink/80 hover:bg-muted",
                       )}
                     >
-                      {label}
+                      {t(...label)}
                     </button>
                   ))}
                 </div>
@@ -776,7 +814,7 @@ function SelfRatingDialog({ open, onOpenChange, role, names, initial, onSave }: 
         )}
         <DialogFooter>
           <Button size="lg" className="h-10" onClick={() => onSave(r)}>
-            Save Ratings
+            {t("Save Ratings", "Simpan Penilaian")}
           </Button>
         </DialogFooter>
       </DialogContent>

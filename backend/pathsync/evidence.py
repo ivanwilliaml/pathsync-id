@@ -18,6 +18,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from .config import BKT_GUESS, BKT_SLIP, BKT_TRANSIT, EVIDENCE_WEIGHTS, LOW_CONFIDENCE, PRIOR_NO_EVIDENCE, RUBRIC_SCORES
+from .i18n import t
 
 # confidence contribution of one piece of evidence of each kind (scaled by mapping strength)
 CONFIDENCE_STRENGTH = {"academic": 0.20, "certificate": 0.30, "project": 0.45}
@@ -58,6 +59,9 @@ class SkillState:
     claimed: bool = False
     self_rating: int | None = None
     flags: list[str] = field(default_factory=list)
+    # mastery from direct proof only (Quick Check answers, reviewed projects, certificates): None when there is none.
+    # Grades and CV claims move p but never p_proven, so "strong" and "proven readiness" mean what they say (audit AI-7)
+    p_proven: float | None = None
 
     @property
     def has_evidence(self) -> bool:
@@ -74,6 +78,8 @@ class SkillState:
             "components": {k: round(v, 4) for k, v in self.components.items()}, "sources": self.sources,
             "n_items": self.n_items, "n_correct": self.n_correct, "bkt_trace": [round(x, 4) for x in self.bkt_trace],
             "claimed": self.claimed, "self_rating": self.self_rating, "flags": self.flags,
+            "p_proven": None if self.p_proven is None else round(self.p_proven, 4),
+            "evidence_kinds": sorted(set(self.components) | ({"assessment"} if self.n_items else set())),
         }
 
 
@@ -93,6 +99,9 @@ class Response:
     correct: bool
     phase: str                    # diagnostic | reassessment
     guess: float = BKT_GUESS      # chance of a correct answer without the skill (higher for items with surface cues)
+
+
+DIRECT_KINDS = ("assessment", "project", "certificate")
 
 
 def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list[Response],
@@ -142,16 +151,22 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
         if d:
             g = diag_guess[s]
             st.components["assessment"] = smoothed_accuracy(sum(d), len(d), sum(g) / len(g))
-            st.sources.setdefault("assessment", []).append(f"Diagnostic assessment ({sum(d)}/{len(d)} correct)")
+            st.sources.setdefault("assessment", []).append(t("source.diagnostic", k=sum(d), n=len(d)))
         # eq. (2): weighted mean over the evidence that exists
         if st.components:
             wk = {k: w[k] * factor.get((s, k), 1.0) for k in st.components}
             st.p0 = sum(wk[k] * v for k, v in st.components.items()) / sum(wk.values())
         st.p = st.p0
         st.bkt_trace = [st.p]
+        direct = {k: v for k, v in st.components.items() if k in DIRECT_KINDS}
+        if direct:
+            wd = {k: w[k] * factor.get((s, k), 1.0) for k in direct}
+            st.p_proven = sum(wd[k] * v for k, v in direct.items()) / sum(wd.values())
         for correct, guess in reassess.get(s, []):       # eq. (3) for every new answer
             st.p = bkt_update(st.p, correct, guess=guess)
             st.bkt_trace.append(st.p)
+            # a re-assessment answer is direct proof too; it updates the proven estimate from wherever it stands
+            st.p_proven = bkt_update(st.p_proven if st.p_proven is not None else PRIOR_NO_EVIDENCE, correct, guess=guess)
         answers = d + [c for c, _ in reassess.get(s, [])]
         st.n_items, st.n_correct = len(answers), sum(answers)
         if answers:

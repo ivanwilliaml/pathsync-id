@@ -1,8 +1,8 @@
 """Evaluate embedding normalisation against human labels (plan A3, paper III.D level 1).
 
     python -m pipeline.normalisation sample            # 300 phrases, 100 per similarity band (locked)
-    python -m pipeline.normalisation sheet <name>      # CSV for one labeller (no system prediction shown)
-    python -m pipeline.normalisation import <csv>...   # labelled CSVs -> data/seed/normalisation_gold.json
+    python -m pipeline.normalisation sheet <name>      # Excel for one labeller (no system prediction or band shown)
+    python -m pipeline.normalisation import <file>...  # labelled .xlsx or .csv -> data/seed/normalisation_gold.json
     python -m pipeline.normalisation eval              # curve, purity, chosen threshold -> normalisation_eval.json
 
 Each labeller writes, per phrase, the correct taxonomy skill id or "none" (not a skill, or a skill
@@ -32,6 +32,14 @@ BANDS = (("below_0.70", 0.0, SIM_REVIEW), ("0.70_to_0.85", SIM_REVIEW, SIM_AUTO)
 PER_BAND = 100
 AUTO_PRECISION_TARGET = 0.95
 THRESHOLDS = [round(0.60 + 0.05 * i, 2) for i in range(8)]       # 0.60 .. 0.95
+SHEET_GUIDE = [
+    "Untuk setiap frasa, pilih di kolom kuning id skill yang dimaksud frasa itu (dropdown), atau 'none'.",
+    "'none' berarti: bukan skill (benefit, sifat, nama perusahaan, domain bisnis tanpa kemampuan), soft skill, atau skill yang tidak ada di daftar.",
+    "Baca juga kalimat asalnya. Contoh: 'menjalankan campaign iklan berbayar' -> social_media_ads atau search_ads, sesuai platform yang disebut.",
+    "Kalau dua skill sama-sama cocok, pilih yang paling spesifik dan tulis yang lain di kolom catatan.",
+    "Kerjakan sendiri, jangan berdiskusi dengan pelabel lain sampai keduanya selesai. Sekitar 1 jam untuk 300 frasa.",
+    "Setelah selesai, kirim berkas ini kembali tanpa mengubah kolom id.",
+]
 
 
 def cmd_sample(seed: int = 20261015) -> None:
@@ -61,15 +69,67 @@ def cmd_sample(seed: int = 20261015) -> None:
     print(f"{len(picked)} phrases -> {SAMPLE}")
 
 
+LABEL_COL = "label (skill id or none)"
+
+
 def cmd_sheet(name: str) -> None:
+    """Excel sheet for one labeller: phrases in a shuffled order (the similarity band is never shown), a dropdown
+    of every taxonomy skill id plus "none", and the skill list with names and example words."""
+    from openpyxl import Workbook
+    from openpyxl.styles import Alignment, Font, PatternFill
+    from openpyxl.worksheet.datavalidation import DataValidation
+
+    from pathsync.taxonomy import load_skills
+
     doc = json.loads(SAMPLE.read_text(encoding="utf-8"))
-    out = PROCESSED_DIR / f"normalisation_sheet_{name}.csv"
-    with open(out, "w", newline="", encoding="utf-8-sig") as f:
-        w = csv.writer(f)
-        w.writerow(["id", "surface", "quote", "label (skill id or none)"])
-        for p in doc["phrases"]:
-            w.writerow([p["id"], p["surface"], p["quote"], ""])
-    print(f"sheet for {name}: {out} (skill ids: GET /api/meta -> skills)")
+    phrases = sorted(doc["phrases"], key=lambda p: random.Random(f"{doc['seed']}|{p['id']}").random())
+    skills = sorted(load_skills().items(), key=lambda kv: (kv[1].cluster, kv[0]))
+    wb = Workbook()
+    guide = wb.active
+    guide.title = "Petunjuk"
+    for line in [f"Label normalisasi skill, pelabel: {name}", *SHEET_GUIDE]:
+        guide.append([line])
+    guide["A1"].font = Font(bold=True, size=13)
+    guide.column_dimensions["A"].width = 140
+    sk = wb.create_sheet("Daftar skill")
+    sk.append(["id", "nama", "klaster", "contoh kata di lowongan"])
+    for sid, skill in skills:
+        sk.append([sid, skill.name_id or skill.name, skill.cluster, ", ".join(skill.aliases[:6])])
+    sk.append(["none", "bukan skill atau tidak ada di daftar", "", ""])
+    for col, w in zip("ABCD", (30, 40, 18, 70), strict=True):
+        sk.column_dimensions[col].width = w
+    sk.freeze_panes = "B2"
+    ws = wb.create_sheet("Frasa", 1)
+    ws.append(["no", "id", "frasa", "kalimat asal di lowongan", LABEL_COL, "catatan"])
+    for c in ws[1]:
+        c.font = Font(bold=True, color="FFFFFF")
+        c.fill = PatternFill("solid", fgColor="1F3A5F")
+    for i, p in enumerate(phrases, 1):
+        ws.append([i, p["id"], p["surface"], p["quote"], "", ""])
+    dv = DataValidation(type="list", formula1=f"='Daftar skill'!$A$2:$A${len(skills) + 2}", allow_blank=True,
+                        showErrorMessage=True, errorTitle="Id tidak dikenal", error="Pilih id dari daftar atau tulis none.")
+    ws.add_data_validation(dv)
+    dv.add(f"E2:E{len(phrases) + 1}")
+    for col, w in zip("ABCDEF", (5, 8, 36, 90, 30, 30), strict=True):
+        ws.column_dimensions[col].width = w
+    for row in ws.iter_rows(min_row=2):
+        for c in row:
+            c.alignment = Alignment(wrap_text=True, vertical="top")
+        row[4].fill = PatternFill("solid", fgColor="FFF5CC")
+    ws.freeze_panes = "E2"
+    out = PROCESSED_DIR / f"normalisation_sheet_{name}.xlsx"
+    wb.save(out)
+    print(f"sheet for {name}: {out}")
+
+
+def _read_labels(path: str) -> list[tuple[str, str]]:
+    if path.lower().endswith(".xlsx"):
+        from openpyxl import load_workbook
+
+        ws = load_workbook(path, read_only=True)["Frasa"]
+        return [(str(r[1]), str(r[4] or "").strip()) for r in ws.iter_rows(min_row=2, values_only=True) if r[1]]
+    with open(path, encoding="utf-8-sig") as f:
+        return [(row["id"], (row.get(LABEL_COL) or "").strip()) for row in csv.DictReader(f)]
 
 
 def cmd_import(paths: list[str]) -> None:
@@ -79,13 +139,11 @@ def cmd_import(paths: list[str]) -> None:
     labels: dict[str, dict[str, str]] = defaultdict(dict)
     for p in paths:
         who = Path(p).stem.replace("normalisation_sheet_", "")
-        with open(p, encoding="utf-8-sig") as f:
-            for row in csv.DictReader(f):
-                lab = (row.get("label (skill id or none)") or "").strip()
-                if lab:
-                    if lab not in valid:
-                        raise SystemExit(f"{p}: unknown label '{lab}' on {row['id']}")
-                    labels[row["id"]][who] = lab
+        for pid, lab in _read_labels(p):
+            if lab:
+                if lab not in valid:
+                    raise SystemExit(f"{p}: unknown label '{lab}' on {pid}")
+                labels[pid][who] = lab
     old = json.loads(GOLD.read_text(encoding="utf-8")) if GOLD.exists() else {"phrases": {}}
     phrases = {}
     for pid, by in labels.items():

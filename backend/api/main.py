@@ -21,6 +21,7 @@ from sqlalchemy.exc import IntegrityError
 from pathsync.db import get_session, init_db
 from pathsync.embeddings import WARM
 from pathsync.engine import ensure_seed
+from pathsync.i18n import get_lang, negotiate, reset_lang, set_lang
 from pathsync.observability import STATS, configure_logging
 from pathsync.security import ensure_admin_token
 
@@ -103,7 +104,7 @@ app = FastAPI(title="PathSync API", version="1.0.0", lifespan=lifespan,
                           "at sign-up; staff routes need an admin, expert or advisor token.")
 origins = [o.strip() for o in os.getenv("PATHSYNC_CORS_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",") if o.strip()]
 app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
-                   allow_headers=["Authorization", "Content-Type", "X-PathSync", "X-Request-ID"],
+                   allow_headers=["Authorization", "Content-Type", "X-PathSync", "X-PathSync-Lang", "X-Request-ID"],
                    expose_headers=["X-Request-ID"], allow_credentials=True)
 
 
@@ -111,7 +112,15 @@ app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", 
 async def request_context(request: Request, call_next):
     rid = request.headers.get("x-request-id") or uuid.uuid4().hex[:12]
     t0 = time.perf_counter()
-    response = await call_next(request)
+    # display language for this request (plan BE-12): ?lang= wins, then Accept-Language, else PATHSYNC_LANG
+    lang = negotiate(request.query_params.get("lang"), request.headers.get("x-pathsync-lang") or request.headers.get("accept-language"))
+    token = set_lang(lang) if lang else None
+    try:
+        response = await call_next(request)
+    finally:
+        if token is not None:
+            reset_lang(token)
+    response.headers["Content-Language"] = lang or get_lang()
     ms = (time.perf_counter() - t0) * 1000
     response.headers["X-Request-ID"] = rid
     response.headers["X-Content-Type-Options"] = "nosniff"

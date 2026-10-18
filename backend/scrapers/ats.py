@@ -68,8 +68,17 @@ WORKDAY_SITES = [
     ("prysmiangroup", "wd3", "Careers"), ("cloudera", "wd5", "External_Career"), ("csgi", "wd5", "csgcareers"),
     ("hsbc", "wd3", "external"), ("manulife", "wd3", "MFCJH_Jobs"), ("pg", "wd5", "1000"),
     ("dbs", "wd3", "DBS_Careers"), ("prudential", "wd3", "prudential"), ("covestro", "wd3", "cov_external"),
+    # added 18 Oct 2026: public boards that returned Indonesian postings for a "Indonesia" search
+    ("pwc", "wd3", "Global_Experienced_Careers"), ("abbott", "wd5", "abbottcareers"), ("maersk", "wd3", "Maersk_Careers"),
+    ("mastercard", "wd1", "CorporateCareers"), ("gsk", "wd5", "GSKCareers"), ("citi", "wd5", "2"),
+    ("astrazeneca", "wd3", "Careers"), ("gehc", "wd5", "GEHC_ExternalSite"), ("3m", "wd1", "Search"),
+    ("visa", "wd5", "Visa"), ("salesforce", "wd12", "External_Career_Site"), ("philips", "wd3", "jobs-and-careers"),
+    ("jll", "wd1", "jllcareers"), ("hpe", "wd5", "Jobsathpe"), ("mmc", "wd1", "MMC"), ("kyndryl", "wd5", "KyndrylProfessionalCareers"),
+    ("roche", "wd3", "roche-ext"), ("lseg", "wd3", "Careers"), ("novartis", "wd3", "Novartis_Careers"), ("hp", "wd5", "ExternalCareerSite"),
 ]
-WORKDAY_QUERIES = ["analyst", "engineer", "developer", "designer", "marketing", "accounting", "security", "devops", "data"]
+# location searches find the Indonesian postings directly; role words alone searched worldwide and kept few
+WORKDAY_QUERIES = ["Indonesia", "Jakarta", "Surabaya", "Tangerang", "Bandung"]
+WORKDAY_MAX_PER_QUERY = 200
 
 
 # ------------------------------------------------------------------- workable
@@ -241,16 +250,25 @@ def scrape_workday(client: PoliteClient, sites=None, verbose=True) -> list[Posti
     for tenant, dc, site in sites or WORKDAY_SITES:
         base = f"https://{tenant}.{dc}.myworkdayjobs.com/wday/cxs/{tenant}/{site}"
         paths: dict[str, dict] = {}
+        dead = False
         for q in WORKDAY_QUERIES:
-            try:
-                r = client.client.post(f"{base}/jobs", json={"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": q},
-                                       headers={"Content-Type": "application/json", "Accept": "application/json"})
-            except Exception:
+            for offset in range(0, WORKDAY_MAX_PER_QUERY, 20):
+                try:
+                    r = client.client.post(f"{base}/jobs", json={"appliedFacets": {}, "limit": 20, "offset": offset, "searchText": q},
+                                           headers={"Content-Type": "application/json", "Accept": "application/json"})
+                except Exception:
+                    dead = True
+                    break
+                if r.status_code != 200:
+                    dead = True
+                    break
+                page = r.json().get("jobPostings", [])
+                for jp in page:
+                    paths.setdefault(jp.get("externalPath", ""), jp)
+                if len(page) < 20:
+                    break
+            if dead:
                 break
-            if r.status_code != 200:
-                break
-            for jp in r.json().get("jobPostings", []):
-                paths.setdefault(jp.get("externalPath", ""), jp)
         kept = 0
         for path, jp in paths.items():
             role = classify_role(jp.get("title", ""))

@@ -43,3 +43,15 @@ def test_kappa_and_consensus():
     assert doc["postings"]["a"]["skills"] == ["excel", "sql"]
     assert doc["postings"]["b"]["skills"] == ["bpmn"]
     assert open_disputes == [{"posting_id": "c", "skill": "bpmn", "chosen_by": ["y"]}]
+
+
+def test_business_supplement_is_locked_and_disjoint():
+    from pathsync.gold import load_split_all
+
+    main, both = load_split(), load_split_all()
+    extra_dev = both["dev"][len(main["dev"]):]
+    extra_test = both["test"][len(main["test"]):]
+    assert len(extra_dev) == 15 and len(extra_test) == 15
+    assert not (set(extra_dev) | set(extra_test)) & (set(main["dev"]) | set(main["test"]))
+    assert not (set(extra_dev) | set(extra_test)) & earlier_gold_ids()
+    assert {"tax_specialist", "hr_specialist", "financial_analyst"} <= set(both["per_role"])

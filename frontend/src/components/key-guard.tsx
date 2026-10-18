@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ErrorNote } from "./kit";
+import { useT } from "@/lib/i18n";
 
 export const KEY_PENDING = "pathsync.keypending";
 
@@ -45,6 +46,7 @@ export function KeyGuard() {
   const [saved, setSaved] = useState(false);
   const [reauth, setReauth] = useState(false);
   const key = accessKey() ?? "";
+  const t = useT();
 
   useEffect(() => {
     try {
@@ -71,22 +73,24 @@ export function KeyGuard() {
         <DialogContent className="sm:max-w-md" showCloseButton={false}>
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-xl">
-              <KeyRound className="size-5 text-indigo" aria-hidden="true" /> Save Your Access Key
+              <KeyRound className="size-5 text-indigo" aria-hidden="true" /> {t("Save Your Access Key", "Simpan Access Key-mu")}
             </DialogTitle>
             <DialogDescription>
-              PathSync has no password and no email. This key is the only way back into your profile if you change phone or browser, or clear your
-              data. We cannot recover it for you.
+              {t(
+                "PathSync has no password and no email. This key is the only way back into your profile if you change phone or browser, or clear your data. We cannot recover it for you.",
+                "PathSync tidak memakai password atau email. Key ini satu-satunya jalan kembali ke profilmu kalau kamu ganti HP atau browser, atau menghapus data. Kami tidak bisa memulihkannya untukmu.",
+              )}
             </DialogDescription>
           </DialogHeader>
           <code className="block break-all rounded-lg bg-muted p-3 font-mono text-sm" translate="no">
             {key}
           </code>
           <div className="flex flex-wrap gap-2">
-            <Button variant="outline" onClick={() => navigator.clipboard?.writeText(key).then(() => toast.success("Key copied"))}>
-              <Copy /> Copy
+            <Button variant="outline" onClick={() => navigator.clipboard?.writeText(key).then(() => toast.success(t("Key copied", "Key disalin")))}>
+              <Copy /> {t("Copy", "Salin")}
             </Button>
             <Button variant="outline" onClick={() => downloadKey(key)}>
-              <Download /> Download .txt
+              <Download /> {t("Download .txt", "Unduh .txt")}
             </Button>
             <Button
               variant="outline"
@@ -97,15 +101,15 @@ export function KeyGuard() {
                 />
               }
             >
-              <Mail /> Email It to Me
+              <Mail /> {t("Email It to Me", "Kirim ke Email-ku")}
             </Button>
           </div>
           <label className="flex cursor-pointer gap-3 text-sm text-ink/80">
             <Checkbox checked={saved} onCheckedChange={(v) => setSaved(v === true)} className="mt-0.5" />
-            <span>I saved my key somewhere safe (notes app, password manager, or email).</span>
+            <span>{t("I saved my key somewhere safe (notes app, password manager, or email).", "Key sudah kusimpan di tempat aman (aplikasi catatan, password manager, atau email).")}</span>
           </label>
           <Button size="lg" className="h-11 w-full" disabled={!saved} onClick={done}>
-            Continue
+            {t("Continue", "Lanjut")}
           </Button>
         </DialogContent>
       </Dialog>
@@ -118,12 +122,13 @@ function ReauthDialog({ open, onClose }: { open: boolean; onClose: () => void })
   const [value, setValue] = useState("");
   const [err, setErr] = useState<unknown>(null);
   const [busy, setBusy] = useState(false);
+  const t = useT();
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
     const auth = parseAccessKey(value);
     if (!auth) {
-      setErr(new Error("That does not look like an access key."));
+      setErr(new Error(t("That does not look like an access key.", "Itu sepertinya bukan access key.")));
       return;
     }
     setBusy(true);
@@ -138,7 +143,7 @@ function ReauthDialog({ open, onClose }: { open: boolean; onClose: () => void })
     } catch {
       const old = previous ? parseAccessKey(previous) : null;
       setStudent(old);
-      setErr(new Error("That key was not accepted. Copy it again from the file or note where you saved it."));
+      setErr(new Error(t("That key was not accepted. Copy it again from the file or note where you saved it.", "Key itu tidak diterima. Salin lagi dari file atau catatan tempat kamu menyimpannya.")));
     } finally {
       setBusy(false);
     }
@@ -147,9 +152,12 @@ function ReauthDialog({ open, onClose }: { open: boolean; onClose: () => void })
     <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Enter Your Access Key</DialogTitle>
+          <DialogTitle>{t("Enter Your Access Key", "Masukkan Access Key-mu")}</DialogTitle>
           <DialogDescription>
-            PathSync could not confirm this device&rsquo;s key. Your data is safe on the server: paste your access key to continue.
+            {t(
+              "PathSync could not confirm this device’s key. Your data is safe on the server: paste your access key to continue.",
+              "PathSync tidak bisa mengonfirmasi key di perangkat ini. Datamu aman di server: tempel access key-mu untuk lanjut.",
+            )}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={submit} className="space-y-4">
@@ -160,10 +168,10 @@ function ReauthDialog({ open, onClose }: { open: boolean; onClose: () => void })
           <ErrorNote error={err} />
           <div className="flex gap-2">
             <Button type="submit" size="lg" className="h-10 flex-1" disabled={!value.trim() || busy}>
-              {busy ? "Checking…" : "Continue"}
+              {busy ? t("Checking…", "Memeriksa…") : t("Continue", "Lanjut")}
             </Button>
             <Button type="button" variant="ghost" size="lg" className="h-10" onClick={() => { setStudent(null); window.location.href = "/"; }}>
-              Start Over
+              {t("Start Over", "Mulai Ulang")}
             </Button>
           </div>
         </form>

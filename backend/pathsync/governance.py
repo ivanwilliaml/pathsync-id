@@ -24,7 +24,28 @@ from sqlalchemy.orm import Session
 from .config import ROLES, SEED_DIR
 from .db import Posting, PostingMention, active_snapshot
 from .market import esco_status
+from .soft import detect as soft_detect
 from .taxonomy import load_skills, load_taxonomy
+
+# Phrases that are not hard skills in this taxonomy's scope, by decision (annotation rules, plan D2). They leave the C1
+# denominator instead of counting as covered, and the report lists every excluded phrase so the choice is visible.
+OUT_OF_SCOPE = {
+    "domain": ("banking", "bank indonesia", "rtgs", "fatca", "snap standard", "msme", "lending", "fintech", "retail",
+               "fashion", "fmcg", "e-commerce", "ecommerce", "insurance industry", "telco", "regulation", "regulasi",
+               "financial crime", "compliance framework", "industri", "industry"),
+    "methodology": ("lean", "six sigma", "continuous improvement", "process re-engineering", "kaizen", "fishbone"),
+    "generic": ("such as", "related", "similar", "the it field", "a related field", "solutions", "relationships",
+                "lainnya", "platforms", "initiatives", "environments", "roles", "enhancement"),
+}
+
+
+def out_of_scope(surface: str) -> str | None:
+    s = surface.lower()
+    for kind, words in OUT_OF_SCOPE.items():
+        if any(w in s for w in words):
+            return kind
+    return None
+
 
 COVERAGE_TARGET = 0.95
 CANDIDATE_MAX_SHARE = 0.10
@@ -34,6 +55,11 @@ CHANGELOG = [
      "ICT business analyst and data analyst profiles plus frequent extraction terms."},
     {"version": "2026.10-v2", "date": "2026-10-01", "change": "Added 'API & system integration': most frequent "
      "new-skill candidate cluster (REST API, JSON, Swagger, system integration) in IT BA postings."},
+    {"version": "2026.10-v4", "date": "2026-10-17", "change": "Plan A9: six business roles. 52 candidate skills were proposed "
+     "and the 24 that reach 10% of postings in at least one business role were kept (114 -> 138 skills, 14 -> 20 clusters)."},
+    {"version": "2026.10-v4.1", "date": "2026-10-17", "change": "Contested tax aliases moved to the specific skill (PPh 23/25/29/4(2) "
+     "-> pph_corporate_withholding, PPN/faktur pajak -> vat_ppn_mechanics, tax audit -> tax_dispute_audit). C1 now leaves "
+     "out-of-scope phrases (business domains, process methodologies, generic words) out of the denominator and lists them."},
 ]
 
 
@@ -70,10 +96,20 @@ def report(s: Session, role: str = "business_analyst") -> dict:
     mentions = s.execute(select(PostingMention.posting_id, PostingMention.skill_id, PostingMention.status,
                                 PostingMention.surface).where(PostingMention.posting_id.in_(pids))).all()
     counted = [m for m in mentions if m.status in ("auto", "review", "new")]
-    covered = [m for m in counted if m.status in ("auto", "review") and m.skill_id]
-    coverage = len(covered) / len(counted) if counted else 0.0
+    # a phrase the soft-skill layer already captures (Agile, project management, communication...) is not a missing
+    # skill: the product shows it, with its demand, outside the ranked hard-skill list
+    soft_hit = {m.surface: bool(soft_detect(m.surface)) for m in counted if m.status == "new"}
+    # unmapped phrases that are out of scope by decision leave the denominator (listed in the report)
+    excluded = [m for m in counted if m.status == "new" and not soft_hit.get(m.surface) and out_of_scope(m.surface)]
+    excluded_ids = {id(m) for m in excluded}
+    in_scope = [m for m in counted if id(m) not in excluded_ids]
+    covered = [m for m in in_scope if (m.status in ("auto", "review") and m.skill_id) or soft_hit.get(m.surface)]
+    coverage = len(covered) / len(in_scope) if in_scope else 0.0
+    excluded_report = defaultdict(list)
+    for m in excluded:
+        excluded_report[out_of_scope(m.surface)].append(m.surface)
 
-    clusters = _cluster_candidates([(m.surface, m.posting_id) for m in counted if m.status == "new"])
+    clusters = _cluster_candidates([(m.surface, m.posting_id) for m in in_scope if m.status == "new" and not soft_hit.get(m.surface)])
     cands = sorted(({"label": c["label"], "examples": sorted(c["members"])[:6], "postings": len(c["postings"]),
                      "share": round(len(c["postings"]) / max(1, n_posts), 3)} for c in clusters),
                    key=lambda c: -c["postings"])
@@ -123,7 +159,8 @@ def report(s: Session, role: str = "business_analyst") -> dict:
         by_cluster[sk.cluster] += 1
     return {"role": role, "role_name": ROLES[role]["name"], "version": tax["version"], "sha256": taxonomy_hash(),
             "frozen_at": tax.get("frozen_at"), "n_skills": len(skills), "by_cluster": dict(by_cluster),
-            "n_postings": n_posts, "n_mentions": len(counted), "criteria": criteria,
+            "n_postings": n_posts, "n_mentions": len(counted), "n_mentions_in_scope": len(in_scope), "criteria": criteria,
+            "excluded_out_of_scope": {k: sorted(set(v))[:20] for k, v in excluded_report.items()},
             "core_skills": core, "n_core": len(core),
             "adjacent_skills": [r["skill_id"] for r in per_skill if r["status"] == "adjacent"],
             "final": all(c["pass"] for c in criteria.values()),

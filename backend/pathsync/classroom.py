@@ -16,23 +16,33 @@ from __future__ import annotations
 from datetime import date, timedelta
 from statistics import mean
 
+from .i18n import tr
+
+# (English, Indonesian)
 ARTIFACTS = {
-    "data_analytics": "your notebook, query file (.sql) or analysis report",
-    "bi_tools": "the file you built (spreadsheet notes, dashboard description or export) as text or PDF",
-    "business_analysis": "your BPMN/flowchart, requirement document (BRD/user stories) or process write-up",
-    "data_ml": "your notebook with the data, model, evaluation and conclusions",
-    "data_eng": "your pipeline code or SQL, and a short description of the data flow",
-    "web_frontend": "your code (HTML/CSS/JS), repository README or a short build write-up",
-    "backend": "your source code, API documentation or README with the endpoints",
-    "mobile": "your app code, README and a description of the screens",
-    "testing": "your test plan, test cases, automation scripts or bug reports",
-    "devops": "your Dockerfile, pipeline config or infrastructure code with a short README",
-    "security": "your lab report, scan results or write-up of the exercise (no real credentials)",
-    "design": "your case study: research notes, flows, screens and what you learned",
-    "marketing": "your campaign plan, report or analytics write-up with the numbers",
-    "finance": "your worksheet, journal or report with the calculations explained",
+    "data_analytics": ("your notebook, query file (.sql) or analysis report", "notebook, file query (.sql) atau laporan analisismu"),
+    "bi_tools": ("the file you built (spreadsheet notes, dashboard description or export) as text or PDF",
+                 "file yang kamu buat (catatan spreadsheet, deskripsi atau ekspor dashboard) sebagai teks atau PDF"),
+    "business_analysis": ("your BPMN/flowchart, requirement document (BRD/user stories) or process write-up",
+                          "BPMN/flowchart, dokumen requirement (BRD/user story) atau tulisan prosesmu"),
+    "data_ml": ("your notebook with the data, model, evaluation and conclusions", "notebook-mu berisi data, model, evaluasi, dan kesimpulan"),
+    "data_eng": ("your pipeline code or SQL, and a short description of the data flow",
+                 "kode pipeline atau SQL-mu, plus deskripsi singkat alur datanya"),
+    "web_frontend": ("your code (HTML/CSS/JS), repository README or a short build write-up",
+                     "kodemu (HTML/CSS/JS), README repository atau tulisan singkat proses pembuatannya"),
+    "backend": ("your source code, API documentation or README with the endpoints", "source code, dokumentasi API atau README berisi endpoint-nya"),
+    "mobile": ("your app code, README and a description of the screens", "kode aplikasi, README, dan deskripsi layar-layarnya"),
+    "testing": ("your test plan, test cases, automation scripts or bug reports", "test plan, test case, skrip otomasi atau bug report-mu"),
+    "devops": ("your Dockerfile, pipeline config or infrastructure code with a short README",
+               "Dockerfile, konfigurasi pipeline atau kode infrastruktur dengan README singkat"),
+    "security": ("your lab report, scan results or write-up of the exercise (no real credentials)",
+                 "laporan lab, hasil scan atau tulisan latihanmu (tanpa kredensial asli)"),
+    "design": ("your case study: research notes, flows, screens and what you learned",
+               "studi kasusmu: catatan riset, flow, layar, dan apa yang kamu pelajari"),
+    "marketing": ("your campaign plan, report or analytics write-up with the numbers", "rencana kampanye, laporan atau tulisan analitik beserta angkanya"),
+    "finance": ("your worksheet, journal or report with the calculations explained", "lembar kerja, jurnal atau laporan dengan perhitungan yang dijelaskan"),
 }
-DEFAULT_ARTIFACT = "the work you produced (code, document or report) as text or PDF"
+DEFAULT_ARTIFACT = ("the work you produced (code, document or report) as text or PDF", "hasil kerjamu (kode, dokumen atau laporan) sebagai teks atau PDF")
 K_ANONYMITY = 5
 
 
@@ -58,8 +68,10 @@ def course_companion(courses: list[dict], rec: dict, skills: dict) -> list[dict]
             rows.append({
                 "skill_id": sid, "name": sk.name, "strength": round(strength, 2), "on_path": on_path,
                 "path_step": path_pos.get(sid), "rank": rank.get(sid), "p": cp.get("p"), "required": cp.get("required"),
-                "evidence_tip": (f"Turn a {c['name']} assignment into proof of {sk.name}: upload {ARTIFACTS.get(sk.cluster, DEFAULT_ARTIFACT)} "
-                                 f"as a project. The rubric looks for {sk.learn_what}."),
+                "evidence_tip": tr(f"Turn a {c['name']} assignment into proof of {sk.name}: upload {tr(*ARTIFACTS.get(sk.cluster, DEFAULT_ARTIFACT))} "
+                                   f"as a project. The rubric looks for {sk.learn_what}.",
+                                   f"Jadikan tugas {c['name']} sebagai bukti {sk.name}: unggah {tr(*ARTIFACTS.get(sk.cluster, DEFAULT_ARTIFACT))} "
+                                   f"sebagai project. Rubriknya mencari {sk.learn_what}."),
             })
         aligned = [r for r in rows if r["on_path"] or (r["rank"] and r["rank"] <= 6)]
         out.append({"course": c["name"], "status": c.get("status", "ongoing"), "skills": rows,
@@ -86,8 +98,8 @@ def suggest_week(rec: dict, companion: list[dict], weekly_hours: float) -> list[
                       "minutes": int(minutes_total * sh), "course": support.get(p["skill_id"]),
                       "material": {"title": mat["title"], "url": mat["url"]} if mat else None,
                       "done": False,
-                      "action": ("Take the skill check when you feel ready" if p["rec_type"] == "buktikan"
-                                 else f"Study: {p['learn_what']}")})
+                      "action": (tr("Take the skill check when you feel ready", "Ikuti skill check saat kamu merasa siap")
+                                 if p["rec_type"] == "buktikan" else tr("Study", "Pelajari") + f": {p['learn_what']}")})
     return goals
 
 
@@ -110,7 +122,8 @@ def cohort_report(students: list[dict], skills: dict) -> dict:
     n = len(students)
     if n < K_ANONYMITY:
         return {"n_students": n, "hidden": True,
-                "message": f"Aggregates appear once at least {K_ANONYMITY} students have joined (privacy threshold)."}
+                "message": tr(f"Aggregates appear once at least {K_ANONYMITY} students have joined (privacy threshold).",
+                              f"Ringkasan muncul setelah minimal {K_ANONYMITY} mahasiswa bergabung (batas privasi).")}
     sids = sorted({s for st in students for s in st["required"]})
     rows = []
     for sid in sids:

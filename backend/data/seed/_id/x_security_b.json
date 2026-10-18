@@ -1,0 +1,152 @@
+{
+ "security_frameworks_compliance-1": {
+  "stem": "Standar mana yang mendefinisikan persyaratan sistem manajemen keamanan informasi (ISMS)?",
+  "options": [
+   "ISO/IEC 27001",
+   "ISO 9001",
+   "PCI DSS",
+   "HTTP/2"
+  ],
+  "explanation": "ISO/IEC 27001."
+ },
+ "security_frameworks_compliance-2": {
+  "stem": "Undang-undang mana yang mengatur pelindungan data pribadi di Indonesia?",
+  "options": [
+   "UU No. 27 Tahun 2022 (UU PDP)",
+   "UU ITE No. 11 Tahun 2008 saja",
+   "GDPR Uni Eropa",
+   "UU Perlindungan Konsumen Tahun 1999"
+  ],
+  "explanation": "UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)."
+ },
+ "security_frameworks_compliance-3": {
+  "stem": "Standar mana yang berlaku bagi organisasi yang menyimpan, memproses, atau mengirim data kartu pembayaran?",
+  "options": [
+   "PCI DSS",
+   "ISO 14001",
+   "SOC 1 saja",
+   "WCAG"
+  ],
+  "explanation": "PCI DSS."
+ },
+ "security_frameworks_compliance-4": {
+  "stem": "Lima fungsi inti NIST Cybersecurity Framework mencakup Identify, Protect, Detect, Respond, dan...",
+  "options": [
+   "Recover",
+   "Report",
+   "Review",
+   "Restrict"
+  ],
+  "explanation": "Recover (versi 2.0 menambahkan Govern)."
+ },
+ "security_frameworks_compliance-5": {
+  "stem": "Dalam penilaian risiko, risiko umumnya diperkirakan sebagai...",
+  "options": [
+   "Kemungkinan dikalikan dampak",
+   "Biaya dibagi jumlah pengguna",
+   "Kerentanan ditambah ancaman",
+   "Dampak dikurangi anggaran yang tersedia"
+  ],
+  "explanation": "Kemungkinan (likelihood) dikalikan dampak (impact)."
+ },
+ "siem_monitoring-1": {
+  "stem": "Apa yang dilakukan SIEM?",
+  "options": [
+   "Mengumpulkan dan mengorelasikan log serta memunculkan peringatan",
+   "Mengenkripsi disk pada setiap laptop milik para karyawan",
+   "Mengelola kata sandi para staf di seluruh aplikasi kantor",
+   "Memindai situs web untuk mencari tautan rusak secara berkala"
+  ],
+  "explanation": "Mengumpulkan dan mengorelasikan log dari banyak sumber serta memunculkan peringatan."
+ },
+ "siem_monitoring-2": {
+  "stem": "Mana yang merupakan platform pemantauan keamanan sumber terbuka?",
+  "options": [
+   "Wazuh",
+   "Canva",
+   "Trello",
+   "Slack"
+  ],
+  "explanation": "Wazuh."
+ },
+ "siem_monitoring-3": {
+  "stem": "Apa itu kerangka kerja MITRE ATT&CK?",
+  "options": [
+   "Basis pengetahuan tentang taktik dan teknik penyerang",
+   "Standar internasional untuk mengenkripsi pesan email",
+   "Alat yang memblokir malware di setiap endpoint kantor",
+   "Sertifikasi profesional untuk para manajer keamanan"
+  ],
+  "explanation": "Basis pengetahuan tentang taktik dan teknik penyerang yang dipakai untuk menggambarkan dan mendeteksi serangan."
+ },
+ "siem_monitoring-4": {
+  "stem": "SIEM menunjukkan 50 kali gagal login pada satu akun dalam semenit, disusul login berhasil dari negara baru. Apa kejadian yang paling mungkin?",
+  "options": [
+   "Pengguna biasa yang sesekali lupa kata sandi akunnya sendiri",
+   "Pembaruan perangkat lunak yang me-restart server secara otomatis",
+   "Serangan brute force yang berujung pada akun yang diambil alih",
+   "Pekerjaan backup terjadwal yang gagal dimulai pada malam hari"
+  ],
+  "explanation": "Brute force atau credential stuffing yang diikuti akun yang diambil alih."
+ },
+ "siem_monitoring-5": {
+  "stem": "Analis kewalahan oleh ribuan peringatan bernilai rendah. Apa respons terbaik?",
+  "options": [
+   "Menyetel ulang aturan dan memprioritaskan peringatan berdasarkan risiko",
+   "Menghapus semua log yang usianya lebih tua dari satu hari saja",
+   "Merekrut lebih banyak analis untuk membaca tiap peringatan satu per satu",
+   "Mematikan semua peringatan yang tidak ditandai sebagai kritis oleh sistem"
+  ],
+  "explanation": "Setel dan prioritaskan aturan (kurangi false positive, tambah konteks dan tingkat keparahan), bukan mengabaikan peringatan."
+ },
+ "vulnerability_assessment-1": {
+  "stem": "Apa kepanjangan CVE?",
+  "options": [
+   "Common Vulnerabilities and Exposures",
+   "Critical Version Evaluation",
+   "Centralised Virus Engine",
+   "Controlled Verification of Endpoints and Devices"
+  ],
+  "explanation": "Common Vulnerabilities and Exposures: pengenal publik untuk kerentanan yang sudah diketahui."
+ },
+ "vulnerability_assessment-2": {
+  "stem": "Alat mana yang merupakan pemindai kerentanan jaringan yang terkenal?",
+  "options": [
+   "Nessus",
+   "Notion",
+   "Jenkins",
+   "Kibana"
+  ],
+  "explanation": "Nessus (dan OpenVAS)."
+ },
+ "vulnerability_assessment-3": {
+  "stem": "Apa yang ditunjukkan skor CVSS 9,8?",
+  "options": [
+   "Kerentanan kritis yang harus diperbaiki lebih dulu",
+   "Server yang tersedia 98% dari seluruh waktu operasional",
+   "Pemindaian yang gagal selesai karena terputus di tengah",
+   "Risiko rendah yang aman ditunda selama satu tahun penuh"
+  ],
+  "explanation": "Kerentanan dengan tingkat keparahan kritis yang harus diperbaiki lebih dulu."
+ },
+ "vulnerability_assessment-4": {
+  "stem": "Dua temuan punya skor CVSS yang sama. Mana yang diperbaiki lebih dulu?",
+  "options": [
+   "Yang ada di sistem kritis yang terbuka ke internet dan punya exploit publik",
+   "Yang ada di sistem uji internal tetapi sudah punya exploit publik beredar",
+   "Yang ada di sistem kritis dan ditandai dua kali oleh pemindai otomatis",
+   "Yang dilaporkan lebih dulu, karena sudah terbuka paling lama di daftar"
+  ],
+  "explanation": "Yang ada di aset kritis bisnis yang terhubung ke internet dengan exploit yang sudah diketahui."
+ },
+ "vulnerability_assessment-5": {
+  "stem": "Apa beda vulnerability assessment dan penetration test?",
+  "options": [
+   "Assessment mendaftar kelemahan, pen test mengeksploitasinya untuk menunjukkan dampak",
+   "Assessment mengeksploitasi kelemahan, sedangkan pen test hanya mendaftarkannya saja",
+   "Keduanya adalah kegiatan yang sama dengan dua nama yang berbeda saja",
+   "Assessment mencakup aplikasi, sedangkan pen test hanya mencakup perangkat keras"
+  ],
+  "explanation": "Assessment mengidentifikasi dan memeringkat kelemahan secara luas; pen test mengeksploitasinya secara aktif untuk membuktikan dampak."
+ }
+}

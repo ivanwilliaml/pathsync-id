@@ -101,7 +101,9 @@ def research_consent(body: ResearchConsent, st: Student = Depends(student_access
 # ------------------------------------------------------------------ analytics
 EVENTS = {"signup", "evidence_saved", "check_started", "check_completed", "next_step_viewed", "why_opened",
           "material_clicked", "reassess_started", "reassess_passed", "key_saved", "key_restored", "page_view",
-          "plan_saved", "reflection_saved", "trace_opened", "demo_started"}
+          "plan_saved", "reflection_saved", "trace_opened", "demo_started", "pilot_survey"}
+# pilot targets from PLAN.md section 4; a miss is a finding to report, not a launch blocker
+PILOT_TARGETS = {"quick_check_completion": 0.60, "median_minutes_to_next_step": 5.0, "survey_q1_mean": 4.0}
 
 
 class EventIn(BaseModel):
@@ -122,6 +124,11 @@ def track(body: EventIn, authorization: str | None = Header(default=None), s: Se
             sid = st.id
             st.last_seen_at = utcnow()
     props = {k: v for k, v in list(body.props.items())[:8] if isinstance(v, (str, int, float, bool)) and len(str(v)) <= 120}
+    if body.name == "pilot_survey":
+        # three 1-5 ratings per condition (V3 protocol): q1 clear first step, q2 fits my level, q3 can start this week
+        if props.get("condition") not in ("pathsync", "generic") or not all(
+                isinstance(props.get(q), int) and 1 <= props[q] <= 5 for q in ("q1", "q2", "q3")):
+            raise HTTPException(422, "pilot_survey needs condition (pathsync|generic) and q1, q2, q3 from 1 to 5.")
     s.add(ProductEvent(name=body.name, student_id=sid, props=props))
     s.commit()
     return Response(status_code=204)
@@ -219,7 +226,31 @@ def metrics(days: int = 14, s: Session = Depends(db_session)):
     n = max(1, len(ids))
     pending = s.scalars(select(Evidence).where(Evidence.review_status == "pending")).all()
     overdue = [e for e in pending if (utcnow() - e.created_at).total_seconds() > 72 * 3600]
-    return {"window_days": days, "new_students": len(ids),
+    created = {st.id: st.created_at for st in students}
+    first_next = {}
+    for sid, at in s.execute(select(ProductEvent.student_id, ProductEvent.created_at)
+                             .where(ProductEvent.name == "next_step_viewed", ProductEvent.student_id.in_(ids))).all():
+        first_next[sid] = min(at, first_next.get(sid, at))
+    minutes = sorted((first_next[k] - created[k]).total_seconds() / 60 for k in first_next if k in created)
+    median_min = round(minutes[len(minutes) // 2], 1) if minutes else None
+    survey: dict[str, list[dict]] = {"pathsync": [], "generic": []}
+    for (props,) in s.execute(select(ProductEvent.props).where(ProductEvent.name == "pilot_survey", ProductEvent.created_at >= since)).all():
+        if props.get("condition") in survey:
+            survey[props["condition"]].append(props)
+
+    def mean(rows, q):
+        return round(sum(r[q] for r in rows) / len(rows), 2) if rows else None
+
+    survey_out = {c: {"n": len(rows), **{q: mean(rows, q) for q in ("q1", "q2", "q3")}} for c, rows in survey.items()}
+    qc = len(by_event.get("check_completed", set()) & ids) / n
+    pilot = {"targets": PILOT_TARGETS,
+             "values": {"quick_check_completion": round(qc, 3), "median_minutes_to_next_step": median_min,
+                        "survey_q1_mean": survey_out["pathsync"]["q1"]},
+             "survey": survey_out}
+    pilot["meets"] = {"quick_check_completion": qc >= PILOT_TARGETS["quick_check_completion"] if ids else None,
+                      "median_minutes_to_next_step": None if median_min is None else median_min <= PILOT_TARGETS["median_minutes_to_next_step"],
+                      "survey_q1_mean": None if survey_out["pathsync"]["q1"] is None else survey_out["pathsync"]["q1"] >= PILOT_TARGETS["survey_q1_mean"]}
+    return {"window_days": days, "new_students": len(ids), "pilot": pilot,
             "funnel": [{"step": k, "students": len(v), "share": round(len(v) / n, 3)} for k, v in funnel],
             "north_star": {"definition": "share of new students who pass a re-check on at least one skill within 14 days",
                            "value": round(len(by_event.get("reassess_passed", set()) & ids) / n, 3)},

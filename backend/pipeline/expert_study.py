@@ -4,8 +4,9 @@
    live Business Analyst market map and stores them for the real expert panel;
 2. runs the paper's feasibility simulation (III.A.4): three simulated experts with three
    possible judging styles, grouped CV, bootstrap CIs, ablation, adaptivity, data-size check;
-3. trains the ranking model and registers it - it becomes active only if it agrees with the
-   reference at least as well as formula (5) (paper III.D.4 risk mitigation).
+3. trains the ranking model and registers it as an experiment. It is never activated: these are simulated experts
+   whose judging style resembles the formula, so agreement is partly circular (audit AI-4). Formula (5) stays active
+   until real experts' rankings beat it (leave-one-expert-out rule, Admin > Models > Train).
 
 Run: python -m pipeline.expert_study [--role ROLE | --all-roles]
 
@@ -19,12 +20,12 @@ import json
 from datetime import datetime
 
 import numpy as np
-from sqlalchemy import delete, select, update
+from sqlalchemy import delete, select
 
 from pathsync.config import FEATURES, MODELS_DIR
 from pathsync.db import Expert, RankerModel, Scenario, ScenarioRanking, bump_epoch, get_session, init_db
 from pathsync.engine import load_context
-from pathsync.evaluation import NON_INFERIORITY, adaptivity, cross_validate, passes_rule, train_full
+from pathsync.evaluation import NON_INFERIORITY, activate_formula5, adaptivity, cross_validate, passes_rule, train_full
 from pathsync.extraction.llm import LLMUnavailable, llm_configured
 from pathsync.ranker import aggregate_orders, kendalls_w
 from pathsync.scenarios import build_scenarios, simulate_expert
@@ -157,18 +158,20 @@ def main(role: str = "business_analyst"):
                 s.add(ScenarioRanking(scenario_id=sid, expert_id=eid, order=order, simulated=True))
         model_ndcg = cv["methods"]["model"]["ndcg5"]["mean"]
         f5_ndcg = cv["methods"]["formula5"]["ndcg5"]["mean"]
-        activate = passes_rule(cv)
-        if activate:
-            s.execute(update(RankerModel).values(active=False))
+        passes = passes_rule(cv)          # recorded for the report; simulated experts never activate a model
+        activate = False
         # replace the previous simulated model instead of piling up one per run
         s.execute(delete(RankerModel).where(RankerModel.source == "simulated", RankerModel.name.like("LTR v1%")))
         bump_epoch(s)
         s.add(RankerModel(name="LTR v1 (trained on simulated experts)", source="simulated", weights=w_full,
                           metrics={"cv_ndcg5": cv["methods"]["model"]["ndcg5"], "cv_formula5_ndcg5": cv["methods"]["formula5"]["ndcg5"],
-                                   "condition": "campuran", "rule": f"aktif bila NDCG@5 >= formula (5) - {NON_INFERIORITY}"},
+                                   "condition": "campuran", "non_inferior": passes, "margin": NON_INFERIORITY,
+                                   "rule": "never active: simulated experts; formula (5) serves until real experts beat it"},
                           active=activate))
+        activate_formula5(s)
         s.commit()
-        report["registered_model"] = {"weights": w_full, "active": activate, "cv_ndcg5": model_ndcg, "formula5_ndcg5": f5_ndcg}
+        report["registered_model"] = {"weights": w_full, "active": activate, "non_inferior_to_formula5": passes,
+                                      "cv_ndcg5": model_ndcg, "formula5_ndcg5": f5_ndcg, "active_ranker": "Formula (5)"}
 
     (MODELS_DIR / "evaluation_report.json").write_text(json.dumps(report, indent=1, ensure_ascii=False), encoding="utf-8")
     print(json.dumps(report["registered_model"], indent=1))

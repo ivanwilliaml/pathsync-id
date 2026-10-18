@@ -1,0 +1,302 @@
+{
+ "android_kotlin-1": {
+  "stem": "Bahasa apa yang direkomendasikan Google untuk pengembangan Android baru?",
+  "options": [
+   "Kotlin",
+   "Swift",
+   "Dart",
+   "C#"
+  ],
+  "explanation": "Kotlin."
+ },
+ "android_kotlin-2": {
+  "stem": "Apa itu Jetpack Compose?",
+  "options": [
+   "Toolkit UI deklaratif untuk Android",
+   "Library database untuk Android",
+   "Alat untuk menerbitkan aplikasi ke toko aplikasi",
+   "Framework pengujian untuk aplikasi Android"
+  ],
+  "explanation": "Toolkit UI deklaratif untuk Android yang ditulis dengan Kotlin."
+ },
+ "android_kotlin-3": {
+  "stem": "Library mana yang menjadi cara standar menyimpan data terstruktur di database SQLite lokal pada Android?",
+  "options": [
+   "Room",
+   "Retrofit",
+   "Glide",
+   "Hilt"
+  ],
+  "explanation": "Room."
+ },
+ "android_kotlin-4": {
+  "stem": "Layar diputar dan state UI hilang. Komponen mana yang dirancang untuk bertahan saat perubahan konfigurasi?",
+  "options": [
+   "ViewModel",
+   "BroadcastReceiver",
+   "ContentProvider",
+   "Intent"
+  ],
+  "explanation": "ViewModel menyimpan state UI saat terjadi perubahan konfigurasi."
+ },
+ "android_kotlin-5": {
+  "stem": "Panggilan jaringan di main thread membekukan UI dan bisa membuat aplikasi crash. Apa yang harus dilakukan?",
+  "options": [
+   "Menjalankan panggilan di coroutine pada background dispatcher",
+   "Memanggilnya dari onCreate supaya selesai lebih dulu di awal",
+   "Membungkus panggilan dengan blok try dan catch saja",
+   "Menambah timeout pada HTTP client yang dipakai aplikasi"
+  ],
+  "explanation": "Jalankan di luar main thread dengan coroutine (misalnya Dispatchers.IO)."
+ },
+ "flutter_dart-1": {
+  "stem": "Di Flutter, apa hampir semua yang terlihat di layar?",
+  "options": [
+   "Widget",
+   "Fragment",
+   "View controller",
+   "Activity"
+  ],
+  "explanation": "Segalanya adalah widget."
+ },
+ "flutter_dart-2": {
+  "stem": "Bahasa apa yang dipakai untuk menulis aplikasi Flutter?",
+  "options": [
+   "Dart",
+   "Kotlin",
+   "Swift",
+   "JavaScript"
+  ],
+  "explanation": "Dart."
+ },
+ "flutter_dart-3": {
+  "stem": "Apa beda StatelessWidget dan StatefulWidget?",
+  "options": [
+   "Stateful widget menyimpan state yang bisa berubah dan membangun ulang dirinya",
+   "Stateless widget menyimpan state yang bisa berubah seiring waktu dan membangun ulang dirinya",
+   "Stateful widget tidak bisa memuat widget anak",
+   "Stateless widget biasanya dirender oleh platform view bawaan"
+  ],
+  "explanation": "StatefulWidget menyimpan state yang bisa berubah dan dibangun ulang saat setState dipanggil; StatelessWidget tidak berubah sendiri."
+ },
+ "flutter_dart-4": {
+  "stem": "Widget mana yang membuat daftar panjang yang bisa digulir secara efisien, dengan membuat item hanya saat dibutuhkan?",
+  "options": [
+   "ListView.builder",
+   "Column dengan banyak anak",
+   "Stack dengan item yang diposisikan",
+   "Row di dalam SingleChildScrollView"
+  ],
+  "explanation": "ListView.builder membangun item secara lazy."
+ },
+ "flutter_dart-5": {
+  "stem": "Beberapa layar perlu berbagi dan bereaksi terhadap data aplikasi yang sama. Pendekatan mana yang idiomatik di Flutter?",
+  "options": [
+   "Memakai paket state management seperti Provider, Riverpod, atau Bloc",
+   "Meneruskan data lewat konstruktor ke setiap layar yang butuh",
+   "Menyimpan data dalam variabel global yang dibaca oleh tiap layar",
+   "Memuat ulang data dari server setiap kali sebuah layar dibangun"
+  ],
+  "explanation": "Pakai solusi state management seperti Provider, Riverpod, atau Bloc, bukan meneruskan data lewat setiap konstruktor."
+ },
+ "ios_swift-1": {
+  "stem": "IDE mana yang dipakai untuk mengembangkan aplikasi iOS?",
+  "options": [
+   "Xcode",
+   "Android Studio",
+   "Visual Studio",
+   "Eclipse"
+  ],
+  "explanation": "Xcode."
+ },
+ "ios_swift-2": {
+  "stem": "Apa itu SwiftUI?",
+  "options": [
+   "Framework UI deklaratif dari Apple",
+   "Package manager untuk library dan alat Swift",
+   "Framework database untuk iOS",
+   "Alat untuk menguji kinerja aplikasi"
+  ],
+  "explanation": "Framework deklaratif dari Apple untuk membangun antarmuka pengguna di seluruh platformnya."
+ },
+ "ios_swift-3": {
+  "stem": "Apa arti optional (String?) di Swift?",
+  "options": [
+   "Nilainya bisa berupa string atau nil",
+   "String itu biasanya kosong",
+   "String itu tidak bisa diubah setelah dibuat",
+   "String itu disimpan di disk perangkat"
+  ],
+  "explanation": "Nilainya bisa berupa string atau nil."
+ },
+ "ios_swift-4": {
+  "stem": "Property wrapper SwiftUI mana yang menyimpan state lokal tampilan dan menyegarkan tampilan saat berubah?",
+  "options": [
+   "@State",
+   "@Binding",
+   "@Environment",
+   "@AppStorage"
+  ],
+  "explanation": "@State."
+ },
+ "ios_swift-5": {
+  "stem": "Alat mana yang mendistribusikan build beta aplikasi iOS ke penguji sebelum rilis?",
+  "options": [
+   "TestFlight",
+   "Instruments",
+   "Simulator",
+   "Playgrounds"
+  ],
+  "explanation": "TestFlight."
+ },
+ "mobile_backend_services-1": {
+  "stem": "Untuk apa Firebase Authentication dipakai?",
+  "options": [
+   "Memasukkan pengguna lewat email, telepon, atau akun sosial",
+   "Mengompilasi aplikasi untuk beberapa platform sekaligus",
+   "Mengukur kecepatan jaringan di perangkat pengguna",
+   "Memampatkan gambar sebelum diunggah ke penyimpanan"
+  ],
+  "explanation": "Memasukkan pengguna lewat email, telepon, atau penyedia seperti Google."
+ },
+ "mobile_backend_services-2": {
+  "stem": "Layanan Firebase mana yang mengirim notifikasi push?",
+  "options": [
+   "Firebase Cloud Messaging",
+   "Firebase Hosting",
+   "Remote Config",
+   "Test Lab"
+  ],
+  "explanation": "Firebase Cloud Messaging (FCM)."
+ },
+ "mobile_backend_services-3": {
+  "stem": "Sebuah aplikasi harus tetap berfungsi tanpa internet dan menyinkronkan data nanti. Apa namanya?",
+  "options": [
+   "Offline-first dengan penyimpanan lokal dan sinkronisasi belakangan",
+   "Server-first dengan permintaan yang diulang sampai perangkat online lagi",
+   "Mode offline yang menonaktifkan penyuntingan sampai perangkat online",
+   "Penyimpanan lokal yang sepenuhnya menggantikan peran server di aplikasi"
+  ],
+  "explanation": "Desain offline-first dengan penyimpanan lokal dan sinkronisasi di latar belakang."
+ },
+ "mobile_backend_services-4": {
+  "stem": "Alat mana yang melaporkan crash dari pengguna nyata beserta stack trace?",
+  "options": [
+   "Firebase Crashlytics",
+   "Google Analytics untuk web",
+   "Android Lint",
+   "Xcode Previews"
+  ],
+  "explanation": "Crashlytics (atau pelapor crash sejenis)."
+ },
+ "mobile_backend_services-5": {
+  "stem": "Di mana sebaiknya API secret key untuk memanggil layanan berbayar disimpan?",
+  "options": [
+   "Di servermu sendiri yang melakukan panggilan untuk aplikasi",
+   "Di dalam aplikasi, dienkripsi dengan kunci yang juga disimpan di aplikasi",
+   "Di berkas konfigurasi yang diunduh aplikasi saat dibuka",
+   "Di keychain aman aplikasi, yang diisi saat build"
+  ],
+  "explanation": "Di servermu sendiri yang meneruskan panggilan; kunci di dalam aplikasi bisa diekstrak."
+ },
+ "mobile_release_quality-1": {
+  "stem": "Di mana aplikasi Android diterbitkan untuk diunduh publik?",
+  "options": [
+   "Google Play Console",
+   "App Store Connect",
+   "TestFlight",
+   "Firebase Hosting"
+  ],
+  "explanation": "Google Play Console / Play Store."
+ },
+ "mobile_release_quality-2": {
+  "stem": "Mengapa aplikasi harus ditandatangani sebelum dirilis?",
+  "options": [
+   "Untuk membuktikan penerbitnya dan bahwa aplikasi tidak diubah",
+   "Untuk memberi aplikasi izin memakai kamera di perangkat",
+   "Agar aplikasi bisa berjalan tanpa akses internet sama sekali",
+   "Agar aplikasi menjadi lebih kecil saat diunduh pengguna"
+  ],
+  "explanation": "Tanda tangan membuktikan siapa penerbitnya dan bahwa aplikasi tidak diubah."
+ },
+ "mobile_release_quality-3": {
+  "stem": "Apa itu staged rollout?",
+  "options": [
+   "Merilis ke persentase pengguna yang terus bertambah sambil memantau",
+   "Merilis aplikasi hanya kepada para developer aplikasi itu sendiri",
+   "Merilis build setelah setiap tes ditulis ulang dari awal",
+   "Merilis build yang sama di toko aplikasi dengan beberapa nama"
+  ],
+  "explanation": "Merilis versi baru ke persentase pengguna yang terus bertambah sambil mengawasi masalah."
+ },
+ "mobile_release_quality-4": {
+  "stem": "Alat mana yang mengotomatiskan build, penandatanganan, dan pengunggahan rilis aplikasi mobile?",
+  "options": [
+   "Fastlane",
+   "Gradle wrapper",
+   "CocoaPods",
+   "ProGuard"
+  ],
+  "explanation": "Fastlane."
+ },
+ "mobile_release_quality-5": {
+  "stem": "Sesi bebas crash turun dari 99,5% menjadi 96% setelah sebuah rilis. Tindakan terbaik apa?",
+  "options": [
+   "Menghentikan rollout dan menyelidiki dengan laporan crash",
+   "Menunggu sebulan penuh untuk melihat apakah membaik sendiri",
+   "Meminta pengguna menginstal ulang aplikasi dua kali",
+   "Menaikkan target rating bintang di toko aplikasi"
+  ],
+  "explanation": "Hentikan rollout, selidiki dengan laporan crash, lalu perbaiki atau rollback."
+ },
+ "react_native-1": {
+  "stem": "Apa yang memungkinkan React Native?",
+  "options": [
+   "Membangun aplikasi iOS dan Android dengan React dan JavaScript",
+   "Membangun situs web yang hanya bisa berjalan di dalam browser",
+   "Membangun layanan back-end yang terhubung langsung ke database",
+   "Membangun game desktop lengkap dengan physics engine bawaan"
+  ],
+  "explanation": "Membangun aplikasi mobile native untuk iOS dan Android dengan React dan JavaScript."
+ },
+ "react_native-2": {
+  "stem": "Alat mana yang menyederhanakan memulai dan menjalankan proyek React Native tanpa pengaturan native?",
+  "options": [
+   "Expo",
+   "Webpack",
+   "Storybook",
+   "Cordova"
+  ],
+  "explanation": "Expo."
+ },
+ "react_native-3": {
+  "stem": "Komponen mana yang sebaiknya dipakai untuk menampilkan daftar panjang yang bisa digulir?",
+  "options": [
+   "FlatList",
+   "View dengan banyak anak",
+   "ScrollView dengan semua item dirender",
+   "Text dengan pemisah baris"
+  ],
+  "explanation": "FlatList melakukan virtualisasi pada daftar panjang."
+ },
+ "react_native-4": {
+  "stem": "Library mana yang umum dipakai untuk navigasi layar di React Native?",
+  "options": [
+   "React Navigation",
+   "React Router DOM",
+   "Redux Thunk",
+   "Axios"
+  ],
+  "explanation": "React Navigation."
+ },
+ "react_native-5": {
+  "stem": "Sebuah animasi tersendat karena berjalan di thread JavaScript. Apa yang membantu?",
+  "options": [
+   "Menjalankannya di thread UI dengan Reanimated atau native driver",
+   "Merender ulang seluruh layar aplikasi pada setiap frame animasi",
+   "Menambah lebih banyak variabel state pada komponen yang dianimasikan",
+   "Memperpendek animasi hingga hanya tersisa satu frame saja"
+  ],
+  "explanation": "Pakai native driver atau Reanimated agar animasi berjalan di thread UI."
+ }
+}

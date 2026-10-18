@@ -1,0 +1,30 @@
+# Daily logical backup of the production database (Neon) kept as a workflow artifact for 14 days.
+# Needs the repository secret NEON_DATABASE_URL. Scheduled workflows run from the default branch.
+# Restore: gunzip -c pathsync-YYYYMMDD.sql.gz | psql "$TARGET_URL"   (drill 18 Oct 2026: row counts identical)
+name: Backup Neon
+
+on:
+  schedule:
+    - cron: "30 19 * * *"     # 02:30 WIB
+  workflow_dispatch:
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    container: postgres:18     # pg_dump must be at least the server version (Neon runs 18)
+    steps:
+      - name: Dump
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then echo "NEON_DATABASE_URL not set; skipping"; exit 0; fi
+          f="pathsync-$(date +%Y%m%d).sql.gz"
+          pg_dump --no-owner --no-acl --clean --if-exists "$DATABASE_URL" | gzip > "$f"
+          test "$(stat -c %s "$f")" -gt 100000   # an empty or failed dump is a few hundred bytes
+          echo "FILE=$f" >> "$GITHUB_ENV"
+      - if: env.FILE != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.FILE }}
+          path: ${{ env.FILE }}
+          retention-days: 14

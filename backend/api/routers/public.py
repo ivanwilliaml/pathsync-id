@@ -8,6 +8,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from pathsync.assessment import item_bank
+from pathsync.careers import career_graph
 from pathsync.config import (
     BKT_GUESS,
     BKT_SLIP,
@@ -19,14 +20,26 @@ from pathsync.config import (
     ROLES,
     SIM_AUTO,
     SIM_REVIEW,
+    TREND_MIN_POSTINGS,
+    TREND_WINDOW_MONTHS,
 )
-from pathsync.db import Expert, GraphEdge, MarketSnapshot, Posting, PostingMention, RankerModel, active_snapshot, utcnow
+from pathsync.db import (
+    NON_EXPERT_KINDS,
+    Expert,
+    GraphEdge,
+    MarketSnapshot,
+    Posting,
+    PostingMention,
+    RankerModel,
+    active_snapshot,
+    utcnow,
+)
 from pathsync.embeddings import WARM
 from pathsync.engine import graph_from_db
 from pathsync.extraction.llm import llm_configured
-from pathsync.roles import FAMILIES
+from pathsync.i18n import family_names, role_blurb, t, tr
 from pathsync.security import db_session, rate_limit
-from pathsync.taxonomy import cluster_names, load_skills, load_taxonomy
+from pathsync.taxonomy import cluster_names, display_rationale, display_skills, load_taxonomy
 
 LIMITED_DATA_POSTINGS = 30   # below this many postings a role is shown as "limited data" (beta)
 router = APIRouter(prefix="/api", tags=["public"], dependencies=[Depends(rate_limit("public", 240))])
@@ -71,27 +84,31 @@ def model_card(s: Session) -> dict:
     mpath = MODELS_DIR / "metrics.json"     # plan D2: the single source of reported numbers (python -m pipeline.report)
     metrics = json.loads(mpath.read_text(encoding="utf-8")) if mpath.exists() else {}
     return {
-        "decision_model": {"type": "linear learning-to-rank (eq. 4), not an LLM",
+        "decision_model": {"type": (tr("formula (5): G x D x T x U x R, the special case of eq. 4; not an LLM", "formula (5): G x D x T x U x R, kasus khusus pers. 4; bukan LLM")
+                                    if not ranker or ranker.source == "formula5" else tr("linear learning-to-rank (eq. 4), not an LLM", "learning-to-rank linear (pers. 4), bukan LLM")),
                            "name": ranker.name if ranker else "Formula (5)", "weights": ranker.weights if ranker else None,
-                           "why": "few training rankings and every weight must be inspectable and explainable"},
+                           "why": tr("every weight must be inspectable and explainable; a trained model replaces the formula only "
+                              "when real experts' rankings show it is better (models trained on simulated experts never do)",
+                              "setiap bobot harus bisa diperiksa dan dijelaskan; model terlatih baru menggantikan rumus bila "
+                              "urutan pakar sungguhan menunjukkan ia lebih baik (model yang dilatih dari pakar simulasi tidak pernah)")},
         "extraction_llm": {"runtime": LLM_MODEL if llm_configured() else None,
                            "runtime_provider": "Anthropic Claude API (structured output, taxonomy-constrained)",
                            "offline_run": offline or "Qwen3-8B (Apache-2.0), Kaggle T4 x2",
                            "active_for_market_map": "llm" if llm_configured() else "lexicon",
                            "gates": f"quote must exist verbatim in the posting; embedding normalisation {SIM_AUTO} / {SIM_REVIEW}"},
-        "embedding_model": {"name": EMBEDDING_MODEL, "use": "map free-text skill phrases and course names to the taxonomy"},
+        "embedding_model": {"name": EMBEDDING_MODEL, "use": tr("map free-text skill phrases and course names to the taxonomy", "memetakan frasa skill dan nama mata kuliah bebas ke taksonomi")},
         "knowledge_tracing": {"type": "Bayesian knowledge tracing (eq. 3)", "slip": BKT_SLIP, "guess": BKT_GUESS, "learn": BKT_TRANSIT,
                               "calibrated": False},
         "llm_is_never_used_for": ["choosing priorities", "estimating mastery", "ordering the path"],
         # what is validated today, so the UI can say "Beta" honestly (PM audit AI-6, AI-7)
-        "validation": {"real_experts": s.scalar(select(func.count(Expert.id)).where(Expert.kind != "simulasi")) or 0,
+        "validation": {"real_experts": s.scalar(select(func.count(Expert.id)).where(Expert.kind.not_in(NON_EXPERT_KINDS))) or 0,
                        "ranker_trained_on": "simulated experts" if ranker and "simulated" in (ranker.name or "").lower() else "expert rankings",
                        "extractor_blind_eval": ({**blind, "n_postings": ev["blind"]["n_postings"], "annotators": 1} if blind else None),
                        "metrics_file": metrics.get("generated_at"),
                        "extractor_target_met_at_lower_ci": ((metrics.get("extraction") or {}).get("target_met") or {}).get("lower_ci_bound"),
                        "status": "beta"},
-        "planned": ["LLM-based reading of postings (Claude API) once the gold annotation set is complete",
-                    "Ranker re-trained on a real expert panel"],
+        "planned": [tr("LLM-based reading of postings (Claude API) once the gold annotation set is complete", "pembacaan lowongan berbasis LLM (Claude API) setelah set label manusia lengkap"),
+                    tr("Ranker re-trained on a real expert panel", "Ranker dilatih ulang dengan panel pakar sungguhan")],
     }
 
 
@@ -107,15 +124,15 @@ def bps_context():
 def meta(s: Session = Depends(db_session)):
     tax = load_taxonomy()
     snaps = {r: (snap.version if (snap := active_snapshot(s, r)) else None) for r in ROLES}
-    skills = load_skills()
+    skills = display_skills()
     ranker = s.scalars(select(RankerModel).where(RankerModel.active.is_(True))).first()
     role_info = []
     for k, v in ROLES.items():
         snap = active_snapshot(s, k)
         n = snap.data.get("n_postings", 0) if snap else 0
-        role_info.append({"id": k, "name": v["name"], "family": v.get("family", ""), "blurb": v.get("blurb", ""),
+        role_info.append({"id": k, "name": v["name"], "family": v.get("family", ""), "blurb": role_blurb(k, v.get("blurb", "")),
                           "n_postings": n, "limited_data": n < LIMITED_DATA_POSTINGS})
-    return {"roles": role_info, "families": FAMILIES, "clusters": cluster_names(),
+    return {"roles": role_info, "families": family_names(), "clusters": cluster_names(),
             "taxonomy_version": tax["version"],
             "skills": [{"id": sk.id, "name": sk.name, "name_en": sk.name_en, "cluster": sk.cluster, "kind": sk.kind,
                         "description": sk.description, "learn_what": sk.learn_what} for sk in skills.values()],
@@ -139,11 +156,11 @@ def catalog():
 @router.get("/market/{role}")
 def market(role: str, s: Session = Depends(db_session)):
     if role not in ROLES:
-        raise HTTPException(404, "Unknown role.")
+        raise HTTPException(404, tr("Unknown role.", "Role tidak dikenal."))
     snap = active_snapshot(s, role)
     if not snap:
-        raise HTTPException(404, "No market snapshot yet. Run a market update first.")
-    skills = load_skills()
+        raise HTTPException(404, tr("No market snapshot yet. Run a market update first.", "Belum ada snapshot pasar. Jalankan update pasar dulu."))
+    skills = display_skills()
     data = snap.data
     rows = [{**v, "name": skills[k].name, "cluster": skills[k].cluster, "required": snap.required.get(k)}
             for k, v in data["skills"].items() if v["count"] or k in snap.required]
@@ -152,6 +169,10 @@ def market(role: str, s: Session = Depends(db_session)):
     return {"role": role, "role_name": ROLES[role]["name"], "version": snap.version, "simulated": snap.simulated,
             "note": snap.note, "reference_date": data["reference_date"], "n_postings": data["n_postings"],
             "n_recent": data["n_recent"], "n_previous": data["n_previous"], "trend_status": data["trend_status"],
+            # why the trend is missing, in the request's language (shown instead of a flat 0; plan AI-09)
+            "trend_reason": "" if data["trend_status"] == "ok" else t("market.trend_missing", recent=data["n_recent"],
+                                                                         previous=data["n_previous"], w=TREND_WINDOW_MONTHS,
+                                                                         need=TREND_MIN_POSTINGS),
             "sources": snap.sources, "skills": rows,
             "snapshots": [{"id": h.id, "version": h.version, "created_at": h.created_at.isoformat(), "active": h.active,
                            "simulated": h.simulated, "note": h.note} for h in hist]}
@@ -159,9 +180,9 @@ def market(role: str, s: Session = Depends(db_session)):
 
 @router.get("/market/{role}/skill/{skill_id}")
 def market_skill(role: str, skill_id: str, s: Session = Depends(db_session)):
-    skills = load_skills()
+    skills = display_skills()
     if role not in ROLES or skill_id not in skills:
-        raise HTTPException(404, "Unknown role or skill.")
+        raise HTTPException(404, tr("Unknown role or skill.", "Role atau skill tidak dikenal."))
     rows = s.execute(select(PostingMention, Posting).join(Posting, Posting.id == PostingMention.posting_id)
                      .where(Posting.role == role, Posting.duplicate_of.is_(None), Posting.in_window.is_(True),
                             PostingMention.skill_id == skill_id, PostingMention.status == "auto")
@@ -200,7 +221,7 @@ def postings(role: str | None = None, q: str | None = None, limit: int = 100, s:
 def posting(pid: str, s: Session = Depends(db_session)):
     p = s.get(Posting, pid)
     if not p:
-        raise HTTPException(404, "Posting not found.")
+        raise HTTPException(404, tr("Posting not found.", "Posting tidak ditemukan."))
     return {"id": p.id, "title": p.title, "company": p.company, "url": p.url, "source": p.source, "description": p.description,
             "published_at": p.published_at.isoformat() if p.published_at else None, "extractor": p.extractor,
             "mentions": [{"skill_id": m.skill_id, "surface": m.surface, "quote": m.quote, "level": m.level,
@@ -209,7 +230,7 @@ def posting(pid: str, s: Session = Depends(db_session)):
 
 def graph_payload(s: Session, role: str, rec: dict | None = None) -> dict:
     g = graph_from_db(s)
-    skills = load_skills()
+    skills = display_skills()
     depth = g.depth()
     snap = active_snapshot(s, role)
     D = {k: v["demand"] for k, v in snap.data["skills"].items()} if snap else {}
@@ -224,8 +245,8 @@ def graph_payload(s: Session, role: str, rec: dict | None = None) -> dict:
         nodes.append({"id": k, "name": sk.name, "cluster": sk.cluster, "depth": depth[k], "demand": D.get(k, 0.0),
                       "p": c.get("p"), "required": c.get("required"), "rank": rank.get(k, {}).get("rank"),
                       "in_path": k in path, "path_index": path.get(k), "bottleneck": bool(expl.get("bottleneck"))})
-    edges = [{"id": e.id, "from": e.src, "to": e.dst, "source": e.source, "rationale": e.rationale, "status": e.status,
-              "active": (e.src, e.dst) in active} for e in s.scalars(select(GraphEdge)).all()]
+    edges = [{"id": e.id, "from": e.src, "to": e.dst, "source": e.source, "rationale": display_rationale(e.src, e.dst, e.rationale),
+              "status": e.status, "active": (e.src, e.dst) in active} for e in s.scalars(select(GraphEdge)).all()]
     return {"nodes": nodes, "edges": edges, "clusters": cluster_names()}
 
 
@@ -234,12 +255,18 @@ def graph(role: str = "business_analyst", s: Session = Depends(db_session)):
     return graph_payload(s, role)
 
 
+@router.get("/careers/graph")
+def careers_graph(s: Session = Depends(db_session)):
+    """Roles linked by the skills their postings share (Career Map). Market data only, same for everyone."""
+    return career_graph(s)
+
+
 @router.get("/taxonomy/report")
 def taxonomy_report(role: str = "business_analyst", s: Session = Depends(db_session)):
     """Is the skill list final? Measured exit criteria, core vs adjacent skills, frozen hash, changelog."""
     from pathsync.governance import report
     if role not in ROLES:
-        raise HTTPException(404, "Unknown role.")
+        raise HTTPException(404, tr("Unknown role.", "Role tidak dikenal."))
     return report(s, role)
 
 

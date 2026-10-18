@@ -5,22 +5,24 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * PathSync design system (docs/audit/UI_AUDIT.md)
- *   Ink #1B1740 · Indigo #4338CA · Iris #7C6CF6 · Ember #F2711C · Mint #0E9F8A · Paper #F6F6FB
- * The "route" gradient (indigo → iris → ember) is the one signature element: it is reserved for the
+ * PathSync design system (docs/audit/UI_AUDIT.md), theme "Langit pagi" (morning sky, chosen 16 Oct 2026 to sit with the green chameleon mascot)
+ *   Ink #0F2442 · Primary blue #1D6FD8 · Leaf green #4AA548 · Sun yellow #F5C542 · Success #2BA66A · Paper #F0F6FF
+ * Token names are historical (indigo = primary, iris = middle accent, ember = warm accent).
+ * The "route" gradient (blue → green → yellow) is the one signature element: it is reserved for the
  * learning path, the readiness ring, assessment progress and hero panels. Everything else stays quiet.
+ * Yellow is too light for text or icons on white; use text-ember-ink for those.
  */
 :root {
-  --ink: #1b1740;
-  --indigo: #4338ca;
-  --iris: #7c6cf6;
-  --ember: #f2711c;
-  --ember-ink: #9a3412;
-  --mint: #0e9f8a;
-  --mint-ink: #0b6e60;
-  --paper: #f6f6fb;
-  --route: linear-gradient(90deg, #4338ca 0%, #7c6cf6 55%, #f2711c 100%);
-  --route-soft: linear-gradient(135deg, #eef0ff 0%, #f3efff 55%, #fff1e8 100%);
+  --ink: #0f2442;
+  --indigo: #1d6fd8;
+  --iris: #4aa548;
+  --ember: #f5c542;
+  --ember-ink: #8a5b00;
+  --mint: #2ba66a;
+  --mint-ink: #1c7a4b;
+  --paper: #f0f6ff;
+  --route: linear-gradient(90deg, #1d6fd8 0%, #4aa548 55%, #f5c542 100%);
+  --route-soft: linear-gradient(135deg, #e8f1fe 0%, #edf7ec 55%, #fff8e1 100%);
 
   --background: var(--paper);
   --foreground: var(--ink);
@@ -30,28 +32,28 @@
   --popover-foreground: var(--ink);
   --primary: var(--indigo);
   --primary-foreground: #ffffff;
-  --secondary: #eceaff;
-  --secondary-foreground: #2e2a8a;
-  --muted: #efeff6;
-  --muted-foreground: #5a5878;
-  --accent: #eceaff;
-  --accent-foreground: #2e2a8a;
+  --secondary: #e6f0fc;
+  --secondary-foreground: #134e9c;
+  --muted: #edf2f8;
+  --muted-foreground: #4a5b75;
+  --accent: #e6f0fc;
+  --accent-foreground: #134e9c;
   --destructive: #c81e1e;
-  --border: #e2e1ee;
-  --input: #d8d6e8;
-  --ring: #4338ca;
-  --chart-1: #4338ca;
-  --chart-2: #7c6cf6;
-  --chart-3: #f2711c;
-  --chart-4: #0e9f8a;
-  --chart-5: #a9a6c4;
+  --border: #dce5f0;
+  --input: #cfdae8;
+  --ring: #1d6fd8;
+  --chart-1: #1d6fd8;
+  --chart-2: #4aa548;
+  --chart-3: #f5c542;
+  --chart-4: #2ba66a;
+  --chart-5: #a7b4c8;
   --radius: 0.75rem;
   --sidebar: #ffffff;
   --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--indigo);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eceaff;
-  --sidebar-accent-foreground: #2e2a8a;
+  --sidebar-accent: #e6f0fc;
+  --sidebar-accent-foreground: #134e9c;
   --sidebar-border: var(--border);
   --sidebar-ring: var(--ring);
   color-scheme: light;
@@ -142,7 +144,7 @@
   background-image: var(--route);
 }
 @utility bg-route-v {
-  background-image: linear-gradient(180deg, #4338ca 0%, #7c6cf6 55%, #f2711c 100%);
+  background-image: linear-gradient(180deg, var(--indigo) 0%, var(--iris) 55%, var(--ember) 100%);
 }
 @utility bg-route-soft {
   background-image: var(--route-soft);
@@ -160,4 +162,124 @@
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Mascot loader (components/mascot-loader.tsx): 30-frame run cycle with chameleon-like colour bands */
+.sync-run {
+  position: relative;
+  display: inline-block;
+  width: var(--sync-w);
+  height: var(--sync-h);
+  isolation: isolate;
+}
+.sync-run-layer {
+  position: absolute;
+  inset: 0;
+}
+.sync-run-base {
+  background: url(/mascot/sync-run-green.webp) no-repeat 0 0 / calc(var(--sync-w) * 30) var(--sync-h);
+  animation: sync-run-steps 1.4s steps(30) infinite;
+}
+.sync-run-color {
+  display: none;
+}
+@supports ((mask-image: url("")) or (-webkit-mask-image: url(""))) {
+  .sync-run-base {
+    background-image: url(/mascot/sync-run-shade.webp);
+  }
+  .sync-run-color {
+    display: block;
+    mix-blend-mode: multiply;
+    /* a large diagonal sweep of colours, plus soft patches, drifting back and forth (no tiling, so no seams) */
+    background:
+      radial-gradient(circle at 30% 35%, rgb(94 176 240 / 0.55), transparent 22%),
+      radial-gradient(circle at 70% 65%, rgb(245 197 66 / 0.5), transparent 20%),
+      linear-gradient(
+        125deg,
+        #4aa548 0%,
+        #3fb57a 12%,
+        #14a39a 24%,
+        #1d6fd8 36%,
+        #5eb0f0 46%,
+        #6cc24a 58%,
+        #a8d43c 68%,
+        #f5c542 80%,
+        #9bd34a 90%,
+        #4aa548 100%
+      );
+    background-size: 260% 260%, 300% 300%, 450% 450%;
+    background-repeat: no-repeat;
+    -webkit-mask: url(/mascot/sync-run-mask.webp) no-repeat 0 0 / calc(var(--sync-w) * 30) var(--sync-h);
+    mask: url(/mascot/sync-run-mask.webp) no-repeat 0 0 / calc(var(--sync-w) * 30) var(--sync-h);
+    animation:
+      sync-run-mask-steps 1.4s steps(30) infinite,
+      sync-run-colour 9s ease-in-out infinite alternate;
+  }
+}
+@keyframes sync-run-steps {
+  to { background-position: calc(var(--sync-w) * -30) 0; }
+}
+@keyframes sync-run-mask-steps {
+  to { -webkit-mask-position: calc(var(--sync-w) * -30) 0; mask-position: calc(var(--sync-w) * -30) 0; }
+}
+@keyframes sync-run-colour {
+  0% { background-position: 0% 0%, 100% 20%, 0% 0%; }
+  50% { background-position: 80% 70%, 10% 90%, 55% 45%; }
+  100% { background-position: 20% 100%, 90% 0%, 100% 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sync-run-base { animation: none; background-image: url(/mascot/sync-run-green.webp); }
+  .sync-run-color { display: none; }
+}
+
+/* Large headings: tighter tracking and leading as size grows (docs/audit/APPLE_DESIGN_AUDIT.md) */
+@layer base {
+  h1 { letter-spacing: -0.02em; }
+  h2 { letter-spacing: -0.01em; }
+}
+
+/* Users who ask for less transparency get solid surfaces instead of blurred, see-through ones */
+@media (prefers-reduced-transparency: reduce) {
+  .backdrop-blur, .backdrop-blur-xs, .backdrop-blur-sm, [class*="supports-backdrop-filter:backdrop-blur"] {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+  .bg-background\/90 { background-color: var(--background) !important; }
+  [data-slot="dialog-overlay"], [data-slot="alert-dialog-overlay"], [data-slot="sheet-overlay"] { background-color: rgb(15 36 66 / 0.55) !important; }
+}
+
+/* Users who ask for more contrast get darker secondary text and visible borders */
+@media (prefers-contrast: more) {
+  :root {
+    --muted-foreground: #2c3a50;
+    --border: #9fb0c6;
+    --input: #8a9cb4;
+  }
+  .text-ink\/60, .text-ink\/70, .text-ink\/75, .text-ink\/80 { color: var(--ink) !important; }
+}
+
+/* "Sync" in the wordmark: the chameleon's colour blend (components/logo.tsx) */
+.sync-word {
+  background-image: linear-gradient(100deg, #2e9e5b 0%, #14a39a 45%, #1d6fd8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.sync-word-light {
+  background-image: linear-gradient(100deg, #8fdc6e 0%, #5ed6c4 45%, #7fc0ff 100%);
+}
+@media (prefers-contrast: more), (forced-colors: active) {
+  .sync-word { background-image: none; color: inherit; }
+}
+
+/* Career Map: a role whose readiness changed since the last visit pulses three times (transform + opacity only) */
+.career-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: career-pulse 1.6s ease-out 3;
+  opacity: 0;
+}
+@keyframes career-pulse {
+  0% { transform: scale(0.9); opacity: 0.85; }
+  100% { transform: scale(1.45); opacity: 0; }
 }

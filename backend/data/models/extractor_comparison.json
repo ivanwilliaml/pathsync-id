@@ -1,135 +1,135 @@
 {
- "n_postings": 88,
- "mean_jaccard": 0.3375,
- "spearman_skill_frequency": 0.6064,
+ "n_postings": 473,
+ "mean_jaccard": 0.319,
+ "spearman_skill_frequency": 0.6819,
  "mentions_per_posting": {
-  "lexicon": 10.99,
-  "llm": 5.0
+  "lexicon": 5.51,
+  "llm": 2.74
  },
  "top_only_lexicon": [
   [
-   "Pelaporan & Dashboard BI",
-   45
+   "SQL and database querying",
+   63
   ],
   [
-   "Komunikasi Lisan & Interpersonal",
-   43
+   "Python programming",
+   49
   ],
   [
-   "Kolaborasi Tim",
-   41
+   "Accounting fundamentals (PSAK)",
+   42
   ],
   [
-   "Manajemen Pemangku Kepentingan",
-   39
+   "Excel and spreadsheets",
+   40
   ],
   [
-   "Berpikir Kritis & Pemecahan Masalah",
+   "Financial statements & reporting",
+   35
+  ],
+  [
+   "APIs and system integration",
    34
   ],
   [
-   "Pengujian Sistem & UAT",
-   21
+   "System design & microservices",
+   33
   ],
   [
-   "Dokumentasi Kebutuhan (BRD/FSD/User Story)",
-   18
+   "Audit & internal control",
+   32
   ],
   [
-   "Sistem ERP & CRM",
-   18
+   "Reporting and BI dashboards",
+   30
   ],
   [
-   "Analisis Strategis Bisnis",
-   18
-  ],
-  [
-   "Analisis & Perbaikan Proses",
-   18
+   "ERP and CRM systems",
+   29
   ]
  ],
  "top_only_llm": [
   [
-   "Persiapan & Kualitas Data",
-   13
+   "Requirements elicitation",
+   26
   ],
   [
-   "Visualisasi Data",
+   "Requirements documentation",
+   26
+  ],
+  [
+   "Data preparation and quality",
+   21
+  ],
+  [
+   "System testing and UAT",
+   19
+  ],
+  [
+   "Financial analysis",
+   18
+  ],
+  [
+   "APIs and system integration",
+   17
+  ],
+  [
+   "Systems development life cycle",
+   15
+  ],
+  [
+   "Data analysis",
+   14
+  ],
+  [
+   "Data visualization",
    12
   ],
   [
-   "Penulisan Bisnis",
-   5
-  ],
-  [
-   "Analisis Data",
-   5
-  ],
-  [
-   "Agile & Scrum",
-   4
-  ],
-  [
-   "Manajemen Proyek",
-   4
-  ],
-  [
-   "Business Case & Analisis Biaya-Manfaat",
-   4
-  ],
-  [
-   "Dokumentasi Kebutuhan (BRD/FSD/User Story)",
-   4
-  ],
-  [
-   "Elisitasi Kebutuhan",
-   4
-  ],
-  [
-   "Pemodelan Sistem (UML/Use Case)",
-   4
+   "Social media advertising",
+   12
   ]
  ],
  "top_agreed": [
   [
-   "Analisis Data",
+   "Excel and spreadsheets",
+   57
+  ],
+  [
+   "SQL and database querying",
+   37
+  ],
+  [
+   "Data analysis",
    35
   ],
   [
-   "Elisitasi Kebutuhan",
-   34
+   "Indonesian tax compliance",
+   29
   ],
   [
-   "Pemodelan Proses Bisnis (BPMN/Flowchart)",
-   32
+   "Git & version control",
+   28
   ],
   [
-   "Dokumentasi Kebutuhan (BRD/FSD/User Story)",
+   "REST API design & development",
    26
   ],
   [
-   "SQL & Kueri Basis Data",
-   20
+   "CI/CD pipelines",
+   24
   ],
   [
-   "Berpikir Kritis & Pemecahan Masalah",
-   20
-  ],
-  [
-   "Microsoft Excel & Spreadsheet",
+   "Requirements elicitation",
    18
   ],
   [
-   "Siklus Pengembangan Sistem (SDLC)",
-   16
+   "Systems development life cycle",
+   18
   ],
   [
-   "Persiapan & Kualitas Data",
-   15
-  ],
-  [
-   "Manajemen Pemangku Kepentingan",
-   12
+   "APIs and system integration",
+   17
   ]
  ]
 }

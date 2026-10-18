@@ -1,0 +1,914 @@
+{
+ "note": "Plausible distractors for the business-role items (x_bisnis). Replaces off-domain or absurd options with neighbouring concepts or common misconceptions of similar length, in both languages. Applied by pipeline.item_authoring.apply_distractors. 'key_en'/'key_id' replace the key where the original was factually wrong. Keys much longer than their distractors (a length cue) were shortened without changing their meaning, and distractors much shorter than the key were lengthened. A final pass lengthened one distractor where the key was still the longest option.",
+ "items": {
+  "pph_corporate_withholding-4": {
+   "key_en": "The 15th of the following month",
+   "key_id": "Tanggal 15 bulan berikutnya",
+   "en": [
+    "The 10th of the following month",
+    "The 20th of the following month",
+    "The last day of the following month"
+   ],
+   "id": [
+    "Tanggal 10 bulan berikutnya",
+    "Tanggal 20 bulan berikutnya",
+    "Akhir bulan berikutnya"
+   ],
+   "why": "PMK 81/2024 (in force from 1 Jan 2025) moved the payment deadline for withheld PPh to the 15th of the following month."
+  },
+  "enterprise_risk_management-2": {
+   "en": [
+    "Risk identification, insurance purchase and annual audit",
+    "Hazard listing, budgeting and variance analysis",
+    "Risk register, loss reporting and claims handling"
+   ],
+   "id": [
+    "Identifikasi risiko, pembelian asuransi, dan audit internal tahunan",
+    "Daftar bahaya, penganggaran, dan analisis varians",
+    "Register risiko, pelaporan kerugian, dan klaim asuransi"
+   ]
+  },
+  "enterprise_risk_management-4": {
+   "en": [
+    "The largest loss the organisation could absorb before it would fail",
+    "The level of risk left after all controls are applied",
+    "The probability that a given risk event will occur"
+   ],
+   "id": [
+    "Kerugian terbesar yang masih bisa ditanggung organisasi sebelum gagal",
+    "Tingkat risiko yang tersisa setelah semua kontrol diterapkan",
+    "Peluang terjadinya suatu peristiwa risiko tertentu"
+   ],
+   "key_en": "The risk an organisation is willing to take to meet its goals",
+   "key_id": "Risiko yang bersedia diambil organisasi untuk mencapai tujuannya"
+  },
+  "audit_reporting_followup-1": {
+   "en": [
+    "A ranking of the audited units by their performance",
+    "The auditor's complete working papers and test sheets",
+    "Disciplinary actions for the staff responsible"
+   ],
+   "id": [
+    "Peringkat unit yang diaudit berdasarkan kinerjanya",
+    "Kertas kerja dan lembar pengujian auditor secara lengkap",
+    "Sanksi disiplin bagi staf yang bertanggung jawab"
+   ]
+  },
+  "audit_reporting_followup-4": {
+   "en": [
+    "To start a new audit of the same area straight after the report",
+    "To re-test every control across the organisation",
+    "To give management time to dispute the findings"
+   ],
+   "id": [
+    "Untuk segera memulai audit baru di area yang sama",
+    "Untuk menguji ulang semua kontrol di seluruh organisasi",
+    "Untuk memberi manajemen waktu membantah temuan"
+   ]
+  },
+  "hris_systems-1": {
+   "en": [
+    "Customer contacts, sales leads and the stage of each deal",
+    "Purchase orders, suppliers and stock levels",
+    "Ledger accounts, journals and closing entries"
+   ],
+   "id": [
+    "Kontak pelanggan, prospek penjualan, dan tahap transaksi",
+    "Pesanan pembelian, pemasok, dan tingkat stok",
+    "Akun buku besar, jurnal, dan entri penutup"
+   ]
+  },
+  "hris_systems-2": {
+   "en": [
+    "Salaries can be paid without a monthly payroll cut-off",
+    "Overtime no longer needs a supervisor's approval",
+    "Tax withholding is calculated by the bank instead"
+   ],
+   "id": [
+    "Gaji bisa dibayar tanpa batas waktu penggajian bulanan",
+    "Lembur tidak lagi memerlukan persetujuan atasan",
+    "Pemotongan pajak dihitung oleh bank sebagai gantinya"
+   ]
+  },
+  "hris_systems-3": {
+   "en": [
+    "So HR staff can see every field of every employee record",
+    "So managers can log in without checking their password",
+    "So reports load faster for every user in the company"
+   ],
+   "id": [
+    "Agar staf HR bisa melihat semua isian data setiap karyawan",
+    "Agar manajer bisa masuk tanpa pemeriksaan kata sandi",
+    "Agar laporan dimuat lebih cepat untuk semua pengguna"
+   ],
+   "key_en": "So each person sees only the data their role allows",
+   "key_id": "Agar setiap orang hanya melihat data sesuai perannya"
+  },
+  "hris_systems-4": {
+   "en": [
+    "Their leave balance keeps accruing every month",
+    "The headcount report shows one employee fewer than reality",
+    "Their tax withholding stops being calculated"
+   ],
+   "id": [
+    "Saldo cutinya terus bertambah setiap bulan tanpa terpakai",
+    "Laporan jumlah karyawan kurang satu orang",
+    "Pemotongan pajaknya berhenti dihitung"
+   ]
+  },
+  "recruitment_selection-2": {
+   "en": [
+    "Each interviewer chooses whichever questions suit the particular candidate",
+    "The candidate leads the conversation in their own way",
+    "Questions are kept hidden from the other interviewers"
+   ],
+   "id": [
+    "Setiap pewawancara bebas memilih pertanyaan yang paling cocok untuk masing-masing kandidat",
+    "Kandidat memimpin percakapan dengan caranya sendiri",
+    "Pertanyaan dirahasiakan dari pewawancara lain"
+   ]
+  },
+  "recruitment_selection-3": {
+   "en": [
+    "To decide the final hire before any interview takes place",
+    "To rank candidates by the salary they expect to be paid",
+    "To check references with each candidate's former employers and lecturers"
+   ],
+   "id": [
+    "Untuk memutuskan kandidat yang diterima sebelum wawancara",
+    "Untuk mengurutkan kandidat menurut gaji yang mereka harapkan",
+    "Untuk memeriksa referensi dari atasan lama dan dosen setiap kandidat"
+   ]
+  },
+  "recruitment_selection-4": {
+   "en": [
+    "Running employee onboarding and monthly payroll",
+    "Publishing job ads on the company's social media",
+    "Storing yearly performance appraisal results"
+   ],
+   "id": [
+    "Menjalankan orientasi karyawan baru dan penggajian bulanan",
+    "Memasang iklan lowongan di media sosial perusahaan",
+    "Menyimpan hasil penilaian kinerja tahunan"
+   ],
+   "key_en": "Tracking applicants through every hiring stage",
+   "key_id": "Melacak pelamar di setiap tahap rekrutmen"
+  },
+  "recruitment_selection-5": {
+   "en": [
+    "They let interviewers skip the scoring rubric for experienced candidates",
+    "They set the final salary band for each candidate",
+    "They replace the need for reference checks later on"
+   ],
+   "id": [
+    "Membuat pewawancara bisa melewati rubrik penilaian untuk kandidat berpengalaman",
+    "Menentukan rentang gaji akhir untuk setiap kandidat",
+    "Menggantikan kebutuhan pemeriksaan referensi nantinya"
+   ]
+  },
+  "performance_management-1": {
+   "en": [
+    "The supervisor's personal impression",
+    "Length of service only",
+    "The number of hours spent in the office each week"
+   ],
+   "id": [
+    "Kesan pribadi atasan",
+    "Masa kerja saja",
+    "Jumlah jam yang dihabiskan di kantor setiap minggu"
+   ],
+   "key_en": "The core functions and skills of their job"
+  },
+  "performance_management-2": {
+   "en": [
+    "A ranking of employees by their output in a period",
+    "A review of an employee's past appraisal results",
+    "A survey of what employees expect from their job"
+   ],
+   "id": [
+    "Peringkat karyawan berdasarkan hasil kerja dalam satu periode",
+    "Tinjauan atas hasil penilaian kinerja karyawan sebelumnya",
+    "Survei tentang harapan karyawan terhadap pekerjaannya"
+   ],
+   "key_en": "Identifying the duties and requirements of a job",
+   "key_id": "Mengidentifikasi tugas dan persyaratan suatu jabatan"
+  },
+  "performance_management-4": {
+   "en": [
+    "The list of KPIs each employee must hit this year",
+    "A description of the reporting lines in a department",
+    "The steps of the yearly performance appraisal process"
+   ],
+   "id": [
+    "Daftar KPI yang wajib dicapai oleh setiap karyawan sepanjang tahun ini",
+    "Uraian garis pelaporan di dalam suatu departemen",
+    "Langkah-langkah proses penilaian kinerja tahunan"
+   ],
+   "key_en": "The knowledge, skills and behaviours a role needs",
+   "key_id": "Pengetahuan, keterampilan, dan perilaku yang dibutuhkan suatu peran"
+  },
+  "performance_management-5": {
+   "en": [
+    "To let each manager raise the scores of their own team",
+    "To place every employee on a fixed forced-ranking curve",
+    "To replace employees' self-assessments with ratings made by managers only"
+   ],
+   "id": [
+    "Agar setiap manajer bisa menaikkan nilai timnya sendiri",
+    "Untuk menempatkan setiap karyawan pada kurva peringkat paksa",
+    "Untuk mengganti penilaian diri dengan penilaian manajer saja"
+   ]
+  },
+  "learning_development-4": {
+   "en": [
+    "To choose the trainer and the training venue",
+    "To measure participants' satisfaction afterwards",
+    "To calculate the return on the training spend"
+   ],
+   "id": [
+    "Untuk memilih pelatih, tempat, dan jadwal pelatihan yang sesuai",
+    "Untuk mengukur kepuasan peserta setelah pelatihan",
+    "Untuk menghitung imbal hasil biaya pelatihan"
+   ]
+  },
+  "inventory_management-2": {
+   "en": [
+    "Stock built up ahead of a seasonal promotion",
+    "The minimum order quantity set by the supplier",
+    "Stock reserved for orders customers already paid for"
+   ],
+   "id": [
+    "Stok yang sengaja ditimbun menjelang promosi musiman atau hari raya besar",
+    "Jumlah pesanan minimum yang ditetapkan pemasok",
+    "Stok yang disisihkan untuk pesanan yang sudah dibayar"
+   ]
+  },
+  "procurement_sourcing-5": {
+   "en": [
+    "Pick the supplier offering the longest payment terms",
+    "Pick the lowest price among bids that meet the specification",
+    "Pick the supplier that the end users say they prefer"
+   ],
+   "id": [
+    "Pilih pemasok yang menawarkan tempo pembayaran terpanjang",
+    "Pilih harga terendah di antara penawaran yang memenuhi spesifikasi",
+    "Pilih pemasok yang paling disukai oleh pengguna akhir"
+   ],
+   "key_en": "Score weighted criteria: price, quality, delivery and risk",
+   "key_id": "Menilai kriteria berbobot: harga, kualitas, pengiriman, risiko"
+  },
+  "vendor_supplier_management-1": {
+   "en": [
+    "A checklist for registering a new supplier",
+    "A ranking of suppliers by the total value bought from each",
+    "The supplier's own assessment of its capacity"
+   ],
+   "id": [
+    "Daftar periksa untuk mendaftarkan pemasok baru",
+    "Peringkat pemasok berdasarkan total nilai pembelian dari masing-masing",
+    "Penilaian pemasok sendiri atas kapasitasnya"
+   ],
+   "key_en": "A rating of a supplier's quality, delivery and price",
+   "key_id": "Penilaian kinerja pemasok atas kualitas, pengiriman, harga"
+  },
+  "vendor_supplier_management-2": {
+   "en": [
+    "A promise from the supplier to give its lowest price",
+    "A clause that lets either party end the contract early with notice",
+    "The supplier's internal quality policy statement"
+   ],
+   "id": [
+    "Janji pemasok untuk memberi harga terendahnya",
+    "Klausul yang memungkinkan salah satu pihak mengakhiri kontrak lebih awal",
+    "Pernyataan kebijakan mutu internal pemasok"
+   ]
+  },
+  "vendor_supplier_management-3": {
+   "en": [
+    "To list every supplier the company has ever paid",
+    "To rank suppliers from the lowest price upwards",
+    "To list suppliers that are still waiting for their evaluation results"
+   ],
+   "id": [
+    "Untuk mendaftar semua pemasok yang pernah menerima pembayaran dari perusahaan",
+    "Untuk mengurutkan pemasok dari harga terendah",
+    "Untuk mendaftar pemasok yang masih menunggu evaluasi"
+   ]
+  },
+  "vendor_supplier_management-4": {
+   "en": [
+    "Buyers become too familiar with the supplier's staff",
+    "The company has to sign longer contracts than usual",
+    "Supplier invoices become harder to match to orders"
+   ],
+   "id": [
+    "Staf pembelian menjadi terlalu akrab dengan staf pemasok",
+    "Perusahaan harus menandatangani kontrak lebih panjang dari biasanya",
+    "Faktur pemasok menjadi lebih sulit dicocokkan dengan pesanan"
+   ]
+  },
+  "warehouse_logistics-1": {
+   "en": [
+    "Planning delivery routes and schedules for the company's truck fleet",
+    "Forecasting customer demand for the next quarter",
+    "Recording supplier invoices so they can be paid"
+   ],
+   "id": [
+    "Merencanakan rute dan jadwal pengiriman untuk seluruh armada truk perusahaan",
+    "Meramalkan permintaan pelanggan untuk kuartal berikutnya",
+    "Mencatat faktur pemasok agar bisa dibayar"
+   ],
+   "key_en": "Managing receiving, storage and picking in a warehouse",
+   "key_id": "Mengelola penerimaan, penyimpanan, dan pengambilan barang di gudang"
+  },
+  "production_planning_mrp-1": {
+   "en": [
+    "The sales forecast, price list and supplier catalogue",
+    "The bill of materials, machine capacity and labour cost",
+    "Purchase orders, supplier invoices and payment terms"
+   ],
+   "id": [
+    "Ramalan penjualan, daftar harga, dan katalog pemasok",
+    "Bill of materials, kapasitas mesin, dan biaya tenaga kerja",
+    "Pesanan pembelian, faktur pemasok, dan termin pembayaran"
+   ],
+   "key_en": "The MPS, bill of materials and inventory status",
+   "key_id": "MPS, bill of materials, dan status persediaan"
+  },
+  "production_planning_mrp-2": {
+   "en": [
+    "The sequence of machine operations needed for a product",
+    "The list of finished products currently held in stock",
+    "The purchase plan for raw materials over the next month"
+   ],
+   "id": [
+    "Urutan operasi mesin yang dibutuhkan untuk satu produk",
+    "Daftar produk jadi yang saat ini tersedia di gudang",
+    "Rencana pembelian bahan baku untuk bulan depan"
+   ],
+   "key_en": "The materials and quantities needed for one product",
+   "key_id": "Bahan dan jumlah yang dibutuhkan untuk satu produk"
+  },
+  "production_planning_mrp-4": {
+   "en": [
+    "Which raw materials to buy and when",
+    "How much machine capacity each shift has available",
+    "The sales target for each region"
+   ],
+   "id": [
+    "Bahan baku apa yang dibeli dan kapan",
+    "Berapa kapasitas mesin yang tersedia pada setiap shift",
+    "Target penjualan untuk setiap wilayah"
+   ],
+   "key_en": "Which products are made, how many and when",
+   "key_id": "Produk apa yang dibuat, berapa, dan kapan"
+  },
+  "project_planning_wbs-1": {
+   "en": [
+    "A sequence of project activities with their dates",
+    "A chart of who reports to whom in the project",
+    "A list of project risks together with their owners and actions"
+   ],
+   "id": [
+    "Urutan seluruh aktivitas proyek beserta tanggal mulai dan tanggal selesainya",
+    "Bagan siapa melapor kepada siapa dalam proyek",
+    "Daftar risiko proyek beserta pemiliknya"
+   ],
+   "key_en": "Splitting project deliverables into manageable parts",
+   "key_id": "Pemecahan hasil kerja proyek menjadi bagian yang mudah dikelola"
+  },
+  "project_planning_wbs-3": {
+   "en": [
+    "Each work package must be assigned to a single person",
+    "The WBS must be signed off by the sponsor before any estimating starts",
+    "Each level must break the work into equal parts"
+   ],
+   "id": [
+    "Setiap work package harus diberikan kepada satu orang",
+    "WBS harus disetujui oleh sponsor proyek sebelum estimasi biaya dan waktu dimulai",
+    "Setiap tingkat harus membagi pekerjaan menjadi bagian sama besar"
+   ]
+  },
+  "project_planning_wbs-5": {
+   "en": [
+    "A list of activities in order, each with its duration and start date",
+    "A record of the decisions made in project meetings",
+    "A way to track the project's actual spending"
+   ],
+   "id": [
+    "Daftar aktivitas berurutan, masing-masing dengan durasi dan tanggal mulainya",
+    "Catatan keputusan yang diambil dalam rapat proyek",
+    "Cara memantau pengeluaran aktual proyek"
+   ]
+  },
+  "project_scheduling-1": {
+   "en": [
+    "Dependencies between activities as a network of nodes",
+    "The breakdown of deliverables into work packages",
+    "Planned versus actual project cost over time"
+   ],
+   "id": [
+    "Ketergantungan antaraktivitas sebagai jaringan simpul",
+    "Pemecahan deliverable menjadi work package",
+    "Biaya proyek yang direncanakan dibanding aktual dari waktu ke waktu"
+   ]
+  },
+  "project_risk_change-2": {
+   "en": [
+    "Recording issues that have already happened",
+    "Reporting weekly progress to the project sponsor",
+    "Logging the hours worked by each team member"
+   ],
+   "id": [
+    "Mencatat masalah yang sudah terjadi",
+    "Melaporkan kemajuan mingguan proyek kepada sponsor dan klien",
+    "Mencatat jam kerja setiap anggota tim"
+   ]
+  },
+  "project_risk_change-5": {
+   "en": [
+    "Do it quietly to please the client",
+    "Refuse it because the scope has already been signed off",
+    "Start the work and tell them afterwards"
+   ],
+   "id": [
+    "Kerjakan diam-diam untuk menyenangkan klien",
+    "Tolak karena ruang lingkup proyek sudah ditandatangani bersama",
+    "Mulai kerjakan lalu beri tahu setelahnya"
+   ],
+   "key_en": "Raise a change request and get approval before working",
+   "key_id": "Ajukan change request dan minta persetujuan sebelum mengerjakan"
+  },
+  "product_roadmap_prioritization-1": {
+   "en": [
+    "To list every planned feature with its exact release date",
+    "To record the tasks planned for each sprint",
+    "To track the bugs that users have reported"
+   ],
+   "id": [
+    "Untuk mendaftar setiap fitur dengan tanggal rilis pastinya",
+    "Untuk mencatat tugas yang direncanakan di setiap sprint",
+    "Untuk memantau bug yang dilaporkan pengguna"
+   ],
+   "key_en": "To show product direction and priorities over time",
+   "key_id": "Menunjukkan arah dan prioritas produk dari waktu ke waktu"
+  },
+  "product_roadmap_prioritization-5": {
+   "en": [
+    "Themes are easier to estimate in hours than single features",
+    "The team can commit to more features in each quarter",
+    "Stakeholders no longer need to review it each quarter"
+   ],
+   "id": [
+    "Tema lebih mudah diestimasi dalam jam daripada fitur tunggal",
+    "Tim bisa berkomitmen pada lebih banyak fitur setiap kuartal",
+    "Pemangku kepentingan tidak perlu lagi meninjaunya tiap kuartal"
+   ],
+   "key_en": "The direction stays clear while features adapt to new priorities",
+   "key_id": "Arah tetap jelas sementara fitur menyesuaikan prioritas baru"
+  },
+  "project_tools_workspace-4": {
+   "en": [
+    "Deciding who does the task",
+    "Storing attachments for the task",
+    "Sorting cards by priority automatically"
+   ],
+   "id": [
+    "Menentukan siapa yang mengerjakan tugas",
+    "Menyimpan lampiran untuk tugas",
+    "Mengurutkan kartu menurut prioritas secara otomatis"
+   ],
+   "key_en": "Marking when the task must be done",
+   "key_id": "Menandai kapan tugas harus selesai"
+  },
+  "release_delivery_management-1": {
+   "en": [
+    "Fixing defects that users report in production",
+    "Managing changes to the agreed project scope",
+    "Approving test results before the system goes live"
+   ],
+   "id": [
+    "Memperbaiki cacat yang dilaporkan pengguna di produksi",
+    "Mengelola perubahan atas ruang lingkup proyek yang disepakati",
+    "Menyetujui hasil pengujian sebelum sistem live"
+   ],
+   "key_en": "Planning and controlling how changes reach users",
+   "key_id": "Merencanakan dan mengendalikan perubahan sampai ke pengguna"
+  },
+  "release_delivery_management-2": {
+   "en": [
+    "The test cases that were run for the release",
+    "The plan for returning to the old version if needed",
+    "The list of users who will receive access"
+   ],
+   "id": [
+    "Kasus uji yang dijalankan untuk rilis tersebut",
+    "Rencana untuk kembali ke versi lama bila rilis bermasalah",
+    "Daftar pengguna yang akan mendapat akses"
+   ]
+  },
+  "release_delivery_management-3": {
+   "en": [
+    "Developer confirmation that the code compiles",
+    "A marketing announcement sent to all users",
+    "A data backup taken after the system goes live"
+   ],
+   "id": [
+    "Konfirmasi developer bahwa kode berhasil dikompilasi",
+    "Pengumuman pemasaran yang dikirim ke semua pengguna",
+    "Cadangan data yang diambil setelah sistem live"
+   ]
+  },
+  "release_delivery_management-4": {
+   "en": [
+    "Releasing a new feature to a small group of users before everyone",
+    "Moving data from the old system into the new one",
+    "Scheduling the release outside business hours"
+   ],
+   "id": [
+    "Merilis fitur baru ke sekelompok kecil pengguna sebelum semua pengguna",
+    "Memindahkan data dari sistem lama ke sistem baru",
+    "Menjadwalkan rilis di luar jam kerja"
+   ]
+  },
+  "vat_ppn_mechanics-1": {
+   "key_en": "VAT a PKP charges on its taxable sales",
+   "key_id": "PPN yang dipungut PKP atas penjualan kena pajak"
+  },
+  "vat_ppn_mechanics-2": {
+   "key_en": "VAT a PKP pays on its taxable purchases",
+   "key_id": "PPN yang dibayar PKP atas pembelian kena pajak",
+   "en": [
+    "VAT a PKP collects from customers",
+    "Income tax withheld from employee pay each month",
+    "A penalty for filing a return late"
+   ],
+   "id": [
+    "PPN yang dipungut PKP dari pelanggan atas penjualannya",
+    "PPh yang dipotong dari gaji karyawan",
+    "Denda atas keterlambatan lapor SPT"
+   ]
+  },
+  "vat_ppn_mechanics-4": {
+   "en": [
+    "An ordinary receipt issued by the shop",
+    "A delivery note signed by the warehouse",
+    "A bank transfer slip with no other document"
+   ],
+   "id": [
+    "Kuitansi biasa yang dikeluarkan toko",
+    "Surat jalan yang ditandatangani gudang",
+    "Bukti transfer bank tanpa dokumen lain"
+   ]
+  },
+  "tax_dispute_audit-1": {
+   "en": [
+    "The Tax Court in Jakarta",
+    "The head of the regional tax office",
+    "The Minister of Finance"
+   ],
+   "id": [
+    "Pengadilan Pajak di Jakarta",
+    "Kepala Kantor Wilayah DJP",
+    "Menteri Keuangan"
+   ]
+  },
+  "audit_reporting_followup-2": {
+   "en": [
+    "What the auditor actually found in the field",
+    "The effect the deviation has on the organisation",
+    "The fix the auditor suggests to management"
+   ],
+   "id": [
+    "Apa yang sebenarnya ditemukan auditor di lapangan",
+    "Akibat penyimpangan terhadap organisasi",
+    "Perbaikan yang disarankan auditor kepada manajemen"
+   ]
+  },
+  "audit_reporting_followup-5": {
+   "key_en": "Record management's view and keep judging by the evidence",
+   "key_id": "Mencatat tanggapan manajemen dan tetap menilai berdasarkan bukti",
+   "en": [
+    "Delete the finding so the report is done sooner",
+    "Change the audit conclusion so that it matches management's view",
+    "Hold the report until management agrees"
+   ],
+   "id": [
+    "Menghapus temuan agar laporan cepat selesai",
+    "Mengubah kesimpulan audit agar sesuai dengan keinginan manajemen",
+    "Menunda laporan sampai manajemen setuju"
+   ]
+  },
+  "labor_law_id-3": {
+   "key_en": "The probation is void and still counts as service",
+   "key_id": "Masa percobaan batal demi hukum dan tetap dihitung masa kerja",
+   "en": [
+    "It is valid because both parties agreed to it",
+    "It is valid as long as the pay is halved",
+    "The contract automatically turns into a permanent PKWTT contract"
+   ],
+   "id": [
+    "Sah, karena kedua pihak sudah menyepakatinya",
+    "Sah, selama upah pada masa itu setengah",
+    "Kontrak otomatis berubah menjadi PKWTT atau karyawan tetap"
+   ]
+  },
+  "labor_law_id-5": {
+   "key_en": "Severance and a long-service award, as regulated",
+   "key_id": "Pesangon dan uang penghargaan masa kerja sesuai ketentuan",
+   "en": [
+    "The last month's wage, without any severance",
+    "The compensation money used for fixed-term contracts",
+    "No entitlement beyond the final month's salary"
+   ],
+   "id": [
+    "Upah bulan terakhir, tanpa pesangon apa pun",
+    "Uang kompensasi seperti yang berlaku pada kontrak PKWT",
+    "Tidak ada hak di luar gaji bulan terakhir"
+   ]
+  },
+  "recruitment_selection-1": {
+   "en": [
+    "Offer, interview and assessment, sourcing, verification, screening",
+    "Verification, offer, sourcing, screening, interview and assessment",
+    "Interview and assessment, offer, screening, sourcing, verification"
+   ],
+   "id": [
+    "Penawaran, wawancara dan asesmen, sourcing, verifikasi, penyaringan",
+    "Verifikasi, penawaran, sourcing, penyaringan, wawancara dan asesmen",
+    "Wawancara dan asesmen, penawaran, penyaringan, sourcing, verifikasi"
+   ]
+  },
+  "performance_management-3": {
+   "en": [
+    "Ratings from the direct supervisor alone",
+    "Ratings from customers and suppliers",
+    "Ratings from a written test and a structured interview"
+   ],
+   "id": [
+    "Penilaian dari atasan langsung saja",
+    "Penilaian dari pelanggan dan pemasok",
+    "Penilaian dari tes tertulis dan wawancara terstruktur akhir"
+   ],
+   "key_en": "Ratings from supervisor, peers, reports and oneself"
+  },
+  "inventory_management-1": {
+   "key_en": "Are high in value, few in type and tightly controlled",
+   "key_id": "Bernilai tinggi, jenisnya sedikit, dan dikontrol ketat",
+   "en": [
+    "Are low in value and make up most of the item types",
+    "Have been stored in the warehouse for the longest time",
+    "Are returned by customers most often"
+   ],
+   "id": [
+    "Bernilai rendah dan mencakup sebagian besar jenis barang",
+    "Paling lama tersimpan di dalam gudang",
+    "Paling sering dikembalikan oleh pelanggan"
+   ]
+  },
+  "procurement_sourcing-2": {
+   "en": [
+    "When the solution needed is not yet known and suppliers must propose one",
+    "After the goods have been received and checked",
+    "When a supplier contract is about to be terminated"
+   ],
+   "id": [
+    "Saat solusi yang dibutuhkan belum diketahui sehingga pemasok perlu mengusulkannya",
+    "Setelah barang diterima dan diperiksa",
+    "Saat kontrak pemasok akan segera diakhiri"
+   ]
+  },
+  "procurement_sourcing-4": {
+   "en": [
+    "Quotation, signed contract and the bank transfer slip",
+    "Supplier invoice, tax report and delivery note",
+    "Approved budget, purchase order and sales report"
+   ],
+   "id": [
+    "Penawaran, kontrak bertanda tangan, dan bukti transfer bank",
+    "Faktur pemasok, laporan pajak, dan surat jalan",
+    "Anggaran disetujui, purchase order, dan laporan penjualan"
+   ]
+  },
+  "vendor_supplier_management-5": {
+   "key_en": "Find the causes with the supplier and agree an improvement plan",
+   "key_id": "Menelusuri penyebab bersama pemasok dan menyepakati rencana perbaikan",
+   "en": [
+    "Terminate the contract at once without any discussion with them",
+    "Lower the target to 82% so the supplier passes",
+    "Ignore it because the result is still above 80%"
+   ],
+   "id": [
+    "Langsung memutus kontrak saat itu juga tanpa diskusi apa pun dengan pemasok",
+    "Menurunkan target menjadi 82% agar pemasok lulus",
+    "Mengabaikannya karena hasilnya masih di atas 80%"
+   ]
+  },
+  "warehouse_logistics-5": {
+   "en": [
+    "Cross-docking at a partner's site",
+    "Just-in-time delivery",
+    "Make-to-order production"
+   ],
+   "id": [
+    "Cross-docking di lokasi mitra",
+    "Pengiriman just-in-time",
+    "Produksi make-to-order"
+   ]
+  },
+  "project_scheduling-2": {
+   "key_en": "The longest activity chain, which sets the minimum duration",
+   "key_id": "Rangkaian kegiatan terpanjang yang menentukan durasi minimum",
+   "en": [
+    "The activities that cost the most money",
+    "The activities that carry the greatest risk of slipping the schedule",
+    "The activities done by the project manager"
+   ],
+   "id": [
+    "Kegiatan yang paling banyak menghabiskan biaya",
+    "Kegiatan yang membawa risiko keterlambatan paling besar bagi jadwal",
+    "Kegiatan yang dikerjakan oleh manajer proyek"
+   ]
+  },
+  "project_tools_workspace-1": {
+   "en": [
+    "Folders hold spreadsheets and spreadsheets hold rows",
+    "A table holds rows and each row holds columns",
+    "A calendar holds weeks and weeks hold events"
+   ],
+   "id": [
+    "Folder berisi spreadsheet, dan spreadsheet berisi baris",
+    "Tabel berisi baris, dan setiap baris berisi kolom",
+    "Kalender berisi minggu, dan minggu berisi acara"
+   ]
+  },
+  "project_tools_workspace-2": {
+   "en": [
+    "A team member who is responsible for the cards in it",
+    "A month of the year when work is due",
+    "A type of budget used by the project"
+   ],
+   "id": [
+    "Anggota tim yang bertanggung jawab atas kartu",
+    "Bulan dalam setahun saat pekerjaan jatuh tempo",
+    "Jenis anggaran yang dipakai proyek"
+   ]
+  },
+  "project_tools_workspace-5": {
+   "en": [
+    "Work is flowing smoothly and evenly through every stage",
+    "Every task on the board is already finished",
+    "The board columns were set up the wrong way"
+   ],
+   "id": [
+    "Pekerjaan mengalir lancar dan merata di setiap tahap",
+    "Semua tugas di papan sudah selesai",
+    "Kolom papan dibuat dengan cara yang salah"
+   ]
+  },
+  "credit_analysis-4": {
+   "en": [
+    "A replacement for analysing the borrower's cash flow and income",
+    "A way to raise the interest the borrower pays",
+    "A guarantee that the borrower will never pay late"
+   ],
+   "id": [
+    "Menggantikan analisis arus kas dan pendapatan peminjam secara penuh",
+    "Menaikkan bunga yang harus dibayar peminjam",
+    "Menjamin peminjam tidak akan pernah terlambat"
+   ]
+  },
+  "vat_ppn_mechanics-5": {
+   "en": [
+    "Tax on raw materials used in production",
+    "Tax on services marketing the company's products",
+    "Tax on warehouse rent for storing the trade goods it sells"
+   ],
+   "id": [
+    "Atas bahan baku yang dipakai berproduksi",
+    "Atas jasa pemasaran produk perusahaan",
+    "Atas sewa gudang yang dipakai untuk menyimpan barang dagangan"
+   ]
+  },
+  "audit_planning_fieldwork-1": {
+   "en": [
+    "Reporting, planning, follow-up, fieldwork",
+    "Follow-up, planning, reporting, fieldwork",
+    "Fieldwork, reporting, planning, follow-up"
+   ],
+   "id": [
+    "Pelaporan, perencanaan, tindak lanjut, pelaksanaan lapangan",
+    "Tindak lanjut, perencanaan, pelaporan, pelaksanaan lapangan",
+    "Pelaksanaan lapangan, pelaporan, perencanaan, tindak lanjut"
+   ]
+  },
+  "audit_planning_fieldwork-4": {
+   "en": [
+    "As much as possible without checking the source",
+    "Only verbal statements of the auditee",
+    "Only documents prepared by the auditee"
+   ],
+   "id": [
+    "Sebanyak mungkin tanpa perlu memeriksa sumber bukti itu",
+    "Hanya berupa pernyataan lisan auditee",
+    "Hanya dokumen yang disiapkan oleh auditee"
+   ]
+  },
+  "audit_planning_fieldwork-5": {
+   "en": [
+    "Those that are easiest to audit",
+    "Those not audited for the longest time, regardless of risk",
+    "Those the auditee asks to be reviewed leniently"
+   ],
+   "id": [
+    "Area yang paling mudah diaudit",
+    "Area yang paling lama tidak diaudit tanpa memandang risiko",
+    "Area yang diminta auditee paling lunak"
+   ]
+  },
+  "enterprise_risk_management-1": {
+   "en": [
+    "The chance of a financial loss in a given year",
+    "The gap between budget and actual",
+    "A threat from outside the company"
+   ],
+   "id": [
+    "Kemungkinan terjadinya kerugian keuangan",
+    "Selisih antara anggaran dan realisasi",
+    "Ancaman dari pihak luar perusahaan"
+   ]
+  },
+  "hris_systems-5": {
+   "en": [
+    "Today's clock-in and clock-out times",
+    "Next week's leave request",
+    "Last month's overtime"
+   ],
+   "id": [
+    "Jam masuk dan jam pulang kerja hari ini",
+    "Pengajuan cuti minggu depan",
+    "Lembur bulan lalu"
+   ]
+  },
+  "payroll_processing-4": {
+   "en": [
+    "Half a month's wage, on the holiday",
+    "Two months' wages, paid in full one month before the holiday",
+    "One month's wage, a week after the holiday"
+   ],
+   "id": [
+    "Setengah bulan upah, pada hari raya",
+    "2 bulan upah, dibayar penuh 1 bulan sebelum hari raya",
+    "1 bulan upah, seminggu setelah hari raya"
+   ]
+  },
+  "warehouse_logistics-2": {
+   "en": [
+    "Delivering goods to customers",
+    "Returning damaged goods from customers to the warehouse",
+    "Writing goods off the books"
+   ],
+   "id": [
+    "Pengiriman barang ke pelanggan",
+    "Pengembalian barang rusak dari pelanggan ke gudang",
+    "Penghapusan barang dari pembukuan"
+   ]
+  },
+  "project_scheduling-5": {
+   "en": [
+    "No effect",
+    "The project slips by 1 day",
+    "The project finishes earlier than planned"
+   ],
+   "id": [
+    "Tidak ada dampak",
+    "Proyek mundur 1 hari",
+    "Proyek selesai lebih cepat dari rencana"
+   ]
+  },
+  "project_risk_change-1": {
+   "en": [
+    "A gradual cut in the budget",
+    "A faster schedule at no extra cost to the client",
+    "A change of team members"
+   ],
+   "id": [
+    "Pengurangan anggaran secara bertahap",
+    "Percepatan jadwal proyek tanpa biaya tambahan bagi klien",
+    "Pergantian anggota tim"
+   ]
+  },
+  "project_risk_change-3": {
+   "en": [
+    "Start working on it right away",
+    "Reject it without reading",
+    "Change the budget and schedule without telling the client"
+   ],
+   "id": [
+    "Langsung mengerjakannya",
+    "Menolaknya tanpa membaca",
+    "Mengubah anggaran dan jadwal proyek tanpa memberi tahu klien"
+   ]
+  }
+ }
+}

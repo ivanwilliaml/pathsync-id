@@ -26,7 +26,7 @@ from collections import Counter
 
 from pathsync.config import MODELS_DIR, PROCESSED_DIR, RAW_DIR, SEED_DIR
 from pathsync.extraction import cache_tag, extract_skills
-from pathsync.gold import CONSENSUS_FILE, load_split, prf, wilson  # noqa: F401  (wilson re-exported for callers)
+from pathsync.gold import CONSENSUS_FILE, load_split_all, prf, wilson  # noqa: F401  (wilson re-exported for callers)
 from pathsync.taxonomy import load_skills
 
 EXTRACTORS = ("lexicon", "llm", "union", "intersection")
@@ -96,13 +96,18 @@ def evaluate(prefer: str = "lexicon", goldfile: str = "gold_pilot.json", split: 
     doc = json.loads((SEED_DIR / goldfile).read_text(encoding="utf-8"))
     gold, cap = doc["postings"], doc.get("max_chars")
     if split:
-        locked = load_split()
+        locked = load_split_all()
         if not locked:
             raise SystemExit("no gold_split.json; run python -m pipeline.gold split")
         keep = set(locked[split])
         gold = {k: v for k, v in gold.items() if k in keep}
     rows = load_postings()
     cluster = {sid: sk.cluster for sid, sk in load_skills().items()}
+    # Skills added to the taxonomy after a gold set was labelled (plan A9, "added_in") cannot be judged by that set: a
+    # correct mention of them would count as a false positive. They are scored only once the gold labels at least one.
+    taxonomy = json.loads((SEED_DIR / "taxonomy.json").read_text(encoding="utf-8"))
+    labelled = {s for g in gold.values() for s in g["skills"]}
+    out_of_scope = {sk["id"] for sk in taxonomy["skills"] if sk.get("added_in")} - labelled
     llm = _LLMCache() if prefer != "lexicon" else None
     tp = fp = fn = 0
     fps, fns = Counter(), Counter()
@@ -115,6 +120,7 @@ def evaluate(prefer: str = "lexicon", goldfile: str = "gold_pilot.json", split: 
         if pred is None:
             skipped.append(key)
             continue
+        pred = pred - out_of_scope
         want = set(g["skills"])
         a, b, c = len(pred & want), len(pred - want), len(want - pred)
         tp, fp, fn = tp + a, fp + b, fn + c
@@ -129,7 +135,7 @@ def evaluate(prefer: str = "lexicon", goldfile: str = "gold_pilot.json", split: 
             cl = per_cluster.setdefault(cluster.get(s, "?"), [0, 0, 0])
             cl[0 if (s in pred and s in want) else 1 if s in pred else 2] += 1
     return {"gold": goldfile, "gold_file": goldfile, "gold_sha": file_hash(SEED_DIR / goldfile), "split": split,
-            "extractor": prefer, "n_postings": len(gold) - len(skipped), "skipped_no_llm_result": skipped,
+            "extractor": prefer, "skills_outside_gold_scope": len(out_of_scope), "n_postings": len(gold) - len(skipped), "skipped_no_llm_result": skipped,
             "overall": {**prf(tp, fp, fn), "f1_ci95": bootstrap_f1(per_posting)},
             "per_role": {k: prf(*v) for k, v in sorted(per_role.items())},
             "per_cluster": {k: prf(*v) for k, v in sorted(per_cluster.items())},
@@ -147,7 +153,8 @@ def main() -> None:
         r = evaluate(a.extractor, a.gold, a.split)
         print(json.dumps(r if a.json else {"n": r["n_postings"], **r["overall"]}, indent=None if not a.json else 1))
         return
-    out = {"dev": evaluate(), "heldout": evaluate(goldfile="gold_heldout.json"), "blind": evaluate(goldfile="gold_blind.json")}
+    out = {"dev": evaluate(), "heldout": evaluate(goldfile="gold_heldout.json"), "blind": evaluate(goldfile="gold_blind.json"),
+           "blind_bisnis": evaluate(goldfile="gold_blind_bisnis.json")}
     if CONSENSUS_FILE.exists():
         for half in ("dev", "test"):
             out[f"consensus_{half}"] = evaluate(goldfile=CONSENSUS_FILE.name, split=half)

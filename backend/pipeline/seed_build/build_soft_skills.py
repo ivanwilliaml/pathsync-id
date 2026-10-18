@@ -27,6 +27,18 @@ TIPS = {
     "english_proficiency": "Read documentation and write commit messages or reports in English; a TOEFL/IELTS score is a strong proof.",
 }
 
+TIPS_ID = {
+    "verbal_communication": "Latih dengan menjelaskan topik teknis kepada teman non-teknis, atau presentasi di kelas atau rapat organisasi.",
+    "presentation_storytelling": "Presentasikan hasil proyek dengan satu pesan utama dan tiga slide, lalu minta masukan.",
+    "business_writing": "Tulis README atau laporan satu halaman untuk sebuah proyek, lalu minta orang lain menjelaskan apa yang mereka tangkap.",
+    "collaboration": "Ikut proyek kelompok atau kepanitiaan, pakai papan tugas bersama, dan catat apa yang kamu selesaikan.",
+    "critical_thinking": "Tulis satu masalah yang pernah kamu selesaikan: pilihan yang kamu bandingkan, alasan memilih, dan apa yang kamu cek.",
+    "stakeholder_management": "Jalankan proyek kecil dengan peminta nyata (dosen, organisasi, pelanggan) dan catat apa yang mereka minta.",
+    "project_management": "Rencanakan proyek dengan milestone dan penanggung jawab, pantau setiap minggu, lalu tulis retrospektif singkat.",
+    "agile_scrum": "Jalankan sprint dua minggu di proyek tim: perencanaan, cek harian singkat, dan review.",
+    "english_proficiency": "Baca dokumentasi dan tulis pesan commit atau laporan dalam bahasa Inggris; skor TOEFL/IELTS adalah bukti yang kuat.",
+}
+
 
 def main() -> None:
     old = json.loads((SEED_DIR / "_src" / "taxonomy_v2_backup.json").read_text(encoding="utf-8"))
@@ -36,7 +48,7 @@ def main() -> None:
         s = by[sid]
         aliases = [a for a in dict.fromkeys(s["aliases"] + EXTRA.get(sid, [])) if a not in DROP_ALIASES]
         out.append({"id": sid, "name": s["name"], "name_en": s.get("name_en", s["name"]), "aliases": aliases,
-                    "how_to_build": TIPS[sid]})
+                    "how_to_build": TIPS[sid], "how_to_build_id": TIPS_ID[sid]})
     (SEED_DIR / "soft_skills.json").write_text(json.dumps({"version": "2026.10-soft1", "skills": out}, ensure_ascii=False, indent=1) + "\n",
                                                encoding="utf-8")
     print(len(out), "soft skills")

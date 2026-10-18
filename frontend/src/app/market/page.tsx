@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ExternalLink, Quote } from "lucide-react";
 import { SOURCE, fmtDate, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
@@ -11,6 +11,8 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ErrorNote, Loading, Panel, Tag } from "@/components/kit";
+import { Mascot } from "@/components/mascot";
+import { useT } from "@/lib/i18n";
 
 interface MarketRow {
   skill_id: string;
@@ -55,6 +57,12 @@ interface Bps {
 
 export default function MarketPage() {
   const [role, setRole] = useState("business_analyst");
+  const t = useT();
+  // ?role=<id> opens a specific career (links from the Career Map)
+  useEffect(() => {
+    const r = new URLSearchParams(window.location.search).get("role");
+    if (r) setRole(r);
+  }, []);
   const [all, setAll] = useState(false);
   const [skill, setSkill] = useState<string | null>(null);
   const meta = useApi<Meta>("/meta");
@@ -69,17 +77,21 @@ export default function MarketPage() {
   const max = Math.max(0.01, ...rows.map((r) => r.share));
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-12">
       <section className="relative overflow-hidden rounded-3xl">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/images/market.webp" alt="" width={1600} height={1067} className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/85 to-ink/30" aria-hidden="true" />
+        <Mascot name="job-board" size={190} priority className="absolute right-6 bottom-0 hidden md:block" />
         <div className="relative p-7 sm:p-10">
           <h1 className="text-[30px] font-extrabold text-white sm:text-[36px]">Job Market</h1>
           <p className="mt-2 max-w-lg text-white/80">
-            What Indonesian employers ask for, read from {m.data ? `${m.data.n_postings} real postings` : "real postings"} on Karirhub and company career sites.
+            {t(
+              `What Indonesian employers ask for, read from ${m.data ? `${m.data.n_postings} real postings` : "real postings"} on Karirhub and company career sites.`,
+              `Apa yang diminta employer Indonesia, dibaca dari ${m.data ? `${m.data.n_postings} job posting nyata` : "job posting nyata"} di Karirhub dan situs karier perusahaan.`,
+            )}
           </p>
-          <label htmlFor="market-role" className="mt-6 block text-xs font-medium text-white/70">Career</label>
+          <label htmlFor="market-role" className="mt-6 block text-xs font-medium text-white/70">{t("Career", "Karier")}</label>
           <select
             id="market-role"
             value={role}
@@ -106,7 +118,7 @@ export default function MarketPage() {
       {bps.data ? (
         <Panel>
           <h2 className="text-lg font-semibold text-ink">{bps.data.title}</h2>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {bps.data.figures.map((f) => (
               <div key={f.id} className="rounded-xl bg-card p-4">
                 <p className="text-xs font-medium text-ink/60">{f.label}</p>
@@ -124,8 +136,8 @@ export default function MarketPage() {
       ) : null}
 
       {m.data?.simulated ? (
-        <p role="note" className="rounded-xl border border-ember/30 bg-[#fff7f1] px-4 py-3 text-sm text-ember-ink">
-          You&rsquo;re viewing a simulated market ({m.data.note}). An admin can switch back to real data.
+        <p role="note" className="rounded-xl border border-ember/30 bg-[#fff8e1] px-4 py-3 text-sm text-ember-ink">
+          {t(`You\u2019re viewing a simulated market (${m.data.note}). An admin can switch back to real data.`, `Kamu melihat pasar simulasi (${m.data.note}). Admin bisa mengembalikannya ke data nyata.`)}
         </p>
       ) : null}
 
@@ -135,8 +147,8 @@ export default function MarketPage() {
       ) : (
         <Tabs defaultValue="skills">
           <TabsList className="mb-4">
-            <TabsTrigger value="skills">Most Requested Skills</TabsTrigger>
-            <TabsTrigger value="postings">Postings</TabsTrigger>
+            <TabsTrigger value="skills">{t("Most Requested Skills", "Skill Paling Banyak Diminta")}</TabsTrigger>
+            <TabsTrigger value="postings">{t("Postings", "Job Posting")}</TabsTrigger>
           </TabsList>
           <TabsContent value="skills">
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
@@ -162,20 +174,20 @@ export default function MarketPage() {
                 {rows.length > 10 ? (
                   <div className="border-t p-3 text-center">
                     <Button variant="ghost" onClick={() => setAll(!all)}>
-                      {all ? "Show Top 10" : `Show All ${rows.length} Skills`}
+                      {all ? t("Show Top 10", "Tampilkan 10 Teratas") : t(`Show All ${rows.length} Skills`, `Tampilkan Semua ${rows.length} Skill`)}
                     </Button>
                   </div>
                 ) : null}
               </Panel>
               <aside className="space-y-4">
                 <Panel>
-                  <h2 className="font-semibold text-ink">How to Read This</h2>
+                  <h2 className="font-semibold text-ink">{t("How to Read This", "Cara Membaca")}</h2>
                   <p className="mt-1.5 text-sm text-ink/70">
-                    The percentage is the share of postings that ask for the skill. Click a skill to read the exact sentences employers wrote.
+                    {t("The percentage is the share of postings that ask for the skill. Click a skill to read the exact sentences employers wrote.", "Persentasenya adalah porsi posting yang meminta skill tersebut. Klik skill untuk membaca kalimat persis yang ditulis employer.")}
                   </p>
                 </Panel>
                 <Panel>
-                  <h2 className="font-semibold text-ink">Sources</h2>
+                  <h2 className="font-semibold text-ink">{t("Sources", "Sumber")}</h2>
                   <ul className="mt-2 space-y-1.5 text-sm">
                     {Object.entries(m.data.sources)
                       .sort((a, b) => b[1] - a[1])
@@ -186,7 +198,7 @@ export default function MarketPage() {
                         </li>
                       ))}
                   </ul>
-                  <p className="mt-3 text-xs text-muted-foreground">Updated {fmtDate(m.data.reference_date)}</p>
+                  <p className="mt-3 text-xs text-muted-foreground">{t("Updated", "Diperbarui")} {fmtDate(m.data.reference_date)}</p>
                 </Panel>
               </aside>
             </div>
@@ -195,7 +207,7 @@ export default function MarketPage() {
             {!posts.data ? (
               <Loading />
             ) : (
-              <ul className="grid gap-3 md:grid-cols-2">
+              <ul className="grid gap-4 md:grid-cols-2">
                 {posts.data.map((p) => (
                   <li key={p.id}>
                     <a
@@ -212,7 +224,7 @@ export default function MarketPage() {
                       <span className="mt-3 flex flex-wrap gap-1.5">
                         <Tag tone="neutral">{SOURCE[p.source] ?? p.source}</Tag>
                         {p.published_at ? <Tag tone="neutral">{fmtDate(p.published_at)}</Tag> : null}
-                        <Tag tone="indigo">{p.skills.length} skills</Tag>
+                        <Tag tone="indigo">{p.skills.length} skill</Tag>
                       </span>
                     </a>
                   </li>
@@ -226,8 +238,8 @@ export default function MarketPage() {
       <Sheet open={skill !== null} onOpenChange={(o) => !o && setSkill(null)}>
         <SheetContent side="right" className="w-full gap-0 p-0 sm:max-w-lg">
           <SheetHeader className="border-b bg-route-soft p-6">
-            <SheetTitle className="text-xl font-bold text-ink">{ev.data ? titleCase(ev.data.name) : "Loading…"}</SheetTitle>
-            <SheetDescription>{ev.data ? `${ev.data.evidence.length} postings ask for this skill. Here is what they wrote.` : " "}</SheetDescription>
+            <SheetTitle className="text-xl font-bold text-ink">{ev.data ? titleCase(ev.data.name) : t("Loading…", "Memuat…")}</SheetTitle>
+            <SheetDescription>{ev.data ? t(`${ev.data.evidence.length} postings ask for this skill. Here is what they wrote.`, `${ev.data.evidence.length} posting meminta skill ini. Ini yang mereka tulis.`) : " "}</SheetDescription>
           </SheetHeader>
           <ScrollArea className="min-h-0 flex-1">
             {!ev.data || ev.loading ? (

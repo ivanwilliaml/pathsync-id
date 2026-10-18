@@ -8,7 +8,9 @@ import { useStudentId } from "@/lib/student";
 import { cn } from "@/lib/utils";
 import { ErrorNote, Loading, MasteryBar, NativeSelect, PageHeader, Panel, Tag } from "@/components/kit";
 import { MySkills } from "@/components/my-skills";
+import { CareerMap } from "@/components/career-map";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useT } from "@/lib/i18n";
 
 interface GNode {
   id: string;
@@ -36,21 +38,37 @@ interface GraphData {
   clusters: Record<string, string>;
 }
 
+const TABS = ["careers", "mine", "connect"] as const;
+
 export default function SkillMapPage() {
   const { id, ready } = useStudentId();
+  // ?tab=careers|mine|connect deep-links a tab (e.g. "Explore careers" on the dashboard)
+  const [tab, setTab] = useState<string>("careers");
+  const t = useT();
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("tab");
+    if (q && (TABS as readonly string[]).includes(q)) setTab(q);
+  }, []);
   if (!ready) return <Loading />;
   if (!id) return <Connections />;
   return (
     <div>
-      <PageHeader
+      <PageHeader mascot="nodes"
         title="Skill Map"
-        description="See which skills are already strong, which are close, and which to fix first, then how the skills connect."
+        description={t(
+          "Explore which careers your skills bring you close to, see which skills are strong and which to fix first, then how the skills connect.",
+          "Lihat karier mana yang dekat dengan skill-mu, skill mana yang kuat dan mana yang perlu diperbaiki dulu, lalu bagaimana skill saling terhubung.",
+        )}
       />
-      <Tabs defaultValue="mine">
-        <TabsList className="mb-5">
-          <TabsTrigger value="mine">My Skills</TabsTrigger>
-          <TabsTrigger value="connect">How Skills Connect</TabsTrigger>
+      <Tabs value={tab} onValueChange={(v) => setTab(String(v))}>
+        <TabsList className="mb-6">
+          <TabsTrigger value="careers">Career Map</TabsTrigger>
+          <TabsTrigger value="mine">{t("My Skills", "Skill Saya")}</TabsTrigger>
+          <TabsTrigger value="connect">{t("How Skills Connect", "Hubungan Antar-Skill")}</TabsTrigger>
         </TabsList>
+        <TabsContent value="careers">
+          <CareerMap sid={id} />
+        </TabsContent>
         <TabsContent value="mine">
           <MySkills sid={id} />
         </TabsContent>
@@ -67,6 +85,7 @@ function Connections({ embedded }: { embedded?: boolean }) {
   const g = useApi<GraphData>(ready ? (id ? `/students/${id}/graph` : "/graph") : null);
   const [focus, setFocus] = useState<string | null>(null);
   const [showFull, setShowFull] = useState(false);
+  const t = useT();
 
   const data = g.data;
   const byId = useMemo(() => Object.fromEntries((data?.nodes ?? []).map((n) => [n.id, n])), [data]);
@@ -89,16 +108,16 @@ function Connections({ embedded }: { embedded?: boolean }) {
   return (
     <div>
       {embedded ? null : (
-        <PageHeader
+        <PageHeader mascot="nodes"
           title="Skill Map"
-          description="See what each skill builds on and what it opens up. Pick any skill to explore."
+          description={t("See what each skill builds on and what it opens up. Pick any skill to explore.", "Lihat dasar setiap skill dan apa yang dibukanya. Pilih skill mana saja untuk dijelajahi.")}
         />
       )}
       <div className="grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
         <aside className="space-y-5">
           <div className="space-y-1.5">
             <label htmlFor="pick" className="text-sm font-medium text-ink">
-              Pick Any Skill
+              {t("Pick Any Skill", "Pilih Skill")}
             </label>
             <NativeSelect id="pick" value={focus} onChange={(e) => setFocus(e.target.value)}>
               {CLUSTER_ORDER.filter((c) => data.clusters[c]).map((c) => (
@@ -116,8 +135,8 @@ function Connections({ embedded }: { embedded?: boolean }) {
             </NativeSelect>
           </div>
           {route.length ? (
-            <nav aria-label="Your route">
-              <p className="mb-2 text-sm font-medium text-ink">Your Route</p>
+            <nav aria-label={t("Your route", "Rutemu")}>
+              <p className="mb-2 text-sm font-medium text-ink">{t("Your Route", "Rutemu")}</p>
               <ol className="space-y-1">
                 {route.map((n, i) => (
                   <li key={n.id}>
@@ -142,7 +161,7 @@ function Connections({ embedded }: { embedded?: boolean }) {
 
         <div className="min-w-0 space-y-6">
           <div className="grid items-start gap-4 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.15fr)_auto_minmax(0,1fr)]">
-            <Column title="Builds On" empty="Nothing. This is a starting skill.">
+            <Column title={t("Builds On", "Dibangun Di Atas")} empty={t("Nothing. This is a starting skill.", "Tidak ada. Ini skill awal.")}>
               {builds.map((e) => (
                 <MiniCard key={e.id} n={byId[e.from]} note={e.rationale} onClick={() => setFocus(e.from)} personal={personal} />
               ))}
@@ -152,24 +171,24 @@ function Connections({ embedded }: { embedded?: boolean }) {
               <div className="rounded-[14px] bg-card p-5">
                 <div className="flex flex-wrap gap-1.5">
                   <Tag tone="neutral">{data.clusters[node.cluster]}</Tag>
-                  {node.rank ? <Tag tone="indigo">Priority #{node.rank}</Tag> : null}
+                  {node.rank ? <Tag tone="indigo">{t("Priority", "Prioritas")} #{node.rank}</Tag> : null}
                   {node.bottleneck ? <Tag tone="ember">Bottleneck</Tag> : null}
                 </div>
                 <h2 className="mt-3 text-xl font-bold leading-snug text-ink">{titleCase(node.name)}</h2>
-                <p className="mt-1 text-sm text-ink/70">Asked for in {pct(node.demand)} of job postings.</p>
+                <p className="mt-1 text-sm text-ink/70">{t(`Asked for in ${pct(node.demand)} of job postings.`, `Diminta di ${pct(node.demand)} job posting.`)}</p>
                 {node.p != null ? (
                   <div className="mt-4">
                     <MasteryBar value={node.p} target={node.required} />
                     <p className="mt-2 flex justify-between text-xs text-ink/70">
-                      <span>You: {num(node.p)}</span>
-                      <span>Role needs: {num(node.required)}</span>
+                      <span>{t("You", "Kamu")}: {num(node.p)}</span>
+                      <span>{t("Role needs", "Dibutuhkan role")}: {num(node.required)}</span>
                     </p>
                   </div>
                 ) : null}
               </div>
             </div>
             <Connector />
-            <Column title="Unlocks" empty="Nothing further. This is an end skill.">
+            <Column title={t("Unlocks", "Membuka")} empty={t("Nothing further. This is an end skill.", "Tidak ada lagi. Ini skill akhir.")}>
               {unlocks.map((e) => (
                 <MiniCard key={e.id} n={byId[e.to]} onClick={() => setFocus(e.to)} personal={personal} />
               ))}
@@ -183,7 +202,7 @@ function Connections({ embedded }: { embedded?: boolean }) {
               aria-expanded={showFull}
               className="flex w-full items-center justify-between p-5 text-left font-semibold text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
             >
-              {showFull ? "Hide the Full Map" : `Show the Full Map (${data.nodes.length} Skills)`}
+              {showFull ? t("Hide the Full Map", "Sembunyikan Peta Lengkap") : t(`Show the Full Map (${data.nodes.length} Skills)`, `Tampilkan Peta Lengkap (${data.nodes.length} Skill)`)}
               <ArrowDown className={cn("size-4 transition-transform", showFull && "rotate-180")} aria-hidden="true" />
             </button>
             {showFull ? <FullMap data={data} focus={focus} onFocus={setFocus} /> : null}
@@ -213,6 +232,7 @@ function Connector() {
 }
 
 function MiniCard({ n, note, onClick, personal }: { n: GNode; note?: string; onClick: () => void; personal: boolean }) {
+  const t = useT();
   if (!n) return null;
   return (
     <li>
@@ -223,7 +243,7 @@ function MiniCard({ n, note, onClick, personal }: { n: GNode; note?: string; onC
       >
         <span className="flex items-start justify-between gap-2">
           <span className="text-sm font-semibold leading-snug text-ink">{titleCase(n.name)}</span>
-          {n.in_path ? <span className="mt-1 size-2 shrink-0 rounded-full bg-ember" title="On your route" aria-label="On your route" /> : null}
+          {n.in_path ? <span className="mt-1 size-2 shrink-0 rounded-full bg-ember" title={t("On your route", "Di rutemu")} aria-label={t("On your route", "Di rutemu")} /> : null}
         </span>
         {personal && n.p != null ? <MasteryBar value={n.p} target={n.required} tone="indigo" className="mt-2.5 h-1.5" /> : null}
         {note ? <span className="mt-2 block text-xs leading-relaxed text-ink/60">{note}</span> : null}
@@ -241,14 +261,15 @@ function FullMap({ data, focus, onFocus }: { data: GraphData; focus: string; onF
       .sort(([a], [b]) => Number(a) - Number(b))
       .map(([, v]) => v.sort((a, b) => CLUSTER_ORDER.indexOf(a.cluster) - CLUSTER_ORDER.indexOf(b.cluster) || a.name.localeCompare(b.name)));
   }, [data]);
+  const t = useT();
   const related = new Set([focus, ...data.edges.filter((e) => e.from === focus).map((e) => e.to), ...data.edges.filter((e) => e.to === focus).map((e) => e.from)]);
   return (
     <div className="overflow-x-auto border-t p-5">
-      <p className="mb-4 text-sm text-ink/70">Columns go from starting skills (left) to skills that need the most groundwork (right). Click a skill to focus it.</p>
+      <p className="mb-4 text-sm text-ink/70">{t("Columns go from starting skills (left) to skills that need the most groundwork (right). Click a skill to focus it.", "Kolom berjalan dari skill awal (kiri) ke skill yang butuh dasar paling banyak (kanan). Klik skill untuk memfokuskannya.")}</p>
       <div className="flex min-w-[860px] gap-4">
         {cols.map((col, i) => (
           <ul key={i} className="flex-1 space-y-1.5">
-            <li className="pb-1 text-xs font-medium text-ink/60">{i === 0 ? "Starting Skills" : `Level ${i + 1}`}</li>
+            <li className="pb-1 text-xs font-medium text-ink/60">{i === 0 ? t("Starting Skills", "Skill Awal") : `Level ${i + 1}`}</li>
             {col.map((n) => (
               <li key={n.id}>
                 <button

@@ -53,6 +53,32 @@ NEGATIVE_CONTEXT = {
     "reports": re.compile(r"\breports? to\b", re.I),
     "client": re.compile(r"\b(?:our|serving|serve)\s+(?:\w+\s+)?clients?\b", re.I),
     "english": re.compile(r"\benglish (?:name|version)\b", re.I),
+    # Indonesian "keras" (hard): pekerja keras, perangkat keras, kerja keras
+    "keras": re.compile(r"\b(?:pekerja|kerja|bekerja|perangkat|berusaha|belajar)\s+keras\b|\bkeras\s+(?:dan|&)", re.I),
+    # "regression testing" is QA, not statistics
+    "regression": re.compile(r"\bregression\s+test|\b(?:smoke|functional|integration|uat)\b", re.I),
+    "regresi": re.compile(r"\b(?:uji|pengujian|testing)\s+regresi\b|\bregresi\s+test", re.I),
+    # dev-half error analysis (18 Oct 2026): words that name a tool or skill only in some contexts
+    "combine": re.compile(r"^(?!.*\b(?:swift|swiftui|ios|rxswift|reactive)\b)", re.I | re.S),   # Apple's Combine vs the verb
+    "gtm": re.compile(r"\bgtm\s+(?:team|strateg\w*|motion|plan)|go-to-market", re.I),          # go-to-market, not Tag Manager
+    "apache": re.compile(r"\bapache\s+(?:flink|kafka|spark|airflow|beam|hadoop|hive|nifi|iceberg|superset|pulsar)", re.I),
+    "programming language": re.compile(r"\b(?:go|golang|java|kotlin|swift|rust|php|ruby|scala|dart|javascript|typescript)"
+                                       r"\s+programming language", re.I),
+    "segmentation": re.compile(r"^(?!.*\b(?:e-?mail|campaign|kampanye|crm|newsletter|marketing automation)\b)", re.I | re.S),
+    "capacity planning": re.compile(r"story points|team capacity|sprint capacity", re.I),
+    "anggaran": re.compile(r"\b(?:jadwal|waktu|ruang lingkup)\b[^.;]{0,30}\banggaran\b", re.I),
+    "cli": re.compile(r"\b(?:github|gh|aws|azure|gcloud|firebase|vercel|heroku|git|stripe)\s+cli\b", re.I),
+    "routing": re.compile(r"\brout(?:e|ing)\s+(?:config\w*|using|with)\b|\breact router\b|lazy-load", re.I),
+    "design pattern": re.compile(r"\b(?:cms|ui|ux|page|web|mobile)\s+design\s+patterns?", re.I),
+    "scope of work": re.compile(r"^\W*scope of work\W*$", re.I),
+    "github": re.compile(r"\bgithub\s+copilot\b", re.I),
+    "experimentation": re.compile(r"\binnovation and experimentation\b", re.I),
+    "design system": re.compile(r"\bdesign system architecture\b", re.I),
+    "accessibility": re.compile(r"\baccessibility of (?:data|information)|flow and accessibility\b", re.I),
+    "accounting": re.compile(r"\b(?:divisi|departemen|department|division|tim|team)\s+(?:accounting|akuntansi)\b", re.I),
+    # building software "aligned with business requirements" is not eliciting them
+    "business requirements": re.compile(r"\b(?:align\w*|meet\w*|accordance|in line|according|sesuai|support\w*|based on)\b"
+                                        r"[^.;]{0,40}\bbusiness requirements\b", re.I),
 }
 PATTERN_CUE = re.compile(
     r"(?:experience (?:in|with|using)|knowledge (?:of|in)|familiar(?:ity)? with|proficien(?:t|cy) (?:in|with)|understanding of|"
@@ -63,14 +89,16 @@ PATTERN_CUE = re.compile(
 )
 _ITEM_SPLIT = re.compile(r",|/|\band\b|\bdan\b|\batau\b|\bor\b|\(|\)|\betc\b|\bdll\b|\bdsb\b", re.I)
 _STOP_ITEM = re.compile(r"^(?:the|a|an|of|in|with|yang|untuk|dengan|di|ke|dari|serta|terkait|related|other|lainnya|"
-                        r"various|berbagai|similar|sejenis|tools?|tool|software|aplikasi|sistem|system|good|strong)$"
+                        r"various|berbagai|similar|sejenis|tools?|tool|software|aplikasi|sistem|system|good|strong|"
+                        r"solutions?|platforms?|roles?|field|enhancement|import|distribution|relationships?)$"
+                        r"|\bsuch as\b|\brelated (?:field|roles?)\b|\bsimilar (?:platforms?|tools?)\b|\bthe it field\b"
                         r"|^(?:tools?|software|aplikasi)\b|nilai tambah|\bplus\b|preferred|diutamakan|advantage|"
                         r"\b(?:tahun|years?|bulan|months?)\b|\d", re.I)
 
 
 # A degree field ("Bachelor in Statistics") is not a skill requirement.
 DEGREE = re.compile(r"\b(?:bachelor|master|degree|diploma|s1|s2|d3|d4|sarjana|jurusan|gelar|graduate|lulusan|related field|pendidikan)\b", re.I)
-FIELD_ALIASES = {"statistics", "statistik", "accounting", "akuntansi", "marketing", "mathematics", "matematika", "computer science"}
+FIELD_ALIASES = {"statistics", "statistik", "statistika", "accounting", "akuntansi", "marketing", "mathematics", "matematika", "computer science"}
 # "integrating ... APIs" / "API integration" is an api_integration mention even when the alias list has no exact form
 API_INTEGRATION = re.compile(r"\bintegrat\w*\b[^.;\n]{0,70}\bAPIs?\b|\bAPIs?\b[^.;\n]{0,20}\bintegrat\w*|\bintegrasi\b[^.;\n]{0,30}\bapi\b", re.I)
 
@@ -85,7 +113,8 @@ class LexiconExtractor:
                 # first owner wins; aliases are unique in the frozen taxonomy
                 self.alias_owner.setdefault(a.lower(), sid)
         ordered = sorted(self.alias_owner, key=len, reverse=True)
-        self.alias_re = re.compile(r"(?<![\w])(" + "|".join(re.escape(a) for a in ordered) + r")(?![\w])", re.I)
+        # not right after a dot either: "js" in "Express.js" / "Node.js" is part of a framework name, not JavaScript
+        self.alias_re = re.compile(r"(?<![\w.])(" + "|".join(re.escape(a) for a in ordered) + r")(?![\w])", re.I)
 
     @staticmethod
     def _level(segment: str, pos: int) -> str:

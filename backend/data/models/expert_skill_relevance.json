@@ -1,0 +1,814 @@
+{
+ "experts": {
+  "7e81a2abfc59": {
+   "name": "Ivan (tinjauan internal tim)",
+   "kind": "tim",
+   "affiliation": "Tim PathSync",
+   "role": "business_analyst",
+   "imported_at": "2026-10-17T22:31:37",
+   "skills": {
+    "requirements_elicitation": {
+     "level": "Wajib",
+     "comment": "Inti pekerjaan BA."
+    },
+    "requirements_documentation": {
+     "level": "Wajib",
+     "comment": "Keluaran utama BA; lulusan baru harus bisa menulis BRD atau user story dasar."
+    },
+    "business_process_modeling": {
+     "level": "Wajib",
+     "comment": "Flowchart dan BPMN dasar dituntut hampir di setiap lowongan BA."
+    },
+    "testing_uat": {
+     "level": "Penting",
+     "comment": "UAT sering menjadi tugas awal BA muda."
+    },
+    "sdlc": {
+     "level": "Penting",
+     "comment": "Perlu paham tahapan siklus dan perbedaan agile dengan waterfall."
+    },
+    "sql": {
+     "level": "Penting",
+     "comment": "SQL dasar membedakan kandidat, meski belum selalu diwajibkan."
+    },
+    "api_integration": {
+     "level": "Pelengkap",
+     "comment": "Cukup paham konsep; kedalaman teknis datang dengan pengalaman."
+    },
+    "erp_crm": {
+     "level": "Pelengkap",
+     "comment": "Bergantung industri; biasanya dipelajari di tempat kerja."
+    },
+    "excel": {
+     "level": "Wajib",
+     "comment": "Dipakai setiap hari untuk olah data dan laporan."
+    },
+    "system_modeling_uml": {
+     "level": "Penting",
+     "comment": "Use case dan activity diagram dasar lazim diminta."
+    },
+    "data_modeling": {
+     "level": "Pelengkap",
+     "comment": "ERD dasar cukup; pemodelan lanjut untuk peran data."
+    },
+    "diagramming_tools": {
+     "level": "Pelengkap",
+     "comment": "Alatnya mudah diganti; yang dinilai adalah notasinya."
+    },
+    "data_analysis": {
+     "level": "Penting",
+     "comment": "Kemampuan menarik kesimpulan dari data makin dituntut."
+    },
+    "jira_confluence": {
+     "level": "Penting",
+     "comment": "Alat kerja standar tim agile."
+    },
+    "rest_api_design": {
+     "level": "Pelengkap",
+     "comment": "BA cukup membaca spesifikasi API, tidak merancangnya."
+    },
+    "kpi_metrics": {
+     "level": "Penting",
+     "comment": "Dasar untuk menyusun kebutuhan yang terukur."
+    },
+    "data_cleaning": {
+     "level": "Pelengkap",
+     "comment": "Lebih relevan untuk BA yang condong ke data."
+    },
+    "dashboard_reporting": {
+     "level": "Pelengkap",
+     "comment": "Cukup untuk BA yang condong ke data atau BI."
+    },
+    "wireframing": {
+     "level": "Penting",
+     "comment": "Wireframe sederhana sering dibuat BA untuk memvalidasi kebutuhan."
+    },
+    "power_bi": {
+     "level": "Pelengkap",
+     "comment": "Nilai tambah, bukan syarat untuk lulusan baru."
+    }
+   },
+   "precision_top_skills": 0.6
+  },
+  "3e6e9bd58dd3": {
+   "name": "Ivan (tinjauan internal tim)",
+   "kind": "tim",
+   "affiliation": "Tim PathSync",
+   "role": "business_analyst",
+   "imported_at": "2026-10-18T18:43:14",
+   "skills": {
+    "requirements_elicitation": {
+     "level": "Wajib",
+     "comment": "Inti pekerjaan BA."
+    },
+    "requirements_documentation": {
+     "level": "Wajib",
+     "comment": "Keluaran utama BA; lulusan baru harus bisa menulis BRD atau user story dasar."
+    },
+    "business_process_modeling": {
+     "level": "Wajib",
+     "comment": "Flowchart dan BPMN dasar dituntut hampir di setiap lowongan BA."
+    },
+    "testing_uat": {
+     "level": "Penting",
+     "comment": "UAT sering menjadi tugas awal BA muda."
+    },
+    "sdlc": {
+     "level": "Penting",
+     "comment": "Perlu paham tahapan siklus dan perbedaan agile dengan waterfall."
+    },
+    "sql": {
+     "level": "Penting",
+     "comment": "SQL dasar membedakan kandidat, meski belum selalu diwajibkan."
+    },
+    "api_integration": {
+     "level": "Pelengkap",
+     "comment": "Cukup paham konsep; kedalaman teknis datang dengan pengalaman."
+    },
+    "erp_crm": {
+     "level": "Pelengkap",
+     "comment": "Bergantung industri; biasanya dipelajari di tempat kerja."
+    },
+    "excel": {
+     "level": "Wajib",
+     "comment": "Dipakai setiap hari untuk olah data dan laporan."
+    },
+    "system_modeling_uml": {
+     "level": "Penting",
+     "comment": "Use case dan activity diagram dasar lazim diminta."
+    },
+    "data_modeling": {
+     "level": "Pelengkap",
+     "comment": "ERD dasar cukup; pemodelan lanjut untuk peran data."
+    },
+    "diagramming_tools": {
+     "level": "Pelengkap",
+     "comment": "Alatnya mudah diganti; yang dinilai adalah notasinya."
+    },
+    "data_analysis": {
+     "level": "Penting",
+     "comment": "Kemampuan menarik kesimpulan dari data makin dituntut."
+    },
+    "jira_confluence": {
+     "level": "Penting",
+     "comment": "Alat kerja standar tim agile."
+    },
+    "rest_api_design": {
+     "level": "Pelengkap",
+     "comment": "BA cukup membaca spesifikasi API, tidak merancangnya."
+    },
+    "kpi_metrics": {
+     "level": "Penting",
+     "comment": "Dasar untuk menyusun kebutuhan yang terukur."
+    },
+    "data_cleaning": {
+     "level": "Pelengkap",
+     "comment": "Lebih relevan untuk BA yang condong ke data."
+    },
+    "dashboard_reporting": {
+     "level": "Pelengkap",
+     "comment": "Cukup untuk BA yang condong ke data atau BI."
+    },
+    "wireframing": {
+     "level": "Penting",
+     "comment": "Wireframe sederhana sering dibuat BA untuk memvalidasi kebutuhan."
+    },
+    "power_bi": {
+     "level": "Pelengkap",
+     "comment": "Nilai tambah, bukan syarat untuk lulusan baru."
+    }
+   },
+   "precision_top_skills": 0.6
+  },
+  "b2da658d818f": {
+   "name": "Pakar 1 (anonim)",
+   "kind": "dosen",
+   "affiliation": "Dosen Sistem Informasi (dirahasiakan)",
+   "role": "business_analyst",
+   "imported_at": "2026-10-18T18:43:16",
+   "skills": {
+    "requirements_elicitation": {
+     "level": "Wajib",
+     "comment": "Dasar menggali dan membedakan kebutuhan harus dapat ditunjukkan melalui kasus."
+    },
+    "requirements_documentation": {
+     "level": "Wajib",
+     "comment": "Kandidat perlu menulis kebutuhan yang jelas, konsisten, dan dapat diperiksa."
+    },
+    "business_process_modeling": {
+     "level": "Penting",
+     "comment": "Pemodelan dasar penting; tidak semua lulusan harus menguasai BPMN secara mendalam."
+    },
+    "testing_uat": {
+     "level": "Penting",
+     "comment": "Lulusan perlu memahami tujuan, skenario, serta hasil uji penerimaan."
+    },
+    "sdlc": {
+     "level": "Penting",
+     "comment": "Memahami hubungan kebutuhan, pengembangan, dan pengujian membantu kesiapan proyek."
+    },
+    "sql": {
+     "level": "Penting",
+     "comment": "SQL dasar memperkuat pemeriksaan data, tetapi bukan syarat semua BA."
+    },
+    "api_integration": {
+     "level": "Pelengkap",
+     "comment": "Literasi integrasi berguna; kedalaman teknis disesuaikan jalur."
+    },
+    "erp_crm": {
+     "level": "Pelengkap",
+     "comment": "Pengetahuan produk bersifat domain dan dapat diperdalam setelah penempatan."
+    },
+    "excel": {
+     "level": "Penting",
+     "comment": "Pengolahan tabel dasar mendukung latihan dan pekerjaan analitis awal."
+    },
+    "system_modeling_uml": {
+     "level": "Penting",
+     "comment": "Use case dasar membantu merumuskan aktor, tujuan, serta batas sistem."
+    },
+    "data_modeling": {
+     "level": "Penting",
+     "comment": "Entitas, relasi, dan kunci merupakan bekal konseptual yang berguna."
+    },
+    "diagramming_tools": {
+     "level": "Penting",
+     "comment": "Kemampuan menghasilkan diagram jelas membantu penilaian portofolio."
+    },
+    "data_analysis": {
+     "level": "Penting",
+     "comment": "Kemampuan menafsirkan data membantu menguji asumsi dan masalah."
+    },
+    "jira_confluence": {
+     "level": "Pelengkap",
+     "comment": "Dasar pengelolaan issue dan dokumentasi mudah dilatih pada proyek."
+    },
+    "rest_api_design": {
+     "level": "Pelengkap",
+     "comment": "Pemahaman kontrak bisa berguna, tetapi implementasi kode tidak menjadi syarat umum."
+    },
+    "kpi_metrics": {
+     "level": "Penting",
+     "comment": "Kebutuhan sebaiknya dihubungkan dengan ukuran keberhasilan yang jelas."
+    },
+    "data_cleaning": {
+     "level": "Penting",
+     "comment": "Kualitas data memengaruhi keandalan analisis dan kesimpulan."
+    },
+    "dashboard_reporting": {
+     "level": "Pelengkap",
+     "comment": "Dashboard berguna pada jalur analitik, bukan seluruh peran BA."
+    },
+    "wireframing": {
+     "level": "Pelengkap",
+     "comment": "Rancangan sederhana dapat membantu validasi kebutuhan antarmuka."
+    },
+    "power_bi": {
+     "level": "Pelengkap",
+     "comment": "Penguasaan produk BI tertentu mengikuti spesialisasi dan proyek."
+    }
+   },
+   "precision_top_skills": 0.65
+  },
+  "1403bb04314d": {
+   "name": "Pakar 2 (anonim)",
+   "kind": "praktisi",
+   "affiliation": "Praktisi BA proses (dirahasiakan)",
+   "role": "business_analyst",
+   "imported_at": "2026-10-18T18:43:19",
+   "skills": {
+    "requirements_elicitation": {
+     "level": "Wajib",
+     "comment": "Kemampuan menerjemahkan masalah pemilik proses menjadi kebutuhan adalah inti peran."
+    },
+    "requirements_documentation": {
+     "level": "Wajib",
+     "comment": "Hasil analisis harus dapat dipakai dan dikonfirmasi oleh pihak bisnis."
+    },
+    "business_process_modeling": {
+     "level": "Wajib",
+     "comment": "Untuk BA proses, pemetaan as-is dan to-be merupakan bukti kemampuan utama."
+    },
+    "testing_uat": {
+     "level": "Penting",
+     "comment": "BA membantu memastikan solusi mendukung proses dan kebutuhan pengguna."
+    },
+    "sdlc": {
+     "level": "Penting",
+     "comment": "Penting untuk mengetahui kapan masukan bisnis dibutuhkan selama proyek."
+    },
+    "sql": {
+     "level": "Pelengkap",
+     "comment": "Berguna bila BA mengakses data sendiri; bukan inti semua pekerjaan proses."
+    },
+    "api_integration": {
+     "level": "Pelengkap",
+     "comment": "Cukup memahami pertukaran informasi dan dampak proses pada tahap awal."
+    },
+    "erp_crm": {
+     "level": "Pelengkap",
+     "comment": "Penting untuk lowongan implementasi tertentu, tetapi tidak wajib pada semua BA junior."
+    },
+    "excel": {
+     "level": "Penting",
+     "comment": "Bermanfaat untuk rekonsiliasi sederhana, daftar kebutuhan, dan analisis operasional."
+    },
+    "system_modeling_uml": {
+     "level": "Pelengkap",
+     "comment": "Tidak semua BA proses menggunakan UML; flowchart bisa mencukupi."
+    },
+    "data_modeling": {
+     "level": "Pelengkap",
+     "comment": "Pemetaan informasi berguna, sementara desain basis data rinci bukan fokus utama."
+    },
+    "diagramming_tools": {
+     "level": "Penting",
+     "comment": "Mendukung penyampaian alur proses; merek alat tertentu tidak wajib."
+    },
+    "data_analysis": {
+     "level": "Penting",
+     "comment": "Analisis dasar diperlukan untuk mendukung rekomendasi perubahan proses."
+    },
+    "jira_confluence": {
+     "level": "Pelengkap",
+     "comment": "Proses pelacakan kerja lebih penting daripada merek alat."
+    },
+    "rest_api_design": {
+     "level": "Pelengkap",
+     "comment": "Untuk BA proses, ini nilai tambah; development bukan kompetensi inti."
+    },
+    "kpi_metrics": {
+     "level": "Wajib",
+     "comment": "BA proses perlu menjelaskan manfaat perubahan melalui indikator yang tepat."
+    },
+    "data_cleaning": {
+     "level": "Penting",
+     "comment": "BA harus mengenali aturan validasi dan inkonsistensi data bisnis."
+    },
+    "dashboard_reporting": {
+     "level": "Pelengkap",
+     "comment": "Kebutuhan pelaporan perlu dipahami, tetapi membangun dashboard bisa menjadi tugas tim lain."
+    },
+    "wireframing": {
+     "level": "Pelengkap",
+     "comment": "Nilai tambah untuk proses berbasis aplikasi; bukan semua BA perlu Figma."
+    },
+    "power_bi": {
+     "level": "Pelengkap",
+     "comment": "Dapat dipelajari setelah kebutuhan pelaporan atau organisasi diketahui."
+    }
+   },
+   "precision_top_skills": 0.5
+  },
+  "4e1fbc5b3a4b": {
+   "name": "Pakar 3 (anonim)",
+   "kind": "praktisi",
+   "affiliation": "Praktisi BA sistem (dirahasiakan)",
+   "role": "business_analyst",
+   "imported_at": "2026-10-18T18:43:22",
+   "skills": {
+    "requirements_elicitation": {
+     "level": "Wajib",
+     "comment": "Kebutuhan yang jelas diperlukan sebelum menyusun spesifikasi sistem."
+    },
+    "requirements_documentation": {
+     "level": "Wajib",
+     "comment": "Spesifikasi dan acceptance criteria perlu cukup jelas untuk pengembangan dan pengujian."
+    },
+    "business_process_modeling": {
+     "level": "Penting",
+     "comment": "Diagram proses membantu memahami alur dan pengecualian sebelum merancang sistem."
+    },
+    "testing_uat": {
+     "level": "Penting",
+     "comment": "Penting untuk validasi solusi; tanggung jawab operasional UAT bergantung organisasi."
+    },
+    "sdlc": {
+     "level": "Wajib",
+     "comment": "Untuk perspektif BA sistem, kandidat perlu memahami alur pengembangan dan perubahan kebutuhan."
+    },
+    "sql": {
+     "level": "Penting",
+     "comment": "SELECT, JOIN, agregasi, dan pemeriksaan data membantu investigasi sistem."
+    },
+    "api_integration": {
+     "level": "Penting",
+     "comment": "BA sistem perlu membaca kontrak, payload, respons, serta aturan pemetaan data."
+    },
+    "erp_crm": {
+     "level": "Pelengkap",
+     "comment": "Pemahaman modul spesifik mengikuti sistem yang digunakan perusahaan."
+    },
+    "excel": {
+     "level": "Penting",
+     "comment": "Berguna untuk pemeriksaan data dan spesifikasi; fungsi lanjutan mengikuti kebutuhan."
+    },
+    "system_modeling_uml": {
+     "level": "Penting",
+     "comment": "Use case dan diagram terpilih berguna; penguasaan seluruh UML tidak diperlukan."
+    },
+    "data_modeling": {
+     "level": "Penting",
+     "comment": "Membaca ERD dan memahami relasi membantu analisis dampak perubahan."
+    },
+    "diagramming_tools": {
+     "level": "Penting",
+     "comment": "Alat diagram mendukung dokumentasi teknis, tetapi kandidat cukup menguasai salah satu."
+    },
+    "data_analysis": {
+     "level": "Penting",
+     "comment": "Berguna untuk investigasi masalah dan validasi dampak solusi."
+    },
+    "jira_confluence": {
+     "level": "Penting",
+     "comment": "Berguna untuk pelacakan kebutuhan, keputusan, dan defect dalam proyek sistem."
+    },
+    "rest_api_design": {
+     "level": "Pelengkap",
+     "comment": "Literasi desain API relevan, tetapi label gabungan menuntut development yang belum tentu tugas BA."
+    },
+    "kpi_metrics": {
+     "level": "Penting",
+     "comment": "KPI membantu menetapkan tujuan solusi dan mengevaluasi hasilnya."
+    },
+    "data_cleaning": {
+     "level": "Penting",
+     "comment": "Mendukung pemeriksaan sumber data, migrasi, serta integrasi."
+    },
+    "dashboard_reporting": {
+     "level": "Pelengkap",
+     "comment": "Berguna bila cakupan proyek melibatkan pelaporan atau BI."
+    },
+    "wireframing": {
+     "level": "Penting",
+     "comment": "Wireframe dasar membantu menjelaskan alur interaksi; penguasaan Figma lanjut tidak wajib."
+    },
+    "power_bi": {
+     "level": "Pelengkap",
+     "comment": "Relevan untuk jalur data/BI; bukan kompetensi universal BA sistem."
+    }
+   },
+   "precision_top_skills": 0.8
+  },
+  "f0208c77e48e": {
+   "name": "Ivan (tinjauan internal tim)",
+   "kind": "tim",
+   "affiliation": "Tim PathSync",
+   "role": "business_analyst",
+   "imported_at": "2026-10-18T19:57:27",
+   "skills": {
+    "requirements_elicitation": {
+     "level": "Wajib",
+     "comment": "Inti pekerjaan BA."
+    },
+    "requirements_documentation": {
+     "level": "Wajib",
+     "comment": "Keluaran utama BA; lulusan baru harus bisa menulis BRD atau user story dasar."
+    },
+    "business_process_modeling": {
+     "level": "Wajib",
+     "comment": "Flowchart dan BPMN dasar dituntut hampir di setiap lowongan BA."
+    },
+    "testing_uat": {
+     "level": "Penting",
+     "comment": "UAT sering menjadi tugas awal BA muda."
+    },
+    "sdlc": {
+     "level": "Penting",
+     "comment": "Perlu paham tahapan siklus dan perbedaan agile dengan waterfall."
+    },
+    "sql": {
+     "level": "Penting",
+     "comment": "SQL dasar membedakan kandidat, meski belum selalu diwajibkan."
+    },
+    "api_integration": {
+     "level": "Pelengkap",
+     "comment": "Cukup paham konsep; kedalaman teknis datang dengan pengalaman."
+    },
+    "erp_crm": {
+     "level": "Pelengkap",
+     "comment": "Bergantung industri; biasanya dipelajari di tempat kerja."
+    },
+    "excel": {
+     "level": "Wajib",
+     "comment": "Dipakai setiap hari untuk olah data dan laporan."
+    },
+    "system_modeling_uml": {
+     "level": "Penting",
+     "comment": "Use case dan activity diagram dasar lazim diminta."
+    },
+    "data_modeling": {
+     "level": "Pelengkap",
+     "comment": "ERD dasar cukup; pemodelan lanjut untuk peran data."
+    },
+    "diagramming_tools": {
+     "level": "Pelengkap",
+     "comment": "Alatnya mudah diganti; yang dinilai adalah notasinya."
+    },
+    "data_analysis": {
+     "level": "Penting",
+     "comment": "Kemampuan menarik kesimpulan dari data makin dituntut."
+    },
+    "jira_confluence": {
+     "level": "Penting",
+     "comment": "Alat kerja standar tim agile."
+    },
+    "rest_api_design": {
+     "level": "Pelengkap",
+     "comment": "BA cukup membaca spesifikasi API, tidak merancangnya."
+    },
+    "kpi_metrics": {
+     "level": "Penting",
+     "comment": "Dasar untuk menyusun kebutuhan yang terukur."
+    },
+    "data_cleaning": {
+     "level": "Pelengkap",
+     "comment": "Lebih relevan untuk BA yang condong ke data."
+    },
+    "dashboard_reporting": {
+     "level": "Pelengkap",
+     "comment": "Cukup untuk BA yang condong ke data atau BI."
+    },
+    "wireframing": {
+     "level": "Penting",
+     "comment": "Wireframe sederhana sering dibuat BA untuk memvalidasi kebutuhan."
+    },
+    "power_bi": {
+     "level": "Pelengkap",
+     "comment": "Nilai tambah, bukan syarat untuk lulusan baru."
+    }
+   },
+   "precision_top_skills": 0.6
+  },
+  "4dc9d3181c88": {
+   "name": "Pakar 1 (anonim)",
+   "kind": "dosen",
+   "affiliation": "Dosen Sistem Informasi (dirahasiakan)",
+   "role": "business_analyst",
+   "imported_at": "2026-10-18T19:57:33",
+   "skills": {
+    "requirements_elicitation": {
+     "level": "Wajib",
+     "comment": "Dasar menggali dan membedakan kebutuhan harus dapat ditunjukkan melalui kasus."
+    },
+    "requirements_documentation": {
+     "level": "Wajib",
+     "comment": "Kandidat perlu menulis kebutuhan yang jelas, konsisten, dan dapat diperiksa."
+    },
+    "business_process_modeling": {
+     "level": "Penting",
+     "comment": "Pemodelan dasar penting; tidak semua lulusan harus menguasai BPMN secara mendalam."
+    },
+    "testing_uat": {
+     "level": "Penting",
+     "comment": "Lulusan perlu memahami tujuan, skenario, serta hasil uji penerimaan."
+    },
+    "sdlc": {
+     "level": "Penting",
+     "comment": "Memahami hubungan kebutuhan, pengembangan, dan pengujian membantu kesiapan proyek."
+    },
+    "sql": {
+     "level": "Penting",
+     "comment": "SQL dasar memperkuat pemeriksaan data, tetapi bukan syarat semua BA."
+    },
+    "api_integration": {
+     "level": "Pelengkap",
+     "comment": "Literasi integrasi berguna; kedalaman teknis disesuaikan jalur."
+    },
+    "erp_crm": {
+     "level": "Pelengkap",
+     "comment": "Pengetahuan produk bersifat domain dan dapat diperdalam setelah penempatan."
+    },
+    "excel": {
+     "level": "Penting",
+     "comment": "Pengolahan tabel dasar mendukung latihan dan pekerjaan analitis awal."
+    },
+    "system_modeling_uml": {
+     "level": "Penting",
+     "comment": "Use case dasar membantu merumuskan aktor, tujuan, serta batas sistem."
+    },
+    "data_modeling": {
+     "level": "Penting",
+     "comment": "Entitas, relasi, dan kunci merupakan bekal konseptual yang berguna."
+    },
+    "diagramming_tools": {
+     "level": "Penting",
+     "comment": "Kemampuan menghasilkan diagram jelas membantu penilaian portofolio."
+    },
+    "data_analysis": {
+     "level": "Penting",
+     "comment": "Kemampuan menafsirkan data membantu menguji asumsi dan masalah."
+    },
+    "jira_confluence": {
+     "level": "Pelengkap",
+     "comment": "Dasar pengelolaan issue dan dokumentasi mudah dilatih pada proyek."
+    },
+    "rest_api_design": {
+     "level": "Pelengkap",
+     "comment": "Pemahaman kontrak bisa berguna, tetapi implementasi kode tidak menjadi syarat umum."
+    },
+    "kpi_metrics": {
+     "level": "Penting",
+     "comment": "Kebutuhan sebaiknya dihubungkan dengan ukuran keberhasilan yang jelas."
+    },
+    "data_cleaning": {
+     "level": "Penting",
+     "comment": "Kualitas data memengaruhi keandalan analisis dan kesimpulan."
+    },
+    "dashboard_reporting": {
+     "level": "Pelengkap",
+     "comment": "Dashboard berguna pada jalur analitik, bukan seluruh peran BA."
+    },
+    "wireframing": {
+     "level": "Pelengkap",
+     "comment": "Rancangan sederhana dapat membantu validasi kebutuhan antarmuka."
+    },
+    "power_bi": {
+     "level": "Pelengkap",
+     "comment": "Penguasaan produk BI tertentu mengikuti spesialisasi dan proyek."
+    }
+   },
+   "precision_top_skills": 0.65
+  },
+  "4983c29389a1": {
+   "name": "Pakar 2 (anonim)",
+   "kind": "praktisi",
+   "affiliation": "Praktisi BA proses (dirahasiakan)",
+   "role": "business_analyst",
+   "imported_at": "2026-10-18T19:57:39",
+   "skills": {
+    "requirements_elicitation": {
+     "level": "Wajib",
+     "comment": "Kemampuan menerjemahkan masalah pemilik proses menjadi kebutuhan adalah inti peran."
+    },
+    "requirements_documentation": {
+     "level": "Wajib",
+     "comment": "Hasil analisis harus dapat dipakai dan dikonfirmasi oleh pihak bisnis."
+    },
+    "business_process_modeling": {
+     "level": "Wajib",
+     "comment": "Untuk BA proses, pemetaan as-is dan to-be merupakan bukti kemampuan utama."
+    },
+    "testing_uat": {
+     "level": "Penting",
+     "comment": "BA membantu memastikan solusi mendukung proses dan kebutuhan pengguna."
+    },
+    "sdlc": {
+     "level": "Penting",
+     "comment": "Penting untuk mengetahui kapan masukan bisnis dibutuhkan selama proyek."
+    },
+    "sql": {
+     "level": "Pelengkap",
+     "comment": "Berguna bila BA mengakses data sendiri; bukan inti semua pekerjaan proses."
+    },
+    "api_integration": {
+     "level": "Pelengkap",
+     "comment": "Cukup memahami pertukaran informasi dan dampak proses pada tahap awal."
+    },
+    "erp_crm": {
+     "level": "Pelengkap",
+     "comment": "Penting untuk lowongan implementasi tertentu, tetapi tidak wajib pada semua BA junior."
+    },
+    "excel": {
+     "level": "Penting",
+     "comment": "Bermanfaat untuk rekonsiliasi sederhana, daftar kebutuhan, dan analisis operasional."
+    },
+    "system_modeling_uml": {
+     "level": "Pelengkap",
+     "comment": "Tidak semua BA proses menggunakan UML; flowchart bisa mencukupi."
+    },
+    "data_modeling": {
+     "level": "Pelengkap",
+     "comment": "Pemetaan informasi berguna, sementara desain basis data rinci bukan fokus utama."
+    },
+    "diagramming_tools": {
+     "level": "Penting",
+     "comment": "Mendukung penyampaian alur proses; merek alat tertentu tidak wajib."
+    },
+    "data_analysis": {
+     "level": "Penting",
+     "comment": "Analisis dasar diperlukan untuk mendukung rekomendasi perubahan proses."
+    },
+    "jira_confluence": {
+     "level": "Pelengkap",
+     "comment": "Proses pelacakan kerja lebih penting daripada merek alat."
+    },
+    "rest_api_design": {
+     "level": "Pelengkap",
+     "comment": "Untuk BA proses, ini nilai tambah; development bukan kompetensi inti."
+    },
+    "kpi_metrics": {
+     "level": "Wajib",
+     "comment": "BA proses perlu menjelaskan manfaat perubahan melalui indikator yang tepat."
+    },
+    "data_cleaning": {
+     "level": "Penting",
+     "comment": "BA harus mengenali aturan validasi dan inkonsistensi data bisnis."
+    },
+    "dashboard_reporting": {
+     "level": "Pelengkap",
+     "comment": "Kebutuhan pelaporan perlu dipahami, tetapi membangun dashboard bisa menjadi tugas tim lain."
+    },
+    "wireframing": {
+     "level": "Pelengkap",
+     "comment": "Nilai tambah untuk proses berbasis aplikasi; bukan semua BA perlu Figma."
+    },
+    "power_bi": {
+     "level": "Pelengkap",
+     "comment": "Dapat dipelajari setelah kebutuhan pelaporan atau organisasi diketahui."
+    }
+   },
+   "precision_top_skills": 0.5
+  },
+  "e9159b0afd27": {
+   "name": "Pakar 3 (anonim)",
+   "kind": "praktisi",
+   "affiliation": "Praktisi BA sistem (dirahasiakan)",
+   "role": "business_analyst",
+   "imported_at": "2026-10-18T19:57:47",
+   "skills": {
+    "requirements_elicitation": {
+     "level": "Wajib",
+     "comment": "Kebutuhan yang jelas diperlukan sebelum menyusun spesifikasi sistem."
+    },
+    "requirements_documentation": {
+     "level": "Wajib",
+     "comment": "Spesifikasi dan acceptance criteria perlu cukup jelas untuk pengembangan dan pengujian."
+    },
+    "business_process_modeling": {
+     "level": "Penting",
+     "comment": "Diagram proses membantu memahami alur dan pengecualian sebelum merancang sistem."
+    },
+    "testing_uat": {
+     "level": "Penting",
+     "comment": "Penting untuk validasi solusi; tanggung jawab operasional UAT bergantung organisasi."
+    },
+    "sdlc": {
+     "level": "Wajib",
+     "comment": "Untuk perspektif BA sistem, kandidat perlu memahami alur pengembangan dan perubahan kebutuhan."
+    },
+    "sql": {
+     "level": "Penting",
+     "comment": "SELECT, JOIN, agregasi, dan pemeriksaan data membantu investigasi sistem."
+    },
+    "api_integration": {
+     "level": "Penting",
+     "comment": "BA sistem perlu membaca kontrak, payload, respons, serta aturan pemetaan data."
+    },
+    "erp_crm": {
+     "level": "Pelengkap",
+     "comment": "Pemahaman modul spesifik mengikuti sistem yang digunakan perusahaan."
+    },
+    "excel": {
+     "level": "Penting",
+     "comment": "Berguna untuk pemeriksaan data dan spesifikasi; fungsi lanjutan mengikuti kebutuhan."
+    },
+    "system_modeling_uml": {
+     "level": "Penting",
+     "comment": "Use case dan diagram terpilih berguna; penguasaan seluruh UML tidak diperlukan."
+    },
+    "data_modeling": {
+     "level": "Penting",
+     "comment": "Membaca ERD dan memahami relasi membantu analisis dampak perubahan."
+    },
+    "diagramming_tools": {
+     "level": "Penting",
+     "comment": "Alat diagram mendukung dokumentasi teknis, tetapi kandidat cukup menguasai salah satu."
+    },
+    "data_analysis": {
+     "level": "Penting",
+     "comment": "Berguna untuk investigasi masalah dan validasi dampak solusi."
+    },
+    "jira_confluence": {
+     "level": "Penting",
+     "comment": "Berguna untuk pelacakan kebutuhan, keputusan, dan defect dalam proyek sistem."
+    },
+    "rest_api_design": {
+     "level": "Pelengkap",
+     "comment": "Literasi desain API relevan, tetapi label gabungan menuntut development yang belum tentu tugas BA."
+    },
+    "kpi_metrics": {
+     "level": "Penting",
+     "comment": "KPI membantu menetapkan tujuan solusi dan mengevaluasi hasilnya."
+    },
+    "data_cleaning": {
+     "level": "Penting",
+     "comment": "Mendukung pemeriksaan sumber data, migrasi, serta integrasi."
+    },
+    "dashboard_reporting": {
+     "level": "Pelengkap",
+     "comment": "Berguna bila cakupan proyek melibatkan pelaporan atau BI."
+    },
+    "wireframing": {
+     "level": "Penting",
+     "comment": "Wireframe dasar membantu menjelaskan alur interaksi; penguasaan Figma lanjut tidak wajib."
+    },
+    "power_bi": {
+     "level": "Pelengkap",
+     "comment": "Relevan untuk jalur data/BI; bukan kompetensi universal BA sistem."
+    }
+   },
+   "precision_top_skills": 0.8
+  }
+ }
+}

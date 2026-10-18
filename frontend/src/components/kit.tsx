@@ -4,9 +4,12 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 import type { VariantProps } from "class-variance-authority";
-import { AlertCircle, Loader2 } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Mascot, type MascotName } from "./mascot";
+import { MascotLoader } from "./mascot-loader";
+import { useT } from "@/lib/i18n";
 
 /** Navigation that looks like a button (keeps <a> semantics for Cmd/Ctrl-click). */
 export function LinkButton({
@@ -24,12 +27,21 @@ export function LinkButton({
   );
 }
 
-export function PageHeader({ title, description, actions, className }: { title: string; description?: ReactNode; actions?: ReactNode; className?: string }) {
+export function PageHeader({ title, description, actions, className, mascot }: {
+  title: string;
+  description?: ReactNode;
+  actions?: ReactNode;
+  className?: string;
+  mascot?: MascotName;
+}) {
   return (
-    <header className={cn("mb-8 flex flex-wrap items-end justify-between gap-4", className)}>
-      <div className="min-w-0 max-w-2xl">
-        <h1 className="text-[28px] font-bold leading-tight text-ink sm:text-[32px]">{title}</h1>
-        {description ? <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">{description}</p> : null}
+    <header className={cn("mb-10 flex flex-wrap items-end justify-between gap-4", className)}>
+      <div className="flex min-w-0 max-w-3xl items-end gap-4">
+        {mascot ? <Mascot name={mascot} size={88} priority className="-mb-1 hidden sm:block" /> : null}
+        <div className="min-w-0 max-w-2xl">
+          <h1 className="text-[28px] font-bold leading-tight text-ink sm:text-[32px]">{title}</h1>
+          {description ? <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">{description}</p> : null}
+        </div>
       </div>
       {actions ? <div className="flex flex-wrap gap-2">{actions}</div> : null}
     </header>
@@ -38,7 +50,7 @@ export function PageHeader({ title, description, actions, className }: { title: 
 
 export function SectionTitle({ children, action, id }: { children: ReactNode; action?: ReactNode; id?: string }) {
   return (
-    <div className="mb-4 flex items-center justify-between gap-3">
+    <div className="mb-5 flex items-center justify-between gap-3">
       <h2 id={id} className="scroll-mt-24 text-lg font-semibold text-ink">
         {children}
       </h2>
@@ -49,16 +61,18 @@ export function SectionTitle({ children, action, id }: { children: ReactNode; ac
 
 export function Panel({ children, className, ...props }: ComponentProps<"section">) {
   return (
-    <section className={cn("rounded-2xl border bg-card p-5 sm:p-6", className)} {...props}>
+    <section className={cn("rounded-2xl border bg-card p-6 sm:p-8", className)} {...props}>
       {children}
     </section>
   );
 }
 
-export function Loading({ label = "Loading…" }: { label?: string }) {
+export function Loading({ label }: { label?: string }) {
+  const t = useT();
   return (
-    <div role="status" aria-live="polite" className="flex items-center gap-2 py-16 text-sm text-muted-foreground">
-      <Loader2 className="size-4 animate-spin" aria-hidden="true" /> {label}
+    <div role="status" aria-live="polite" className="flex flex-col items-center justify-center gap-3 py-16 text-sm text-muted-foreground">
+      <MascotLoader size={72} />
+      {label ?? t("Loading…", "Memuat…")}
     </div>
   );
 }
@@ -74,13 +88,22 @@ export function ErrorNote({ error }: { error: unknown }) {
   );
 }
 
-export function EmptyState({ title, children, action, image }: { title: string; children?: ReactNode; action?: ReactNode; image?: string }) {
+/** Empty or finished states. Shows Sync with an empty box unless another pose (or a photo via `image`) is given. */
+export function EmptyState({ title, children, action, image, mascot = "empty-box" }: {
+  title: string;
+  children?: ReactNode;
+  action?: ReactNode;
+  image?: string;
+  mascot?: MascotName;
+}) {
   return (
-    <div className="flex flex-col items-center rounded-2xl border border-dashed bg-card px-6 py-12 text-center">
+    <div className="flex flex-col items-center rounded-2xl border border-dashed bg-card px-6 py-14 text-center">
       {image ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={image} alt="" width={160} height={107} loading="lazy" className="mb-5 h-[107px] w-40 rounded-xl object-cover" />
-      ) : null}
+      ) : (
+        <Mascot name={mascot} size={128} className="mb-4" />
+      )}
       <h3 className="text-base font-semibold text-ink">{title}</h3>
       {children ? <p className="mt-1.5 max-w-md text-sm text-muted-foreground">{children}</p> : null}
       {action ? <div className="mt-5 flex flex-wrap justify-center gap-2">{action}</div> : null}
@@ -88,16 +111,23 @@ export function EmptyState({ title, children, action, image }: { title: string; 
   );
 }
 
-/** Mastery bar: filled to the current level, with a tick at the target. */
-export function MasteryBar({ value, target, className, tone = "route" }: { value: number; target?: number | null; className?: string; tone?: "route" | "indigo" | "mint" }) {
+/** Mastery bar. Solid fill = level now; a light band of the same colour runs to the target, so the band left
+ * uncovered is the gap still to close. Once the target is reached the fill turns green. */
+export function MasteryBar({ value, target, className, tone = "indigo" }: { value: number; target?: number | null; className?: string; tone?: "indigo" | "mint" }) {
   const v = Math.max(0, Math.min(1, value));
-  const fill = tone === "route" ? "bg-route" : tone === "mint" ? "bg-mint" : "bg-indigo";
+  const t = target == null ? null : Math.max(0, Math.min(1, target));
+  const met = t != null && v >= t;
+  const fill = tone === "mint" || met ? "bg-mint" : "bg-indigo";
   return (
-    <div className={cn("relative h-2 w-full rounded-full bg-muted", className)} role="meter" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(v * 100)}>
-      <div className={cn("h-2 rounded-full", fill)} style={{ width: `${v * 100}%` }} />
-      {target != null ? (
-        <span className="absolute -top-1 h-4 w-[3px] rounded-full bg-ink" style={{ left: `calc(${Math.min(1, target) * 100}% - 1.5px)` }} aria-hidden="true" />
-      ) : null}
+    <div
+      className={cn("relative h-2 w-full overflow-hidden rounded-full bg-muted", className)}
+      role="meter"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(v * 100)}
+    >
+      {t != null && !met ? <div className="absolute inset-y-0 left-0 rounded-full bg-indigo/20" style={{ width: `${t * 100}%` }} aria-hidden="true" /> : null}
+      <div className={cn("absolute inset-y-0 left-0 rounded-full transition-[width] duration-300", fill)} style={{ width: `${v * 100}%` }} />
     </div>
   );
 }
@@ -106,8 +136,8 @@ export function Tag({ children, tone = "neutral", className }: { children: React
   const t = {
     neutral: "bg-muted text-ink/80",
     indigo: "bg-secondary text-secondary-foreground",
-    ember: "bg-[#fff1e8] text-ember-ink",
-    mint: "bg-[#e3f6f2] text-mint-ink",
+    ember: "bg-[#fff6d9] text-ember-ink",
+    mint: "bg-[#e3f5ea] text-mint-ink",
     red: "bg-destructive/10 text-destructive",
   }[tone];
   return <span className={cn("inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-medium", t, className)}>{children}</span>;

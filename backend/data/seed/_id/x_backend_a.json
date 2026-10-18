@@ -1,0 +1,452 @@
+{
+ "auth_security_basics-1": {
+  "stem": "Bagaimana kata sandi sebaiknya disimpan di database?",
+  "options": [
+   "Sebagai hash ber-salt yang dibuat dengan bcrypt atau Argon2",
+   "Sebagai teks biasa agar staf dukungan bisa membacanya",
+   "Sebagai string Base64 yang bisa didekode",
+   "Sebagai nilai terenkripsi dengan satu kunci yang disimpan di kode"
+  ],
+  "explanation": "Simpan hash ber-salt yang dibuat dengan algoritma lambat seperti bcrypt atau Argon2, bukan kata sandinya sendiri."
+ },
+ "auth_security_basics-2": {
+  "stem": "Apa beda autentikasi dan otorisasi?",
+  "options": [
+   "Autentikasi membuktikan siapa kamu, otorisasi menentukan apa yang boleh kamu lakukan",
+   "Autentikasi menentukan apa yang boleh kamu lakukan, otorisasi membuktikan siapa kamu",
+   "Autentikasi mengenkripsi data, otorisasi mengompresinya",
+   "Keduanya berarti sama di framework yang berbeda"
+  ],
+  "explanation": "Autentikasi memverifikasi siapa kamu; otorisasi menentukan apa yang boleh kamu lakukan."
+ },
+ "auth_security_basics-3": {
+  "stem": "Serangan apa yang dicegah oleh parameterised query (prepared statement)?",
+  "options": [
+   "SQL injection",
+   "Cross-site request forgery",
+   "Clickjacking",
+   "Distributed denial of service"
+  ],
+  "explanation": "Parameterised query memisahkan input pengguna dari SQL, sehingga mencegah SQL injection."
+ },
+ "auth_security_basics-4": {
+  "stem": "Sebuah halaman mencetak komentar pengguna ke HTML tanpa meng-encode-nya. Kerentanan apa yang timbul?",
+  "options": [
+   "Cross-site scripting (XSS)",
+   "SQL injection",
+   "Server-side request forgery",
+   "Insecure direct object reference"
+  ],
+  "explanation": "Keluaran yang tidak di-escape membuka celah cross-site scripting (XSS)."
+ },
+ "auth_security_basics-5": {
+  "stem": "Di mana JWT access token berumur pendek sebaiknya disimpan pada aplikasi browser untuk mengurangi dampak XSS?",
+  "options": [
+   "Di cookie HttpOnly dan Secure yang tidak bisa dibaca skrip",
+   "Di localStorage yang bisa dibaca oleh skrip apa pun di halaman",
+   "Di variabel global bernama token pada objek window peramban",
+   "Di query string URL pada setiap permintaan yang dikirim ke server"
+  ],
+  "explanation": "Pilih cookie HttpOnly, Secure, SameSite yang tidak bisa dibaca skrip; localStorage bisa dibaca skrip yang disuntikkan."
+ },
+ "caching_messaging-1": {
+  "stem": "Mengapa menaruh cache seperti Redis di depan database?",
+  "options": [
+   "Untuk melayani pembacaan berulang lebih cepat dan meringankan database",
+   "Untuk membuat penulisan permanen di lebih dari satu disk sekaligus",
+   "Untuk memecah satu tabel besar menjadi beberapa tabel yang kecil",
+   "Untuk mengenkripsi seluruh data yang tersimpan di dalam database"
+  ],
+  "explanation": "Cache melayani pembacaan yang sering dari memori, menurunkan latensi dan beban database."
+ },
+ "caching_messaging-2": {
+  "stem": "Apa yang dimungkinkan oleh message queue seperti RabbitMQ?",
+  "options": [
+   "Producer dan consumer bekerja secara independen satu sama lain",
+   "Producer dan consumer berbagi satu tabel database secara langsung",
+   "Consumer membaca data yang sama lebih cepat dari memori",
+   "Producer menunggu sampai tiap consumer selesai bekerja"
+  ],
+  "explanation": "Memisahkan producer dan consumer sehingga pekerjaan bisa diproses secara asinkron."
+ },
+ "caching_messaging-3": {
+  "stem": "Harga produk di cache harus segera berubah setelah produk disunting. Pendekatan mana yang menanganinya?",
+  "options": [
+   "Menginvalidasi entri saat pembaruan atau memakai TTL pendek",
+   "Men-cache harga selamanya dan meminta pengguna menyegarkan halaman",
+   "Menonaktifkan cache untuk seluruh tabel produk",
+   "Menyalin harga ke penyimpanan browser tiap pengguna"
+  ],
+  "explanation": "Invalidasi entri cache saat pembaruan atau pakai time-to-live yang pendek."
+ },
+ "caching_messaging-4": {
+  "stem": "Sebuah consumer antrean bisa menerima pesan yang sama dua kali. Sifat apa yang harus dimiliki handler-nya?",
+  "options": [
+   "Idempotensi, sehingga pesan yang berulang tidak berefek tambahan",
+   "Immutabilitas, sehingga teks pesan tidak bisa dibaca dua kali",
+   "Atomisitas, sehingga antrean menghapus pesan lebih awal",
+   "Persistensi, sehingga pesan disimpan selamanya"
+  ],
+  "explanation": "Idempotensi: memproses pesan yang sama lagi tidak boleh menimbulkan efek ganda."
+ },
+ "caching_messaging-5": {
+  "stem": "Setelah entri cache kedaluwarsa, ratusan permintaan menghantam database sekaligus. Apa nama masalah ini?",
+  "options": [
+   "Cache stampede",
+   "Deadlock",
+   "Memory leak",
+   "Race pada primary key"
+  ],
+  "explanation": "Cache stampede (thundering herd); diatasi dengan locking, request coalescing, atau TTL yang disebar."
+ },
+ "data_structures_algorithms-1": {
+  "stem": "Struktur data mana yang memberi pencarian nilai berdasarkan key dengan rata-rata O(1)?",
+  "options": [
+   "Hash map",
+   "Linked list",
+   "Array terurut",
+   "Binary heap"
+  ],
+  "explanation": "Hash map (dictionary) memberi pencarian berdasarkan key dengan waktu konstan rata-rata."
+ },
+ "data_structures_algorithms-2": {
+  "stem": "Stack mengeluarkan item dalam urutan apa?",
+  "options": [
+   "Terakhir masuk, pertama keluar",
+   "Pertama masuk, pertama keluar",
+   "Nilai terkecil lebih dulu",
+   "Urutan acak"
+  ],
+  "explanation": "Stack bersifat last in, first out (LIFO)."
+ },
+ "data_structures_algorithms-3": {
+  "stem": "Binary search pada array terurut berisi n item butuh berapa langkah dalam kasus terburuk?",
+  "options": [
+   "Sekitar log n langkah",
+   "Sekitar n langkah",
+   "Sekitar n log n langkah",
+   "Sekitar n kuadrat langkah"
+  ],
+  "explanation": "Tiap langkah membagi dua ruang pencarian, sehingga O(log n)."
+ },
+ "data_structures_algorithms-4": {
+  "stem": "Kamu butuh jalur terpendek antara dua node pada graf tak berbobot. Algoritma mana yang cocok?",
+  "options": [
+   "Breadth-first search",
+   "Depth-first search",
+   "Binary search",
+   "Merge sort"
+  ],
+  "explanation": "Breadth-first search menjelajah lapis demi lapis dan menemukan jalur terpendek pada graf tak berbobot."
+ },
+ "data_structures_algorithms-5": {
+  "stem": "Dua loop bersarang masing-masing berjalan atas seluruh n item input. Berapa kompleksitas waktunya?",
+  "options": [
+   "O(n kuadrat)",
+   "O(n)",
+   "O(n log n)",
+   "O(2 pangkat n)"
+  ],
+  "explanation": "n iterasi dari n iterasi menghasilkan O(n kuadrat)."
+ },
+ "dotnet_csharp-1": {
+  "stem": "Kata kunci C# mana yang mendeklarasikan variabel dengan tipe yang disimpulkan compiler?",
+  "options": [
+   "var",
+   "dynamic",
+   "object",
+   "let"
+  ],
+  "explanation": "var membuat compiler menyimpulkan tipe dari penginisialisasi."
+ },
+ "dotnet_csharp-2": {
+  "stem": "ASP.NET Core terutama dipakai untuk apa?",
+  "options": [
+   "Membangun aplikasi web dan API",
+   "Merancang diagram database",
+   "Menyunting berkas gambar dan video untuk web",
+   "Mengelola mesin virtual di cloud"
+  ],
+  "explanation": "ASP.NET Core adalah framework lintas platform untuk aplikasi web dan API."
+ },
+ "dotnet_csharp-3": {
+  "stem": "Apa yang dimungkinkan LINQ di C#?",
+  "options": [
+   "Mengueri koleksi dan sumber data dengan sintaks seragam",
+   "Mengunci thread yang sedang menulis ke sebuah berkas",
+   "Mencatat setiap event ke konsol saat proses debugging",
+   "Menautkan dua proyek menjadi satu berkas yang bisa dieksekusi"
+  ],
+  "explanation": "LINQ menyediakan sintaks kueri yang seragam untuk koleksi, database, dan sumber lain."
+ },
+ "dotnet_csharp-4": {
+  "stem": "Di ASP.NET Core, mekanisme mana yang memasok sebuah kelas dengan layanan yang dibutuhkannya, seperti DbContext?",
+  "options": [
+   "Constructor injection dari DI container bawaan",
+   "Kelas partial yang dibuat otomatis saat proses build",
+   "Nilai konfigurasi yang ditulis di berkas appsettings.json",
+   "Kelas statis yang diimpor oleh setiap berkas yang memerlukannya"
+  ],
+  "explanation": "DI container bawaan mendaftarkan layanan dan menyuntikkannya ke konstruktor."
+ },
+ "dotnet_csharp-5": {
+  "stem": "Fitur Entity Framework mana yang memperbarui skema database dari perubahan pada kelas modelmu?",
+  "options": [
+   "Migrations",
+   "Scaffolding view",
+   "Tag helper",
+   "Model binding"
+  ],
+  "explanation": "Migrations mencatat perubahan model dan menerapkannya ke database."
+ },
+ "git_version_control-1": {
+  "stem": "Perintah mana yang mencatat perubahan yang sudah di-stage sebagai commit baru?",
+  "options": [
+   "git commit -m \"pesan\"",
+   "git add .",
+   "git push origin main",
+   "git fetch --all"
+  ],
+  "explanation": "git commit menyimpan perubahan yang di-stage ke riwayat."
+ },
+ "git_version_control-2": {
+  "stem": "Apa itu branch di Git?",
+  "options": [
+   "Penunjuk yang bisa dipindah ke satu garis commit untuk kerja paralel",
+   "Salinan lengkap repositori yang disimpan di mesin lain untuk cadangan",
+   "Snapshot folder kerja yang jarang sekali bisa diubah lagi setelah dibuat",
+   "Tag yang menandai versi perangkat lunak yang sudah dirilis ke pengguna"
+  ],
+  "explanation": "Branch adalah penunjuk yang bisa dipindah ke satu garis commit, sehingga pekerjaan bisa berjalan paralel."
+ },
+ "git_version_control-3": {
+  "stem": "git pull setara dengan pasangan perintah mana?",
+  "options": [
+   "git fetch diikuti git merge",
+   "git add diikuti git commit",
+   "git clone diikuti git checkout",
+   "git stash diikuti git reset"
+  ],
+  "explanation": "git pull mengambil commit remote lalu menggabungkannya ke branch saat ini."
+ },
+ "git_version_control-4": {
+  "stem": "Git melaporkan merge conflict pada sebuah berkas. Apa yang harus kamu lakukan?",
+  "options": [
+   "Menyunting berkas untuk menyelesaikan penanda konflik, lalu commit",
+   "Menghapus berkas itu dan menjalankan git pull sekali lagi",
+   "Mengganti nama branch agar konfliknya hilang dengan sendirinya",
+   "Menjalankan git reset --hard pada repositori remote bersama"
+  ],
+  "explanation": "Sunting berkas untuk memilih isi yang benar, hapus penanda konflik, stage, dan selesaikan merge."
+ },
+ "git_version_control-5": {
+  "stem": "Kamu sudah mem-push commit yang membawa bug ke branch bersama. Pendekatan mana yang paling aman?",
+  "options": [
+   "git revert, yang menambah commit untuk membatalkan perubahan",
+   "git reset --hard, lalu force push ke branch bersama",
+   "git commit --amend, lalu force push commit yang sudah diperbaiki",
+   "git checkout ke commit lama, lalu mem-push kondisi itu"
+  ],
+  "explanation": "git revert membuat commit baru yang membatalkan perubahan tanpa menulis ulang riwayat bersama."
+ },
+ "golang_backend-1": {
+  "stem": "Bagaimana memulai fungsi yang berjalan secara konkuren di Go?",
+  "options": [
+   "Taruh kata kunci go sebelum panggilan: go work()",
+   "Bungkus panggilan dengan async: async work()",
+   "Panggil dengan thread.start(work)",
+   "Tandai fungsi dengan tag @concurrent di atasnya"
+  ],
+  "explanation": "Kata kunci go memulai sebuah goroutine."
+ },
+ "golang_backend-2": {
+  "stem": "Paket Go standar mana yang dipakai untuk membangun server HTTP?",
+  "options": [
+   "net/http",
+   "os/exec",
+   "encoding/csv",
+   "text/template"
+  ],
+  "explanation": "net/http menyediakan klien dan server HTTP."
+ },
+ "golang_backend-3": {
+  "stem": "Bagaimana Go yang idiomatik biasanya melaporkan galat dari sebuah fungsi?",
+  "options": [
+   "Mengembalikan nilai error yang diperiksa pemanggil",
+   "Melempar exception yang ditangkap dengan try dan catch",
+   "Menetapkan variabel global bernama lastError",
+   "Memanggil panic agar program langsung berhenti"
+  ],
+  "explanation": "Fungsi mengembalikan nilai error sebagai hasil terakhir dan pemanggil memeriksanya dengan if err != nil."
+ },
+ "golang_backend-4": {
+  "stem": "Untuk apa channel dipakai di Go?",
+  "options": [
+   "Mengoper nilai dengan aman antargoroutine",
+   "Membaca nilai konfigurasi dari berkas",
+   "Membuka koneksi ke server database",
+   "Mendeklarasikan tipe yang memuat beberapa field"
+  ],
+  "explanation": "Channel memungkinkan goroutine berkomunikasi dan bersinkronisasi dengan mengirim dan menerima nilai."
+ },
+ "golang_backend-5": {
+  "stem": "Dua goroutine memperbarui variabel penghitung yang sama dan hasilnya kadang salah. Perbaikan mana yang benar?",
+  "options": [
+   "Melindungi penghitung dengan sync.Mutex atau operasi atomic",
+   "Menambah jumlah goroutine agar hasilnya terambil rata-rata",
+   "Mendeklarasikan penghitung sebagai konstanta sebelum program mulai",
+   "Menambahkan time.Sleep pada salah satu goroutine yang berjalan"
+  ],
+  "explanation": "Lindungi state bersama dengan mutex, atau pakai operasi atomic atau channel."
+ },
+ "java_spring-1": {
+  "stem": "Anotasi Spring mana yang menandai kelas sebagai REST controller yang mengembalikan JSON?",
+  "options": [
+   "@RestController",
+   "@Entity",
+   "@Repository",
+   "@Configuration"
+  ],
+  "explanation": "@RestController menggabungkan @Controller dan @ResponseBody."
+ },
+ "java_spring-2": {
+  "stem": "Apa yang terutama dilakukan Maven atau Gradle dalam proyek Java?",
+  "options": [
+   "Mengelola dependensi serta menjalankan build dan tes",
+   "Memantau pemakaian memori aplikasi yang sedang berjalan",
+   "Merender halaman web yang dilihat oleh pengguna aplikasi",
+   "Menyimpan data aplikasi ke dalam tabel di database relasional"
+  ],
+  "explanation": "Keduanya mengelola dependensi dan menjalankan build, tes, dan pengemasan."
+ },
+ "java_spring-3": {
+  "stem": "Apa arti dependency injection di Spring?",
+  "options": [
+   "Container menyediakan objek yang dibutuhkan sebuah kelas",
+   "Sebuah kelas membuat setiap objek yang dibutuhkannya dengan new",
+   "Library disalin ke folder proyek secara manual setiap kali",
+   "Objek disimpan ke disk dan dimuat saat dibutuhkan"
+  ],
+  "explanation": "Container membuat objek dan menyediakan dependensinya, bukan kelas yang membuatnya sendiri."
+ },
+ "java_spring-4": {
+  "stem": "Antarmuka mana yang memberi metode CRUD untuk sebuah entitas di Spring Data JPA tanpa menulis implementasinya?",
+  "options": [
+   "JpaRepository",
+   "Serializable",
+   "Runnable",
+   "Comparable"
+  ],
+  "explanation": "Memperluas JpaRepository (atau CrudRepository) memberi metode CRUD siap pakai."
+ },
+ "java_spring-5": {
+  "stem": "Memuat daftar pesanan memicu satu kueri tambahan untuk tiap pelanggan pesanan (masalah N+1). Apa perbaikan yang lazim?",
+  "options": [
+   "Mengambil asosiasinya dengan join fetch atau entity graph",
+   "Menambah ukuran connection pool database",
+   "Menandai setiap entitas sebagai serializable agar bisa di-cache",
+   "Mengubah metode repository agar berjalan secara asinkron"
+  ],
+  "explanation": "Ambil asosiasi dalam kueri yang sama dengan join fetch atau entity graph."
+ },
+ "nodejs_backend-1": {
+  "stem": "Apa itu Node.js?",
+  "options": [
+   "Runtime JavaScript yang berjalan di luar browser",
+   "Database yang menyimpan dokumen JSON",
+   "Framework untuk menata gaya halaman web",
+   "Paket yang mengompilasi TypeScript menjadi Java"
+  ],
+  "explanation": "Node.js adalah runtime JavaScript yang berjalan di luar browser, dibangun di atas mesin V8."
+ },
+ "nodejs_backend-2": {
+  "stem": "Berkas mana yang mendaftar dependensi dan skrip proyek Node.js?",
+  "options": [
+   "package.json",
+   "index.html",
+   "node.config",
+   "dependencies.xml"
+  ],
+  "explanation": "package.json menjelaskan proyek dan dependensinya."
+ },
+ "nodejs_backend-3": {
+  "stem": "Di Express, apa itu middleware?",
+  "options": [
+   "Fungsi yang berjalan di pipeline permintaan sebelum handler akhir",
+   "Lapisan database yang berada di antara aplikasi dan disk penyimpanan",
+   "Alat yang me-restart server setelah setiap perubahan kode disimpan",
+   "Berkas khusus yang menyimpan semua environment variable aplikasi"
+  ],
+  "explanation": "Fungsi middleware berjalan berurutan pada siklus request/response dan bisa mengubahnya atau mengakhirinya."
+ },
+ "nodejs_backend-4": {
+  "stem": "Mengapa kode Node.js harus menghindari loop sinkron yang berat di CPU dalam sebuah request handler?",
+  "options": [
+   "Loop itu memblokir event loop tunggal dan menunda semua permintaan lain",
+   "Loop itu memakai lebih banyak bandwidth jaringan daripada kode asinkron",
+   "Loop itu dilarang oleh aturan bahasa JavaScript",
+   "Loop itu membuat garbage collector berhenti selamanya"
+  ],
+  "explanation": "Node menjalankan JavaScript dalam satu thread, sehingga pekerjaan yang memblokir menghentikan semua permintaan lain."
+ },
+ "nodejs_backend-5": {
+  "stem": "Di NestJS, blok bangunan mana yang mengelompokkan controller dan provider yang berkaitan menjadi satu kesatuan?",
+  "options": [
+   "Module",
+   "Guard",
+   "Pipe",
+   "Interceptor"
+  ],
+  "explanation": "Module mengorganisasi controller dan provider."
+ },
+ "nosql_databases-1": {
+  "stem": "Mana yang merupakan database dokumen?",
+  "options": [
+   "MongoDB",
+   "PostgreSQL",
+   "Redis",
+   "Neo4j"
+  ],
+  "explanation": "MongoDB menyimpan dokumen seperti JSON."
+ },
+ "nosql_databases-2": {
+  "stem": "Untuk apa Redis paling umum dipakai?",
+  "options": [
+   "Penyimpanan in-memory untuk caching dan sesi",
+   "Database relasional untuk catatan akuntansi",
+   "Mesin pencari untuk kueri teks penuh",
+   "Alat untuk menggambar diagram database"
+  ],
+  "explanation": "Redis adalah penyimpanan key-value in-memory yang banyak dipakai untuk caching dan sesi."
+ },
+ "nosql_databases-3": {
+  "stem": "Di MongoDB, kapan sebaiknya data terkait disematkan (embed) di dalam satu dokumen, bukan dirujuk?",
+  "options": [
+   "Saat dibaca bersama induknya dan ukurannya tetap kecil",
+   "Saat harus diperbarui secara terpisah dari dokumen induknya",
+   "Saat dipakai bersama oleh ribuan dokumen lain sekaligus",
+   "Saat bertumbuh tanpa batas seiring sistem dipakai terus menerus"
+  ],
+  "explanation": "Sematkan data yang dibaca bersama dan berukuran terbatas; rujuk data yang besar atau dipakai bersama."
+ },
+ "nosql_databases-4": {
+  "stem": "Kueri MongoDB pada koleksi besar memfilter berdasarkan email dan lambat. Apa yang paling membantu?",
+  "options": [
+   "Membuat index pada field email",
+   "Menaikkan batch size kueri",
+   "Menyimpan email di salinan koleksi kedua",
+   "Menjalankan kueri dua kali dan memakai hasil yang lebih cepat"
+  ],
+  "explanation": "Index pada field email menghindari pemindaian seluruh koleksi."
+ },
+ "nosql_databases-5": {
+  "stem": "Beban kerja mana yang kurang cocok untuk database dokumen biasa dan lebih baik dilayani database relasional?",
+  "options": [
+   "Catatan keuangan yang butuh join dan transaksi multibaris",
+   "Katalog produk dengan atribut yang beragam per item",
+   "Data sesi yang kedaluwarsa setelah tiga puluh menit",
+   "Log event yang ditulis sekali dan dibaca secara massal"
+  ],
+  "explanation": "Transaksi multibaris dengan banyak join dan konsistensi ketat cocok untuk database relasional."
+ }
+}

@@ -1,0 +1,2105 @@
+{
+ "note": "Two human labellers per phrase (plan A3); 'adjudicated' resolves disagreements.",
+ "phrases": {
+  "n144": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ios_swift",
+    "llm2_verifikasi_ivan": "ios_swift"
+   },
+   "adjudicated": null
+  },
+  "n212": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cloud_aws",
+    "llm2_verifikasi_ivan": "cloud_aws"
+   },
+   "adjudicated": null
+  },
+  "n291": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n251": {
+   "labels": {
+    "llm1_verifikasi_ivan": "kpi_metrics",
+    "llm2_verifikasi_ivan": "data_analysis"
+   },
+   "adjudicated": null
+  },
+  "n115": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ap_ar_reconciliation",
+    "llm2_verifikasi_ivan": "ap_ar_reconciliation"
+   },
+   "adjudicated": null
+  },
+  "n123": {
+   "labels": {
+    "llm1_verifikasi_ivan": "monitoring_observability",
+    "llm2_verifikasi_ivan": "monitoring_observability"
+   },
+   "adjudicated": null
+  },
+  "n160": {
+   "labels": {
+    "llm1_verifikasi_ivan": "golang_backend",
+    "llm2_verifikasi_ivan": "golang_backend"
+   },
+   "adjudicated": null
+  },
+  "n194": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n089": {
+   "labels": {
+    "llm1_verifikasi_ivan": "machine_learning",
+    "llm2_verifikasi_ivan": "machine_learning"
+   },
+   "adjudicated": null
+  },
+  "n167": {
+   "labels": {
+    "llm1_verifikasi_ivan": "test_design_techniques",
+    "llm2_verifikasi_ivan": "test_design_techniques"
+   },
+   "adjudicated": null
+  },
+  "n277": {
+   "labels": {
+    "llm1_verifikasi_ivan": "api_testing",
+    "llm2_verifikasi_ivan": "api_testing"
+   },
+   "adjudicated": null
+  },
+  "n104": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n183": {
+   "labels": {
+    "llm1_verifikasi_ivan": "accounting_fundamentals",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n050": {
+   "labels": {
+    "llm1_verifikasi_ivan": "design_systems",
+    "llm2_verifikasi_ivan": "design_systems"
+   },
+   "adjudicated": null
+  },
+  "n081": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n195": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n228": {
+   "labels": {
+    "llm1_verifikasi_ivan": "accounting_fundamentals",
+    "llm2_verifikasi_ivan": "accounting_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n233": {
+   "labels": {
+    "llm1_verifikasi_ivan": "visual_design_fundamentals",
+    "llm2_verifikasi_ivan": "visual_design_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n210": {
+   "labels": {
+    "llm1_verifikasi_ivan": "unit_testing_tdd",
+    "llm2_verifikasi_ivan": "unit_testing_tdd"
+   },
+   "adjudicated": null
+  },
+  "n290": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n071": {
+   "labels": {
+    "llm1_verifikasi_ivan": "test_automation_web",
+    "llm2_verifikasi_ivan": "test_automation_web"
+   },
+   "adjudicated": null
+  },
+  "n204": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n170": {
+   "labels": {
+    "llm1_verifikasi_ivan": "social_media_ads",
+    "llm2_verifikasi_ivan": "social_media_ads"
+   },
+   "adjudicated": null
+  },
+  "n162": {
+   "labels": {
+    "llm1_verifikasi_ivan": "etl_pipelines",
+    "llm2_verifikasi_ivan": "etl_pipelines"
+   },
+   "adjudicated": null
+  },
+  "n197": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ci_cd_pipelines",
+    "llm2_verifikasi_ivan": "ci_cd_pipelines"
+   },
+   "adjudicated": null
+  },
+  "n266": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n211": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n274": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n113": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n002": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n134": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n165": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n097": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n299": {
+   "labels": {
+    "llm1_verifikasi_ivan": "etl_pipelines",
+    "llm2_verifikasi_ivan": "etl_pipelines"
+   },
+   "adjudicated": null
+  },
+  "n237": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n073": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n238": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n259": {
+   "labels": {
+    "llm1_verifikasi_ivan": "vulnerability_assessment",
+    "llm2_verifikasi_ivan": "vulnerability_assessment"
+   },
+   "adjudicated": null
+  },
+  "n250": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "etl_pipelines"
+   },
+   "adjudicated": null
+  },
+  "n284": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n260": {
+   "labels": {
+    "llm1_verifikasi_ivan": "infrastructure_as_code",
+    "llm2_verifikasi_ivan": "infrastructure_as_code"
+   },
+   "adjudicated": null
+  },
+  "n129": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n061": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n077": {
+   "labels": {
+    "llm1_verifikasi_ivan": "content_creation_tools",
+    "llm2_verifikasi_ivan": "content_creation_tools"
+   },
+   "adjudicated": null
+  },
+  "n288": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cost_accounting",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n064": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n261": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n169": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cost_accounting",
+    "llm2_verifikasi_ivan": "cost_accounting"
+   },
+   "adjudicated": null
+  },
+  "n102": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n098": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n264": {
+   "labels": {
+    "llm1_verifikasi_ivan": "test_design_techniques",
+    "llm2_verifikasi_ivan": "test_design_techniques"
+   },
+   "adjudicated": null
+  },
+  "n138": {
+   "labels": {
+    "llm1_verifikasi_ivan": "erp_crm",
+    "llm2_verifikasi_ivan": "erp_crm"
+   },
+   "adjudicated": null
+  },
+  "n109": {
+   "labels": {
+    "llm1_verifikasi_ivan": "networking_fundamentals",
+    "llm2_verifikasi_ivan": "networking_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n094": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n084": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n062": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "security_frameworks_compliance"
+   },
+   "adjudicated": null
+  },
+  "n278": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n101": {
+   "labels": {
+    "llm1_verifikasi_ivan": "financial_statements",
+    "llm2_verifikasi_ivan": "financial_statements"
+   },
+   "adjudicated": null
+  },
+  "n185": {
+   "labels": {
+    "llm1_verifikasi_ivan": "audit_internal_control",
+    "llm2_verifikasi_ivan": "audit_internal_control"
+   },
+   "adjudicated": null
+  },
+  "n001": {
+   "labels": {
+    "llm1_verifikasi_ivan": "social_media_ads",
+    "llm2_verifikasi_ivan": "social_media_ads"
+   },
+   "adjudicated": null
+  },
+  "n091": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n285": {
+   "labels": {
+    "llm1_verifikasi_ivan": "performance_testing",
+    "llm2_verifikasi_ivan": "performance_testing"
+   },
+   "adjudicated": null
+  },
+  "n057": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n263": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cloud_data_platform",
+    "llm2_verifikasi_ivan": "cloud_data_platform"
+   },
+   "adjudicated": null
+  },
+  "n052": {
+   "labels": {
+    "llm1_verifikasi_ivan": "react",
+    "llm2_verifikasi_ivan": "react"
+   },
+   "adjudicated": null
+  },
+  "n223": {
+   "labels": {
+    "llm1_verifikasi_ivan": "test_design_techniques",
+    "llm2_verifikasi_ivan": "test_design_techniques"
+   },
+   "adjudicated": null
+  },
+  "n268": {
+   "labels": {
+    "llm1_verifikasi_ivan": "api_integration",
+    "llm2_verifikasi_ivan": "api_integration"
+   },
+   "adjudicated": null
+  },
+  "n099": {
+   "labels": {
+    "llm1_verifikasi_ivan": "auth_security_basics",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n119": {
+   "labels": {
+    "llm1_verifikasi_ivan": "rest_api_design",
+    "llm2_verifikasi_ivan": "rest_api_design"
+   },
+   "adjudicated": null
+  },
+  "n033": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n017": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n039": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n152": {
+   "labels": {
+    "llm1_verifikasi_ivan": "financial_statements",
+    "llm2_verifikasi_ivan": "financial_statements"
+   },
+   "adjudicated": null
+  },
+  "n034": {
+   "labels": {
+    "llm1_verifikasi_ivan": "machine_learning",
+    "llm2_verifikasi_ivan": "machine_learning"
+   },
+   "adjudicated": null
+  },
+  "n157": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n075": {
+   "labels": {
+    "llm1_verifikasi_ivan": "accounting_fundamentals",
+    "llm2_verifikasi_ivan": "accounting_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n070": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n201": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n253": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ap_ar_reconciliation",
+    "llm2_verifikasi_ivan": "ap_ar_reconciliation"
+   },
+   "adjudicated": null
+  },
+  "n236": {
+   "labels": {
+    "llm1_verifikasi_ivan": "statistics",
+    "llm2_verifikasi_ivan": "statistics"
+   },
+   "adjudicated": null
+  },
+  "n230": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ap_ar_reconciliation",
+    "llm2_verifikasi_ivan": "ap_ar_reconciliation"
+   },
+   "adjudicated": null
+  },
+  "n124": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n114": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n265": {
+   "labels": {
+    "llm1_verifikasi_ivan": "tax_compliance_id",
+    "llm2_verifikasi_ivan": "tax_compliance_id"
+   },
+   "adjudicated": null
+  },
+  "n076": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n049": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n006": {
+   "labels": {
+    "llm1_verifikasi_ivan": "etl_pipelines",
+    "llm2_verifikasi_ivan": "etl_pipelines"
+   },
+   "adjudicated": null
+  },
+  "n224": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n192": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n215": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ios_swift",
+    "llm2_verifikasi_ivan": "ios_swift"
+   },
+   "adjudicated": null
+  },
+  "n128": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n295": {
+   "labels": {
+    "llm1_verifikasi_ivan": "warehouse_logistics",
+    "llm2_verifikasi_ivan": "warehouse_logistics"
+   },
+   "adjudicated": null
+  },
+  "n153": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n137": {
+   "labels": {
+    "llm1_verifikasi_ivan": "financial_statements",
+    "llm2_verifikasi_ivan": "financial_statements"
+   },
+   "adjudicated": null
+  },
+  "n289": {
+   "labels": {
+    "llm1_verifikasi_ivan": "marketplace_ecommerce",
+    "llm2_verifikasi_ivan": "marketplace_ecommerce"
+   },
+   "adjudicated": null
+  },
+  "n255": {
+   "labels": {
+    "llm1_verifikasi_ivan": "incident_response_forensics",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n147": {
+   "labels": {
+    "llm1_verifikasi_ivan": "system_design_architecture",
+    "llm2_verifikasi_ivan": "system_design_architecture"
+   },
+   "adjudicated": null
+  },
+  "n252": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n234": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n032": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ci_cd_pipelines",
+    "llm2_verifikasi_ivan": "ci_cd_pipelines"
+   },
+   "adjudicated": null
+  },
+  "n145": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n126": {
+   "labels": {
+    "llm1_verifikasi_ivan": "user_research",
+    "llm2_verifikasi_ivan": "user_research"
+   },
+   "adjudicated": null
+  },
+  "n135": {
+   "labels": {
+    "llm1_verifikasi_ivan": "penetration_testing",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n118": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n221": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n060": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n283": {
+   "labels": {
+    "llm1_verifikasi_ivan": "penetration_testing",
+    "llm2_verifikasi_ivan": "penetration_testing"
+   },
+   "adjudicated": null
+  },
+  "n112": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n016": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n059": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n151": {
+   "labels": {
+    "llm1_verifikasi_ivan": "accounting_fundamentals",
+    "llm2_verifikasi_ivan": "accounting_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n206": {
+   "labels": {
+    "llm1_verifikasi_ivan": "monitoring_observability",
+    "llm2_verifikasi_ivan": "monitoring_observability"
+   },
+   "adjudicated": null
+  },
+  "n044": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n275": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n051": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n069": {
+   "labels": {
+    "llm1_verifikasi_ivan": "java_spring",
+    "llm2_verifikasi_ivan": "java_spring"
+   },
+   "adjudicated": null
+  },
+  "n208": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n235": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cloud_aws",
+    "llm2_verifikasi_ivan": "cloud_aws"
+   },
+   "adjudicated": null
+  },
+  "n239": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cloud_aws",
+    "llm2_verifikasi_ivan": "cloud_aws"
+   },
+   "adjudicated": null
+  },
+  "n125": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n015": {
+   "labels": {
+    "llm1_verifikasi_ivan": "nlp_computer_vision",
+    "llm2_verifikasi_ivan": "machine_learning"
+   },
+   "adjudicated": null
+  },
+  "n047": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n155": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n110": {
+   "labels": {
+    "llm1_verifikasi_ivan": "machine_learning",
+    "llm2_verifikasi_ivan": "machine_learning"
+   },
+   "adjudicated": null
+  },
+  "n272": {
+   "labels": {
+    "llm1_verifikasi_ivan": "data_cleaning",
+    "llm2_verifikasi_ivan": "data_cleaning"
+   },
+   "adjudicated": null
+  },
+  "n270": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n043": {
+   "labels": {
+    "llm1_verifikasi_ivan": "content_creation_tools",
+    "llm2_verifikasi_ivan": "content_creation_tools"
+   },
+   "adjudicated": null
+  },
+  "n096": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n191": {
+   "labels": {
+    "llm1_verifikasi_ivan": "rest_api_design",
+    "llm2_verifikasi_ivan": "rest_api_design"
+   },
+   "adjudicated": null
+  },
+  "n025": {
+   "labels": {
+    "llm1_verifikasi_ivan": "social_media_ads",
+    "llm2_verifikasi_ivan": "social_media_ads"
+   },
+   "adjudicated": null
+  },
+  "n037": {
+   "labels": {
+    "llm1_verifikasi_ivan": "react",
+    "llm2_verifikasi_ivan": "react"
+   },
+   "adjudicated": null
+  },
+  "n180": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n007": {
+   "labels": {
+    "llm1_verifikasi_ivan": "data_analysis",
+    "llm2_verifikasi_ivan": "data_analysis"
+   },
+   "adjudicated": null
+  },
+  "n175": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n103": {
+   "labels": {
+    "llm1_verifikasi_ivan": "monitoring_observability",
+    "llm2_verifikasi_ivan": "monitoring_observability"
+   },
+   "adjudicated": null
+  },
+  "n198": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n010": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n141": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n273": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n067": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n287": {
+   "labels": {
+    "llm1_verifikasi_ivan": "test_automation_web",
+    "llm2_verifikasi_ivan": "test_automation_web"
+   },
+   "adjudicated": null
+  },
+  "n188": {
+   "labels": {
+    "llm1_verifikasi_ivan": "python_analytics",
+    "llm2_verifikasi_ivan": "python_analytics"
+   },
+   "adjudicated": null
+  },
+  "n019": {
+   "labels": {
+    "llm1_verifikasi_ivan": "accounting_software",
+    "llm2_verifikasi_ivan": "accounting_software"
+   },
+   "adjudicated": null
+  },
+  "n086": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n190": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n003": {
+   "labels": {
+    "llm1_verifikasi_ivan": "golang_backend",
+    "llm2_verifikasi_ivan": "golang_backend"
+   },
+   "adjudicated": null
+  },
+  "n227": {
+   "labels": {
+    "llm1_verifikasi_ivan": "tax_compliance_id",
+    "llm2_verifikasi_ivan": "tax_compliance_id"
+   },
+   "adjudicated": null
+  },
+  "n021": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n159": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n065": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n085": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n218": {
+   "labels": {
+    "llm1_verifikasi_ivan": "streaming_data",
+    "llm2_verifikasi_ivan": "streaming_data"
+   },
+   "adjudicated": null
+  },
+  "n148": {
+   "labels": {
+    "llm1_verifikasi_ivan": "monitoring_observability",
+    "llm2_verifikasi_ivan": "monitoring_observability"
+   },
+   "adjudicated": null
+  },
+  "n054": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n173": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n292": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cryptography_basics",
+    "llm2_verifikasi_ivan": "auth_security_basics"
+   },
+   "adjudicated": null
+  },
+  "n298": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n005": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n082": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ci_cd_pipelines",
+    "llm2_verifikasi_ivan": "ci_cd_pipelines"
+   },
+   "adjudicated": null
+  },
+  "n213": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ci_cd_pipelines",
+    "llm2_verifikasi_ivan": "ci_cd_pipelines"
+   },
+   "adjudicated": null
+  },
+  "n225": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n117": {
+   "labels": {
+    "llm1_verifikasi_ivan": "programming_fundamentals",
+    "llm2_verifikasi_ivan": "programming_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n029": {
+   "labels": {
+    "llm1_verifikasi_ivan": "erp_crm",
+    "llm2_verifikasi_ivan": "erp_crm"
+   },
+   "adjudicated": null
+  },
+  "n008": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n271": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cloud_security",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n090": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n079": {
+   "labels": {
+    "llm1_verifikasi_ivan": "programming_fundamentals",
+    "llm2_verifikasi_ivan": "programming_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n142": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cloud_gcp_azure",
+    "llm2_verifikasi_ivan": "cloud_gcp_azure"
+   },
+   "adjudicated": null
+  },
+  "n262": {
+   "labels": {
+    "llm1_verifikasi_ivan": "android_kotlin",
+    "llm2_verifikasi_ivan": "android_kotlin"
+   },
+   "adjudicated": null
+  },
+  "n108": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n242": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n182": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n038": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n083": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n132": {
+   "labels": {
+    "llm1_verifikasi_ivan": "incident_response_forensics",
+    "llm2_verifikasi_ivan": "incident_response_forensics"
+   },
+   "adjudicated": null
+  },
+  "n296": {
+   "labels": {
+    "llm1_verifikasi_ivan": "excel",
+    "llm2_verifikasi_ivan": "excel"
+   },
+   "adjudicated": null
+  },
+  "n254": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n200": {
+   "labels": {
+    "llm1_verifikasi_ivan": "python_analytics",
+    "llm2_verifikasi_ivan": "python_programming"
+   },
+   "adjudicated": null
+  },
+  "n174": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n217": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n011": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n139": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cloud_aws",
+    "llm2_verifikasi_ivan": "cloud_aws"
+   },
+   "adjudicated": null
+  },
+  "n095": {
+   "labels": {
+    "llm1_verifikasi_ivan": "excel",
+    "llm2_verifikasi_ivan": "excel"
+   },
+   "adjudicated": null
+  },
+  "n072": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n140": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n232": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n092": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n258": {
+   "labels": {
+    "llm1_verifikasi_ivan": "audit_internal_control",
+    "llm2_verifikasi_ivan": "audit_internal_control"
+   },
+   "adjudicated": null
+  },
+  "n087": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n020": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n168": {
+   "labels": {
+    "llm1_verifikasi_ivan": "auth_security_basics",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n127": {
+   "labels": {
+    "llm1_verifikasi_ivan": "accounting_fundamentals",
+    "llm2_verifikasi_ivan": "accounting_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n222": {
+   "labels": {
+    "llm1_verifikasi_ivan": "data_analysis",
+    "llm2_verifikasi_ivan": "data_analysis"
+   },
+   "adjudicated": null
+  },
+  "n199": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "business_process_modeling"
+   },
+   "adjudicated": null
+  },
+  "n219": {
+   "labels": {
+    "llm1_verifikasi_ivan": "test_design_techniques",
+    "llm2_verifikasi_ivan": "test_design_techniques"
+   },
+   "adjudicated": null
+  },
+  "n241": {
+   "labels": {
+    "llm1_verifikasi_ivan": "test_design_techniques",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n189": {
+   "labels": {
+    "llm1_verifikasi_ivan": "email_marketing_automation",
+    "llm2_verifikasi_ivan": "email_marketing_automation"
+   },
+   "adjudicated": null
+  },
+  "n149": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n068": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n036": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n023": {
+   "labels": {
+    "llm1_verifikasi_ivan": "financial_statements",
+    "llm2_verifikasi_ivan": "financial_statements"
+   },
+   "adjudicated": null
+  },
+  "n111": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n136": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n028": {
+   "labels": {
+    "llm1_verifikasi_ivan": "erp_crm",
+    "llm2_verifikasi_ivan": "erp_crm"
+   },
+   "adjudicated": null
+  },
+  "n249": {
+   "labels": {
+    "llm1_verifikasi_ivan": "financial_statements",
+    "llm2_verifikasi_ivan": "financial_statements"
+   },
+   "adjudicated": null
+  },
+  "n229": {
+   "labels": {
+    "llm1_verifikasi_ivan": "security_frameworks_compliance",
+    "llm2_verifikasi_ivan": "security_frameworks_compliance"
+   },
+   "adjudicated": null
+  },
+  "n105": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ap_ar_reconciliation",
+    "llm2_verifikasi_ivan": "ap_ar_reconciliation"
+   },
+   "adjudicated": null
+  },
+  "n116": {
+   "labels": {
+    "llm1_verifikasi_ivan": "marketplace_ecommerce",
+    "llm2_verifikasi_ivan": "marketplace_ecommerce"
+   },
+   "adjudicated": null
+  },
+  "n193": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n012": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n100": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n300": {
+   "labels": {
+    "llm1_verifikasi_ivan": "email_marketing_automation",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n022": {
+   "labels": {
+    "llm1_verifikasi_ivan": "kpi_metrics",
+    "llm2_verifikasi_ivan": "kpi_metrics"
+   },
+   "adjudicated": null
+  },
+  "n216": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "system_design_architecture"
+   },
+   "adjudicated": null
+  },
+  "n186": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n078": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n243": {
+   "labels": {
+    "llm1_verifikasi_ivan": "content_creation_tools",
+    "llm2_verifikasi_ivan": "content_creation_tools"
+   },
+   "adjudicated": null
+  },
+  "n161": {
+   "labels": {
+    "llm1_verifikasi_ivan": "seo",
+    "llm2_verifikasi_ivan": "seo"
+   },
+   "adjudicated": null
+  },
+  "n244": {
+   "labels": {
+    "llm1_verifikasi_ivan": "statistics",
+    "llm2_verifikasi_ivan": "statistics"
+   },
+   "adjudicated": null
+  },
+  "n281": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n231": {
+   "labels": {
+    "llm1_verifikasi_ivan": "release_delivery_management",
+    "llm2_verifikasi_ivan": "testing_uat"
+   },
+   "adjudicated": null
+  },
+  "n196": {
+   "labels": {
+    "llm1_verifikasi_ivan": "statistics",
+    "llm2_verifikasi_ivan": "statistics"
+   },
+   "adjudicated": null
+  },
+  "n279": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n048": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n013": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n214": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n150": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n179": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n040": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n269": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n074": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n027": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n240": {
+   "labels": {
+    "llm1_verifikasi_ivan": "kubernetes",
+    "llm2_verifikasi_ivan": "kubernetes"
+   },
+   "adjudicated": null
+  },
+  "n245": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n256": {
+   "labels": {
+    "llm1_verifikasi_ivan": "caching_messaging",
+    "llm2_verifikasi_ivan": "caching_messaging"
+   },
+   "adjudicated": null
+  },
+  "n226": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n133": {
+   "labels": {
+    "llm1_verifikasi_ivan": "content_creation_tools",
+    "llm2_verifikasi_ivan": "content_creation_tools"
+   },
+   "adjudicated": null
+  },
+  "n177": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n280": {
+   "labels": {
+    "llm1_verifikasi_ivan": "penetration_testing",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n120": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n093": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n187": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n045": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n207": {
+   "labels": {
+    "llm1_verifikasi_ivan": "git_version_control",
+    "llm2_verifikasi_ivan": "git_version_control"
+   },
+   "adjudicated": null
+  },
+  "n122": {
+   "labels": {
+    "llm1_verifikasi_ivan": "social_media_ads",
+    "llm2_verifikasi_ivan": "social_media_ads"
+   },
+   "adjudicated": null
+  },
+  "n106": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "html_css"
+   },
+   "adjudicated": null
+  },
+  "n055": {
+   "labels": {
+    "llm1_verifikasi_ivan": "dashboard_reporting",
+    "llm2_verifikasi_ivan": "dashboard_reporting"
+   },
+   "adjudicated": null
+  },
+  "n024": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n176": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n247": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n172": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n282": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n166": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n009": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n205": {
+   "labels": {
+    "llm1_verifikasi_ivan": "sql",
+    "llm2_verifikasi_ivan": "sql"
+   },
+   "adjudicated": null
+  },
+  "n026": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n267": {
+   "labels": {
+    "llm1_verifikasi_ivan": "nlp_computer_vision",
+    "llm2_verifikasi_ivan": "nlp_computer_vision"
+   },
+   "adjudicated": null
+  },
+  "n031": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n209": {
+   "labels": {
+    "llm1_verifikasi_ivan": "deep_learning",
+    "llm2_verifikasi_ivan": "deep_learning"
+   },
+   "adjudicated": null
+  },
+  "n030": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n158": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n184": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n257": {
+   "labels": {
+    "llm1_verifikasi_ivan": "social_media_ads",
+    "llm2_verifikasi_ivan": "social_media_ads"
+   },
+   "adjudicated": null
+  },
+  "n130": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n121": {
+   "labels": {
+    "llm1_verifikasi_ivan": "network_security",
+    "llm2_verifikasi_ivan": "network_security"
+   },
+   "adjudicated": null
+  },
+  "n276": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n107": {
+   "labels": {
+    "llm1_verifikasi_ivan": "networking_fundamentals",
+    "llm2_verifikasi_ivan": "networking_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n066": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n063": {
+   "labels": {
+    "llm1_verifikasi_ivan": "php_laravel",
+    "llm2_verifikasi_ivan": "php_laravel"
+   },
+   "adjudicated": null
+  },
+  "n004": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n202": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n143": {
+   "labels": {
+    "llm1_verifikasi_ivan": "golang_backend",
+    "llm2_verifikasi_ivan": "golang_backend"
+   },
+   "adjudicated": null
+  },
+  "n203": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n058": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n156": {
+   "labels": {
+    "llm1_verifikasi_ivan": "audit_internal_control",
+    "llm2_verifikasi_ivan": "audit_internal_control"
+   },
+   "adjudicated": null
+  },
+  "n154": {
+   "labels": {
+    "llm1_verifikasi_ivan": "ci_cd_pipelines",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n181": {
+   "labels": {
+    "llm1_verifikasi_ivan": "machine_learning",
+    "llm2_verifikasi_ivan": "machine_learning"
+   },
+   "adjudicated": null
+  },
+  "n080": {
+   "labels": {
+    "llm1_verifikasi_ivan": "monitoring_observability",
+    "llm2_verifikasi_ivan": "monitoring_observability"
+   },
+   "adjudicated": null
+  },
+  "n171": {
+   "labels": {
+    "llm1_verifikasi_ivan": "web_analytics",
+    "llm2_verifikasi_ivan": "web_analytics"
+   },
+   "adjudicated": null
+  },
+  "n041": {
+   "labels": {
+    "llm1_verifikasi_ivan": "data_visualization",
+    "llm2_verifikasi_ivan": "data_visualization"
+   },
+   "adjudicated": null
+  },
+  "n293": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "figma_design_tools"
+   },
+   "adjudicated": null
+  },
+  "n246": {
+   "labels": {
+    "llm1_verifikasi_ivan": "cloud_aws",
+    "llm2_verifikasi_ivan": "cloud_aws"
+   },
+   "adjudicated": null
+  },
+  "n294": {
+   "labels": {
+    "llm1_verifikasi_ivan": "testing_uat",
+    "llm2_verifikasi_ivan": "test_design_techniques"
+   },
+   "adjudicated": null
+  },
+  "n131": {
+   "labels": {
+    "llm1_verifikasi_ivan": "accounting_fundamentals",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n018": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n286": {
+   "labels": {
+    "llm1_verifikasi_ivan": "accounting_fundamentals",
+    "llm2_verifikasi_ivan": "accounting_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n014": {
+   "labels": {
+    "llm1_verifikasi_ivan": "accounting_fundamentals",
+    "llm2_verifikasi_ivan": "accounting_fundamentals"
+   },
+   "adjudicated": null
+  },
+  "n042": {
+   "labels": {
+    "llm1_verifikasi_ivan": "golang_backend",
+    "llm2_verifikasi_ivan": "golang_backend"
+   },
+   "adjudicated": null
+  },
+  "n053": {
+   "labels": {
+    "llm1_verifikasi_ivan": "android_kotlin",
+    "llm2_verifikasi_ivan": "android_kotlin"
+   },
+   "adjudicated": null
+  },
+  "n146": {
+   "labels": {
+    "llm1_verifikasi_ivan": "api_integration",
+    "llm2_verifikasi_ivan": "api_integration"
+   },
+   "adjudicated": null
+  },
+  "n220": {
+   "labels": {
+    "llm1_verifikasi_ivan": "kubernetes",
+    "llm2_verifikasi_ivan": "kubernetes"
+   },
+   "adjudicated": null
+  },
+  "n178": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n056": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n035": {
+   "labels": {
+    "llm1_verifikasi_ivan": "mobile_release_quality",
+    "llm2_verifikasi_ivan": "mobile_release_quality"
+   },
+   "adjudicated": null
+  },
+  "n046": {
+   "labels": {
+    "llm1_verifikasi_ivan": "system_design_architecture",
+    "llm2_verifikasi_ivan": "system_design_architecture"
+   },
+   "adjudicated": null
+  },
+  "n164": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n163": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "api_integration"
+   },
+   "adjudicated": null
+  },
+  "n088": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "none"
+   },
+   "adjudicated": null
+  },
+  "n297": {
+   "labels": {
+    "llm1_verifikasi_ivan": "none",
+    "llm2_verifikasi_ivan": "user_research"
+   },
+   "adjudicated": null
+  },
+  "n248": {
+   "labels": {
+    "llm1_verifikasi_ivan": "conversion_optimization",
+    "llm2_verifikasi_ivan": "conversion_optimization"
+   },
+   "adjudicated": null
+  }
+ }
+}

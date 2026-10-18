@@ -1,871 +1,1211 @@
 {
- "version": "2026-10-12-lexicon",
- "reference_date": "2026-10-12",
+ "version": "2026-10-18-lexicon",
+ "reference_date": "2026-10-18",
  "mention_status": {
-  "auto": 13708,
-  "review": 2378,
-  "new": 1730,
+  "auto": 19961,
+  "review": 5120,
+  "new": 2541,
   "rejected": 2
  },
  "roles": {
   "data_engineer": {
-   "n_postings": 18,
+   "n_postings": 23,
    "trend_status": "insufficient",
    "sources": {
-    "karirhub": 10,
+    "karirhub": 11,
     "workable": 1,
     "smartrecruiters": 1,
-    "kalibrr": 6
-   },
-   "top": [
-    [
-     "sql",
-     0.9413
-    ],
-    [
-     "etl_pipelines",
-     0.89
-    ],
-    [
-     "python_programming",
-     0.8341
-    ],
-    [
-     "data_warehousing",
-     0.6087
-    ],
-    [
-     "big_data_spark",
-     0.5556
-    ],
-    [
-     "cloud_aws",
-     0.5496
-    ],
-    [
-     "workflow_orchestration",
-     0.4398
-    ],
-    [
-     "data_cleaning",
-     0.4397
-    ],
-    [
-     "data_modeling",
-     0.3409
-    ],
-    [
-     "git_version_control",
-     0.3251
-    ],
-    [
-     "cloud_data_platform",
-     0.2717
-    ],
-    [
-     "streaming_data",
-     0.2717
-    ]
-   ]
-  },
-  "data_scientist": {
-   "n_postings": 19,
-   "trend_status": "insufficient",
-   "sources": {
-    "karirhub": 9,
-    "workable": 2,
-    "smartrecruiters": 3,
-    "lever": 2,
-    "kalibrr": 3
-   },
-   "top": [
-    [
-     "python_programming",
-     0.8366
-    ],
-    [
-     "machine_learning",
-     0.7808
-    ],
-    [
-     "deep_learning",
-     0.6285
-    ],
-    [
-     "statistics",
-     0.4265
-    ],
-    [
-     "nlp_computer_vision",
-     0.3925
-    ],
-    [
-     "mlops_deployment",
-     0.3917
-    ],
-    [
-     "sql",
-     0.3627
-    ],
-    [
-     "kpi_metrics",
-     0.3552
-    ],
-    [
-     "cloud_aws",
-     0.3327
-    ],
-    [
-     "big_data_spark",
-     0.3201
-    ],
-    [
-     "cloud_gcp_azure",
-     0.2787
-    ],
-    [
-     "data_analysis",
-     0.2058
-    ]
-   ]
-  },
-  "data_analyst": {
-   "n_postings": 37,
-   "trend_status": "insufficient",
-   "sources": {
-    "karirhub": 15,
-    "workable": 6,
-    "workday": 2,
-    "lever": 5,
+    "workday": 1,
     "kalibrr": 9
    },
    "top": [
     [
-     "data_analysis",
-     0.8493
-    ],
-    [
-     "excel",
-     0.6031
-    ],
-    [
-     "dashboard_reporting",
-     0.5127
-    ],
-    [
      "sql",
-     0.4986
+     0.9068
     ],
     [
-     "data_visualization",
-     0.3975
-    ],
-    [
-     "kpi_metrics",
-     0.384
-    ],
-    [
-     "statistics",
-     0.3564
+     "etl_pipelines",
+     0.8665
     ],
     [
      "python_programming",
-     0.3173
+     0.7942
     ],
     [
-     "tableau",
-     0.2937
+     "big_data_spark",
+     0.5586
     ],
     [
-     "bi_tools_other",
-     0.2872
+     "data_warehousing",
+     0.5532
     ],
     [
-     "power_bi",
-     0.276
+     "cloud_aws",
+     0.4769
     ],
     [
      "data_cleaning",
-     0.2724
-    ]
-   ]
-  },
-  "business_analyst": {
-   "n_postings": 57,
-   "trend_status": "insufficient",
-   "sources": {
-    "karirhub": 28,
-    "workable": 3,
-    "workday": 1,
-    "lever": 3,
-    "kalibrr": 22
-   },
-   "top": [
-    [
-     "requirements_elicitation",
-     0.7032
+     0.439
     ],
     [
-     "requirements_documentation",
-     0.4802
+     "workflow_orchestration",
+     0.4377
     ],
     [
-     "business_process_modeling",
-     0.4148
-    ],
-    [
-     "testing_uat",
-     0.3518
-    ],
-    [
-     "sdlc",
-     0.3118
-    ],
-    [
-     "sql",
-     0.2937
-    ],
-    [
-     "api_integration",
-     0.2369
-    ],
-    [
-     "erp_crm",
-     0.2244
-    ],
-    [
-     "excel",
-     0.2072
-    ],
-    [
-     "system_modeling_uml",
-     0.2036
+     "streaming_data",
+     0.2603
     ],
     [
      "data_modeling",
-     0.2009
-    ],
-    [
-     "diagramming_tools",
-     0.1565
-    ]
-   ]
-  },
-  "cybersecurity_analyst": {
-   "n_postings": 26,
-   "trend_status": "insufficient",
-   "sources": {
-    "workable": 6,
-    "smartrecruiters": 1,
-    "lever": 1,
-    "kalibrr": 18
-   },
-   "top": [
-    [
-     "siem_monitoring",
-     0.5302
-    ],
-    [
-     "network_security",
-     0.5041
-    ],
-    [
-     "cloud_security",
-     0.4329
-    ],
-    [
-     "networking_fundamentals",
-     0.4194
-    ],
-    [
-     "security_frameworks_compliance",
-     0.401
-    ],
-    [
-     "incident_response_forensics",
-     0.3828
-    ],
-    [
-     "penetration_testing",
-     0.3794
-    ],
-    [
-     "vulnerability_assessment",
-     0.3656
-    ],
-    [
-     "linux_administration",
-     0.23
-    ],
-    [
-     "cloud_aws",
-     0.2138
-    ],
-    [
-     "cloud_gcp_azure",
-     0.1277
-    ],
-    [
-     "ci_cd_pipelines",
-     0.0897
-    ]
-   ]
-  },
-  "devops_engineer": {
-   "n_postings": 24,
-   "trend_status": "insufficient",
-   "sources": {
-    "karirhub": 9,
-    "workable": 7,
-    "smartrecruiters": 1,
-    "kalibrr": 7
-   },
-   "top": [
-    [
-     "ci_cd_pipelines",
-     0.6584
-    ],
-    [
-     "networking_fundamentals",
-     0.6188
-    ],
-    [
-     "cloud_aws",
-     0.5449
-    ],
-    [
-     "docker_containers",
-     0.5379
-    ],
-    [
-     "kubernetes",
-     0.5349
-    ],
-    [
-     "linux_administration",
-     0.5326
-    ],
-    [
-     "cloud_gcp_azure",
-     0.451
-    ],
-    [
-     "monitoring_observability",
-     0.399
+     0.2559
     ],
     [
      "git_version_control",
-     0.3414
+     0.2549
     ],
     [
-     "python_programming",
-     0.335
-    ],
-    [
-     "cloud_security",
-     0.2427
-    ],
-    [
-     "infrastructure_as_code",
-     0.2373
+     "cloud_gcp_azure",
+     0.2544
     ]
    ]
   },
-  "qa_engineer": {
-   "n_postings": 31,
+  "data_scientist": {
+   "n_postings": 23,
    "trend_status": "insufficient",
    "sources": {
-    "karirhub": 12,
-    "workable": 3,
-    "lever": 1,
-    "kalibrr": 15
-   },
-   "top": [
-    [
-     "test_design_techniques",
-     0.8897
-    ],
-    [
-     "test_automation_web",
-     0.7905
-    ],
-    [
-     "api_testing",
-     0.5383
-    ],
-    [
-     "sql",
-     0.4918
-    ],
-    [
-     "performance_testing",
-     0.3996
-    ],
-    [
-     "javascript",
-     0.3291
-    ],
-    [
-     "git_version_control",
-     0.3148
-    ],
-    [
-     "rest_api_design",
-     0.3126
-    ],
-    [
-     "java_spring",
-     0.2978
-    ],
-    [
-     "testing_uat",
-     0.2957
-    ],
-    [
-     "python_programming",
-     0.171
-    ],
-    [
-     "unit_testing_tdd",
-     0.166
-    ]
-   ]
-  },
-  "mobile_developer": {
-   "n_postings": 29,
-   "trend_status": "insufficient",
-   "sources": {
-    "karirhub": 9,
-    "workable": 7,
+    "karirhub": 11,
+    "workable": 2,
     "smartrecruiters": 3,
-    "kalibrr": 10
+    "lever": 2,
+    "kalibrr": 4,
+    "workday": 1
    },
    "top": [
     [
-     "android_kotlin",
-     0.6099
-    ],
-    [
-     "ios_swift",
-     0.5844
-    ],
-    [
-     "git_version_control",
-     0.5486
-    ],
-    [
-     "rest_api_design",
-     0.5462
-    ],
-    [
-     "auth_security_basics",
-     0.3659
-    ],
-    [
-     "flutter_dart",
-     0.3377
-    ],
-    [
-     "mobile_release_quality",
-     0.3373
-    ],
-    [
-     "system_design_architecture",
-     0.3218
-    ],
-    [
-     "react_native",
-     0.2655
-    ],
-    [
-     "caching_messaging",
-     0.2482
-    ],
-    [
-     "unit_testing_tdd",
-     0.2212
-    ],
-    [
-     "mobile_backend_services",
-     0.1685
-    ]
-   ]
-  },
-  "fullstack_developer": {
-   "n_postings": 49,
-   "trend_status": "insufficient",
-   "sources": {
-    "karirhub": 33,
-    "workable": 8,
-    "smartrecruiters": 1,
-    "kalibrr": 7
-   },
-   "top": [
-    [
-     "sql",
-     0.8276
-    ],
-    [
-     "react",
-     0.7807
-    ],
-    [
-     "rest_api_design",
-     0.7179
-    ],
-    [
-     "git_version_control",
-     0.5719
-    ],
-    [
-     "javascript",
-     0.4359
-    ],
-    [
-     "docker_containers",
-     0.4054
-    ],
-    [
-     "frontend_frameworks_other",
-     0.3933
-    ],
-    [
-     "nosql_databases",
-     0.3726
-    ],
-    [
-     "system_design_architecture",
-     0.3443
-    ],
-    [
-     "nodejs_backend",
-     0.3426
-    ],
-    [
-     "php_laravel",
-     0.3153
-    ],
-    [
-     "ci_cd_pipelines",
-     0.3145
-    ]
-   ]
-  },
-  "frontend_developer": {
-   "n_postings": 18,
-   "trend_status": "insufficient",
-   "sources": {
-    "karirhub": 12,
-    "workable": 4,
-    "kalibrr": 2
-   },
-   "top": [
-    [
-     "javascript",
-     0.7027
-    ],
-    [
-     "html_css",
-     0.6182
-    ],
-    [
-     "rest_api_design",
-     0.5804
-    ],
-    [
-     "responsive_accessible_web",
-     0.5651
-    ],
-    [
-     "git_version_control",
-     0.4687
-    ],
-    [
-     "react",
-     0.4403
-    ],
-    [
-     "frontend_frameworks_other",
-     0.414
-    ],
-    [
-     "typescript",
-     0.2519
-    ],
-    [
-     "web_performance",
-     0.2423
-    ],
-    [
-     "figma_design_tools",
-     0.2186
-    ],
-    [
-     "cms_wordpress",
-     0.1239
-    ],
-    [
-     "frontend_testing",
-     0.1184
-    ]
-   ]
-  },
-  "backend_developer": {
-   "n_postings": 72,
-   "trend_status": "insufficient",
-   "sources": {
-    "karirhub": 29,
-    "workable": 5,
-    "smartrecruiters": 9,
-    "kalibrr": 29
-   },
-   "top": [
-    [
-     "sql",
-     0.611
-    ],
-    [
-     "rest_api_design",
-     0.5605
-    ],
-    [
-     "system_design_architecture",
-     0.4641
-    ],
-    [
-     "git_version_control",
-     0.4067
-    ],
-    [
-     "java_spring",
-     0.403
-    ],
-    [
-     "nosql_databases",
-     0.3729
-    ],
-    [
-     "ci_cd_pipelines",
-     0.3033
-    ],
-    [
-     "golang_backend",
-     0.2569
-    ],
-    [
-     "caching_messaging",
-     0.241
+     "machine_learning",
+     0.8241
     ],
     [
      "python_programming",
-     0.2296
+     0.8183
     ],
     [
-     "dotnet_csharp",
-     0.2208
+     "deep_learning",
+     0.6557
+    ],
+    [
+     "statistics",
+     0.4386
+    ],
+    [
+     "nlp_computer_vision",
+     0.4157
+    ],
+    [
+     "mlops_deployment",
+     0.4151
+    ],
+    [
+     "sql",
+     0.3372
     ],
     [
      "cloud_aws",
+     0.3172
+    ],
+    [
+     "cloud_gcp_azure",
+     0.2739
+    ],
+    [
+     "big_data_spark",
+     0.2568
+    ],
+    [
+     "docker_containers",
+     0.2419
+    ],
+    [
+     "data_analysis",
      0.2158
     ]
    ]
   },
-  "ui_ux_designer": {
-   "n_postings": 7,
+  "data_analyst": {
+   "n_postings": 41,
    "trend_status": "insufficient",
    "sources": {
+    "karirhub": 18,
+    "workable": 6,
+    "workday": 2,
+    "lever": 5,
+    "kalibrr": 10
+   },
+   "top": [
+    [
+     "data_analysis",
+     0.814
+    ],
+    [
+     "excel",
+     0.5615
+    ],
+    [
+     "dashboard_reporting",
+     0.5103
+    ],
+    [
+     "sql",
+     0.4978
+    ],
+    [
+     "data_visualization",
+     0.4083
+    ],
+    [
+     "python_programming",
+     0.3663
+    ],
+    [
+     "statistics",
+     0.2907
+    ],
+    [
+     "bi_tools_other",
+     0.2832
+    ],
+    [
+     "power_bi",
+     0.2733
+    ],
+    [
+     "data_cleaning",
+     0.2687
+    ],
+    [
+     "tableau",
+     0.2326
+    ],
+    [
+     "data_warehousing",
+     0.1141
+    ]
+   ]
+  },
+  "business_analyst": {
+   "n_postings": 65,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 29,
+    "workable": 5,
+    "workday": 2,
+    "lever": 3,
+    "kalibrr": 26
+   },
+   "top": [
+    [
+     "requirements_elicitation",
+     0.5736
+    ],
+    [
+     "requirements_documentation",
+     0.4769
+    ],
+    [
+     "business_process_modeling",
+     0.3918
+    ],
+    [
+     "testing_uat",
+     0.3594
+    ],
+    [
+     "sdlc",
+     0.3429
+    ],
+    [
+     "sql",
+     0.2909
+    ],
+    [
+     "api_integration",
+     0.2415
+    ],
+    [
+     "excel",
+     0.204
+    ],
+    [
+     "erp_crm",
+     0.2016
+    ],
+    [
+     "jira_confluence",
+     0.1795
+    ],
+    [
+     "data_modeling",
+     0.1425
+    ],
+    [
+     "diagramming_tools",
+     0.1355
+    ]
+   ]
+  },
+  "cybersecurity_analyst": {
+   "n_postings": 49,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 14,
+    "workable": 6,
+    "smartrecruiters": 2,
+    "lever": 1,
+    "workday": 2,
+    "greenhouse": 1,
+    "kalibrr": 23
+   },
+   "top": [
+    [
+     "network_security",
+     0.5827
+    ],
+    [
+     "siem_monitoring",
+     0.5579
+    ],
+    [
+     "penetration_testing",
+     0.4578
+    ],
+    [
+     "incident_response_forensics",
+     0.4265
+    ],
+    [
+     "vulnerability_assessment",
+     0.3886
+    ],
+    [
+     "cloud_security",
+     0.3724
+    ],
+    [
+     "security_frameworks_compliance",
+     0.3603
+    ],
+    [
+     "networking_fundamentals",
+     0.3486
+    ],
+    [
+     "linux_administration",
+     0.2968
+    ],
+    [
+     "cloud_aws",
+     0.2219
+    ],
+    [
+     "python_programming",
+     0.1997
+    ],
+    [
+     "cloud_gcp_azure",
+     0.1321
+    ]
+   ]
+  },
+  "devops_engineer": {
+   "n_postings": 34,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 17,
+    "workable": 7,
+    "smartrecruiters": 1,
+    "kalibrr": 8,
+    "workday": 1
+   },
+   "top": [
+    [
+     "ci_cd_pipelines",
+     0.7341
+    ],
+    [
+     "networking_fundamentals",
+     0.5602
+    ],
+    [
+     "kubernetes",
+     0.5389
+    ],
+    [
+     "docker_containers",
+     0.538
+    ],
+    [
+     "cloud_aws",
+     0.5257
+    ],
+    [
+     "monitoring_observability",
+     0.4736
+    ],
+    [
+     "linux_administration",
+     0.4655
+    ],
+    [
+     "cloud_gcp_azure",
+     0.4266
+    ],
+    [
+     "git_version_control",
+     0.3894
+    ],
+    [
+     "python_programming",
+     0.3172
+    ],
+    [
+     "infrastructure_as_code",
+     0.3121
+    ],
+    [
+     "cloud_security",
+     0.2023
+    ]
+   ]
+  },
+  "qa_engineer": {
+   "n_postings": 43,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 23,
+    "workable": 3,
+    "lever": 1,
+    "kalibrr": 16
+   },
+   "top": [
+    [
+     "test_design_techniques",
+     0.8478
+    ],
+    [
+     "test_automation_web",
+     0.7022
+    ],
+    [
+     "api_testing",
+     0.4776
+    ],
+    [
+     "sql",
+     0.3963
+    ],
+    [
+     "performance_testing",
+     0.3777
+    ],
+    [
+     "testing_uat",
+     0.2784
+    ],
+    [
+     "javascript",
+     0.2317
+    ],
+    [
+     "git_version_control",
+     0.2166
+    ],
+    [
+     "java_spring",
+     0.2097
+    ],
+    [
+     "rest_api_design",
+     0.1952
+    ],
+    [
+     "python_programming",
+     0.1204
+    ],
+    [
+     "ci_for_testing",
+     0.0701
+    ]
+   ]
+  },
+  "mobile_developer": {
+   "n_postings": 33,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 10,
+    "workable": 7,
+    "smartrecruiters": 3,
+    "workday": 1,
+    "kalibrr": 12
+   },
+   "top": [
+    [
+     "android_kotlin",
+     0.6324
+    ],
+    [
+     "git_version_control",
+     0.5027
+    ],
+    [
+     "ios_swift",
+     0.5006
+    ],
+    [
+     "rest_api_design",
+     0.4381
+    ],
+    [
+     "system_design_architecture",
+     0.3868
+    ],
+    [
+     "flutter_dart",
+     0.325
+    ],
+    [
+     "auth_security_basics",
+     0.312
+    ],
+    [
+     "mobile_release_quality",
+     0.2876
+    ],
+    [
+     "react_native",
+     0.2634
+    ],
+    [
+     "caching_messaging",
+     0.2495
+    ],
+    [
+     "programming_fundamentals",
+     0.217
+    ],
+    [
+     "unit_testing_tdd",
+     0.1886
+    ]
+   ]
+  },
+  "fullstack_developer": {
+   "n_postings": 60,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 42,
+    "workable": 8,
+    "smartrecruiters": 1,
+    "kalibrr": 9
+   },
+   "top": [
+    [
+     "sql",
+     0.825
+    ],
+    [
+     "react",
+     0.8242
+    ],
+    [
+     "rest_api_design",
+     0.694
+    ],
+    [
+     "git_version_control",
+     0.6014
+    ],
+    [
+     "javascript",
+     0.4944
+    ],
+    [
+     "docker_containers",
+     0.4506
+    ],
+    [
+     "nosql_databases",
+     0.3912
+    ],
+    [
+     "nodejs_backend",
+     0.3819
+    ],
+    [
+     "system_design_architecture",
+     0.3683
+    ],
+    [
+     "frontend_frameworks_other",
+     0.3667
+    ],
+    [
+     "ci_cd_pipelines",
+     0.3581
+    ],
+    [
+     "typescript",
+     0.3464
+    ]
+   ]
+  },
+  "frontend_developer": {
+   "n_postings": 21,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 12,
+    "workable": 4,
+    "kalibrr": 5
+   },
+   "top": [
+    [
+     "javascript",
+     0.6473
+    ],
+    [
+     "html_css",
+     0.6261
+    ],
+    [
+     "rest_api_design",
+     0.5403
+    ],
+    [
+     "responsive_accessible_web",
+     0.4762
+    ],
+    [
+     "git_version_control",
+     0.4467
+    ],
+    [
+     "react",
+     0.4229
+    ],
+    [
+     "frontend_frameworks_other",
+     0.3468
+    ],
+    [
+     "typescript",
+     0.2651
+    ],
+    [
+     "web_performance",
+     0.2029
+    ],
+    [
+     "figma_design_tools",
+     0.1832
+    ],
+    [
+     "accessibility_design",
+     0.1465
+    ],
+    [
+     "cms_wordpress",
+     0.1038
+    ]
+   ]
+  },
+  "backend_developer": {
+   "n_postings": 87,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 40,
+    "workable": 5,
+    "smartrecruiters": 9,
+    "workday": 3,
+    "kalibrr": 30
+   },
+   "top": [
+    [
+     "sql",
+     0.5936
+    ],
+    [
+     "rest_api_design",
+     0.5132
+    ],
+    [
+     "system_design_architecture",
+     0.4346
+    ],
+    [
+     "java_spring",
+     0.3964
+    ],
+    [
+     "git_version_control",
+     0.3774
+    ],
+    [
+     "nosql_databases",
+     0.3208
+    ],
+    [
+     "ci_cd_pipelines",
+     0.3058
+    ],
+    [
+     "golang_backend",
+     0.2365
+    ],
+    [
+     "docker_containers",
+     0.2216
+    ],
+    [
+     "dotnet_csharp",
+     0.2204
+    ],
+    [
+     "python_programming",
+     0.2032
+    ],
+    [
+     "php_laravel",
+     0.1998
+    ]
+   ]
+  },
+  "ui_ux_designer": {
+   "n_postings": 19,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 9,
     "workable": 1,
     "smartrecruiters": 1,
+    "greenhouse": 3,
     "kalibrr": 5
    },
    "top": [
     [
      "figma_design_tools",
-     0.7202
-    ],
-    [
-     "visual_design_fundamentals",
-     0.7071
-    ],
-    [
-     "prototyping_interaction",
-     0.6843
+     0.5895
     ],
     [
      "wireframing",
-     0.5996
+     0.4384
     ],
     [
-     "usability_testing",
-     0.5768
+     "visual_design_fundamentals",
+     0.4198
+    ],
+    [
+     "prototyping_interaction",
+     0.4075
     ],
     [
      "design_systems",
-     0.5558
+     0.3938
+    ],
+    [
+     "usability_testing",
+     0.3714
     ],
     [
      "user_research",
-     0.4483
-    ],
-    [
-     "html_css",
-     0.1519
-    ],
-    [
-     "information_architecture",
-     0.1513
+     0.3265
     ],
     [
      "responsive_accessible_web",
-     0.144
-    ],
-    [
-     "accessibility_design",
-     0.144
+     0.107
     ],
     [
      "web_analytics",
-     0.1285
+     0.097
+    ],
+    [
+     "html_css",
+     0.0531
+    ],
+    [
+     "information_architecture",
+     0.0529
+    ],
+    [
+     "accessibility_design",
+     0.0503
     ]
    ]
   },
   "digital_marketing": {
-   "n_postings": 190,
+   "n_postings": 245,
    "trend_status": "insufficient",
    "sources": {
-    "karirhub": 157,
-    "workable": 14,
+    "karirhub": 208,
+    "workable": 16,
     "smartrecruiters": 1,
-    "kalibrr": 18
+    "workday": 1,
+    "kalibrr": 19
    },
    "top": [
     [
      "social_media_ads",
-     0.3567
-    ],
-    [
-     "content_creation_tools",
-     0.3532
+     0.3692
     ],
     [
      "search_ads",
-     0.287
+     0.3104
     ],
     [
      "marketplace_ecommerce",
-     0.2418
+     0.2396
     ],
     [
-     "kpi_metrics",
-     0.234
-    ],
-    [
-     "web_analytics",
-     0.2125
+     "content_creation_tools",
+     0.2277
     ],
     [
      "seo",
-     0.212
+     0.2094
+    ],
+    [
+     "web_analytics",
+     0.2034
     ],
     [
      "figma_design_tools",
-     0.179
+     0.1934
     ],
     [
      "data_analysis",
-     0.1691
+     0.174
+    ],
+    [
+     "kpi_metrics",
+     0.1671
     ],
     [
      "visual_design_fundamentals",
-     0.1304
+     0.1198
     ],
     [
      "conversion_optimization",
-     0.0801
+     0.0874
     ],
     [
-     "email_marketing_automation",
-     0.0766
+     "excel",
+     0.0798
+    ]
+   ]
+  },
+  "financial_analyst": {
+   "n_postings": 17,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 8,
+    "workable": 2,
+    "kalibrr": 5,
+    "workday": 2
+   },
+   "top": [
+    [
+     "excel",
+     0.5321
+    ],
+    [
+     "financial_statements",
+     0.4956
+    ],
+    [
+     "financial_analysis",
+     0.37
+    ],
+    [
+     "accounting_fundamentals",
+     0.2796
+    ],
+    [
+     "budgeting_forecasting",
+     0.2409
+    ],
+    [
+     "credit_analysis",
+     0.117
+    ],
+    [
+     "sql",
+     0.0752
+    ],
+    [
+     "data_visualization",
+     0.0
+    ],
+    [
+     "kpi_metrics",
+     0.0
+    ],
+    [
+     "power_bi",
+     0.0
+    ]
+   ]
+  },
+  "tax_specialist": {
+   "n_postings": 87,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 67,
+    "workable": 4,
+    "workday": 4,
+    "kalibrr": 12
+   },
+   "top": [
+    [
+     "tax_compliance_id",
+     1.0
+    ],
+    [
+     "accounting_fundamentals",
+     0.7444
+    ],
+    [
+     "excel",
+     0.5471
+    ],
+    [
+     "financial_statements",
+     0.5259
+    ],
+    [
+     "vat_ppn_mechanics",
+     0.505
+    ],
+    [
+     "accounting_software",
+     0.3029
+    ],
+    [
+     "pph_corporate_withholding",
+     0.216
+    ],
+    [
+     "erp_crm",
+     0.1681
+    ],
+    [
+     "tax_dispute_audit",
+     0.1543
+    ]
+   ]
+  },
+  "internal_auditor": {
+   "n_postings": 53,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 27,
+    "workable": 3,
+    "lever": 3,
+    "kalibrr": 10,
+    "workday": 10
+   },
+   "top": [
+    [
+     "audit_internal_control",
+     0.8469
+    ],
+    [
+     "excel",
+     0.2897
+    ],
+    [
+     "enterprise_risk_management",
+     0.2746
+    ],
+    [
+     "audit_reporting_followup",
+     0.2356
+    ],
+    [
+     "data_analysis",
+     0.2287
+    ],
+    [
+     "audit_planning_fieldwork",
+     0.2249
+    ],
+    [
+     "accounting_fundamentals",
+     0.1785
+    ],
+    [
+     "financial_statements",
+     0.1769
+    ],
+    [
+     "erp_crm",
+     0.025
+    ],
+    [
+     "sql",
+     0.0
+    ]
+   ]
+  },
+  "hr_specialist": {
+   "n_postings": 138,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 113,
+    "kalibrr": 17,
+    "workday": 8
+   },
+   "top": [
+    [
+     "recruitment_selection",
+     0.506
+    ],
+    [
+     "excel",
+     0.3423
+    ],
+    [
+     "labor_law_id",
+     0.3166
+    ],
+    [
+     "payroll_processing",
+     0.2163
+    ],
+    [
+     "hris_systems",
+     0.2035
+    ],
+    [
+     "performance_management",
+     0.1688
+    ],
+    [
+     "kpi_metrics",
+     0.1332
+    ],
+    [
+     "learning_development",
+     0.0959
+    ],
+    [
+     "data_analysis",
+     0.0926
+    ],
+    [
+     "dashboard_reporting",
+     0.0073
+    ],
+    [
+     "power_bi",
+     0.0
+    ]
+   ]
+  },
+  "supply_chain_analyst": {
+   "n_postings": 96,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 44,
+    "kalibrr": 28,
+    "workday": 24
+   },
+   "top": [
+    [
+     "procurement_sourcing",
+     0.6012
+    ],
+    [
+     "excel",
+     0.4914
+    ],
+    [
+     "inventory_management",
+     0.2603
+    ],
+    [
+     "cost_accounting",
+     0.2223
+    ],
+    [
+     "vendor_supplier_management",
+     0.1888
+    ],
+    [
+     "production_planning_mrp",
+     0.187
+    ],
+    [
+     "data_analysis",
+     0.1603
+    ],
+    [
+     "erp_crm",
+     0.1519
+    ],
+    [
+     "warehouse_logistics",
+     0.1111
+    ],
+    [
+     "kpi_metrics",
+     0.0748
+    ],
+    [
+     "dashboard_reporting",
+     0.0347
+    ],
+    [
+     "sql",
+     0.0322
+    ]
+   ]
+  },
+  "project_coordinator": {
+   "n_postings": 53,
+   "trend_status": "insufficient",
+   "sources": {
+    "karirhub": 28,
+    "kalibrr": 17,
+    "workday": 8
+   },
+   "top": [
+    [
+     "requirements_elicitation",
+     0.1765
+    ],
+    [
+     "project_scheduling",
+     0.151
+    ],
+    [
+     "project_tools_workspace",
+     0.1426
+    ],
+    [
+     "jira_confluence",
+     0.1296
+    ],
+    [
+     "project_planning_wbs",
+     0.1293
+    ],
+    [
+     "product_roadmap_prioritization",
+     0.1137
+    ],
+    [
+     "data_analysis",
+     0.1051
+    ],
+    [
+     "project_risk_change",
+     0.0956
+    ],
+    [
+     "excel",
+     0.083
+    ],
+    [
+     "release_delivery_management",
+     0.0583
+    ],
+    [
+     "kpi_metrics",
+     0.0572
+    ],
+    [
+     "diagramming_tools",
+     0.0381
     ]
    ]
   },
   "accountant": {
-   "n_postings": 172,
+   "n_postings": 136,
    "trend_status": "insufficient",
    "sources": {
-    "karirhub": 112,
-    "workable": 16,
-    "lever": 6,
+    "karirhub": 91,
+    "workable": 8,
+    "lever": 3,
     "greenhouse": 1,
-    "kalibrr": 37
+    "workday": 6,
+    "smartrecruiters": 1,
+    "kalibrr": 26
    },
    "top": [
     [
      "accounting_fundamentals",
-     0.7262
-    ],
-    [
-     "tax_compliance_id",
-     0.5624
+     0.8343
     ],
     [
      "financial_statements",
-     0.5468
+     0.7014
     ],
     [
      "excel",
-     0.5271
+     0.5554
     ],
     [
-     "audit_internal_control",
-     0.438
+     "tax_compliance_id",
+     0.5346
     ],
     [
      "ap_ar_reconciliation",
-     0.4023
+     0.3487
     ],
     [
-     "accounting_software",
-     0.264
+     "audit_internal_control",
+     0.3059
     ],
     [
      "financial_analysis",
-     0.2443
+     0.2886
+    ],
+    [
+     "accounting_software",
+     0.2869
     ],
     [
      "erp_crm",
-     0.1769
+     0.17
     ],
     [
      "budgeting_forecasting",
-     0.0736
-    ],
-    [
-     "data_analysis",
-     0.0582
+     0.1111
     ],
     [
      "cost_accounting",
-     0.0526
+     0.0655
+    ],
+    [
+     "dashboard_reporting",
+     0.0234
     ]
    ]
   }
  },
  "provenance": {
-  "taxonomy_version": "2026.10-v3",
-  "taxonomy_sha": "d887be8bb3605168",
-  "graph_sha": "d399a628488deaa8",
+  "taxonomy_version": "2026.10-v4",
+  "taxonomy_sha": "1326d0eec1dbd09f",
+  "graph_sha": "96b2947f46f6651c",
   "esco_sha": "b027e6c19853f013",
-  "postings": 1093,
+  "postings": 1831,
   "extractors": {
-   "lexicon": 1093
+   "lexicon": 1831
   },
   "cache_tags": {
-   "lexicon": "lexicon|2026.10-v3|6d4ac66efe57"
+   "lexicon": "lexicon|2026.10-v4|95ebfd92940c"
   },
   "gold_sha": {
    "gold_blind.json": "6109aca0cc2883c0",
-   "gold_split.json": "ed04d7494cefb142"
+   "gold_split.json": "ed04d7494cefb142",
+   "gold_consensus.json": "d3172551f33f74f5"
   },
   "overrides": false
  }

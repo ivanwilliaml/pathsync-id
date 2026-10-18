@@ -15,9 +15,9 @@ from sqlalchemy.orm import Session
 
 from .config import SEED_DIR
 from .db import Posting
+from .i18n import get_lang, t
 
-LEVELS = {0: "No experience yet", 1: "Tried it (class, club, event)", 2: "Regular (project, internship, job)",
-          3: "Led or taught others"}
+LEVELS = (0, 1, 2, 3)          # labels come from the message catalogue (soft.level.N) in the request's language
 MAX_NOTE = 240
 
 
@@ -63,7 +63,9 @@ def soft_profile(demand: dict[str, float], experience: dict | None) -> list[dict
     rows = []
     for sid, sk in load_soft().items():
         e = exp.get(sid, {"level": 0, "note": ""})
-        rows.append({"skill_id": sid, "name": sk["name_en"], "demand": demand.get(sid, 0.0), "level": e["level"],
-                     "level_label": LEVELS[e["level"]], "note": e["note"], "how_to_build": sk["how_to_build"]})
+        en = get_lang() == "en"
+        rows.append({"skill_id": sid, "name": sk["name_en"] if en else sk["name"], "demand": demand.get(sid, 0.0),
+                     "level": e["level"], "level_label": t(f"soft.level.{e['level']}"), "note": e["note"],
+                     "how_to_build": sk["how_to_build"] if en else sk.get("how_to_build_id", sk["how_to_build"])})
     rows.sort(key=lambda r: -r["demand"])
     return rows

@@ -22,7 +22,8 @@
     "communicate effectively",
     "berkomunikasi"
    ],
-   "how_to_build": "Practise by explaining a technical topic to a non-technical friend, or by presenting in a class or club meeting."
+   "how_to_build": "Practise by explaining a technical topic to a non-technical friend, or by presenting in a class or club meeting.",
+   "how_to_build_id": "Latih dengan menjelaskan topik teknis kepada teman non-teknis, atau presentasi di kelas atau rapat organisasi."
   },
   {
    "id": "presentation_storytelling",
@@ -45,7 +46,8 @@
     "slides",
     "public speaking"
    ],
-   "how_to_build": "Present a project result with one clear message and three slides, then ask for feedback."
+   "how_to_build": "Present a project result with one clear message and three slides, then ask for feedback.",
+   "how_to_build_id": "Presentasikan hasil proyek dengan satu pesan utama dan tiga slide, lalu minta masukan."
   },
   {
    "id": "business_writing",
@@ -66,7 +68,8 @@
     "technical writing",
     "menyusun laporan"
    ],
-   "how_to_build": "Write a one-page README or report for a project and ask someone to say what they understood."
+   "how_to_build": "Write a one-page README or report for a project and ask someone to say what they understood.",
+   "how_to_build_id": "Tulis README atau laporan satu halaman untuk sebuah proyek, lalu minta orang lain menjelaskan apa yang mereka tangkap."
   },
   {
    "id": "collaboration",
@@ -89,7 +92,8 @@
     "work in a team",
     "team-oriented"
    ],
-   "how_to_build": "Join a group project or committee, keep a shared task board and record what you delivered."
+   "how_to_build": "Join a group project or committee, keep a shared task board and record what you delivered.",
+   "how_to_build_id": "Ikut proyek kelompok atau kepanitiaan, pakai papan tugas bersama, dan catat apa yang kamu selesaikan."
   },
   {
    "id": "critical_thinking",
@@ -121,7 +125,8 @@
     "detail-oriented",
     "teliti"
    ],
-   "how_to_build": "Write down a problem you solved: the options you compared, why you chose one and what you checked."
+   "how_to_build": "Write down a problem you solved: the options you compared, why you chose one and what you checked.",
+   "how_to_build_id": "Tulis satu masalah yang pernah kamu selesaikan: pilihan yang kamu bandingkan, alasan memilih, dan apa yang kamu cek."
   },
   {
    "id": "stakeholder_management",
@@ -145,7 +150,8 @@
     "klien",
     "relationship management"
    ],
-   "how_to_build": "Run a small project with a real requester (a lecturer, a club, a customer) and keep notes of what they asked for."
+   "how_to_build": "Run a small project with a real requester (a lecturer, a club, a customer) and keep notes of what they asked for.",
+   "how_to_build_id": "Jalankan proyek kecil dengan peminta nyata (dosen, organisasi, pelanggan) dan catat apa yang mereka minta."
   },
   {
    "id": "project_management",
@@ -166,7 +172,8 @@
     "project delivery",
     "prince2"
    ],
-   "how_to_build": "Plan a project with milestones and owners, track it weekly and write a short retrospective."
+   "how_to_build": "Plan a project with milestones and owners, track it weekly and write a short retrospective.",
+   "how_to_build_id": "Rencanakan proyek dengan milestone dan penanggung jawab, pantau setiap minggu, lalu tulis retrospektif singkat."
   },
   {
    "id": "agile_scrum",
@@ -185,7 +192,8 @@
     "agile methodology",
     "metodologi agile"
    ],
-   "how_to_build": "Run a two-week sprint on a team project with planning, a daily check-in and a review."
+   "how_to_build": "Run a two-week sprint on a team project with planning, a daily check-in and a review.",
+   "how_to_build_id": "Jalankan sprint dua minggu di proyek tim: perencanaan, cek harian singkat, dan review."
   },
   {
    "id": "english_proficiency",
@@ -205,7 +213,8 @@
     "active english",
     "komunikasi bahasa inggris"
    ],
-   "how_to_build": "Read documentation and write commit messages or reports in English; a TOEFL/IELTS score is a strong proof."
+   "how_to_build": "Read documentation and write commit messages or reports in English; a TOEFL/IELTS score is a strong proof.",
+   "how_to_build_id": "Baca dokumentasi dan tulis pesan commit atau laporan dalam bahasa Inggris; skor TOEFL/IELTS adalah bukti yang kuat."
   }
  ]
 }

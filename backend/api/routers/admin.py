@@ -17,12 +17,12 @@ from sqlalchemy.orm import Session
 
 from pathsync.config import BACKEND_DIR, PROCESSED_DIR, ROLES
 from pathsync.db import (
+    NON_EXPERT_KINDS,
     Annotation,
     ApiToken,
     Cohort,
     Evidence,
     Expert,
-    GraphEdge,
     MarketSnapshot,
     Posting,
     PostingMention,
@@ -38,10 +38,11 @@ from pathsync.db import (
     utcnow,
 )
 from pathsync.demand import MarketMap, apply_market_shift
-from pathsync.engine import graph_from_db, propagate_market_change
+from pathsync.engine import finalize_edges as engine_finalize_edges
+from pathsync.engine import propagate_market_change
 from pathsync.extraction.llm import llm_configured
 from pathsync.gold import agreement as annotator_agreement
-from pathsync.gold import load_split, prf
+from pathsync.gold import load_split_all, prf
 from pathsync.security import audit_admin_writes, db_session, issue_token, require_admin, revoke
 from pathsync.study import DEFAULT_ARMS, analyse, join_code
 from pathsync.taxonomy import CycleError, load_skills
@@ -91,7 +92,7 @@ def stats(s: Session = Depends(db_session)):
     return {"postings_total": cnt(select(func.count(Posting.id))),
             "duplicates": cnt(select(func.count(Posting.id)).where(Posting.duplicate_of.is_not(None))),
             "by_source": by_source, "in_window_by_role": by_role, "mentions_by_status": by_status,
-            "students": cnt(select(func.count(Student.id))), "experts": cnt(select(func.count(Expert.id)).where(Expert.kind != "simulasi")),
+            "students": cnt(select(func.count(Student.id))), "experts": cnt(select(func.count(Expert.id)).where(Expert.kind.not_in(NON_EXPERT_KINDS))),
             "scenarios": cnt(select(func.count(Scenario.id))), "annotations": cnt(select(func.count(Annotation.id))),
             "pending_project_reviews": cnt(select(func.count(Evidence.id)).where(Evidence.review_status == "pending")),
             "cohorts": cnt(select(func.count(Cohort.id))), "studies": cnt(select(func.count(Study.id))),
@@ -280,7 +281,7 @@ def annotation_next(annotator: str, s: Session = Depends(db_session)):
     order, so every annotator labels the same postings; only the posting text is returned, never the
     extractor output."""
     done = set(s.scalars(select(Annotation.posting_id).where(Annotation.annotator == annotator)).all())
-    split = load_split()
+    split = load_split_all()
     if split:
         todo = [pid for pid in split["dev"] + split["test"] if pid not in done]
         if todo:
@@ -392,7 +393,8 @@ def train(body: TrainIn, s: Session = Depends(db_session)):
     # LTR must beat formula (5) by >= 0.02 with a bootstrap CI that excludes zero
     loeo = None if body.use_simulated else leave_one_expert_out(data, per_expert)
     ok = passes_rule(cv) if body.use_simulated else bool(loeo and loeo.get("passes"))
-    activate = ok and body.activate_if_passes and body.role == "business_analyst"
+    # models trained on simulated experts are never activated (plan AI-06); they only exercise the pipeline
+    activate = ok and body.activate_if_passes and body.role == "business_analyst" and not body.use_simulated
     if activate:
         s.execute(update(RankerModel).values(active=False))
         bump_epoch(s)
@@ -420,14 +422,8 @@ def agreement(simulated: bool = False, s: Session = Depends(db_session)):
 @router.post("/edges/finalize")
 def finalize_edges(s: Session = Depends(db_session)):
     """Keep an edge when at least two of three experts approve it (paper III.A.3)."""
-    summary = {"approved": 0, "rejected": 0, "draft": 0}
-    for e in s.scalars(select(GraphEdge)).all():
-        a = sum(v.approve for v in e.votes)
-        r = sum(not v.approve for v in e.votes)
-        e.status = "approved" if a >= 2 else "rejected" if r >= 2 else "draft"
-        summary[e.status] += 1
     try:
-        graph_from_db(s).check_acyclic()
+        summary = engine_finalize_edges(s)          # internal and simulated reviews never validate a link
     except CycleError:
         s.rollback()
         raise HTTPException(400, "The approved links form a loop. Reject one of them and try again.") from None
@@ -447,7 +443,7 @@ class ExpertIn(BaseModel):
 @router.get("/experts")
 def experts(s: Session = Depends(db_session)):
     return [{"id": e.id, "name": e.name, "affiliation": e.affiliation, "kind": e.kind, "validates_graph": e.validates_graph}
-            for e in s.scalars(select(Expert).where(Expert.kind != "simulasi")).all()]
+            for e in s.scalars(select(Expert).where(Expert.kind.not_in(NON_EXPERT_KINDS))).all()]
 
 
 @router.post("/experts")

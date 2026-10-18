@@ -6,7 +6,8 @@ from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from functools import lru_cache
 
-from .config import LANG, SEED_DIR
+from .config import SEED_DIR
+from .i18n import get_lang
 
 
 @dataclass(frozen=True)
@@ -131,13 +132,17 @@ def load_taxonomy() -> dict:
     return _load_json("taxonomy.json")
 
 
-@lru_cache(maxsize=1)
-def load_skills() -> dict[str, Skill]:
-    """Frozen taxonomy as Skill objects (cached; treat the returned dict as read-only)."""
+def load_skills(lang: str | None = None) -> dict[str, Skill]:
+    """Frozen taxonomy as Skill objects in the request's display language (cached per language; read-only)."""
+    return _load_skills(lang or get_lang())
+
+
+@lru_cache(maxsize=4)
+def _load_skills(lang: str) -> dict[str, Skill]:
     tax = load_taxonomy()
     out = {}
     for s in tax["skills"]:
-        en = LANG == "en"
+        en = lang == "en"
         out[s["id"]] = Skill(
             id=s["id"], name=s["name_en"] if en else s["name"], name_en=s["name_en"], cluster=s["cluster"], kind=s["kind"],
             description=s.get("description_en", s["description"]) if en else s["description"],
@@ -148,15 +153,33 @@ def load_skills() -> dict[str, Skill]:
     return out
 
 
+def display_skills() -> dict[str, Skill]:
+    """Taxonomy for display: names and texts in the current request's language (the same as load_skills())."""
+    return load_skills()
+
+
 def load_draft_edges() -> list[Edge]:
     g = _load_json("graph.json")
-    key = "rationale_en" if LANG == "en" else "rationale"
+    key = "rationale_en" if get_lang() == "en" else "rationale"
     return [Edge(e["from"], e["to"], e.get("source", "tim"), e.get(key) or e.get("rationale", "")) for e in g["edges"]]
+
+
+@lru_cache(maxsize=1)
+def rationale_variants() -> dict[tuple[str, str], dict[str, str]]:
+    """(src, dst) -> {"id": ..., "en": ...} for seed edges, so a stored rationale can be shown in either language."""
+    return {(e["from"], e["to"]): {"id": e.get("rationale", ""), "en": e.get("rationale_en") or e.get("rationale", "")}
+            for e in _load_json("graph.json")["edges"]}
+
+
+def display_rationale(src: str, dst: str, stored: str) -> str:
+    """A seed rationale in the request's language; text an expert wrote stays as written."""
+    v = rationale_variants().get((src, dst))
+    return v[get_lang()] if v and stored in v.values() else stored
 
 
 def seed_rationales() -> dict[tuple[str, str], tuple[str, str]]:
     """(src, dst) -> (Indonesian rationale, display rationale) for edges that came from the seed graph."""
-    key = "rationale_en" if LANG == "en" else "rationale"
+    key = "rationale_en" if get_lang() == "en" else "rationale"
     return {(e["from"], e["to"]): (e.get("rationale", ""), e.get(key) or e.get("rationale", ""))
             for e in _load_json("graph.json")["edges"]}
 
@@ -166,5 +189,6 @@ def load_graph(edges: list[Edge] | None = None) -> SkillGraph:
 
 
 def cluster_names() -> dict[str, str]:
+    """Area labels in the current request's language."""
     tax = load_taxonomy()
-    return tax.get("clusters_en", tax["clusters"]) if LANG == "en" else tax["clusters"]
+    return tax.get("clusters_en", tax["clusters"]) if get_lang() == "en" else tax["clusters"]

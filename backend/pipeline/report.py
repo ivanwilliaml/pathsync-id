@@ -23,11 +23,23 @@ from pathlib import Path
 from sqlalchemy import func, select
 
 from pathsync.config import BKT_GUESS, BKT_SLIP, BKT_TRANSIT, MODELS_DIR, ROLES, SEED_DIR, SIM_AUTO, SIM_REVIEW
-from pathsync.db import Annotation, Expert, GraphEdge, Posting, RankerModel, active_snapshot, get_session, init_db
+from pathsync.db import (
+    NON_EXPERT_KINDS,
+    Annotation,
+    Expert,
+    GraphEdge,
+    Posting,
+    RankerModel,
+    ScenarioRanking,
+    active_snapshot,
+    get_session,
+    init_db,
+)
 
 OUT = MODELS_DIR / "metrics.json"
 CRLF, LF = bytes([13, 10]), bytes([10])     # hashes ignore line endings (Windows checkouts vs CI)
-GOLD_FILES = ("gold_pilot.json", "gold_heldout.json", "gold_blind.json", "gold_split.json",
+GOLD_FILES = ("gold_pilot.json", "gold_heldout.json", "gold_blind.json", "gold_blind_bisnis.json", "gold_split.json",
+              "gold_split_bisnis.json",
               "gold_consensus.json", "gold_adjudication.json", "normalisation_gold.json")
 
 
@@ -45,7 +57,8 @@ def _extraction() -> dict:
     sets = {k: {"n_postings": v["n_postings"], **{m: v["overall"][m] for m in
                 ("precision", "precision_ci95", "recall", "recall_ci95", "f1") if m in v["overall"]},
                 "f1_ci95": v["overall"].get("f1_ci95"), "gold_sha": v.get("gold_sha"),
-                "tuned_on": k == "dev"}
+                # dev and held-out were both used to tune aliases (held-out after its first measurement, 12 Oct)
+                "tuned_on": k in ("dev", "heldout", "consensus_dev")}
             for k, v in ev.items() if k != "provenance"}
     from pathsync.gold import CONSENSUS_FILE
     if CONSENSUS_FILE.exists():                     # plan A2: every extractor on the two-annotator test half
@@ -53,23 +66,33 @@ def _extraction() -> dict:
         for ext in EXTRACTORS:
             r = evaluate(ext, CONSENSUS_FILE.name, "test")
             if r["n_postings"]:
-                sets[f"consensus_test_{ext}"] = {"n_postings": r["n_postings"], "annotators": 2, **r["overall"],
-                                                 "tuned_on": False}
+                prov = json.loads(CONSENSUS_FILE.read_text(encoding="utf-8")).get("provenance", {})
+                sets[f"consensus_test_{ext}"] = {"n_postings": r["n_postings"], **r["overall"], "tuned_on": False,
+                                                 "annotators": prov.get("label", "2 human annotators"),
+                                                 "human_annotators": prov.get("human_annotators", 2),
+                                                 "independent": prov.get("independent", True)}
     blind = sets.get("blind", {})
     lo = (blind.get("precision_ci95") or [None])[0]
     return {"extractor": (ev.get("provenance") or {}).get("extractor", "lexicon"), "sets": sets,
             "annotators": 1, "target_precision": 0.80,
             "target_met": {"point_estimate": blind.get("precision", 0) >= 0.80,
                            "lower_ci_bound": lo is not None and lo >= 0.80},
-            "note": "dev was used to tune aliases and must not be quoted as performance; blind is the reportable set"}
+            "note": "dev and heldout were used to tune aliases and must not be quoted as performance; blind (14 original roles) "
+                    "and blind_bisnis (6 business roles, never tuned on) are the reportable sets; all single-annotator"}
 
 
 def _items() -> dict:
-    a = _load("item_cue_audit.json")
-    c = a.get("classifier", {})
-    return {"generated": a.get("generated"), "n_items": a.get("n_items"), "language": a.get("language"),
-            "answer_pattern_accuracy": c.get("accuracy"), "chance": c.get("chance"), "random_p95": c.get("null_p95"),
-            "note": "accuracy of a model that sees only option surface features; at or below random_p95 means no usable cue"}
+    def one(name: str) -> dict:
+        a = _load(name)
+        c = a.get("classifier", {})
+        return {"generated": a.get("generated"), "n_items": a.get("n_items"), "language": a.get("language"),
+                "answer_pattern_accuracy": c.get("accuracy"), "accuracy_sd": c.get("accuracy_sd"),
+                "seeds": c.get("seeds"), "chance": c.get("chance"), "random_p95": c.get("null_p95")}
+
+    en, idn = one("item_cue_audit.json"), one("item_cue_audit_id.json")
+    return {**en, "indonesian": idn,
+            "note": "accuracy of a model that sees only option surface features; at or below random_p95 means no usable cue. "
+                    "The Indonesian bank (plan A7) is audited separately because translation changes option lengths."}
 
 
 def _ranker(s) -> dict:
@@ -79,7 +102,9 @@ def _ranker(s) -> dict:
     for name, c in (rep.get("conditions") or {}).items():
         methods = ((c.get("cv") or {}).get("methods") or {})
         conds[name] = {m: (v.get("ndcg5") or {}) for m, v in methods.items()}
-    real = s.scalar(select(func.count(Expert.id)).where(Expert.kind != "simulasi")) or 0
+    # the ranker is judged on scenario rankings, so only experts who ranked scenarios count here (graph reviewers do not)
+    real = s.scalar(select(func.count(func.distinct(ScenarioRanking.expert_id))).join(Expert, Expert.id == ScenarioRanking.expert_id)
+                    .where(ScenarioRanking.simulated.is_(False), Expert.kind.not_in(NON_EXPERT_KINDS))) or 0
     return {"generated": rep.get("generated_at"), "role": rep.get("role"), "n_scenarios": rep.get("n_scenarios"),
             "experts": "real" if real >= 3 else "simulated", "real_experts": real,
             "active_model": active.name if active else "Formula (5)",
@@ -103,8 +128,16 @@ def _market(s) -> dict:
 def _validation(s) -> dict:
     edges = dict(s.execute(select(GraphEdge.status, func.count()).group_by(GraphEdge.status)).all())
     annotators = s.scalar(select(func.count(func.distinct(Annotation.annotator)))) or 0
+    from pathsync.db import Expert
+    from pathsync.gold import CONSENSUS_FILE
+
+    prov = json.loads(CONSENSUS_FILE.read_text(encoding="utf-8")).get("provenance") if CONSENSUS_FILE.exists() else None
+    reviewers = [{"name": e.name, "kind": e.kind} for e in s.scalars(select(Expert)).all() if e.kind != "simulasi"]
     return {"graph_edges": edges, "annotators_in_app": annotators,
-            "annotated_postings_in_app": s.scalar(select(func.count(func.distinct(Annotation.posting_id)))) or 0}
+            "annotated_postings_in_app": s.scalar(select(func.count(func.distinct(Annotation.posting_id)))) or 0,
+            "annotation_provenance": prov and {k: prov[k] for k in ("label", "human_annotators", "independent")},
+            "graph_reviewers": reviewers,
+            "independent_experts": sum(r["kind"] not in NON_EXPERT_KINDS for r in reviewers)}
 
 
 def _taxonomy_final(s) -> dict:
@@ -138,13 +171,22 @@ def build() -> dict:
             "constants": {"sim_auto": SIM_AUTO, "sim_review": SIM_REVIEW,
                           "bkt": {"slip": BKT_SLIP, "guess": BKT_GUESS, "transit": BKT_TRANSIT}},
             "extraction": _extraction(), "assessment_items": _items(), "ranker": _ranker(s),
-            "market": _market(s), "validation": _validation(s), "taxonomy_final": _taxonomy_final(s),
+            "market": _market(s), "validation": _validation(s), "pilot": _pilot(), "taxonomy_final": _taxonomy_final(s),
             "evidence_weights": _evidence_weights(s), "normalisation": _load("normalisation_eval.json") or None,
             "item_calibration": {k: v for k, v in _load("item_calibration.json").items()
                                  if k in ("generated_at", "n_answers", "n_items_calibrated", "active",
                                           "author_vs_empirical_spearman")} or None,
             "performance": _load("loadtest.json") or None,
         }
+
+
+def _pilot() -> dict | None:
+    p = MODELS_DIR / "pilot_eval.json"
+    if not p.exists():
+        return None
+    d = json.loads(p.read_text(encoding="utf-8"))
+    return {k: d[k] for k in ("n", "provenance", "session_dates", "tasks", "times", "ratings_pathsync_vs_generic", "sus",
+                              "meets", "note")}
 
 
 def main() -> None:

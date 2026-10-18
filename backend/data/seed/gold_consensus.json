@@ -1,0 +1,1949 @@
+{
+ "note": "LLM pre-annotation (2 passes), verified by 1 team member (Ivan). Two LLM passes were checked and corrected by one team member. Labels where the two sheets disagree are left out (no adjudication). Agreement between the two sheets is NOT inter-human agreement and must not be reported as kappa between annotators.",
+ "postings": {
+  "kalibrr:228861": {
+   "role": "backend_developer",
+   "skills": [
+    "dotnet_csharp",
+    "git_version_control",
+    "golang_backend",
+    "java_spring",
+    "php_laravel",
+    "programming_fundamentals",
+    "python_programming",
+    "rest_api_design",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:231627": {
+   "role": "supply_chain_analyst",
+   "skills": [
+    "excel",
+    "procurement_sourcing",
+    "vendor_supplier_management"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:236267": {
+   "role": "qa_engineer",
+   "skills": [
+    "performance_testing",
+    "test_automation_web"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:246659": {
+   "role": "supply_chain_analyst",
+   "skills": [
+    "excel",
+    "inventory_management",
+    "procurement_sourcing",
+    "vendor_supplier_management"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:251758": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "network_security"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:254916": {
+   "role": "ui_ux_designer",
+   "skills": [
+    "dashboard_reporting",
+    "data_analysis",
+    "kpi_metrics",
+    "usability_testing",
+    "user_research",
+    "web_analytics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:262223": {
+   "role": "financial_analyst",
+   "skills": [
+    "credit_analysis"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:267421": {
+   "role": "data_analyst",
+   "skills": [
+    "conversion_optimization",
+    "data_analysis",
+    "data_structures_algorithms",
+    "deep_learning",
+    "kpi_metrics",
+    "python_analytics",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:267604": {
+   "role": "fullstack_developer",
+   "skills": [
+    "android_kotlin",
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "data_structures_algorithms",
+    "flutter_dart",
+    "frontend_frameworks_other",
+    "html_css",
+    "java_spring",
+    "javascript",
+    "nodejs_backend",
+    "nosql_databases",
+    "react",
+    "react_native",
+    "sql",
+    "system_design_architecture",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:267805": {
+   "role": "ui_ux_designer",
+   "skills": [
+    "information_architecture",
+    "usability_testing"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:267998": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "cloud_security",
+    "infrastructure_as_code",
+    "monitoring_observability",
+    "network_security",
+    "networking_fundamentals",
+    "security_frameworks_compliance"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:268320": {
+   "role": "data_analyst",
+   "skills": [
+    "data_analysis",
+    "data_cleaning",
+    "excel",
+    "search_ads",
+    "web_analytics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:268599": {
+   "role": "digital_marketing",
+   "skills": [
+    "conversion_optimization",
+    "web_analytics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:269823": {
+   "role": "ui_ux_designer",
+   "skills": [
+    "cms_wordpress",
+    "design_systems",
+    "figma_design_tools",
+    "html_css",
+    "prototyping_interaction",
+    "usability_testing",
+    "user_research",
+    "wireframing"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:270000": {
+   "role": "data_engineer",
+   "skills": [
+    "big_data_spark",
+    "cloud_aws",
+    "java_spring",
+    "python_programming",
+    "sql",
+    "streaming_data"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:270282": {
+   "role": "fullstack_developer",
+   "skills": [
+    "api_integration",
+    "auth_security_basics",
+    "caching_messaging",
+    "ci_cd_pipelines",
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "cryptography_basics",
+    "data_modeling",
+    "docker_containers",
+    "git_version_control",
+    "java_spring",
+    "javascript",
+    "kubernetes",
+    "linux_administration",
+    "react",
+    "rest_api_design",
+    "sql",
+    "streaming_data",
+    "system_design_architecture",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:271196": {
+   "role": "digital_marketing",
+   "skills": [
+    "conversion_optimization",
+    "data_analysis",
+    "excel",
+    "kpi_metrics",
+    "marketplace_ecommerce"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:271232": {
+   "role": "project_coordinator",
+   "skills": [
+    "data_analysis",
+    "figma_design_tools",
+    "jira_confluence",
+    "kpi_metrics",
+    "product_roadmap_prioritization",
+    "requirements_documentation",
+    "user_research"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:271254": {
+   "role": "digital_marketing",
+   "skills": [
+    "conversion_optimization",
+    "data_analysis",
+    "search_ads",
+    "social_media_ads",
+    "web_analytics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:271429": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "incident_response_forensics",
+    "network_security",
+    "networking_fundamentals",
+    "vulnerability_assessment"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:271829": {
+   "role": "financial_analyst",
+   "skills": [
+    "accounting_fundamentals",
+    "accounting_software",
+    "ap_ar_reconciliation",
+    "erp_crm",
+    "excel",
+    "financial_statements",
+    "tax_compliance_id",
+    "vat_ppn_mechanics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272018": {
+   "role": "qa_engineer",
+   "skills": [
+    "api_testing",
+    "java_spring",
+    "javascript",
+    "jira_confluence",
+    "performance_testing",
+    "sdlc",
+    "test_automation_web",
+    "test_design_techniques"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272074": {
+   "role": "backend_developer",
+   "skills": [
+    "caching_messaging",
+    "dotnet_csharp",
+    "git_version_control",
+    "javascript",
+    "kubernetes",
+    "nosql_databases",
+    "penetration_testing",
+    "rest_api_design",
+    "sql",
+    "testing_uat",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272230": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "audit_internal_control",
+    "audit_reporting_followup",
+    "excel",
+    "incident_response_forensics",
+    "security_frameworks_compliance"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272422": {
+   "role": "qa_engineer",
+   "skills": [
+    "api_testing",
+    "ci_cd_pipelines",
+    "docker_containers",
+    "golang_backend",
+    "kubernetes",
+    "performance_testing",
+    "programming_fundamentals",
+    "test_automation_web",
+    "testing_uat",
+    "typescript",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272709": {
+   "role": "data_analyst",
+   "skills": [
+    "excel",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272717": {
+   "role": "devops_engineer",
+   "skills": [],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272776": {
+   "role": "mobile_developer",
+   "skills": [
+    "auth_security_basics",
+    "ci_cd_pipelines",
+    "ios_swift",
+    "mobile_release_quality",
+    "monitoring_observability",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272934": {
+   "role": "internal_auditor",
+   "skills": [
+    "audit_internal_control",
+    "audit_planning_fieldwork",
+    "audit_reporting_followup",
+    "excel"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272975": {
+   "role": "devops_engineer",
+   "skills": [
+    "ci_cd_pipelines",
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "docker_containers",
+    "git_version_control",
+    "web_servers_proxies"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:272987": {
+   "role": "tax_specialist",
+   "skills": [
+    "accounting_fundamentals",
+    "ap_ar_reconciliation",
+    "budgeting_forecasting",
+    "cost_accounting",
+    "erp_crm",
+    "excel",
+    "financial_analysis",
+    "financial_statements",
+    "pph_corporate_withholding",
+    "tax_compliance_id",
+    "vat_ppn_mechanics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:273187": {
+   "role": "financial_analyst",
+   "skills": [
+    "accounting_fundamentals",
+    "accounting_software",
+    "ap_ar_reconciliation",
+    "audit_internal_control",
+    "audit_reporting_followup",
+    "erp_crm",
+    "financial_analysis",
+    "financial_statements",
+    "tax_compliance_id",
+    "vat_ppn_mechanics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:273196": {
+   "role": "financial_analyst",
+   "skills": [
+    "excel"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:273218": {
+   "role": "frontend_developer",
+   "skills": [
+    "api_integration",
+    "git_version_control",
+    "react",
+    "react_native",
+    "responsive_accessible_web"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:273479": {
+   "role": "supply_chain_analyst",
+   "skills": [
+    "excel",
+    "procurement_sourcing",
+    "vendor_supplier_management"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:273555": {
+   "role": "qa_engineer",
+   "skills": [
+    "python_programming",
+    "sql",
+    "test_automation_web",
+    "test_design_techniques"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:273688": {
+   "role": "mobile_developer",
+   "skills": [
+    "api_integration",
+    "git_version_control",
+    "ios_swift",
+    "mobile_release_quality",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:273726": {
+   "role": "data_scientist",
+   "skills": [
+    "api_integration",
+    "docker_containers",
+    "nlp_computer_vision",
+    "nosql_databases",
+    "python_backend",
+    "python_programming",
+    "rest_api_design",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "kalibrr:274311": {
+   "role": "project_coordinator",
+   "skills": [
+    "data_cleaning",
+    "project_planning_wbs",
+    "project_risk_change",
+    "vendor_supplier_management"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a01e17-fc43-73af-9759-fbfdc75ee598": {
+   "role": "project_coordinator",
+   "skills": [],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a02311-413d-7239-85c0-5750364e67cb": {
+   "role": "business_analyst",
+   "skills": [
+    "business_process_modeling",
+    "diagramming_tools",
+    "erp_crm",
+    "excel",
+    "jira_confluence",
+    "project_risk_change",
+    "requirements_documentation",
+    "requirements_elicitation",
+    "sdlc",
+    "testing_uat"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a02aba-3f61-7231-b5f9-6bcae77c558b": {
+   "role": "internal_auditor",
+   "skills": [
+    "audit_internal_control",
+    "erp_crm"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a031e0-3652-72ca-ac75-494e89bd5c14": {
+   "role": "accountant",
+   "skills": [
+    "accounting_fundamentals",
+    "ap_ar_reconciliation",
+    "financial_statements"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a03361-91d4-72a7-ace1-a1935db10f8b": {
+   "role": "internal_auditor",
+   "skills": [
+    "audit_internal_control",
+    "audit_reporting_followup",
+    "inventory_management"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0446b-1d01-73f6-9517-0f45e5b6ea77": {
+   "role": "digital_marketing",
+   "skills": [
+    "marketplace_ecommerce",
+    "search_ads",
+    "seo",
+    "social_media_ads"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a04710-1e74-739e-90f1-031829b11d4c": {
+   "role": "data_scientist",
+   "skills": [
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "data_analysis",
+    "deep_learning",
+    "machine_learning",
+    "nlp_computer_vision",
+    "python_analytics",
+    "sql",
+    "statistics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a04eba-5268-7332-8ac6-7e5dd61dd18f": {
+   "role": "fullstack_developer",
+   "skills": [
+    "api_integration",
+    "auth_security_basics",
+    "data_modeling",
+    "docker_containers",
+    "flutter_dart",
+    "git_version_control",
+    "golang_backend",
+    "nodejs_backend",
+    "php_laravel",
+    "programming_fundamentals",
+    "react",
+    "rest_api_design",
+    "sql",
+    "typescript"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0561f-73d4-72be-b7fb-cfae59d2c457": {
+   "role": "data_engineer",
+   "skills": [
+    "cloud_aws",
+    "cloud_data_platform",
+    "cloud_gcp_azure",
+    "data_warehousing",
+    "etl_pipelines",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0573f-e949-73bb-ad6c-3bf8769a192c": {
+   "role": "backend_developer",
+   "skills": [
+    "api_integration",
+    "data_analysis",
+    "deep_learning",
+    "machine_learning",
+    "nlp_computer_vision",
+    "python_programming",
+    "rest_api_design"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a05c50-1045-701e-8f79-98d13f066479": {
+   "role": "financial_analyst",
+   "skills": [
+    "budgeting_forecasting",
+    "data_analysis",
+    "excel",
+    "financial_analysis"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a06649-35ff-7211-b814-2d2ab730ac55": {
+   "role": "mobile_developer",
+   "skills": [
+    "api_integration",
+    "git_version_control",
+    "react",
+    "react_native"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a07b52-2cdd-71cc-bab5-505783c134fb": {
+   "role": "fullstack_developer",
+   "skills": [
+    "data_modeling",
+    "dotnet_csharp",
+    "frontend_frameworks_other",
+    "html_css",
+    "javascript",
+    "react",
+    "requirements_elicitation",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a08aac-873f-707b-beff-56a540546991": {
+   "role": "devops_engineer",
+   "skills": [
+    "cloud_gcp_azure",
+    "monitoring_observability",
+    "networking_fundamentals"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a08f27-108d-732c-87f4-7c67d96cad9f": {
+   "role": "project_coordinator",
+   "skills": [
+    "erp_crm"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a096d1-68bb-71e1-8d60-d6b8c110c951": {
+   "role": "backend_developer",
+   "skills": [
+    "golang_backend",
+    "java_spring",
+    "javascript",
+    "nosql_databases",
+    "php_laravel",
+    "programming_fundamentals",
+    "sql",
+    "system_design_architecture",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0ad43-8268-7145-93d5-8483d25c713d": {
+   "role": "business_analyst",
+   "skills": [
+    "api_integration",
+    "erp_crm",
+    "project_risk_change",
+    "python_programming",
+    "release_delivery_management",
+    "requirements_documentation",
+    "requirements_elicitation",
+    "testing_uat"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0b3d1-d7de-721d-8dd7-bd923f939952": {
+   "role": "data_analyst",
+   "skills": [
+    "accounting_software",
+    "data_analysis",
+    "excel"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0c807-0f63-7185-864c-01323fd72012": {
+   "role": "business_analyst",
+   "skills": [
+    "business_process_modeling"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0d9c0-c355-732d-8ae5-cc9624e0075c": {
+   "role": "hr_specialist",
+   "skills": [
+    "hris_systems",
+    "labor_law_id",
+    "recruitment_selection"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0d9c3-ceb2-71cb-88c4-6f1c2676de58": {
+   "role": "fullstack_developer",
+   "skills": [
+    "api_integration",
+    "api_testing",
+    "big_data_spark",
+    "docker_containers",
+    "etl_pipelines",
+    "figma_design_tools",
+    "frontend_frameworks_other",
+    "git_version_control",
+    "golang_backend",
+    "html_css",
+    "javascript",
+    "kubernetes",
+    "nosql_databases",
+    "php_laravel",
+    "python_programming",
+    "react",
+    "rest_api_design",
+    "sql",
+    "streaming_data",
+    "system_design_architecture"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0d9c4-7cd5-7129-98a3-7934ba7c2574": {
+   "role": "data_scientist",
+   "skills": [
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "deep_learning",
+    "docker_containers",
+    "machine_learning",
+    "math_for_ml",
+    "mlops_deployment",
+    "nlp_computer_vision",
+    "python_programming"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0deea-aa90-7074-bc6f-64e068c77c48": {
+   "role": "fullstack_developer",
+   "skills": [
+    "api_integration",
+    "caching_messaging",
+    "git_version_control",
+    "golang_backend",
+    "nosql_databases",
+    "react",
+    "react_native",
+    "rest_api_design",
+    "sql",
+    "system_design_architecture",
+    "typescript"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0deeb-1006-72d3-bc5d-21040e98c7ef": {
+   "role": "digital_marketing",
+   "skills": [
+    "conversion_optimization",
+    "kpi_metrics",
+    "marketplace_ecommerce",
+    "search_ads",
+    "social_media_ads"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0e28c-f5e6-73cf-b8aa-95af700fbd51": {
+   "role": "financial_analyst",
+   "skills": [
+    "excel"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0e294-825e-72af-a661-ba2b56f03a5c": {
+   "role": "frontend_developer",
+   "skills": [
+    "auth_security_basics",
+    "cms_wordpress",
+    "figma_design_tools",
+    "git_version_control",
+    "html_css",
+    "javascript",
+    "responsive_accessible_web",
+    "rest_api_design",
+    "sdlc"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0e5cf-0c5d-7039-800a-e73b97b73b2b": {
+   "role": "digital_marketing",
+   "skills": [
+    "content_creation_tools"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0e77b-2473-71e1-a5a9-c53abbaf86e9": {
+   "role": "accountant",
+   "skills": [
+    "accounting_fundamentals",
+    "excel",
+    "tax_compliance_id"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0f14b-c3d7-7066-bde7-3254c4c25c3b": {
+   "role": "digital_marketing",
+   "skills": [
+    "content_creation_tools"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0f385-41b7-72a8-9be1-1d738528fbfa": {
+   "role": "data_analyst",
+   "skills": [
+    "data_analysis",
+    "python_analytics",
+    "statistics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0f38f-cc00-7249-9d47-e7be6f726d94": {
+   "role": "backend_developer",
+   "skills": [
+    "api_integration",
+    "auth_security_basics",
+    "ci_cd_pipelines",
+    "cloud_gcp_azure",
+    "nodejs_backend",
+    "nosql_databases",
+    "rest_api_design",
+    "sql",
+    "system_design_architecture"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0f396-80c7-70e5-b1e2-1608b57362f0": {
+   "role": "supply_chain_analyst",
+   "skills": [
+    "budgeting_forecasting",
+    "data_analysis",
+    "inventory_management",
+    "production_planning_mrp"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a0f8a6-b2d7-709c-8f15-6a7816c6f099": {
+   "role": "tax_specialist",
+   "skills": [
+    "accounting_fundamentals",
+    "accounting_software",
+    "ap_ar_reconciliation"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a10acc-b36d-7271-814b-7d9ea1fc346e": {
+   "role": "data_engineer",
+   "skills": [
+    "cloud_aws",
+    "data_visualization",
+    "data_warehousing",
+    "etl_pipelines",
+    "python_programming",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a114f8-829a-7092-b2f3-3dec10c887f4": {
+   "role": "business_analyst",
+   "skills": [],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a11cb5-6f75-7009-88a8-6a07ed2e2a95": {
+   "role": "tax_specialist",
+   "skills": [
+    "pph_corporate_withholding",
+    "tax_compliance_id",
+    "tax_dispute_audit",
+    "vat_ppn_mechanics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a12c2a-66bb-718b-8db3-a02806a5257f": {
+   "role": "fullstack_developer",
+   "skills": [
+    "html_css",
+    "javascript",
+    "react",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a12c2c-f9cd-70f5-9320-06f59b246467": {
+   "role": "hr_specialist",
+   "skills": [
+    "learning_development",
+    "performance_management",
+    "recruitment_selection"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a13150-7e69-711a-822a-bd63276f4f29": {
+   "role": "tax_specialist",
+   "skills": [
+    "accounting_fundamentals",
+    "ap_ar_reconciliation",
+    "excel",
+    "financial_statements",
+    "tax_compliance_id"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a13266-5097-73ce-8199-f6d7546608d4": {
+   "role": "tax_specialist",
+   "skills": [
+    "accounting_fundamentals",
+    "accounting_software",
+    "ap_ar_reconciliation",
+    "excel",
+    "financial_statements",
+    "tax_compliance_id"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a13b9d-aa15-72b9-9b0d-cbbb88d6f066": {
+   "role": "financial_analyst",
+   "skills": [
+    "accounting_fundamentals",
+    "accounting_software",
+    "ap_ar_reconciliation",
+    "excel",
+    "financial_statements"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a140c2-ac8c-72b3-8a22-8b1fed9c019c": {
+   "role": "hr_specialist",
+   "skills": [
+    "labor_law_id",
+    "recruitment_selection"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:01a140d4-787f-7327-b47f-270d3d16185e": {
+   "role": "project_coordinator",
+   "skills": [
+    "networking_fundamentals"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:0ad07c2f-1cdc-431c-bc58-b7c76de59dc9": {
+   "role": "data_analyst",
+   "skills": [
+    "bi_tools_other",
+    "dashboard_reporting",
+    "data_analysis",
+    "data_visualization",
+    "excel",
+    "kpi_metrics",
+    "power_bi",
+    "python_analytics",
+    "sql",
+    "tableau"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:0c85be76-29e3-4763-84ed-9097d1387420": {
+   "role": "digital_marketing",
+   "skills": [
+    "pph_corporate_withholding",
+    "tax_compliance_id",
+    "tax_dispute_audit",
+    "vat_ppn_mechanics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:1930707f-8972-4320-90c5-5e9a0a8a95cc": {
+   "role": "accountant",
+   "skills": [
+    "accounting_fundamentals",
+    "excel"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:21cfdfa8-3d85-45b8-ba31-2d68cf760910": {
+   "role": "data_analyst",
+   "skills": [
+    "business_process_modeling",
+    "dashboard_reporting",
+    "data_analysis",
+    "data_visualization",
+    "excel",
+    "power_bi",
+    "sql",
+    "tableau"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:2ca3a260-a4df-4a07-a7df-f1ad41d33a13": {
+   "role": "digital_marketing",
+   "skills": [
+    "kpi_metrics",
+    "search_ads",
+    "social_media_ads",
+    "web_analytics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:3e39527d-0cf9-41ce-945f-513a0e01b61a": {
+   "role": "digital_marketing",
+   "skills": [
+    "search_ads",
+    "social_media_ads",
+    "web_analytics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:4149b67e-f86a-4c59-8a2d-eb36f21df8d9": {
+   "role": "tax_specialist",
+   "skills": [
+    "budgeting_forecasting",
+    "enterprise_risk_management",
+    "financial_analysis",
+    "financial_statements",
+    "tax_compliance_id"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:470b6c57-d9c8-4980-a6ac-93b1a004547c": {
+   "role": "backend_developer",
+   "skills": [
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "data_structures_algorithms",
+    "erp_crm",
+    "javascript",
+    "programming_fundamentals",
+    "python_programming",
+    "system_design_architecture",
+    "typescript",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:4a163976-26c3-4ec5-a9df-3e82dbbe26f9": {
+   "role": "tax_specialist",
+   "skills": [
+    "accounting_fundamentals",
+    "accounting_software",
+    "ap_ar_reconciliation",
+    "budgeting_forecasting",
+    "cost_accounting",
+    "excel",
+    "financial_analysis",
+    "financial_statements",
+    "pph_corporate_withholding",
+    "tax_compliance_id",
+    "vat_ppn_mechanics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:805590be-7cb4-4f81-99b4-9e27066ef9ee": {
+   "role": "accountant",
+   "skills": [
+    "accounting_fundamentals",
+    "ap_ar_reconciliation",
+    "audit_internal_control",
+    "cost_accounting",
+    "excel",
+    "financial_statements",
+    "tax_compliance_id",
+    "vat_ppn_mechanics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:92c121f9-f0bf-42bb-9d4f-4a2ed25e8b1e": {
+   "role": "business_analyst",
+   "skills": [
+    "credit_analysis",
+    "excel"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:c11951d9-c3f1-491d-a9fe-a51cb323d590": {
+   "role": "hr_specialist",
+   "skills": [
+    "recruitment_selection"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:cfa8836b-a684-44e6-a96b-434615fb1b14": {
+   "role": "business_analyst",
+   "skills": [
+    "api_integration",
+    "auth_security_basics",
+    "caching_messaging",
+    "requirements_documentation",
+    "rest_api_design",
+    "system_design_architecture",
+    "system_modeling_uml"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:d527e393-3f73-4166-af13-c867fb9889e6": {
+   "role": "hr_specialist",
+   "skills": [
+    "excel",
+    "recruitment_selection"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:d60f97f0-9fc2-4107-8b81-978cea2d31ff": {
+   "role": "data_engineer",
+   "skills": [
+    "big_data_spark",
+    "data_cleaning",
+    "data_modeling",
+    "data_warehousing",
+    "etl_pipelines",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:dbc02af6-63d6-4424-9cc1-8bd26f58059a": {
+   "role": "fullstack_developer",
+   "skills": [
+    "ci_cd_pipelines",
+    "docker_containers",
+    "figma_design_tools",
+    "frontend_testing",
+    "golang_backend",
+    "java_spring",
+    "php_laravel",
+    "programming_fundamentals",
+    "python_programming",
+    "react",
+    "rest_api_design",
+    "sql",
+    "system_design_architecture",
+    "typescript",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:dfc8bcd0-ff4f-4665-83bb-4dedfc13b933": {
+   "role": "supply_chain_analyst",
+   "skills": [
+    "data_analysis",
+    "excel",
+    "kpi_metrics",
+    "networking_fundamentals",
+    "procurement_sourcing",
+    "vendor_supplier_management"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:e5667238-ee1e-4db7-af92-e4253bc0a9ff": {
+   "role": "business_analyst",
+   "skills": [
+    "api_integration",
+    "dashboard_reporting",
+    "data_analysis",
+    "data_cleaning",
+    "data_visualization",
+    "excel",
+    "power_bi",
+    "sql",
+    "tableau"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:f0984379-8fce-47e7-b114-e66cd41afeb4": {
+   "role": "mobile_developer",
+   "skills": [
+    "android_kotlin",
+    "api_integration",
+    "ci_cd_pipelines",
+    "docker_containers",
+    "figma_design_tools",
+    "git_version_control",
+    "jira_confluence",
+    "mobile_backend_services",
+    "mobile_release_quality",
+    "programming_fundamentals",
+    "sdlc"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:f32dca07-440e-4d0e-a230-40893246a202": {
+   "role": "internal_auditor",
+   "skills": [
+    "accounting_fundamentals",
+    "accounting_software",
+    "audit_internal_control"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:f455952e-54c8-4be3-96e2-6285f23ca2ad": {
+   "role": "internal_auditor",
+   "skills": [
+    "audit_internal_control",
+    "credit_analysis"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "karirhub:f456a8cb-6698-404a-b7d3-4840eed245b1": {
+   "role": "business_analyst",
+   "skills": [
+    "business_process_modeling",
+    "diagramming_tools",
+    "erp_crm",
+    "kpi_metrics",
+    "requirements_documentation",
+    "requirements_elicitation",
+    "testing_uat"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "lever:1e6eb820-9037-4a80-bbd6-d0e50125a292": {
+   "role": "accountant",
+   "skills": [
+    "accounting_fundamentals",
+    "ap_ar_reconciliation",
+    "audit_internal_control",
+    "erp_crm",
+    "tax_compliance_id"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "lever:2d581907-e2a0-477a-b219-d0eb5b41a089": {
+   "role": "ui_ux_designer",
+   "skills": [
+    "bi_tools_other",
+    "dashboard_reporting",
+    "data_analysis",
+    "figma_design_tools",
+    "information_architecture",
+    "prototyping_interaction",
+    "user_research",
+    "visual_design_fundamentals",
+    "web_analytics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "lever:3340d907-1dd4-4591-93e2-d5246b5d0b61": {
+   "role": "data_analyst",
+   "skills": [
+    "data_analysis"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "lever:3fc8dd54-3af0-4b27-a7b4-e7762bf1c9af": {
+   "role": "business_analyst",
+   "skills": [
+    "dashboard_reporting",
+    "data_analysis",
+    "python_programming",
+    "requirements_documentation",
+    "sql",
+    "user_research"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "lever:5e2c3395-ab00-4818-95b2-b6efa2fe6148": {
+   "role": "cybersecurity_analyst",
+   "skills": [
+    "audit_internal_control",
+    "audit_reporting_followup",
+    "enterprise_risk_management",
+    "security_frameworks_compliance"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "lever:d909a99d-a913-4a92-a324-031a3c499992": {
+   "role": "business_analyst",
+   "skills": [
+    "data_analysis",
+    "excel",
+    "financial_analysis"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "lever:f3566bb7-f2fd-4aef-bf2d-a1e0108d24e3": {
+   "role": "data_analyst",
+   "skills": [
+    "dashboard_reporting",
+    "excel"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "smartrecruiters:743999833215762": {
+   "role": "backend_developer",
+   "skills": [
+    "caching_messaging",
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "git_version_control",
+    "golang_backend",
+    "linux_administration",
+    "monitoring_observability",
+    "nosql_databases",
+    "programming_fundamentals",
+    "rest_api_design",
+    "streaming_data",
+    "system_design_architecture",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "smartrecruiters:743999892855045": {
+   "role": "frontend_developer",
+   "skills": [
+    "data_structures_algorithms",
+    "frontend_frameworks_other",
+    "frontend_testing",
+    "html_css",
+    "javascript",
+    "programming_fundamentals",
+    "react",
+    "responsive_accessible_web"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "smartrecruiters:744000143637779": {
+   "role": "devops_engineer",
+   "skills": [
+    "ci_cd_pipelines",
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "docker_containers",
+    "infrastructure_as_code",
+    "kubernetes",
+    "linux_administration",
+    "monitoring_observability",
+    "networking_fundamentals",
+    "python_programming",
+    "security_frameworks_compliance"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "smartrecruiters:744000144226639": {
+   "role": "data_scientist",
+   "skills": [
+    "conversion_optimization",
+    "dashboard_reporting",
+    "data_analysis",
+    "data_visualization",
+    "erp_crm",
+    "machine_learning",
+    "python_analytics",
+    "sql",
+    "statistics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "smartrecruiters:744000144227409": {
+   "role": "backend_developer",
+   "skills": [
+    "ci_cd_pipelines",
+    "data_modeling",
+    "data_structures_algorithms",
+    "data_visualization",
+    "golang_backend",
+    "rest_api_design",
+    "system_design_architecture"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "smartrecruiters:744000153988681": {
+   "role": "data_engineer",
+   "skills": [
+    "big_data_spark",
+    "caching_messaging",
+    "cloud_aws",
+    "data_cleaning",
+    "data_modeling",
+    "data_structures_algorithms",
+    "data_warehousing",
+    "etl_pipelines",
+    "machine_learning",
+    "nosql_databases",
+    "python_programming",
+    "sql",
+    "streaming_data",
+    "workflow_orchestration"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:0022d4ff-a9cd-4e8f-bdb5-5bc3453f4b2b": {
+   "role": "mobile_developer",
+   "skills": [
+    "android_kotlin",
+    "cryptography_basics",
+    "ios_swift",
+    "programming_fundamentals"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:36461c0c-bdb4-4629-8ab6-6bbc57f7be2f": {
+   "role": "ui_ux_designer",
+   "skills": [],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:4272d3d2-9cbd-43de-ab6f-50f381c08395": {
+   "role": "qa_engineer",
+   "skills": [
+    "api_testing",
+    "sdlc",
+    "test_design_techniques"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:4b903baa-05b2-4e88-8249-435ce08a14ee": {
+   "role": "financial_analyst",
+   "skills": [
+    "accounting_fundamentals",
+    "ap_ar_reconciliation",
+    "budgeting_forecasting",
+    "excel",
+    "financial_analysis",
+    "financial_statements"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:712fc15f-3a5c-47d5-8641-dda452e2c894": {
+   "role": "backend_developer",
+   "skills": [
+    "ci_cd_pipelines",
+    "data_modeling",
+    "java_spring",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:7457a221-dbfd-4a4c-ae23-a9ec155bb8c5": {
+   "role": "backend_developer",
+   "skills": [
+    "caching_messaging",
+    "cloud_aws",
+    "cloud_gcp_azure",
+    "golang_backend",
+    "java_spring",
+    "monitoring_observability",
+    "nosql_databases",
+    "sql",
+    "streaming_data",
+    "system_design_architecture"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:766b08de-90ff-43d4-8ce0-c85bba27c37a": {
+   "role": "data_scientist",
+   "skills": [
+    "credit_analysis",
+    "dashboard_reporting",
+    "machine_learning",
+    "mlops_deployment",
+    "statistics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:9b0738ec-4e80-4994-90cc-9e0e996878f2": {
+   "role": "frontend_developer",
+   "skills": [
+    "api_integration",
+    "ci_cd_pipelines",
+    "design_systems",
+    "frontend_frameworks_other",
+    "frontend_testing",
+    "git_version_control",
+    "html_css",
+    "javascript",
+    "react",
+    "responsive_accessible_web",
+    "typescript",
+    "web_performance"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:a1a12e89-4646-49bf-9f4c-40b0ae84778c": {
+   "role": "fullstack_developer",
+   "skills": [
+    "cloud_aws",
+    "data_modeling",
+    "frontend_testing",
+    "infrastructure_as_code",
+    "programming_fundamentals",
+    "python_programming",
+    "react",
+    "rest_api_design",
+    "sql",
+    "typescript",
+    "unit_testing_tdd"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:a6d2f0fa-d922-46d9-97bb-2f08b8e2ebf5": {
+   "role": "data_analyst",
+   "skills": [
+    "bi_tools_other",
+    "cloud_data_platform",
+    "dashboard_reporting",
+    "data_analysis",
+    "data_visualization",
+    "etl_pipelines",
+    "kpi_metrics",
+    "sql",
+    "tableau"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:f075f897-d79d-4fc1-9cf7-abc85e76c841": {
+   "role": "devops_engineer",
+   "skills": [
+    "ci_cd_pipelines",
+    "cloud_aws",
+    "docker_containers",
+    "git_version_control",
+    "infrastructure_as_code",
+    "kubernetes",
+    "linux_administration",
+    "monitoring_observability",
+    "networking_fundamentals",
+    "python_programming",
+    "sql"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:f2ab2504-4bff-4d3f-8683-778611b0fb49": {
+   "role": "frontend_developer",
+   "skills": [
+    "api_integration",
+    "erp_crm",
+    "networking_fundamentals",
+    "nodejs_backend",
+    "php_laravel",
+    "python_programming",
+    "rest_api_design"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  },
+  "workable:f56fd51e-b354-4f82-9ce4-42e367a63653": {
+   "role": "fullstack_developer",
+   "skills": [
+    "dashboard_reporting",
+    "email_marketing_automation",
+    "kpi_metrics",
+    "search_ads",
+    "seo",
+    "social_media_ads",
+    "web_analytics"
+   ],
+   "annotators": [
+    "llm1_verifikasi_ivan",
+    "llm2_verifikasi_ivan"
+   ]
+  }
+ },
+ "provenance": {
+  "label": "LLM pre-annotation (2 passes), verified by 1 team member (Ivan)",
+  "human_annotators": 1,
+  "independent": false,
+  "verified_at": "2026-10-17",
+  "note": "Two LLM passes were checked and corrected by one team member. Labels where the two sheets disagree are left out (no adjudication). Agreement between the two sheets is NOT inter-human agreement and must not be reported as kappa between annotators.",
+  "sources": [
+   "data/seed/_validasi/V1_llm1_verifikasi_ivan.xlsx",
+   "data/seed/_validasi/V1_llm2_verifikasi_ivan.xlsx"
+  ]
+ }
+}

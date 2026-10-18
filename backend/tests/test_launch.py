@@ -205,3 +205,102 @@ def test_soft_skills_are_experience_only(client):
     c = next(x for x in d["soft_skills"] if x["skill_id"] == "collaboration")
     assert c["level"] == 2 and c["note"] == "Capstone team of 4"
     assert client.get("/api/assessment/items?skill_id=collaboration", headers=h).status_code in (404, 422)
+
+
+def test_governance_counts_soft_skill_phrases_as_covered():
+    """Agile, project management and the other soft skills live in their own layer, so a posting phrase the
+    soft layer captures is neither a missing hard skill nor a new-skill candidate (jury note: BA list final)."""
+    from pathsync import governance
+    from pathsync.db import SessionLocal
+    from pathsync.soft import detect
+
+    with SessionLocal() as s:
+        rep = governance.report(s, "business_analyst")
+    assert rep["new_skill_candidates"], "the report should still list real candidates"
+    assert not [c["label"] for c in rep["new_skill_candidates"] if detect(c["label"])]
+    assert rep["criteria"]["C2_no_frequent_candidate"]["pass"] and 0.5 < rep["criteria"]["C1_coverage"]["value"] <= 1
+
+
+def test_frontend_cluster_order_covers_taxonomy():
+    """Regression: clusters missing from CLUSTER_ORDER are silently hidden on the dashboard and Skill Map."""
+    import re
+
+    from pathsync.config import BACKEND_DIR
+    from pathsync.taxonomy import load_skills
+
+    src = (BACKEND_DIR.parent / "frontend" / "src" / "lib" / "format.ts").read_text(encoding="utf-8")
+    block = src[src.index("export const CLUSTER_ORDER"):]
+    listed = set(re.findall(r'"([a-z_]+)"', block[: block.index("];")]))
+    missing = {s.cluster for s in load_skills().values()} - listed
+    assert not missing, f"add to CLUSTER_ORDER in frontend/src/lib/format.ts: {sorted(missing)}"
+
+
+def test_formula5_is_the_active_ranker_until_real_experts_beat_it(client):
+    """Plan AI-06: a model trained on simulated experts is registered but never activated."""
+    card = client.get("/api/model-card").json()
+    assert card["decision_model"]["name"] == "Formula (5)"
+    assert card["decision_model"]["type"].startswith("formula (5)")
+
+
+def test_market_explains_a_missing_trend(client):
+    """A role without enough postings in both windows says why, instead of showing a flat 0 trend (plan AI-09)."""
+    m = client.get("/api/market/business_analyst").json()
+    if m["trend_status"] != "ok":
+        assert "needed" in m["trend_reason"] and str(m["n_previous"]) in m["trend_reason"]
+
+
+def test_grades_alone_never_count_as_proven_readiness(client):
+    """Audit AI-7: a transcript raises p but not p_proven; proven readiness stays 0 until there is direct proof."""
+    sid, h = new_student(client)
+    r = client.post(f"/api/students/{sid}/evidence/academic", headers=h,
+                    json={"courses": [{"name": "Basis Data", "grade": "A"}, {"name": "Analisis dan Perancangan Sistem", "grade": "A"}]})
+    assert r.status_code == 200, r.text
+    d = client.get(f"/api/students/{sid}/dashboard", headers=h).json()
+    assert d["coverage_proven"] == 0.0
+    graded = [c for c in d["competencies"] if "academic" in c["evidence_kinds"]]
+    assert graded and all(c["p_proven"] is None for c in graded)
+    assert d["coverage"] > d["coverage_proven"]
+
+
+def test_recruiter_contacts_are_redacted_and_sources_can_be_excluded(monkeypatch):
+    """Plan BE-03: contacts never reach the market map; a source can be dropped without code changes."""
+    from pathsync.text import redact_contacts
+
+    out = redact_contacts("Kirim CV ke hrd@contoh.co.id atau WA 0812-3456-7890. Gaji 5.000.000 per bulan, 2026.")
+    assert "@" not in out and "0812" not in out and "5.000.000" in out and "2026" in out
+
+    import pipeline.build_market as bm
+
+    monkeypatch.setattr(bm, "EXCLUDED_SOURCES", frozenset({"kalibrr"}))
+    rows = bm.load_raw()
+    assert rows and not any(r["source"] == "kalibrr" for r in rows)
+    assert not any("@" in r["description_text"] and ".co" in r["description_text"].split("@")[-1][:20] for r in rows)
+
+
+def test_pilot_survey_and_targets(client):
+    """Plan BE-08: the V3 survey is stored as first-party events and the launch metrics report pilot targets."""
+    sid, h = new_student(client)
+    ok = client.post("/api/events", headers=h, json={"name": "pilot_survey", "student_id": sid,
+                                                    "props": {"condition": "pathsync", "q1": 5, "q2": 4, "q3": 4}})
+    assert ok.status_code == 204
+    bad = client.post("/api/events", headers=h, json={"name": "pilot_survey", "student_id": sid, "props": {"condition": "x", "q1": 9}})
+    assert bad.status_code == 422
+    m = client.get("/api/admin/metrics", headers=ADMIN).json()["pilot"]
+    assert m["targets"]["quick_check_completion"] == 0.6 and m["survey"]["pathsync"]["n"] >= 1
+
+
+def test_diagnostic_keeps_related_topics_together(client):
+    """Pilot finding (V3): the Quick Check groups same-cluster skills instead of jumping between topics."""
+    from pathsync.assessment import diagnostic_plan
+    from pathsync.db import SessionLocal
+    from pathsync.engine import load_context
+    from pathsync.taxonomy import load_skills
+
+    with SessionLocal() as s:
+        ctx = load_context(s, "business_analyst")
+    plan = diagnostic_plan(ctx.market, {}, set())
+    skills = load_skills()
+    clusters = [skills[it["skill_id"]].cluster for it in plan]
+    runs = [c for i, c in enumerate(clusters) if i == 0 or c != clusters[i - 1]]
+    assert len(runs) == len(set(runs)), runs           # each cluster appears as one block
+    assert 20 <= len(plan) <= 26

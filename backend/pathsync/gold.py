@@ -17,6 +17,9 @@ from itertools import combinations
 from .config import SEED_DIR
 
 SPLIT_FILE = SEED_DIR / "gold_split.json"
+# supplement for the six business roles added after the main split was locked (plan A9); locked the same way
+EXTRA_SPLIT_FILE = SEED_DIR / "gold_split_bisnis.json"
+EXTRA_SPLIT_SEED = 20261017
 ADJUDICATION_FILE = SEED_DIR / "gold_adjudication.json"
 CONSENSUS_FILE = SEED_DIR / "gold_consensus.json"
 EARLIER_GOLD = ("gold_pilot.json", "gold_heldout.json", "gold_blind.json")
@@ -84,6 +87,18 @@ def make_split(candidates: dict[str, str], seed: int = SPLIT_SEED) -> dict:
 
 def load_split() -> dict | None:
     return json.loads(SPLIT_FILE.read_text(encoding="utf-8")) if SPLIT_FILE.exists() else None
+
+
+def load_split_all() -> dict | None:
+    """Main split plus the business-role supplement, in that order (annotators see the main split first)."""
+    main = load_split()
+    if main is None:
+        return None
+    if not EXTRA_SPLIT_FILE.exists():
+        return main
+    extra = json.loads(EXTRA_SPLIT_FILE.read_text(encoding="utf-8"))
+    return {**main, "dev": main["dev"] + extra["dev"], "test": main["test"] + extra["test"],
+            "per_role": {**main["per_role"], **extra["per_role"]}}
 
 
 def kappa(x: list[int], y: list[int]) -> float | None:

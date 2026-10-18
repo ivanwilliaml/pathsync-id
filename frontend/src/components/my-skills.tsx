@@ -8,6 +8,7 @@ import { useApi } from "@/lib/hooks";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { ErrorNote, LinkButton, Loading, MasteryBar, Panel, Tag } from "./kit";
+import { useT } from "@/lib/i18n";
 
 /** Only skills that a meaningful share of postings ask for (or that the route already ranks) appear on the map. */
 const RELEVANT_DEMAND = 0.15;
@@ -31,15 +32,16 @@ function classify(c: Competency, rank: number | null): Status {
   return "fix";
 }
 
-const SECTIONS: { id: Status; title: string; blurb: string; icon: typeof Flame; tone: "ember" | "mint" | "indigo" | "neutral" }[] = [
-  { id: "fix", title: "Fix First", blurb: "Employers ask for these a lot and you are below the level they need. Start here.", icon: Flame, tone: "ember" },
-  { id: "close", title: "Almost There", blurb: "A little more proof gets you to the level the role needs.", icon: Target, tone: "indigo" },
-  { id: "strong", title: "Your Strengths", blurb: "You already meet the level employers ask for. Keep the proof ready.", icon: ShieldCheck, tone: "mint" },
-  { id: "unproven", title: "Not Proven Yet", blurb: "In demand, but we have no evidence from you. Take a quick check or add a project.", icon: Sparkles, tone: "neutral" },
+const SECTIONS: { id: Status; title: [string, string]; blurb: [string, string]; icon: typeof Flame; tone: "ember" | "mint" | "indigo" | "neutral" }[] = [
+  { id: "fix", title: ["Fix First", "Perbaiki Dulu"], blurb: ["Employers ask for these a lot and you are below the level they need. Start here.", "Sering diminta employer dan level kamu masih di bawah yang dibutuhkan. Mulai dari sini."], icon: Flame, tone: "ember" },
+  { id: "close", title: ["Almost There", "Hampir Sampai"], blurb: ["A little more proof gets you to the level the role needs.", "Sedikit bukti lagi dan kamu sampai di level yang dibutuhkan role ini."], icon: Target, tone: "indigo" },
+  { id: "strong", title: ["Your Strengths", "Kekuatanmu"], blurb: ["You already meet the level employers ask for. Keep the proof ready.", "Kamu sudah memenuhi level yang diminta employer. Simpan buktinya."], icon: ShieldCheck, tone: "mint" },
+  { id: "unproven", title: ["Not Proven Yet", "Belum Terbukti"], blurb: ["In demand, but we have no evidence from you. Take a quick check or add a project.", "Banyak dicari, tapi belum ada evidence darimu. Ikuti Quick Check atau tambahkan project."], icon: Sparkles, tone: "neutral" },
 ];
 
 export function MySkills({ sid }: { sid: string }) {
   const { data: d, error } = useApi<Dashboard>(`/students/${sid}/dashboard`);
+  const t = useT();
   const [open, setOpen] = useState<Record<string, boolean>>({ fix: true, close: true, strong: true, unproven: true });
   const rows = useMemo<Row[]>(() => {
     if (!d) return [];
@@ -50,7 +52,7 @@ export function MySkills({ sid }: { sid: string }) {
     });
   }, [d]);
   if (error) return <ErrorNote error={error} />;
-  if (!d) return <Loading label="Reading your skills…" />;
+  if (!d) return <Loading label={t("Reading your skills…", "Membaca skill-mu…")} />;
 
   const by = (s: Status) =>
     rows
@@ -62,14 +64,17 @@ export function MySkills({ sid }: { sid: string }) {
   return (
     <div className="space-y-6">
       <Panel className="bg-route-soft">
-        <h2 className="text-lg font-semibold text-ink">Where You Stand for {d.role.name}</h2>
-        <div className="mt-3 grid gap-4 sm:grid-cols-3">
-          <Summary label="Role readiness" value={pct(d.coverage)} note="of what employers ask for, weighted by how often" />
-          <Summary label="Strongest" value={strongest.length ? strongest.map((r) => titleCase(r.c.name)).join(", ") : "Nothing proven yet"} note="skills at or above the required level" small />
-          <Summary label="Fix first" value={fixFirst.length ? fixFirst.map((r) => titleCase(r.c.name)).join(", ") : "Nothing urgent"} note="biggest gap that employers care about" small />
+        <h2 className="text-lg font-semibold text-ink">{t("Where You Stand for", "Posisimu untuk")} {d.role.name}</h2>
+        <div className="mt-4 grid gap-5 sm:grid-cols-3">
+          <Summary label={t("Role readiness", "Readiness role")} value={pct(d.coverage)} note={t("of what employers ask for, weighted by how often", "dari yang diminta employer, dibobot seberapa sering")} />
+          <Summary label={t("Strongest", "Terkuat")} value={strongest.length ? strongest.map((r) => titleCase(r.c.name)).join(", ") : t("Nothing proven yet", "Belum ada yang terbukti")} note={t("skills at or above the required level", "skill di atas atau sama dengan level yang dibutuhkan")} small />
+          <Summary label={t("Fix first", "Perbaiki dulu")} value={fixFirst.length ? fixFirst.map((r) => titleCase(r.c.name)).join(", ") : t("Nothing urgent", "Tidak ada yang mendesak")} note={t("biggest gap that employers care about", "gap terbesar yang dipedulikan employer")} small />
         </div>
         <p className="mt-4 text-xs text-ink/65">
-          How to read each bar: the fill is your level now, the black tick is the level employers ask for. Only skills asked for in at least 15% of the {d.role.n_postings} real postings, or in your top five priorities, are shown.
+          {t(
+            `How to read each bar: the solid part is your level now, the light part runs to the level employers ask for, and the bar turns green once you reach it. Only skills asked for in at least 15% of the ${d.role.n_postings} real postings, or in your top five priorities, are shown.`,
+            `Cara membaca bar: bagian pekat adalah level kamu sekarang, bagian muda sampai ke level yang diminta employer, dan bar berubah hijau begitu kamu mencapainya. Yang ditampilkan hanya skill yang diminta di minimal 15% dari ${d.role.n_postings} job posting nyata, atau yang masuk lima prioritas teratasmu.`,
+          )}
         </p>
       </Panel>
 
@@ -88,15 +93,15 @@ export function MySkills({ sid }: { sid: string }) {
               <span className="flex items-center gap-2">
                 <Icon className="size-5 text-indigo" aria-hidden="true" />
                 <span id={`sec-${sec.id}`} className="text-lg font-semibold text-ink">
-                  {sec.title}
+                  {t(...sec.title)}
                 </span>
                 <Tag tone={sec.tone}>{list.length}</Tag>
               </span>
               <ChevronDown className={cn("size-4 transition-transform", open[sec.id] && "rotate-180")} aria-hidden="true" />
             </button>
-            <p className="-mt-1 mb-3 text-sm text-ink/70">{sec.blurb}</p>
+            <p className="-mt-1 mb-3 text-sm text-ink/70">{t(...sec.blurb)}</p>
             {open[sec.id] ? (
-              <ul className="grid gap-3 md:grid-cols-2">
+              <ul className="grid gap-4 md:grid-cols-2">
                 {list.map((r) => (
                   <SkillRow key={r.c.skill_id} r={r} />
                 ))}
@@ -112,52 +117,56 @@ export function MySkills({ sid }: { sid: string }) {
 }
 
 const EXPERIENCE = [
-  [0, "No experience yet"],
-  [1, "Tried it (class, club, event)"],
-  [2, "Regular (project, internship, job)"],
-  [3, "Led or taught others"],
+  [0, "No experience yet", "Belum ada pengalaman"],
+  [1, "Tried it (class, club, event)", "Pernah mencoba (kelas, organisasi, acara)"],
+  [2, "Regular (project, internship, job)", "Rutin (project, magang, kerja)"],
+  [3, "Led or taught others", "Memimpin atau mengajari orang lain"],
 ] as const;
 
 /** Soft skills are shown beside the hard skills but are never quizzed or ranked: the student records real experience. */
 function SoftSection({ sid, items }: { sid: string; items: SoftSkill[] }) {
   const [local, setLocal] = useState<Record<string, { level: number; note: string }>>({});
+  const t = useT();
   if (!items.length) return null;
   const save = (id: string, level: number, note: string) => {
     setLocal((l) => ({ ...l, [id]: { level, note } }));
-    api.put(`/students/${sid}/soft-experience`, { skill_id: id, level, note }).catch(() => toast.error("Could not save. Try again."));
+    api.put(`/students/${sid}/soft-experience`, { skill_id: id, level, note }).catch(() => toast.error(t("Could not save. Try again.", "Gagal menyimpan. Coba lagi.")));
   };
   return (
     <section aria-labelledby="sec-soft">
-      <h2 id="sec-soft" className="text-lg font-semibold text-ink">Soft Skills From Experience</h2>
+      <h2 id="sec-soft" className="text-lg font-semibold text-ink">{t("Soft Skills From Experience", "Soft Skill dari Pengalaman")}</h2>
       <p className="mb-3 text-sm text-ink/70">
-        Employers ask for these too, but they are built through real experience, so there is no quiz and they never change your route. Record what you have actually done.
+        {t(
+          "Employers ask for these too, but they are built through real experience, so there is no quiz and they never change your route. Record what you have actually done.",
+          "Employer juga meminta ini, tapi soft skill dibangun lewat pengalaman nyata, jadi tidak ada kuis dan tidak mengubah rutemu. Catat apa yang benar-benar sudah kamu lakukan.",
+        )}
       </p>
-      <ul className="grid gap-3 md:grid-cols-2">
+      <ul className="grid gap-4 md:grid-cols-2">
         {items.map((x) => {
           const cur = local[x.skill_id] ?? { level: x.level, note: x.note };
           return (
             <li key={x.skill_id} className="rounded-xl border bg-card p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <p className="font-semibold leading-snug text-ink">{x.name}</p>
-                <Tag tone="neutral">Asked in {pct(x.demand)} of postings</Tag>
+                <Tag tone="neutral">{t(`Asked in ${pct(x.demand)} of postings`, `Diminta di ${pct(x.demand)} posting`)}</Tag>
               </div>
-              <label className="mt-3 block text-xs font-medium text-ink/70" htmlFor={`exp-${x.skill_id}`}>Your experience</label>
+              <label className="mt-3 block text-xs font-medium text-ink/70" htmlFor={`exp-${x.skill_id}`}>{t("Your experience", "Pengalamanmu")}</label>
               <select
                 id={`exp-${x.skill_id}`}
                 value={cur.level}
                 onChange={(e) => save(x.skill_id, Number(e.target.value), cur.note)}
                 className="mt-1 w-full rounded-lg border bg-card px-3 py-2 text-sm"
               >
-                {EXPERIENCE.map(([v, label]) => (
-                  <option key={v} value={v}>{label}</option>
+                {EXPERIENCE.map(([v, en, id]) => (
+                  <option key={v} value={v}>{t(en, id)}</option>
                 ))}
               </select>
               {cur.level > 0 ? (
                 <input
-                  aria-label={`Example for ${x.name}`}
+                  aria-label={t(`Example for ${x.name}`, `Contoh untuk ${x.name}`)}
                   defaultValue={cur.note}
                   maxLength={240}
-                  placeholder="One example, e.g. capstone team of 4"
+                  placeholder={t("One example, e.g. capstone team of 4", "Satu contoh, mis. tim capstone 4 orang")}
                   onBlur={(e) => e.target.value !== cur.note && save(x.skill_id, cur.level, e.target.value)}
                   className="mt-2 w-full rounded-lg border bg-card px-3 py-2 text-sm"
                 />
@@ -184,36 +193,37 @@ function Summary({ label, value, note, small }: { label: string; value: string; 
 
 function SkillRow({ r }: { r: Row }) {
   const { c } = r;
-  const tone = r.status === "strong" ? "mint" : "route";
+  const t = useT();
+  const tone = r.status === "strong" ? "mint" : "indigo";
   return (
     <li className="rounded-xl border bg-card p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div className="min-w-0">
           <p className="font-semibold leading-snug text-ink">{titleCase(c.name)}</p>
           <p className="mt-0.5 text-xs text-ink/65">
-            {LEVEL[c.level] ?? c.level} now{c.required != null ? `, role needs ${levelFor(c.required)}` : ""} · asked in {pct(c.demand)} of postings
+            {LEVEL[c.level] ? t(...LEVEL[c.level]) : c.level} {t("now", "sekarang")}{c.required != null ? t(`, role needs ${t(...levelFor(c.required))}`, `, role butuh ${t(...levelFor(c.required))}`) : ""} · {t(`asked in ${pct(c.demand)} of postings`, `diminta di ${pct(c.demand)} posting`)}
           </p>
         </div>
-        {r.rank ? <Tag tone="indigo">Priority #{r.rank}</Tag> : null}
+        {r.rank ? <Tag tone="indigo">{t("Priority", "Prioritas")} #{r.rank}</Tag> : null}
       </div>
       <MasteryBar value={c.p} target={c.required} tone={tone} className="mt-3" />
       {r.why ? <p className="mt-2 text-xs leading-relaxed text-ink/70">{r.why}</p> : null}
       {r.status !== "strong" ? (
         <div className="mt-3 flex flex-wrap gap-2">
           <LinkButton href={`/assessment/${c.skill_id}`} size="sm" variant="outline">
-            {Object.keys(c.components ?? {}).length || c.n_items ? "Prove It" : "Take a Quick Check"}
+            {Object.keys(c.components ?? {}).length || c.n_items ? t("Prove It", "Buktikan") : t("Take a Quick Check", "Ikuti Quick Check")}
           </LinkButton>
           <LinkButton href="/dashboard" size="sm" variant="ghost">
-            See Route
+            {t("See Route", "Lihat Rute")}
           </LinkButton>
         </div>
       ) : (
-        <p className="mt-2 text-xs text-mint-ink">{c.n_items ? `${c.n_correct}/${c.n_items} check answers correct` : "Shown by your evidence"}</p>
+        <p className="mt-2 text-xs text-mint-ink">{c.n_items ? t(`${c.n_correct}/${c.n_items} check answers correct`, `${c.n_correct}/${c.n_items} jawaban check benar`) : t("Shown by your evidence", "Ditunjukkan oleh evidence-mu")}</p>
       )}
     </li>
   );
 }
 
-function levelFor(x: number): string {
+function levelFor(x: number): [string, string] {
   return x >= 0.8 ? LEVEL.mahir : x >= 0.6 ? LEVEL.mandiri : x >= 0.35 ? LEVEL.dasar : LEVEL.awal;
 }
