@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-17T19:23:23+00:00",
+ "generated_at": "2026-10-18T00:45:04+00:00",
  "inputs": {
   "taxonomy_sha": "97b396bb278d",
   "graph_sha": "b6fed258f5d1",
@@ -1241,7 +1241,13 @@
    "kappa": 0.8882
   }
  },
- "item_calibration": null,
+ "item_calibration": {
+  "generated_at": "2026-10-18T07:45:03",
+  "n_answers": 0,
+  "n_items_calibrated": 0,
+  "active": false,
+  "author_vs_empirical_spearman": null
+ },
  "performance": {
   "base": "http://backend:8000",
   "students": 200,

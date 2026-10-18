@@ -6,7 +6,7 @@ Kolom "Pemilik" adalah usulan peran, bukan penunjukan. "Kapan" mengacu ke jadwal
 
 ---
 
-## Status 17 Okt 2026 (branch `perbaikan-be-ai`)
+## Status 18 Okt 2026 (branch `perbaikan-be-ai`)
 
 Semua angka di bawah ada di `backend/data/models/metrics.json` (`python -m pipeline.report`).
 
@@ -22,19 +22,20 @@ Semua angka di bawah ada di `backend/data/models/metrics.json` (`python -m pipel
 | AI-05 kesiapan terbukti | Selesai (backend) | `p_proven`, `evidence_kinds`, `coverage_proven` di API dashboard; nilai kuliah tidak pernah dihitung sebagai terbukti. Frontend belum memakainya |
 | AI-06 ranker | Selesai | Model aktif: Formula (5). Model dari pakar simulasi tidak pernah aktif |
 | AI-07 graf pakar | Tinjauan internal selesai, pakar independen belum | Ivan (jenis `tim`): 23 dari 25 prasyarat disetujui, 2 ditolak, 8 usulan baru; relevansi skill teratas BA precision@20 0,6. Jenis `tim` tidak dihitung sebagai pakar dan tidak memvalidasi sisi (aturan 2 dari 3 pakar). Pakar independen: 0. Draf jawaban buatan AI (18 Okt) dicatat di `docs/validasi/V2_draf_AI_bukan_pakar.md`, tidak dihitung |
-| AI-08 data | Sebagian | 20 tenant Workday ditambah (pencarian per lokasi Indonesia): 113 lowongan, total 1.323. BA bertambah hanya 5 |
+| AI-08 data | Sebagian, target BA belum | 20 tenant Workday ditambah (pencarian per lokasi Indonesia): 113 lowongan, total 1.323. BA di jendela 12 bulan 65 (target ≥ 100); dari 97 lowongan BA unik di data mentah, Karirhub 52% (batas 50%), Kalibrr 30, ATS 17. ATS sudah di-scrape 17 Okt; sumber besar lain (Jobstreet, Glints, LinkedIn) melarang penyalinan di syarat layanannya. Role BA tetap diberi keterangan jumlah lowongan |
 | AI-09 tren | Selesai | API menjelaskan kenapa tren belum ada (jumlah lowongan per periode), dalam dua bahasa |
-| AI-10 kalibrasi asesmen | Menunggu pilot | Alat siap |
+| AI-10 kalibrasi asesmen | Tidak aktif (tercatat) | `item_calibration.json`: 0 jawaban per soal di database, kalibrasi tidak aktif, BKT dan kesulitan soal tetap prior (ditulis di `DECISION_ENGINE.md`). Lembar pilot V3 hanya berisi hasil tugas dan SUS, bukan jawaban per soal; aktif bila ≥ 30 jawaban per soal untuk separuh bank |
 | AI-11 soal Indonesia | Selesai (A7 Jonathan) | Bank soal Indonesia dipakai otomatis saat permintaan berbahasa Indonesia |
 | AI-12 soal BA | Ditinjau, tidak diubah | 27 dari 30 soal menguji notasi atau metode; 3 soal situasional berbasis teknik BABOK |
 | Ekstraksi bisnis (baru) | Diukur | Set buta 18 lowongan bisnis: presisi 0,85, recall 0,68, satu anotator, tidak dipakai menyetel |
 | Pilot (V3) | Selesai (dengan catatan) | 20 mahasiswa, 13-17 Okt, urutan diselang-seling. Data dari Google Sheets diinput tim ke template; ekspor mentah belum ada di repo. T1 95%, T2 90% (median 3,9 menit), T3 80%, T4 90%, T5 55% (istilah Bottleneck dan Prove It belum dipahami), SUS 71,1. PathSync dinilai lebih jelas daripada saran umum di Q1-Q3 (semua p < 0,05), tetapi Q1 PathSync 3,75 di bawah target 4,0. Temuan asesmen (topik lompat) sudah ditindaklanjuti: soal diagnostik dikelompokkan per klaster |
-| BE-01 CI GitHub | Tidak bisa dicek dari sini | `gh` tidak terpasang dan repo privat; cek tab Actions |
-| BE-02 deploy publik | Belum | Butuh VPS dan kredensial |
+| BE-01 CI GitHub | Gerbang lulus lokal | CI hanya berjalan di push ke `main` dan PR, jadi branch ini belum diuji di GitHub. Langkah CI dijalankan lokal 18 Okt: ruff bersih, pip-audit dan npm audit bersih, migrasi cocok, 133 tes lulus dengan coverage 88,9% (gerbang 80%), job PostgreSQL 16 (migrasi dua kali + `check`, bangun pasar, 133 tes) lulus. Status Actions di GitHub tetap perlu dilihat setelah PR |
+| BE-02 deploy publik | Frontend online, backend menunggu Blueprint Render | Gratis: Vercel (`pathsync-icc2026.vercel.app`), Render Free 512 MB (`render.yaml`, model ONNX, diuji di kontainer 512 MB/0,1 CPU: ±470 MB, 0 OOM), Neon PostgreSQL 18 (terisi). Cadangan harian `backup-neon.yml`, latihan pemulihan identik. Lihat `docs/ops/DEPLOY_GRATIS.md` |
 | BE-03 sumber data | Selesai (dokumen), menunggu keputusan | `docs/ops/DATA_SOURCES.md`: syarat layanan Kalibrr melarang penyalinan tanpa izin tertulis; Karirhub tanpa syarat layanan yang bisa ditemukan. `PATHSYNC_EXCLUDED_SOURCES` untuk mengeluarkan sumber; kontak perekrut disamarkan saat dimuat |
 | BE-05 latensi | Diukur | Satu permintaan: transkrip 12 kueri, dashboard 6 kueri. Beban 200 siswa, 40 konkuren, 1 worker SQLite: 0 galat, p95 transkrip sekitar 1 detik karena antrean penulis tunggal, bukan CPU. Ukur ulang di PostgreSQL dengan beberapa worker |
 | BE-07 workflow bulanan | Selesai | Tidak lagi meng-commit berkas mentah; snapshot disimpan sebagai artifact 90 hari |
 | BE-08 metrik pilot | Selesai | Event `pilot_survey` tervalidasi, target pilot di Admin > Launch Metrics |
+| BE-09 keamanan | Selesai | Hasil di `RUNBOOK.md`: audit dependensi bersih, tes cookie staf dan header IP klien |
 | BE-12 bahasa per permintaan | Selesai | `?lang=` atau `Accept-Language`, katalog pesan dua bahasa untuk semua kalimat mesin, header `Content-Language`, tes paritas |
 
 ## 0. Prinsip kerja Data/AI
