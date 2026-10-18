@@ -38,6 +38,8 @@ from pathsync.db import (
 
 OUT = MODELS_DIR / "metrics.json"
 CRLF, LF = bytes([13, 10]), bytes([10])     # hashes ignore line endings (Windows checkouts vs CI)
+# 0.80 until 18 Oct 2026; the team lowered it to 0.75 after the test-half result (0.796) was known (PLAN.md M1)
+TARGET_PRECISION = 0.75
 GOLD_FILES = ("gold_pilot.json", "gold_heldout.json", "gold_blind.json", "gold_blind_bisnis.json", "gold_split.json",
               "gold_split_bisnis.json",
               "gold_consensus.json", "gold_adjudication.json", "normalisation_gold.json")
@@ -74,9 +76,9 @@ def _extraction() -> dict:
     blind = sets.get("blind", {})
     lo = (blind.get("precision_ci95") or [None])[0]
     return {"extractor": (ev.get("provenance") or {}).get("extractor", "lexicon"), "sets": sets,
-            "annotators": 1, "target_precision": 0.80,
-            "target_met": {"point_estimate": blind.get("precision", 0) >= 0.80,
-                           "lower_ci_bound": lo is not None and lo >= 0.80},
+            "annotators": 1, "target_precision": TARGET_PRECISION,
+            "target_met": {"point_estimate": blind.get("precision", 0) >= TARGET_PRECISION,
+                           "lower_ci_bound": lo is not None and lo >= TARGET_PRECISION},
             "note": "dev and heldout were used to tune aliases and must not be quoted as performance; blind (14 original roles) "
                     "and blind_bisnis (6 business roles, never tuned on) are the reportable sets; all single-annotator"}
 

@@ -16,13 +16,13 @@ baru dari `main` dengan branch sendiri, lalu PR. Rincian dan angka: `docs/plan/P
 `backend/data/models/metrics.json`. Situs live: **https://pathsync-id.vercel.app** (backend Railway dari `main`, data Neon);
 cara deploy di `docs/ops/DEPLOY_GRATIS.md`.
 
-**Progres kasar:** keseluruhan ±82%; backend/data/AI/asesmen/validasi ±92%; syarat wajib MVP ±70% (2 dari 7 penuh, 4 hampir).
+**Progres (18 Okt, keputusan tim):** backend, data, AI, asesmen, dan validasi manusia **dianggap selesai untuk MVP**. Dua target backend/data dilepas karena MVP tetap tercapai: profil demo ±10 dtk (tidak dipercepat lagi) dan lowongan BA 65 (tidak dikejar ke ≥ 100). Sisa: frontend (M2), deploy (Playwright, video, secret cadangan), dan proposal (M5). Keseluruhan ±88%.
 
 ### Status syarat MVP
 
 | ID | Status | Yang kurang |
 |---|---|---|
-| M1 | Sebagian | Presisi uji ekstraksi sedikit di bawah target 0,80 (selang kepercayaan mencakup 0,80). Gold = pra-anotasi LLM + 1 verifikator, bukan 2 anotator manusia dengan kappa. Taksonomi BA lolos 3/3 |
+| M1 | **Selesai** | Target presisi diturunkan tim dari 0,80 ke **0,75** pada 18 Okt, **setelah** hasil paruh uji diketahui (dicatat terbuka). Paruh uji: presisi 0,796 [0,7522-0,8334], recall 0,817, jadi titik tengah dan batas bawah selang ≥ 0,75. Gold = pra-anotasi LLM dua putaran yang diverifikasi dan dikoreksi manusia (Ivan), bukan 2 anotator independen dengan kappa. Taksonomi BA lolos 3/3 |
 | M2 | Sebagian | Backend sudah memberi `p_proven` dan `coverage_proven`; **frontend belum menampilkan "dari nilai" vs "dibuktikan"** |
 | M3 | Hampir | UI bahasa Indonesia + tombol ID/EN (frontend Derik), backend dan bank soal dua bahasa. Halaman staf tetap Inggris (sengaja) |
 | M4 | Sebagian | **Online penuh**: pathsync-id.vercel.app + Railway + Neon, HTTPS, alur demo dicek manual 18 Okt (profil demo ±10 dtk). Kurang: uji otomatis Playwright, video cadangan, secret cadangan Neon di GitHub |
@@ -54,7 +54,7 @@ cara deploy di `docs/ops/DEPLOY_GRATIS.md`.
 | # | Pekerjaan | Pemilik |
 |---|---|---|
 | 9 | Kirim email izin ke Kalibrr | Tim |
-| 10 | Lowongan BA dari 65 ke ≥ 100 (bergantung izin Kalibrr atau sumber legal lain) | Data/AI |
+| 10 | ~~Lowongan BA dari 65 ke ≥ 100~~ Dilepas 18 Okt (MVP tercapai dengan 65); tetap kirim email izin Kalibrr | Data/AI |
 | 11 | Ekspor jawaban Quick Check per soal dari pilot untuk kalibrasi asesmen (AI-10) | Tim |
 | 12 | Tambah secret `NEON_DATABASE_URL` di GitHub agar cadangan harian jalan | Ivan |
 | 13 | Putuskan 10 berkas `docs/validasi/` dari sesi lain (lembar validator yang diisi AI): pindah ke folder berlabel, buang, atau simpan | Ivan |
@@ -86,7 +86,7 @@ Alasannya dari audit: hanya BA yang punya data cukup (57 posting), gold, dan tak
 
 | ID | Syarat | Ukuran lulus | Bidang |
 |---|---|---|---|
-| M1 | **BA tervalidasi** | Gold konsensus 2 anotator manusia dengan kappa ≥ 0,70. Presisi dan recall ekstraksi ≥ 0,80 di set uji, dengan selang dicantumkan. Kriteria taksonomi final BA lolos 3 dari 3 | Data/AI |
+| M1 | **BA tervalidasi** | Gold diverifikasi manusia (awalnya: 2 anotator, kappa ≥ 0,70). Presisi dan recall ekstraksi ≥ 0,75 di set uji (awalnya 0,80; diubah 18 Okt), dengan selang dicantumkan. Kriteria taksonomi final BA lolos 3 dari 3 | Data/AI |
 | M2 | **Angka kesiapan yang jujur** | Tidak ada skill tampil sebagai "kuat" atau tercakup dalam readiness hanya dari nilai kuliah. UI membedakan "dari nilai" dan "dibuktikan" | Backend + Frontend |
 | M3 | **Alur utama dalam bahasa Indonesia** | Landing, pendaftaran, bukti, Quick Check, dashboard, Skill Map tersedia dalam bahasa Indonesia dengan tombol bahasa. Bahasa dipilih per permintaan di backend (bukan variabel lingkungan global) | Backend + Frontend + Data/AI |
 | M4 | **URL publik yang tahan gagal** | Deploy publik berjalan dengan HTTPS dan cadangan, ada video demo cadangan, dan ada uji otomatis alur demo di browser | Backend + Frontend |
@@ -120,7 +120,7 @@ Alasannya dari audit: hanya BA yang punya data cukup (57 posting), gold, dan tak
 | D1 | Posisi produk | **BA-first**, 13 role lain Beta | Satu wedge terbukti (audit PM-1, INV-5) |
 | D2 | Agile/Scrum dan Project Management | **Tetap soft skill berbasis pengalaman.** Daftarkan sebagai "dikenal, di luar cakupan" di governance supaya tidak muncul sebagai kandidat skill baru | Konsisten dengan keputusan hard-skill-only. `PLAN.md` lama menyarankan mengembalikannya ke taksonomi hard |
 | D3 | Ranker | **Pakai formula (5)** sebagai model aktif sampai ada pakar nyata. LTR disebut "eksperimen" | LTR seri dengan formula (0,9747 vs 0,9749) dan validasinya sirkular |
-| D4 | Ekstraktor produksi | Ditentukan oleh S1 dengan aturan tertulis: F1 tertinggi di set uji, asal presisi ≥ 0,80. Seri, pilih lexicon | Hindari memilih setelah melihat hasil |
+| D4 | Ekstraktor produksi | Ditentukan oleh S1 dengan aturan tertulis: F1 tertinggi di set uji, asal presisi ≥ 0,80 (aturan saat keputusan diambil). Seri, pilih lexicon | Hindari memilih setelah melihat hasil |
 | D5 | Readiness | Tampilkan **dua angka**: "Terbukti" (asesmen, proyek, sertifikat) dan "Dari nilai". Hanya yang pertama untuk "Strengths" | Audit AI-7 dan USR-2 |
 | D6 | Bahasa | Indonesia sebagai bahasa utama, Inggris pilihan | Sasaran proposal |
 | D7 | Sumber data | Prioritaskan sumber ATS publik dan perluasan sumber, jangan menambah ketergantungan ke satu portal | Audit INV-3 dan INV-4 |

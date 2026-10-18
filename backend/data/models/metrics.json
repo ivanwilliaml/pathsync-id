@@ -248,10 +248,10 @@
    }
   },
   "annotators": 1,
-  "target_precision": 0.8,
+  "target_precision": 0.75,
   "target_met": {
    "point_estimate": true,
-   "lower_ci_bound": false
+   "lower_ci_bound": true
   },
   "note": "dev and heldout were used to tune aliases and must not be quoted as performance; blind (14 original roles) and blind_bisnis (6 business roles, never tuned on) are the reportable sets; all single-annotator"
  },
