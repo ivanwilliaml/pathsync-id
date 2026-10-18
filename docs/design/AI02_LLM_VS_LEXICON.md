@@ -32,7 +32,8 @@ Aturan yang ditulis sebelum eksperimen (PLAN D4): *pilih F1 tertinggi dengan sya
   melewati 0,80.
 - **Rekomendasi: tetap leksikon** (F1 tertinggi; presisi 0,796, selang kepercayaannya mencakup 0,80), dengan penyimpangan dari
   aturan harfiah dicatat di sini. Gabungan memberi F1 setara (0,804) tetapi presisi lebih rendah dan bergantung pada GPU.
-  Keputusan akhir ada di tim; bila tim memilih menerapkan aturan apa adanya, irisan dapat dipakai sebagai mode "presisi tinggi".
+  **Keputusan tim (18 Okt 2026): leksikon.** Penyimpangan dari aturan D4 harfiah disetujui tim dengan alasan di atas; irisan tetap
+  tersedia sebagai penanda "terkonfirmasi dua metode".
 - **Peran LLM:** pembanding dan pemeriksa. Irisan dengan presisi 0,975 berguna untuk menandai sebutan leksikon yang dikonfirmasi
   dua metode; LLM juga tetap dipakai untuk membaca CV.
 

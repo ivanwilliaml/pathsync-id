@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-10-18T04:27:38+00:00",
+ "generated_at": "2026-10-18T05:33:44+00:00",
  "inputs": {
   "taxonomy_sha": "97b396bb278d",
   "graph_sha": "b6fed258f5d1",
@@ -259,8 +259,8 @@
   "generated": "2026-10-18",
   "n_items": 705,
   "language": "en",
-  "answer_pattern_accuracy": 0.304,
-  "accuracy_sd": 0.008,
+  "answer_pattern_accuracy": 0.34,
+  "accuracy_sd": 0.005,
   "seeds": [
    0,
    1,
@@ -269,13 +269,13 @@
    4
   ],
   "chance": 0.25,
-  "random_p95": 0.267,
+  "random_p95": 0.265,
   "indonesian": {
    "generated": "2026-10-18",
    "n_items": 705,
    "language": "id",
-   "answer_pattern_accuracy": 0.312,
-   "accuracy_sd": 0.006,
+   "answer_pattern_accuracy": 0.333,
+   "accuracy_sd": 0.008,
    "seeds": [
     0,
     1,
@@ -284,7 +284,7 @@
     4
    ],
    "chance": 0.25,
-   "random_p95": 0.264
+   "random_p95": 0.263
   },
   "note": "accuracy of a model that sees only option surface features; at or below random_p95 means no usable cue. The Indonesian bank (plan A7) is audited separately because translation changes option lengths."
  },
