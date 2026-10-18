@@ -11,10 +11,12 @@ Tenggat: **23 Okt** karya ilmiah lengkap dan demo, **27 Okt** TM luring, **28 Ok
 
 ## 0. Status 18 Okt dan sisa pekerjaan
 
-Pekerjaan backend, data, AI, asesmen, dan validasi 16–18 Okt ada di branch **`perbaikan-be-ai`** (22 commit, belum di-merge ke
-`main`). Rincian dan angka: `docs/plan/PLAN_BACKEND_DATA_AI.md` dan `backend/data/models/metrics.json` di branch itu.
+Semua pekerjaan (backend/AI/validasi Ivan, frontend Derik, taksonomi Jo) sudah di **`main`** lewat PR #3 (18 Okt). Mulai kerja
+baru dari `main` dengan branch sendiri, lalu PR. Rincian dan angka: `docs/plan/PLAN_BACKEND_DATA_AI.md` dan
+`backend/data/models/metrics.json`. Situs live: **https://pathsync-id.vercel.app** (backend Railway dari `main`, data Neon);
+cara deploy di `docs/ops/DEPLOY_GRATIS.md`.
 
-**Progres kasar:** keseluruhan ±75%; backend/data/AI/asesmen/validasi ±90%; syarat wajib MVP ±65% (3 dari 7 penuh).
+**Progres kasar:** keseluruhan ±82%; backend/data/AI/asesmen/validasi ±92%; syarat wajib MVP ±70% (2 dari 7 penuh, 4 hampir).
 
 ### Status syarat MVP
 
@@ -22,8 +24,8 @@ Pekerjaan backend, data, AI, asesmen, dan validasi 16–18 Okt ada di branch **`
 |---|---|---|
 | M1 | Sebagian | Presisi uji ekstraksi sedikit di bawah target 0,80 (selang kepercayaan mencakup 0,80). Gold = pra-anotasi LLM + 1 verifikator, bukan 2 anotator manusia dengan kappa. Taksonomi BA lolos 3/3 |
 | M2 | Sebagian | Backend sudah memberi `p_proven` dan `coverage_proven`; **frontend belum menampilkan "dari nilai" vs "dibuktikan"** |
-| M3 | Sebagian | Backend dua bahasa per permintaan dan bank soal Indonesia siap; **UI frontend masih bahasa Inggris, belum ada tombol bahasa** |
-| M4 | Sebagian | Frontend online (Vercel, HTTPS); database Neon terisi; cadangan harian siap. **Backend belum online**, belum ada uji otomatis alur demo, video cadangan belum ada |
+| M3 | Hampir | UI bahasa Indonesia + tombol ID/EN (frontend Derik), backend dan bank soal dua bahasa. Halaman staf tetap Inggris (sengaja) |
+| M4 | Sebagian | **Online penuh**: pathsync-id.vercel.app + Railway + Neon, HTTPS, alur demo dicek manual 18 Okt (profil demo ±10 dtk). Kurang: uji otomatis Playwright, video cadangan, secret cadangan Neon di GitHub |
 | M5 | Belum dicek | Proposal Bab I–III belum dicocokkan dengan `metrics.json` |
 | M6 | **Selesai** | Pilot 20 mahasiswa; 3 pakar BA independen (anonim atas permintaan, jawaban dirangkum tim). Aturan 2 dari 3: 12 prasyarat disetujui, 15 ditolak |
 | M7 | Hampir | `DATA_SOURCES.md` dan halaman About ada; izin Kalibrr belum (draf email `docs/ops/EMAIL_IZIN_KALIBRR.md`) |
@@ -38,14 +40,14 @@ Pekerjaan backend, data, AI, asesmen, dan validasi 16–18 Okt ada di branch **`
 
 | # | Pekerjaan | Pemilik | Catatan |
 |---|---|---|---|
-| 1 | **Backend online** | Ivan + Claude | Render minta kartu dan kartu ditolak. Rencana: **Railway trial** (tanpa kartu, kredit $5 ≈ 30 hari, cukup sampai final 28 Okt) atau laptop + Cloudflare Tunnel untuk demo. Image `deploy/render/Dockerfile` sudah teruji di 512 MB. Setelah online: bangun ulang isi Neon, arahkan `PATHSYNC_API` di Vercel, uji ujung ke ujung |
+| 1 | ~~Backend online~~ **Selesai 18 Okt** (Railway trial, kredit ±30 hari sampai final) | Ivan + Claude | Pantau sisa kredit di dashboard Railway |
 | 2 | ~~1–3 pakar BA independen mengisi lembar V2~~ **Selesai 18 Okt** (3 pakar) | Tim | Simpan jawaban asli dan identitas pakar di tempat aman untuk verifikasi juri |
 | 3 | Frontend menampilkan "dari nilai" vs "dibuktikan" (M2) | Frontend | Data dari API dashboard sudah ada |
-| 4 | Frontend bahasa Indonesia + tombol bahasa (M3) | Frontend | Backend menerima `?lang=id` atau `Accept-Language` |
-| 5 | Uji otomatis alur demo di browser (Playwright) | Frontend + Claude | Setelah backend online |
-| 6 | Video demo cadangan | Tim | Setelah backend online |
+| 4 | ~~Frontend bahasa Indonesia + tombol bahasa (M3)~~ **Selesai** (Derik) | Frontend | |
+| 5 | Uji otomatis alur demo di browser (Playwright) ke pathsync-id.vercel.app | Frontend + Claude | Backend sudah online |
+| 6 | Video demo cadangan | Tim | Backend sudah online |
 | 7 | Cocokkan proposal Bab I–III dengan `metrics.json` (M5) | Tim + Claude | Kirim draf proposal |
-| 8 | Merge `perbaikan-be-ai` ke `main` lewat PR agar CI GitHub berjalan | Ivan + Claude | Gerbang CI sudah lulus lokal (SQLite + PostgreSQL, coverage 89%) |
+| 8 | ~~Merge ke `main` lewat PR~~ **Selesai** (PR #3). Hapus branch lama yang sudah ter-merge (`perbaikan-be-ai`, `review/final-improvements`, `plan-perbaikan`, `platform-v1`, `gabungan-final`) | Ivan | Semua isinya sudah di `main` |
 
 **P1, memperkuat**
 
