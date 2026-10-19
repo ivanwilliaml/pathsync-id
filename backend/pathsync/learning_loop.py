@@ -11,7 +11,8 @@ The route says *what* to learn; the loop helps the student master it and shows t
   adapt     a deterministic decision from the state below, with its reason shown to the student
 
 The decision rules are written as data-free functions so they can be tested and simulated (pipeline.simulate_loop).
-Practice content lives in data/seed/practice/<role>.json; skills without content fall back to learn -> prove.
+Practice content lives in data/seed/practice/*.json (Indonesian; the five core BA skills also carry English). Options
+may be written compactly as [text, correct, feedback]. Skills without content fall back to learn -> prove.
 """
 from __future__ import annotations
 
@@ -36,15 +37,29 @@ TIER_PASS = 2 / 3        # basic and applied: at least two of three tasks right 
 TRANSFER_PASS = 1.0      # transfer: every transfer task right, before a skill is called mastered
 
 
+def _option(o) -> dict:
+    if isinstance(o, list):                      # compact form: [text, correct, feedback]
+        return {"text": o[0], "correct": bool(o[1]), "feedback": o[2]}
+    return o
+
+
 @lru_cache(maxsize=1)
 def practice_bank() -> dict[str, dict]:
-    """skill_id -> {objective, criteria, tasks, provenance}, merged from every role file."""
+    """skill_id -> {objective, criteria, tasks, provenance}, merged from every practice file."""
     bank: dict[str, dict] = {}
     for f in sorted(PRACTICE_DIR.glob("*.json")):
         data = json.loads(f.read_text(encoding="utf-8"))
         for sid, body in data["skills"].items():
-            bank[sid] = {**body, "provenance": data.get("provenance", {})}
+            if sid in bank:
+                raise ValueError(f"practice for {sid} is defined twice ({f.name})")
+            tasks = [{**t, "options": [_option(o) for o in t["options"]]} if t["type"] == "choice" else t for t in body["tasks"]]
+            bank[sid] = {**body, "tasks": tasks, "provenance": data.get("provenance", {})}
     return bank
+
+
+def _criteria(content: dict) -> list[str]:
+    c = content["criteria"]
+    return list(c if isinstance(c, list) else (c.get(get_lang()) or c["id"]))
 
 
 def _l(text) -> str:
@@ -204,6 +219,8 @@ def loop_state(s: Session, student: Student, ctx, states: dict, skill_id: str) -
 def _decision_text(code: str, skill_id: str, name: str, st: LoopState, names: dict[str, str]) -> dict:
     prereqs = [{"skill_id": q, "name": names.get(q, q)} for q in st.unmet_prereqs]
     level = level_label(st.target)
+    n_basic = st.tiers["basic"].total if "basic" in st.tiers else 0
+    n_applied = st.tiers["applied"].total if "applied" in st.tiers else 0
     text = {
         "mastered": (tr("Mastered: move on", "Dikuasai: lanjut"),
                      tr(f"Your proven level meets the target and you applied it to a different case.",
@@ -222,16 +239,16 @@ def _decision_text(code: str, skill_id: str, name: str, st: LoopState, names: di
                      f"Cek terakhir {st.last_prove_correct}/{st.last_prove_total} benar. Ulangi latihan terapan, baca umpan baliknya, lalu cek lagi."),
                   f"/learn/practice/{skill_id}?tier=applied", tr("Practise again", "Latihan lagi")),
         "practice_basic": (tr("Start with the basics", "Mulai dari latihan dasar"),
-                           tr("Three short tasks on the core idea, with feedback on every answer.",
-                              "Tiga latihan singkat tentang konsep inti, dengan umpan balik untuk setiap jawaban."),
+                           tr(f"{n_basic} short tasks on the core idea, with feedback on every answer.",
+                              f"{n_basic} latihan singkat tentang konsep inti, dengan umpan balik untuk setiap jawaban."),
                            f"/learn/practice/{skill_id}?tier=basic", tr("Start practice", "Mulai latihan")),
         "review_basic": (tr("Review, then redo the basics", "Ulas materi, lalu ulangi latihan dasar"),
                          tr("Some basics are still off. Read the feedback and one material, then try the basic tasks again.",
                             "Beberapa konsep dasar belum tepat. Baca umpan balik dan satu materi, lalu ulangi latihan dasar."),
                          f"/learn/practice/{skill_id}?tier=basic", tr("Redo the basics", "Ulangi latihan dasar")),
         "practice_applied": (tr("Apply it to a case", "Terapkan di kasus"),
-                             tr("Basics done. Now three tasks from realistic situations.",
-                                "Dasar sudah. Sekarang tiga latihan dari situasi nyata."),
+                             tr(f"Basics done. Now {n_applied} tasks from realistic situations.",
+                                f"Dasar sudah. Sekarang {n_applied} latihan dari situasi nyata."),
                              f"/learn/practice/{skill_id}?tier=applied", tr("Start applied tasks", "Mulai latihan terapan")),
         "prerequisite": (tr("Learn the prerequisite first", "Pelajari prasyaratnya dulu"),
                          tr(f"{name} builds on {', '.join(p['name'] for p in prereqs)}. That one is not solid yet.",
@@ -252,7 +269,7 @@ def loop_status(s: Session, student: Student, ctx, states: dict, skill_id: str, 
     return {
         "skill_id": skill_id, "name": ctx.names[skill_id], "supported": st.supported,
         "objective": _l(content["objective"]) if content else None,
-        "criteria": [*(content["criteria"].get(get_lang()) or content["criteria"]["id"])] if content else [],
+        "criteria": _criteria(content) if content else [],
         "provenance": _l(content.get("provenance")) if content else None,
         "target": round(st.target, 3), "level_target": level_label(st.target),
         "p": round(st.p, 3), "level_now": level_label(st.p),

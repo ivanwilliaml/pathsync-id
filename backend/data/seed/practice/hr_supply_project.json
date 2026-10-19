@@ -1,0 +1,2060 @@
+{
+ "version": "2026-10-20",
+ "provenance": "Disusun tim PathSync (draf dibantu AI). Belum ditinjau pakar; latihan tidak mengubah tingkat penguasaan.",
+ "skills": {
+  "hris_systems": {
+   "objective": "Mengelola HRIS: data induk karyawan, cuti dan absensi, laporan HR, serta hak akses yang aman.",
+   "criteria": [
+    "Menjaga kualitas data induk karyawan",
+    "Mengatur alur cuti dan absensi",
+    "Menyusun laporan HR dari HRIS",
+    "Mengatur hak akses sesuai peran"
+   ],
+   "tasks": [
+    {
+     "id": "hris-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Siapa yang sebaiknya bisa melihat data gaji seluruh karyawan di HRIS?",
+     "options": [
+      [
+       "Semua karyawan HR",
+       false,
+       "Tidak semua staf HR butuh data gaji; akses luas menambah risiko kebocoran."
+      ],
+      [
+       "Staf payroll dan manajer HR yang berwenang",
+       true,
+       "Tepat. Hak akses minimum sesuai tugas melindungi data sensitif."
+      ],
+      [
+       "Setiap atasan untuk seluruh perusahaan",
+       false,
+       "Atasan cukup melihat timnya sendiri, itu pun tidak selalu gaji."
+      ],
+      [
+       "Tim IT yang mengelola server",
+       false,
+       "Mengelola sistem tidak berarti perlu membaca isi data gaji."
+      ]
+     ],
+     "takeaway": "Hak akses HRIS mengikuti prinsip kebutuhan tugas (least privilege)."
+    },
+    {
+     "id": "hris-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Laporan turnover bulanan tampak terlalu rendah. Penyebab data yang paling mungkin:",
+     "options": [
+      [
+       "Tanggal keluar karyawan yang resign belum diisi di data induk",
+       true,
+       "Tepat. Laporan hanya sebaik data induknya; status keluar yang terlambat diperbarui menurunkan angka."
+      ],
+      [
+       "Grafik laporan memakai warna yang salah",
+       false,
+       "Tampilan tidak mengubah angka."
+      ],
+      [
+       "Terlalu banyak karyawan baru",
+       false,
+       "Rekrutmen tidak menurunkan jumlah karyawan keluar."
+      ],
+      [
+       "Server HRIS lambat",
+       false,
+       "Kecepatan tidak mengubah isi data."
+      ]
+     ],
+     "takeaway": "Periksa kelengkapan data induk sebelum mempercayai laporan HR."
+    },
+    {
+     "id": "hris-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Perusahaan pindah dari Excel ke HRIS baru. Data 800 karyawan akan dimigrasi minggu depan.",
+     "stem": "Langkah migrasi yang paling aman:",
+     "options": [
+      [
+       "Mengimpor semua data sekaligus lalu memperbaiki bila ada keluhan",
+       false,
+       "Kesalahan baru ketahuan saat gaji atau cuti salah dihitung."
+      ],
+      [
+       "Membersihkan duplikat dan format, uji impor pada sampel, rekonsiliasi jumlah dan total gaji, baru impor penuh",
+       true,
+       "Tepat. Validasi sebelum dan sesudah impor mencegah kesalahan menyebar."
+      ],
+      [
+       "Meminta tiap karyawan mengisi ulang datanya sendiri",
+       false,
+       "Lama dan menghasilkan format yang tidak konsisten."
+      ],
+      [
+       "Menjalankan Excel dan HRIS paralel selamanya",
+       false,
+       "Paralel sebentar boleh, selamanya menciptakan dua sumber data."
+      ]
+     ],
+     "takeaway": "Migrasi data: bersihkan, uji sampel, rekonsiliasi, baru tayangkan."
+    },
+    {
+     "id": "hris-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Karyawan mengeluh saldo cutinya di HRIS berkurang dua kali untuk satu pengajuan.",
+     "stem": "Langkah pertama yang paling tepat:",
+     "options": [
+      [
+       "Menambah saldo cuti karyawan itu secara manual",
+       false,
+       "Ini menutup gejala tanpa tahu apakah masalah berulang."
+      ],
+      [
+       "Memeriksa riwayat pengajuan dan persetujuan untuk melihat apakah ada pengajuan ganda atau aturan potong yang salah",
+       true,
+       "Tepat. Jejak audit menunjukkan penyebab sebelum data diubah."
+      ],
+      [
+       "Meminta vendor HRIS mengganti sistem",
+       false,
+       "Terlalu dini sebelum penyebab diketahui."
+      ],
+      [
+       "Mengabaikan karena hanya satu karyawan",
+       false,
+       "Kesalahan aturan bisa berdampak ke banyak karyawan."
+      ]
+     ],
+     "takeaway": "Gunakan jejak audit HRIS untuk menemukan penyebab sebelum mengoreksi data."
+    },
+    {
+     "id": "hris-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: kampus memakai sistem informasi akademik. Dosen bisa mengubah nilai mahasiswa di semua kelas, termasuk yang tidak diajarnya.",
+     "stem": "Perbaikan yang paling tepat:",
+     "options": [
+      [
+       "Membiarkan karena dosen bisa dipercaya",
+       false,
+       "Kepercayaan tidak menggantikan kontrol akses."
+      ],
+      [
+       "Membatasi akses ubah nilai hanya untuk kelas yang diampu, dengan log setiap perubahan",
+       true,
+       "Tepat. Prinsip hak akses minimum dan jejak audit yang sama seperti di HRIS."
+      ],
+      [
+       "Menghapus fitur ubah nilai",
+       false,
+       "Dosen tetap butuh mengoreksi nilai kelasnya."
+      ],
+      [
+       "Mengganti kata sandi semua dosen",
+       false,
+       "Tidak mengubah cakupan aksesnya."
+      ]
+     ],
+     "takeaway": "Prinsip akses dan jejak audit berlaku untuk setiap sistem yang menyimpan data pribadi."
+    }
+   ]
+  },
+  "labor_law_id": {
+   "objective": "Menerapkan hukum ketenagakerjaan Indonesia: PKWT dan PKWTT, upah minimum, lembur, THR, dan PHK.",
+   "criteria": [
+    "Membedakan PKWT dan PKWTT",
+    "Menghitung hak normatif (THR, lembur)",
+    "Mengenali larangan dalam perjanjian kerja",
+    "Menjalankan prosedur PHK yang sah"
+   ],
+   "tasks": [
+    {
+     "id": "law-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Mana yang tidak boleh dicantumkan dalam PKWT (kontrak waktu tertentu)?",
+     "options": [
+      [
+       "Jangka waktu kontrak",
+       false,
+       "Jangka waktu justru wajib ada di PKWT."
+      ],
+      [
+       "Masa percobaan kerja",
+       true,
+       "Tepat. PKWT tidak boleh mensyaratkan masa percobaan; bila dicantumkan, batal demi hukum."
+      ],
+      [
+       "Besaran upah",
+       false,
+       "Upah wajib dicantumkan."
+      ],
+      [
+       "Jabatan atau jenis pekerjaan",
+       false,
+       "Jenis pekerjaan wajib dicantumkan."
+      ]
+     ],
+     "takeaway": "Masa percobaan hanya untuk PKWTT (karyawan tetap)."
+    },
+    {
+     "id": "law-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Karyawan dengan masa kerja 6 bulan saat hari raya berhak atas THR sebesar:",
+     "options": [
+      [
+       "Tidak berhak karena belum setahun",
+       false,
+       "Masa kerja 1 bulan atau lebih sudah berhak secara proporsional."
+      ],
+      [
+       "Satu bulan upah penuh",
+       false,
+       "Satu bulan penuh untuk masa kerja 12 bulan atau lebih."
+      ],
+      [
+       "6/12 × satu bulan upah",
+       true,
+       "Tepat. THR proporsional untuk masa kerja kurang dari 12 bulan."
+      ],
+      [
+       "Setengah bulan upah dibayar setelah hari raya",
+       false,
+       "Besarnya kebetulan sama, tetapi THR wajib dibayar paling lambat H-7."
+      ]
+     ],
+     "takeaway": "THR: ≥12 bulan = 1 bulan upah; 1–12 bulan = proporsional; dibayar paling lambat 7 hari sebelum hari raya."
+    },
+    {
+     "id": "law-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Upah sebulan Rp5.190.000. Karyawan lembur 3 jam pada hari kerja biasa.",
+     "stem": "Upah lembur yang benar:",
+     "options": [
+      [
+       "Rp90.000",
+       false,
+       "Ini 3 × upah sejam tanpa pengali lembur."
+      ],
+      [
+       "Rp165.000",
+       true,
+       "Tepat. Upah sejam = 5.190.000/173 = 30.000; jam ke-1: 1,5 × 30.000 = 45.000; jam ke-2 dan ke-3: 2 × 30.000 × 2 = 120.000."
+      ],
+      [
+       "Rp135.000",
+       false,
+       "Ini memakai pengali 1,5× untuk semua jam; jam kedua dan seterusnya 2×."
+      ],
+      [
+       "Rp180.000",
+       false,
+       "Ini memakai pengali 2× untuk semua jam; jam pertama hanya 1,5×."
+      ]
+     ],
+     "takeaway": "Upah sejam = 1/173 upah sebulan; hari kerja: jam pertama 1,5×, jam berikutnya 2×."
+    },
+    {
+     "id": "law-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Seorang staf admin sudah bekerja dengan PKWT yang diperpanjang terus selama 6 tahun untuk pekerjaan yang sifatnya tetap.",
+     "stem": "Status hukum yang paling tepat:",
+     "options": [
+      [
+       "Tetap PKWT selama kontrak ditandatangani",
+       false,
+       "PKWT dibatasi jangka waktu dan jenis pekerjaan; pelanggarannya mengubah status."
+      ],
+      [
+       "Demi hukum menjadi PKWTT karena melewati batas waktu PKWT dan pekerjaannya bersifat tetap",
+       true,
+       "Tepat. PKWT maksimal 5 tahun dan tidak untuk pekerjaan bersifat tetap."
+      ],
+      [
+       "Menjadi pekerja harian lepas",
+       false,
+       "Tidak ada dasar perubahan menjadi harian lepas."
+      ],
+      [
+       "Kontrak otomatis berakhir tanpa hak apa pun",
+       false,
+       "Pekerja tetap memiliki hak sesuai statusnya."
+      ]
+     ],
+     "takeaway": "PKWT hanya untuk pekerjaan yang selesai dalam waktu tertentu, maksimal 5 tahun; selebihnya menjadi PKWTT."
+    },
+    {
+     "id": "law-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: startup ingin memberhentikan karyawan tetap karena perusahaan efisiensi.",
+     "stem": "Langkah yang paling sesuai aturan:",
+     "options": [
+      [
+       "Memberi tahu lewat chat dan menghentikan gaji hari itu juga",
+       false,
+       "PHK sepihak tanpa prosedur dan hak normatif berisiko sengketa."
+      ],
+      [
+       "Memberitahukan maksud dan alasan PHK, berunding bipartit, dan membayar pesangon, penghargaan masa kerja, serta penggantian hak sesuai ketentuan",
+       true,
+       "Tepat. PHK harus melalui pemberitahuan, perundingan, dan pemenuhan hak."
+      ],
+      [
+       "Meminta karyawan menandatangani surat resign agar tanpa pesangon",
+       false,
+       "Memaksa resign untuk menghindari pesangon melanggar hak pekerja."
+      ],
+      [
+       "Mengubah status karyawan menjadi PKWT dulu",
+       false,
+       "Status karyawan tetap tidak bisa diturunkan sepihak."
+      ]
+     ],
+     "takeaway": "PHK karena efisiensi tetap membutuhkan prosedur dan pembayaran hak sesuai ketentuan."
+    }
+   ]
+  },
+  "payroll_processing": {
+   "objective": "Memproses penggajian dengan benar: komponen gaji, lembur, potongan BPJS dan PPh 21, slip gaji, serta rekonsiliasi payroll.",
+   "criteria": [
+    "Membedakan komponen tetap dan tidak tetap",
+    "Menghitung potongan dengan dasar yang benar",
+    "Menyiapkan slip gaji yang jelas",
+    "Merekonsiliasi payroll dengan buku besar dan bank"
+   ],
+   "tasks": [
+    {
+     "id": "pay-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Mana yang termasuk komponen gaji tidak tetap?",
+     "options": [
+      [
+       "Gaji pokok",
+       false,
+       "Gaji pokok dibayar tetap setiap bulan."
+      ],
+      [
+       "Tunjangan jabatan bulanan",
+       false,
+       "Tunjangan yang dibayar tetap tiap bulan termasuk komponen tetap."
+      ],
+      [
+       "Uang lembur",
+       true,
+       "Tepat. Besarnya bergantung jam lembur bulan itu."
+      ],
+      [
+       "Tunjangan keluarga bulanan",
+       false,
+       "Dibayar tetap selama syaratnya terpenuhi."
+      ]
+     ],
+     "takeaway": "Komponen tetap dibayar sama tiap bulan; komponen tidak tetap bergantung kehadiran atau kinerja."
+    },
+    {
+     "id": "pay-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Sebelum transfer gaji, pemeriksaan yang paling penting adalah:",
+     "options": [
+      [
+       "Menyamakan total gaji bersih di daftar payroll dengan total file transfer bank",
+       true,
+       "Tepat. Selisih menunjukkan karyawan terlewat, ganda, atau nominal salah."
+      ],
+      [
+       "Memastikan warna slip gaji sesuai brand",
+       false,
+       "Tampilan tidak memengaruhi ketepatan pembayaran."
+      ],
+      [
+       "Mengirim slip gaji sebelum dihitung",
+       false,
+       "Slip harus berdasarkan perhitungan final."
+      ],
+      [
+       "Menanyakan karyawan apakah gajinya benar",
+       false,
+       "Pemeriksaan harus dilakukan sebelum dibayar, bukan mengandalkan keluhan."
+      ]
+     ],
+     "takeaway": "Rekonsiliasi total payroll dengan file bank sebelum menekan tombol transfer."
+    },
+    {
+     "id": "pay-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Karyawan baru masuk tanggal 16 dari bulan dengan 22 hari kerja; gaji sebulan Rp6,6 juta. Kebijakan: gaji prorata berdasarkan hari kerja.",
+     "stem": "Gaji bulan pertama (bila ia bekerja 11 hari kerja):",
+     "options": [
+      [
+       "Rp6,6 juta",
+       false,
+       "Belum diprorata."
+      ],
+      [
+       "Rp3,3 juta",
+       true,
+       "Tepat. 11/22 × 6,6 juta = 3,3 juta."
+      ],
+      [
+       "Rp3,1 juta",
+       false,
+       "Periksa pembaginya: kebijakan memakai hari kerja, bukan hari kalender."
+      ],
+      [
+       "Rp2,2 juta",
+       false,
+       "Ini memakai 11/33; periksa jumlah hari kerjanya."
+      ]
+     ],
+     "takeaway": "Prorata mengikuti kebijakan perusahaan (hari kerja atau kalender) secara konsisten."
+    },
+    {
+     "id": "pay-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Setelah payroll diproses, beban gaji di buku besar Rp412 juta, sedangkan rekap payroll Rp405 juta.",
+     "stem": "Langkah yang paling tepat:",
+     "options": [
+      [
+       "Menyesuaikan buku besar menjadi Rp405 juta",
+       false,
+       "Mengubah tanpa menelusuri bisa menyembunyikan kesalahan pencatatan."
+      ],
+      [
+       "Menelusuri selisih Rp7 juta, misalnya jurnal akrual bonus, gaji karyawan keluar, atau posting ganda",
+       true,
+       "Tepat. Selisih dijelaskan dulu, baru dikoreksi."
+      ],
+      [
+       "Membiarkan karena selisihnya kecil",
+       false,
+       "Selisih Rp7 juta material untuk beban gaji bulanan."
+      ],
+      [
+       "Menambah gaji karyawan sebesar selisih",
+       false,
+       "Tidak ada dasar membayar selisih ke karyawan."
+      ]
+     ],
+     "takeaway": "Rekonsiliasi payroll ke buku besar setiap bulan dan jelaskan setiap selisih."
+    },
+    {
+     "id": "pay-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: koperasi membayar honor 30 pengajar lepas per jam mengajar setiap bulan.",
+     "stem": "Proses yang paling mengurangi kesalahan bayar:",
+     "options": [
+      [
+       "Membayar berdasarkan perkiraan jam rata-rata",
+       false,
+       "Jam aktual berbeda tiap bulan."
+      ],
+      [
+       "Rekap jam dari daftar hadir yang disetujui koordinator, dicek silang ke jadwal, lalu dihitung dan direkonsiliasi ke total transfer",
+       true,
+       "Tepat. Prinsip payroll yang sama: data input disetujui, dihitung, direkonsiliasi."
+      ],
+      [
+       "Meminta pengajar menulis sendiri jumlah jamnya",
+       false,
+       "Tanpa verifikasi, risiko salah atau berlebih tinggi."
+      ],
+      [
+       "Membayar setiap tiga bulan agar lebih sederhana",
+       false,
+       "Frekuensi tidak mengurangi kesalahan perhitungan."
+      ]
+     ],
+     "takeaway": "Data input yang disetujui dan rekonsiliasi berlaku untuk honor apa pun, bukan hanya gaji tetap."
+    }
+   ]
+  },
+  "recruitment_selection": {
+   "objective": "Merekrut secara terstruktur: analisis kebutuhan, sourcing, wawancara terstruktur, asesmen, dan penawaran kerja.",
+   "criteria": [
+    "Menurunkan kriteria dari analisis jabatan",
+    "Memilih saluran sourcing yang tepat",
+    "Menyusun wawancara terstruktur",
+    "Mengambil keputusan dari bukti, bukan kesan"
+   ],
+   "tasks": [
+    {
+     "id": "rec-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Mengapa wawancara terstruktur lebih baik daripada wawancara bebas?",
+     "options": [
+      [
+       "Lebih cepat selesai",
+       false,
+       "Durasi bukan keunggulan utamanya."
+      ],
+      [
+       "Semua kandidat menjawab pertanyaan yang sama dan dinilai dengan rubrik, sehingga lebih adil dan prediktif",
+       true,
+       "Tepat. Konsistensi mengurangi bias pewawancara."
+      ],
+      [
+       "Kandidat lebih santai",
+       false,
+       "Bukan tujuan utama struktur."
+      ],
+      [
+       "Tidak perlu menyiapkan apa pun",
+       false,
+       "Justru butuh persiapan pertanyaan dan rubrik."
+      ]
+     ],
+     "takeaway": "Pertanyaan sama + rubrik penilaian = keputusan yang lebih adil dan bisa dipertanggungjawabkan."
+    },
+    {
+     "id": "rec-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Pertanyaan behavioral yang paling baik untuk menilai kemampuan menangani konflik:",
+     "options": [
+      [
+       "Apakah Anda orang yang sabar?",
+       false,
+       "Jawabannya ya/tidak dan mudah dipoles."
+      ],
+      [
+       "Ceritakan situasi saat Anda berbeda pendapat dengan rekan kerja, apa yang Anda lakukan, dan hasilnya",
+       true,
+       "Tepat. Menggali perilaku nyata di masa lalu (situasi, tindakan, hasil)."
+      ],
+      [
+       "Bagaimana menurut Anda konflik yang ideal?",
+       false,
+       "Ini opini, bukan bukti perilaku."
+      ],
+      [
+       "Apa kelemahan terbesar Anda?",
+       false,
+       "Tidak menyasar kompetensi konflik secara spesifik."
+      ]
+     ],
+     "takeaway": "Pertanyaan behavioral meminta contoh nyata: situasi, tindakan, hasil (STAR)."
+    },
+    {
+     "id": "rec-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Lowongan staf gudang menerima 900 lamaran dalam seminggu. Tim HR hanya dua orang.",
+     "stem": "Langkah penyaringan yang paling efisien dan adil:",
+     "options": [
+      [
+       "Membaca CV satu per satu dari yang terbaru",
+       false,
+       "Tidak efisien dan kandidat awal tertinggal."
+      ],
+      [
+       "Pertanyaan saringan wajib (misalnya domisili, bisa shift, pengalaman gudang) di formulir, lalu tes singkat untuk yang lolos",
+       true,
+       "Tepat. Kriteria wajib disaring otomatis dan konsisten, waktu HR dipakai untuk kandidat relevan."
+      ],
+      [
+       "Memilih kandidat dari universitas tertentu",
+       false,
+       "Kriteria ini tidak relevan dengan pekerjaan dan menimbulkan bias."
+      ],
+      [
+       "Mengambil 20 lamaran secara acak",
+       false,
+       "Kandidat terbaik bisa terlewat."
+      ]
+     ],
+     "takeaway": "Saring dengan kriteria wajib yang relevan pekerjaan sebelum menilai lebih dalam."
+    },
+    {
+     "id": "rec-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Dua pewawancara memberi nilai sangat berbeda untuk kandidat yang sama: 2 dan 5 dari 5.",
+     "stem": "Langkah yang paling tepat:",
+     "options": [
+      [
+       "Merata-ratakan menjadi 3,5 lalu lanjut",
+       false,
+       "Rata-rata menyembunyikan perbedaan yang perlu dipahami."
+      ],
+      [
+       "Kalibrasi: membahas bukti jawaban terhadap rubrik dan menyepakati penilaian",
+       true,
+       "Tepat. Perbedaan besar menunjukkan rubrik dipahami berbeda."
+      ],
+      [
+       "Mengikuti nilai pewawancara paling senior",
+       false,
+       "Senioritas bukan dasar penilaian."
+      ],
+      [
+       "Menolak kandidat karena hasilnya meragukan",
+       false,
+       "Kandidat dirugikan oleh masalah proses penilaian."
+      ]
+     ],
+     "takeaway": "Kalibrasi pewawancara dengan bukti dan rubrik, bukan dengan rata-rata atau senioritas."
+    },
+    {
+     "id": "rec-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: organisasi mahasiswa merekrut 10 panitia dari 120 pendaftar.",
+     "stem": "Cara seleksi yang paling adil:",
+     "options": [
+      [
+       "Memilih teman yang sudah dikenal dekat",
+       false,
+       "Bias kedekatan mengabaikan kemampuan pendaftar lain."
+      ],
+      [
+       "Menentukan kriteria tiap divisi, wawancara dengan pertanyaan yang sama, dan menilai dengan rubrik",
+       true,
+       "Tepat. Prinsip seleksi terstruktur yang sama berlaku untuk organisasi kecil."
+      ],
+      [
+       "Memilih berdasarkan IPK tertinggi saja",
+       false,
+       "IPK belum tentu relevan dengan tugas kepanitiaan."
+      ],
+      [
+       "Siapa cepat dia dapat",
+       false,
+       "Tidak menilai kesesuaian sama sekali."
+      ]
+     ],
+     "takeaway": "Kriteria dari kebutuhan peran + penilaian konsisten berlaku di mana pun."
+    }
+   ]
+  },
+  "inventory_management": {
+   "objective": "Mengelola persediaan: reorder point, safety stock, EOQ, analisis ABC, dan stock opname.",
+   "criteria": [
+    "Menghitung reorder point",
+    "Menentukan safety stock",
+    "Mengelompokkan barang dengan analisis ABC",
+    "Menangani selisih stok"
+   ],
+   "tasks": [
+    {
+     "id": "inv-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Pemakaian rata-rata 40 unit per hari, lead time pemasok 5 hari, safety stock 60 unit. Reorder point:",
+     "options": [
+      [
+       "200 unit",
+       false,
+       "Ini permintaan selama lead time tanpa safety stock."
+      ],
+      [
+       "260 unit",
+       true,
+       "Tepat. 40 × 5 + 60 = 260."
+      ],
+      [
+       "300 unit",
+       false,
+       "Periksa safety stock yang dipakai."
+      ],
+      [
+       "100 unit",
+       false,
+       "Ini hanya safety stock ditambah 40."
+      ]
+     ],
+     "takeaway": "Reorder point = permintaan selama lead time + safety stock."
+    },
+    {
+     "id": "inv-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Dalam analisis ABC, barang kelas A adalah:",
+     "options": [
+      [
+       "Barang dengan jumlah unit terbanyak",
+       false,
+       "ABC berdasarkan nilai, bukan jumlah unit."
+      ],
+      [
+       "Sedikit jenis barang yang menyumbang sebagian besar nilai persediaan",
+       true,
+       "Tepat. Kelas A paling perlu dikendalikan ketat."
+      ],
+      [
+       "Barang yang paling lama tidak terjual",
+       false,
+       "Itu barang slow-moving, bukan kelas A."
+      ],
+      [
+       "Barang dengan nama berawalan A",
+       false,
+       "Bukan berdasarkan nama."
+      ]
+     ],
+     "takeaway": "Fokuskan kontrol pada sedikit item bernilai tinggi (kelas A)."
+    },
+    {
+     "id": "inv-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Sebuah barang sering habis saat permintaan melonjak menjelang Lebaran, padahal rata-rata stok tahunan cukup.",
+     "stem": "Perbaikan yang paling tepat:",
+     "options": [
+      [
+       "Menambah stok sepanjang tahun secara merata",
+       false,
+       "Biaya simpan naik di bulan yang tidak membutuhkannya."
+      ],
+      [
+       "Menyesuaikan forecast dan safety stock musiman sebelum periode Lebaran",
+       true,
+       "Tepat. Masalahnya pola musiman, bukan rata-rata tahunan."
+      ],
+      [
+       "Mengganti pemasok",
+       false,
+       "Belum tentu masalah pemasok."
+      ],
+      [
+       "Mengurangi lead time menjadi nol",
+       false,
+       "Tidak realistis."
+      ]
+     ],
+     "takeaway": "Parameter stok perlu mengikuti pola permintaan, termasuk musiman."
+    },
+    {
+     "id": "inv-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Stock opname menemukan stok fisik 470 unit, sistem 500 unit, untuk barang bernilai tinggi.",
+     "stem": "Langkah yang paling tepat:",
+     "options": [
+      [
+       "Langsung menyesuaikan sistem menjadi 470",
+       false,
+       "Penyesuaian tanpa investigasi bisa menyembunyikan pencurian atau salah catat."
+      ],
+      [
+       "Hitung ulang, telusuri transaksi masuk-keluar terakhir, lalu sesuaikan dengan persetujuan dan catat penyebabnya",
+       true,
+       "Tepat. Selisih dijelaskan dulu sebelum dikoreksi."
+      ],
+      [
+       "Mengabaikan karena hanya 6%",
+       false,
+       "Untuk barang bernilai tinggi, selisih ini material."
+      ],
+      [
+       "Menambah 30 unit dari pembelian baru",
+       false,
+       "Tidak menjelaskan selisih dan menambah biaya."
+      ]
+     ],
+     "takeaway": "Selisih stok diinvestigasi, disetujui, dan didokumentasikan sebelum sistem disesuaikan."
+    },
+    {
+     "id": "inv-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: apotek kecil sering kehabisan obat yang paling laku dan menumpuk obat yang hampir kedaluwarsa.",
+     "stem": "Langkah yang paling tepat:",
+     "options": [
+      [
+       "Membeli semua obat dalam jumlah besar agar tidak habis",
+       false,
+       "Menambah risiko kedaluwarsa dan biaya."
+      ],
+      [
+       "Analisis ABC dan reorder point untuk obat laris, plus FEFO (yang kedaluwarsa duluan keluar duluan)",
+       true,
+       "Tepat. Konsep persediaan yang sama, ditambah aturan kedaluwarsa."
+      ],
+      [
+       "Mengurangi jenis obat yang dijual",
+       false,
+       "Bisa membantu, tetapi tidak menyelesaikan kekosongan obat laris."
+      ],
+      [
+       "Menghitung stok sekali setahun",
+       false,
+       "Terlalu jarang untuk mendeteksi masalah."
+      ]
+     ],
+     "takeaway": "Konsep persediaan berlaku di semua usaha; produk mudah kedaluwarsa butuh FEFO."
+    }
+   ]
+  },
+  "procurement_sourcing": {
+   "objective": "Menjalankan pengadaan: RFQ dan RFP, evaluasi penawaran, negosiasi, dan kontrak yang melindungi perusahaan.",
+   "criteria": [
+    "Memilih RFQ atau RFP sesuai kebutuhan",
+    "Mengevaluasi penawaran dengan kriteria berbobot",
+    "Menghitung total biaya kepemilikan",
+    "Menyusun syarat kontrak penting"
+   ],
+   "tasks": [
+    {
+     "id": "prc-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Kapan RFQ (request for quotation) lebih tepat daripada RFP?",
+     "options": [
+      [
+       "Saat spesifikasi barang sudah jelas dan pembeda utamanya harga",
+       true,
+       "Tepat. RFQ untuk membandingkan harga barang yang spesifikasinya baku."
+      ],
+      [
+       "Saat solusi belum jelas dan perlu proposal pendekatan",
+       false,
+       "Itu kebutuhan RFP."
+      ],
+      [
+       "Saat hanya ada satu pemasok",
+       false,
+       "Dengan satu pemasok, yang dilakukan adalah negosiasi langsung."
+      ],
+      [
+       "Saat ingin menunda keputusan",
+       false,
+       "Bukan tujuan RFQ."
+      ]
+     ],
+     "takeaway": "RFQ = spesifikasi jelas, bandingkan harga; RFP = kebutuhan kompleks, bandingkan solusi."
+    },
+    {
+     "id": "prc-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Total cost of ownership (TCO) printer kantor mencakup:",
+     "options": [
+      [
+       "Harga beli saja",
+       false,
+       "Harga beli hanya sebagian biaya."
+      ],
+      [
+       "Harga beli, tinta, servis, dan biaya listrik selama masa pakai",
+       true,
+       "Tepat. Printer murah bisa mahal di tinta dan servis."
+      ],
+      [
+       "Harga beli dan ongkos kirim",
+       false,
+       "Masih melewatkan biaya operasional."
+      ],
+      [
+       "Harga printer pesaing",
+       false,
+       "Itu pembanding, bukan komponen biaya."
+      ]
+     ],
+     "takeaway": "Bandingkan pemasok dengan biaya total selama masa pakai, bukan harga awal."
+    },
+    {
+     "id": "prc-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Tiga penawaran jasa kebersihan. Kriteria berbobot: harga 40%, kualitas 40%, pengalaman 20%. Skor (1–5): A harga 5, kualitas 2, pengalaman 3; B harga 3, kualitas 5, pengalaman 4; C harga 4, kualitas 3, pengalaman 3.",
+     "stem": "Pemenang menurut skor berbobot:",
+     "options": [
+      [
+       "A, karena harganya termurah",
+       false,
+       "Skor A = 2+0,8+0,6 = 3,4; harga murah tidak cukup."
+      ],
+      [
+       "B dengan skor 4,0",
+       true,
+       "Tepat. B = 1,2+2,0+0,8 = 4,0; C = 1,6+1,2+0,6 = 3,4."
+      ],
+      [
+       "C karena seimbang",
+       false,
+       "Skor C 3,4, di bawah B."
+      ],
+      [
+       "Seri antara A dan C",
+       false,
+       "Keduanya 3,4, tetapi keduanya kalah dari B."
+      ]
+     ],
+     "takeaway": "Evaluasi berbobot membuat keputusan pengadaan transparan dan bisa diaudit."
+    },
+    {
+     "id": "prc-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Pemasok bahan baku utama meminta kenaikan harga 15% dengan alasan biaya energi.",
+     "stem": "Persiapan negosiasi yang paling kuat:",
+     "options": [
+      [
+       "Langsung menerima agar hubungan tetap baik",
+       false,
+       "Tanpa data, perusahaan kehilangan posisi tawar."
+      ],
+      [
+       "Mengumpulkan data indeks harga energi dan pasar, menyiapkan alternatif pemasok (BATNA), dan menawarkan komitmen volume sebagai ganti kenaikan lebih kecil",
+       true,
+       "Tepat. Data dan alternatif memberi dasar negosiasi yang adil."
+      ],
+      [
+       "Mengancam memutus kontrak",
+       false,
+       "Ancaman tanpa alternatif nyata melemahkan posisi."
+      ],
+      [
+       "Menolak semua kenaikan apa pun alasannya",
+       false,
+       "Bila biaya pemasok memang naik, penolakan total bisa mengganggu pasokan."
+      ]
+     ],
+     "takeaway": "Negosiasi pengadaan bertumpu pada data pasar dan alternatif yang nyata (BATNA)."
+    },
+    {
+     "id": "prc-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: himpunan mahasiswa memilih vendor kaos untuk 300 anggota.",
+     "stem": "Proses pemilihan yang paling tepat:",
+     "options": [
+      [
+       "Memilih vendor teman ketua",
+       false,
+       "Konflik kepentingan dan tanpa perbandingan."
+      ],
+      [
+       "Meminta penawaran dengan spesifikasi sama (bahan, sablon, tenggat) dari 3 vendor, cek sampel, dan nilai harga serta kualitas",
+       true,
+       "Tepat. Prinsip RFQ dan evaluasi berbobot yang sama."
+      ],
+      [
+       "Memilih harga termurah tanpa melihat sampel",
+       false,
+       "Kualitas bisa mengecewakan dan berakhir dengan biaya ulang."
+      ],
+      [
+       "Membeli satuan di toko berbeda-beda",
+       false,
+       "Kualitas tidak seragam dan harga tidak efisien."
+      ]
+     ],
+     "takeaway": "Spesifikasi yang sama, beberapa penawaran, dan kriteria jelas membuat pengadaan adil."
+    }
+   ]
+  },
+  "vendor_supplier_management": {
+   "objective": "Mengelola pemasok: scorecard kinerja, SLA, evaluasi berkala, dan daftar pemasok terdaftar.",
+   "criteria": [
+    "Menyusun metrik scorecard pemasok",
+    "Menulis SLA yang terukur",
+    "Menindaklanjuti kinerja buruk",
+    "Menjaga daftar pemasok terdaftar"
+   ],
+   "tasks": [
+    {
+     "id": "vsm-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Metrik scorecard pemasok yang paling objektif:",
+     "options": [
+      [
+       "Kesan tim terhadap sales pemasok",
+       false,
+       "Subjektif dan sulit dibandingkan."
+      ],
+      [
+       "Persentase pengiriman tepat waktu dan lengkap (OTIF)",
+       true,
+       "Tepat. Terukur dari data penerimaan barang."
+      ],
+      [
+       "Jumlah hadiah yang diberikan pemasok",
+       false,
+       "Tidak relevan dan berisiko konflik kepentingan."
+      ],
+      [
+       "Lama pemasok berdiri",
+       false,
+       "Informasi latar, bukan kinerja."
+      ]
+     ],
+     "takeaway": "Scorecard memakai metrik terukur seperti OTIF, kualitas, dan respons."
+    },
+    {
+     "id": "vsm-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "SLA yang paling baik untuk jasa perbaikan mesin:",
+     "options": [
+      [
+       "Teknisi datang secepatnya",
+       false,
+       "\"Secepatnya\" tidak terukur."
+      ],
+      [
+       "Teknisi tiba maksimal 4 jam kerja setelah laporan, mesin pulih maksimal 24 jam, dengan potongan biaya bila terlambat",
+       true,
+       "Tepat. Ada ukuran waktu dan konsekuensi."
+      ],
+      [
+       "Pelayanan memuaskan",
+       false,
+       "Tidak bisa diukur atau ditagih."
+      ],
+      [
+       "Teknisi berpengalaman",
+       false,
+       "Syarat kompetensi, bukan tingkat layanan."
+      ]
+     ],
+     "takeaway": "SLA = target layanan yang terukur dan konsekuensi bila tidak tercapai."
+    },
+    {
+     "id": "vsm-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "OTIF pemasok kemasan turun dari 96% ke 78% dalam tiga bulan; produksi beberapa kali tertunda.",
+     "stem": "Langkah yang paling tepat:",
+     "options": [
+      [
+       "Langsung memutus kontrak",
+       false,
+       "Tanpa memahami penyebab dan tanpa pengganti, produksi bisa berhenti total."
+      ],
+      [
+       "Pertemuan kinerja dengan data, meminta rencana perbaikan bertenggat, dan menyiapkan pemasok cadangan",
+       true,
+       "Tepat. Perbaikan diberi kesempatan terukur sambil mengurangi risiko."
+      ],
+      [
+       "Menunggu sampai membaik sendiri",
+       false,
+       "Tren menurun tiga bulan butuh tindakan."
+      ],
+      [
+       "Menaikkan stok pengaman tanpa bicara ke pemasok",
+       false,
+       "Menambah biaya dan tidak memperbaiki akar masalah."
+      ]
+     ],
+     "takeaway": "Kinerja buruk ditangani dengan data, rencana perbaikan, dan opsi cadangan."
+    },
+    {
+     "id": "vsm-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Staf pembelian ingin menambahkan pemasok baru yang menawarkan harga 20% lebih murah.",
+     "stem": "Syarat sebelum pemasok masuk daftar terdaftar:",
+     "options": [
+      [
+       "Cukup karena harganya murah",
+       false,
+       "Harga saja tidak menjamin legalitas, kualitas, atau kapasitas."
+      ],
+      [
+       "Verifikasi legalitas dan pajak, uji sampel atau kunjungan, cek kapasitas, dan tidak ada konflik kepentingan",
+       true,
+       "Tepat. Due diligence melindungi dari risiko kualitas dan kecurangan."
+      ],
+      [
+       "Persetujuan lisan atasan",
+       false,
+       "Perlu dokumentasi dan kriteria yang jelas."
+      ],
+      [
+       "Rekomendasi dari pemasok lain",
+       false,
+       "Rekomendasi tidak menggantikan verifikasi."
+      ]
+     ],
+     "takeaway": "Pemasok baru melewati due diligence sebelum boleh dipakai."
+    },
+    {
+     "id": "vsm-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: kantin kampus bekerja sama dengan 8 penjual makanan; keluhan kebersihan meningkat.",
+     "stem": "Cara pengelolaan yang paling tepat:",
+     "options": [
+      [
+       "Mengganti semua penjual",
+       false,
+       "Tidak adil bagi yang sudah baik."
+      ],
+      [
+       "Standar kebersihan tertulis, inspeksi berkala dengan skor, dan peringatan bertahap untuk yang di bawah standar",
+       true,
+       "Tepat. Konsep scorecard dan SLA yang sama dipakai untuk mitra apa pun."
+      ],
+      [
+       "Meminta mahasiswa memilih penjual sendiri",
+       false,
+       "Tidak menangani standar kebersihan."
+      ],
+      [
+       "Menunggu ada kasus keracunan",
+       false,
+       "Reaktif dan berbahaya."
+      ]
+     ],
+     "takeaway": "Standar terukur, inspeksi, dan konsekuensi berlaku untuk semua jenis mitra."
+    }
+   ]
+  },
+  "jira_confluence": {
+   "objective": "Memakai Jira dan Confluence untuk melacak pekerjaan: issue yang jelas, workflow, board, dan dokumentasi tim.",
+   "criteria": [
+    "Menulis issue yang bisa dikerjakan",
+    "Memakai workflow dan status dengan konsisten",
+    "Membaca board untuk melihat hambatan",
+    "Mendokumentasikan keputusan di Confluence"
+   ],
+   "tasks": [
+    {
+     "id": "jira-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Issue Jira yang paling baik:",
+     "options": [
+      [
+       "Perbaiki login",
+       false,
+       "Tidak jelas masalahnya, langkah reproduksi, atau kriteria selesai."
+      ],
+      [
+       "Login gagal untuk email berhuruf besar; langkah: daftar dengan A@x.com lalu login a@x.com; harapan: berhasil; kriteria selesai: login tidak peka huruf besar",
+       true,
+       "Tepat. Developer dan tester tahu persis masalah dan kapan selesai."
+      ],
+      [
+       "URGENT!!! login rusak tolong cepat",
+       false,
+       "Urgensi tanpa detail tidak membantu."
+      ],
+      [
+       "Cek semua fitur",
+       false,
+       "Terlalu luas untuk satu issue."
+      ]
+     ],
+     "takeaway": "Issue yang baik: masalah, langkah reproduksi, hasil yang diharapkan, kriteria selesai."
+    },
+    {
+     "id": "jira-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Board kanban menunjukkan 12 kartu menumpuk di kolom \"Review\". Artinya:",
+     "options": [
+      [
+       "Tim sangat produktif",
+       false,
+       "Tumpukan menunjukkan hambatan, bukan produktivitas."
+      ],
+      [
+       "Ada bottleneck di tahap review; perlu batas WIP atau tambahan reviewer",
+       true,
+       "Tepat. Board membuat hambatan alur terlihat."
+      ],
+      [
+       "Kolom Review harus dihapus",
+       false,
+       "Review tetap penting untuk kualitas."
+      ],
+      [
+       "Semua kartu harus dipindah ke Done",
+       false,
+       "Memindahkan tanpa review menurunkan kualitas."
+      ]
+     ],
+     "takeaway": "Tumpukan di satu kolom board adalah tanda bottleneck."
+    },
+    {
+     "id": "jira-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Tim sering lupa keputusan rapat: siapa memutuskan apa dan mengapa. Diskusinya tersebar di chat.",
+     "stem": "Penggunaan Confluence yang paling tepat:",
+     "options": [
+      [
+       "Menyalin seluruh isi chat ke satu halaman",
+       false,
+       "Terlalu panjang dan sulit dicari."
+      ],
+      [
+       "Halaman catatan keputusan dengan templat: konteks, opsi, keputusan, pemilik, tanggal, dan tautan ke issue Jira terkait",
+       true,
+       "Tepat. Keputusan mudah dicari dan terhubung ke pekerjaan."
+      ],
+      [
+       "Merekam semua rapat tanpa ringkasan",
+       false,
+       "Rekaman sulit dicari dan jarang ditonton ulang."
+      ],
+      [
+       "Mengandalkan ingatan PM",
+       false,
+       "Rentan hilang saat orang berganti."
+      ]
+     ],
+     "takeaway": "Dokumentasikan keputusan secara terstruktur dan tautkan ke pekerjaan yang terdampak."
+    },
+    {
+     "id": "jira-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Laporan sprint menunjukkan banyak issue berstatus \"In Progress\" berhari-hari tanpa pembaruan.",
+     "stem": "Langkah yang paling tepat:",
+     "options": [
+      [
+       "Menutup semua issue itu otomatis",
+       false,
+       "Pekerjaan yang belum selesai jadi hilang dari pantauan."
+      ],
+      [
+       "Membahas di daily stand-up apa hambatannya, menandai yang terblokir, dan menetapkan batas WIP per orang",
+       true,
+       "Tepat. Status yang macet ditangani dengan membuka hambatannya."
+      ],
+      [
+       "Menambah kolom baru di board",
+       false,
+       "Kolom baru tidak menyelesaikan hambatan."
+      ],
+      [
+       "Membiarkan karena tim sibuk",
+       false,
+       "Status yang tidak akurat membuat perencanaan salah."
+      ]
+     ],
+     "takeaway": "Status di Jira harus mencerminkan kenyataan; issue yang macet perlu dibuka hambatannya."
+    },
+    {
+     "id": "jira-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: panitia seminar mengelola 40 tugas (venue, pembicara, publikasi) lewat grup chat dan banyak tugas terlewat.",
+     "stem": "Perbaikan yang paling tepat:",
+     "options": [
+      [
+       "Membuat grup chat baru yang lebih kecil",
+       false,
+       "Masalahnya tidak ada pelacakan tugas, bukan jumlah anggota."
+      ],
+      [
+       "Papan tugas (misalnya Trello atau Jira) dengan pemilik, tenggat, dan status tiap tugas, ditinjau seminggu sekali",
+       true,
+       "Tepat. Prinsip issue tracking yang sama untuk proyek non-IT."
+      ],
+      [
+       "Mengandalkan ketua mengingat semuanya",
+       false,
+       "Satu orang menjadi titik gagal."
+      ],
+      [
+       "Mengirim pengingat setiap hari ke semua orang",
+       false,
+       "Pengingat umum mudah diabaikan."
+      ]
+     ],
+     "takeaway": "Pelacakan tugas dengan pemilik, tenggat, dan status berguna untuk proyek apa pun."
+    }
+   ]
+  },
+  "project_planning_wbs": {
+   "objective": "Merencanakan proyek: project charter, ruang lingkup, WBS, dan rencana proyek yang dapat dikelola.",
+   "criteria": [
+    "Merumuskan tujuan dan ruang lingkup",
+    "Memecah pekerjaan menjadi WBS",
+    "Mendefinisikan deliverable dan kriteria selesai",
+    "Menyusun rencana yang realistis"
+   ],
+   "tasks": [
+    {
+     "id": "wbs-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Fungsi utama WBS (work breakdown structure):",
+     "options": [
+      [
+       "Menunjukkan urutan waktu pekerjaan",
+       false,
+       "Urutan waktu ditunjukkan jadwal atau Gantt chart."
+      ],
+      [
+       "Memecah seluruh ruang lingkup menjadi deliverable dan paket kerja yang bisa diestimasi dan ditugaskan",
+       true,
+       "Tepat. WBS memastikan tidak ada pekerjaan yang terlewat."
+      ],
+      [
+       "Mencatat risiko proyek",
+       false,
+       "Itu fungsi register risiko."
+      ],
+      [
+       "Mengatur anggaran pemasaran",
+       false,
+       "Tidak berhubungan langsung."
+      ]
+     ],
+     "takeaway": "WBS = apa saja yang harus dihasilkan; jadwal = kapan dikerjakan."
+    },
+    {
+     "id": "wbs-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Mana yang termasuk isi project charter?",
+     "options": [
+      [
+       "Daftar tugas harian tiap anggota",
+       false,
+       "Terlalu rinci untuk charter."
+      ],
+      [
+       "Tujuan proyek, sponsor, ruang lingkup tingkat tinggi, dan kriteria keberhasilan",
+       true,
+       "Tepat. Charter memberi mandat dan arah proyek."
+      ],
+      [
+       "Kode program aplikasi",
+       false,
+       "Bukan dokumen manajemen proyek."
+      ],
+      [
+       "Notulen rapat mingguan",
+       false,
+       "Dokumen operasional, bukan charter."
+      ]
+     ],
+     "takeaway": "Charter menjawab mengapa proyek ada, siapa sponsornya, dan apa ukuran berhasilnya."
+    },
+    {
+     "id": "wbs-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Proyek: meluncurkan aplikasi absensi untuk 3 cabang dalam 4 bulan.",
+     "stem": "Pemecahan WBS tingkat pertama yang paling baik:",
+     "options": [
+      [
+       "Senin, Selasa, Rabu, Kamis",
+       false,
+       "Itu pembagian waktu, bukan deliverable."
+      ],
+      [
+       "Analisis kebutuhan, pengembangan aplikasi, pengujian, pelatihan pengguna, peluncuran di 3 cabang",
+       true,
+       "Tepat. Berbasis deliverable dan mencakup seluruh ruang lingkup."
+      ],
+      [
+       "Budi, Sari, Andi",
+       false,
+       "Itu pembagian orang, bukan pekerjaan."
+      ],
+      [
+       "Tahap sulit dan tahap mudah",
+       false,
+       "Tidak menjelaskan hasil yang harus dibuat."
+      ]
+     ],
+     "takeaway": "Pecah WBS berdasarkan deliverable, lalu turunkan sampai paket kerja yang bisa diestimasi."
+    },
+    {
+     "id": "wbs-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Di tengah proyek, tim baru sadar pelatihan pengguna tidak pernah direncanakan dan anggarannya tidak ada.",
+     "stem": "Pelajaran perencanaan yang paling tepat:",
+     "options": [
+      [
+       "Pelatihan memang tidak penting",
+       false,
+       "Tanpa pelatihan, adopsi aplikasi berisiko gagal."
+      ],
+      [
+       "WBS perlu ditinjau bersama stakeholder untuk memastikan seluruh ruang lingkup (aturan 100%) tercakup sejak awal",
+       true,
+       "Tepat. WBS yang lengkap mencegah pekerjaan terlewat."
+      ],
+      [
+       "Menambah anggaran tanpa persetujuan sponsor",
+       false,
+       "Perubahan anggaran perlu melalui kontrol perubahan."
+      ],
+      [
+       "Menghapus pengujian untuk menutupi anggaran",
+       false,
+       "Memotong pengujian menambah risiko kualitas."
+      ]
+     ],
+     "takeaway": "Aturan 100%: WBS mencakup seluruh pekerjaan proyek, tidak lebih dan tidak kurang."
+    },
+    {
+     "id": "wbs-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: keluarga merencanakan pernikahan dalam 6 bulan.",
+     "stem": "Cara merencanakan yang paling mirip WBS:",
+     "options": [
+      [
+       "Membuat daftar tamu dulu lalu lihat nanti",
+       false,
+       "Satu bagian saja; bagian lain bisa terlewat."
+      ],
+      [
+       "Memecah menjadi deliverable: tempat, katering, busana, undangan, dokumentasi, administrasi, lalu tiap bagian dipecah lagi",
+       true,
+       "Tepat. Pola pemecahan berbasis hasil yang sama."
+      ],
+      [
+       "Mengikuti apa yang dilakukan saudara tahun lalu",
+       false,
+       "Kebutuhan bisa berbeda."
+      ],
+      [
+       "Menunggu vendor menawarkan paket",
+       false,
+       "Kendali perencanaan diserahkan ke pihak lain."
+      ]
+     ],
+     "takeaway": "Memecah tujuan besar menjadi hasil-hasil kecil berguna untuk proyek apa pun."
+    }
+   ]
+  },
+  "project_scheduling": {
+   "objective": "Menjadwalkan proyek: dependensi, jalur kritis, float, milestone, dan alokasi sumber daya.",
+   "criteria": [
+    "Menentukan dependensi antartugas",
+    "Menghitung jalur kritis",
+    "Memanfaatkan float",
+    "Menyesuaikan jadwal saat ada keterlambatan"
+   ],
+   "tasks": [
+    {
+     "id": "sch-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Jalur kritis adalah:",
+     "options": [
+      [
+       "Rangkaian tugas yang paling mahal",
+       false,
+       "Biaya tidak menentukan jalur kritis."
+      ],
+      [
+       "Rangkaian tugas terpanjang yang menentukan durasi minimum proyek",
+       true,
+       "Tepat. Keterlambatan di jalur ini menunda proyek."
+      ],
+      [
+       "Tugas yang dikerjakan manajer proyek",
+       false,
+       "Bukan soal siapa yang mengerjakan."
+      ],
+      [
+       "Tugas yang paling berisiko",
+       false,
+       "Risiko penting, tetapi definisi jalur kritis berdasarkan durasi."
+      ]
+     ],
+     "takeaway": "Tugas di jalur kritis tidak punya float; keterlambatannya menunda proyek."
+    },
+    {
+     "id": "sch-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Tugas B baru bisa dimulai setelah tugas A selesai. Jenis dependensinya:",
+     "options": [
+      [
+       "Start-to-start",
+       false,
+       "Itu bila B boleh mulai saat A mulai."
+      ],
+      [
+       "Finish-to-start",
+       true,
+       "Tepat. Ini jenis dependensi yang paling umum."
+      ],
+      [
+       "Finish-to-finish",
+       false,
+       "Itu bila B tidak boleh selesai sebelum A selesai."
+      ],
+      [
+       "Tidak ada dependensi",
+       false,
+       "Ada ketergantungan yang jelas."
+      ]
+     ],
+     "takeaway": "Finish-to-start: tugas berikutnya mulai setelah tugas sebelumnya selesai."
+    },
+    {
+     "id": "sch-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Tugas: A (3 hari) → C (4 hari) → E (2 hari); B (5 hari) → D (1 hari) → E. E butuh C dan D selesai.",
+     "stem": "Durasi proyek dan jalur kritisnya:",
+     "options": [
+      [
+       "8 hari, jalur B-D-E",
+       false,
+       "B-D-E = 8 hari, tetapi A-C-E lebih panjang."
+      ],
+      [
+       "9 hari, jalur A-C-E",
+       true,
+       "Tepat. A-C-E = 3+4+2 = 9 hari; B-D-E = 8 hari, punya float 1 hari."
+      ],
+      [
+       "15 hari, semua tugas berurutan",
+       false,
+       "Tugas paralel tidak dijumlahkan semuanya."
+      ],
+      [
+       "6 hari",
+       false,
+       "Lebih pendek dari jalur mana pun."
+      ]
+     ],
+     "takeaway": "Jalur kritis adalah jalur terpanjang; jalur lain punya float sebesar selisihnya."
+    },
+    {
+     "id": "sch-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Tugas di jalur kritis terlambat 3 hari. Sponsor meminta tanggal peluncuran tidak bergeser.",
+     "stem": "Pilihan yang paling masuk akal:",
+     "options": [
+      [
+       "Menambah orang ke tugas yang tidak di jalur kritis",
+       false,
+       "Tidak memengaruhi tanggal selesai proyek."
+      ],
+      [
+       "Crashing (menambah sumber daya) atau fast-tracking (mengerjakan paralel) pada tugas di jalur kritis, dengan menilai biaya dan risikonya",
+       true,
+       "Tepat. Hanya mempercepat jalur kritis yang memajukan tanggal selesai."
+      ],
+      [
+       "Menghapus pengujian",
+       false,
+       "Menghemat waktu dengan risiko kualitas yang besar."
+      ],
+      [
+       "Diam saja dan berharap terkejar",
+       false,
+       "Sponsor perlu tahu dan opsi perlu dipilih sekarang."
+      ]
+     ],
+     "takeaway": "Untuk memajukan proyek, percepat tugas di jalur kritis, bukan tugas lain."
+    },
+    {
+     "id": "sch-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: renovasi rumah. Pasang listrik 3 hari harus selesai sebelum plester 4 hari; cat 2 hari setelah plester. Pemesanan furnitur 7 hari bisa berjalan paralel dan dipasang setelah cat.",
+     "stem": "Rangkaian yang menentukan kapan rumah siap:",
+     "options": [
+      [
+       "Pemesanan furnitur saja, 7 hari",
+       false,
+       "Listrik-plester-cat butuh 9 hari, lebih lama."
+      ],
+      [
+       "Listrik → plester → cat (9 hari) lalu pasang furnitur",
+       true,
+       "Tepat. Ini jalur terpanjang; pemesanan furnitur punya float 2 hari."
+      ],
+      [
+       "Semua dijumlahkan: 16 hari",
+       false,
+       "Pemesanan furnitur berjalan paralel."
+      ],
+      [
+       "Cat dulu baru listrik",
+       false,
+       "Melanggar dependensi."
+      ]
+     ],
+     "takeaway": "Jalur kritis berlaku untuk proyek apa pun yang punya tugas berurutan dan paralel."
+    }
+   ]
+  },
+  "project_tools_workspace": {
+   "objective": "Memakai alat kerja proyek: papan tugas, templat, otomasi, dan laporan progres yang berguna.",
+   "criteria": [
+    "Menyusun papan tugas yang jelas",
+    "Memakai templat agar konsisten",
+    "Membuat otomasi sederhana",
+    "Menyusun laporan progres untuk stakeholder"
+   ],
+   "tasks": [
+    {
+     "id": "ptw-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Kolom papan tugas yang paling umum dan berguna untuk tim kecil:",
+     "options": [
+      [
+       "To do, In progress, Done",
+       true,
+       "Tepat. Sederhana dan menunjukkan alur kerja."
+      ],
+      [
+       "Mudah, Sedang, Sulit",
+       false,
+       "Itu tingkat kesulitan, bukan status."
+      ],
+      [
+       "Budi, Sari, Andi",
+       false,
+       "Itu pembagian orang; lebih cocok sebagai label atau filter."
+      ],
+      [
+       "Januari sampai Desember",
+       false,
+       "Itu kalender, bukan status pekerjaan."
+      ]
+     ],
+     "takeaway": "Kolom papan tugas menunjukkan status pekerjaan; orang dan prioritas diatur dengan label."
+    },
+    {
+     "id": "ptw-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Manfaat utama templat proyek:",
+     "options": [
+      [
+       "Membuat papan terlihat menarik",
+       false,
+       "Tampilan bukan tujuan utama."
+      ],
+      [
+       "Langkah dan dokumen standar tidak terlewat di setiap proyek baru",
+       true,
+       "Tepat. Templat menjaga konsistensi dan mempercepat persiapan."
+      ],
+      [
+       "Menggantikan manajer proyek",
+       false,
+       "Templat membantu, tidak menggantikan pengambilan keputusan."
+      ],
+      [
+       "Menghapus kebutuhan rapat",
+       false,
+       "Koordinasi tetap dibutuhkan."
+      ]
+     ],
+     "takeaway": "Templat menyimpan praktik baik agar tidak diulang dari nol."
+    },
+    {
+     "id": "ptw-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Setiap tugas yang dipindah ke \"Done\" harus diperiksa QA, tetapi tim sering lupa memberi tahu QA.",
+     "stem": "Otomasi yang paling tepat:",
+     "options": [
+      [
+       "Mengirim pengingat manual setiap sore",
+       false,
+       "Masih bergantung pada ingatan orang."
+      ],
+      [
+       "Aturan: saat kartu masuk kolom \"Siap QA\", otomatis tetapkan ke QA dan kirim notifikasi",
+       true,
+       "Tepat. Serah terima terjadi otomatis dan tercatat."
+      ],
+      [
+       "Menghapus kolom QA",
+       false,
+       "Kualitas tidak diperiksa."
+      ],
+      [
+       "Meminta QA mengecek papan setiap jam",
+       false,
+       "Membuang waktu QA."
+      ]
+     ],
+     "takeaway": "Otomasi paling berguna untuk serah terima yang sering terlupa."
+    },
+    {
+     "id": "ptw-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Direktur meminta laporan progres mingguan proyek, tetapi hanya punya waktu 2 menit untuk membacanya.",
+     "stem": "Isi laporan yang paling tepat:",
+     "options": [
+      [
+       "Daftar seluruh 150 tugas beserta statusnya",
+       false,
+       "Terlalu rinci untuk dibaca 2 menit."
+      ],
+      [
+       "Status keseluruhan (hijau/kuning/merah), milestone tercapai dan berikutnya, risiko atau keputusan yang dibutuhkan",
+       true,
+       "Tepat. Direktur langsung tahu kondisi dan apa yang perlu dilakukannya."
+      ],
+      [
+       "Tangkapan layar papan tugas tanpa penjelasan",
+       false,
+       "Direktur harus menafsirkan sendiri."
+      ],
+      [
+       "Cerita kronologis kegiatan tim seminggu",
+       false,
+       "Panjang dan tidak menonjolkan yang penting."
+      ]
+     ],
+     "takeaway": "Laporan untuk eksekutif: status, milestone, risiko, dan keputusan yang dibutuhkan."
+    },
+    {
+     "id": "ptw-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: kelompok tugas kuliah beranggota 5 orang sering bingung siapa mengerjakan bagian mana.",
+     "stem": "Cara paling sederhana yang efektif:",
+     "options": [
+      [
+       "Satu dokumen panjang tanpa pembagian",
+       false,
+       "Tidak jelas pemilik tiap bagian."
+      ],
+      [
+       "Papan tugas bersama dengan pemilik dan tenggat tiap bagian, dicek di pertemuan mingguan",
+       true,
+       "Tepat. Alat kerja proyek yang sama, skala kecil."
+      ],
+      [
+       "Ketua mengerjakan semuanya",
+       false,
+       "Tidak adil dan tidak efisien."
+      ],
+      [
+       "Membagi tugas lewat lisan saja",
+       false,
+       "Mudah lupa dan tidak tercatat."
+      ]
+     ],
+     "takeaway": "Papan tugas dengan pemilik dan tenggat membantu tim sekecil apa pun."
+    }
+   ]
+  },
+  "sdlc": {
+   "objective": "Memahami siklus pengembangan sistem: tahapan, waterfall vs iteratif, peran BA di tiap tahap, dan pengelolaan change request.",
+   "criteria": [
+    "Menyebut tahapan SDLC dan keluarannya",
+    "Memilih waterfall atau iteratif sesuai kondisi",
+    "Menjelaskan peran BA di setiap tahap",
+    "Menangani change request dengan analisis dampak"
+   ],
+   "tasks": [
+    {
+     "id": "sdlc-b1",
+     "tier": "basic",
+     "type": "order",
+     "stem": "Urutkan tahapan SDLC model waterfall.",
+     "steps": [
+      "Analisis kebutuhan",
+      "Desain sistem",
+      "Implementasi (coding)",
+      "Pengujian",
+      "Deployment",
+      "Pemeliharaan"
+     ],
+     "feedback": "Waterfall berjalan berurutan: kebutuhan dipahami dulu, lalu dirancang, dibangun, diuji, dirilis, dan dipelihara.",
+     "takeaway": "Tiap tahap waterfall menghasilkan keluaran yang menjadi masukan tahap berikutnya."
+    },
+    {
+     "id": "sdlc-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Kapan pendekatan iteratif (misalnya Scrum) lebih cocok daripada waterfall?",
+     "options": [
+      [
+       "Saat kebutuhan sudah pasti dan jarang berubah",
+       false,
+       "Kondisi ini justru cocok untuk waterfall."
+      ],
+      [
+       "Saat kebutuhan belum jelas dan pengguna perlu melihat hasil bertahap untuk memberi masukan",
+       true,
+       "Tepat. Iterasi pendek memberi umpan balik lebih cepat."
+      ],
+      [
+       "Saat proyek tidak punya pengguna",
+       false,
+       "Setiap sistem punya pengguna."
+      ],
+      [
+       "Saat tim tidak mau rapat",
+       false,
+       "Scrum justru punya rapat rutin."
+      ]
+     ],
+     "takeaway": "Kebutuhan yang belum pasti → iteratif; kebutuhan stabil dan teregulasi → waterfall bisa cocok."
+    },
+    {
+     "id": "sdlc-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Di tahap pengujian, manajer penjualan meminta fitur laporan baru yang tidak ada di dokumen kebutuhan.",
+     "stem": "Langkah BA yang paling tepat:",
+     "options": [
+      [
+       "Langsung meminta developer menambahkannya",
+       false,
+       "Perubahan tanpa analisis dampak bisa menggeser jadwal dan anggaran."
+      ],
+      [
+       "Mencatat change request, menganalisis dampak ke jadwal, biaya, dan risiko, lalu membawa ke pemilik keputusan",
+       true,
+       "Tepat. Perubahan dikendalikan, bukan ditolak atau diterima begitu saja."
+      ],
+      [
+       "Menolak karena kebutuhan sudah dibekukan",
+       false,
+       "Kebutuhan bisa valid; yang perlu adalah prosesnya."
+      ],
+      [
+       "Menunda sampai proyek berikutnya tanpa memberi tahu",
+       false,
+       "Stakeholder perlu tahu keputusannya."
+      ]
+     ],
+     "takeaway": "Change request: catat, analisis dampak, putuskan oleh pemilik, komunikasikan."
+    },
+    {
+     "id": "sdlc-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Tim memakai Scrum dengan sprint 2 minggu. Product owner jarang hadir sehingga prioritas backlog sering tidak jelas.",
+     "stem": "Dampak dan langkah yang paling tepat:",
+     "options": [
+      [
+       "Tidak masalah karena developer bisa memilih sendiri",
+       false,
+       "Developer bisa mengerjakan yang tidak paling bernilai bagi bisnis."
+      ],
+      [
+       "Risiko membangun fitur yang salah; BA membantu menyiapkan backlog yang siap diputuskan dan menjadwalkan refinement rutin dengan product owner",
+       true,
+       "Tepat. BA menjembatani, tetapi keputusan prioritas tetap di product owner."
+      ],
+      [
+       "BA mengambil alih peran product owner sepenuhnya",
+       false,
+       "BA membantu, tetapi akuntabilitas prioritas ada di product owner."
+      ],
+      [
+       "Mengganti Scrum dengan waterfall",
+       false,
+       "Tidak menyelesaikan masalah keterlibatan."
+      ]
+     ],
+     "takeaway": "Dalam pendekatan iteratif, peran BA adalah menyiapkan backlog yang jelas agar keputusan cepat."
+    },
+    {
+     "id": "sdlc-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: pemerintah daerah membangun sistem perizinan dengan aturan yang sudah ditetapkan peraturan dan tidak boleh berubah selama proyek.",
+     "stem": "Pendekatan yang paling masuk akal:",
+     "options": [
+      [
+       "Iteratif dengan perubahan kebutuhan setiap sprint",
+       false,
+       "Aturan sudah tetap; fleksibilitas besar tidak dibutuhkan."
+      ],
+      [
+       "Waterfall atau hibrida dengan analisis kebutuhan rinci di awal, tetap ada demo berkala untuk validasi",
+       true,
+       "Tepat. Kebutuhan stabil cocok dengan perencanaan di depan, dengan validasi bertahap."
+      ],
+      [
+       "Langsung coding tanpa analisis",
+       false,
+       "Aturan yang rumit butuh analisis dulu."
+      ],
+      [
+       "Menunggu peraturan berubah",
+       false,
+       "Tidak ada alasan menunggu."
+      ]
+     ],
+     "takeaway": "Pilih model SDLC dari stabilitas kebutuhan dan konteks, bukan dari tren."
+    }
+   ]
+  },
+  "testing_uat": {
+   "objective": "Menguji sistem dan menjalankan UAT: skenario dari acceptance criteria, test case, pelaporan defect, dan keputusan go/no-go.",
+   "criteria": [
+    "Menurunkan test case dari acceptance criteria",
+    "Menulis laporan defect yang bisa direproduksi",
+    "Mengelola UAT bersama pengguna",
+    "Merekomendasikan go/no-go berdasarkan hasil uji"
+   ],
+   "tasks": [
+    {
+     "id": "uat-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Perbedaan utama UAT dengan pengujian sistem oleh tim QA:",
+     "options": [
+      [
+       "UAT dilakukan developer",
+       false,
+       "UAT dilakukan pengguna bisnis."
+      ],
+      [
+       "UAT dilakukan pengguna bisnis untuk memastikan sistem mendukung proses kerja mereka",
+       true,
+       "Tepat. UAT menjawab apakah sistem layak dipakai untuk pekerjaan nyata."
+      ],
+      [
+       "UAT hanya menguji tampilan",
+       false,
+       "UAT menguji proses bisnis dari ujung ke ujung."
+      ],
+      [
+       "UAT dilakukan setelah go-live",
+       false,
+       "UAT dilakukan sebelum go-live."
+      ]
+     ],
+     "takeaway": "Tes sistem = sesuai spesifikasi; UAT = sesuai kebutuhan kerja pengguna."
+    },
+    {
+     "id": "uat-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Laporan defect yang paling baik:",
+     "options": [
+      [
+       "Fitur bayar error",
+       false,
+       "Tidak bisa direproduksi."
+      ],
+      [
+       "Langkah: checkout dengan voucher 50% lalu bayar QRIS; hasil: total menjadi Rp0; harapan: total terpotong 50%; lingkungan: staging, Chrome",
+       true,
+       "Tepat. Langkah, hasil, harapan, dan lingkungan membuat defect bisa diperbaiki."
+      ],
+      [
+       "Tolong diperbaiki secepatnya",
+       false,
+       "Urgensi tanpa informasi."
+      ],
+      [
+       "Sistem tidak bagus",
+       false,
+       "Tidak menjelaskan masalah apa pun."
+      ]
+     ],
+     "takeaway": "Defect: langkah reproduksi, hasil aktual, hasil yang diharapkan, lingkungan."
+    },
+    {
+     "id": "uat-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Acceptance criterion: \"Pengajuan cuti lebih dari saldo ditolak dengan pesan yang jelas.\" Saldo cuti karyawan uji: 5 hari.",
+     "stem": "Set test case yang paling baik:",
+     "options": [
+      [
+       "Ajukan cuti 3 hari saja",
+       false,
+       "Hanya kasus normal; batas dan kasus ditolak tidak diuji."
+      ],
+      [
+       "Ajukan 4 hari (diterima), 5 hari (diterima, tepat di batas), dan 6 hari (ditolak dengan pesan)",
+       true,
+       "Tepat. Menguji di bawah, tepat di, dan di atas batas."
+      ],
+      [
+       "Ajukan 100 hari",
+       false,
+       "Jauh di atas batas saja tidak memeriksa nilai batasnya."
+      ],
+      [
+       "Mencoba semua angka 1 sampai 30",
+       false,
+       "Tidak efisien; nilai batas sudah cukup."
+      ]
+     ],
+     "takeaway": "Uji nilai batas: tepat di batas, satu di bawah, dan satu di atas."
+    },
+    {
+     "id": "uat-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Hasil UAT: 2 defect kritis terbuka (gaji tidak terhitung untuk karyawan kontrak), 9 defect minor tampilan. Go-live dijadwalkan lusa.",
+     "stem": "Rekomendasi yang paling tepat:",
+     "options": [
+      [
+       "Go-live sesuai jadwal karena defect minor lebih banyak",
+       false,
+       "Jumlah tidak menentukan; defect kritis memengaruhi gaji."
+      ],
+      [
+       "No-go sampai defect kritis diperbaiki dan diuji ulang; defect minor boleh masuk daftar perbaikan pascarilis",
+       true,
+       "Tepat. Keputusan berdasarkan dampak bisnis defect."
+      ],
+      [
+       "Go-live dan minta karyawan kontrak menunggu",
+       false,
+       "Gaji yang salah berdampak hukum dan kepercayaan."
+      ],
+      [
+       "Menunda semua sampai 9 defect minor juga beres",
+       false,
+       "Defect minor tidak perlu menahan rilis."
+      ]
+     ],
+     "takeaway": "Go/no-go ditentukan tingkat keparahan defect, bukan jumlahnya."
+    },
+    {
+     "id": "uat-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: kampus akan memakai sistem KRS online baru. Uji coba melibatkan bagian akademik dan beberapa mahasiswa.",
+     "stem": "Skenario UAT yang paling penting:",
+     "options": [
+      [
+       "Mengganti foto profil mahasiswa",
+       false,
+       "Fitur sekunder."
+      ],
+      [
+       "Mahasiswa mengambil kelas sampai batas SKS, kelas penuh ditolak, dan dosen wali menyetujui KRS",
+       true,
+       "Tepat. Proses inti dan aturan batas diuji oleh pengguna sebenarnya."
+      ],
+      [
+       "Mengecek warna tombol",
+       false,
+       "Bukan proses kritis."
+      ],
+      [
+       "Login berulang kali",
+       false,
+       "Hanya bagian kecil dari proses."
+      ]
+     ],
+     "takeaway": "UAT berfokus pada proses inti dan aturan bisnis yang paling berdampak."
+    }
+   ]
+  }
+ }
+}

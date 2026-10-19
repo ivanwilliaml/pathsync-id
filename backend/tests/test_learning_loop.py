@@ -24,25 +24,38 @@ def demo(client):
 
 
 # ------------------------------------------------------------------ content
-def test_practice_content_is_complete_in_both_languages():
+CORE_BA = {"requirements_elicitation", "requirements_documentation", "business_process_modeling", "system_modeling_uml", "sql"}
+
+
+def _id(x):
+    return x["id"] if isinstance(x, dict) else x
+
+
+def test_practice_content_is_complete():
+    """Every skill: an objective, at least three criteria, and at least 2 basic, 2 applied and 1 transfer task in
+    Indonesian, each choice with exactly one key and feedback on every option. Core BA skills have 3/3/2."""
     bank = practice_bank()
-    assert len(bank) >= 5
     for sid, body in bank.items():
-        assert body["objective"]["id"] and body["objective"]["en"], sid
-        assert len(body["criteria"]["id"]) == len(body["criteria"]["en"]) >= 3, sid
+        assert _id(body["objective"]), sid
+        crit = body["criteria"] if isinstance(body["criteria"], list) else body["criteria"]["id"]
+        assert len(crit) >= 3, sid
         tiers = [t["tier"] for t in body["tasks"]]
-        assert all(tiers.count(t) >= (2 if t == "transfer" else 3) for t in TIERS), (sid, tiers)
+        need = {"basic": 3, "applied": 3, "transfer": 2} if sid in CORE_BA else {"basic": 2, "applied": 2, "transfer": 1}
+        assert all(tiers.count(t) >= n for t, n in need.items()), (sid, tiers)
         ids = [t["id"] for t in body["tasks"]]
         assert len(ids) == len(set(ids)), sid
         for t in body["tasks"]:
-            assert t["stem"]["id"] and t["stem"]["en"], t["id"]
+            assert _id(t["stem"]), t["id"]
             if t["type"] == "choice":
-                assert sum(o["correct"] for o in t["options"]) == 1, t["id"]
-                for o in t["options"]:
-                    assert o["text"]["id"] and o["text"]["en"] and o["feedback"]["id"] and o["feedback"]["en"], t["id"]
+                assert len(t["options"]) == 4 and sum(o["correct"] for o in t["options"]) == 1, t["id"]
+                assert all(_id(o["text"]) and _id(o["feedback"]) for o in t["options"]), t["id"]
             else:
-                assert t["type"] == "order" and len(t["steps"]) >= 4, t["id"]
-                assert all(x["id"] and x["en"] for x in t["steps"]), t["id"]
+                assert t["type"] == "order" and len(t["steps"]) >= 4 and all(_id(x) for x in t["steps"]), t["id"]
+
+
+def test_task_ids_are_unique_across_skills():
+    ids = [t["id"] for b in practice_bank().values() for t in b["tasks"]]
+    assert len(ids) == len(set(ids))
 
 
 def test_practice_skills_exist_in_the_taxonomy():
@@ -198,3 +211,13 @@ def test_practice_attempts_are_exported_and_erased(client, demo):
         erase_students(s, [sid])
         s.commit()
         assert s.scalar(select(func.count()).select_from(PracticeAttempt).where(PracticeAttempt.student_id == sid)) == 0
+
+
+def test_no_task_repeats_an_option_or_names_the_key_in_its_text():
+    for body in practice_bank().values():
+        for t in body["tasks"]:
+            if t["type"] != "choice":
+                continue
+            texts = [_id(o["text"]).strip().lower() for o in t["options"]]
+            assert len(set(texts)) == len(texts), t["id"]
+            assert not any(x.startswith(("tepat", "benar", "jawaban")) for x in texts), t["id"]
