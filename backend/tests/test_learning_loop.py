@@ -221,3 +221,14 @@ def test_no_task_repeats_an_option_or_names_the_key_in_its_text():
             texts = [_id(o["text"]).strip().lower() for o in t["options"]]
             assert len(set(texts)) == len(texts), t["id"]
             assert not any(x.startswith(("tepat", "benar", "jawaban")) for x in texts), t["id"]
+
+
+def test_simulation_proven_is_strict_and_the_loop_ends():
+    """Synthetic students (pipeline.simulate_loop): guessing rarely passes a check, and learners always finish."""
+    from pipeline.simulate_loop import loop_runs, proven_rates
+
+    chance = [r for r in proven_rates() if r["guess"].startswith("chance")]
+    assert all(r["guesser_called_proven"] < 0.07 for r in chance)
+    runs = {r["profile"]: r for r in loop_runs(n=400)}
+    assert runs["knows already"]["finished"] == 1.0 and runs["knows already"]["mastered_without_knowing"] == 0
+    assert runs["learns with practice (rate 0.3)"]["finished"] > 0.98

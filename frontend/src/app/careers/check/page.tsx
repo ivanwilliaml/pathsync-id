@@ -208,6 +208,10 @@ function Result({ text, r, t }: { text: string; r: JobCheck; t: T }) {
             <LegendSwatch className="bg-secondary ring-1 ring-indigo/40" label={t("skill, no evidence yet", "skill, belum ada bukti")} />
             <LegendSwatch className="border border-dashed border-ink/40" label={t("not recognised yet", "belum dikenali")} />
           </div>
+          <p className="mt-2 text-xs text-muted-foreground">
+            {t("Soft skills such as communication, leadership or teamwork are not counted here: PathSync measures teachable hard skills.",
+               "Soft skill seperti komunikasi, kepemimpinan, atau kerja sama tim tidak dihitung di sini: PathSync mengukur hard skill yang bisa dipelajari dan diuji.")}
+          </p>
         </Panel>
       </section>
 
