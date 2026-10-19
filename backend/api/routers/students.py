@@ -40,6 +40,7 @@ from pathsync.intake import (
     signature_similarity,
     verification_link,
 )
+from pathsync.job_check import check_job
 from pathsync.retention import erase_students
 from pathsync.security import clip_text, db_session, hash_token, new_token, rate_limit, read_upload, student_access
 from pathsync.taxonomy import load_skills
@@ -68,6 +69,10 @@ class StudentPatch(BaseModel):
     target_role: str | None = None
     preferences: dict | None = None
     self_ratings: dict[str, Annotated[int, Field(ge=1, le=5)]] | None = None
+
+
+class JobCheckIn(BaseModel):
+    text: str = Field(min_length=30, max_length=12_000)
 
 
 @router.post("/students", dependencies=[Depends(rate_limit("signup", 20))])
@@ -320,6 +325,14 @@ def delete_evidence(eid: int, st: Student = Depends(student_access), s: Session 
 
 
 # ------------------------------------------------------------ dashboard
+@router.post("/students/{sid}/check-job", dependencies=[Depends(rate_limit("check_job", 10))])
+def check_pasted_job(body: JobCheckIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
+    """Analyze a pasted posting without writing its text or extracted skills to the database."""
+    if not body.text.strip():
+        raise HTTPException(422, tr("Paste the job requirements first.", "Tempel persyaratan lowongan dulu."))
+    return check_job(s, st, body.text)
+
+
 @router.get("/students/{sid}/dashboard")
 def dashboard(st: Student = Depends(student_access), s: Session = Depends(db_session)):
     """Read-only: history is written by the mutations and by market updates, never by a page view."""
