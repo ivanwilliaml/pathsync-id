@@ -19,6 +19,7 @@ from pathsync.db import (
     AssessmentResponse,
     CourseEnrollment,
     Evidence,
+    PracticeAttempt,
     Pulse,
     RecommendationHistory,
     Student,
@@ -187,7 +188,7 @@ def export_data(st: Student = Depends(student_access), s: Session = Depends(db_s
     return {"exported_at": utcnow().isoformat(), "profile": _student_out(s, st),
             "assessment_responses": rows(AssessmentResponse), "history": rows(RecommendationHistory),
             "courses": rows(CourseEnrollment), "weekly_plans": rows(WeeklyPlan), "pulses": rows(Pulse),
-            "study_plans": rows(StudyPlan)}
+            "study_plans": rows(StudyPlan), "practice_attempts": rows(PracticeAttempt)}
 
 
 @router.delete("/students/{sid}")

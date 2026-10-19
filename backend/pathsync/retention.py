@@ -18,6 +18,7 @@ from .db import (
     CourseEnrollment,
     Evidence,
     Feedback,
+    PracticeAttempt,
     ProductEvent,
     Pulse,
     RecommendationHistory,
@@ -37,7 +38,7 @@ DEMO_PROFILE_DAYS = 2              # one-click demo profiles (api.routers.demo)
 BACKUP_KEEP_DAYS = 14              # deploy/backup.sh default (Privacy §6)
 
 STUDENT_TABLES = (AssessmentResponse, AssessmentSession, RecommendationHistory, CourseEnrollment, WeeklyPlan, Pulse,
-                  StudyPlan, Evidence)
+                  StudyPlan, Evidence, PracticeAttempt)
 
 
 def erase_students(s: Session, ids: list[str]) -> int:

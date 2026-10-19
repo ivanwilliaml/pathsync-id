@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, ArrowRight, Check, X } from "lucide-react";
-import { api, type Item } from "@/lib/api";
+import { api, type Item, type LoopStatus } from "@/lib/api";
+import { useApi } from "@/lib/hooks";
 import { pct, titleCase } from "@/lib/format";
 import { track } from "@/lib/track";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,7 @@ import { Mascot, type MascotName } from "./mascot";
 import type { CareersData } from "./career-map";
 import { ChangeList } from "./change-list";
 import { useT } from "@/lib/i18n";
+import { LoopDecision } from "./learning-loop";
 
 interface SubmitResult {
   results: { item_id: string; skill_id: string; correct: boolean; choice: number | null; answer: number; explanation: string }[];
@@ -33,7 +35,7 @@ interface SubmitResult {
 
 const LETTERS = ["A", "B", "C", "D"];
 
-export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string; items: Item[] }) {
+export function Quiz({ sid, sessionId, items, loopSkill }: { sid: string; sessionId: string; items: Item[]; loopSkill?: string }) {
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [idx, setIdx] = useState(0);
   const [result, setResult] = useState<SubmitResult | null>(null);
@@ -124,7 +126,7 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
     return () => window.removeEventListener("keydown", onKey);
   }, [it, last, finish, items.length, result]);
 
-  if (result) return <Results items={items} result={result} sid={sid} before={before} />;
+  if (result) return <Results items={items} result={result} sid={sid} before={before} loopSkill={loopSkill} />;
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -224,7 +226,7 @@ function resultMascot(correct: number, total: number): MascotName {
   return share >= 0.7 ? "celebrate" : share >= 0.4 ? "thinking" : "sad";
 }
 
-function Results({ items, result, sid, before }: { items: Item[]; result: SubmitResult; sid: string; before: CareersData | null }) {
+function Results({ items, result, sid, before, loopSkill }: { items: Item[]; result: SubmitResult; sid: string; before: CareersData | null; loopSkill?: string }) {
   const byId = Object.fromEntries(items.map((i) => [i.id, i]));
   const t = useT();
   const changes = Object.entries(result.skills).sort((a, b) => b[1].p_after - b[1].p_before - (a[1].p_after - a[1].p_before));
@@ -248,6 +250,7 @@ function Results({ items, result, sid, before }: { items: Item[]; result: Submit
         </div>
         <Mascot name={resultMascot(result.correct, result.total)} size={140} className="sm:ml-auto" />
       </section>
+      {loopSkill ? <LoopAfterCheck sid={sid} skill={loopSkill} /> : null}
       <CareerShift sid={sid} before={before} />
 
       <Panel>
@@ -325,4 +328,10 @@ function CareerShift({ sid, before }: { sid: string; before: CareersData | null 
       </LinkButton>
     </Panel>
   );
+}
+
+/** After a skill check inside the learning loop: the adapt step (move on, practise again, or a different case). */
+function LoopAfterCheck({ sid, skill }: { sid: string; skill: string }) {
+  const loop = useApi<LoopStatus>(`/students/${sid}/loop/${skill}`);
+  return loop.data ? <LoopDecision status={loop.data} /> : null;
 }

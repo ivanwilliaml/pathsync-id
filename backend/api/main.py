@@ -25,7 +25,7 @@ from pathsync.i18n import get_lang, negotiate, reset_lang, set_lang
 from pathsync.observability import STATS, configure_logging
 from pathsync.security import ensure_admin_token
 
-from .routers import admin, advisor, assessment, classroom, demo, experts, platform, public, students, sync
+from .routers import admin, advisor, assessment, classroom, demo, experts, learning, platform, public, students, sync
 
 log = logging.getLogger("pathsync")
 configure_logging()     # JSON lines in production (PATHSYNC_LOG_JSON), plain text in development
@@ -155,6 +155,6 @@ async def unhandled(request: Request, exc: Exception):   # pragma: no cover - la
                         content={"detail": f"Something went wrong on the server. Try again in a moment. (ref {rid})"})
 
 
-for r in (public, students, assessment, classroom, experts, advisor, admin, platform, demo, sync):
+for r in (public, students, assessment, learning, classroom, experts, advisor, admin, platform, demo, sync):
     app.include_router(r.router)
 app.include_router(platform.admin)

@@ -1,0 +1,543 @@
+{
+ "version": "2026-10-20",
+ "provenance": {
+  "id": "Disusun tim PathSync (draf dibantu AI, ditinjau satu anggota tim). Belum ditinjau pakar; latihan tidak mengubah tingkat penguasaan.",
+  "en": "Written by the PathSync team (AI-assisted draft, reviewed by one team member). Not yet reviewed by an expert; practice never changes mastery."
+ },
+ "skills": {
+  "requirements_elicitation": {
+   "objective": {
+    "id": "Menggali kebutuhan nyata dari stakeholder: memilih teknik yang cocok, bertanya terbuka, dan memisahkan kebutuhan dari solusi yang diusulkan.",
+    "en": "Draw out real needs from stakeholders: pick a fitting technique, ask open questions, and separate the need from the solution being proposed."
+   },
+   "criteria": {
+    "id": ["Memilih teknik elisitasi sesuai situasi", "Mengajukan pertanyaan terbuka, bukan menggiring", "Membedakan kebutuhan (masalah) dari permintaan solusi", "Mengenali stakeholder yang terlewat"],
+    "en": ["Picks an elicitation technique that fits the situation", "Asks open questions instead of leading ones", "Tells the need (the problem) apart from a requested solution", "Notices stakeholders who were left out"]
+   },
+   "tasks": [
+    {
+     "id": "re-b1", "tier": "basic", "type": "choice",
+     "stem": {"id": "Staf gudang kesulitan menjelaskan cara mereka mencatat barang masuk; banyak langkah dilakukan \"otomatis\" tanpa dipikirkan. Teknik paling tepat untuk mulai menggali kebutuhannya:", "en": "Warehouse staff struggle to explain how they record incoming goods; many steps happen \"on autopilot\". The best technique to start eliciting their needs:"},
+     "options": [
+      {"text": {"id": "Observasi langsung saat mereka bekerja", "en": "Observe them directly while they work"}, "correct": true, "feedback": {"id": "Tepat. Langkah yang dilakukan tanpa dipikirkan jarang terucap di wawancara; observasi menangkapnya.", "en": "Right. Steps done on autopilot rarely come up in an interview; observation captures them."}},
+      {"text": {"id": "Kuesioner berskala 1–5 ke seluruh staf", "en": "A 1–5 rating questionnaire for all staff"}, "correct": false, "feedback": {"id": "Kuesioner mengukur pendapat atas pertanyaan yang sudah kamu tentukan, jadi langkah yang tidak kamu ketahui tetap tidak muncul.", "en": "A questionnaire measures opinions on questions you already chose, so steps you don't know about still won't surface."}},
+      {"text": {"id": "Meminta mereka menulis prosedur sendiri", "en": "Ask them to write the procedure themselves"}, "correct": false, "feedback": {"id": "Masalahnya justru mereka sulit menjelaskan; menulis sendiri akan melewatkan langkah yang sama.", "en": "The problem is exactly that they find it hard to explain; writing it down skips the same steps."}},
+      {"text": {"id": "Membuat prototipe layar lalu minta tanggapan", "en": "Build a screen prototype and ask for feedback"}, "correct": false, "feedback": {"id": "Prototipe berguna setelah alurnya dipahami. Sekarang kamu belum tahu proses yang mau didukung.", "en": "Prototypes help once the flow is understood. Right now you don't yet know the process to support."}}
+     ],
+     "takeaway": {"id": "Pilih teknik dari jenis pengetahuan yang dicari: pengetahuan yang tidak terucap paling baik diamati.", "en": "Pick the technique from the kind of knowledge you need: unspoken knowledge is best observed."}
+    },
+    {
+     "id": "re-b2", "tier": "basic", "type": "choice",
+     "stem": {"id": "Mana pertanyaan wawancara yang paling baik untuk membuka percakapan tentang proses persetujuan cuti?", "en": "Which interview question best opens a conversation about the leave approval process?"},
+     "options": [
+      {"text": {"id": "Apakah proses persetujuan sekarang terlalu lambat?", "en": "Is the current approval process too slow?"}, "correct": false, "feedback": {"id": "Pertanyaan ini menggiring: kamu sudah menyiratkan masalahnya \"lambat\" dan jawabannya hanya ya/tidak.", "en": "This leads: you already imply the problem is \"slow\", and it only invites yes or no."}},
+      {"text": {"id": "Coba ceritakan apa yang terjadi sejak karyawan mengajukan cuti sampai disetujui.", "en": "Walk me through what happens from the moment someone requests leave until it is approved."}, "correct": true, "feedback": {"id": "Tepat. Pertanyaan terbuka membuat narasumber menjelaskan alurnya dengan kata-katanya sendiri, termasuk hal yang tidak kamu duga.", "en": "Right. An open question lets them describe the flow in their own words, including things you didn't expect."}},
+      {"text": {"id": "Anda setuju kalau persetujuan dibuat lewat aplikasi?", "en": "Would you agree to approvals being done in an app?"}, "correct": false, "feedback": {"id": "Ini menawarkan solusi sebelum masalahnya dipahami, dan mendorong jawaban \"setuju\".", "en": "This offers a solution before the problem is understood, and nudges them to agree."}},
+      {"text": {"id": "Berapa hari rata-rata persetujuan cuti?", "en": "On average, how many days does approval take?"}, "correct": false, "feedback": {"id": "Angka ini berguna nanti, tetapi sebagai pembuka ia mempersempit percakapan ke satu metrik.", "en": "This number helps later, but as an opener it narrows the conversation to one metric."}}
+     ],
+     "takeaway": {"id": "Buka dengan pertanyaan terbuka tentang alur; simpan pertanyaan tertutup untuk konfirmasi.", "en": "Open with an open question about the flow; keep closed questions for confirming."}
+    },
+    {
+     "id": "re-b3", "tier": "basic", "type": "choice",
+     "stem": {"id": "Manajer berkata: \"Kami butuh dashboard Power BI.\" Langkah BA berikutnya yang paling tepat:", "en": "A manager says: \"We need a Power BI dashboard.\" The best next step for the BA:"},
+     "options": [
+      {"text": {"id": "Langsung menyusun daftar grafik yang diinginkan", "en": "Start listing the charts they want"}, "correct": false, "feedback": {"id": "Itu mencatat solusi. Kamu belum tahu keputusan apa yang mau didukung dashboard itu.", "en": "That records the solution. You don't yet know what decision the dashboard should support."}},
+      {"text": {"id": "Bertanya keputusan apa yang sulit diambil sekarang dan informasi apa yang kurang", "en": "Ask which decisions are hard to make today and what information is missing"}, "correct": true, "feedback": {"id": "Tepat. \"Dashboard\" adalah usulan solusi; kebutuhannya adalah keputusan yang perlu didukung data.", "en": "Right. \"Dashboard\" is a proposed solution; the need is the decision that data should support."}},
+      {"text": {"id": "Menjelaskan bahwa Excel lebih murah daripada Power BI", "en": "Explain that Excel is cheaper than Power BI"}, "correct": false, "feedback": {"id": "Membandingkan alat masih berbicara di level solusi, sebelum kebutuhannya jelas.", "en": "Comparing tools is still talking about solutions before the need is clear."}},
+      {"text": {"id": "Meminta tim data mulai membangun prototipe dashboard", "en": "Ask the data team to start building a prototype dashboard"}, "correct": false, "feedback": {"id": "Membangun sebelum memahami masalah berisiko menghasilkan dashboard yang tidak dipakai.", "en": "Building before understanding the problem risks a dashboard nobody uses."}}
+     ],
+     "takeaway": {"id": "Saat stakeholder menyebut solusi, tanyakan \"untuk apa\" sampai kamu menemukan masalah atau keputusannya.", "en": "When a stakeholder names a solution, ask \"what for\" until you reach the problem or decision."}
+    },
+    {
+     "id": "re-a1", "tier": "applied", "type": "choice",
+     "context": {"id": "Catatan wawancara dengan kepala admin klinik: \"Pasien sering marah karena antre lama. Kami mau aplikasi antrean online. Dokter juga sering telat, tapi itu bukan urusan sistem. Perawat mencatat jadwal di buku, lalu saya salin ke Excel tiap sore.\"", "en": "Interview notes with the clinic's head of admin: \"Patients often get angry about long queues. We want an online queue app. Doctors are often late too, but that's not a system issue. Nurses write schedules in a book, then I copy them into Excel every afternoon.\""},
+     "stem": {"id": "Mana yang paling tepat dicatat sebagai kebutuhan bisnis dari wawancara ini?", "en": "Which is best recorded as the business need from this interview?"},
+     "options": [
+      {"text": {"id": "Klinik membutuhkan aplikasi antrean online", "en": "The clinic needs an online queue app"}, "correct": false, "feedback": {"id": "Itu solusi yang diusulkan narasumber, bukan kebutuhannya. Antrean online belum tentu menyelesaikan penyebab antre lama.", "en": "That's the solution they proposed, not the need. An online queue may not fix the cause of long waits."}},
+      {"text": {"id": "Waktu tunggu pasien perlu turun; penyebabnya (jadwal dokter, pencatatan ganda) perlu dipastikan", "en": "Patient waiting time needs to drop; its causes (doctor schedules, double recording) need confirming"}, "correct": true, "feedback": {"id": "Tepat. Ini menyatakan masalah yang terukur dan mencatat dugaan penyebab untuk digali, termasuk hal yang narasumber anggap \"bukan urusan sistem\".", "en": "Right. It states a measurable problem and notes suspected causes to explore, including what they called \"not a system issue\"."}},
+      {"text": {"id": "Perawat harus berhenti memakai buku", "en": "Nurses must stop using the book"}, "correct": false, "feedback": {"id": "Ini lompat ke perubahan proses sebelum tahu apakah buku memang penyebab antre.", "en": "This jumps to a process change before knowing whether the book causes the queue."}},
+      {"text": {"id": "Dokter harus datang tepat waktu", "en": "Doctors must arrive on time"}, "correct": false, "feedback": {"id": "Mungkin benar, tetapi ini satu dugaan penyebab, bukan kebutuhan bisnisnya. Catat sebagai hal yang perlu dipastikan.", "en": "Maybe true, but it's one suspected cause, not the business need. Record it as something to confirm."}}
+     ],
+     "takeaway": {"id": "Kebutuhan bisnis = masalah yang perlu berubah dan bisa diukur. Usulan solusi dan dugaan penyebab dicatat terpisah.", "en": "A business need is a problem that must change and can be measured. Proposed solutions and suspected causes are noted separately."}
+    },
+    {
+     "id": "re-a2", "tier": "applied", "type": "choice",
+     "context": {"id": "Kamu menggali kebutuhan sistem pengajuan dana kegiatan mahasiswa. Sejauh ini kamu sudah mewawancarai ketua himpunan dan staf keuangan kampus.", "en": "You are eliciting needs for a student activity funding request system. So far you have interviewed the student association chair and the campus finance staff."},
+     "stem": {"id": "Stakeholder mana yang paling berisiko terlewat dan perlu kamu temui berikutnya?", "en": "Which stakeholder is most at risk of being missed and should be met next?"},
+     "options": [
+      {"text": {"id": "Vendor aplikasi yang mungkin dipakai", "en": "The software vendor that might be used"}, "correct": false, "feedback": {"id": "Vendor relevan saat memilih solusi, bukan sumber kebutuhan proses persetujuan.", "en": "A vendor matters when choosing a solution, not as a source of approval-process needs."}},
+      {"text": {"id": "Wakil dekan/pejabat yang menyetujui dana", "en": "The vice dean or official who approves the funds"}, "correct": true, "feedback": {"id": "Tepat. Penyetuju menentukan aturan dan dokumen yang wajib ada; tanpa mereka, kebutuhan persetujuan bisa salah.", "en": "Right. The approver sets the rules and required documents; without them the approval needs can be wrong."}},
+      {"text": {"id": "Mahasiswa yang tidak ikut organisasi", "en": "Students who are not in any association"}, "correct": false, "feedback": {"id": "Mereka bukan pengguna atau penentu proses ini, jadi prioritasnya rendah.", "en": "They neither use nor shape this process, so they are a low priority."}},
+      {"text": {"id": "Ketua himpunan lain, untuk mengulang wawancara yang sama", "en": "Another association chair, repeating the same interview"}, "correct": false, "feedback": {"id": "Bisa menambah contoh, tetapi peran yang sama tidak menutup sudut pandang yang hilang.", "en": "It adds examples, but the same role doesn't cover the missing perspective."}}
+     ],
+     "takeaway": {"id": "Petakan peran: pengaju, pemroses, penyetuju, dan pihak yang terdampak. Cari peran yang belum terwakili.", "en": "Map the roles: requester, processor, approver and anyone affected. Look for roles not yet represented."}
+    },
+    {
+     "id": "re-a3", "tier": "applied", "type": "choice",
+     "context": {"id": "Di workshop, divisi penjualan ingin diskon bisa disetujui sales sendiri, sementara divisi keuangan ingin semua diskon di atas 10% disetujui manajer.", "en": "In a workshop, sales want discounts approved by the salesperson, while finance wants every discount above 10% approved by a manager."},
+     "stem": {"id": "Langkah BA yang paling tepat menghadapi konflik ini:", "en": "The best BA move in this conflict:"},
+     "options": [
+      {"text": {"id": "Memilih permintaan divisi yang paling senior", "en": "Go with the most senior division's request"}, "correct": false, "feedback": {"id": "BA tidak memutuskan berdasarkan senioritas; itu menyembunyikan alasan bisnis di balik tiap posisi.", "en": "A BA doesn't decide by seniority; that hides the business reason behind each position."}},
+      {"text": {"id": "Menggali alasan tiap pihak (kecepatan transaksi vs risiko margin), lalu membawa opsi dan dampaknya ke pemilik keputusan", "en": "Explore each side's reason (deal speed vs margin risk), then bring options and their impact to the decision owner"}, "correct": true, "feedback": {"id": "Tepat. Kebutuhan di balik posisi bisa dipertemukan, misalnya batas otomatis yang berbeda per nilai transaksi.", "en": "Right. The needs behind the positions can often meet, for example different automatic limits per deal size."}},
+      {"text": {"id": "Menulis keduanya sebagai requirement dan biarkan developer memilih", "en": "Write both as requirements and let developers choose"}, "correct": false, "feedback": {"id": "Requirement yang saling bertentangan tidak bisa dibangun dan memindahkan keputusan bisnis ke orang yang salah.", "en": "Conflicting requirements can't be built and push a business decision onto the wrong people."}},
+      {"text": {"id": "Menunda topik ini sampai sistem selesai", "en": "Park the topic until the system is built"}, "correct": false, "feedback": {"id": "Aturan persetujuan memengaruhi desain; menundanya berarti membangun ulang nanti.", "en": "Approval rules shape the design; postponing means rebuilding later."}}
+     ],
+     "takeaway": {"id": "Konflik requirement diselesaikan dengan menggali kepentingan di balik posisi dan menyerahkan keputusan ke pemiliknya.", "en": "Requirement conflicts are resolved by exploring the interests behind positions and handing the decision to its owner."}
+    },
+    {
+     "id": "re-t1", "tier": "transfer", "type": "choice",
+     "context": {"id": "Kasus berbeda: koperasi petani ingin \"aplikasi marketplace\" agar hasil panen terjual. Ketua koperasi berbicara paling banyak; para petani diam di pertemuan.", "en": "A different case: a farmers' cooperative wants a \"marketplace app\" to sell its harvest. The chair does most of the talking; the farmers stay quiet in meetings."},
+     "stem": {"id": "Rencana elisitasi yang paling kuat:", "en": "The strongest elicitation plan:"},
+     "options": [
+      {"text": {"id": "Workshop besar bersama semua petani dan ketua", "en": "One large workshop with all farmers and the chair"}, "correct": false, "feedback": {"id": "Di forum yang sama, petani kemungkinan tetap diam karena ada ketua; suara mereka hilang lagi.", "en": "In the same forum the farmers will likely stay quiet with the chair present; their voice is lost again."}},
+      {"text": {"id": "Wawancara ketua saja karena ia mewakili anggota", "en": "Interview only the chair, since they represent the members"}, "correct": false, "feedback": {"id": "Perwakilan tidak sama dengan pengguna; masalah lapangan petani bisa berbeda dari pandangan ketua.", "en": "A representative is not the user; the farmers' field problems can differ from the chair's view."}},
+      {"text": {"id": "Wawancara petani satu per satu dan amati proses penjualan saat ini, lalu konfirmasi temuan dengan ketua", "en": "Interview farmers one by one and observe how they sell today, then confirm findings with the chair"}, "correct": true, "feedback": {"id": "Tepat. Teknik dipilih untuk menjangkau suara yang diam, dan \"marketplace\" diperlakukan sebagai usulan yang perlu diuji.", "en": "Right. The technique is chosen to reach the quiet voices, and \"marketplace\" is treated as a proposal to test."}},
+      {"text": {"id": "Langsung membandingkan tiga aplikasi marketplace yang ada", "en": "Compare three existing marketplace apps right away"}, "correct": false, "feedback": {"id": "Ini menerima usulan solusi tanpa memastikan masalahnya, misalnya harga, akses pembeli, atau logistik.", "en": "This accepts the proposed solution without checking the problem, such as price, buyer access or logistics."}}
+     ],
+     "takeaway": {"id": "Prinsip yang sama berlaku di domain lain: pisahkan kebutuhan dari solusi dan pilih teknik yang menjangkau semua peran.", "en": "The same principles carry over: separate need from solution, and pick techniques that reach every role."}
+    },
+    {
+     "id": "re-t2", "tier": "transfer", "type": "choice",
+     "context": {"id": "Kasus berbeda: rumah sakit ingin mengurangi salah pemberian obat. Dari observasi, perawat menulis dosis dari resep dokter yang sulit dibaca.", "en": "A different case: a hospital wants fewer medication errors. From observation, nurses copy doses from doctors' hard-to-read prescriptions."},
+     "stem": {"id": "Pernyataan kebutuhan yang paling baik untuk dibawa ke validasi:", "en": "The best need statement to take into validation:"},
+     "options": [
+      {"text": {"id": "Rumah sakit membutuhkan sistem resep elektronik", "en": "The hospital needs an e-prescription system"}, "correct": false, "feedback": {"id": "Mungkin solusi yang baik, tetapi dinyatakan sebagai solusi, bukan kebutuhan yang bisa diuji.", "en": "Perhaps a good solution, but stated as a solution rather than a testable need."}},
+      {"text": {"id": "Dokter harus menulis lebih rapi", "en": "Doctors must write more neatly"}, "correct": false, "feedback": {"id": "Ini menyalahkan perilaku tanpa kebutuhan yang terukur; sulit dijadikan dasar perubahan.", "en": "This blames behaviour without a measurable need; it's a weak basis for change."}},
+      {"text": {"id": "Perawat menerima instruksi dosis yang terbaca jelas dan bisa diverifikasi sebelum obat diberikan", "en": "Nurses receive dose instructions that are clearly readable and can be verified before giving medication"}, "correct": true, "feedback": {"id": "Tepat. Ini menyatakan hasil yang dibutuhkan, bisa diuji, dan masih membuka beberapa solusi.", "en": "Right. It states the needed outcome, is testable, and still leaves several solutions open."}},
+      {"text": {"id": "Semua perawat perlu pelatihan ulang", "en": "All nurses need retraining"}, "correct": false, "feedback": {"id": "Observasi menunjukkan masalah ada di sumber instruksi, bukan pada kemampuan perawat.", "en": "The observation points at the source of the instruction, not at nurses' skills."}}
+     ],
+     "takeaway": {"id": "Kebutuhan yang baik menyatakan hasil, bisa diuji, dan tidak mengunci satu solusi.", "en": "A good need states an outcome, is testable and doesn't lock in one solution."}
+    }
+   ]
+  },
+  "requirements_documentation": {
+   "objective": {
+    "id": "Menulis requirement yang jelas dan bisa diuji: user story yang lengkap, acceptance criteria yang terukur, dan pemisahan requirement fungsional dan non-fungsional.",
+    "en": "Write clear, testable requirements: complete user stories, measurable acceptance criteria, and functional kept apart from non-functional requirements."
+   },
+   "criteria": {
+    "id": ["Requirement bisa diuji (ada ukuran yang jelas)", "User story memuat peran, kebutuhan, dan manfaat", "Acceptance criteria menyatakan kondisi dan hasil", "Membedakan fungsional dari non-fungsional"],
+    "en": ["Requirements can be tested (there is a clear measure)", "User stories carry role, need and benefit", "Acceptance criteria state conditions and outcomes", "Tells functional apart from non-functional"]
+   },
+   "tasks": [
+    {
+     "id": "rd-b1", "tier": "basic", "type": "choice",
+     "stem": {"id": "Requirement mana yang paling bisa diuji?", "en": "Which requirement is the most testable?"},
+     "options": [
+      {"text": {"id": "Sistem harus cepat dan responsif", "en": "The system must be fast and responsive"}, "correct": false, "feedback": {"id": "\"Cepat\" tidak punya ukuran; dua penguji bisa memberi hasil berbeda.", "en": "\"Fast\" has no measure; two testers could reach different results."}},
+      {"text": {"id": "Halaman daftar pesanan tampil dalam 2 detik untuk 1.000 pesanan", "en": "The order list page loads within 2 seconds for 1,000 orders"}, "correct": true, "feedback": {"id": "Tepat. Ada kondisi (1.000 pesanan) dan ambang yang terukur (2 detik).", "en": "Right. There's a condition (1,000 orders) and a measurable threshold (2 seconds)."}},
+      {"text": {"id": "Sistem harus mudah dipakai semua pengguna", "en": "The system must be easy for every user"}, "correct": false, "feedback": {"id": "\"Mudah\" adalah tujuan baik, tetapi perlu diturunkan ke ukuran, misalnya waktu menyelesaikan tugas.", "en": "\"Easy\" is a good goal, but it needs a measure, such as time to finish a task."}},
+      {"text": {"id": "Sistem sebaiknya mendukung laporan", "en": "The system should support reports"}, "correct": false, "feedback": {"id": "Tidak jelas laporan apa, untuk siapa, dan kapan dianggap selesai.", "en": "It's unclear which reports, for whom, and when it counts as done."}}
+     ],
+     "takeaway": {"id": "Requirement yang bisa diuji punya kondisi dan ukuran yang membuat dua penguji sepakat.", "en": "A testable requirement has a condition and a measure that two testers would agree on."}
+    },
+    {
+     "id": "rd-b2", "tier": "basic", "type": "choice",
+     "stem": {"id": "User story mana yang paling lengkap?", "en": "Which user story is the most complete?"},
+     "options": [
+      {"text": {"id": "Tambahkan tombol ekspor ke Excel", "en": "Add an export-to-Excel button"}, "correct": false, "feedback": {"id": "Ini tugas teknis tanpa peran dan manfaat; tim tidak tahu kapan alternatif lain sama baiknya.", "en": "This is a technical task with no role or benefit; the team can't tell when an alternative would do."}},
+      {"text": {"id": "Sebagai pengguna, saya ingin sistem bagus", "en": "As a user, I want a good system"}, "correct": false, "feedback": {"id": "Formatnya benar, tetapi kebutuhan dan manfaatnya kosong.", "en": "The format is right, but the need and benefit are empty."}},
+      {"text": {"id": "Sebagai staf keuangan, saya ingin mengunduh transaksi bulanan agar bisa merekonsiliasi dengan rekening bank", "en": "As a finance officer, I want to download monthly transactions so I can reconcile them with the bank statement"}, "correct": true, "feedback": {"id": "Tepat. Ada peran, kebutuhan, dan manfaat, sehingga tim bisa menilai solusi yang paling pas.", "en": "Right. It has a role, a need and a benefit, so the team can judge the best-fitting solution."}},
+      {"text": {"id": "Sistem menyimpan transaksi di database", "en": "The system stores transactions in the database"}, "correct": false, "feedback": {"id": "Ini detail implementasi, bukan kebutuhan pengguna.", "en": "That's an implementation detail, not a user need."}}
+     ],
+     "takeaway": {"id": "User story yang baik: siapa, butuh apa, dan untuk apa. Bagian \"untuk apa\" yang membuat solusi bisa dinilai.", "en": "A good user story says who, needs what, and why. The \"why\" is what makes solutions comparable."}
+    },
+    {
+     "id": "rd-b3", "tier": "basic", "type": "choice",
+     "stem": {"id": "Mana yang termasuk requirement non-fungsional?", "en": "Which one is a non-functional requirement?"},
+     "options": [
+      {"text": {"id": "Pengguna bisa mengubah kata sandi", "en": "Users can change their password"}, "correct": false, "feedback": {"id": "Ini perilaku yang dilakukan sistem, jadi fungsional.", "en": "This is something the system does, so it's functional."}},
+      {"text": {"id": "Admin bisa menonaktifkan akun", "en": "Admins can deactivate accounts"}, "correct": false, "feedback": {"id": "Ini juga fungsi sistem.", "en": "This is also a system function."}},
+      {"text": {"id": "Data pribadi dienkripsi saat disimpan", "en": "Personal data is encrypted at rest"}, "correct": true, "feedback": {"id": "Tepat. Ini kualitas (keamanan) yang berlaku pada cara sistem bekerja, bukan fungsi baru bagi pengguna.", "en": "Right. It's a quality (security) of how the system works, not a new function for users."}},
+      {"text": {"id": "Sistem mengirim email saat pesanan dikirim", "en": "The system emails users when an order ships"}, "correct": false, "feedback": {"id": "Mengirim email adalah fungsi yang terlihat pengguna.", "en": "Sending an email is a user-visible function."}}
+     ],
+     "takeaway": {"id": "Fungsional = apa yang dilakukan sistem. Non-fungsional = seberapa baik ia melakukannya (kinerja, keamanan, ketersediaan).", "en": "Functional is what the system does. Non-functional is how well it does it (performance, security, availability)."}
+    },
+    {
+     "id": "rd-a1", "tier": "applied", "type": "choice",
+     "context": {"id": "User story: \"Sebagai pelanggan, saya ingin melacak pesanan agar tahu kapan barang tiba.\"", "en": "User story: \"As a customer, I want to track my order so I know when it will arrive.\""},
+     "stem": {"id": "Acceptance criterion mana yang paling baik untuk story ini?", "en": "Which acceptance criterion fits this story best?"},
+     "options": [
+      {"text": {"id": "Pelacakan berjalan dengan baik", "en": "Tracking works well"}, "correct": false, "feedback": {"id": "Tidak ada kondisi atau hasil yang bisa diperiksa.", "en": "There's no condition or outcome to check."}},
+      {"text": {"id": "Diberikan pesanan berstatus \"dikirim\", saat pelanggan membuka detail pesanan, maka tampil nomor resi dan perkiraan tanggal tiba", "en": "Given an order with status \"shipped\", when the customer opens the order details, then the tracking number and estimated arrival date are shown"}, "correct": true, "feedback": {"id": "Tepat. Formatnya kondisi–aksi–hasil (Given/When/Then), jadi bisa langsung diuji.", "en": "Right. It's condition–action–outcome (Given/When/Then), so it can be tested directly."}},
+      {"text": {"id": "Gunakan API ekspedisi untuk pelacakan", "en": "Use the courier's API for tracking"}, "correct": false, "feedback": {"id": "Itu keputusan desain teknis, bukan kriteria penerimaan dari sisi pelanggan.", "en": "That's a technical design choice, not an acceptance criterion from the customer's side."}},
+      {"text": {"id": "Pelanggan senang dengan fitur pelacakan", "en": "Customers are happy with tracking"}, "correct": false, "feedback": {"id": "Kepuasan penting, tetapi tidak bisa diuji saat fitur diterima.", "en": "Satisfaction matters, but it can't be tested when the feature is accepted."}}
+     ],
+     "takeaway": {"id": "Acceptance criteria yang baik bisa ditulis sebagai Given/When/Then dan diuji tanpa menebak.", "en": "Good acceptance criteria can be written as Given/When/Then and tested without guessing."}
+    },
+    {
+     "id": "rd-a2", "tier": "applied", "type": "choice",
+     "context": {"id": "Draf requirement: \"Sistem harus menampilkan semua data yang relevan bagi manajer dengan cepat.\"", "en": "Draft requirement: \"The system must quickly show all data relevant to managers.\""},
+     "stem": {"id": "Revisi mana yang paling memperbaiki requirement ini?", "en": "Which revision improves this requirement the most?"},
+     "options": [
+      {"text": {"id": "Sistem harus menampilkan semua data manajer dengan sangat cepat", "en": "The system must show all manager data very quickly"}, "correct": false, "feedback": {"id": "\"Sangat cepat\" dan \"semua data\" masih tidak terukur.", "en": "\"Very quickly\" and \"all data\" are still unmeasurable."}},
+      {"text": {"id": "Manajer cabang melihat penjualan harian, stok kritis, dan retur cabangnya dalam 3 detik setelah login", "en": "A branch manager sees their branch's daily sales, critical stock and returns within 3 seconds of logging in"}, "correct": true, "feedback": {"id": "Tepat. Siapa, data apa, dan batas waktu kini jelas dan bisa diuji.", "en": "Right. Who, which data and the time limit are now clear and testable."}},
+      {"text": {"id": "Sistem memakai cache agar data tampil cepat", "en": "The system uses caching so data appears quickly"}, "correct": false, "feedback": {"id": "Ini solusi teknis; kebutuhannya sendiri belum diperjelas.", "en": "That's a technical solution; the need itself is still vague."}},
+      {"text": {"id": "Data yang relevan ditentukan kemudian oleh manajer", "en": "Relevant data will be decided by managers later"}, "correct": false, "feedback": {"id": "Menunda isi requirement tidak memperbaikinya.", "en": "Postponing the content doesn't fix the requirement."}}
+     ],
+     "takeaway": {"id": "Perbaiki requirement dengan mengganti kata kabur (semua, relevan, cepat) dengan peran, isi, dan ukuran.", "en": "Fix a requirement by replacing vague words (all, relevant, fast) with role, content and measure."}
+    },
+    {
+     "id": "rd-a3", "tier": "applied", "type": "choice",
+     "context": {"id": "Dua requirement di BRD: (1) \"Pesanan di atas Rp10 juta wajib disetujui manajer.\" (2) \"Semua pesanan diproses otomatis tanpa intervensi manual.\"", "en": "Two requirements in the BRD: (1) \"Orders above Rp10 million must be approved by a manager.\" (2) \"All orders are processed automatically with no manual intervention.\""},
+     "stem": {"id": "Masalah utama pada kedua requirement ini adalah:", "en": "The main problem with these two requirements is:"},
+     "options": [
+      {"text": {"id": "Keduanya terlalu panjang", "en": "Both are too long"}, "correct": false, "feedback": {"id": "Panjangnya wajar; yang bermasalah isinya.", "en": "The length is fine; the content is the problem."}},
+      {"text": {"id": "Keduanya saling bertentangan untuk pesanan di atas Rp10 juta", "en": "They contradict each other for orders above Rp10 million"}, "correct": true, "feedback": {"id": "Tepat. Requirement harus konsisten; ubah (2) menjadi \"kecuali yang butuh persetujuan\" atau putuskan aturannya dengan pemilik bisnis.", "en": "Right. Requirements must be consistent; change (2) to \"except those needing approval\" or settle the rule with the business owner."}},
+      {"text": {"id": "Requirement (1) seharusnya non-fungsional", "en": "Requirement (1) should be non-functional"}, "correct": false, "feedback": {"id": "Persetujuan adalah aturan bisnis yang dijalankan sistem, jadi fungsional.", "en": "Approval is a business rule the system enforces, so it's functional."}},
+      {"text": {"id": "Nominal Rp10 juta seharusnya tidak ditulis", "en": "The Rp10 million amount shouldn't be written"}, "correct": false, "feedback": {"id": "Nominal justru membuat aturan bisa diuji.", "en": "The amount is what makes the rule testable."}}
+     ],
+     "takeaway": {"id": "Periksa konsistensi antar-requirement; dua kalimat yang benar sendiri-sendiri bisa bertentangan.", "en": "Check consistency across requirements; two statements that are fine alone can contradict each other."}
+    },
+    {
+     "id": "rd-t1", "tier": "transfer", "type": "choice",
+     "context": {"id": "Kasus berbeda: aplikasi perpustakaan kampus. Kepala perpustakaan ingin \"mahasiswa tidak telat mengembalikan buku\".", "en": "A different case: a campus library app. The head librarian wants \"students to stop returning books late\"."},
+     "stem": {"id": "User story dan acceptance criterion mana yang paling tepat?", "en": "Which user story and acceptance criterion fit best?"},
+     "options": [
+      {"text": {"id": "Sebagai mahasiswa, saya ingin pengingat 2 hari sebelum jatuh tempo agar tidak kena denda; kriteria: pengingat terkirim H-2 pukul 08.00 untuk setiap pinjaman aktif", "en": "As a student, I want a reminder 2 days before the due date so I avoid fines; criterion: a reminder is sent at 08:00 two days before for every active loan"}, "correct": true, "feedback": {"id": "Tepat. Story lengkap dan kriterianya punya waktu dan cakupan yang bisa diuji.", "en": "Right. A complete story, and the criterion has a time and scope that can be tested."}},
+      {"text": {"id": "Sebagai kepala perpustakaan, saya ingin mahasiswa disiplin; kriteria: keterlambatan berkurang", "en": "As the head librarian, I want disciplined students; criterion: lateness goes down"}, "correct": false, "feedback": {"id": "\"Berkurang\" tanpa angka dan periode tidak bisa diuji saat fitur diterima.", "en": "\"Goes down\" without a number or period can't be tested at acceptance."}},
+      {"text": {"id": "Sistem mengirim notifikasi; kriteria: notifikasi berfungsi", "en": "The system sends notifications; criterion: notifications work"}, "correct": false, "feedback": {"id": "Tanpa peran, manfaat, dan kondisi, tim harus menebak apa yang dimaksud \"berfungsi\".", "en": "With no role, benefit or condition, the team must guess what \"work\" means."}},
+      {"text": {"id": "Sebagai developer, saya ingin cron job harian; kriteria: cron berjalan", "en": "As a developer, I want a daily cron job; criterion: the cron runs"}, "correct": false, "feedback": {"id": "Ini tugas teknis, bukan kebutuhan pengguna.", "en": "That's a technical task, not a user need."}}
+     ],
+     "takeaway": {"id": "Di domain apa pun, ubah tujuan umum menjadi story dengan manfaat dan kriteria yang terukur.", "en": "In any domain, turn a broad goal into a story with a benefit and measurable criteria."}
+    },
+    {
+     "id": "rd-t2", "tier": "transfer", "type": "choice",
+     "context": {"id": "Kasus berbeda: sistem absensi pabrik. Requirement: \"Karyawan bisa absen dengan wajah.\"", "en": "A different case: a factory attendance system. Requirement: \"Employees can clock in with their face.\""},
+     "stem": {"id": "Requirement non-fungsional mana yang paling penting ditambahkan?", "en": "Which non-functional requirement is most important to add?"},
+     "options": [
+      {"text": {"id": "Antarmukanya berwarna biru", "en": "The interface is blue"}, "correct": false, "feedback": {"id": "Preferensi visual, bukan kualitas kritis untuk absensi.", "en": "A visual preference, not a critical quality for attendance."}},
+      {"text": {"id": "Karyawan bisa melihat riwayat absensi", "en": "Employees can view their attendance history"}, "correct": false, "feedback": {"id": "Ini fungsi baru, bukan requirement non-fungsional.", "en": "This is a new function, not a non-functional requirement."}},
+      {"text": {"id": "Pengenalan wajah selesai ≤ 3 detik per orang saat pergantian shift 200 orang, dan data wajah disimpan terenkripsi", "en": "Face recognition finishes in ≤ 3 seconds per person during a 200-person shift change, and face data is stored encrypted"}, "correct": true, "feedback": {"id": "Tepat. Kinerja saat beban puncak dan keamanan data biometrik adalah kualitas yang menentukan sistem ini layak dipakai.", "en": "Right. Peak-load performance and biometric data security decide whether this system is usable."}},
+      {"text": {"id": "Sistem memakai kamera beresolusi tinggi", "en": "The system uses a high-resolution camera"}, "correct": false, "feedback": {"id": "Itu pilihan perangkat (solusi), bukan requirement kualitas yang bisa diuji.", "en": "That's a hardware choice (a solution), not a testable quality requirement."}}
+     ],
+     "takeaway": {"id": "Tanyakan kualitas apa yang membuat fungsi itu gagal di dunia nyata: beban puncak, keamanan, ketersediaan.", "en": "Ask which qualities would make the function fail in practice: peak load, security, availability."}
+    }
+   ]
+  },
+  "business_process_modeling": {
+   "objective": {
+    "id": "Memodelkan proses bisnis dengan BPMN: urutan aktivitas, gateway keputusan, peran (lane), dan menemukan bottleneck pada proses as-is.",
+    "en": "Model business processes in BPMN: activity order, decision gateways, roles (lanes), and finding bottlenecks in the as-is process."
+   },
+   "criteria": {
+    "id": ["Menyusun urutan aktivitas yang benar", "Memakai gateway untuk keputusan dan cabang", "Menempatkan aktivitas di lane peran yang tepat", "Menemukan bottleneck dan pemborosan di proses"],
+    "en": ["Puts activities in the right order", "Uses gateways for decisions and branches", "Places activities in the right role lane", "Finds bottlenecks and waste in a process"]
+   },
+   "tasks": [
+    {
+     "id": "bpm-b1", "tier": "basic", "type": "order",
+     "stem": {"id": "Urutkan aktivitas proses pengembalian barang (retur) di toko online, dari awal sampai akhir.", "en": "Put the steps of an online store's return process in order, from start to end."},
+     "steps": [
+      {"id": "Pelanggan mengajukan retur", "en": "Customer submits a return request"},
+      {"id": "CS memeriksa syarat retur", "en": "Support checks the return conditions"},
+      {"id": "Pelanggan mengirim barang", "en": "Customer ships the item back"},
+      {"id": "Gudang memeriksa kondisi barang", "en": "Warehouse inspects the item"},
+      {"id": "Keuangan mengembalikan dana", "en": "Finance issues the refund"}
+     ],
+     "feedback": {"id": "Syarat diperiksa sebelum barang dikirim (agar tidak ada kiriman sia-sia), dan dana dikembalikan setelah barang diperiksa.", "en": "Conditions are checked before the item is shipped (no wasted shipments), and the refund follows the inspection."},
+     "takeaway": {"id": "Urutan proses mengikuti ketergantungan: langkah yang menyaring atau memastikan sesuatu datang lebih dulu.", "en": "Process order follows dependencies: steps that filter or confirm come first."}
+    },
+    {
+     "id": "bpm-b2", "tier": "basic", "type": "choice",
+     "stem": {"id": "Dalam BPMN, elemen apa yang dipakai saat alur bercabang karena keputusan \"syarat terpenuhi?\" ya/tidak?", "en": "In BPMN, which element is used when the flow branches on a decision \"conditions met?\" yes/no?"},
+     "options": [
+      {"text": {"id": "Task (persegi panjang membulat)", "en": "Task (rounded rectangle)"}, "correct": false, "feedback": {"id": "Task adalah pekerjaan yang dilakukan; ia tidak mengatur percabangan.", "en": "A task is work being done; it doesn't control branching."}},
+      {"text": {"id": "Exclusive gateway (belah ketupat)", "en": "Exclusive gateway (diamond)"}, "correct": true, "feedback": {"id": "Tepat. Exclusive gateway memilih tepat satu jalur berdasarkan kondisi.", "en": "Right. An exclusive gateway picks exactly one path based on a condition."}},
+      {"text": {"id": "Start event (lingkaran tipis)", "en": "Start event (thin circle)"}, "correct": false, "feedback": {"id": "Start event hanya menandai awal proses.", "en": "A start event only marks where the process begins."}},
+      {"text": {"id": "Data object (dokumen)", "en": "Data object (document)"}, "correct": false, "feedback": {"id": "Data object menunjukkan data yang dipakai, bukan keputusan.", "en": "A data object shows data in use, not a decision."}}
+     ],
+     "takeaway": {"id": "Keputusan dengan satu jalur keluar yang dipilih = exclusive gateway; jalur paralel = parallel gateway.", "en": "A decision with one chosen exit is an exclusive gateway; parallel paths use a parallel gateway."}
+    },
+    {
+     "id": "bpm-b3", "tier": "basic", "type": "choice",
+     "stem": {"id": "Apa fungsi swimlane (lane) dalam diagram BPMN?", "en": "What is a swimlane (lane) for in a BPMN diagram?"},
+     "options": [
+      {"text": {"id": "Menunjukkan siapa (peran atau unit) yang melakukan setiap aktivitas", "en": "Showing who (role or unit) performs each activity"}, "correct": true, "feedback": {"id": "Tepat. Lane membuat serah terima antar-peran terlihat, dan di situ bottleneck sering muncul.", "en": "Right. Lanes make hand-offs between roles visible, which is where bottlenecks often appear."}},
+      {"text": {"id": "Menunjukkan urutan waktu dari kiri ke kanan saja", "en": "Showing time order from left to right only"}, "correct": false, "feedback": {"id": "Urutan ditunjukkan oleh sequence flow (panah), bukan oleh lane.", "en": "Order is shown by sequence flow (arrows), not by lanes."}},
+      {"text": {"id": "Mengelompokkan aktivitas yang mirip", "en": "Grouping similar activities"}, "correct": false, "feedback": {"id": "Lane dikelompokkan berdasarkan pelaku, bukan kemiripan aktivitas.", "en": "Lanes group by who does the work, not by how similar activities are."}},
+      {"text": {"id": "Menandai aktivitas yang diotomasi", "en": "Marking automated activities"}, "correct": false, "feedback": {"id": "Otomasi ditandai dengan tipe task (misalnya service task), bukan lane.", "en": "Automation is shown with task types (such as a service task), not lanes."}}
+     ],
+     "takeaway": {"id": "Lane = pelaku. Setiap panah yang menyeberang lane adalah serah terima yang perlu diperhatikan.", "en": "A lane is an actor. Every arrow that crosses lanes is a hand-off worth watching."}
+    },
+    {
+     "id": "bpm-a1", "tier": "applied", "type": "choice",
+     "context": {"id": "Proses as-is penggantian biaya (reimbursement): karyawan isi formulir kertas → atasan tanda tangan → formulir dibawa ke keuangan (rata-rata menunggu 4 hari di meja atasan) → keuangan cek → transfer. Total rata-rata 9 hari.", "en": "As-is expense reimbursement: employee fills a paper form → manager signs → form is carried to finance (waiting on the manager's desk 4 days on average) → finance checks → transfer. 9 days on average in total."},
+     "stem": {"id": "Di mana bottleneck utama dan perbaikan apa yang paling masuk akal?", "en": "Where is the main bottleneck and which improvement makes most sense?"},
+     "options": [
+      {"text": {"id": "Di keuangan; tambah staf keuangan", "en": "At finance; hire more finance staff"}, "correct": false, "feedback": {"id": "Data menunjukkan waktu tunggu terbesar di meja atasan, bukan di keuangan.", "en": "The data shows the biggest wait is on the manager's desk, not at finance."}},
+      {"text": {"id": "Di persetujuan atasan; persetujuan digital dengan pengingat dan batas waktu", "en": "At manager approval; digital approval with reminders and a time limit"}, "correct": true, "feedback": {"id": "Tepat. 4 dari 9 hari adalah antrean persetujuan; perbaikan menyasar langkah itu.", "en": "Right. 4 of the 9 days is the approval queue; the fix targets that step."}},
+      {"text": {"id": "Di pengisian formulir; buat formulir lebih pendek", "en": "At form filling; make the form shorter"}, "correct": false, "feedback": {"id": "Mungkin membantu sedikit, tetapi bukan langkah dengan waktu tunggu terbesar.", "en": "It might help a little, but it isn't the step with the largest wait."}},
+      {"text": {"id": "Di transfer; ganti bank", "en": "At the transfer; switch banks"}, "correct": false, "feedback": {"id": "Tidak ada data bahwa transfer adalah penyebab keterlambatan.", "en": "Nothing suggests the transfer causes the delay."}}
+     ],
+     "takeaway": {"id": "Cari bottleneck dari data waktu tunggu, bukan dari asumsi. Perbaiki langkah dengan antrean terpanjang dulu.", "en": "Find bottlenecks from waiting-time data, not assumptions. Fix the step with the longest queue first."}
+    },
+    {
+     "id": "bpm-a2", "tier": "applied", "type": "order",
+     "context": {"id": "Proses to-be penerimaan magang: setelah lamaran masuk, HR menyaring berkas; jika lolos, user melakukan wawancara; jika diterima, HR mengirim surat penawaran, lalu kandidat menandatangani perjanjian.", "en": "To-be internship hiring: after an application arrives, HR screens it; if it passes, the hiring manager interviews; if accepted, HR sends an offer letter, then the candidate signs the agreement."},
+     "stem": {"id": "Urutkan elemen BPMN untuk jalur \"diterima\" dari awal sampai akhir.", "en": "Order the BPMN elements for the \"accepted\" path from start to end."},
+     "steps": [
+      {"id": "Start event: lamaran diterima", "en": "Start event: application received"},
+      {"id": "Task HR: saring berkas", "en": "HR task: screen application"},
+      {"id": "Gateway: lolos saringan?", "en": "Gateway: passed screening?"},
+      {"id": "Task user: wawancara", "en": "Manager task: interview"},
+      {"id": "Gateway: diterima?", "en": "Gateway: accepted?"},
+      {"id": "Task HR: kirim surat penawaran", "en": "HR task: send offer letter"},
+      {"id": "End event: perjanjian ditandatangani", "en": "End event: agreement signed"}
+     ],
+     "feedback": {"id": "Setiap keputusan (lolos? diterima?) adalah gateway setelah aktivitas yang menghasilkan informasinya, dan proses ditutup dengan end event.", "en": "Each decision (passed? accepted?) is a gateway after the task that produces its information, and the process closes with an end event."},
+     "takeaway": {"id": "Pola umum: aktivitas → gateway keputusan → aktivitas berikutnya. Gateway selalu datang setelah informasinya tersedia.", "en": "Common pattern: activity → decision gateway → next activity. A gateway always comes after its information exists."}
+    },
+    {
+     "id": "bpm-a3", "tier": "applied", "type": "choice",
+     "context": {"id": "Dalam proses pesanan, setelah pembayaran dikonfirmasi, gudang mengemas barang dan keuangan menerbitkan faktur. Keduanya tidak saling bergantung, dan pengiriman baru boleh dilakukan setelah keduanya selesai.", "en": "In an order process, after payment is confirmed, the warehouse packs the goods and finance issues the invoice. Neither depends on the other, and shipping may only start once both are done."},
+     "stem": {"id": "Cara memodelkan bagian ini yang paling tepat:", "en": "The best way to model this part:"},
+     "options": [
+      {"text": {"id": "Kemas lalu faktur secara berurutan", "en": "Pack, then invoice, in sequence"}, "correct": false, "feedback": {"id": "Urutan berderet membuat keuangan menunggu gudang tanpa alasan, sehingga proses jadi lebih lama.", "en": "A strict sequence makes finance wait for the warehouse for no reason, making the process longer."}},
+      {"text": {"id": "Exclusive gateway yang memilih kemas atau faktur", "en": "An exclusive gateway choosing pack or invoice"}, "correct": false, "feedback": {"id": "Exclusive gateway memilih salah satu, padahal keduanya harus terjadi.", "en": "An exclusive gateway picks one, but both must happen."}},
+      {"text": {"id": "Parallel gateway membuka dua jalur (kemas dan faktur), lalu parallel gateway menggabungkannya sebelum pengiriman", "en": "A parallel gateway splits into two paths (pack and invoice), then a parallel gateway joins them before shipping"}, "correct": true, "feedback": {"id": "Tepat. Split paralel menjalankan keduanya bersamaan; join paralel menunggu keduanya selesai.", "en": "Right. The parallel split runs both at once; the parallel join waits for both to finish."}},
+      {"text": {"id": "Satu task gabungan \"kemas dan faktur\"", "en": "One combined task \"pack and invoice\""}, "correct": false, "feedback": {"id": "Dua peran berbeda melakukan dua pekerjaan berbeda; menggabungkannya menyembunyikan serah terima.", "en": "Two roles do two different jobs; merging them hides the hand-offs."}}
+     ],
+     "takeaway": {"id": "Pekerjaan independen yang harus sama-sama selesai = parallel split + parallel join.", "en": "Independent work that must all finish = parallel split + parallel join."}
+    },
+    {
+     "id": "bpm-t1", "tier": "transfer", "type": "choice",
+     "context": {"id": "Kasus berbeda: puskesmas. Pasien mendaftar di loket → menunggu dipanggil ke poli (rata-rata 70 menit) → diperiksa dokter (10 menit) → mengambil obat di apotek (rata-rata 25 menit).", "en": "A different case: a community health centre. Patients register at the desk → wait to be called to the clinic (70 minutes on average) → see the doctor (10 minutes) → collect medicine at the pharmacy (25 minutes on average)."},
+     "stem": {"id": "Usulan perbaikan proses yang paling tepat sasaran:", "en": "The most targeted process improvement:"},
+     "options": [
+      {"text": {"id": "Mempercepat pemeriksaan dokter menjadi 5 menit", "en": "Speed up the doctor's examination to 5 minutes"}, "correct": false, "feedback": {"id": "Pemeriksaan bukan langkah terlama, dan memotongnya berisiko pada kualitas layanan.", "en": "The examination isn't the longest step, and cutting it risks quality of care."}},
+      {"text": {"id": "Pendaftaran dengan nomor antrean berbasis jadwal agar pasien datang mendekati waktunya", "en": "Registration with schedule-based queue numbers so patients arrive close to their time"}, "correct": true, "feedback": {"id": "Tepat. Waktu tunggu 70 menit sebelum poli adalah bottleneck; penjadwalan memindahkan tunggu itu keluar dari puskesmas.", "en": "Right. The 70-minute wait before the clinic is the bottleneck; scheduling moves that wait out of the centre."}},
+      {"text": {"id": "Menambah loket pendaftaran", "en": "Add more registration desks"}, "correct": false, "feedback": {"id": "Data tidak menunjukkan antrean di loket; antrean terbesar setelah pendaftaran.", "en": "The data shows no queue at the desk; the biggest queue comes after registration."}},
+      {"text": {"id": "Memindahkan apotek ke dekat pintu masuk", "en": "Move the pharmacy near the entrance"}, "correct": false, "feedback": {"id": "Lokasi tidak menyasar waktu tunggu terbesar.", "en": "Location doesn't target the biggest wait."}}
+     ],
+     "takeaway": {"id": "Di domain apa pun: petakan langkah dan waktu, lalu targetkan antrean terpanjang.", "en": "In any domain: map steps and times, then target the longest queue."}
+    },
+    {
+     "id": "bpm-t2", "tier": "transfer", "type": "order",
+     "context": {"id": "Kasus berbeda: pengajuan izin keramaian ke kelurahan. Warga mengajukan; staf memeriksa kelengkapan; jika lengkap, lurah menyetujui; surat izin diterbitkan dan diserahkan ke warga.", "en": "A different case: requesting a public-event permit from the village office. A resident applies; staff check completeness; if complete, the village head approves; the permit is issued and handed to the resident."},
+     "stem": {"id": "Urutkan elemen jalur \"lengkap dan disetujui\".", "en": "Order the elements of the \"complete and approved\" path."},
+     "steps": [
+      {"id": "Start event: warga mengajukan", "en": "Start event: resident applies"},
+      {"id": "Task staf: periksa kelengkapan", "en": "Staff task: check completeness"},
+      {"id": "Gateway: lengkap?", "en": "Gateway: complete?"},
+      {"id": "Task lurah: setujui", "en": "Village head task: approve"},
+      {"id": "Task staf: terbitkan surat izin", "en": "Staff task: issue permit"},
+      {"id": "End event: izin diserahkan", "en": "End event: permit handed over"}
+     ],
+     "feedback": {"id": "Pola yang sama dengan kasus magang: aktivitas pemeriksaan → gateway → persetujuan → penerbitan → akhir.", "en": "The same pattern as the internship case: check → gateway → approval → issuing → end."},
+     "takeaway": {"id": "Pola proses administrasi berulang di banyak domain; mengenali polanya mempercepat pemodelan.", "en": "Administrative process patterns repeat across domains; recognising them speeds up modelling."}
+    }
+   ]
+  },
+  "system_modeling_uml": {
+   "objective": {
+    "id": "Memodelkan sistem dengan UML: aktor dan use case yang tepat, relasi include/extend, dan memilih diagram yang sesuai pertanyaan.",
+    "en": "Model systems in UML: the right actors and use cases, include/extend relations, and choosing the diagram that fits the question."
+   },
+   "criteria": {
+    "id": ["Mengidentifikasi aktor sebagai peran di luar sistem", "Menulis use case sebagai tujuan aktor", "Memakai include/extend dengan benar", "Memilih diagram UML sesuai pertanyaan"],
+    "en": ["Identifies actors as roles outside the system", "Writes use cases as actor goals", "Uses include/extend correctly", "Chooses the UML diagram that fits the question"]
+   },
+   "tasks": [
+    {
+     "id": "uml-b1", "tier": "basic", "type": "choice",
+     "stem": {"id": "Dalam use case diagram sistem perpustakaan, mana yang paling tepat sebagai aktor?", "en": "In a library system's use case diagram, which is best as an actor?"},
+     "options": [
+      {"text": {"id": "Database buku", "en": "The book database"}, "correct": false, "feedback": {"id": "Database adalah bagian dalam sistem, bukan pihak luar yang berinteraksi.", "en": "The database is inside the system, not an outside party interacting with it."}},
+      {"text": {"id": "Anggota perpustakaan", "en": "Library member"}, "correct": true, "feedback": {"id": "Tepat. Aktor adalah peran di luar sistem yang punya tujuan saat memakainya.", "en": "Right. An actor is a role outside the system with goals when using it."}},
+      {"text": {"id": "Tombol \"Pinjam\"", "en": "The \"Borrow\" button"}, "correct": false, "feedback": {"id": "Tombol adalah elemen antarmuka, bukan pelaku.", "en": "A button is an interface element, not an actor."}},
+      {"text": {"id": "Proses peminjaman", "en": "The borrowing process"}, "correct": false, "feedback": {"id": "Peminjaman adalah use case (tujuan), bukan aktor.", "en": "Borrowing is a use case (a goal), not an actor."}}
+     ],
+     "takeaway": {"id": "Aktor = peran di luar sistem (orang atau sistem lain). Komponen internal bukan aktor.", "en": "An actor is a role outside the system (a person or another system). Internal parts are not actors."}
+    },
+    {
+     "id": "uml-b2", "tier": "basic", "type": "choice",
+     "stem": {"id": "Nama use case mana yang paling baik?", "en": "Which use case name is best?"},
+     "options": [
+      {"text": {"id": "Tabel peminjaman", "en": "Loan table"}, "correct": false, "feedback": {"id": "Itu struktur data, bukan tujuan aktor.", "en": "That's a data structure, not an actor goal."}},
+      {"text": {"id": "Klik tombol cari", "en": "Click the search button"}, "correct": false, "feedback": {"id": "Itu langkah antarmuka; use case menyatakan tujuan, bukan klik.", "en": "That's a UI step; a use case states a goal, not a click."}},
+      {"text": {"id": "Meminjam buku", "en": "Borrow a book"}, "correct": true, "feedback": {"id": "Tepat. Kata kerja + objek yang menyatakan tujuan bernilai bagi aktor.", "en": "Right. Verb + object stating a goal of value to the actor."}},
+      {"text": {"id": "Sistem perpustakaan", "en": "Library system"}, "correct": false, "feedback": {"id": "Itu batas sistem, bukan satu use case.", "en": "That's the system boundary, not one use case."}}
+     ],
+     "takeaway": {"id": "Use case ditulis kata kerja + objek, dari sudut pandang tujuan aktor.", "en": "Use cases are verb + object, from the actor's goal."}
+    },
+    {
+     "id": "uml-b3", "tier": "basic", "type": "choice",
+     "stem": {"id": "Kamu ingin menunjukkan urutan pesan antara Pelanggan, Aplikasi, dan Payment Gateway saat pembayaran. Diagram UML yang paling tepat:", "en": "You want to show the order of messages between Customer, App and Payment Gateway during payment. The best UML diagram:"},
+     "options": [
+      {"text": {"id": "Class diagram", "en": "Class diagram"}, "correct": false, "feedback": {"id": "Class diagram menunjukkan struktur statis, bukan urutan interaksi.", "en": "A class diagram shows static structure, not the order of interactions."}},
+      {"text": {"id": "Sequence diagram", "en": "Sequence diagram"}, "correct": true, "feedback": {"id": "Tepat. Sequence diagram menunjukkan pesan antar-peserta menurut waktu.", "en": "Right. A sequence diagram shows messages between participants over time."}},
+      {"text": {"id": "Use case diagram", "en": "Use case diagram"}, "correct": false, "feedback": {"id": "Use case menunjukkan siapa melakukan apa, bukan urutan pesannya.", "en": "A use case diagram shows who does what, not the message order."}},
+      {"text": {"id": "Deployment diagram", "en": "Deployment diagram"}, "correct": false, "feedback": {"id": "Deployment menunjukkan di mana perangkat lunak berjalan.", "en": "A deployment diagram shows where software runs."}}
+     ],
+     "takeaway": {"id": "Pilih diagram dari pertanyaannya: struktur → class; urutan interaksi → sequence; alur aktivitas → activity.", "en": "Pick the diagram from the question: structure → class; interaction order → sequence; activity flow → activity."}
+    },
+    {
+     "id": "uml-a1", "tier": "applied", "type": "choice",
+     "context": {"id": "Sistem pemesanan tiket bioskop: setiap kali pelanggan \"Memesan tiket\", sistem selalu \"Memvalidasi pembayaran\". Pelanggan kadang \"Memakai voucher\" saat memesan.", "en": "A cinema booking system: every time a customer \"Books a ticket\", the system always \"Validates payment\". Sometimes the customer \"Applies a voucher\" while booking."},
+     "stem": {"id": "Relasi yang tepat:", "en": "The right relations:"},
+     "options": [
+      {"text": {"id": "Memesan tiket «include» Memvalidasi pembayaran; Memakai voucher «extend» Memesan tiket", "en": "Book a ticket «include» Validate payment; Apply a voucher «extend» Book a ticket"}, "correct": true, "feedback": {"id": "Tepat. Include = selalu terjadi sebagai bagian; extend = tambahan bersyarat.", "en": "Right. Include always happens as part of it; extend is a conditional addition."}},
+      {"text": {"id": "Keduanya «include»", "en": "Both «include»"}, "correct": false, "feedback": {"id": "Voucher tidak selalu dipakai, jadi bukan include.", "en": "A voucher isn't always used, so it isn't include."}},
+      {"text": {"id": "Keduanya «extend»", "en": "Both «extend»"}, "correct": false, "feedback": {"id": "Validasi pembayaran selalu terjadi, jadi bukan extend.", "en": "Payment validation always happens, so it isn't extend."}},
+      {"text": {"id": "Memvalidasi pembayaran «extend» Memesan tiket; Memakai voucher «include» Memesan tiket", "en": "Validate payment «extend» Book a ticket; Apply a voucher «include» Book a ticket"}, "correct": false, "feedback": {"id": "Arah dan jenisnya tertukar: yang wajib adalah include, yang opsional adalah extend.", "en": "The kinds are swapped: the mandatory one is include, the optional one is extend."}}
+     ],
+     "takeaway": {"id": "«include» = selalu dijalankan; «extend» = hanya dalam kondisi tertentu.", "en": "«include» always runs; «extend» runs only under certain conditions."}
+    },
+    {
+     "id": "uml-a2", "tier": "applied", "type": "choice",
+     "context": {"id": "Aplikasi ojek online: penumpang memesan, pengemudi menerima pesanan, dan sistem pembayaran bank memproses transfer.", "en": "A ride-hailing app: passengers book, drivers accept bookings, and the bank's payment system processes transfers."},
+     "stem": {"id": "Daftar aktor yang paling tepat:", "en": "The best list of actors:"},
+     "options": [
+      {"text": {"id": "Penumpang, Pengemudi, Sistem Pembayaran Bank", "en": "Passenger, Driver, Bank Payment System"}, "correct": true, "feedback": {"id": "Tepat. Ketiganya berada di luar aplikasi; sistem eksternal juga bisa menjadi aktor.", "en": "Right. All three are outside the app; an external system can be an actor too."}},
+      {"text": {"id": "Penumpang, Pengemudi, Peta, Database", "en": "Passenger, Driver, Map, Database"}, "correct": false, "feedback": {"id": "Database adalah bagian internal; aktor harus berada di luar batas sistem.", "en": "The database is internal; actors must be outside the system boundary."}},
+      {"text": {"id": "Penumpang saja", "en": "Passenger only"}, "correct": false, "feedback": {"id": "Pengemudi juga pengguna dengan tujuan sendiri, dan bank berinteraksi dengan sistem.", "en": "Drivers are users with their own goals too, and the bank interacts with the system."}},
+      {"text": {"id": "Pesan, Terima, Bayar", "en": "Book, Accept, Pay"}, "correct": false, "feedback": {"id": "Ini use case, bukan aktor.", "en": "These are use cases, not actors."}}
+     ],
+     "takeaway": {"id": "Aktor bisa manusia atau sistem eksternal; yang penting berada di luar batas sistem dan berinteraksi dengannya.", "en": "Actors can be people or external systems; what matters is they sit outside the boundary and interact with it."}
+    },
+    {
+     "id": "uml-a3", "tier": "applied", "type": "choice",
+     "context": {"id": "Tim developer bertanya: \"Data apa saja yang disimpan untuk Mahasiswa, Mata Kuliah, dan KRS, dan bagaimana hubungannya?\"", "en": "The developers ask: \"What data do we keep for Student, Course and Enrolment, and how are they related?\""},
+     "stem": {"id": "Diagram yang paling tepat untuk menjawabnya:", "en": "The best diagram to answer this:"},
+     "options": [
+      {"text": {"id": "Activity diagram", "en": "Activity diagram"}, "correct": false, "feedback": {"id": "Activity menunjukkan alur kerja, bukan struktur data dan relasinya.", "en": "An activity diagram shows workflow, not data structure and relations."}},
+      {"text": {"id": "Sequence diagram", "en": "Sequence diagram"}, "correct": false, "feedback": {"id": "Sequence menunjukkan urutan pesan, bukan atribut dan relasi.", "en": "A sequence diagram shows message order, not attributes and relations."}},
+      {"text": {"id": "Class diagram (atau ERD)", "en": "Class diagram (or ERD)"}, "correct": true, "feedback": {"id": "Tepat. Atribut dan relasi (misalnya satu mahasiswa punya banyak KRS) adalah struktur statis.", "en": "Right. Attributes and relations (such as one student having many enrolments) are static structure."}},
+      {"text": {"id": "Use case diagram", "en": "Use case diagram"}, "correct": false, "feedback": {"id": "Use case menunjukkan tujuan pengguna, bukan data yang disimpan.", "en": "A use case diagram shows user goals, not stored data."}}
+     ],
+     "takeaway": {"id": "Pertanyaan \"data apa dan berelasi bagaimana\" dijawab class diagram atau ERD.", "en": "\"What data and how is it related\" is answered by a class diagram or ERD."}
+    },
+    {
+     "id": "uml-t1", "tier": "transfer", "type": "choice",
+     "context": {"id": "Kasus berbeda: sistem antrean bengkel. Pelanggan \"Membuat janji servis\"; sistem selalu \"Mengecek slot montir\"; kadang pelanggan \"Menambah layanan cuci\".", "en": "A different case: a repair shop booking system. Customers \"Book a service\"; the system always \"Checks mechanic slots\"; sometimes customers \"Add a car wash\"."},
+     "stem": {"id": "Relasi yang tepat:", "en": "The right relations:"},
+     "options": [
+      {"text": {"id": "Mengecek slot montir «extend» Membuat janji", "en": "Check mechanic slots «extend» Book a service"}, "correct": false, "feedback": {"id": "Cek slot selalu terjadi, jadi include, bukan extend.", "en": "Checking slots always happens, so it's include, not extend."}},
+      {"text": {"id": "Membuat janji «include» Mengecek slot montir; Menambah layanan cuci «extend» Membuat janji", "en": "Book a service «include» Check mechanic slots; Add a car wash «extend» Book a service"}, "correct": true, "feedback": {"id": "Tepat. Pola yang sama dengan kasus bioskop, di domain berbeda.", "en": "Right. The same pattern as the cinema case, in another domain."}},
+      {"text": {"id": "Menambah layanan cuci «include» Membuat janji", "en": "Add a car wash «include» Book a service"}, "correct": false, "feedback": {"id": "Cuci bersifat opsional, jadi extend.", "en": "The wash is optional, so it's extend."}},
+      {"text": {"id": "Tidak perlu relasi; semua jadi use case terpisah", "en": "No relations needed; make them all separate use cases"}, "correct": false, "feedback": {"id": "Tanpa relasi, diagram tidak menunjukkan bahwa cek slot selalu bagian dari pemesanan.", "en": "Without relations the diagram doesn't show that slot checking is always part of booking."}}
+     ],
+     "takeaway": {"id": "Uji setiap relasi: \"selalu?\" → include; \"kadang, dengan syarat?\" → extend.", "en": "Test each relation: \"always?\" → include; \"sometimes, under a condition?\" → extend."}
+    },
+    {
+     "id": "uml-t2", "tier": "transfer", "type": "choice",
+     "context": {"id": "Kasus berbeda: dosen ingin memahami bagaimana status skripsi berubah dari \"diajukan\" ke \"disetujui pembimbing\", \"siap sidang\", sampai \"lulus\" atau \"revisi\".", "en": "A different case: a lecturer wants to understand how a thesis status moves from \"submitted\" to \"supervisor approved\", \"ready for defence\", and then \"passed\" or \"revise\"."},
+     "stem": {"id": "Diagram UML yang paling tepat:", "en": "The best UML diagram:"},
+     "options": [
+      {"text": {"id": "State machine diagram", "en": "State machine diagram"}, "correct": true, "feedback": {"id": "Tepat. Pertanyaannya tentang status satu objek dan transisinya.", "en": "Right. The question is about one object's states and transitions."}},
+      {"text": {"id": "Class diagram", "en": "Class diagram"}, "correct": false, "feedback": {"id": "Class menunjukkan struktur, bukan perubahan status dari waktu ke waktu.", "en": "A class diagram shows structure, not status changes over time."}},
+      {"text": {"id": "Use case diagram", "en": "Use case diagram"}, "correct": false, "feedback": {"id": "Use case menunjukkan tujuan aktor, bukan siklus hidup objek.", "en": "A use case diagram shows actor goals, not an object's life cycle."}},
+      {"text": {"id": "Deployment diagram", "en": "Deployment diagram"}, "correct": false, "feedback": {"id": "Deployment menunjukkan infrastruktur, tidak relevan di sini.", "en": "A deployment diagram shows infrastructure, which isn't relevant here."}}
+     ],
+     "takeaway": {"id": "Status dan transisi satu objek → state machine diagram.", "en": "One object's states and transitions → state machine diagram."}
+    }
+   ]
+  },
+  "sql": {
+   "objective": {
+    "id": "Menulis kueri SQL untuk menjawab pertanyaan bisnis: memfilter, menggabungkan tabel, dan merangkum data dengan benar.",
+    "en": "Write SQL queries that answer business questions: filter, join tables and summarise data correctly."
+   },
+   "criteria": {
+    "id": ["Memfilter baris dengan WHERE yang benar", "Merangkum dengan GROUP BY dan agregat", "Membedakan WHERE dan HAVING", "Memilih jenis JOIN sesuai pertanyaan"],
+    "en": ["Filters rows with the right WHERE", "Summarises with GROUP BY and aggregates", "Tells WHERE apart from HAVING", "Picks the JOIN type that fits the question"]
+   },
+   "tasks": [
+    {
+     "id": "sql-b1", "tier": "basic", "type": "choice",
+     "stem": {"id": "Tabel orders(id, customer_id, total, status). Kueri untuk mengambil pesanan berstatus 'paid' dengan total di atas 500000:", "en": "Table orders(id, customer_id, total, status). A query for orders with status 'paid' and a total above 500000:"},
+     "options": [
+      {"text": {"id": "SELECT * FROM orders WHERE status = 'paid' AND total > 500000", "en": "SELECT * FROM orders WHERE status = 'paid' AND total > 500000"}, "correct": true, "feedback": {"id": "Tepat. Kedua syarat harus benar bersamaan, jadi AND.", "en": "Right. Both conditions must hold, so AND."}},
+      {"text": {"id": "SELECT * FROM orders WHERE status = 'paid' OR total > 500000", "en": "SELECT * FROM orders WHERE status = 'paid' OR total > 500000"}, "correct": false, "feedback": {"id": "OR mengambil pesanan yang memenuhi salah satu saja, termasuk yang belum dibayar.", "en": "OR returns orders meeting either one, including unpaid ones."}},
+      {"text": {"id": "SELECT * FROM orders HAVING status = 'paid' AND total > 500000", "en": "SELECT * FROM orders HAVING status = 'paid' AND total > 500000"}, "correct": false, "feedback": {"id": "HAVING untuk menyaring hasil GROUP BY; untuk menyaring baris pakai WHERE.", "en": "HAVING filters grouped results; to filter rows use WHERE."}},
+      {"text": {"id": "SELECT status, total FROM orders WHERE total > 500000", "en": "SELECT status, total FROM orders WHERE total > 500000"}, "correct": false, "feedback": {"id": "Syarat status 'paid' hilang.", "en": "The status 'paid' condition is missing."}}
+     ],
+     "takeaway": {"id": "WHERE menyaring baris; AND = semua syarat, OR = salah satu.", "en": "WHERE filters rows; AND means all conditions, OR means any."}
+    },
+    {
+     "id": "sql-b2", "tier": "basic", "type": "choice",
+     "stem": {"id": "Untuk menghitung jumlah pesanan per status dari tabel orders, kueri yang benar:", "en": "To count orders per status in the orders table, the correct query:"},
+     "options": [
+      {"text": {"id": "SELECT status, COUNT(*) FROM orders", "en": "SELECT status, COUNT(*) FROM orders"}, "correct": false, "feedback": {"id": "Tanpa GROUP BY, COUNT menghitung semua baris jadi satu, dan kolom status tidak valid di banyak database.", "en": "Without GROUP BY, COUNT totals everything into one row, and status is invalid in most databases."}},
+      {"text": {"id": "SELECT status, COUNT(*) FROM orders GROUP BY status", "en": "SELECT status, COUNT(*) FROM orders GROUP BY status"}, "correct": true, "feedback": {"id": "Tepat. GROUP BY membuat satu baris per status, lalu COUNT menghitung di tiap kelompok.", "en": "Right. GROUP BY makes one row per status, then COUNT counts within each group."}},
+      {"text": {"id": "SELECT COUNT(status) FROM orders ORDER BY status", "en": "SELECT COUNT(status) FROM orders ORDER BY status"}, "correct": false, "feedback": {"id": "ORDER BY hanya mengurutkan; tidak membentuk kelompok.", "en": "ORDER BY only sorts; it doesn't form groups."}},
+      {"text": {"id": "SELECT DISTINCT status FROM orders", "en": "SELECT DISTINCT status FROM orders"}, "correct": false, "feedback": {"id": "Ini daftar status unik tanpa jumlahnya.", "en": "This lists unique statuses without their counts."}}
+     ],
+     "takeaway": {"id": "\"Per X\" dalam pertanyaan bisnis biasanya berarti GROUP BY X.", "en": "\"Per X\" in a business question usually means GROUP BY X."}
+    },
+    {
+     "id": "sql-b3", "tier": "basic", "type": "choice",
+     "stem": {"id": "Tabel customers dan orders. Kamu ingin semua pelanggan beserta pesanannya, termasuk pelanggan yang belum pernah memesan. JOIN yang tepat:", "en": "Tables customers and orders. You want every customer with their orders, including customers who never ordered. The right JOIN:"},
+     "options": [
+      {"text": {"id": "INNER JOIN", "en": "INNER JOIN"}, "correct": false, "feedback": {"id": "INNER JOIN membuang pelanggan tanpa pesanan.", "en": "INNER JOIN drops customers without orders."}},
+      {"text": {"id": "customers LEFT JOIN orders", "en": "customers LEFT JOIN orders"}, "correct": true, "feedback": {"id": "Tepat. LEFT JOIN mempertahankan semua baris tabel kiri; pesanan kosong menjadi NULL.", "en": "Right. LEFT JOIN keeps every row of the left table; missing orders become NULL."}},
+      {"text": {"id": "customers RIGHT JOIN orders", "en": "customers RIGHT JOIN orders"}, "correct": false, "feedback": {"id": "Ini mempertahankan semua pesanan, bukan semua pelanggan.", "en": "This keeps every order, not every customer."}},
+      {"text": {"id": "CROSS JOIN", "en": "CROSS JOIN"}, "correct": false, "feedback": {"id": "CROSS JOIN memasangkan setiap pelanggan dengan setiap pesanan, hasilnya salah.", "en": "CROSS JOIN pairs every customer with every order, which is wrong."}}
+     ],
+     "takeaway": {"id": "\"Termasuk yang tidak punya …\" → LEFT JOIN dari tabel yang ingin dipertahankan semuanya.", "en": "\"Including those without …\" → LEFT JOIN from the table you want to keep in full."}
+    },
+    {
+     "id": "sql-a1", "tier": "applied", "type": "choice",
+     "context": {"id": "Manajer bertanya: \"Kota mana yang punya lebih dari 50 pesanan lunas bulan ini?\" Tabel orders(id, city, status, order_date).", "en": "A manager asks: \"Which cities have more than 50 paid orders this month?\" Table orders(id, city, status, order_date)."},
+     "stem": {"id": "Kueri yang benar:", "en": "The correct query:"},
+     "options": [
+      {"text": {"id": "SELECT city, COUNT(*) FROM orders WHERE status='paid' AND order_date >= '2026-10-01' GROUP BY city HAVING COUNT(*) > 50", "en": "SELECT city, COUNT(*) FROM orders WHERE status='paid' AND order_date >= '2026-10-01' GROUP BY city HAVING COUNT(*) > 50"}, "correct": true, "feedback": {"id": "Tepat. WHERE menyaring baris dulu (lunas, bulan ini), lalu HAVING menyaring kelompok kota.", "en": "Right. WHERE filters rows first (paid, this month), then HAVING filters the city groups."}},
+      {"text": {"id": "SELECT city, COUNT(*) FROM orders WHERE COUNT(*) > 50 GROUP BY city", "en": "SELECT city, COUNT(*) FROM orders WHERE COUNT(*) > 50 GROUP BY city"}, "correct": false, "feedback": {"id": "Agregat tidak bisa dipakai di WHERE, karena WHERE dijalankan sebelum pengelompokan.", "en": "Aggregates can't be used in WHERE, because WHERE runs before grouping."}},
+      {"text": {"id": "SELECT city, COUNT(*) FROM orders GROUP BY city HAVING COUNT(*) > 50", "en": "SELECT city, COUNT(*) FROM orders GROUP BY city HAVING COUNT(*) > 50"}, "correct": false, "feedback": {"id": "Syarat lunas dan bulan ini hilang, jadi semua pesanan terhitung.", "en": "The paid and this-month conditions are missing, so every order counts."}},
+      {"text": {"id": "SELECT city FROM orders WHERE status='paid' ORDER BY COUNT(*) DESC LIMIT 50", "en": "SELECT city FROM orders WHERE status='paid' ORDER BY COUNT(*) DESC LIMIT 50"}, "correct": false, "feedback": {"id": "Ini mengambil 50 baris teratas, bukan kota dengan lebih dari 50 pesanan.", "en": "This takes the top 50 rows, not cities with more than 50 orders."}}
+     ],
+     "takeaway": {"id": "Urutan logis: WHERE (baris) → GROUP BY → HAVING (kelompok).", "en": "Logical order: WHERE (rows) → GROUP BY → HAVING (groups)."}
+    },
+    {
+     "id": "sql-a2", "tier": "applied", "type": "choice",
+     "context": {"id": "Tabel customers(id, name) dan orders(id, customer_id, total). Pertanyaan: \"Pelanggan mana yang belum pernah memesan?\"", "en": "Tables customers(id, name) and orders(id, customer_id, total). Question: \"Which customers have never ordered?\""},
+     "stem": {"id": "Kueri yang benar:", "en": "The correct query:"},
+     "options": [
+      {"text": {"id": "SELECT c.name FROM customers c JOIN orders o ON o.customer_id = c.id WHERE o.id IS NULL", "en": "SELECT c.name FROM customers c JOIN orders o ON o.customer_id = c.id WHERE o.id IS NULL"}, "correct": false, "feedback": {"id": "INNER JOIN sudah membuang pelanggan tanpa pesanan, jadi hasilnya selalu kosong.", "en": "INNER JOIN already drops customers without orders, so the result is always empty."}},
+      {"text": {"id": "SELECT c.name FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.id IS NULL", "en": "SELECT c.name FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.id IS NULL"}, "correct": true, "feedback": {"id": "Tepat. LEFT JOIN mempertahankan semua pelanggan; yang tidak punya pesanan punya o.id NULL.", "en": "Right. LEFT JOIN keeps every customer; those without orders have o.id NULL."}},
+      {"text": {"id": "SELECT name FROM customers WHERE total = 0", "en": "SELECT name FROM customers WHERE total = 0"}, "correct": false, "feedback": {"id": "Kolom total ada di tabel orders, bukan customers.", "en": "The total column lives in orders, not customers."}},
+      {"text": {"id": "SELECT c.name FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.total > 0", "en": "SELECT c.name FROM customers c LEFT JOIN orders o ON o.customer_id = c.id WHERE o.total > 0"}, "correct": false, "feedback": {"id": "Ini justru mengambil pelanggan yang punya pesanan.", "en": "This returns customers who do have orders."}}
+     ],
+     "takeaway": {"id": "\"Yang belum pernah …\" = LEFT JOIN lalu WHERE kolom tabel kanan IS NULL.", "en": "\"Who never …\" = LEFT JOIN then WHERE the right table's column IS NULL."}
+    },
+    {
+     "id": "sql-a3", "tier": "applied", "type": "choice",
+     "context": {"id": "Laporan rata-rata nilai pesanan per pelanggan ternyata terlalu tinggi. Kueri: SELECT AVG(o.total) FROM customers c JOIN orders o ON o.customer_id = c.id JOIN order_items i ON i.order_id = o.id", "en": "An average-order-value report looks too high. Query: SELECT AVG(o.total) FROM customers c JOIN orders o ON o.customer_id = c.id JOIN order_items i ON i.order_id = o.id"},
+     "stem": {"id": "Penyebab paling mungkin:", "en": "The most likely cause:"},
+     "options": [
+      {"text": {"id": "AVG selalu membulatkan ke atas", "en": "AVG always rounds up"}, "correct": false, "feedback": {"id": "AVG tidak membulatkan ke atas.", "en": "AVG doesn't round up."}},
+      {"text": {"id": "JOIN ke order_items menggandakan baris pesanan yang punya banyak item, sehingga pesanan besar terhitung berkali-kali", "en": "Joining order_items duplicates order rows with several items, so large orders are counted many times"}, "correct": true, "feedback": {"id": "Tepat. Fan-out dari JOIN satu-ke-banyak membuat setiap pesanan muncul sebanyak jumlah itemnya. Hapus JOIN yang tidak perlu atau agregasi dulu.", "en": "Right. The one-to-many join fans out, so each order appears once per item. Drop the unneeded join or aggregate first."}},
+      {"text": {"id": "Pelanggan tanpa pesanan ikut terhitung", "en": "Customers without orders are included"}, "correct": false, "feedback": {"id": "INNER JOIN justru membuang mereka; itu tidak menaikkan rata-rata.", "en": "INNER JOIN drops them; that wouldn't raise the average."}},
+      {"text": {"id": "Kolom total bertipe teks", "en": "The total column is text"}, "correct": false, "feedback": {"id": "Mungkin menimbulkan error, tetapi tidak menjelaskan rata-rata yang terlalu tinggi.", "en": "That might cause an error, but it doesn't explain an inflated average."}}
+     ],
+     "takeaway": {"id": "Hati-hati JOIN satu-ke-banyak sebelum agregasi; periksa jumlah baris setelah setiap JOIN.", "en": "Watch one-to-many joins before aggregating; check row counts after each join."}
+    },
+    {
+     "id": "sql-t1", "tier": "transfer", "type": "choice",
+     "context": {"id": "Kasus berbeda: data akademik. Tabel enrollments(student_id, course_id, grade). Pertanyaan: \"Mata kuliah mana yang rata-rata nilainya di bawah 2,5, untuk mata kuliah dengan minimal 30 mahasiswa?\"", "en": "A different case: academic data. Table enrollments(student_id, course_id, grade). Question: \"Which courses average below 2.5, among courses with at least 30 students?\""},
+     "stem": {"id": "Kueri yang benar:", "en": "The correct query:"},
+     "options": [
+      {"text": {"id": "SELECT course_id, AVG(grade) FROM enrollments GROUP BY course_id HAVING COUNT(*) >= 30 AND AVG(grade) < 2.5", "en": "SELECT course_id, AVG(grade) FROM enrollments GROUP BY course_id HAVING COUNT(*) >= 30 AND AVG(grade) < 2.5"}, "correct": true, "feedback": {"id": "Tepat. Kedua syarat adalah tentang kelompok mata kuliah, jadi keduanya di HAVING.", "en": "Right. Both conditions are about course groups, so both go in HAVING."}},
+      {"text": {"id": "SELECT course_id, AVG(grade) FROM enrollments WHERE grade < 2.5 GROUP BY course_id HAVING COUNT(*) >= 30", "en": "SELECT course_id, AVG(grade) FROM enrollments WHERE grade < 2.5 GROUP BY course_id HAVING COUNT(*) >= 30"}, "correct": false, "feedback": {"id": "WHERE grade < 2.5 membuang nilai tinggi sebelum dirata-rata, jadi rata-ratanya pasti rendah dan salah.", "en": "WHERE grade < 2.5 drops high grades before averaging, so the average is wrongly low."}},
+      {"text": {"id": "SELECT course_id FROM enrollments WHERE AVG(grade) < 2.5", "en": "SELECT course_id FROM enrollments WHERE AVG(grade) < 2.5"}, "correct": false, "feedback": {"id": "Agregat tidak boleh di WHERE dan GROUP BY hilang.", "en": "Aggregates aren't allowed in WHERE, and GROUP BY is missing."}},
+      {"text": {"id": "SELECT course_id, AVG(grade) FROM enrollments GROUP BY course_id ORDER BY AVG(grade) LIMIT 30", "en": "SELECT course_id, AVG(grade) FROM enrollments GROUP BY course_id ORDER BY AVG(grade) LIMIT 30"}, "correct": false, "feedback": {"id": "Ini 30 mata kuliah dengan rata-rata terendah, bukan yang memenuhi kedua syarat.", "en": "These are the 30 lowest-average courses, not those meeting both conditions."}}
+     ],
+     "takeaway": {"id": "Syarat tentang baris individual → WHERE; syarat tentang kelompok (jumlah, rata-rata) → HAVING.", "en": "Conditions on single rows → WHERE; conditions on groups (count, average) → HAVING."}
+    },
+    {
+     "id": "sql-t2", "tier": "transfer", "type": "choice",
+     "context": {"id": "Kasus berbeda: HR. Tabel employees(id, name, dept_id) dan trainings(employee_id, course). Pertanyaan: \"Daftar semua karyawan dan jumlah pelatihannya, termasuk yang belum pernah ikut pelatihan (tampil 0).\"", "en": "A different case: HR. Tables employees(id, name, dept_id) and trainings(employee_id, course). Question: \"List every employee with their number of trainings, including those with none (shown as 0).\""},
+     "stem": {"id": "Kueri yang benar:", "en": "The correct query:"},
+     "options": [
+      {"text": {"id": "SELECT e.name, COUNT(*) FROM employees e LEFT JOIN trainings t ON t.employee_id = e.id GROUP BY e.name", "en": "SELECT e.name, COUNT(*) FROM employees e LEFT JOIN trainings t ON t.employee_id = e.id GROUP BY e.name"}, "correct": false, "feedback": {"id": "COUNT(*) menghitung baris hasil LEFT JOIN, jadi karyawan tanpa pelatihan tampil 1, bukan 0.", "en": "COUNT(*) counts the LEFT JOIN row, so employees with no training show 1, not 0."}},
+      {"text": {"id": "SELECT e.name, COUNT(t.course) FROM employees e LEFT JOIN trainings t ON t.employee_id = e.id GROUP BY e.id, e.name", "en": "SELECT e.name, COUNT(t.course) FROM employees e LEFT JOIN trainings t ON t.employee_id = e.id GROUP BY e.id, e.name"}, "correct": true, "feedback": {"id": "Tepat. COUNT(kolom) tidak menghitung NULL, jadi karyawan tanpa pelatihan bernilai 0; GROUP BY id mencegah nama kembar tergabung.", "en": "Right. COUNT(column) skips NULLs, so employees without training get 0; grouping by id keeps same-name people apart."}},
+      {"text": {"id": "SELECT e.name, COUNT(t.course) FROM employees e JOIN trainings t ON t.employee_id = e.id GROUP BY e.name", "en": "SELECT e.name, COUNT(t.course) FROM employees e JOIN trainings t ON t.employee_id = e.id GROUP BY e.name"}, "correct": false, "feedback": {"id": "INNER JOIN membuang karyawan tanpa pelatihan.", "en": "INNER JOIN drops employees without training."}},
+      {"text": {"id": "SELECT name, (SELECT COUNT(*) FROM trainings) FROM employees", "en": "SELECT name, (SELECT COUNT(*) FROM trainings) FROM employees"}, "correct": false, "feedback": {"id": "Subkueri ini menghitung semua pelatihan, sama untuk setiap karyawan.", "en": "This subquery counts all trainings, the same number for every employee."}}
+     ],
+     "takeaway": {"id": "Dengan LEFT JOIN, hitung kolom dari tabel kanan (bukan *) supaya yang kosong bernilai 0.", "en": "With a LEFT JOIN, count a right-table column (not *) so empty ones come out as 0."}
+    }
+   ]
+  }
+ }
+}
