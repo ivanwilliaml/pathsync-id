@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowDown, CheckCircle2, Cpu, Scale, Tags, XCircle } from "lucide-react";
+import { CheckCircle2, Cpu, Scale, Tags, XCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { num, pct, titleCase } from "@/lib/format";
 import type { Meta } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
+import { BpsContext } from "@/components/market-evidence";
 import { ErrorNote, Loading, PageHeader, Panel, SectionTitle, Tag } from "@/components/kit";
 import { useT } from "@/lib/i18n";
 
@@ -82,15 +84,36 @@ export default function HowItWorksPage() {
   const weights = useApi<WeightsReport>("/evaluation/weights");
   const evals = useApi<EvalReport>("/evaluation");
   const t = useT();
+  const toc: [string, string][] = [
+    ["engine", t("How a recommendation is made", "Cara rekomendasi dibuat")],
+    ["models", t("Models", "Model")],
+    ["tax", t("Skill list", "Daftar skill")],
+    ["weights", t("Evidence weights", "Bobot bukti")],
+    ["eval", t("Agreement with experts", "Kecocokan dengan pakar")],
+    ["data-sources", t("Data sources", "Sumber data")],
+  ];
   return (
-    <div className="space-y-14">
-      <PageHeader mascot="shift-route"
-        title={t("How the AI Works", "Cara Kerja AI")}
+    <div>
+      <PageHeader
+        className="mb-6"
+        title={t("Methodology & Data", "Metode & Data")}
         description={t(
           "Which AI does what, how a recommendation is decided, why the skill list is final, and why evidence is weighted the way it is.",
-          "AI mana mengerjakan apa, bagaimana rekomendasi diputuskan, kenapa daftar skill sudah final, dan kenapa evidence dibobot seperti ini.",
+          "AI mana mengerjakan apa, bagaimana rekomendasi diputuskan, kenapa daftar skill sudah final, dan kenapa bukti dibobot seperti ini.",
         )}
       />
+      {/* a local table of contents beside the article; every detail stays reachable, the long lists open on request */}
+      <div className="grid gap-8 lg:grid-cols-[190px_minmax(0,1fr)]">
+        <nav aria-label={t("On this page", "Di halaman ini")} className="lg:sticky lg:top-6 lg:self-start">
+          <ol className="flex flex-wrap gap-x-4 gap-y-1 text-sm lg:flex-col lg:gap-1 lg:border-l lg:pl-3">
+            {toc.map(([id, label]) => (
+              <li key={id}>
+                <a href={`#${id}`} className="text-ink/70 underline-offset-4 hover:text-ink hover:underline">{label}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      <div className="min-w-0 space-y-12 [&_section]:scroll-mt-24">
       <Engine />
       <section aria-labelledby="models">
         <SectionTitle id="models">
@@ -130,37 +153,56 @@ export default function HowItWorksPage() {
         <SectionTitle id="eval">{t("How Well the Ranking Agrees With Experts", "Seberapa Sejalan Ranking dengan Pakar")}</SectionTitle>
         {evals.error ? <ErrorNote error={evals.error} /> : !evals.data ? <Loading /> : <Evaluation e={evals.data} />}
       </section>
+      <section aria-labelledby="data-sources">
+        <SectionTitle id="data-sources">{t("Data Sources and Coverage", "Sumber & Cakupan Data")}</SectionTitle>
+        <p className="mb-4 max-w-3xl text-sm text-ink/75">
+          {t(
+            "Job postings come from Karirhub (Kemnaker) and public company career sites, refreshed monthly; per-career sources and dates are shown with each career's market evidence in Choose a Career. The national context below is display only and never enters the ranking.",
+            "Job posting berasal dari Karirhub (Kemnaker) dan situs karier perusahaan publik, diperbarui tiap bulan; sumber dan tanggal per karier ditampilkan bersama bukti pasar tiap karier di Pilih Karier. Konteks nasional di bawah hanya untuk tampilan dan tidak pernah masuk ke ranking.",
+          )}
+        </p>
+        <BpsContext />
+      </section>
+      </div>
+      </div>
     </div>
   );
 }
 
 function Engine() {
   const t = useT();
+  const [stage, setStage] = useState(0);
   const stages = [
-    ["Evidence", t("Course grades, certificates, project artifacts (rubric with quotes) and skill checks. CV claims and self-ratings never count as mastery.", "Nilai mata kuliah, sertifikat, artefak project (rubrik dengan kutipan) dan skill check. Klaim CV dan penilaian diri tidak pernah dihitung sebagai mastery.")],
-    ["Mastery p", t("Weighted average of the evidence that exists (eq. 2), then updated by every new answer with Bayesian knowledge tracing (eq. 3).", "Rata-rata berbobot dari evidence yang ada (pers. 2), lalu diperbarui setiap jawaban baru dengan Bayesian knowledge tracing (pers. 3).")],
-    [t("Seven features", "Tujuh fitur"), t("Gap, prerequisites ready, evidence confidence, market demand, demand trend, unlock value and downstream block (Table 3).", "Gap, kesiapan prasyarat, keyakinan evidence, market demand, tren demand, nilai unlock, dan downstream block (Tabel 3).")],
-    ["Ranking model", t("A linear learning-to-rank score f = Σ wᵢ log xᵢ (eq. 4), weights learned from expert rankings, every weight inspectable.", "Skor learning-to-rank linear f = Σ wᵢ log xᵢ (pers. 4), bobot dipelajari dari ranking pakar, setiap bobot bisa diperiksa.")],
+    ["Evidence", t("Course grades, certificates, project artifacts (rubric with quotes) and skill checks. CV claims and self-ratings never count as mastery.", "Nilai mata kuliah, sertifikat, artefak project (rubrik dengan kutipan) dan Cek Kemampuan. Klaim CV dan penilaian diri tidak pernah dihitung sebagai mastery.")],
+    ["Mastery p", t("Weighted average of the evidence that exists, then updated by every new answer with Bayesian knowledge tracing.", "Rata-rata berbobot dari evidence yang ada, lalu diperbarui setiap jawaban baru dengan Bayesian knowledge tracing.")],
+    [t("Seven features", "Tujuh fitur"), t("Gap, prerequisites ready, evidence confidence, market demand, demand trend, unlock value and downstream block.", "Gap, kesiapan prasyarat, keyakinan evidence, market demand, tren demand, nilai unlock, dan downstream block.")],
+    ["Ranking model", t("A linear learning-to-rank score f = Σ wᵢ log xᵢ, weights learned from expert rankings, every weight inspectable.", "Skor learning-to-rank linear f = Σ wᵢ log xᵢ, bobot dipelajari dari ranking pakar, setiap bobot bisa diperiksa.")],
     [t("Route", "Rute"), t("Top 3 skills plus unmastered prerequisites in prerequisite order, each with what, why (with job-posting quotes), why now and next.", "3 skill teratas plus prasyarat yang belum dikuasai sesuai urutan prasyarat, masing-masing dengan apa, kenapa (dengan kutipan job posting), kenapa sekarang, dan selanjutnya.")],
   ];
   return (
     <section aria-labelledby="engine">
       <SectionTitle id="engine">{t("The Decision Engine, Step by Step", "Decision Engine, Langkah demi Langkah")}</SectionTitle>
-      <ol className="grid gap-2">
-        {stages.map(([title, d], i) => (
+      {/* the five stages as one strip; the chosen stage is explained below it */}
+      <ol className="grid gap-1.5 sm:grid-cols-5">
+        {stages.map(([title], i) => (
           <li key={title}>
-            <div className="flex gap-4 rounded-2xl border bg-card p-4">
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-route text-sm font-bold text-white">{i + 1}</span>
-              <div>
-                <p className="font-semibold text-ink">{title}</p>
-                <p className="text-sm text-ink/75">{d}</p>
-              </div>
-            </div>
-            {i < stages.length - 1 ? <ArrowDown className="mx-auto my-1 size-4 text-muted-foreground" aria-hidden="true" /> : null}
+            <button
+              type="button"
+              aria-pressed={stage === i}
+              onClick={() => setStage(i)}
+              className={cn(
+                "flex w-full items-center gap-2 rounded-xl border px-3 py-2 text-left text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                stage === i ? "border-indigo bg-secondary text-secondary-foreground" : "bg-card text-ink/80 hover:bg-muted",
+              )}
+            >
+              <span className={cn("flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold", stage === i ? "bg-indigo text-white" : "bg-muted text-ink/70")}>{i + 1}</span>
+              {title}
+            </button>
           </li>
         ))}
       </ol>
-      <p className="mt-3 text-sm text-ink/70">
+      <p className="mt-3 max-w-3xl rounded-xl bg-muted/60 px-4 py-3 text-sm text-ink/85" aria-live="polite">{stages[stage][1]}</p>
+      <p className="mt-3 max-w-3xl text-sm text-ink/70">
         {t(
           "Every recommendation on your dashboard has a \u201cHow was this decided?\u201d panel that shows these five steps with your actual numbers. New evidence, a market update or a role change re-runs the engine and the change is saved with its reason.",
           "Setiap rekomendasi di dashboard-mu punya panel \u201cBagaimana ini diputuskan?\u201d yang menunjukkan lima langkah ini dengan angka milikmu. Evidence baru, update pasar, atau pergantian role menjalankan ulang engine dan perubahannya disimpan beserta alasannya.",
@@ -258,7 +300,14 @@ function Taxonomy({ g }: { g: Governance }) {
           ))}
         </ul>
       </Panel>
-      <Panel>
+      <details className="rounded-2xl border bg-card px-5 py-3">
+        <summary className="cursor-pointer text-sm font-semibold text-ink">
+          {t(
+            `Catalog details: ${g.skills.filter((s) => s.status === "adjacent").length} adjacent skills, candidates for the next version, changelog`,
+            `Detail katalog: ${g.skills.filter((s) => s.status === "adjacent").length} adjacent skill, kandidat versi berikutnya, changelog`,
+          )}
+        </summary>
+        <div className="mt-3">
         <p className="mb-2 font-medium text-ink">{t("Adjacent skills (core for related careers, rare in this one)", "Adjacent skill (inti di karier terkait, jarang di karier ini)")}</p>
         <ul className="flex flex-wrap gap-2">
           {g.skills
@@ -289,7 +338,8 @@ function Taxonomy({ g }: { g: Governance }) {
             </li>
           ))}
         </ul>
-      </Panel>
+        </div>
+      </details>
     </div>
   );
 }
@@ -303,7 +353,7 @@ function Weights({ w }: { w: WeightsReport }) {
         <p className="text-sm text-ink/80">
           {t(
             "Combining independent noisy measurements of the same skill, the most accurate average weights each source by 1 / (its error)². The weights therefore state an explicit, testable assumption about how noisy each source is, relative to a direct skill check:",
-            "Saat menggabungkan pengukuran independen yang ber-noise untuk skill yang sama, rata-rata paling akurat membobot tiap sumber dengan 1 / (error-nya)². Jadi bobot ini menyatakan asumsi eksplisit yang bisa diuji tentang seberapa ber-noise tiap sumber, dibandingkan skill check langsung:",
+            "Saat menggabungkan pengukuran independen yang ber-noise untuk skill yang sama, rata-rata paling akurat membobot tiap sumber dengan 1 / (error-nya)². Jadi bobot ini menyatakan asumsi eksplisit yang bisa diuji tentang seberapa ber-noise tiap sumber, dibandingkan Cek Kemampuan langsung:",
           )}
         </p>
         <div className="mt-3 overflow-x-auto">
@@ -312,7 +362,7 @@ function Weights({ w }: { w: WeightsReport }) {
               <tr className="text-left text-ink/70">
                 <th className="py-1.5 pr-3 font-medium">Evidence</th>
                 <th className="py-1.5 pr-3 font-medium">{t("Weight", "Bobot")}</th>
-                <th className="py-1.5 font-medium">{t("Assumed error vs skill check", "Asumsi error vs skill check")}</th>
+                <th className="py-1.5 font-medium">{t("Assumed error vs skill check", "Asumsi error vs Cek Kemampuan")}</th>
               </tr>
             </thead>
             <tbody className="tabular">
@@ -329,7 +379,7 @@ function Weights({ w }: { w: WeightsReport }) {
         <p className="mt-3 text-sm text-ink/70">
           {t(
             "The product checks the assumption itself: each later skill check is a direct measurement that earlier indirect evidence can be compared with. Once 30 such pairs exist, the weights are re-estimated and adopted only if they predict better.",
-            "Produk ini menguji asumsinya sendiri: setiap skill check berikutnya adalah pengukuran langsung yang bisa dibandingkan dengan evidence tidak langsung sebelumnya. Begitu ada 30 pasangan seperti itu, bobot diestimasi ulang dan baru dipakai kalau prediksinya lebih baik.",
+            "Produk ini menguji asumsinya sendiri: setiap Cek Kemampuan berikutnya adalah pengukuran langsung yang bisa dibandingkan dengan evidence tidak langsung sebelumnya. Begitu ada 30 pasangan seperti itu, bobot diestimasi ulang dan baru dipakai kalau prediksinya lebih baik.",
           )}{" "}
           {w.sensitivity?.calibration?.message ?? ""}
         </p>

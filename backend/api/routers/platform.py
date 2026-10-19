@@ -11,7 +11,8 @@ from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from pathsync.db import AuditLog, Evidence, Feedback, ProductEvent, Student, Waitlist, utcnow
+from pathsync.db import AuditLog, Evidence, Feedback, ProductEvent, StaffAccount, Student, Waitlist, utcnow
+from pathsync.i18n import tr
 from pathsync.security import (
     SESSION_PREFIX,
     STAFF_COOKIE,
@@ -26,6 +27,7 @@ from pathsync.security import (
     staff_token_row,
     student_access,
 )
+from pathsync.staff_accounts import MIN_PASSWORD, account_token, demo_account, hash_password, normalise_email, verify_password
 
 router = APIRouter(prefix="/api", tags=["platform"])
 SECURE_COOKIE = os.getenv("PATHSYNC_ENV") == "production"
@@ -36,20 +38,83 @@ class StaffLogin(BaseModel):
     token: str = Field(..., min_length=8, max_length=200)
 
 
-@router.post("/staff/session", dependencies=[Depends(rate_limit("staff_login", 10))])
-def staff_login(body: StaffLogin, response: Response, s: Session = Depends(db_session)):
-    """Exchange a staff token for an HttpOnly cookie, so the token never sits in localStorage (XSS-safe)."""
-    row = staff_token_row(s, body.token.strip())
-    if row is None:
-        raise HTTPException(401, "Unknown, expired or revoked staff token.")
+def _start_session(s: Session, response: Response, row, how: str) -> dict:
+    """Issue a browser session from a staff token and put it in an HttpOnly cookie (never in localStorage)."""
     token, session = issue_session(s, row)
     max_age = max(60, int((session.expires_at - utcnow()).total_seconds()))
     response.set_cookie(STAFF_COOKIE, token, max_age=max_age, httponly=True, secure=SECURE_COOKIE,
                         samesite="strict", path="/api")
-    audit(s, f"{row.role}:{row.label or row.id}", "staff sign-in")
+    audit(s, f"{row.role}:{row.label or row.id}", f"staff sign-in ({how})")
     s.commit()
-    return {"role": row.role, "subject_id": row.subject_id, "label": row.label,
+    return {"role": row.role, "subject_id": row.subject_id, "label": row.label, "demo": "demo:" in row.label,
             "expires_at": session.expires_at.isoformat()}
+
+
+@router.post("/staff/session", dependencies=[Depends(rate_limit("staff_login", 10))])
+def staff_login(body: StaffLogin, response: Response, s: Session = Depends(db_session)):
+    """Sign in with a staff token (the bootstrap admin key, scripts). People use email + password (below)."""
+    row = staff_token_row(s, body.token.strip())
+    if row is None:
+        raise HTTPException(401, "Unknown, expired or revoked staff token.")
+    return _start_session(s, response, row, "token")
+
+
+class AccountLogin(BaseModel):
+    email: str = Field(..., min_length=3, max_length=200)
+    password: str = Field(..., min_length=1, max_length=200)
+
+
+@router.post("/staff/login", dependencies=[Depends(rate_limit("staff_login", 10))])
+def account_login(body: AccountLogin, response: Response, s: Session = Depends(db_session)):
+    """Email + password sign-in for staff accounts. One message for every failure, so it does not reveal which
+    emails have accounts."""
+    acc = s.scalars(select(StaffAccount).where(StaffAccount.email == normalise_email(body.email))).first()
+    if acc is None or acc.demo or acc.disabled_at is not None or not verify_password(body.password, acc.password_hash):
+        raise HTTPException(401, tr("Wrong email or password.", "Email atau password salah."))
+    acc.last_login_at = utcnow()
+    return _start_session(s, response, account_token(s, acc), "password")
+
+
+class AcceptInvite(BaseModel):
+    token: str = Field(..., min_length=8, max_length=200)
+    password: str = Field(..., min_length=MIN_PASSWORD, max_length=200)
+
+
+@router.get("/staff/invite")
+def invite_info(token: str, s: Session = Depends(db_session)):
+    """Who the invite is for, so the set-password page can greet them."""
+    acc = s.scalars(select(StaffAccount).where(StaffAccount.invite_hash == hash_token(token))).first()
+    if acc is None or acc.invite_expires_at is None or acc.invite_expires_at < utcnow() or acc.disabled_at is not None:
+        raise HTTPException(404, tr("This invite link is invalid or has expired. Ask the admin for a new one.",
+                                    "Link undangan ini tidak valid atau sudah kedaluwarsa. Minta link baru ke admin."))
+    return {"email": acc.email, "name": acc.name, "role": acc.role}
+
+
+@router.post("/staff/accept", dependencies=[Depends(rate_limit("staff_login", 10))])
+def accept_invite(body: AcceptInvite, response: Response, s: Session = Depends(db_session)):
+    """Set the password from an invite (or a reset) link, then sign in."""
+    acc = s.scalars(select(StaffAccount).where(StaffAccount.invite_hash == hash_token(body.token))).first()
+    if acc is None or acc.invite_expires_at is None or acc.invite_expires_at < utcnow() or acc.disabled_at is not None:
+        raise HTTPException(404, tr("This invite link is invalid or has expired. Ask the admin for a new one.",
+                                    "Link undangan ini tidak valid atau sudah kedaluwarsa. Minta link baru ke admin."))
+    acc.password_hash = hash_password(body.password)
+    acc.invite_hash, acc.invite_expires_at = None, None
+    acc.last_login_at = utcnow()
+    return _start_session(s, response, account_token(s, acc), "invite")
+
+
+class DemoStaff(BaseModel):
+    role: str = Field(..., pattern="^(advisor|expert)$")
+
+
+@router.post("/staff/demo", dependencies=[Depends(rate_limit("signup", 20))])
+def demo_staff(body: DemoStaff, response: Response, s: Session = Depends(db_session)):
+    """One-click read-only demo: a lecturer with a demo class, or an expert who never counts as one."""
+    if os.getenv("PATHSYNC_DEMO", "1") == "0":
+        raise HTTPException(404, tr("The demo is turned off on this server.", "Demo dimatikan di server ini."))
+    acc = demo_account(s, body.role)
+    s.flush()
+    return _start_session(s, response, account_token(s, acc), "demo")
 
 
 @router.get("/staff/session")
@@ -57,7 +122,14 @@ def staff_me(request: Request, s: Session = Depends(db_session)):
     row = staff_token_row(s, request.cookies.get(STAFF_COOKIE))
     if row is None:
         raise HTTPException(401, "Not signed in.")
-    return {"role": row.role, "subject_id": row.subject_id, "label": row.label,
+    # the account behind the session (if it came from one), so the app can show who is signed in
+    acc = None
+    if row.label.startswith(SESSION_PREFIX):
+        parent = row.label[len(SESSION_PREFIX):].split(" ", 1)[0]
+        if parent.isdigit():
+            acc = s.scalars(select(StaffAccount).where(StaffAccount.token_id == int(parent))).first()
+    return {"role": row.role, "subject_id": row.subject_id, "label": row.label, "demo": "demo:" in row.label,
+            "name": acc.name if acc else None, "email": None if acc is None or acc.demo else acc.email,
             "expires_at": row.expires_at.isoformat() if row.expires_at else None}
 
 

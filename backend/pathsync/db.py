@@ -107,7 +107,7 @@ class GraphEdge(Base):
 
 # reviewers who are not independent experts: simulated ones, and the team's own internal review. Their votes are kept
 # but never count as expert validation (real_experts, the 2-of-3 rule for prerequisite links).
-NON_EXPERT_KINDS = ("simulasi", "tim")
+NON_EXPERT_KINDS = ("simulasi", "tim", "demo")
 
 
 class Expert(Base):
@@ -238,6 +238,27 @@ class ApiToken(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
     revoked_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     expires_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)   # staff tokens: 30 days
+
+
+class StaffAccount(Base):
+    """A named staff account (lecturer, expert, admin) that signs in with email and password. It sits on top of the
+    staff tokens: `token_id` is the account's long-lived staff token, from which every browser session is issued, so
+    roles, revocation and the audit log work exactly as for token sign-in. Admins invite by email; the invitee sets
+    the password from the invite link. Only hashes are stored (password: scrypt, invite: sha256)."""
+    __tablename__ = "staff_accounts"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    email: Mapped[str] = mapped_column(String(200), unique=True, index=True)
+    name: Mapped[str] = mapped_column(String(120), default="")
+    role: Mapped[str] = mapped_column(String(20))                       # admin | expert | advisor
+    subject_id: Mapped[str] = mapped_column(String(40), default="")    # expert id / cohort id
+    password_hash: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    invite_hash: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
+    invite_expires_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    token_id: Mapped[int | None] = mapped_column(ForeignKey("api_tokens.id"), nullable=True)
+    demo: Mapped[bool] = mapped_column(Boolean, default=False)          # read-only demo account for visitors
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    last_login_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+    disabled_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
 
 class AuditLog(Base):

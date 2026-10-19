@@ -52,6 +52,34 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
   const answered = Object.keys(answers).length;
   const last = idx === items.length - 1;
 
+  // Answers live only in this page until they are sent, and a new visit starts a new set of questions, so leaving
+  // with unsent answers loses them: warn on closing or reloading the tab, and ask before following a link in the app.
+  const dirty = answered > 0 && !result && !busy;
+  useEffect(() => {
+    if (!dirty) return;
+    const leaving = t("Leave the check? Your answers have not been sent and will be lost.", "Keluar dari cek? Jawabanmu belum terkirim dan akan hilang.");
+    const onUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement | null)?.closest?.("a[href]") as HTMLAnchorElement | null;
+      if (!a || a.target === "_blank" || e.defaultPrevented || e.metaKey || e.ctrlKey) return;
+      const url = new URL(a.href, window.location.href);
+      if (url.origin !== window.location.origin || url.pathname === window.location.pathname) return;
+      if (!window.confirm(leaving)) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+    window.addEventListener("beforeunload", onUnload);
+    document.addEventListener("click", onClick, true);
+    return () => {
+      window.removeEventListener("beforeunload", onUnload);
+      document.removeEventListener("click", onClick, true);
+    };
+  }, [dirty, t]);
+
   const submit = useCallback(async () => {
     setConfirm(false);
     setBusy(true);
@@ -114,7 +142,7 @@ export function Quiz({ sid, sessionId, items }: { sid: string; sessionId: string
 
       <Panel className="p-6 sm:p-8">
         <Tag tone="indigo">{titleCase(it.skill_name)}</Tag>
-        <h2 className="mt-4 text-[20px] font-semibold leading-snug text-ink sm:text-[22px]">{it.stem}</h2>
+        <h2 className="mt-4 text-[20px] font-semibold leading-snug text-ink sm:text-[19px]">{it.stem}</h2>
         <div role="radiogroup" aria-label={t("Answer options", "Pilihan jawaban")} className="mt-6 space-y-3">
           {it.options.map((o, k) => {
             const sel = answers[it.id] === k;
@@ -205,13 +233,18 @@ function Results({ items, result, sid, before }: { items: Item[]; result: Submit
       <section className="flex flex-col items-center gap-6 rounded-3xl bg-route-soft p-8 text-center sm:flex-row sm:text-left">
         <ReadinessRing value={result.total ? result.correct / result.total : 0} label={t("Correct", "Benar")} />
         <div>
-          <h1 className="text-[28px] font-extrabold text-ink">
+          <h1 className="text-[24px] font-extrabold text-ink">
             {t(`${result.correct} of ${result.total} Correct`, `${result.correct} dari ${result.total} Benar`)}
           </h1>
           <p className="mt-1 text-ink/70">{t("Your route has been updated with these results.", "Rutemu sudah diperbarui dengan hasil ini.")}</p>
-          <LinkButton href="/dashboard" size="lg" className="mt-4 h-11 px-6">
-            {t("See My Updated Route", "Lihat Rute Terbaruku")}
-          </LinkButton>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <LinkButton href="/learn?tab=history" size="lg" className="h-11 px-6">
+              {t("See How My Route Changed", "Lihat Perubahan Ruteku")}
+            </LinkButton>
+            <LinkButton href="/skills" variant="outline" size="lg" className="h-11 px-6">
+              {t("See My Skills", "Lihat Skill-ku")}
+            </LinkButton>
+          </div>
         </div>
         <Mascot name={resultMascot(result.correct, result.total)} size={140} className="sm:ml-auto" />
       </section>
@@ -287,8 +320,8 @@ function CareerShift({ sid, before }: { sid: string; before: CareersData | null 
       <h2 className="text-lg font-semibold text-ink">{t("What This Check Moved", "Yang Digerakkan Check Ini")}</h2>
       <p className="mt-1 text-sm text-muted-foreground">{t("How much of what employers ask you can now show, per career.", "Seberapa banyak yang diminta employer yang kini bisa kamu tunjukkan, per karier.")}</p>
       <ChangeList className="mt-3" items={moved.map((c) => ({ id: c.id, name: c.name, before: c.readiness - c.delta, now: c.readiness, target: c.is_target }))} />
-      <LinkButton href="/skill-map?tab=careers" variant="outline" size="lg" className="mt-5 h-10">
-        {t("Open My Career Map", "Buka Career Map-ku")}
+      <LinkButton href="/careers" variant="outline" size="lg" className="mt-5 h-10">
+        {t("See My Career Matches", "Lihat Rekomendasi Karierku")}
       </LinkButton>
     </Panel>
   );

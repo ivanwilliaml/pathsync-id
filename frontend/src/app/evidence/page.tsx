@@ -2,6 +2,7 @@
 
 import { Suspense, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { Award, Check, FileText, FolderKanban, GraduationCap, Plus, SlidersHorizontal, Trash2, Upload, UserRound } from "lucide-react";
 import { track } from "@/lib/track";
 import { toast } from "sonner";
@@ -24,9 +25,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { EvidenceList } from "@/components/evidence-list";
 import { RequireStudent } from "@/components/require-student";
-import { ErrorNote, LinkButton, Loading, NativeSelect, PageHeader, Panel, Tag } from "@/components/kit";
-import { Mascot, type MascotName } from "@/components/mascot";
+import { ErrorNote, LinkButton, Loading, NativeSelect, PageHeader, Tag } from "@/components/kit";
+import type { MascotName } from "@/components/mascot";
 import { useT } from "@/lib/i18n";
 
 type StepId = "transcript" | "certificates" | "projects" | "cv" | "preferences";
@@ -81,45 +83,44 @@ function Evidence({ sid }: { sid: string }) {
 
   return (
     <div>
-      <PageHeader mascot="upload"
-        title={t("My Evidence", "Evidence Saya")}
-        description={t("Add whatever you have. Every step is optional, and the more you add, the more accurate your route gets.", "Tambahkan apa pun yang kamu punya. Setiap langkah opsional, dan makin banyak yang kamu tambahkan, makin akurat rutemu.")}
+      <PageHeader
+        className="mb-5"
+        title={t("Add Evidence", "Tambah Bukti")}
+        description={t("Every step is optional; pick any. The more you add, the more accurate your route gets.", "Setiap langkah opsional; pilih yang mana saja. Makin banyak yang kamu tambahkan, makin akurat rutemu.")}
         actions={
-          <LinkButton href="/dashboard" size="lg" className="h-10">
-            {t("See My Route", "Lihat Ruteku")}
+          <LinkButton href="/skills" variant="outline" size="sm">
+            {t("See My Skills", "Lihat Skill-ku")}
           </LinkButton>
         }
       />
 
-      <nav aria-label={t("Evidence steps", "Langkah evidence")} className="mb-8">
-        <ol className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
+      {/* compact stepper: one row (scrolls sideways on phones), every step reachable directly */}
+      <nav aria-label={t("Evidence steps", "Langkah bukti")} className="-mx-4 mb-5 overflow-x-auto px-4 sm:mx-0 sm:px-0">
+        <ol className="flex min-w-max gap-1.5">
           {STEPS.map((s, i) => {
             const active = s.id === step;
             const isDone = done(s);
             return (
-              <li key={s.id} className="min-w-0">
+              <li key={s.id}>
                 <button
                   type="button"
                   onClick={() => go(s.id)}
                   aria-current={active ? "step" : undefined}
                   aria-label={`${t(...s.label)}${isDone ? t(", done", ", selesai") : ""}`}
                   className={cn(
-                    "flex w-full min-w-0 flex-row items-center gap-2 rounded-xl border p-2 text-left sm:p-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                    active ? "border-indigo bg-card shadow-sm" : "bg-card/60 hover:bg-card",
+                    "flex items-center gap-2 rounded-full border py-1 pl-1 pr-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                    active ? "border-indigo bg-secondary text-secondary-foreground" : "bg-card text-ink/75 hover:bg-muted",
                   )}
                 >
                   <span
                     className={cn(
-                      "flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-bold",
+                      "flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold",
                       isDone ? "bg-mint text-white" : active ? "bg-indigo text-white" : "bg-muted text-ink/70",
                     )}
                   >
-                    {isDone ? <Check className="size-4" aria-label={t("Done", "Selesai")} /> : i + 1}
+                    {isDone ? <Check className="size-3.5" aria-label={t("Done", "Selesai")} /> : i + 1}
                   </span>
-                  <span className="w-full min-w-0">
-                    <span className="block text-xs font-semibold text-ink sm:text-sm">{t(...s.label)}</span>
-                    <span className="hidden truncate text-xs text-muted-foreground md:block">{t(...s.hint)}</span>
-                  </span>
+                  {t(...s.label)}
                 </button>
               </li>
             );
@@ -128,7 +129,8 @@ function Evidence({ sid }: { sid: string }) {
       </nav>
 
       <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
-        <div className="min-w-0">
+        {/* the form and the step navigation share one card: saving is inside the form, moving on is its footer */}
+        <div className="min-w-0 rounded-2xl border bg-card">
           {step === "transcript" && <Transcript sid={sid} catalog={catalog.data} names={names} onSaved={() => saved(t("Transcript", "Transkrip"))} />}
           {step === "certificates" && <Certificates sid={sid} catalog={catalog.data} names={names} onSaved={() => saved(t("Certificates", "Sertifikat"))} />}
           {step === "projects" && <Projects sid={sid} names={names} onSaved={() => saved("Project")} />}
@@ -139,17 +141,17 @@ function Evidence({ sid }: { sid: string }) {
               toast.success(t("Preferences saved", "Preferensi tersimpan"), { action: { label: t("See My Route", "Lihat Ruteku"), onClick: () => router.push("/dashboard") } });
             }} />
           )}
-          <div className="mt-6 flex items-center justify-between">
-            <Button variant="ghost" size="lg" disabled={idx === 0} onClick={() => go(STEPS[idx - 1].id)}>
-              {t("Back", "Kembali")}
+          <div className="flex items-center justify-between gap-3 border-t px-5 py-3">
+            <Button variant="ghost" size="sm" disabled={idx === 0} onClick={() => go(STEPS[idx - 1].id)}>
+              ← {t("Back", "Kembali")}
             </Button>
             {next ? (
-              <Button variant="outline" size="lg" onClick={() => go(next.id)}>
-                {done(STEPS[idx]) ? t(`Continue to ${t(...next.label)}`, `Lanjut ke ${t(...next.label)}`) : t(`Skip to ${t(...next.label)}`, `Lewati ke ${t(...next.label)}`)}
+              <Button variant="ghost" size="sm" onClick={() => go(next.id)}>
+                {done(STEPS[idx]) ? t(`Next: ${t(...next.label)}`, `Berikutnya: ${t(...next.label)}`) : t(`Skip to ${t(...next.label)}`, `Lewati ke ${t(...next.label)}`)} →
               </Button>
             ) : (
-              <LinkButton href="/assessment" size="lg">
-                {t("Take the Quick Check", "Ikuti Quick Check")}
+              <LinkButton href="/assessment" size="sm" variant="outline">
+                {t("Take the Skill Check", "Ikuti Cek Kemampuan")}
               </LinkButton>
             )}
           </div>
@@ -160,86 +162,18 @@ function Evidence({ sid }: { sid: string }) {
   );
 }
 
-// ------------------------------------------------------------------ saved evidence
-const KIND: Record<string, [string, string]> = { academic: ["Transcript", "Transkrip"], certificate: ["Certificates", "Sertifikat"], cv: ["CV", "CV"], project: ["Project", "Project"] };
 
-function EvidenceList({ sid, student, onChange }: { sid: string; student: Student | null; onChange: () => void }) {
-  const [pending, setPending] = useState<{ id: number; title: string } | null>(null);
-  const t = useT();
-  const kind = (k: string) => (KIND[k] ? t(...KIND[k]) : k);
-  async function remove() {
-    if (!pending) return;
-    await api.del(`/students/${sid}/evidence/${pending.id}`);
-    toast.success(t("Evidence removed", "Evidence dihapus"));
-    setPending(null);
-    onChange();
-  }
-  return (
-    <aside aria-labelledby="saved" className="h-fit rounded-2xl border bg-card p-5 lg:sticky lg:top-8">
-      <h2 id="saved" className="font-semibold text-ink">
-        {t("Saved Evidence", "Evidence Tersimpan")}
-      </h2>
-      {!student ? (
-        <Loading />
-      ) : student.evidence.length === 0 && student.n_responses === 0 ? (
-        <p className="mt-2 text-sm text-muted-foreground">{t("Nothing yet. What you save shows up here.", "Belum ada. Yang kamu simpan muncul di sini.")}</p>
-      ) : (
-        <ul className="mt-3 space-y-2">
-          {student.evidence.map((e) => (
-            <li key={e.id} className="flex items-start justify-between gap-2 rounded-xl bg-muted/70 px-3 py-2.5">
-              <div className="min-w-0">
-                <p className="text-xs font-medium text-indigo">{kind(e.kind)}</p>
-                <p className="truncate text-sm font-medium text-ink" title={e.title}>
-                  {e.kind === "academic" ? t("Transcript", "Transkrip") : e.title}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  {e.kind === "cv" ? t(`${((e.details.claim_ids as string[]) ?? []).length} skills mentioned`, `${((e.details.claim_ids as string[]) ?? []).length} skill disebut`) : t(`${Object.keys(e.scores).length} skills found`, `${Object.keys(e.scores).length} skill ditemukan`)}
-                </p>
-              </div>
-              <Button variant="ghost" size="icon" aria-label={t(`Remove ${kind(e.kind)}`, `Hapus ${kind(e.kind)}`)} onClick={() => setPending({ id: e.id, title: KIND[e.kind] ? kind(e.kind) : e.title })}>
-                <Trash2 />
-              </Button>
-            </li>
-          ))}
-          {student.n_responses > 0 ? (
-            <li className="rounded-xl bg-muted/70 px-3 py-2.5">
-              <p className="text-xs font-medium text-mint-ink">Assessment</p>
-              <p className="text-sm font-medium text-ink">{t(`${student.n_responses} questions answered`, `${student.n_responses} soal terjawab`)}</p>
-            </li>
-          ) : null}
-        </ul>
-      )}
-      <AlertDialog open={pending !== null} onOpenChange={(o) => !o && setPending(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t(`Remove This ${pending?.title}?`, `Hapus ${pending?.title} Ini?`)}</AlertDialogTitle>
-            <AlertDialogDescription>{t("Your route will be recalculated without it. You can add it again later.", "Rutemu akan dihitung ulang tanpanya. Kamu bisa menambahkannya lagi nanti.")}</AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t("Keep It", "Simpan Saja")}</AlertDialogCancel>
-            <AlertDialogAction variant="destructive" onClick={remove}>
-              {t("Remove", "Hapus")}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
-    </aside>
-  );
-}
 
 // ------------------------------------------------------------------ shared bits
-function StepPanel({ title, description, children, mascot }: { title: string; description: string; children: React.ReactNode; mascot?: MascotName }) {
+/** The body of one step inside the wizard card: a short heading and the form. (`mascot` is kept for the call sites;
+ * the page header no longer repeats an illustration inside every step.) */
+function StepPanel({ title, description, children }: { title: string; description: string; children: React.ReactNode; mascot?: MascotName }) {
   return (
-    <Panel>
-      <div className="flex items-center gap-4">
-        {mascot ? <Mascot name={mascot} size={84} className="hidden sm:block" /> : null}
-        <div>
-          <h2 className="text-xl font-bold text-ink">{title}</h2>
-          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-        </div>
-      </div>
-      <div className="mt-5">{children}</div>
-    </Panel>
+    <div className="p-5 sm:p-6">
+      <h2 className="text-lg font-bold text-ink">{title}</h2>
+      <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>
+      <div className="mt-4">{children}</div>
+    </div>
   );
 }
 
@@ -345,7 +279,7 @@ function Transcript({ sid, catalog, names, onSaved }: { sid: string; catalog: Ca
   }
 
   return (
-    <StepPanel mascot="transcript" title={t("Add Your Transcript", "Tambahkan Transkripmu")} description={t("Paste your grades or upload your transcript. Grades count as background knowledge, not proof, so they carry the lightest weight.", "Tempel nilaimu atau unggah transkrip. Nilai dihitung sebagai pengetahuan dasar, bukan bukti, jadi bobotnya paling ringan.")}>
+    <StepPanel mascot="transcript" title={t("Add Your Transcript", "Tambahkan Transkripmu")} description={t("Paste your grades or upload your transcript. Grades are indirect evidence of knowledge, so they carry the lightest weight.", "Tempel nilaimu atau unggah transkrip. Nilai adalah bukti tidak langsung tentang pengetahuan, jadi bobotnya paling ringan.")}>
       {rows.length === 0 ? (
         <>
           <PasteOrUpload
@@ -626,7 +560,7 @@ function CV({ sid, names, onSaved }: { sid: string; names: Record<string, string
     <StepPanel
       mascot="thinking"
       title={t("Add Your CV", "Tambahkan CV-mu")}
-      description={t("Skills on your CV don't raise your level. They tell us where a quick check could prove what you already know.", "Skill di CV tidak menaikkan level-mu. Itu memberi tahu kami di mana Quick Check bisa membuktikan yang sudah kamu kuasai.")}
+      description={t("Skills on your CV don't raise your level. They tell us where a quick check could prove what you already know.", "Skill di CV tidak menaikkan level-mu. Itu memberi tahu kami di mana Cek Kemampuan bisa membuktikan yang sudah kamu kuasai.")}
     >
       <PasteOrUpload id="cv" label={t("CV Content", "Isi CV")} text={text} setText={setText} file={file} setFile={setFile} accept=".pdf,.docx,.txt" placeholder={t("Paste your CV…", "Tempel CV-mu…")} />
       <Button size="lg" className="mt-5 h-10" onClick={save} disabled={busy || (!file && text.trim().length < 20)}>
@@ -709,10 +643,23 @@ function Preferences({ student, meta, names, onSaved }: { student: Student; meta
       description={t("We use these to size your route and choose materials. Changing your role rebuilds your route.", "Kami memakai ini untuk menakar rutemu dan memilih materi. Mengganti role akan menyusun ulang rutemu.")}
     >
       <div className="space-y-6">
-        <fieldset>
-          <legend className="mb-2 text-sm font-medium text-ink">{t("Target Role", "Target Role")}</legend>
-          <div className="flex flex-wrap gap-2">{meta.roles.map((r) => seg(r.id, role, setRole, r.name))}</div>
-        </fieldset>
+        {/* one control for the target; comparing careers in depth lives in Pilih Karier */}
+        <div className="max-w-sm">
+          <Label htmlFor="target-role" className="mb-2 block">{t("Target Role", "Target Role")}</Label>
+          <NativeSelect id="target-role" value={role} onChange={(e) => setRole(e.target.value)}>
+            {Object.entries(meta.families ?? {}).map(([fid, fname]) => (
+              <optgroup key={fid} label={fname}>
+                {meta.roles.filter((r) => r.family === fid).map((r) => (
+                  <option key={r.id} value={r.id}>{r.name}{r.limited_data ? " (Beta)" : ""}</option>
+                ))}
+              </optgroup>
+            ))}
+          </NativeSelect>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {t("Not sure yet? ", "Belum yakin? ")}
+            <Link href="/careers" className="font-medium text-indigo underline-offset-4 hover:underline">{t("Compare careers first", "Bandingkan karier dulu")}</Link>
+          </p>
+        </div>
         <div>
           <Label htmlFor="hours" className="mb-2 block">
             {t("Study Time per Week", "Waktu Belajar per Minggu")}: <span className="tabular font-semibold">{hoursPerWeek} {t("hours", "jam")}</span>
@@ -800,7 +747,7 @@ function SelfRatingDialog({ open, onOpenChange, role, names, initial, onSave }: 
                       aria-checked={r[s.skill_id] === i + 1}
                       onClick={() => setR({ ...r, [s.skill_id]: i + 1 })}
                       className={cn(
-                        "min-h-10 rounded-lg border px-1 text-[11px] font-medium leading-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-xs",
+                        "min-h-10 rounded-lg border px-1 text-xs font-medium leading-tight transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:text-xs",
                         r[s.skill_id] === i + 1 ? "border-indigo bg-indigo text-white" : "bg-card text-ink/80 hover:bg-muted",
                       )}
                     >

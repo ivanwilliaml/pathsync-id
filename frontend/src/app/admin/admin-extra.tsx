@@ -133,6 +133,165 @@ interface CohortRow {
   n_students: number;
 }
 
+// ------------------------------------------------------------ staff accounts (email + password)
+interface AccountRow {
+  id: number;
+  email: string;
+  name: string;
+  role: "admin" | "expert" | "advisor";
+  subject_id: string;
+  status: "invited" | "active" | "disabled";
+  last_login_at: string | null;
+}
+const ROLE_LABEL: Record<AccountRow["role"], [string, string]> = { admin: ["Admin", "Admin"], expert: ["Expert", "Pakar"], advisor: ["Lecturer", "Dosen"] };
+const STATUS: Record<AccountRow["status"], [string, string, "mint" | "ember" | "neutral"]> = {
+  active: ["Active", "Aktif", "mint"],
+  invited: ["Invited", "Diundang", "ember"],
+  disabled: ["Disabled", "Nonaktif", "neutral"],
+};
+
+/** Invite people by email; each gets a link to set their own password. The link is shown once (only its hash is
+ * stored), so the admin copies it into an email or chat. */
+function StaffAccounts({ cohorts }: { cohorts: CohortRow[] | null | undefined }) {
+  const t = useT();
+  const list = useApi<AccountRow[]>("/admin/staff-accounts");
+  const blank = { email: "", name: "", role: "expert" as AccountRow["role"], cohort_id: "", affiliation: "" };
+  const [form, setForm] = useState(blank);
+  const [link, setLink] = useState<{ who: string; url: string } | null>(null);
+  const [err, setErr] = useState<unknown>(null);
+  const [busy, setBusy] = useState(false);
+
+  const showLink = (r: AccountRow & { invite_path: string }) =>
+    setLink({ who: `${r.name} (${r.email})`, url: `${window.location.origin}${r.invite_path}` });
+
+  async function invite(e: React.FormEvent) {
+    e.preventDefault();
+    setErr(null);
+    setBusy(true);
+    try {
+      const r = await api.post<AccountRow & { invite_path: string }>("/admin/staff-accounts", {
+        email: form.email.trim(),
+        name: form.name.trim(),
+        role: form.role,
+        cohort_id: form.role === "advisor" ? form.cohort_id : null,
+        affiliation: form.role === "expert" ? form.affiliation : "",
+      });
+      showLink(r);
+      setForm(blank);
+      list.reload();
+    } catch (x) {
+      setErr(x);
+    } finally {
+      setBusy(false);
+    }
+  }
+  async function newLink(a: AccountRow) {
+    setErr(null);
+    try {
+      showLink(await api.post<AccountRow & { invite_path: string }>(`/admin/staff-accounts/${a.id}/invite`));
+    } catch (x) {
+      setErr(x);
+    }
+  }
+  async function disable(a: AccountRow) {
+    if (!window.confirm(t(`Disable ${a.name}? They can no longer sign in and their open sessions end now.`, `Nonaktifkan ${a.name}? Mereka tidak bisa masuk lagi dan sesi yang terbuka langsung berakhir.`))) return;
+    setErr(null);
+    try {
+      await api.del(`/admin/staff-accounts/${a.id}`);
+      list.reload();
+    } catch (x) {
+      setErr(x);
+    }
+  }
+  const ready = form.email.includes("@") && form.name.trim().length >= 2 && (form.role !== "advisor" || form.cohort_id);
+
+  return (
+    <Panel>
+      <SectionTitle>{t("Staff Accounts", "Akun Staf")}</SectionTitle>
+      <div className="grid gap-8 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <form onSubmit={invite} className="space-y-3">
+          <p className="text-sm font-medium text-ink">{t("Invite someone", "Undang seseorang")}</p>
+          <div className="space-y-1.5">
+            <Label htmlFor="acc-email">Email</Label>
+            <Input id="acc-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required className="h-9" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="acc-name">{t("Full name", "Nama lengkap")}</Label>
+            <Input id="acc-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="h-9" />
+          </div>
+          <div className="space-y-1.5">
+            <Label htmlFor="acc-role">{t("Role", "Peran")}</Label>
+            <NativeSelect id="acc-role" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value as AccountRow["role"] })}>
+              <option value="expert">{t("Expert (validates the map, ranks students)", "Pakar (memvalidasi peta, meranking mahasiswa)")}</option>
+              <option value="advisor">{t("Lecturer (sees one class)", "Dosen (melihat satu kelas)")}</option>
+              <option value="admin">{t("Admin (everything)", "Admin (semuanya)")}</option>
+            </NativeSelect>
+          </div>
+          {form.role === "advisor" ? (
+            <div className="space-y-1.5">
+              <Label htmlFor="acc-class">{t("Class", "Kelas")}</Label>
+              <NativeSelect id="acc-class" value={form.cohort_id} onChange={(e) => setForm({ ...form, cohort_id: e.target.value })}>
+                <option value="">{t("Pick a class…", "Pilih kelas…")}</option>
+                {(cohorts ?? []).map((c) => (
+                  <option key={c.id} value={c.id}>{c.name}</option>
+                ))}
+              </NativeSelect>
+              {cohorts && !cohorts.length ? <p className="text-xs text-muted-foreground">{t("Create a class below first.", "Buat kelas dulu di bawah.")}</p> : null}
+            </div>
+          ) : form.role === "expert" ? (
+            <div className="space-y-1.5">
+              <Label htmlFor="acc-aff">{t("Institution or company", "Institusi atau perusahaan")}</Label>
+              <Input id="acc-aff" value={form.affiliation} onChange={(e) => setForm({ ...form, affiliation: e.target.value })} className="h-9" />
+            </div>
+          ) : null}
+          <Button type="submit" disabled={!ready || busy}>{busy ? t("Inviting…", "Mengundang…") : t("Create Invite Link", "Buat Link Undangan")}</Button>
+        </form>
+
+        <div className="min-w-0 space-y-3">
+          <ErrorNote error={err} />
+          {link ? (
+            <OneTimeSecret label={t(`Invite link for ${link.who}, valid 7 days`, `Link undangan untuk ${link.who}, berlaku 7 hari`)} value={link.url} />
+          ) : null}
+          {list.error ? (
+            <ErrorNote error={list.error} />
+          ) : !list.data ? (
+            <Loading />
+          ) : !list.data.length ? (
+            <p className="text-sm text-muted-foreground">{t("No accounts yet. Invite your first lecturer or expert.", "Belum ada akun. Undang dosen atau pakar pertamamu.")}</p>
+          ) : (
+            <ul className="divide-y border-y text-sm">
+              {list.data.map((a) => (
+                <li key={a.id} className="flex flex-wrap items-center justify-between gap-3 py-2.5">
+                  <div className="min-w-0">
+                    <p className="font-medium text-ink">
+                      {a.name} <span className="font-normal text-muted-foreground">· {t(...ROLE_LABEL[a.role])}</span>
+                    </p>
+                    <p className="truncate text-xs text-muted-foreground">
+                      {a.email}
+                      {a.last_login_at ? t(` · last sign-in ${fmtDateTime(a.last_login_at)}`, ` · terakhir masuk ${fmtDateTime(a.last_login_at)}`) : ""}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Tag tone={STATUS[a.status][2]}>{t(STATUS[a.status][0], STATUS[a.status][1])}</Tag>
+                    {a.status !== "disabled" ? (
+                      <>
+                        <Button size="sm" variant="outline" onClick={() => newLink(a)}>
+                          {a.status === "invited" ? t("New link", "Link baru") : t("Reset password", "Reset password")}
+                        </Button>
+                        <Button size="sm" variant="ghost" onClick={() => disable(a)}>{t("Disable", "Nonaktifkan")}</Button>
+                      </>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </Panel>
+  );
+}
+
 export function TeamAndClasses() {
   const tokens = useApi<TokenRow[]>("/admin/tokens");
   const cohorts = useApi<CohortRow[]>("/admin/cohorts");
@@ -174,11 +333,16 @@ export function TeamAndClasses() {
 
   return (
     <div className="space-y-8">
+      <StaffAccounts cohorts={cohorts.data} />
       <ErrorNote error={err} />
       {secret ? <OneTimeSecret label={secret.label} value={secret.value} /> : null}
       <div className="grid gap-5 lg:grid-cols-2">
-        <Panel>
-          <SectionTitle>{t("Invite an Expert", "Undang Pakar")}</SectionTitle>
+        <details className="rounded-2xl border bg-card p-5 sm:p-6">
+          <summary className="cursor-pointer text-[20px] font-semibold text-ink">{t("Staff keys (for scripts)", "Key staf (untuk skrip)")}</summary>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {t("People sign in with accounts above. Keys are for scripts and the first admin sign-in.", "Orang masuk dengan akun di atas. Key untuk skrip dan masuk admin pertama kali.")}
+          </p>
+          <p className="mt-4 text-sm font-medium text-ink">{t("Expert key", "Key pakar")}</p>
           <form onSubmit={addExpert} className="space-y-3">
             <div className="space-y-1.5">
               <Label htmlFor="ex-name">{t("Full name", "Nama lengkap")}</Label>
@@ -197,7 +361,28 @@ export function TeamAndClasses() {
               {t("Create Expert Key", "Buat Key Pakar")}
             </Button>
           </form>
-        </Panel>
+          <p className="mt-6 text-sm font-medium text-ink">{t("All keys", "Semua key")}</p>
+          {tokens.data ? (
+            <ul className="mt-2 divide-y text-sm">
+              {tokens.data.map((k) => (
+                <li key={k.id} className="flex items-center justify-between gap-3 py-2">
+                  <span className="min-w-0 truncate">
+                    <Tag tone={k.role === "admin" ? "indigo" : "neutral"}>{k.role}</Tag> {k.label}
+                  </span>
+                  {k.revoked ? (
+                    <span className="text-xs text-muted-foreground">{t("revoked", "dicabut")}</span>
+                  ) : (
+                    <Button size="sm" variant="outline" onClick={() => revoke(k.id)}>
+                      {t("Revoke", "Cabut")}
+                    </Button>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Loading />
+          )}
+        </details>
         <Panel>
           <SectionTitle>{t("Create a Class", "Buat Kelas")}</SectionTitle>
           <form onSubmit={addCohort} className="space-y-3">
@@ -229,29 +414,6 @@ export function TeamAndClasses() {
           ) : null}
         </Panel>
       </div>
-      <Panel>
-        <SectionTitle>{t("Staff Keys", "Key Staf")}</SectionTitle>
-        {tokens.data ? (
-          <ul className="divide-y text-sm">
-            {tokens.data.map((k) => (
-              <li key={k.id} className="flex items-center justify-between gap-3 py-2">
-                <span className="min-w-0 truncate">
-                  <Tag tone={k.role === "admin" ? "indigo" : "neutral"}>{k.role}</Tag> {k.label}
-                </span>
-                {k.revoked ? (
-                  <span className="text-xs text-muted-foreground">{t("revoked", "dicabut")}</span>
-                ) : (
-                  <Button size="sm" variant="outline" onClick={() => revoke(k.id)}>
-                    {t("Revoke", "Cabut")}
-                  </Button>
-                )}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <Loading />
-        )}
-      </Panel>
     </div>
   );
 }
@@ -389,7 +551,7 @@ export function LaunchMetrics() {
             ))}
           </NativeSelect>
         </div>
-        <p className="text-[40px] font-extrabold leading-none text-ink tabular">{Math.round(d.north_star.value * 100)}%</p>
+        <p className="text-[32px] font-extrabold leading-none text-ink tabular">{Math.round(d.north_star.value * 100)}%</p>
         <p className="mt-1 text-sm text-ink/70">{d.north_star.definition}. {t(`${d.new_students} new students in this window`, `${d.new_students} mahasiswa baru di rentang ini`)} · {t("D7 return", "Kembali di D7")} {Math.round(d.d7_retention * 100)}%.</p>
       </Panel>
       <Panel>

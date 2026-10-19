@@ -426,7 +426,7 @@ def lexicon_hits(text: str) -> list[str]:
     return [m.group(1) for m in lexicon_extractor().alias_re.finditer(text)]
 
 
-def project_evidence(text: str, title: str, candidate_ids: list[str] | None = None) -> tuple[EvidenceItem, dict]:
+def project_evidence(text: str, title: str, candidate_ids: list[str] | None = None, use_llm: bool = True) -> tuple[EvidenceItem, dict]:
     checks = artifact_checks(text)
     if "copy_of_job_posting" in checks["flags"] or "reads_like_job_requirements" in checks["flags"]:
         detail = {"method": "rejected", "ratings": [], "rejected": [], "checks": checks, "review_status": "rejected",
@@ -437,7 +437,7 @@ def project_evidence(text: str, title: str, candidate_ids: list[str] | None = No
         return EvidenceItem("project", title or "Project", {}, {}), detail
     method = "heuristik"
     ratings: list[dict] = []
-    if llm_configured():
+    if use_llm and llm_configured():   # use_llm=False: the rubric heuristic only (the one-click demo, no model call)
         try:
             from .extraction import llm_extractor
 

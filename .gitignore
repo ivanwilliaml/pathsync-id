@@ -13,6 +13,7 @@ backend/data/raw/karirhub_listing_snapshot.json
 # Node / Next.js
 frontend/node_modules/
 frontend/.next/
+frontend/.next-*/
 frontend/next-env.d.ts
 *.tsbuildinfo
 

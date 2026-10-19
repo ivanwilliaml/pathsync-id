@@ -184,10 +184,12 @@ from functools import lru_cache  # noqa: E402
 GUESS_FLOOR, GUESS_CEIL = 0.25, 0.60
 
 
+@lru_cache(maxsize=1)
 def _guess_table() -> dict[str, float]:
-    from .i18n import get_lang
-
-    return _guess_table_for(get_lang())
+    """One table for every display language. The cue audit is run per language, but a score must not change when the
+    student switches ID/EN (the answer was already given), so each item takes the larger, more conservative value."""
+    ids, ens = _guess_table_for("id"), _guess_table_for("en")
+    return {k: max(ids.get(k, 0.0), ens.get(k, 0.0)) for k in ids.keys() | ens.keys()}
 
 
 @lru_cache(maxsize=4)

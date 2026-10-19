@@ -31,9 +31,10 @@ export function ReadinessRing({ value, size = 148, stroke = 14, label }: { value
           />
         )}
       </svg>
+      {/* small rings keep only the number inside; the label stays in the accessible name */}
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="tabular text-[32px] font-extrabold leading-none text-ink">{text}</span>
-        {label ? <span className="mt-1 text-xs text-muted-foreground">{label}</span> : null}
+        <span className={`tabular font-extrabold leading-none text-ink ${size < 120 ? "text-[20px]" : "text-[26px]"}`}>{text}</span>
+        {label && size >= 120 ? <span className="mt-1 text-xs text-muted-foreground">{label}</span> : null}
       </div>
     </div>
   );

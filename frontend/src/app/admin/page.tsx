@@ -68,7 +68,7 @@ export default function AdminPage() {
       <div className="mx-auto max-w-md">
         <PageHeader title="Admin" description={t("Team-only console for market data, reviews, models, experts, classes and studies.", "Konsol khusus tim untuk data pasar, review, model, pakar, kelas, dan studi.")} />
         <Panel>
-          <StaffLogin role="admin" error={who.error} hint={t("Staff only. Enter your admin key.", "Khusus staf. Masukkan key admin-mu.")} />
+          <StaffLogin role="admin" error={who.error} hint={t("Staff only.", "Khusus staf.")} />
         </Panel>
       </div>
     );
@@ -271,7 +271,7 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
         {j?.log.length ? (
           <details className="mt-4">
             <summary className="cursor-pointer text-sm font-medium text-ink/80">{t("Technical Log", "Log Teknis")}</summary>
-            <pre className="mt-2 max-h-56 overflow-auto rounded-xl bg-ink p-3 text-[11px] leading-relaxed text-white/90">{j.log.join("\n")}</pre>
+            <pre className="mt-2 max-h-56 overflow-auto rounded-xl bg-ink p-3 text-xs leading-relaxed text-white/90">{j.log.join("\n")}</pre>
           </details>
         ) : null}
         <AlertDialog open={confirm} onOpenChange={setConfirm}>
