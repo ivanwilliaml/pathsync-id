@@ -11,7 +11,12 @@ export type Lang = "id" | "en";
 const KEY = "pathsync.lang";
 const listeners = new Set<() => void>();
 
+// Team decision (20 Oct 2026): the app runs in Indonesian only; the switch is hidden. The English halves of the
+// t("English", "Indonesia") pairs stay in the code, so turning this back on is one line.
+const ENGLISH_ENABLED = false;
+
 function read(): Lang {
+  if (!ENGLISH_ENABLED) return "id";
   try {
     return localStorage.getItem(KEY) === "en" ? "en" : "id";
   } catch {

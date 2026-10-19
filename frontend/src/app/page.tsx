@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ErrorNote, LinkButton, NativeSelect, Tag } from "@/components/kit";
 import { Logo } from "@/components/logo";
-import { LangSwitch, useT } from "@/lib/i18n";
+import { useT } from "@/lib/i18n";
 
 // value sent to the API stays English; the label follows the interface language
 const PROGRAMS: [string, string][] = [
@@ -75,7 +75,6 @@ export default function Landing() {
           <Link href="/how-it-works" className="hidden rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:text-ink sm:inline-block">
             {t("How It Works", "Cara Kerja")}
           </Link>
-          <LangSwitch />
           <Button variant="outline" size="lg" onClick={() => setResumeOpen(true)}>
             {t("Resume Profile", "Lanjutkan Profil")}
           </Button>
