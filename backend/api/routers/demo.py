@@ -11,7 +11,8 @@ from __future__ import annotations
 
 import os
 import random
-from datetime import timedelta
+import uuid
+from datetime import date, datetime, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
@@ -20,6 +21,7 @@ from sqlalchemy.orm import Session
 from pathsync.assessment import diagnostic_plan, grade
 from pathsync.classroom import week_start
 from pathsync.db import (
+    AppState,
     AssessmentResponse,
     AssessmentSession,
     CourseEnrollment,
@@ -28,10 +30,11 @@ from pathsync.db import (
     RecommendationHistory,
     Student,
     WeeklyPlan,
+    cache_epoch,
     utcnow,
 )
 from pathsync.engine import load_context, materials_by_skill, student_states
-from pathsync.i18n import tr
+from pathsync.i18n import get_lang, tr
 from pathsync.intake import academic_evidence, certificate_evidence, map_course, project_evidence, verification_link
 from pathsync.security import db_session, hash_token, new_token, rate_limit
 
@@ -104,9 +107,72 @@ def demo_profile(s: Session = Depends(db_session)):
     if os.getenv("PATHSYNC_DEMO", "1") == "0":
         raise HTTPException(404, tr("The demo profile is turned off on this server.", "Profil demo dimatikan di server ini."))
     token = new_token()
+    st = _clone(s, _template(s), hash_token(token))
+    return {"id": st.id, "token": token}
+
+
+# Building the profile runs the engine four times (one route update per piece of evidence), about 40 s against a
+# remote database on a small host. It is built once per language and cache epoch as a template, and each click copies
+# its rows in one transaction, shifted in time so the copy reads as "16 days of use, until now".
+TEMPLATE_CONSENT = "demo-template"      # not "demo", so the two-day demo retention rule leaves the template alone
+CLONED = (Evidence, CourseEnrollment, AssessmentResponse, RecommendationHistory, WeeklyPlan, Pulse)
+
+
+def _template(s: Session) -> Student:
+    key, epoch = f"demo_template:{get_lang()}", cache_epoch(s)
+    row = s.get(AppState, key)
+    if row is not None:
+        sid, _, built_epoch = row.value.partition("|")
+        st = s.get(Student, sid)
+        if st is not None and built_epoch == epoch:
+            return st
+    st = _build(s)
+    row = s.get(AppState, key) or AppState(key=key)
+    row.value = f"{st.id}|{epoch}"
+    s.add(row)
+    s.commit()
+    return st
+
+
+def _shift(v, delta: timedelta):
+    return v + delta if isinstance(v, datetime) else v
+
+
+def _copy(row, delta: timedelta, **over):
+    cols = {c.key: _shift(getattr(row, c.key), delta) for c in row.__table__.columns if c.key != "id"}
+    return type(row)(**(cols | over))
+
+
+def _clone(s: Session, tpl: Student, token_hash: str) -> Student:
+    delta = utcnow() - tpl.created_at
+    prefs = {k: v for k, v in (tpl.preferences or {}).items() if k != "template"}
+    if prefs.get("materials_done"):
+        prefs["materials_done"] = {m: (date.fromisoformat(d) + timedelta(days=delta.days)).isoformat()
+                                   for m, d in prefs["materials_done"].items()}
+    st = _copy(tpl, delta, token_hash=token_hash, consent_version="demo", preferences=prefs, created_at=utcnow(),
+               last_seen_at=None)
+    s.add(st)
+    s.flush()
+    sessions = {}
+    for row in s.scalars(select(AssessmentSession).where(AssessmentSession.student_id == tpl.id)):
+        sessions[row.id] = uuid.uuid4().hex
+        s.add(_copy(row, delta, id=sessions[row.id], student_id=st.id))
+    for model in CLONED:
+        for row in s.scalars(select(model).where(model.student_id == tpl.id).order_by(model.id)):
+            over = {"student_id": st.id}
+            if model is AssessmentResponse:
+                over["session_id"] = sessions.get(row.session_id, row.session_id)
+            if model is WeeklyPlan:
+                over["week_start"] = row.week_start + timedelta(days=7 * (delta.days // 7))
+            s.add(_copy(row, delta, **over))
+    s.commit()
+    return st
+
+
+def _build(s: Session) -> Student:
     st = Student(display_name="Rani (demo)", program="Information Systems", semester=6, target_role="business_analyst",
-                 consent_at=utcnow() - timedelta(days=16), consent_version="demo", token_hash=hash_token(token),
-                 preferences={"weekly_hours": 6, "language": "id", "format": "kursus", "demo": True})
+                 consent_at=utcnow() - timedelta(days=16), consent_version=TEMPLATE_CONSENT, token_hash=None,
+                 preferences={"weekly_hours": 6, "language": "id", "format": "kursus", "demo": True, "template": True})
     s.add(st)
     s.flush()
     for name in DEMO_CURRENT:
@@ -187,4 +253,4 @@ def demo_profile(s: Session = Depends(db_session)):
     prefs["soft_experience"] = {k: {"level": lvl, "note": note} for k, (lvl, note) in DEMO_SOFT.items()}
     st.preferences = prefs
     s.commit()
-    return {"id": st.id, "token": token}
+    return st
