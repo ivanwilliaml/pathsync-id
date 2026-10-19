@@ -220,7 +220,7 @@ function Result({ text, r, t }: { text: string; r: JobCheck; t: T }) {
               return (
                 <li key={s.skill_id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 sm:px-6">
                   <div className="min-w-0">
-                    <p className="font-medium text-ink">{s.skill_name}</p>
+                    <p className="font-medium text-ink [overflow-wrap:anywhere]">{s.skill_name}</p>
                     <p className="text-xs text-muted-foreground">
                       {t("Needed", "Dibutuhkan")}: {lvl(s.level_needed)} · {t("You now", "Kamu sekarang")}: {lvl(s.level_now)}
                     </p>
@@ -244,7 +244,7 @@ function Result({ text, r, t }: { text: string; r: JobCheck; t: T }) {
           <Panel>
             <div className="flex flex-wrap gap-2">
               {r.terms_to_review.map((x, i) => (
-                <span key={i} className="rounded-md border border-dashed border-ink/40 px-2 py-0.5 text-sm text-ink/80">{x.text}</span>
+                <span key={i} className="max-w-full rounded-md border border-dashed border-ink/40 px-2 py-0.5 text-sm text-ink/80 [overflow-wrap:anywhere]">{x.text}</span>
               ))}
             </div>
             <p className="mt-3 text-xs text-muted-foreground">
@@ -329,5 +329,5 @@ function Highlighted({ text, skills, review, lvl, t }: { text: string; skills: C
     at = s.end;
   }
   out.push(text.slice(at));
-  return <p className="whitespace-pre-wrap text-[15px] leading-7 text-ink/85">{out}</p>;
+  return <p className="whitespace-pre-wrap text-[15px] leading-7 text-ink/85 [overflow-wrap:anywhere]">{out}</p>;
 }
