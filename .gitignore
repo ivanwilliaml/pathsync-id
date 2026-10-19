@@ -40,3 +40,5 @@ backend/.coverage
 
 # Vercel CLI link
 frontend/.vercel/
+frontend/test-results/
+frontend/playwright-report/
