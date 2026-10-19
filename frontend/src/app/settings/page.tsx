@@ -22,13 +22,21 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { RequireStudent } from "@/components/require-student";
-import { ErrorNote, Loading, NativeSelect, PageHeader, Panel, SectionTitle, Tag } from "@/components/kit";
+import { ErrorNote, Loading, NativeSelect, PageHeader, SectionTitle, Tag } from "@/components/kit";
 import { Mascot } from "@/components/mascot";
 import { LangSwitch, useT } from "@/lib/i18n";
 
 export default function SettingsPage() {
   return <RequireStudent>{(sid) => <Settings sid={sid} />}</RequireStudent>;
 }
+
+const SECTIONS: [string, [string, string]][] = [
+  ["profile", ["Profile", "Profil"]],
+  ["access-key", ["Access key", "Access key"]],
+  ["research", ["Research", "Riset"]],
+  ["class", ["Class and study", "Kelas dan studi"]],
+  ["privacy", ["Your data", "Data pribadimu"]],
+];
 
 function Settings({ sid }: { sid: string }) {
   const st = useApi<Student & { semester: number | null; cohort_id: string | null; study_arm: string | null; consent_at: string | null; consent_version: string }>(
@@ -39,13 +47,27 @@ function Settings({ sid }: { sid: string }) {
   if (!st.data) return <Loading />;
   const s = st.data;
   return (
-    <div className="space-y-12">
-      <PageHeader mascot="key" title={t("Settings & Data", "Pengaturan & Data")} description={t("Your profile, your access key, classes and studies you join, and control over your personal data.", "Profilmu, access key-mu, kelas dan studi yang kamu ikuti, dan kendali atas data pribadimu.")} />
-      <Profile sid={sid} s={s} onSaved={st.reload} />
-      <AccessKey />
-      <Research sid={sid} on={!!(s as { research_consent_at?: string | null }).research_consent_at} onChange={st.reload} />
-      <Joins sid={sid} cohort={s.cohort_id} arm={s.study_arm} onChange={st.reload} />
-      <Privacy sid={sid} consentAt={s.consent_at} version={s.consent_version} />
+    <div>
+      <PageHeader className="mb-6" title={t("Settings & Data", "Pengaturan & Data")} description={t("Your profile, your access key, classes and studies you join, and control over your personal data.", "Profilmu, access key-mu, kelas dan studi yang kamu ikuti, dan kendali atas data pribadimu.")} />
+      {/* categories beside one form column; groups are split by dividers, not five cards of different heights */}
+      <div className="grid gap-8 lg:grid-cols-[180px_minmax(0,720px)]">
+        <nav aria-label={t("Settings sections", "Bagian pengaturan")} className="lg:sticky lg:top-6 lg:self-start">
+          <ol className="flex flex-wrap gap-x-4 gap-y-1 text-sm lg:flex-col lg:gap-1 lg:border-l lg:pl-3">
+            {SECTIONS.map(([id, label]) => (
+              <li key={id}>
+                <a href={`#${id}`} className="text-ink/70 underline-offset-4 hover:text-ink hover:underline">{t(...label)}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+        <div className="min-w-0 divide-y [&>section]:scroll-mt-24 [&>section]:py-6 [&>section:first-child]:pt-0">
+          <Profile sid={sid} s={s} onSaved={st.reload} />
+          <AccessKey />
+          <Research sid={sid} on={!!(s as { research_consent_at?: string | null }).research_consent_at} onChange={st.reload} />
+          <Joins sid={sid} cohort={s.cohort_id} arm={s.study_arm} onChange={st.reload} />
+          <Privacy sid={sid} consentAt={s.consent_at} version={s.consent_version} />
+        </div>
+      </div>
     </div>
   );
 }
@@ -55,20 +77,21 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
   const [semester, setSemester] = useState(s.semester ?? 0);
   const [hours, setHours] = useState(Number(s.preferences.weekly_hours ?? 6));
   const [format, setFormat] = useState(String(s.preferences.format ?? ""));
+  const [language, setLanguage] = useState(String(s.preferences.language ?? "id"));
   const t = useT();
   async function save(e: React.FormEvent) {
     e.preventDefault();
     await api.patch(`/students/${sid}`, {
       display_name: name,
       semester: semester || null,
-      preferences: { weekly_hours: hours, format: format || null },
+      preferences: { weekly_hours: hours, format: format || null, language },
     });
     toast.success(t("Saved", "Tersimpan"));
     onSaved();
   }
   return (
-    <Panel>
-      <SectionTitle>{t("Profile", "Profil")}</SectionTitle>
+    <section id="profile" aria-labelledby="profile-title">
+      <SectionTitle id="profile-title">{t("Profile", "Profil")}</SectionTitle>
       <form onSubmit={save} className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
           <Label htmlFor="nm">{t("Name", "Nama")}</Label>
@@ -76,7 +99,7 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="sem">Semester</Label>
-          <NativeSelect id="sem" value={semester} onChange={(e) => setSemester(Number(e.target.value))}>
+          <NativeSelect id="sem" value={semester} onChange={(e) => setSemester(Number(e.target.value))} className="max-w-[220px]">
             <option value={0}>{t("Not set", "Belum diisi")}</option>
             {Array.from({ length: 14 }, (_, i) => i + 1).map((n) => (
               <option key={n} value={n}>
@@ -87,7 +110,7 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="hrs">{t("Hours per week for your route", "Jam per minggu untuk rutemu")}</Label>
-          <Input id="hrs" type="number" min={1} max={40} value={hours} onChange={(e) => setHours(Number(e.target.value))} className="h-10" />
+          <Input id="hrs" type="number" min={1} max={40} value={hours} onChange={(e) => setHours(Number(e.target.value))} className="h-10 w-32" />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="fmt">{t("Preferred material format", "Format materi favorit")}</Label>
@@ -100,15 +123,25 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
           </NativeSelect>
         </div>
         <div className="space-y-1.5">
-          <p className="text-sm font-medium text-ink">{t("Language", "Bahasa")}</p>
+          <Label htmlFor="mlang">{t("Language of learning materials", "Bahasa materi belajar")}</Label>
+          <NativeSelect id="mlang" value={language} onChange={(e) => setLanguage(e.target.value)}>
+            <option value="id">{t("Prefer Indonesian", "Utamakan Bahasa Indonesia")}</option>
+            <option value="en">{t("English is fine", "Bahasa Inggris tidak masalah")}</option>
+          </NativeSelect>
+        </div>
+        <div className="space-y-1.5">
+          <p className="text-sm font-medium text-ink">{t("Interface language", "Bahasa antarmuka")}</p>
           <LangSwitch />
-          <p className="text-xs text-muted-foreground">{t("Technical terms stay in English in both.", "Istilah teknis tetap dalam bahasa Inggris di keduanya.")}</p>
+          <p className="text-xs text-muted-foreground">
+            {t("The language of the app itself. Technical terms stay in English in both.",
+               "Bahasa aplikasi ini sendiri. Istilah teknis tetap dalam bahasa Inggris di keduanya.")}
+          </p>
         </div>
         <div className="sm:col-span-2">
           <Button type="submit">{t("Save Profile", "Simpan Profil")}</Button>
         </div>
       </form>
-    </Panel>
+    </section>
   );
 }
 
@@ -117,8 +150,8 @@ function AccessKey() {
   const key = accessKey() ?? "";
   const t = useT();
   return (
-    <Panel>
-      <SectionTitle>{t("Your Access Key", "Access Key-mu")}</SectionTitle>
+    <section id="access-key" aria-labelledby="access-key-title">
+      <SectionTitle id="access-key-title">{t("Your Access Key", "Access Key-mu")}</SectionTitle>
       <p className="mb-3 text-sm text-ink/70">
         {t("PathSync has no passwords. This key opens your profile on another device. Keep it private: anyone with it can see your evidence.", "PathSync tidak memakai password. Key ini membuka profilmu di perangkat lain. Jaga kerahasiaannya: siapa pun yang memegangnya bisa melihat evidence-mu.")}
       </p>
@@ -149,15 +182,15 @@ function AccessKey() {
           {t("Create a New Key", "Buat Key Baru")}
         </Button>
       </div>
-    </Panel>
+    </section>
   );
 }
 
 function Research({ sid, on, onChange }: { sid: string; on: boolean; onChange: () => void }) {
   const t = useT();
   return (
-    <Panel>
-      <SectionTitle>{t("Research Participation", "Partisipasi Riset")}</SectionTitle>
+    <section id="research" aria-labelledby="research-title">
+      <SectionTitle id="research-title">{t("Research Participation", "Partisipasi Riset")}</SectionTitle>
       <label className="flex cursor-pointer gap-3 text-sm text-ink/80">
         <Checkbox
           checked={on}
@@ -175,7 +208,7 @@ function Research({ sid, on, onChange }: { sid: string; on: boolean; onChange: (
           )}
         </span>
       </label>
-    </Panel>
+    </section>
   );
 }
 
@@ -195,8 +228,8 @@ function Joins({ sid, cohort, arm, onChange }: { sid: string; cohort: string | n
     }
   }
   return (
-    <Panel>
-      <SectionTitle>{t("Class and Study", "Kelas dan Studi")}</SectionTitle>
+    <section id="class" aria-labelledby="class-title">
+      <SectionTitle id="class-title">{t("Class and Study", "Kelas dan Studi")}</SectionTitle>
       <div className="grid gap-5 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="cls">{t("Class code from your lecturer", "Kode kelas dari dosenmu")}</Label>
@@ -233,7 +266,7 @@ function Joins({ sid, cohort, arm, onChange }: { sid: string; cohort: string | n
         </div>
       </div>
       <ErrorNote error={err} />
-    </Panel>
+    </section>
   );
 }
 
@@ -256,8 +289,8 @@ function Privacy({ sid, consentAt, version }: { sid: string; consentAt: string |
     window.location.href = "/";
   }
   return (
-    <Panel>
-      <SectionTitle>
+    <section id="privacy" aria-labelledby="privacy-title">
+      <SectionTitle id="privacy-title">
         <span className="inline-flex items-center gap-2">
           <ShieldCheck className="size-5 text-indigo" aria-hidden="true" /> {t("Your Personal Data", "Data Pribadimu")}
         </span>
@@ -296,6 +329,6 @@ function Privacy({ sid, consentAt, version }: { sid: string; consentAt: string |
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </Panel>
+    </section>
   );
 }

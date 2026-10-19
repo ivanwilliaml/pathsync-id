@@ -13,6 +13,11 @@ export interface StaffSession {
   subject_id: string;
   label: string;
   expires_at: string | null;
+  /** the staff account behind the session (null for key sign-in) */
+  name?: string | null;
+  email?: string | null;
+  /** a read-only demo account: the page can look, never change */
+  demo?: boolean;
 }
 
 export async function staffSignIn(token: string): Promise<StaffSession> {
@@ -20,6 +25,41 @@ export async function staffSignIn(token: string): Promise<StaffSession> {
   window.dispatchEvent(new Event(EVENT));
   return s;
 }
+
+/** Email + password sign-in for a staff account. */
+export async function staffLogin(email: string, password: string): Promise<StaffSession> {
+  const s = await api.post<StaffSession>("/staff/login", { email, password });
+  window.dispatchEvent(new Event(EVENT));
+  return s;
+}
+
+/** One-click read-only demo: a lecturer with a demo class, or an expert who never counts as one. */
+export async function staffDemo(role: "advisor" | "expert"): Promise<StaffSession> {
+  const s = await api.post<StaffSession>("/staff/demo", { role });
+  window.dispatchEvent(new Event(EVENT));
+  return s;
+}
+
+export interface StaffInvite {
+  email: string;
+  name: string;
+  role: StaffRole;
+}
+
+/** Who an invite (or password reset) link is for. */
+export function staffInvite(token: string): Promise<StaffInvite> {
+  return api.get<StaffInvite>(`/staff/invite?token=${encodeURIComponent(token)}`);
+}
+
+/** Set the password from an invite link, then the account is signed in. */
+export async function staffAccept(token: string, password: string): Promise<StaffSession> {
+  const s = await api.post<StaffSession>("/staff/accept", { token, password });
+  window.dispatchEvent(new Event(EVENT));
+  return s;
+}
+
+/** Where each role works. */
+export const STAFF_HOME: Record<StaffRole, string> = { admin: "/admin", expert: "/experts", advisor: "/advisor" };
 
 export async function staffSignOut() {
   try {

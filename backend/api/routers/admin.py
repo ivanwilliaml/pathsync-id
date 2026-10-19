@@ -30,6 +30,7 @@ from pathsync.db import (
     RankerModel,
     Scenario,
     ScenarioRanking,
+    StaffAccount,
     Student,
     Study,
     StudyPlan,
@@ -44,6 +45,7 @@ from pathsync.extraction.llm import llm_configured
 from pathsync.gold import agreement as annotator_agreement
 from pathsync.gold import load_split_all, prf
 from pathsync.security import audit_admin_writes, db_session, issue_token, require_admin, revoke
+from pathsync.staff_accounts import INVITE_DAYS, new_invite, normalise_email
 from pathsync.study import DEFAULT_ARMS, analyse, join_code
 from pathsync.taxonomy import CycleError, load_skills
 
@@ -553,3 +555,73 @@ def run_calibration(s: Session = Depends(db_session)):
 @router.get("/roles")
 def roles():
     return [{"id": k, "name": v["name"]} for k, v in ROLES.items()]
+
+
+# ------------------------------------------------------------------ staff accounts (email + password)
+class StaffAccountIn(BaseModel):
+    email: str = Field(..., min_length=3, max_length=200, pattern=r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+    name: str = Field(..., min_length=2, max_length=120)
+    role: str = Field(..., pattern="^(admin|expert|advisor)$")
+    cohort_id: str | None = Field(None, max_length=40)      # lecturers: the class they see
+    affiliation: str = Field("", max_length=200)             # experts
+
+
+def _account_out(a: StaffAccount) -> dict:
+    status = "disabled" if a.disabled_at else ("active" if a.password_hash else "invited")
+    return {"id": a.id, "email": a.email, "name": a.name, "role": a.role, "subject_id": a.subject_id, "status": status,
+            "last_login_at": a.last_login_at.isoformat() if a.last_login_at else None, "created_at": a.created_at.isoformat()}
+
+
+@router.get("/staff-accounts")
+def list_staff_accounts(s: Session = Depends(db_session)):
+    return [_account_out(a) for a in s.scalars(select(StaffAccount).where(StaffAccount.demo.is_(False)).order_by(StaffAccount.id)).all()]
+
+
+@router.post("/staff-accounts")
+def invite_staff(body: StaffAccountIn, s: Session = Depends(db_session)):
+    """Create an account and return its invite link (valid 7 days). The admin sends the link; the invitee sets a
+    password from it. Experts get their own expert record; lecturers are tied to one class."""
+    email = normalise_email(body.email)
+    if s.scalars(select(StaffAccount).where(StaffAccount.email == email)).first() is not None:
+        raise HTTPException(409, "An account with this email already exists.")
+    subject = ""
+    if body.role == "expert":
+        e = Expert(name=body.name, affiliation=body.affiliation, kind="dosen", validates_graph=True)
+        s.add(e)
+        s.flush()
+        subject = e.id
+    elif body.role == "advisor":
+        if not body.cohort_id or s.get(Cohort, body.cohort_id) is None:
+            raise HTTPException(400, "Pick the class this lecturer will see.")
+        subject = body.cohort_id
+    acc = StaffAccount(email=email, name=body.name, role=body.role, subject_id=subject)
+    s.add(acc)
+    s.flush()
+    raw = new_invite(acc)
+    s.commit()
+    return {**_account_out(acc), "invite_path": f"/staff/accept?token={raw}", "expires_in_days": INVITE_DAYS}
+
+
+@router.post("/staff-accounts/{aid}/invite")
+def reinvite_staff(aid: int, s: Session = Depends(db_session)):
+    """A fresh link to set (or reset) the password. The old password keeps working until the new one is set."""
+    acc = s.get(StaffAccount, aid)
+    if acc is None or acc.demo:
+        raise HTTPException(404, "No such account.")
+    raw = new_invite(acc)
+    s.commit()
+    return {**_account_out(acc), "invite_path": f"/staff/accept?token={raw}", "expires_in_days": INVITE_DAYS}
+
+
+@router.delete("/staff-accounts/{aid}")
+def disable_staff(aid: int, s: Session = Depends(db_session)):
+    """Disable an account: it can no longer sign in, and its open sessions end now."""
+    acc = s.get(StaffAccount, aid)
+    if acc is None or acc.demo:
+        raise HTTPException(404, "No such account.")
+    acc.disabled_at = utcnow()
+    acc.invite_hash, acc.invite_expires_at = None, None
+    if acc.token_id:
+        revoke(s, acc.token_id)
+    s.commit()
+    return _account_out(acc)

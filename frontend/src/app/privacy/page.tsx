@@ -46,9 +46,9 @@ export default function PrivacyPage() {
           <ul className="list-disc space-y-1.5 pl-5">
             <li>Profil: nama panggilan, program studi, semester, peran target. Tanpa email, tanpa kata sandi.</li>
             <li>Bukti belajar yang Anda tambahkan: nilai mata kuliah, nama dan tautan sertifikat, teks proyek atau tugas, teks CV.</li>
-            <li>Jawaban Quick Check dan asesmen ulang, rencana mingguan, refleksi, dan jawaban singkat tentang kejelasan arah.</li>
+            <li>Jawaban Cek Kemampuan dan asesmen ulang, rencana mingguan, refleksi, dan jawaban singkat tentang kejelasan arah.</li>
             <li>Riwayat rute belajar Anda dan perubahannya.</li>
-            <li>Data teknis dasar: waktu kunjungan terakhir dan peristiwa penggunaan (misalnya &ldquo;menyelesaikan Quick Check&rdquo;), tanpa isi dokumen Anda.</li>
+            <li>Data teknis dasar: waktu kunjungan terakhir dan peristiwa penggunaan (misalnya &ldquo;menyelesaikan Cek Kemampuan&rdquo;), tanpa isi dokumen Anda.</li>
           </ul>
           <p>Kami tidak meminta data sensitif (agama, kesehatan, biometrik, dsb.). Mohon tidak memasukkannya ke dalam dokumen yang Anda unggah.</p>
         </Section>
@@ -61,7 +61,7 @@ export default function PrivacyPage() {
               dibaca oleh peninjau PathSync untuk memastikan penilaiannya adil.
             </li>
             <li>
-              <strong>Perbaikan produk secara agregat</strong>, misalnya berapa persen pengguna yang menyelesaikan Quick Check. Hasilnya tidak
+              <strong>Perbaikan produk secara agregat</strong>, misalnya berapa persen pengguna yang menyelesaikan Cek Kemampuan. Hasilnya tidak
               menampilkan individu.
             </li>
           </ul>
@@ -92,6 +92,12 @@ export default function PrivacyPage() {
             Data disimpan di server PathSync. Bila fitur pembacaan dokumen berbasis model bahasa diaktifkan, potongan teks proyek dapat dikirim ke
             penyedia model (Anthropic) hanya untuk memberi penilaian rubrik; teks tersebut tidak kami jual. Saat ini fitur itu{" "}
             <strong>tidak aktif</strong> dan penilaian memakai aturan lokal di server kami.
+          </p>
+          <p className="mt-3">
+            Asisten <strong>Sync</strong> memakai model bahasa yang dijalankan oleh Groq. Saat Anda bertanya ke Sync, yang dikirim ke Groq
+            hanyalah pertanyaan Anda, data skill Anda (nama skill, level, target karier) dan teks lowongan kerja publik yang relevan; nama,
+            ID profil, dan kunci akses Anda tidak pernah dikirim. Sync hanya membaca data, tidak mengubah apa pun, dan percakapannya tidak
+            kami simpan selain di tab peramban Anda.
           </p>
         </Section>
 

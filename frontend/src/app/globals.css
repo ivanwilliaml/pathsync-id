@@ -22,9 +22,10 @@
   --mint-ink: #1c7a4b;
   --paper: #f0f6ff;
   --route: linear-gradient(90deg, #1d6fd8 0%, #4aa548 55%, #f5c542 100%);
-  --route-soft: linear-gradient(135deg, #e8f1fe 0%, #edf7ec 55%, #fff8e1 100%);
+  /* a calm single tint for the one decision panel per page (the full route gradient stays on the route itself) */
+  --route-soft: linear-gradient(135deg, #ebf2fd 0%, #f3f7fd 100%);
 
-  --background: var(--paper);
+  --background: #f6f8fb;
   --foreground: var(--ink);
   --card: #ffffff;
   --card-foreground: var(--ink);
@@ -34,20 +35,20 @@
   --primary-foreground: #ffffff;
   --secondary: #e6f0fc;
   --secondary-foreground: #134e9c;
-  --muted: #edf2f8;
-  --muted-foreground: #4a5b75;
+  --muted: #eef1f5;
+  --muted-foreground: #4b5a6e;
   --accent: #e6f0fc;
   --accent-foreground: #134e9c;
   --destructive: #c81e1e;
-  --border: #dce5f0;
-  --input: #cfdae8;
+  --border: #e1e6ed;
+  --input: #cdd5e0;
   --ring: #1d6fd8;
   --chart-1: #1d6fd8;
   --chart-2: #4aa548;
   --chart-3: #f5c542;
   --chart-4: #2ba66a;
   --chart-5: #a7b4c8;
-  --radius: 0.75rem;
+  --radius: 0.5rem;
   --sidebar: #ffffff;
   --sidebar-foreground: var(--ink);
   --sidebar-primary: var(--indigo);
@@ -62,6 +63,11 @@
 @theme inline {
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-heading: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  /* reading scale: text-sm is the body size (15px), text-xs the metadata size (13px) */
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.55;
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.45;
   --color-ink: var(--ink);
   --color-indigo: var(--indigo);
   --color-iris: var(--iris);

@@ -13,6 +13,7 @@ backend/data/raw/karirhub_listing_snapshot.json
 # Node / Next.js
 frontend/node_modules/
 frontend/.next/
+frontend/.next-*/
 frontend/next-env.d.ts
 *.tsbuildinfo
 
@@ -26,6 +27,7 @@ backend/offline_llm/jobs/
 
 # generated first admin key (backend writes it when PATHSYNC_ADMIN_TOKEN is unset)
 backend/data/admin_token.txt
+backend/data/local_admin_account.txt
 .claude/
 !.env.example
 backups/

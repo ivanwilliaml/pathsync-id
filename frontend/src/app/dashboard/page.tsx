@@ -1,481 +1,240 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
-import { AlertTriangle, ChevronRight, Clock, Lock } from "lucide-react";
-import { api, FEATURE_LABELS, type Competency, type Dashboard, type PathStep, type RankRow } from "@/lib/api";
-import { CLUSTER_ORDER, LEVEL, REC, firstSentence, hours, num, pct, titleCase } from "@/lib/format";
+import { useEffect, useState } from "react";
+import { BookOpen, Check, ChevronRight, ExternalLink } from "lucide-react";
+import { api, type Dashboard } from "@/lib/api";
+import { firstSentence, fmtDateTime, hours, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
-import { track, trackOnce } from "@/lib/track";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RequireStudent } from "@/components/require-student";
-import { ReadinessRing } from "@/components/readiness-ring";
-import { Mascot } from "@/components/mascot";
-import type { CareersData } from "@/components/career-map";
-import { SkillSheet, type SkillDetail } from "@/components/skill-sheet";
-import { EmptyState, ErrorNote, LinkButton, Loading, MasteryBar, Panel, SectionTitle, Tag } from "@/components/kit";
 import { useT } from "@/lib/i18n";
+import { usePulseReady } from "@/lib/pulse";
+import { trackOnce } from "@/lib/track";
+import { Button } from "@/components/ui/button";
+import type { CareersData } from "@/components/career-map";
+import { ErrorNote, LinkButton, Loading, Panel, SectionTitle } from "@/components/kit";
+import { Mascot } from "@/components/mascot";
+import { ReadinessRing } from "@/components/readiness-ring";
+import { RequireStudent } from "@/components/require-student";
+import { useSkillSheet } from "@/components/skill-sheet";
 
 export default function DashboardPage() {
   return <RequireStudent>{(sid) => <DashboardView sid={sid} />}</RequireStudent>;
 }
 
+/** Home: a short orientation. Where you are headed, the one action that matters most now and why, where your skills
+ * stand, the journey at a glance, then a few pointers (next learning step, close careers, latest change). The full
+ * views live in their stages: skills in /skills, the route in /learn, careers in /careers. */
 function DashboardView({ sid }: { sid: string }) {
   const { data: d, error } = useApi<Dashboard>(`/students/${sid}/dashboard`);
-  const [detail, setDetail] = useState<SkillDetail | null>(null);
   const t = useT();
   const pulseReady = usePulseReady();
+  const { open, sheet } = useSkillSheet(d ?? null);
   useEffect(() => trackOnce("next_step_viewed", `next-${sid}`), [sid]);
-  const comps = useMemo(() => Object.fromEntries((d?.competencies ?? []).map((c) => [c.skill_id, c])), [d]);
-  const ranks = useMemo(() => Object.fromEntries((d?.ranking ?? []).map((r) => [r.skill_id, r])), [d]);
 
   if (error) return <ErrorNote error={error} />;
   if (!d) return <Loading label={t("Building your route…", "Menyusun rutemu…")} />;
 
   const hasEvidence = d.diagnostic_done || Object.entries(d.evidence_summary).some(([, v]) => v > 0);
-  const names = Object.fromEntries(d.competencies.map((c) => [c.skill_id, titleCase(c.name)]));
-  const open = (skillId: string) => {
-    markPulseReady();
-    track("why_opened", { skill: skillId });
-    const r = ranks[skillId];
-    const step = d.path.find((p) => p.skill_id === skillId);
-    setDetail({
-      skill_id: skillId,
-      name: r?.name ?? step?.name ?? names[skillId],
-      rank: r?.rank,
-      rec_type: r?.rec_type ?? step?.rec_type,
-      bottleneck: r?.explanation?.bottleneck,
-      explanation: r?.explanation ?? step?.explanation,
-      step,
-      competency: comps[skillId],
-    });
-  };
+  const nEvidence = Object.entries(d.evidence_summary).filter(([k]) => k !== "assessment_items").reduce((a, [, v]) => a + v, 0);
   const top = d.ranking[0];
-  const weekly = Number(d.student.preferences.weekly_hours ?? 6);
   const f = d.features ?? { evidence: true, graph: true, adaptive: true, explanations: true, path: true };
   if (!f.path) return <ControlListView d={d} sid={sid} />;
+  // the one action that matters most now: get evidence in, then the skill check, then the top priority
+  const stage = !hasEvidence ? "evidence" : !d.diagnostic_done ? "check" : top ? "learn" : "done";
+  const nextStep = d.path.find((p) => !p.waiting_for.length) ?? d.path[0];
 
   return (
-    <div className="space-y-12">
-      {/* Hero */}
-      <section className="grid gap-6 rounded-3xl bg-route-soft p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
+    <div className="space-y-10">
+      <header className="flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-[30px] font-extrabold leading-tight text-ink sm:text-[36px]">Hi, {d.student.display_name}</h1>
-          <p className="mt-1 text-ink/70">
-            {t("Your route to", "Rutemu menuju")} <span className="font-semibold text-ink">{d.role.name}</span>, {t(`based on ${d.role.n_postings} real job postings.`, `berdasarkan ${d.role.n_postings} job posting nyata.`)}
+          <h1 className="text-[26px] font-bold leading-tight text-ink sm:text-[30px]">Hi, {d.student.display_name}</h1>
+          <p className="mt-1 text-sm text-ink/70">
+            {t("Your route to", "Rutemu menuju")} <span className="font-semibold text-ink">{d.role.name}</span>
+            {t(`, from ${d.role.n_postings} real job postings. `, `, dari ${d.role.n_postings} job posting nyata. `)}
+            <Link href="/careers" className="font-medium text-indigo underline-offset-4 hover:underline">
+              {t("Change", "Ganti")}
+            </Link>
           </p>
-          {!hasEvidence ? (
-            <div className="relative mt-6 rounded-2xl bg-card p-5 shadow-sm sm:pr-36">
-              <Mascot name="checklist" size={112} className="absolute right-4 bottom-3 hidden sm:block" />
-              <h2 className="text-lg font-semibold text-ink">{t("Make This Route Yours", "Jadikan Rute Ini Milikmu")}</h2>
-              <p className="mt-1 text-sm text-ink/70">
-                {t(
-                  "Right now everyone starts from zero. Add your transcript or take the quick check so we know what you can already do.",
-                  "Saat ini semua orang mulai dari nol. Tambahkan transkripmu atau ikuti Quick Check supaya kami tahu apa yang sudah bisa kamu lakukan.",
-                )}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <LinkButton href="/assessment" size="lg" className="h-10">
-                  {t("Take the Quick Check", "Ikuti Quick Check")}
-                </LinkButton>
-                <LinkButton href="/evidence" variant="outline" size="lg" className="h-10">
-                  {t("Add My Evidence", "Tambah Evidence-ku")}
-                </LinkButton>
-              </div>
-            </div>
-          ) : top ? (
-            <div className="relative mt-6 rounded-2xl bg-card p-5 shadow-sm sm:pr-36">
-              <Mascot name="compass" size={112} className="absolute right-4 bottom-3 hidden sm:block" />
-              <p className="text-sm font-medium text-indigo">{t("Your Next Step", "Langkah Berikutnya")}</p>
-              <h2 className="mt-1 text-[22px] font-bold leading-snug text-ink">{titleCase(top.name)}</h2>
-              <p className="mt-1.5 text-sm text-ink/75">{top.explanation ? firstSentence(top.explanation.why_now) : null}</p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Button size="lg" className="h-10" onClick={() => open(top.skill_id)}>
-                  {t("See Why and How", "Lihat Alasan dan Caranya")}
-                </Button>
-                <LinkButton href={`/assessment/${top.skill_id}`} variant="outline" size="lg" className="h-10">
-                  {t("I Already Know This", "Aku Sudah Bisa Ini")}
-                </LinkButton>
-              </div>
-            </div>
-          ) : (
-            <div className="mt-6 flex items-center gap-4 rounded-2xl bg-card p-5 text-ink/80">
-              <Mascot name="trophy" size={88} />
-              <p>{t("You meet every requirement we track for this role. Nice work.", "Kamu memenuhi semua syarat yang kami lacak untuk role ini. Mantap.")}</p>
-            </div>
-          )}
+          {d.student.preferences.demo ? <DemoGuide topId={top?.skill_id} topName={top ? titleCase(top.name) : undefined} /> : null}
         </div>
-        <div className="flex items-center gap-5 lg:flex-col lg:text-center">
-          {f.evidence ? <ReadinessRing value={hasEvidence ? d.coverage : null} label={t("Role Readiness", "Readiness Role")} /> : null}
-          <p className="max-w-[220px] text-sm text-ink/70">
-            {hasEvidence
-              ? t("How much of what employers ask for you can already show.", "Seberapa banyak yang diminta employer yang sudah bisa kamu tunjukkan.")
-              : t("Not measured yet. Your readiness appears after your first evidence or quick check.", "Belum terukur. Readiness-mu muncul setelah evidence atau Quick Check pertamamu.")}
-          </p>
+      </header>
+
+      <JourneyStrip d={d} hasEvidence={hasEvidence} />
+
+      {/* main: what to do now and what to study; side: where you stand and what changed */}
+      <div className="grid items-start gap-10 lg:grid-cols-12">
+        <div className="min-w-0 space-y-10 lg:col-span-8">
+          <section aria-labelledby="primary-action" className="relative rounded-2xl bg-route-soft p-5 sm:p-6 sm:pr-36">
+            {stage === "evidence" ? (
+              <>
+                <Mascot name="checklist" size={104} className="absolute right-4 bottom-3 hidden sm:block" />
+                <p className="text-sm font-medium text-indigo">{t("Start here", "Mulai dari sini")}</p>
+                <h2 id="primary-action" className="mt-1 text-[19px] font-bold leading-snug text-ink">{t("Show what you can already do", "Tunjukkan apa yang sudah bisa kamu lakukan")}</h2>
+                <p className="mt-1.5 text-sm text-ink/70">{t("A transcript, a project or the skill check is enough to start.", "Transkrip, project, atau Cek Kemampuan sudah cukup untuk mulai.")}</p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <LinkButton href="/evidence" size="lg" className="h-10">{t("Add Evidence", "Tambah Bukti")}</LinkButton>
+                  <LinkButton href="/assessment" variant="outline" size="lg" className="h-10">{t("Take the Skill Check", "Ikuti Cek Kemampuan")}</LinkButton>
+                </div>
+              </>
+            ) : stage === "check" ? (
+              <>
+                <Mascot name="stopwatch" size={104} className="absolute right-4 bottom-3 hidden sm:block" />
+                <p className="text-sm font-medium text-indigo">{t("Sharpen your route", "Perkuat pemetaan")}</p>
+                <h2 id="primary-action" className="mt-1 text-[19px] font-bold leading-snug text-ink">{t("Take the Skill Check", "Ikuti Cek Kemampuan")}</h2>
+                <p className="mt-1.5 text-sm text-ink/70">{t("About 20 minutes. Makes your route much sharper.", "Sekitar 20 menit. Membuat rutemu jauh lebih tepat.")}</p>
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <LinkButton href="/assessment" size="lg" className="h-10">{t("Start the Check", "Mulai Cek")}</LinkButton>
+                  {nextStep ? (
+                    <Link href={`/learn#step-${nextStep.skill_id}`} className="text-sm font-medium text-indigo underline-offset-4 hover:underline">
+                      {t("or start learning now", "atau mulai belajar sekarang")}
+                    </Link>
+                  ) : null}
+                </div>
+              </>
+            ) : stage === "learn" && top ? (
+              <>
+                <Mascot name="compass" size={104} className="absolute right-4 bottom-3 hidden sm:block" />
+                <p className="text-sm font-medium text-indigo">{t("Start learning", "Mulai belajar")}</p>
+                <h2 id="primary-action" className="mt-1 text-[19px] font-bold leading-snug text-ink">{titleCase(top.name)}</h2>
+                <p className="mt-1.5 text-sm text-ink/75">{top.explanation ? firstSentence(top.explanation.why_now) : null}</p>
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <LinkButton href={`/learn#step-${top.skill_id}`} size="lg" className="h-10">{t("Open the Materials", "Buka Materinya")}</LinkButton>
+                  <button type="button" className="text-sm font-medium text-indigo underline-offset-4 hover:underline" onClick={() => open(top.skill_id)}>
+                    {t("See why", "Lihat alasannya")}
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="flex items-center gap-4 text-ink/80">
+                <Mascot name="trophy" size={88} />
+                <p id="primary-action">{t("You meet every requirement we track for this role. Nice work.", "Kamu memenuhi semua syarat yang kami lacak untuk role ini. Mantap.")}</p>
+              </div>
+            )}
+          </section>
+
+          {nextStep ? <ActiveStep step={nextStep} /> : null}
+          {d.study_arm ? <StudyPlanCard sid={sid} /> : null}
         </div>
-      </section>
 
-      {d.student.preferences.demo ? <DemoGuide topId={top?.skill_id} topName={top ? titleCase(top.name) : undefined} /> : null}
-      {d.study_arm ? <StudyPlanCard sid={sid} /> : null}
-      {pulseReady ? <ClarityPulse sid={sid} /> : null}
-      {f.evidence && d.confirmations.length > 0 ? <Attention items={d.confirmations} onOpen={open} /> : null}
-
-      <LearningRoute steps={d.path} names={names} onOpen={open} totalHours={d.path_hours} weekly={weekly} />
-
-      <section aria-labelledby="priorities">
-        <SectionTitle id="priorities">{t("Top Priorities", "Prioritas Utama")}</SectionTitle>
-        <ul className="divide-y rounded-2xl border bg-card">
-          {d.ranking.slice(0, 3).map((r) => (
-            <PriorityRow key={r.skill_id} r={r} comp={comps[r.skill_id]} onOpen={() => open(r.skill_id)} />
-          ))}
-        </ul>
-      </section>
-
-      {hasEvidence ? <AlsoClose sid={sid} /> : null}
-
-      <section aria-labelledby="explore">
-        <SectionTitle id="explore">{t("Explore Your Profile", "Jelajahi Profilmu")}</SectionTitle>
-        <Tabs defaultValue="areas">
-          <TabsList className="mb-4 flex-wrap">
-            <TabsTrigger value="areas">{t("Skills by Area", "Skill per Area")}</TabsTrigger>
-            <TabsTrigger value="all">{t("All Skills", "Semua Skill")}</TabsTrigger>
-            <TabsTrigger value="order">{t("Why This Order", "Kenapa Urutan Ini")}</TabsTrigger>
-            <TabsTrigger value="ranking">{t("How We Ranked", "Cara Kami Meranking")}</TabsTrigger>
-          </TabsList>
-          <TabsContent value="areas">
-            <Areas d={d} measured={hasEvidence} />
-          </TabsContent>
-          <TabsContent value="all">
-            <AllSkills comps={d.competencies} onOpen={open} />
-          </TabsContent>
-          <TabsContent value="order">
-            <WhyOrder d={d} names={names} />
-          </TabsContent>
-          <TabsContent value="ranking">
-            <HowRanked ranking={d.ranking} />
-          </TabsContent>
-        </Tabs>
-      </section>
-
-      <SkillSheet detail={detail} onOpenChange={(o) => !o && setDetail(null)} />
+        <aside className="min-w-0 space-y-8 lg:col-span-4 lg:border-l lg:pl-8">
+          <Link href="/skills" className="group block">
+            <span className="block text-sm font-semibold text-ink">{t("Role readiness", "Readiness role")}</span>
+            {f.evidence ? <span className="tabular mt-0.5 block text-[28px] font-bold leading-tight text-ink">{hasEvidence ? pct(d.coverage) : "–"}</span> : null}
+            <span className="mt-1 block text-sm font-medium text-indigo group-hover:underline">{t("See my skills →", "Lihat skill-ku →")}</span>
+          </Link>
+          {hasEvidence ? <AlsoClose sid={sid} /> : null}
+          <LatestChange sid={sid} />
+          {pulseReady ? <ClarityPulse sid={sid} /> : null}
+        </aside>
+      </div>
+      {sheet}
     </div>
   );
 }
 
-function Attention({ items, onOpen }: { items: Dashboard["confirmations"]; onOpen: (id: string) => void }) {
+/** The step to study now with its first materials, so Home leads straight into the work. */
+function ActiveStep({ step }: { step: Dashboard["path"][number] }) {
   const t = useT();
+  const left = step.materials.filter((m) => !m.done);
   return (
-    <section aria-labelledby="attention" className="rounded-2xl border border-ember/30 bg-[#fff7f1] p-5">
-      <h2 id="attention" className="flex items-center gap-2 font-semibold text-ember-ink">
-        <AlertTriangle className="size-4" aria-hidden="true" /> {t("Worth Confirming", "Perlu Dikonfirmasi")}
-      </h2>
-      <ul className="mt-3 space-y-2">
-        {items.slice(0, 4).map((c, i) => (
-          <li key={i} className="flex flex-wrap items-center justify-between gap-2 text-sm">
-            <span className="text-ink/85">
-              <button type="button" className="font-semibold text-ink underline-offset-2 hover:underline" onClick={() => onOpen(c.skill_id)}>
-                {titleCase(c.name)}
-              </button>
-              : {c.message}
-            </span>
-            <LinkButton href={`/assessment/${c.skill_id}`} variant="outline" size="sm">
-              {t("Prove It", "Buktikan")}
-            </LinkButton>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-/** The signature element: the route, drawn with the brand gradient. */
-function LearningRoute({ steps, names, onOpen, totalHours, weekly }: { steps: PathStep[]; names: Record<string, string>; onOpen: (id: string) => void; totalHours: number; weekly: number }) {
-  const t = useT();
-  if (!steps.length) return null;
-  const weeks = weekly ? Math.max(1, Math.round(totalHours / weekly)) : null;
-  return (
-    <section aria-labelledby="route">
-      <SectionTitle
-        id="route"
-        action={
-          <span className="flex items-center gap-1.5 text-sm text-ink/70">
-            <Clock className="size-4" aria-hidden="true" /> {t("About", "Sekitar")} {hours(totalHours)}
-            {weeks ? t(`, ${weeks} week${weeks > 1 ? "s" : ""} at ${weekly} h a week`, `, ${weeks} minggu dengan ${weekly} jam per minggu`) : ""}
-          </span>
-        }
-      >
-        {t("Your Learning Route", "Rute Belajarmu")}
-      </SectionTitle>
-      <p className="-mt-2 mb-5 text-sm text-ink/70">
-        {t("Every step comes with free materials.", "Setiap langkah dilengkapi materi gratis.")}{" "}
-        <Link href="/learn" className="font-medium text-indigo underline-offset-4 hover:underline">
-          {t("Start learning", "Mulai belajar")} →
-        </Link>
-      </p>
-      <ol className="relative grid gap-4 md:grid-cols-[repeat(var(--steps),minmax(0,1fr))] md:gap-3" style={{ ["--steps" as string]: steps.length }}>
-        {steps.map((s, i) => {
-          const prereq = s.role_in_path !== "prioritas";
-          return (
-            <li key={s.skill_id} className="relative flex md:flex-col">
-              {/* connector */}
-              <span
-                className="absolute left-[19px] top-10 h-[calc(100%+16px)] w-1 bg-route-v md:left-10 md:top-[18px] md:h-1 md:w-[calc(100%+12px)] md:bg-route"
-                style={{ display: i === steps.length - 1 ? "none" : undefined }}
-                aria-hidden="true"
-              />
-              <span
-                className={`relative z-10 flex size-10 shrink-0 items-center justify-center rounded-full border-4 border-background text-sm font-bold text-white ${prereq ? "bg-iris" : "bg-indigo"}`}
-                aria-hidden="true"
-              >
-                {i + 1}
-              </span>
-              <button
-                type="button"
-                onClick={() => onOpen(s.skill_id)}
-                className="ml-3 flex-1 rounded-2xl border bg-card p-4 text-left transition-[border-color,box-shadow] hover:border-indigo/40 hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring md:ml-0 md:mt-3"
-              >
-                <span className="flex flex-wrap gap-1.5">
-                  <Tag tone={prereq ? "ember" : "indigo"}>{prereq ? t("Prerequisite", "Prasyarat") : `${t("Priority", "Prioritas")} #${s.rank}`}</Tag>
-                </span>
-                <span className="mt-2 block font-semibold leading-snug text-ink">{titleCase(s.name)}</span>
-                <span className="mt-1 block text-xs text-ink/65">
-                  {t(
-                    `Start with a ~${hours(s.first_module_hours ?? s.hours)} first module. Full gap: ${t(...LEVEL[s.level_now])} to ${t(...LEVEL[s.level_target])}, about ${hours(s.hours)}`,
-                    `Mulai dengan modul pertama ~${hours(s.first_module_hours ?? s.hours)}. Gap penuh: ${t(...LEVEL[s.level_now])} ke ${t(...LEVEL[s.level_target])}, sekitar ${hours(s.hours)}`,
-                  )}
-                </span>
-                {s.waiting_for.length ? (
-                  <span className="mt-2 flex items-center gap-1 text-xs text-ember-ink">
-                    <Lock className="size-3" aria-hidden="true" /> {t("After", "Setelah")} {s.waiting_for.map((w) => names[w] ?? w).join(", ")}
-                  </span>
-                ) : null}
-              </button>
-            </li>
-          );
-        })}
-      </ol>
-    </section>
-  );
-}
-
-function PriorityRow({ r, comp, onOpen }: { r: RankRow; comp?: Competency; onOpen: () => void }) {
-  const t = useT();
-  return (
-    <li>
-      <button
-        type="button"
-        onClick={onOpen}
-        className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 p-5 text-left transition-colors duration-100 hover:bg-muted/60 active:bg-secondary/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring sm:px-6 sm:py-5"
-      >
-        <span className="flex size-9 items-center justify-center rounded-full bg-secondary text-sm font-bold text-secondary-foreground">{r.rank}</span>
-        <span className="min-w-0">
-          <span className="flex flex-wrap items-center gap-2">
-            <span className="font-semibold text-ink">{titleCase(r.name)}</span>
-            {r.explanation?.bottleneck ? <Tag tone="ember">Bottleneck</Tag> : null}
-            <Tag tone={r.rec_type === "buktikan" ? "mint" : "neutral"}>{t(...REC[r.rec_type])}</Tag>
-          </span>
-          {r.explanation ? <span className="mt-1 block truncate text-sm text-ink/65">{firstSentence(r.explanation.why)}</span> : null}
-          {comp ? <MasteryBar value={comp.p} target={comp.required} className="mt-3 max-w-md" /> : null}
+    <section aria-labelledby="active-step">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <div className="min-w-0">
+          <p className="text-xs font-medium text-indigo">{t("Learning now", "Sedang dipelajari")}</p>
+          <h2 id="active-step" className="text-base font-semibold text-ink">{titleCase(step.name)}</h2>
+        </div>
+        <span className="tabular text-xs text-muted-foreground">
+          {t(`${step.materials.length - left.length} of ${step.materials.length} materials · about ${hours(step.hours)}`, `${step.materials.length - left.length} dari ${step.materials.length} materi · sekitar ${hours(step.hours)}`)}
         </span>
-        <ChevronRight className="size-5 text-ink/40" aria-hidden="true" />
-      </button>
-    </li>
+      </div>
+      {left.length ? (
+        <ul className="mt-3 divide-y border-y">
+          {left.slice(0, 2).map((m) => (
+            <li key={m.id}>
+              <a href={m.url} target="_blank" rel="noreferrer" className="flex items-start gap-2.5 py-3 text-sm hover:text-indigo">
+                <BookOpen className="mt-0.5 size-4 shrink-0 text-indigo" aria-hidden="true" />
+                <span className="min-w-0">
+                  <span className="block font-medium text-ink">{m.title}</span>
+                  <span className="block text-xs text-muted-foreground">{m.provider} · {m.hours} {t("h", "jam")}</span>
+                </span>
+                <ExternalLink className="ml-auto mt-0.5 size-3 shrink-0 text-ink/40" aria-hidden="true" />
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      <Link href={`/learn#step-${step.skill_id}`} className="mt-3 inline-block text-sm font-medium text-indigo underline-offset-4 hover:underline">
+        {t("Open this step in Learn →", "Buka langkah ini di Belajar →")}
+      </Link>
+    </section>
   );
 }
 
-/** Shown only on one-click demo profiles: what to try, in the order that shows the adaptive cycle. */
+/** The latest route change with its reason (Change History lives in Learn). Shown once there is more than the first route. */
+function LatestChange({ sid }: { sid: string }) {
+  const t = useT();
+  const h = useApi<{ id: number; created_at: string; trigger: string; summary: string; reasons: string[] }[]>(`/students/${sid}/history`);
+  const last = h.data?.[0];
+  if (!last || last.trigger === "initial") return null;
+  const [head, ...rest] = last.summary.split(": ");
+  // the trailing technical note, e.g. "(new project)", belongs to the full history, not the one-line summary
+  const line = (rest.length ? rest.join(": ") : head).replace(/\s*\([^()]+\)\s*$/, "");
+  return (
+    <section aria-labelledby="latest-change">
+      <div className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 id="latest-change" className="text-sm font-semibold text-ink">{t("Latest change", "Perubahan terakhir")}</h2>
+        <time dateTime={last.created_at} className="text-xs text-muted-foreground">{fmtDateTime(last.created_at)}</time>
+      </div>
+      <p className="mt-1 text-sm text-ink">{line}</p>
+      {last.reasons[0] ? <p className="mt-1 line-clamp-2 text-xs text-ink/70">{last.reasons[0]}</p> : null}
+      <Link href="/learn?tab=history" className="mt-2 inline-block text-sm font-medium text-indigo underline-offset-4 hover:underline">
+        {t("Every change and why →", "Semua perubahan dan alasannya →")}
+      </Link>
+    </section>
+  );
+}
+
+/** Shown only on one-click demo profiles: one line, with the three things to try folded under it. */
 function DemoGuide({ topId, topName }: { topId?: string; topName?: string }) {
   const t = useT();
   return (
-    <section aria-labelledby="demo-guide" className="rounded-2xl border border-indigo/30 bg-card p-5">
-      <h2 id="demo-guide" className="font-semibold text-ink">
-        {t("You are looking at a demo student", "Kamu sedang melihat mahasiswa demo")}
-      </h2>
-      <p className="mt-1 text-sm text-ink/75">
-        {t(
-          "Rani studies Information Systems (semester 6) and wants to become a Business Analyst. Her transcript is already in. Three things to try:",
-          "Rani kuliah Sistem Informasi (semester 6) dan ingin menjadi Business Analyst. Transkripnya sudah masuk. Tiga hal untuk dicoba:",
-        )}
-      </p>
-      <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-ink/80">
+    <details className="mt-2 text-sm">
+      <summary className="cursor-pointer text-muted-foreground">
+        {t("Demo profile, deleted after 2 days, never used in research. ", "Profil demo, dihapus setelah 2 hari, tidak dipakai untuk riset. ")}
+        <span className="font-medium text-indigo">{t("What to try", "Yang bisa dicoba")}</span>
+      </summary>
+      <ol className="mt-2 list-decimal space-y-1 pb-1 pl-5 text-sm text-ink/80">
         <li>{t("Open the first priority and read why it comes first: the job-ad quotes, what it unlocks, and what would change the order.", "Buka prioritas pertama dan baca kenapa ia didahulukan: kutipan lowongan, apa yang dibukanya, dan apa yang bisa mengubah urutannya.")}</li>
         <li>
           {topId ? (
             <Link href={`/assessment/${topId}`} className="font-medium text-indigo underline-offset-4 hover:underline">
-              {t(`Take the short check for ${topName}`, `Ikuti check singkat untuk ${topName}`)}
+              {t(`Take the short check for ${topName}`, `Ikuti cek singkat untuk ${topName}`)}
             </Link>
           ) : (
-            t("Take a short skill check", "Ikuti skill check singkat")
+            t("Take a short skill check", "Ikuti cek singkat")
           )}{" "}
-          {t("and watch the route reorder from the new evidence.", "dan lihat rutenya tersusun ulang dari evidence baru.")}
+          {t("and watch the route reorder from the new evidence.", "dan lihat rutenya tersusun ulang dari bukti baru.")}
         </li>
         <li>
           {t("Open", "Buka")}{" "}
-          <Link href="/history" className="font-medium text-indigo underline-offset-4 hover:underline">
-            Path History
+          <Link href="/learn?tab=history" className="font-medium text-indigo underline-offset-4 hover:underline">
+            {t("Change History in Learn", "Riwayat di Belajar")}
           </Link>{" "}
           {t("to see every change and the reason for it.", "untuk melihat setiap perubahan dan alasannya.")}
         </li>
       </ol>
-      <p className="mt-3 text-xs text-muted-foreground">{t("Demo profiles are deleted automatically after 2 days and are never used in research.", "Profil demo otomatis dihapus setelah 2 hari dan tidak pernah dipakai untuk riset.")}</p>
-    </section>
+    </details>
   );
 }
-
-function Areas({ d, measured }: { d: Dashboard; measured: boolean }) {
-  const t = useT();
-  const order = CLUSTER_ORDER.filter((k) => d.coverage_by_cluster[k]);
-  if (!measured)
-    return (
-      <Panel>
-        <p className="text-sm text-ink/70">
-          {t(
-            "Nothing measured yet. Add your transcript, a certificate or a project, or take the quick check, and your coverage per area appears here.",
-            "Belum ada yang terukur. Tambahkan transkrip, sertifikat atau project, atau ikuti Quick Check, dan coverage per area-mu muncul di sini.",
-          )}
-        </p>
-      </Panel>
-    );
-  return (
-    <Panel>
-      <ul className="grid gap-6 sm:grid-cols-2">
-        {order.map((k) => {
-          const c = d.coverage_by_cluster[k];
-          return (
-            <li key={k}>
-              <div className="mb-2 flex items-baseline justify-between">
-                <span className="font-medium text-ink">{c.label}</span>
-                <span className="tabular text-sm font-semibold text-ink">{c.measured === false ? t("Not measured", "Belum terukur") : pct(c.coverage)}</span>
-              </div>
-              <MasteryBar value={c.measured === false ? 0 : c.coverage} tone="indigo" />
-            </li>
-          );
-        })}
-      </ul>
-    </Panel>
-  );
-}
-
-function AllSkills({ comps, onOpen }: { comps: Competency[]; onOpen: (id: string) => void }) {
-  const [onlyGaps, setOnlyGaps] = useState(true);
-  const t = useT();
-  const rows = (onlyGaps ? comps.filter((c) => c.gap > 0.01) : comps).slice().sort((a, b) => b.demand - a.demand);
-  return (
-    <Panel className="p-0 sm:p-0">
-      <div className="flex items-center justify-between border-b px-5 py-3">
-        <p className="text-sm text-ink/70">{t(`${rows.length} skills, most in-demand first`, `${rows.length} skill, paling dicari dulu`)}</p>
-        <label className="flex items-center gap-2 text-sm text-ink/80">
-          <input type="checkbox" checked={onlyGaps} onChange={(e) => setOnlyGaps(e.target.checked)} className="size-4 accent-indigo" />
-          {t("Only skills to improve", "Hanya skill yang perlu ditingkatkan")}
-        </label>
-      </div>
-      <ul className="divide-y">
-        {rows.map((c) => (
-          <li key={c.skill_id}>
-            <button
-              type="button"
-              onClick={() => onOpen(c.skill_id)}
-              className="grid w-full grid-cols-[minmax(0,1fr)_minmax(0,40%)] items-center gap-4 px-5 py-3 text-left hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
-            >
-              <span className="min-w-0">
-                <span className="block truncate text-sm font-medium text-ink">{titleCase(c.name)}</span>
-                <span className="block text-xs text-ink/60">
-                  {t(...LEVEL[c.level])}, {t(`asked in ${pct(c.demand)} of postings`, `diminta di ${pct(c.demand)} posting`)}{c.low_confidence ? t(", little evidence yet", ", evidence masih sedikit") : ""}
-                </span>
-              </span>
-              <MasteryBar value={c.p} target={c.required} tone="indigo" />
-            </button>
-          </li>
-        ))}
-      </ul>
-    </Panel>
-  );
-}
-
-function WhyOrder({ d, names }: { d: Dashboard; names: Record<string, string> }) {
-  const t = useT();
-  const cf = d.counterfactual;
-  return (
-    <Panel>
-      <div className="mb-5 flex items-center gap-4">
-        <Mascot name="scale" size={80} className="hidden sm:block" />
-        <p className="max-w-2xl text-sm text-ink/75">
-          {t(
-            "We compared your route with simpler ways of ordering the same skills. \u201cStuck\u201d means a step comes before something it depends on.",
-            "Kami membandingkan rutemu dengan cara yang lebih sederhana untuk mengurutkan skill yang sama. \u201cMacet\u201d berarti sebuah langkah datang sebelum hal yang dibutuhkannya.",
-          )}
-        </p>
-      </div>
-      <ul className="space-y-3">
-        {cf.alternatives.map((a, i) => (
-          <li key={a.label} className={`rounded-xl border p-4 ${i === 0 ? "border-indigo/40 bg-secondary/40" : ""}`}>
-            <div className="flex flex-wrap items-center justify-between gap-2">
-              <span className="font-semibold text-ink">{i === 0 ? t("Your Route", "Rutemu") : titleCase(a.label)}</span>
-              <Tag tone={a.blocked ? "red" : "mint"}>{a.blocked ? t(`Stuck ${a.blocked}×`, `Macet ${a.blocked}×`) : t("Never stuck", "Tidak pernah macet")}</Tag>
-            </div>
-            <p className="mt-1.5 text-sm text-ink/70">{a.order.map((s) => names[s] ?? s).join(t(", then ", ", lalu "))}</p>
-          </li>
-        ))}
-      </ul>
-      {cf.notes.length ? <p className="mt-4 text-sm text-ink/70">{cf.notes[0]}</p> : null}
-    </Panel>
-  );
-}
-
-function HowRanked({ ranking }: { ranking: RankRow[] }) {
-  const f = ["G", "R", "D", "U", "K"] as const;
-  const t = useT();
-  return (
-    <Panel className="overflow-x-auto">
-      <div className="mb-4 flex items-center gap-4">
-        <Mascot name="magnifier" size={80} className="hidden sm:block" />
-        <p className="max-w-2xl text-sm text-ink/75">
-          {t(
-            "Each skill gets a priority score from these signals. Bigger gaps, higher demand, and skills that unlock others rank higher.",
-            "Setiap skill mendapat skor prioritas dari sinyal-sinyal ini. Gap lebih besar, demand lebih tinggi, dan skill yang membuka skill lain berada lebih atas.",
-          )}
-        </p>
-      </div>
-      <table className="w-full min-w-[560px] text-left text-sm">
-        <thead className="text-xs text-ink/60">
-          <tr>
-            <th className="py-2 pr-3 font-medium">Skill</th>
-            {f.map((k) => (
-              <th key={k} className="py-2 pr-3 text-right font-medium">
-                {FEATURE_LABELS[k]}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="tabular">
-          {ranking.slice(0, 10).map((r) => (
-            <tr key={r.skill_id} className="border-t">
-              <td className="py-2 pr-3 text-ink">
-                {r.rank}. {titleCase(r.name)}
-              </td>
-              {f.map((k) => (
-                <td key={k} className="py-2 pr-3 text-right text-ink/75">
-                  {num(r.features[k])}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </Panel>
-  );
-}
-
 
 // ------------------------------------------------------------- study arm A (control: skill list only)
 function ControlListView({ d, sid }: { d: Dashboard; sid: string }) {
   const rows = [...d.competencies].sort((a, b) => b.demand - a.demand).slice(0, 15);
   const t = useT();
   return (
-    <div className="space-y-12">
-      <section className="rounded-3xl bg-route-soft p-6 sm:p-8">
-        <h1 className="text-[30px] font-extrabold leading-tight text-ink">Hi, {d.student.display_name}</h1>
+    <div className="space-y-8">
+      <section className="rounded-2xl bg-route-soft p-5 sm:p-6">
+        <h1 className="text-[26px] font-extrabold leading-tight text-ink">Hi, {d.student.display_name}</h1>
         <p className="mt-1 text-ink/70">
           {t(`Skills employers ask for in ${d.role.n_postings} real`, `Skill yang diminta employer di ${d.role.n_postings} job posting nyata`)}{" "}
           <span className="font-semibold text-ink">{d.role.name}</span>
@@ -524,7 +283,7 @@ function ClarityPulse({ sid }: { sid: string }) {
     setDone(true);
   }
   return (
-    <section aria-label={t("Quick question", "Pertanyaan singkat")} className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border bg-card p-4">
+    <section aria-label={t("Quick question", "Pertanyaan singkat")} className="flex flex-wrap items-center justify-between gap-3">
       <p className="text-sm text-ink/85">
         <span className="font-medium text-ink">{t("Quick question:", "Pertanyaan singkat:")}</span> {t("\u201cI know which skill to learn next and why.\u201d", "\u201cAku tahu skill mana yang harus dipelajari berikutnya dan kenapa.\u201d")}
       </p>
@@ -593,63 +352,73 @@ function StudyPlanCard({ sid }: { sid: string }) {
 }
 
 
-// The clarity pulse asks "do you know what to learn next and why?", so it only appears once the student has opened the
-// explanation or returned for a second visit (PM audit UX-8).
-const PULSE_KEY = "pathsync.pulseReady";
-const PULSE_EVENT = "pathsync-pulse";
-function markPulseReady() {
-  try {
-    localStorage.setItem(PULSE_KEY, "1");
-    window.dispatchEvent(new Event(PULSE_EVENT));
-  } catch {}
-}
-function usePulseReady() {
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    const read = () => {
-      try {
-        setReady(localStorage.getItem(PULSE_KEY) === "1");
-      } catch {}
-    };
-    try {
-      // count one visit per browser session, however many times the dashboard mounts
-      if (!sessionStorage.getItem("pathsync.visitCounted")) {
-        sessionStorage.setItem("pathsync.visitCounted", "1");
-        const visits = Number(localStorage.getItem("pathsync.visits") ?? 0) + 1;
-        localStorage.setItem("pathsync.visits", String(visits));
-        if (visits >= 2) localStorage.setItem(PULSE_KEY, "1");
-      }
-    } catch {}
-    read();
-    window.addEventListener(PULSE_EVENT, read);
-    return () => window.removeEventListener(PULSE_EVENT, read);
-  }, []);
-  return ready;
-}
 
 
-/** Careers the same evidence already brings the student close to (links to the Career Map). */
+/** Careers the same evidence already brings the student close to (links to Pilih Karier). */
 function AlsoClose({ sid }: { sid: string }) {
   const careers = useApi<CareersData>(`/students/${sid}/careers`);
   const t = useT();
   const others = (careers.data?.careers ?? []).filter((c) => !c.is_target && c.n_measured > 0).slice(0, 3);
   if (!others.length) return null;
   return (
-    <section aria-labelledby="also-close" className="flex flex-col gap-4 rounded-2xl border bg-card p-6 sm:flex-row sm:items-center sm:p-8">
-      <Mascot name="signpost" size={88} className="hidden sm:block" />
-      <div className="min-w-0 flex-1">
-        <h2 id="also-close" className="text-lg font-semibold text-ink">{t("Your Skills Also Bring You Close To", "Skill-mu Juga Mendekatkanmu ke")}</h2>
-        <ul className="mt-3 flex flex-wrap gap-2">
-          {others.map((c) => (
-            <li key={c.id} className="rounded-full bg-secondary px-3 py-1 text-sm text-secondary-foreground">
-              {c.name} <span className="tabular font-semibold">{pct(c.readiness)}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <LinkButton href="/skill-map?tab=careers" variant="outline" size="lg" className="h-10 shrink-0">
-        {t("Explore Careers", "Jelajahi Karier")}
-      </LinkButton>
+    <section aria-labelledby="also-close">
+      <h2 id="also-close" className="text-sm font-semibold text-ink">{t("Also close to", "Juga dekat dengan")}</h2>
+      <ul className="mt-1.5 divide-y text-sm">
+        {others.map((c) => (
+          <li key={c.id}>
+            <Link href={`/careers?role=${c.id}`} className="flex items-baseline justify-between gap-3 py-1.5 hover:text-indigo">
+              <span className="min-w-0 text-ink">{c.name}</span>
+              <span className="tabular shrink-0 font-semibold text-ink">{pct(c.readiness)}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <Link href="/careers" className="mt-1.5 inline-block text-sm font-medium text-indigo underline-offset-4 hover:underline">
+        {t("Compare all careers →", "Bandingkan semua karier →")}
+      </Link>
     </section>
+  );
+}
+
+/** The three stages of the journey as one compact strip, each with its live status and a link into the stage. */
+function JourneyStrip({ d, hasEvidence }: { d: Dashboard; hasEvidence: boolean }) {
+  const t = useT();
+  const nEvidence = Object.entries(d.evidence_summary).filter(([k]) => k !== "assessment_items").reduce((a, [, v]) => a + v, 0);
+  const mats = d.path.flatMap((p) => p.materials);
+  const matsDone = mats.filter((m) => m.done).length;
+  const stages = [
+    {
+      href: hasEvidence ? "/skills" : "/evidence", title: t("Understand Your Skills", "Kenali Skill"), done: hasEvidence,
+      status: t(`${nEvidence} evidence · check ${d.diagnostic_done ? "done" : "not yet"}`, `${nEvidence} bukti · Cek ${d.diagnostic_done ? "selesai" : "belum"}`),
+    },
+    {
+      href: "/careers", title: t("Choose a Career", "Pilih Karier"), done: hasEvidence,
+      status: hasEvidence ? t(`${d.role.name} · ${pct(d.coverage)} ready`, `${d.role.name} · siap ${pct(d.coverage)}`) : d.role.name,
+    },
+    {
+      href: "/learn", title: t("Learn", "Belajar"), done: mats.length > 0 && matsDone === mats.length,
+      status: t(`${d.path.length} steps · ${matsDone}/${mats.length} materials`, `${d.path.length} langkah · ${matsDone}/${mats.length} materi`),
+    },
+  ];
+  return (
+    <nav aria-label={t("Your journey", "Perjalananmu")}>
+      <ol className="grid gap-4 sm:grid-cols-3 sm:gap-0">
+        {stages.map((s, i) => (
+          <li key={s.href} className="relative min-w-0 sm:pr-6">
+            {/* the line that joins this step to the next one */}
+            {i < stages.length - 1 ? <span className="absolute left-3 right-0 top-3 hidden h-px bg-border sm:block" aria-hidden="true" /> : null}
+            <Link href={s.href} className="group relative flex items-start gap-3 focus-visible:outline-none">
+              <span className={`relative flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ring-4 ring-background ${s.done ? "bg-mint" : "bg-indigo"}`} aria-hidden="true">
+                {s.done ? <Check className="size-3.5" /> : i + 1}
+              </span>
+              <span className="min-w-0 pt-0.5">
+                <span className="block text-sm font-semibold text-ink group-hover:text-indigo group-focus-visible:underline">{s.title}</span>
+                <span className="block text-xs text-muted-foreground">{s.status}</span>
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ol>
+    </nav>
   );
 }
