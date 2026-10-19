@@ -87,6 +87,7 @@ const TITLES: [string, [string, string]][] = [
   ["/skills", ["Understand Your Skills", "Kenali Skill"]],
   ["/evidence", ["Add Evidence", "Tambah Bukti"]],
   ["/assessment", ["Skill Check", "Cek Kemampuan"]],
+  ["/careers/check", ["Check a Job Posting", "Cek Lowongan"]],
   ["/careers", ["Choose a Career", "Pilih Karier"]],
   ["/learn", ["Learn", "Belajar"]],
   ["/settings", ["Settings & Data", "Pengaturan & Data"]],
