@@ -69,7 +69,7 @@ export default function Landing() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
         <Logo />
         <nav aria-label={t("Site", "Situs")} className="flex items-center gap-1 sm:gap-2">
-          <Link href="/market" className="hidden rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:text-ink sm:inline-block">
+          <Link href="/careers" className="hidden rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:text-ink sm:inline-block">
             Job Market
           </Link>
           <Link href="/how-it-works" className="hidden rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:text-ink sm:inline-block">
@@ -96,7 +96,7 @@ export default function Landing() {
             <Button size="lg" className="h-12 px-6 text-[15px]" onClick={() => setStartRole("business_analyst")}>
               {t("Start Your Path", "Mulai Path-mu")}
             </Button>
-            <LinkButton href="/market" variant="outline" size="lg" className="h-12 px-6 text-[15px]">
+            <LinkButton href="/careers" variant="outline" size="lg" className="h-12 px-6 text-[15px]">
               {t("Explore the Job Market", "Jelajahi Job Market")}
             </LinkButton>
           </div>
@@ -189,7 +189,7 @@ export default function Landing() {
               body: t("Paste your transcript and add certificates or a project. Skip anything you don't have.", "Tempel transkripmu dan tambahkan sertifikat atau project. Lewati yang tidak kamu punya."),
             },
             {
-              title: t("Take a Quick Check", "Ikuti Quick Check"),
+              title: t("Take a Quick Check", "Ikuti Cek Kemampuan"),
               body: t("Answer about 24 short questions so we can see what you can already do.", "Jawab sekitar 24 soal singkat supaya kami tahu apa yang sudah bisa kamu lakukan."),
             },
             {

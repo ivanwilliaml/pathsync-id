@@ -6,6 +6,7 @@ import { pct, titleCase } from "@/lib/format";
 import type { Meta } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
 import { setStaffToken, useStaffToken } from "@/lib/staff";
+import { DemoBanner } from "@/components/staff-demo";
 import { Button } from "@/components/ui/button";
 import { StaffLogin } from "@/components/staff-login";
 import { EmptyState, ErrorNote, Loading, MasteryBar, NativeSelect, PageHeader, Panel, SectionTitle, Tag } from "@/components/kit";
@@ -55,7 +56,7 @@ export default function AdvisorPage() {
       <div className="mx-auto max-w-md">
         <PageHeader mascot="advisor" title={t("Lecturer View", "Tampilan Dosen")} description={t("Class-level insight: where your students stand against what employers ask for.", "Wawasan tingkat kelas: posisi mahasiswamu dibandingkan yang diminta employer.")} />
         <Panel>
-          <StaffLogin role="advisor" error={cohorts.error} hint={t("Use the lecturer key you received when your class was created.", "Gunakan key dosen yang kamu terima saat kelasmu dibuat.")} />
+          <StaffLogin role="advisor" error={cohorts.error} hint={t("Sign in with the account the PathSync admin invited you to.", "Masuk dengan akun yang diundang admin PathSync.")} />
         </Panel>
       </div>
     );
@@ -63,7 +64,7 @@ export default function AdvisorPage() {
   if (!cohorts.data.length) return <EmptyState title={t("No Classes Yet", "Belum Ada Kelas")} mascot="group">{t("Ask the PathSync team to create a class for you.", "Minta tim PathSync membuatkan kelas untukmu.")}</EmptyState>;
   const co = cohorts.data.find((c) => c.id === current)!;
   return (
-    <div className="space-y-12">
+    <div className="space-y-8">
       <PageHeader mascot="advisor"
         title={t("Lecturer View", "Tampilan Dosen")}
         description={t("Anonymous, class-level gaps against the job market. Use it to plan class sessions, assignments and electives.", "Gap anonim tingkat kelas dibandingkan pasar kerja. Gunakan untuk merencanakan sesi kelas, tugas, dan mata kuliah pilihan.")}
@@ -73,6 +74,7 @@ export default function AdvisorPage() {
           </Button>
         }
       />
+      <DemoBanner />
       <Panel className="flex flex-wrap items-center gap-4">
         <GraduationCap className="size-6 text-indigo" aria-hidden="true" />
         <NativeSelect aria-label={t("Class", "Kelas")} value={current} onChange={(e) => setSel(e.target.value)} className="min-w-0 flex-1">

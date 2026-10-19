@@ -421,7 +421,11 @@ def _reasons(prev: list[dict], cur: list[dict], rec: dict, names: dict[str, str]
             causes.append(t("history.cause.trend_up" if b["T"] > a["T"] else "history.cause.trend_down"))
         if not causes:
             causes.append(t("history.cause.dependents"))
-        move = t("history.move_up") if b["rank"] < a["rank"] else t("history.move_down") if b["rank"] > a["rank"] else t("history.stayed")
+        if a["rank"] == b["rank"]:
+            # same place, different score: say it kept its place instead of "moved #1 to #1"
+            reasons.append(t("history.kept", name=nm, rank=b["rank"], causes=", ".join(causes)))
+            continue
+        move = t("history.move_up") if b["rank"] < a["rank"] else t("history.move_down")
         reasons.append(t("history.moved", name=nm, move=move, a=a["rank"], b=b["rank"], causes=", ".join(causes)))
     top_prev = prev[0]["skill_id"] if prev else None
     top_cur = cur[0]["skill_id"] if cur else None

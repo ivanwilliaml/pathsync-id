@@ -58,7 +58,7 @@ function StageView({ s }: { s: Stage }) {
   return (
     <div>
       <p className="font-medium text-ink">{s.stage}</p>
-      {s.formula ? <p className="mt-0.5 font-mono text-[11px] text-ink/70">{s.formula}</p> : null}
+      {s.formula ? <p className="mt-0.5 font-mono text-xs text-ink/70">{s.formula}</p> : null}
       {rows?.length ? (
         <div className="mt-2 overflow-x-auto">
           <table className="w-full text-xs">

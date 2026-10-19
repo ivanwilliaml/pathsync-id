@@ -83,19 +83,18 @@ export function LangSwitch({ className }: { className?: string }) {
 // Tab titles per route, [English, Indonesian]. The server renders the Indonesian ones (page metadata); this swaps
 // them when the visitor picked English. Kept in step with the metadata in each app/*/layout.tsx.
 const TITLES: [string, [string, string]][] = [
-  ["/dashboard", ["Dashboard", "Dashboard"]],
+  ["/dashboard", ["Home", "Beranda"]],
+  ["/skills", ["Understand Your Skills", "Kenali Skill"]],
+  ["/evidence", ["Add Evidence", "Tambah Bukti"]],
+  ["/assessment", ["Skill Check", "Cek Kemampuan"]],
+  ["/careers", ["Choose a Career", "Pilih Karier"]],
   ["/learn", ["Learn", "Belajar"]],
-  ["/classroom", ["My Classes", "Kelas Saya"]],
-  ["/evidence", ["My Evidence", "Evidence Saya"]],
-  ["/assessment", ["Quick Check", "Quick Check"]],
-  ["/skill-map", ["Skill Map", "Skill Map"]],
-  ["/history", ["Path History", "Path History"]],
   ["/settings", ["Settings & Data", "Pengaturan & Data"]],
-  ["/market", ["Job Market", "Job Market"]],
-  ["/how-it-works", ["How the AI Works", "Cara Kerja AI"]],
+  ["/how-it-works", ["Methodology & Data", "Metode & Data"]],
   ["/advisor", ["Lecturer View", "Tampilan Dosen"]],
   ["/experts", ["Expert Panel", "Panel Pakar"]],
   ["/admin", ["Admin", "Admin"]],
+  ["/staff/accept", ["Set Your Password", "Atur Password"]],
   ["/privacy", ["Privacy Policy", "Kebijakan Privasi"]],
   ["/about", ["About & Contact", "Tentang & Kontak"]],
 ];

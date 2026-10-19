@@ -31,7 +31,7 @@ export default function AboutPage() {
             Dibangun oleh Team cupuu. Sumber data: Karirhub (Kemnaker) dan halaman karier perusahaan. Cara kerja lengkap, termasuk model yang
             dipakai dan batasannya, ada di{" "}
             <Link href="/how-it-works" className="font-medium text-indigo underline">
-              Cara Kerja AI
+              Metode & Data
             </Link>
             .
           </p>

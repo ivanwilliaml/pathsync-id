@@ -33,7 +33,7 @@ function SkillCheck({ sid, skill }: { sid: string; skill: string }) {
   return (
     <div>
       <header className="mx-auto mb-8 max-w-3xl">
-        <h1 className="text-[28px] font-extrabold leading-tight text-ink sm:text-[32px]">{t(`Prove Your ${name}`, `Buktikan ${name}-mu`)}</h1>
+        <h1 className="text-[24px] font-extrabold leading-tight text-ink sm:text-[26px]">{t(`Prove Your ${name}`, `Buktikan ${name}-mu`)}</h1>
         <p className="mt-2 text-ink/70">
           {t(
             `You\u2019re currently at ${t(...level(r.data.p))} level (${num(r.data.p)}). Each right answer moves your level up right away.`,

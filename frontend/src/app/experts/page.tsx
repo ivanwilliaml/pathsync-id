@@ -8,6 +8,7 @@ import { api, type Meta } from "@/lib/api";
 import { num, pct, titleCase } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { setStaffToken, useStaffToken } from "@/lib/staff";
+import { DemoBanner, useIsDemo } from "@/components/staff-demo";
 import { StaffLogin } from "@/components/staff-login";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -80,10 +81,11 @@ function Experts() {
   if (me && task === "scenarios") return <ScenarioRanking me={me} onBack={() => go(null)} />;
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-8">
+      <DemoBanner />
       <section className="grid items-center gap-8 lg:grid-cols-[1.1fr_1fr]">
         <div>
-          <h1 className="text-[32px] font-extrabold leading-tight text-ink sm:text-[38px]">{t("Expert Panel", "Panel Pakar")}</h1>
+          <h1 className="text-[26px] font-extrabold leading-tight text-ink sm:text-[30px]">{t("Expert Panel", "Panel Pakar")}</h1>
           <p className="mt-3 max-w-lg text-lg text-ink/75">
             {t(
               "Lecturers, practitioners, and recruiters check the prerequisite map and rank example students. Your judgement trains how PathSync orders skills.",
@@ -92,7 +94,7 @@ function Experts() {
           </p>
           <Panel className="mt-6">
             {!token || who.error ? (
-              <StaffLogin role="expert" error={who.error} hint={t("Use the personal sign-in key the PathSync team sent you.", "Gunakan key masuk pribadi yang dikirim tim PathSync.")} />
+              <StaffLogin role="expert" error={who.error} hint={t("Sign in with the account the PathSync team invited you to.", "Masuk dengan akun yang diundang tim PathSync.")} />
             ) : who.data?.role === "admin" ? (
               <div className="space-y-1.5">
                 <Label htmlFor="who">{t("Facilitating for", "Memfasilitasi untuk")}</Label>
@@ -104,7 +106,7 @@ function Experts() {
                     </option>
                   ))}
                 </NativeSelect>
-                <p className="text-xs text-muted-foreground">{t("Add experts and send them their keys from Admin, Team.", "Tambahkan pakar dan kirim key mereka dari Admin, Tim.")}</p>
+                <p className="text-xs text-muted-foreground">{t("Invite experts from Admin, Team & Classes.", "Undang pakar dari Admin, Tim & Kelas.")}</p>
               </div>
             ) : me ? (
               <div className="flex items-center justify-between gap-3">
@@ -172,11 +174,12 @@ function TaskHeader({ title, onBack, done, total }: { title: string; onBack: () 
   const t = useT();
   return (
     <div className="mb-6">
+      <DemoBanner />
       <Button variant="ghost" onClick={onBack} className="-ml-2 mb-3">
         <ArrowLeft /> {t("All Tasks", "Semua Tugas")}
       </Button>
       <div className="flex flex-wrap items-end justify-between gap-3">
-        <h1 className="text-[28px] font-extrabold text-ink">{title}</h1>
+        <h1 className="text-[24px] font-extrabold text-ink">{title}</h1>
         <span className="tabular text-sm text-ink/70">
           {t(`${done} of ${total} done`, `${done} dari ${total} selesai`)}
         </span>
@@ -190,6 +193,7 @@ function TaskHeader({ title, onBack, done, total }: { title: string; onBack: () 
 
 // ------------------------------------------------------------------ prerequisite review
 function EdgeReview({ me, onBack }: { me: Expert; onBack: () => void }) {
+  const demo = useIsDemo();
   const edges = useApi<EdgeRow[]>(`/expert/edges?expert_id=${me.id}`);
   const [skipped, setSkipped] = useState<number[]>([]);
   const [suggest, setSuggest] = useState(false);
@@ -201,11 +205,11 @@ function EdgeReview({ me, onBack }: { me: Expert; onBack: () => void }) {
 
   const vote = useCallback(
     async (approve: boolean) => {
-      if (!current) return;
+      if (!current || demo) return;
       await api.post(`/expert/edges/${current.id}/vote`, { expert_id: me.id, approve });
       edges.reload();
     },
-    [current, edges, me.id],
+    [current, edges, me.id, demo],
   );
 
   useEffect(() => {
@@ -235,10 +239,10 @@ function EdgeReview({ me, onBack }: { me: Expert; onBack: () => void }) {
             {current.rationale}
           </div>
           <div className="mt-6 grid grid-cols-3 gap-2">
-            <Button size="lg" className="h-12" onClick={() => vote(true)}>
+            <Button size="lg" className="h-12" onClick={() => vote(true)} disabled={demo}>
               {t("Yes", "Ya")}
             </Button>
-            <Button size="lg" variant="outline" className="h-12" onClick={() => vote(false)}>
+            <Button size="lg" variant="outline" className="h-12" onClick={() => vote(false)} disabled={demo}>
               {t("No", "Tidak")}
             </Button>
             <Button size="lg" variant="ghost" className="h-12" onClick={() => setSkipped((s) => [...s, current.id])}>
@@ -265,7 +269,7 @@ function EdgeReview({ me, onBack }: { me: Expert; onBack: () => void }) {
         </Panel>
       )}
       <div className="mt-6 text-center">
-        <Button variant="ghost" onClick={() => setSuggest(true)}>
+        <Button variant="ghost" onClick={() => setSuggest(true)} disabled={demo}>
           <Plus /> {t("Suggest a Missing Link", "Usulkan Tautan yang Hilang")}
         </Button>
       </div>
@@ -343,6 +347,7 @@ function SuggestDialog({ open, onOpenChange, onAdded }: { open: boolean; onOpenC
 
 // ------------------------------------------------------------------ scenario ranking
 function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
+  const demo = useIsDemo();
   const list = useApi<ScenarioRow[]>(`/expert/scenarios?expert_id=${me.id}`);
   const [sel, setSel] = useState<string | null>(null);
   const detail = useApi<ScenarioDetail>(sel ? `/expert/scenarios/${sel}` : null);
@@ -444,7 +449,7 @@ function ScenarioRanking({ me, onBack }: { me: Expert; onBack: () => void }) {
               })}
             </ul>
             <div className="mt-6 flex flex-wrap items-center gap-2">
-              <Button size="lg" className="h-11 px-6" onClick={save} disabled={!complete || busy}>
+              <Button size="lg" className="h-11 px-6" onClick={save} disabled={!complete || busy || demo}>
                 {busy ? t("Saving…", "Menyimpan…") : complete ? t("Save and Next", "Simpan dan Lanjut") : t(`Rank ${cands.length - order.length} More`, `Ranking ${cands.length - order.length} Lagi`)}
               </Button>
               <Button variant="ghost" size="lg" className="h-11" onClick={() => setOrder(order.slice(0, -1))} disabled={!order.length}>
