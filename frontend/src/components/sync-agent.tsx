@@ -78,7 +78,7 @@ export function SyncAgent({ sid }: { sid: string }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="fixed right-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-2 rounded-full border bg-card py-1.5 pl-1.5 pr-4 text-sm font-semibold text-ink shadow-lg transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:right-6 lg:bottom-6"
+        className="fixed right-4 bottom-[calc(5rem+env(safe-area-inset-bottom))] z-30 flex items-center gap-2 rounded-full border border-white/60 bg-[color-mix(in_oklab,var(--indigo)_14%,transparent)] py-1.5 pl-1.5 pr-4 text-sm font-semibold text-ink shadow-[0_8px_24px_-6px_color-mix(in_oklab,var(--indigo)_45%,transparent),inset_0_1px_0_rgb(255_255_255/0.7)] ring-1 ring-[color-mix(in_oklab,var(--indigo)_25%,transparent)] backdrop-blur-md backdrop-saturate-150 transition-[transform,background-color] hover:-translate-y-0.5 hover:bg-[color-mix(in_oklab,var(--indigo)_22%,transparent)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring lg:right-6 lg:bottom-6"
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/mascot/logo.webp" alt="" width={32} height={32} className="size-8" />
