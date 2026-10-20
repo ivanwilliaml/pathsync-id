@@ -1,10 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BookOpen, Check, ChevronDown, Crosshair, ExternalLink, GraduationCap, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { api, type Dashboard, type Material, type PathStep } from "@/lib/api";
-import { DIFFICULTY, FORMAT, LEVEL, firstSentence, hours, titleCase } from "@/lib/format";
+import { DIFFICULTY, FORMAT, LEVEL, firstSentence, hours, titleCase, weeks } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { useT, type T } from "@/lib/i18n";
 import { useStudentId } from "@/lib/student";
@@ -167,8 +168,15 @@ function Learn({ sid }: { sid: string }) {
         title={t("Learn", "Belajar")}
         stats={[
           [t("Target", "Target"), data.role.name],
-          [t("Study time", "Waktu belajar"), t(`${weekly} h / week`, `${weekly} jam / minggu`)],
-          [t("Whole route", "Seluruh rute"), t(`about ${hours(data.path_hours)}`, `sekitar ${hours(data.path_hours)}`)],
+          // the bootcamp question: how long until I'm ready, at the pace I set
+          [t("Ready in", "Perkiraan siap"), data.path_hours > 0 ? weeks(data.path_weeks ?? data.path_hours / weekly) : t("Route done", "Rute selesai")],
+          [t("Whole route", "Seluruh rute"), (
+            <span key="pace">
+              {t(`about ${hours(data.path_hours)}`, `sekitar ${hours(data.path_hours)}`)}
+              <span className="font-normal text-muted-foreground"> · {t(`${weekly} h/week`, `${weekly} jam/minggu`)} </span>
+              <Link href="/settings" className="font-normal text-indigo hover:underline">{t("change", "ubah")}</Link>
+            </span>
+          )],
           [t("Materials", "Materi"), t(`${finished} of ${all.length} done`, `${finished} dari ${all.length} selesai`)],
         ]}
         actions={<LinkButton href="/careers" variant="outline" size="sm">{t("Change target", "Ganti target")}</LinkButton>}

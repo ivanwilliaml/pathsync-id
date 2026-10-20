@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BookOpen, Check, ChevronRight, ExternalLink } from "lucide-react";
 import { api, type Dashboard } from "@/lib/api";
-import { firstSentence, fmtDateTime, hours, pct, titleCase } from "@/lib/format";
+import { firstSentence, fmtDateTime, hours, pct, titleCase, weeks } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { useT } from "@/lib/i18n";
 import { usePulseReady } from "@/lib/pulse";
@@ -122,6 +122,15 @@ function DashboardView({ sid }: { sid: string }) {
             {f.evidence ? <span className="tabular mt-0.5 block text-[28px] font-bold leading-tight text-ink">{hasEvidence ? pct(d.coverage) : "–"}</span> : null}
             <span className="mt-1 block text-sm font-medium text-indigo group-hover:underline">{t("See my skills →", "Lihat skill-ku →")}</span>
           </Link>
+          {hasEvidence && d.path_hours > 0 ? (
+            <Link href="/learn" className="group block">
+              <span className="block text-sm font-semibold text-ink">{t("Ready in", "Perkiraan siap")}</span>
+              <span className="tabular mt-0.5 block text-[22px] font-bold leading-tight text-ink">{weeks(d.path_weeks)}</span>
+              <span className="mt-1 block text-xs text-muted-foreground">
+                {t(`${hours(d.path_hours)} left at your weekly pace`, `sisa ${hours(d.path_hours)} dengan ritme mingguanmu`)}
+              </span>
+            </Link>
+          ) : null}
           {hasEvidence ? <AlsoClose sid={sid} /> : null}
           <LatestChange sid={sid} />
           {pulseReady ? <ClarityPulse sid={sid} /> : null}
