@@ -16,6 +16,7 @@ import { Mascot } from "@/components/mascot";
 import { ReadinessRing } from "@/components/readiness-ring";
 import { RequireStudent } from "@/components/require-student";
 import { useSkillSheet } from "@/components/skill-sheet";
+import { safeUrl } from "@/lib/safe-url";
 
 export default function DashboardPage() {
   return <RequireStudent>{(sid) => <DashboardView sid={sid} />}</RequireStudent>;
@@ -151,7 +152,7 @@ function ActiveStep({ step }: { step: Dashboard["path"][number] }) {
         <ul className="mt-3 divide-y border-y">
           {left.slice(0, 2).map((m) => (
             <li key={m.id}>
-              <a href={m.url} target="_blank" rel="noreferrer" className="flex items-start gap-2.5 py-3 text-sm hover:text-indigo">
+              <a href={safeUrl(m.url)} target="_blank" rel="noreferrer" className="flex items-start gap-2.5 py-3 text-sm hover:text-indigo">
                 <BookOpen className="mt-0.5 size-4 shrink-0 text-indigo" aria-hidden="true" />
                 <span className="min-w-0">
                   <span className="block font-medium text-ink">{m.title}</span>

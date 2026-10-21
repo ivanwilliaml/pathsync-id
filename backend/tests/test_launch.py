@@ -304,3 +304,14 @@ def test_diagnostic_keeps_related_topics_together(client):
     runs = [c for i, c in enumerate(clusters) if i == 0 or c != clusters[i - 1]]
     assert len(runs) == len(set(runs)), runs           # each cluster appears as one block
     assert 20 <= len(plan) <= 26
+
+
+def test_staff_session_probe_is_quiet_for_anonymous_visitors(client):
+    """The web app checks for a staff session on every page; an anonymous student must not get a 401 each time."""
+    client.delete("/api/staff/session")
+    assert client.get("/api/staff/session").status_code == 401                    # plain call: unchanged
+    r = client.get("/api/staff/session?probe=1")
+    assert r.status_code == 200 and r.json() == {"role": None}
+    assert client.post("/api/staff/session", json={"token": ADMIN_TOKEN}).status_code == 200
+    assert client.get("/api/staff/session?probe=1").json()["role"] == "admin"
+    client.delete("/api/staff/session")

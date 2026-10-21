@@ -223,8 +223,8 @@ def _decision_text(code: str, skill_id: str, name: str, st: LoopState, names: di
     n_applied = st.tiers["applied"].total if "applied" in st.tiers else 0
     text = {
         "mastered": (tr("Mastered: move on", "Dikuasai: lanjut"),
-                     tr(f"Your proven level meets the target and you applied it to a different case.",
-                        f"Level terbuktimu memenuhi target dan kamu sudah menerapkannya di kasus berbeda."),
+                     tr("Your proven level meets the target and you applied it to a different case.",
+                        "Level terbuktimu memenuhi target dan kamu sudah menerapkannya di kasus berbeda."),
                      "/learn", tr("Go to the next step", "Ke langkah berikutnya")),
         "transfer": (tr("Try it on a different case", "Coba di kasus berbeda"),
                      tr("The check says you have it. One different case first, to be sure it carries over.",

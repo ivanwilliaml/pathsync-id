@@ -32,6 +32,7 @@ from pathsync.db import (
     PostingMention,
     RankerModel,
     active_snapshot,
+    active_snapshot_summaries,
     utcnow,
 )
 from pathsync.embeddings import WARM
@@ -123,13 +124,13 @@ def bps_context():
 @router.get("/meta")
 def meta(s: Session = Depends(db_session)):
     tax = load_taxonomy()
-    snaps = {r: (snap.version if (snap := active_snapshot(s, r)) else None) for r in ROLES}
+    summaries = active_snapshot_summaries(s)
+    snaps = {r: (summaries[r]["version"] if r in summaries else None) for r in ROLES}
     skills = display_skills()
     ranker = s.scalars(select(RankerModel).where(RankerModel.active.is_(True))).first()
     role_info = []
     for k, v in ROLES.items():
-        snap = active_snapshot(s, k)
-        n = snap.data.get("n_postings", 0) if snap else 0
+        n = summaries[k]["n_postings"] if k in summaries else 0
         role_info.append({"id": k, "name": v["name"], "family": v.get("family", ""), "blurb": role_blurb(k, v.get("blurb", "")),
                           "n_postings": n, "limited_data": n < LIMITED_DATA_POSTINGS})
     return {"roles": role_info, "families": family_names(), "clusters": cluster_names(),

@@ -33,7 +33,11 @@ MAX_DOCX_UNZIPPED = 40 * 1024 * 1024     # a 5 MB .docx must not expand into gig
 
 
 class DocumentRejected(ValueError):
-    """The file is readable in principle but too large or damaged to parse safely."""
+    """The file is damaged or not what its extension says (HTTP 422)."""
+
+
+class DocumentTooLarge(DocumentRejected):
+    """The file expands to more than the parser will accept, e.g. a zip bomb (HTTP 413)."""
 
 
 def document_to_text(data: bytes, filename: str) -> str:
@@ -43,7 +47,7 @@ def document_to_text(data: bytes, filename: str) -> str:
 
         with pdfplumber.open(io.BytesIO(data)) as pdf:
             if len(pdf.pages) > MAX_PDF_PAGES:
-                raise DocumentRejected(tr(f"This PDF has {len(pdf.pages)} pages; the limit is {MAX_PDF_PAGES}.",
+                raise DocumentTooLarge(tr(f"This PDF has {len(pdf.pages)} pages; the limit is {MAX_PDF_PAGES}.",
                                           f"PDF ini punya {len(pdf.pages)} halaman; batasnya {MAX_PDF_PAGES}."))
             return "\n".join((p.extract_text() or "") for p in pdf.pages)
     if name.endswith(".docx"):
@@ -56,7 +60,7 @@ def document_to_text(data: bytes, filename: str) -> str:
         except zipfile.BadZipFile as e:
             raise DocumentRejected(tr("This .docx file is damaged or is not a Word document.", "File .docx ini rusak atau bukan dokumen Word.")) from e
         if unzipped > MAX_DOCX_UNZIPPED:
-            raise DocumentRejected(tr("This .docx expands to more than 40 MB. Save it again, or paste the text instead.", "File .docx ini membengkak lebih dari 40 MB. Simpan ulang, atau tempel teksnya."))
+            raise DocumentTooLarge(tr("This .docx expands to more than 40 MB. Save it again, or paste the text instead.", "File .docx ini membengkak lebih dari 40 MB. Simpan ulang, atau tempel teksnya."))
         d = docx.Document(io.BytesIO(data))
         parts = [p.text for p in d.paragraphs]
         for t in d.tables:

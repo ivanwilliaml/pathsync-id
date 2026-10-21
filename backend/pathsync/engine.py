@@ -28,7 +28,7 @@ from .db import (
     RankerModel,
     RecommendationHistory,
     Student,
-    active_snapshot,
+    active_snapshot_summaries,
     cache_epoch,
 )
 from .demand import MarketMap
@@ -167,8 +167,9 @@ def load_context(s: Session, role: str) -> Context:
         memo["shared"] = (s.scalars(select(RankerModel.id).where(RankerModel.active.is_(True))
                                     .order_by(RankerModel.id.desc())).first(), cache_epoch(s))
     if role not in memo:
-        snap = active_snapshot(s, role)
-        memo[role] = snap.id if snap else None
+        if "snapshots" not in memo:      # one query for all roles instead of one per role (careers_for walks every role)
+            memo["snapshots"] = active_snapshot_summaries(s)
+        memo[role] = (memo["snapshots"].get(role) or {}).get("id")
     model_row, epoch = memo["shared"]
     key = (role, memo[role], model_row, epoch, get_lang())   # names are per language
     with _CTX_LOCK:

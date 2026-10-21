@@ -203,9 +203,10 @@ def test_practice_attempts_are_exported_and_erased(client, demo):
     sid, h = demo
     exp = client.get(f"/api/students/{sid}/export", headers=h).json()
     assert exp["practice_attempts"]
+    from sqlalchemy import func, select
+
     from pathsync.db import PracticeAttempt, get_session
     from pathsync.retention import erase_students
-    from sqlalchemy import func, select
 
     with get_session() as s:
         erase_students(s, [sid])

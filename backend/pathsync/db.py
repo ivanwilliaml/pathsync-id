@@ -474,6 +474,15 @@ def get_session() -> Session:
     return SessionLocal()
 
 
+def active_snapshot_summaries(s: Session) -> dict[str, dict]:
+    """{role: {"id", "version", "n_postings"}} of every active snapshot in ONE small query (no skill JSON loaded).
+    Callers that look at all roles (landing page, career map) used to run one active_snapshot() query per role."""
+    rows = s.execute(select(MarketSnapshot.role, MarketSnapshot.id, MarketSnapshot.version,
+                            MarketSnapshot.data["n_postings"].as_integer())
+                     .where(MarketSnapshot.active.is_(True)).order_by(MarketSnapshot.id)).all()
+    return {role: {"id": sid, "version": version, "n_postings": n or 0} for role, sid, version, n in rows}   # highest id wins
+
+
 def active_snapshot(s: Session, role: str) -> MarketSnapshot | None:
     return s.scalars(select(MarketSnapshot).where(MarketSnapshot.role == role, MarketSnapshot.active.is_(True))
                      .order_by(MarketSnapshot.id.desc())).first()

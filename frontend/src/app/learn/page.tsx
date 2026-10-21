@@ -18,6 +18,7 @@ import { HowRanked, WhyOrder } from "@/components/route-insights";
 import { Connections } from "@/components/skill-connections";
 import { useSkillSheet } from "@/components/skill-sheet";
 import { LoopDecision, LoopStages, LoopTarget, loopSummary } from "@/components/learning-loop";
+import { safeUrl } from "@/lib/safe-url";
 
 type Tab = "route" | "week" | "why";
 type RouteView = "list" | "map";
@@ -407,7 +408,7 @@ function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, course
                 </button>
                 <div className="min-w-0 flex-1">
                   <a
-                    href={m.url}
+                    href={safeUrl(m.url)}
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => track("material_clicked", { skill: s.skill_id })}

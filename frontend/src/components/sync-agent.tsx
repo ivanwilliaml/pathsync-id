@@ -9,6 +9,7 @@ import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "./ui/sheet";
 import { Tag } from "./kit";
+import { safeUrl } from "@/lib/safe-url";
 
 // Sync, the in-app assistant (backend: pathsync/sync_agent.py). The reply is the model's words; the cards below it
 // (a job posting word for word, a skill-match table) come straight from PathSync data, never from the model.
@@ -331,7 +332,7 @@ function Posting({ c }: { c: PostingCard }) {
           <ChevronDown className={cn("size-4 transition-transform", full && "rotate-180")} aria-hidden="true" />
         </button>
         {c.url ? (
-          <a href={c.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-ink">
+          <a href={safeUrl(c.url)} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-ink">
             {t("Source", "Sumber")} <ExternalLink className="size-3" aria-hidden="true" />
           </a>
         ) : null}

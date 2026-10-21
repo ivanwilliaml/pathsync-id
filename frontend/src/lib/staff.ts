@@ -76,8 +76,8 @@ export function useStaffSession(): { session: StaffSession | null; ready: boolea
     let alive = true;
     const load = () =>
       api
-        .get<StaffSession>("/staff/session")
-        .then((session) => alive && setState({ session, ready: true }))
+        .get<StaffSession | { role: null }>("/staff/session?probe=1")
+        .then((r) => alive && setState({ session: r.role ? (r as StaffSession) : null, ready: true }))
         .catch(() => alive && setState({ session: null, ready: true }));
     load();
     window.addEventListener(EVENT, load);

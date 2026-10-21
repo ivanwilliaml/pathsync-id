@@ -11,6 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { DecisionTrace } from "./decision-trace";
 import { LinkButton, MasteryBar, Tag } from "./kit";
 import { useT } from "@/lib/i18n";
+import { safeUrl } from "@/lib/safe-url";
 
 export interface SkillDetail {
   skill_id: string;
@@ -77,7 +78,7 @@ export function SkillSheet({ detail, onOpenChange }: { detail: SkillDetail | nul
                       {step.materials.map((m) => (
                         <li key={m.id}>
                           <a
-                            href={m.url}
+                            href={safeUrl(m.url)}
                             onClick={() => track("material_clicked", { skill: step.skill_id })}
                             target="_blank"
                             rel="noreferrer"
@@ -165,7 +166,7 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
 function QuoteCard({ q }: { q: Explanation["quotes"][number] }) {
   return (
     <a
-      href={q.url}
+      href={safeUrl(q.url)}
       target="_blank"
       rel="noreferrer"
       className="block rounded-xl border bg-card p-3.5 transition-colors hover:border-indigo/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"

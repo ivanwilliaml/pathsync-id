@@ -31,6 +31,7 @@ from pathsync.engine import decision_trace, materials_by_skill, record_history
 from pathsync.i18n import tr
 from pathsync.intake import (
     DocumentRejected,
+    DocumentTooLarge,
     academic_evidence,
     artifact_signature,
     certificate_evidence,
@@ -213,8 +214,10 @@ def _text_from(text: str, file: UploadFile | None) -> tuple[str, str | None]:
         data, name = read_upload(file)
         try:
             text = document_to_text(data, name)
-        except DocumentRejected as e:
+        except DocumentTooLarge as e:
             raise HTTPException(413, str(e)) from e
+        except DocumentRejected as e:
+            raise HTTPException(422, str(e)) from e
         except Exception as e:  # a damaged PDF/DOCX/notebook is the student's file problem, not a server error
             raise HTTPException(422, tr("We couldn't read this file. Try exporting it again as PDF, or paste the text instead.", "File ini tidak bisa kami baca. Coba ekspor ulang sebagai PDF, atau tempel teksnya.")) from e
         return clip_text(text), file.filename
