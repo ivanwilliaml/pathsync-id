@@ -141,8 +141,8 @@ export default function Landing() {
           </div>
           <p className="mt-2 max-w-2xl text-ink/70">
             {t(
-              `${meta.data ? `${meta.data.roles.length} technical careers` : "Technical careers"}, each built from real Indonesian job postings. PathSync teaches hard skills only: the tools and methods that courses can teach and a quick check can measure. Careers with fewer postings are marked Beta.`,
-              `${meta.data ? `${meta.data.roles.length} karier teknis` : "Karier teknis"}, masing-masing disusun dari job posting nyata di Indonesia. PathSync hanya mengajarkan hard skill: tools dan metode yang bisa diajarkan di perkuliahan dan diukur lewat Quick Check. Karier dengan posting lebih sedikit ditandai Beta.`,
+              `${meta.data ? `${meta.data.roles.length} careers` : "Careers"}, each built from real Indonesian job postings. PathSync teaches hard skills only: the tools and methods that courses can teach and a quick check can measure. Careers with fewer postings are marked Beta.`,
+              `${meta.data ? `${meta.data.roles.length} karier` : "Karier"}, masing-masing disusun dari job posting nyata di Indonesia. PathSync hanya mengajarkan hard skill: tools dan metode yang bisa diajarkan di perkuliahan dan diukur lewat Quick Check. Karier dengan posting lebih sedikit ditandai Beta.`,
             )}
           </p>
           {(meta.data?.roles ?? []).length === 0 ? (
@@ -150,12 +150,12 @@ export default function Landing() {
           ) : (
             // one grid, best-supported careers first (fewest-data Beta roles last), family shown on each card:
             // grouping by family left rows with one card and two empty columns
-            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {(meta.data?.roles ?? [])
                 .slice()
                 .sort((a, b) => Number(a.limited_data) - Number(b.limited_data) || (b.n_postings ?? 0) - (a.n_postings ?? 0))
                 .map((r) => (
-                  <article key={r.id} className="flex flex-col rounded-2xl border bg-background p-5">
+                  <article key={r.id} className="flex min-w-0 flex-col rounded-2xl border bg-background p-5">
                     <p className="text-xs font-semibold uppercase tracking-wide text-ink/55">{meta.data?.families?.[r.family] ?? r.family}</p>
                     <div className="mt-1.5 flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2">
@@ -166,7 +166,7 @@ export default function Landing() {
                     </div>
                     <p className="mt-2 flex-1 text-sm text-ink/75">{r.blurb}</p>
                     <p className="mt-3 text-xs text-ink/60">{r.n_postings ? t(`Based on ${r.n_postings} real postings`, `Berdasarkan ${r.n_postings} posting nyata`) : t("Collecting postings", "Mengumpulkan posting")}</p>
-                    <Button size="lg" variant="outline" className="mt-4 h-10" onClick={() => setStartRole(r.id)}>
+                    <Button size="lg" variant="outline" className="mt-4 h-auto min-h-10 whitespace-normal py-2 text-center" onClick={() => setStartRole(r.id)}>
                       {t(`Start as ${r.name}`, `Mulai sebagai ${r.name}`)}
                     </Button>
                   </article>

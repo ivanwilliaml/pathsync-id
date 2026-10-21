@@ -399,12 +399,17 @@ function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, course
                   aria-checked={!!done[m.id]}
                   aria-label={t(`Mark "${m.title}" as finished`, `Tandai "${m.title}" selesai`)}
                   onClick={() => onToggle(m)}
-                  className={cn(
-                    "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                    done[m.id] ? "border-mint bg-mint text-white" : "border-input bg-card hover:border-indigo",
-                  )}
+                  className="group flex size-6 shrink-0 items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  {done[m.id] ? <Check className="size-3.5" aria-hidden="true" /> : null}
+                  {/* the button is 24 px (WCAG 2.2 minimum touch target); the drawn box stays 20 px */}
+                  <span
+                    className={cn(
+                      "flex size-5 items-center justify-center rounded-md border-2 transition-colors",
+                      done[m.id] ? "border-mint bg-mint text-white" : "border-input bg-card group-hover:border-indigo",
+                    )}
+                  >
+                    {done[m.id] ? <Check className="size-3.5" aria-hidden="true" /> : null}
+                  </span>
                 </button>
                 <div className="min-w-0 flex-1">
                   <a

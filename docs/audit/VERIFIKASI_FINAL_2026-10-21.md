@@ -11,7 +11,11 @@ Audit menyeluruh dari `main` (commit `0fbc87b`) pada branch `audit/final-verific
 | Dependensi Python | `pip-audit`: tidak ada kerentanan yang diketahui |
 | Kontrol akses | 120 operasi API diuji (tanpa login, akun mahasiswa lain, akun mahasiswa di rute staf): **0 kebocoran** |
 | Ketahanan input | 867 isi permintaan rusak + 16 unggahan berkas buruk: **0 galat server (5xx)** |
-| Perbaikan | 7 temuan diperbaiki (satu sedang, sisanya rendah), dengan tes baru untuk yang bisa diuji |
+| Perbaikan | 10 temuan diperbaiki (satu sedang, sisanya rendah), dengan tes baru untuk yang bisa diuji |
+| PostgreSQL (lokal, PG 17) | Migrasi dari kosong dua kali + cocok dengan model; seluruh tes: **208 lulus**, 1 dilewati |
+| Redis sungguhan | Batas laju dibagi antarproses: **2 lulus** |
+| Playwright | Lokal: **4 lulus** (alur demo, halaman publik, 2 tes ponsel baru); situs online: alur demo **lulus** (31 detik) |
+| Tampilan ponsel (375 px) | 14 halaman diperiksa; 2 masalah nyata ditemukan dan diperbaiki (bagian 4, #8 dan #9) |
 | Belum diuji | Lihat bagian 6 |
 
 ## 2. Inventaris singkat
@@ -44,19 +48,40 @@ Audit menyeluruh dari `main` (commit `0fbc87b`) pada branch `audit/final-verific
 | 6 | Rendah (bahasa) | Label klaster (14 klaster lama) masih Inggris di tampilan Indonesia | Label Indonesia; versi Inggris disimpan di `clusters_en` | Terlihat di halaman Karier |
 | 7 | Rendah (UX) | Setiap halaman memicu galat 401 merah di konsol (pemeriksaan sesi staf untuk tamu) | `GET /api/staff/session?probe=1` menjawab 200 `{"role": null}` untuk tamu; panggilan polos tetap 401 | Tes baru di `test_launch.py`; jaringan browser menunjukkan 200 |
 
+Temuan tambahan dari uji lanjutan (malam 21 Okt):
+
+| # | Tingkat | Masalah | Perbaikan | Bukti |
+| --- | --- | --- | --- | --- |
+| 8 | Sedang (tampilan) | **Halaman depan bergeser ke samping di ponsel** (lebar halaman 440 px pada layar 375 px): kartu karier terlalu lebar karena nama karier panjang dan tombol tidak boleh turun baris | `grid-cols-1`, kartu boleh menyempit, tombol boleh membungkus teks | Tes Playwright ponsel baru lulus; tangkapan layar menunjukkan kartu muat |
+| 9 | Rendah (aksesibilitas) | Tombol centang "Tandai selesai" di halaman Belajar hanya 20x20 px (batas WCAG 2.2: 24x24 px) | Tombol 24 px dengan kotak gambar tetap 20 px | Tes Playwright ponsel mengukur ulang |
+| 10 | Rendah (teks) | Beranda masih menulis "karier teknis" padahal kini ada 20 karier termasuk bisnis | Diganti "karier" | Terlihat di beranda |
+
 ## 5. Performa
 
-Semua halaman publik dan dashboard menjawab di bawah 70 ms pada SQLite lokal setelah pemanasan; setelah perbaikan #1 jumlah query terbesar per halaman adalah 9 (graf mahasiswa, kelas). Uji beban terakhir (Ivan, dari catatan repo) tidak dijalankan ulang.
+**Lokal (SQLite):** semua halaman publik dan dashboard menjawab di bawah 70 ms; setelah perbaikan #1, jumlah query terbesar per halaman adalah 9.
+
+**Situs online (Railway + Neon, kode lama dari `perbaikan-be-ai`), diukur 21 Okt:**
+
+| Endpoint | Waktu | Catatan |
+| --- | --- | --- |
+| `GET /api/meta` | 11,3 detik (stabil) | 44 query x ±0,26 detik: dipakai beranda untuk daftar karier |
+| `GET /api/careers/graph` | 32,8 detik (panggilan pertama), 6,1 detik (berikutnya) | 22 query x ±0,28 detik; pertama kali membangun konteks 20 role |
+| `GET /students/{id}/careers` | 7,1 detik | 25 query |
+| `GET /students/{id}/dashboard` | 2,3 detik | |
+| Membuat profil demo | 5,9 detik | |
+| Alur demo Playwright (online) | 31 detik | lokal: 5 detik |
+
+Jadi **satu pertanyaan ke database di server online memakan ±0,26 detik**. Perbaikan #1 (44 jadi 5, 22 jadi 3, 25 jadi 6 query) memperkirakan `/api/meta` ±1,3 detik, `/api/careers/graph` ±0,8 detik, dan `/careers` ±1,6 detik setelah dipasang di Railway (perkiraan dari jumlah query; belum diukur karena belum dipasang). Pembangunan konteks 20 role saat panggilan pertama (32 detik) belum ditangani dan perlu pemanasan saat server mulai.
 
 ## 6. Belum diuji
 
-- **PostgreSQL secara lokal** (job CI `backend-postgres` ada, tidak dijalankan di sini).
-- **Redis multi-worker** (tes dilewati: tidak ada server Redis lokal).
-- **Jalur ONNX/SentencePiece untuk Railway** (tes dilewati: `sentencepiece` tidak terpasang secara lokal).
-- **Suite Playwright milik Ivan** (peramban Playwright tidak terpasang); alur yang sama diuji manual di peramban bawaan.
-- **Situs online** (Vercel + Railway) tidak diuji; frontend di sana masih versi lama.
-- **Asesmen 24 soal sampai selesai di UI** (tes API menutupinya), **konsol admin setelah masuk**, dan **uji keterbacaan layar/keyboard (aksesibilitas)**.
+Daftar sebelumnya sudah dikurangi banyak (PostgreSQL, Redis, Playwright, situs online, dan ponsel kini diuji). Yang tersisa:
+
+- **Model ONNX penuh** (±470 MB, tidak diunduh). Yang diuji: kesamaan hasil tokenizer SentencePiece dengan tokenizer acuan (1 tes lulus) dan seluruh alur di situs online yang memakai jalur ONNX di Railway.
+- **Konsol admin setelah login** dan **asesmen 24 soal sampai selesai di layar** (tes API menutupinya).
+- **Aksesibilitas penuh**: pembaca layar dan keyboard menyeluruh. Yang diuji: tampilan ponsel, nama kontrol, label formulir, atribut `alt`, bahasa halaman, satu `h1` per halaman, ukuran sentuh.
 - **Peramban selain Chromium.**
+- **Uji beban** tidak diulang; dan **perbaikan #1 belum terpasang di Railway**, jadi percepatannya baru perkiraan.
 - **Validitas produk** (bukan bug kode): bobot bukti dan soal belum dikalibrasi dengan data pengguna; presisi ekstraksi separuh uji 0,79 (target 0,80); validasi pakar hanya untuk Business Analyst.
 
 ## 7. Risiko tersisa
