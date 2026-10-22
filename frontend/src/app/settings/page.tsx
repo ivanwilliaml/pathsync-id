@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Copy, Download, Eye, EyeOff, ShieldCheck, Trash2 } from "lucide-react";
+import { Download, ShieldCheck, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { api, type Student } from "@/lib/api";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useApi } from "@/lib/hooks";
-import { accessKey, setStudent } from "@/lib/student";
-import { requireKeySave } from "@/components/key-guard";
+import { setStudent } from "@/lib/student";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,7 +31,7 @@ export default function SettingsPage() {
 
 const SECTIONS: [string, [string, string]][] = [
   ["profile", ["Profile", "Profil"]],
-  ["access-key", ["Access key", "Access key"]],
+  ["account", ["Account", "Akun"]],
   ["research", ["Research", "Riset"]],
   ["class", ["Class and study", "Kelas dan studi"]],
   ["privacy", ["Your data", "Data pribadimu"]],
@@ -48,13 +47,13 @@ function Settings({ sid }: { sid: string }) {
   const s = st.data;
   return (
     <div>
-      <PageHeader className="mb-6" title={t("Settings & Data", "Pengaturan & Data")} description={t("Your profile, your access key, classes and studies you join, and control over your personal data.", "Profilmu, access key-mu, kelas dan studi yang kamu ikuti, dan kendali atas data pribadimu.")} />
+      <PageHeader className="mb-6" title={t("Settings & Data", "Pengaturan & Data")} description={t("Your profile, your sign-in, classes and studies you join, and control over your personal data.", "Profilmu, akun untuk masuk, kelas dan studi yang kamu ikuti, dan kendali atas data pribadimu.")} />
       {/* categories beside one form column; groups are split by dividers, not five cards of different heights */}
       <div className="grid gap-8 lg:grid-cols-[200px_minmax(0,720px)] lg:gap-12">
         <Toc label={t("Settings sections", "Bagian pengaturan")} items={SECTIONS.map(([id, label]) => [id, t(...label)] as [string, string])} />
         <div className="min-w-0 divide-y [&>section]:scroll-mt-24 [&>section]:py-10 [&>section:first-child]:pt-0">
           <Profile sid={sid} s={s} onSaved={st.reload} />
-          <AccessKey />
+          <Account sid={sid} email={(s as { email?: string | null }).email ?? null} onSaved={st.reload} />
           <Research sid={sid} on={!!(s as { research_consent_at?: string | null }).research_consent_at} onChange={st.reload} />
           <Joins sid={sid} cohort={s.cohort_id} arm={s.study_arm} onChange={st.reload} />
           <Privacy sid={sid} consentAt={s.consent_at} version={s.consent_version} />
@@ -129,43 +128,60 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
   );
 }
 
-function AccessKey() {
-  const [show, setShow] = useState(false);
-  const key = accessKey() ?? "";
+function Account({ sid, email, onSaved }: { sid: string; email: string | null; onSaved: () => void }) {
+  const [newEmail, setNewEmail] = useState("");
+  const [current, setCurrent] = useState("");
+  const [password, setPassword] = useState("");
+  const [err, setErr] = useState<unknown>(null);
+  const [busy, setBusy] = useState(false);
   const t = useT();
+  async function save(e: React.FormEvent) {
+    e.preventDefault();
+    setErr(null);
+    setBusy(true);
+    try {
+      await api.put(`/students/${sid}/account`, email ? { password, current_password: current } : { email: newEmail.trim(), password });
+      toast.success(email ? t("Password changed", "Password diganti") : t("Account saved", "Akun disimpan"));
+      setCurrent("");
+      setPassword("");
+      onSaved();
+    } catch (e) {
+      setErr(e);
+    } finally {
+      setBusy(false);
+    }
+  }
   return (
-    <section id="access-key" aria-labelledby="access-key-title">
-      <SectionTitle id="access-key-title">{t("Your Access Key", "Access Key-mu")}</SectionTitle>
-      <p className="mb-3 text-sm text-ink/70">
-        {t("PathSync has no passwords. This key opens your profile on another device. Keep it private: anyone with it can see your evidence.", "PathSync tidak memakai password. Key ini membuka profilmu di perangkat lain. Jaga kerahasiaannya: siapa pun yang memegangnya bisa melihat evidence-mu.")}
+    <section id="account" aria-labelledby="account-title">
+      <SectionTitle id="account-title">{t("Account", "Akun")}</SectionTitle>
+      <p className="mb-4 text-sm text-ink/70">
+        {email
+          ? t(`You sign in with ${email}.`, `Kamu masuk dengan ${email}.`)
+          : t("Add an email and password so you can sign in again from any device.", "Tambahkan email dan password agar kamu bisa masuk lagi dari perangkat mana pun.")}
       </p>
-      <div className="flex flex-wrap items-center gap-2">
-        <code className="min-w-0 flex-1 truncate rounded-lg bg-muted px-3 py-2 font-mono text-sm" translate="no">
-          {show ? key : "•".repeat(28)}
-        </code>
-        <Button variant="outline" onClick={() => setShow((v) => !v)} aria-label={show ? t("Hide key", "Sembunyikan key") : t("Show key", "Tampilkan key")}>
-          {show ? <EyeOff /> : <Eye />}
-        </Button>
-        <Button variant="outline" onClick={() => navigator.clipboard?.writeText(key).then(() => toast.success(t("Access key copied", "Access key disalin")))}>
-          <Copy /> {t("Copy", "Salin")}
-        </Button>
-      </div>
-      <div className="mt-3">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={async () => {
-            const id = key.split(".")[0];
-            if (!confirm(t("Create a new key? The old key stops working on every device.", "Buat key baru? Key lama berhenti berfungsi di semua perangkat."))) return;
-            const r = await api.post<{ id: string; token: string }>(`/students/${id}/rotate-key`);
-            setStudent({ id: r.id, token: r.token });
-            requireKeySave();
-            window.location.reload();
-          }}
-        >
-          {t("Create a New Key", "Buat Key Baru")}
-        </Button>
-      </div>
+      <form onSubmit={save} className="grid max-w-md gap-4">
+        {email ? (
+          <div className="space-y-2">
+            <Label htmlFor="current-password">{t("Current password", "Password lama")}</Label>
+            <Input id="current-password" type="password" autoComplete="current-password" value={current} onChange={(e) => setCurrent(e.target.value)} className="h-10" />
+          </div>
+        ) : (
+          <div className="space-y-2">
+            <Label htmlFor="account-email">Email</Label>
+            <Input id="account-email" type="email" autoComplete="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} className="h-10" />
+          </div>
+        )}
+        <div className="space-y-2">
+          <Label htmlFor="account-password">{email ? t("New password", "Password baru") : "Password"}</Label>
+          <Input id="account-password" type="password" autoComplete="new-password" minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={t("At least 8 characters", "Minimal 8 karakter")} className="h-10" />
+        </div>
+        <ErrorNote error={err} />
+        <div>
+          <Button type="submit" disabled={busy || password.length < 8 || (email ? !current : !newEmail.trim())}>
+            {email ? t("Change Password", "Ganti Password") : t("Save Account", "Simpan Akun")}
+          </Button>
+        </div>
+      </form>
     </section>
   );
 }
