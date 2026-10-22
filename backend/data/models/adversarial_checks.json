@@ -1,10 +1,15 @@
 {
- "generated_at": "2026-10-23T01:40:18",
+ "generated_at": "2026-10-23T01:54:05",
  "label": "robustness checks with crafted input through the API functions; control texts written by the team",
  "A_unseen_posting_as_project": {
   "n": 100,
   "rejected": 89,
-  "flagged_or_rejected": 91
+  "flagged_or_rejected": 91,
+  "not_rejected_by_max_level": {
+   "0": 1,
+   "1": 3,
+   "2": 7
+  }
  },
  "B_keyword_list_as_project": {
   "n": 50,
@@ -15,11 +20,19 @@
  "C_own_work_controls": {
   "n": 6,
   "rejected": 0,
-  "sent_to_review": 5
+  "sent_to_review": 4
  },
  "D_negated_requirement": {
   "n": 100,
-  "still_extracted": 57
+  "still_extracted": 57,
+  "still_required": 38,
+  "still_required_by_template": {
+   "Tidak memerlukan pengalaman {s}.": 0,
+   "{s} tidak wajib.": 0,
+   "Tanpa {s} pun tidak masalah.": 19,
+   "Pengetahuan {s} tidak diperlukan untuk posisi ini.": 0,
+   "Not required: {s}.": 19
+  }
  },
  "E_injected_instruction": {
   "n": 50,

@@ -83,7 +83,10 @@ def main(n_postings: int = 100, n_keywords: int = 50, seed: int = 11) -> dict:
     intake._posting_corpus = lambda: (vec, mat)
     a = [project_status(t) for t in test]
     res_a = {"n": len(a), "rejected": sum(s == "rejected" for s, _, _ in a),
-             "flagged_or_rejected": sum(s != "auto" for s, _, _ in a)}
+             "flagged_or_rejected": sum(s != "auto" for s, _, _ in a),
+             # what the ones that got through were given (audit EVAL-09); review is a random 20% sample plus flags
+             "not_rejected_by_max_level": {str(lv): sum(1 for s, _, x in a if s != "rejected" and x == lv)
+                                           for lv in sorted({x for s, _, x in a if s != "rejected"})}}
 
     # B: keyword lists
     aliases = [al for sk in load_skills().values() for al in sk.aliases if len(al) > 2]
@@ -102,13 +105,18 @@ def main(n_postings: int = 100, n_keywords: int = 50, seed: int = 11) -> dict:
     # D: negation
     skills = load_skills()
     picks = rng.sample([s for s in skills.values() if s.aliases], 20)
-    d_total, d_hit = 0, 0
+    d_total, d_hit, d_req = 0, 0, 0
+    by_template: dict[str, int] = {}
     for sk in picks:
         for tpl in NEGATION:
             d_total += 1
-            ids = {m.skill_id for m in extract_skills(tpl.format(s=sk.aliases[0]), prefer="lexicon").mentions}
-            d_hit += sk.id in ids
-    res_d = {"n": d_total, "still_extracted": d_hit}
+            res = extract_skills(tpl.format(s=sk.aliases[0]), prefer="lexicon")
+            d_hit += sk.id in {m.skill_id for m in res.mentions}
+            # still a requirement: kept as required (a "tidak wajib" skill is kept as a nice-to-have, which is right)
+            req = res.skills.get(sk.id) is not None and res.skills[sk.id].requirement in ("required", "alternative")
+            d_req += req
+            by_template[tpl] = by_template.get(tpl, 0) + req
+    res_d = {"n": d_total, "still_extracted": d_hit, "still_required": d_req, "still_required_by_template": by_template}
 
     # E: injected instructions
     e_same = 0
