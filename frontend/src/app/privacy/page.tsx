@@ -90,7 +90,7 @@ export default function PrivacyPage() {
         <Section title="5. Penyedia layanan">
           <p>
             Data disimpan di server PathSync. Teks CV dan teks proyek yang Anda tambahkan dikirim ke Google Gemini untuk dibaca dan dinilai
-            dengan rubrik; nama dan kunci akses Anda tidak ikut dikirim, dan teks tersebut tidak kami jual. PathSync memakai layanan Gemini
+            dengan rubrik; nama, email, dan password Anda tidak ikut dikirim, dan teks tersebut tidak kami jual. PathSync memakai layanan Gemini
             tingkat gratis, yang menurut ketentuan Google dapat memakai teks yang dikirim untuk meningkatkan produknya. Karena itu, hapus data
             pribadi seperti alamat, nomor telepon, atau NIK dari CV sebelum mengunggah. Bila layanan Gemini tidak tersedia, penilaian memakai
             aturan lokal di server kami.
