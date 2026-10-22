@@ -251,8 +251,18 @@ def graph_payload(s: Session, role: str, rec: dict | None = None) -> dict:
 
 
 @router.get("/graph")
-def graph(role: str = "business_analyst", s: Session = Depends(db_session)):
-    return graph_payload(s, role)
+def graph(role: str = "business_analyst", beginner: bool = False, s: Session = Depends(db_session)):
+    """The prerequisite map with this role's demand. `beginner=true` also runs the real engine for a student with no
+    evidence yet (every skill at the prior), so the landing page can show its actual ranking, route and bottlenecks."""
+    if not beginner:
+        return graph_payload(s, role)
+    if role not in ROLES:
+        raise HTTPException(404, tr("Unknown role.", "Role tidak dikenal."))
+    from pathsync.db import Student
+    from pathsync.engine import load_context, recommend
+
+    novice = Student(id="__beginner__", target_role=role, preferences={})  # never added to the session, never stored
+    return graph_payload(s, role, recommend(s, novice, load_context(s, role), features={"evidence": False}))
 
 
 @router.get("/careers/graph")

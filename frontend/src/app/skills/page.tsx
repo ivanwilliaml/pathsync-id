@@ -8,7 +8,7 @@ import { FORMAT, pct } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { useT } from "@/lib/i18n";
 import { EvidenceList } from "@/components/evidence-list";
-import { ErrorNote, FolderTabs, LinkButton, Loading, PageHeader, Panel, TabPanel } from "@/components/kit";
+import { ErrorNote, FolderTabs, LinkButton, Loading, PageHeader, TabPanel } from "@/components/kit";
 import { SkillCollection, SoftSkills } from "@/components/my-skills";
 import { RequireStudent } from "@/components/require-student";
 import { Attention } from "@/components/skill-insights";
@@ -104,7 +104,7 @@ function UnderstandSkills({ sid }: { sid: string }) {
           </aside>
         </div>
       ) : (
-        <section aria-labelledby="proof" className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <section aria-labelledby="proof" className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_280px]">
           <div>
             <h2 id="proof" className="mb-1 text-lg font-semibold text-ink">{t("Saved Evidence", "Bukti Tersimpan")}</h2>
             <EvidenceList embedded sid={sid} student={student.data} onChange={() => (student.reload(), dash.reload())} />
@@ -128,7 +128,7 @@ function Preferences({ d }: { d: Dashboard }) {
     </div>
   );
   return (
-    <Panel className="h-fit space-y-3 p-5 sm:p-5">
+    <section className="h-fit space-y-3 lg:border-l lg:pl-6">
       <p className="flex items-center gap-2 text-sm font-semibold text-ink">
         <SlidersHorizontal className="size-4 text-indigo" aria-hidden="true" /> {t("Learning Preferences", "Preferensi Belajar")}
       </p>
@@ -141,6 +141,6 @@ function Preferences({ d }: { d: Dashboard }) {
       <LinkButton href="/evidence?step=preferences" variant="outline" size="sm">
         {t("Edit preferences", "Ubah preferensi")}
       </LinkButton>
-    </Panel>
+    </section>
   );
 }

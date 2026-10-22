@@ -36,7 +36,7 @@ export function EvidenceList({ sid, student, onChange, embedded = false }: { sid
   }
   return (
     <aside aria-labelledby={embedded ? undefined : "saved"} aria-label={embedded ? t("Saved evidence", "Bukti tersimpan") : undefined}
-      className={embedded ? "rounded-xl border bg-card px-4 py-1" : "h-fit rounded-2xl border bg-card p-5 lg:sticky lg:top-8"}>
+      className={embedded ? "" : "h-fit rounded-2xl border bg-card p-5 lg:sticky lg:top-8"}>
       {embedded ? null : (
         <h2 id="saved" className="font-semibold text-ink">
           {t("Saved Evidence", "Bukti Tersimpan")}
@@ -59,7 +59,7 @@ export function EvidenceList({ sid, student, onChange, embedded = false }: { sid
                   <p className="truncate text-sm font-medium text-ink" title={e.title}>
                     {e.kind === "academic" ? kind(e.kind) : e.title}
                   </p>
-                  <p className="text-xs text-muted-foreground">{e.kind === "academic" ? found : `${kind(e.kind)} · ${found}`}</p>
+                  <p className="text-xs text-muted-foreground">{e.kind === "academic" ? found : `${kind(e.kind)}, ${found}`}</p>
                 </div>
                 <Button variant="ghost" size="icon" aria-label={t(`Remove ${kind(e.kind)}`, `Hapus ${kind(e.kind)}`)} onClick={() => setPending({ id: e.id, title: KIND[e.kind] ? kind(e.kind) : e.title })}>
                   <Trash2 />

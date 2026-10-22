@@ -58,7 +58,7 @@ function StageView({ s }: { s: Stage }) {
   return (
     <div>
       <p className="font-medium text-ink">{s.stage}</p>
-      {s.formula ? <p className="mt-0.5 font-mono text-xs text-ink/70">{s.formula}</p> : null}
+      {s.formula ? <p className="mt-0.5 text-xs italic text-ink/70">{s.formula}</p> : null}
       {rows?.length ? (
         <div className="mt-2 overflow-x-auto">
           <table className="w-full text-xs">
@@ -81,7 +81,7 @@ function StageView({ s }: { s: Stage }) {
         <p className="mt-1 text-xs text-ink/75">
           {Object.entries(s.inputs as Row)
             .map(([k, v]) => `${k.replaceAll("_", " ")}: ${Array.isArray(v) ? v.map((x) => num(Number(x), 2)).join(" → ") : String(v)}`)
-            .join(" · ")}
+            .join(", ")}
         </p>
       ) : null}
       <p className="mt-1 text-xs text-ink">
@@ -93,7 +93,7 @@ function StageView({ s }: { s: Stage }) {
               ? Object.entries(s.result as Row)
                   .filter(([, v]) => v !== null && !(Array.isArray(v) && v.length === 0))
                   .map(([k, v]) => `${k.replaceAll("_", " ")} ${typeof v === "number" ? num(v, 3) : Array.isArray(v) ? v.join(", ") : String(v)}`)
-                  .join(" · ")
+                  .join(", ")
               : String(s.result)}
         </span>
       </p>

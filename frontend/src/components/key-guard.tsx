@@ -160,8 +160,8 @@ function ReauthDialog({ open, onClose }: { open: boolean; onClose: () => void })
             )}
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit} className="space-y-4">
-          <div className="space-y-1.5">
+        <form onSubmit={submit} className="space-y-6">
+          <div className="space-y-2">
             <Label htmlFor="reauth-key">Access Key</Label>
             <Input id="reauth-key" type="password" autoComplete="off" spellCheck={false} value={value} onChange={(e) => setValue(e.target.value)} className="h-10 font-mono" />
           </div>

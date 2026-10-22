@@ -30,7 +30,7 @@ export function WhyOrder({ d, names }: { d: Dashboard; names: Record<string, str
         {summary(cf.alternatives, t)}{" "}
         <span className="text-muted-foreground">{t("“Stuck” means a step comes before something it depends on.", "“Macet” berarti sebuah langkah datang sebelum hal yang dibutuhkannya.")}</span>
       </p>
-      <div className="mt-3 overflow-hidden rounded-xl border bg-card">
+      <div className="mt-3 overflow-x-auto border-y">
         <table className="w-full text-left text-sm">
           <thead className="hidden bg-muted/50 text-xs text-ink/60 sm:table-header-group">
             <tr>
@@ -71,7 +71,7 @@ export function HowRanked({ ranking }: { ranking: RankRow[] }) {
   const f = ["G", "R", "D", "U", "K"] as const;
   const t = useT();
   return (
-    <details className="group rounded-xl border bg-card">
+    <details className="group border-y">
       <summary className="cursor-pointer px-3 py-2.5 text-sm font-semibold text-ink">
         {t("Signals behind each priority", "Sinyal di balik setiap prioritas")}
         <span className="block text-xs font-normal text-muted-foreground">

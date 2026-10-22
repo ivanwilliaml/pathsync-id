@@ -167,7 +167,7 @@ function SidebarNav({ onNavigate, collapsed = false, onToggle }: { onNavigate?: 
               <p className="px-3 pb-1 text-xs font-medium text-muted-foreground">
                 {t("Team Workspace", "Ruang Kerja Tim")}
                 {/* who is signed in: the account name, or "demo" for the read-only demo accounts */}
-                {session.name ? <span className="block truncate font-normal text-ink/70">{session.name}{session.demo ? t(" · demo", " · demo") : ""}</span> : null}
+                {session.name ? <span className="block truncate font-normal text-ink/70">{session.name}{session.demo ? t(", demo", ", demo") : ""}</span> : null}
               </p>
             )}
             {TEAM.filter((x) => session.role === "admin" || x.href === (session.role === "expert" ? "/experts" : "/advisor")).map(({ href, label, icon }) => (
@@ -231,7 +231,7 @@ function ProfileChip({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="rounded-xl bg-muted p-3">
       <p className="text-xs text-muted-foreground">{t("Profile ID", "ID Profil")}</p>
-      <p className="font-mono text-sm" translate="no">
+      <p className="text-sm tabular-nums tracking-wide" translate="no">
         {id}
       </p>
       <button

@@ -55,7 +55,7 @@ export function Areas({ d, measured, onOpen }: { d: Dashboard; measured: boolean
   const order = CLUSTER_ORDER.filter((k) => d.coverage_by_cluster[k]);
   if (!measured)
     return (
-      <p className="rounded-xl border bg-card px-4 py-4 text-sm text-ink/70">
+      <p className="py-4 text-sm text-ink/70">
         {t(
           "Nothing measured yet. Add your transcript, a certificate or a project, or take the skill check, and your coverage per area appears here.",
           "Belum ada yang terukur. Tambahkan transkrip, sertifikat atau project, atau ikuti Cek Kemampuan, dan coverage per area-mu muncul di sini.",
@@ -63,7 +63,7 @@ export function Areas({ d, measured, onOpen }: { d: Dashboard; measured: boolean
       </p>
     );
   return (
-    <ul className="divide-y rounded-xl border bg-card">
+    <ul className="divide-y border-y">
       {order.map((k) => {
         const c = d.coverage_by_cluster[k];
         const skills = d.competencies.filter((x) => x.cluster === k && x.demand > 0).sort((a, b) => b.demand - a.demand);
@@ -92,7 +92,7 @@ export function Areas({ d, measured, onOpen }: { d: Dashboard; measured: boolean
                       {titleCase(s.name)}
                     </button>
                     <span className="tabular shrink-0 text-xs text-muted-foreground">
-                      {t(...LEVEL[s.level])} · {t(`asked in ${pct(s.demand)}`, `diminta ${pct(s.demand)}`)}
+                      {t(...LEVEL[s.level])}, {t(`asked in ${pct(s.demand)}`, `diminta ${pct(s.demand)}`)}
                     </span>
                   </li>
                 ))}
@@ -113,7 +113,7 @@ export function AllSkills({ comps, onOpen }: { comps: Competency[]; onOpen: (id:
   const t = useT();
   const rows = (onlyGaps ? comps.filter((c) => c.gap > 0.01) : comps).slice().sort((a, b) => b.demand - a.demand);
   return (
-    <div className="rounded-xl border bg-card">
+    <div className="border-y">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b px-4 py-2.5">
         <p className="text-sm text-ink/70">{t(`${rows.length} skills, most in-demand first`, `${rows.length} skill, paling dicari dulu`)}</p>
         <label className="flex items-center gap-2 text-sm text-ink/80">
@@ -142,7 +142,7 @@ export function AllSkills({ comps, onOpen }: { comps: Competency[]; onOpen: (id:
                 <MasteryBar value={c.p} target={c.required} tone="indigo" label={titleCase(c.name)} />
                 <span className="tabular mt-1 block text-xs text-ink/65">
                   {t(...LEVEL[c.level])} {num(c.p)} → {num(c.required)}
-                  <span className="sm:hidden"> · {t(`asked in ${pct(c.demand)}`, `diminta ${pct(c.demand)}`)}</span>
+                  <span className="sm:hidden">, {t(`asked in ${pct(c.demand)}`, `diminta ${pct(c.demand)}`)}</span>
                 </span>
               </span>
               <span className="tabular hidden text-right text-sm text-ink/80 sm:block">{pct(c.demand)}</span>

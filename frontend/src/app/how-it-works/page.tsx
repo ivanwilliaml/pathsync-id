@@ -315,7 +315,7 @@ function Taxonomy({ g }: { g: Governance }) {
             .map((s) => (
               <li key={s.skill_id}>
                 <Tag>
-                  {titleCase(s.name)} · {pct(s.posting_share)}
+                  {titleCase(s.name)}, {pct(s.posting_share)}
                 </Tag>
               </li>
             ))}
@@ -325,7 +325,7 @@ function Taxonomy({ g }: { g: Governance }) {
           {g.new_skill_candidates.slice(0, 8).map((c) => (
             <li key={c.label}>
               <Tag tone="neutral">
-                {c.label} · {c.postings} {t("postings", "posting")}
+                {c.label}, {c.postings} {t("postings", "posting")}
               </Tag>
             </li>
           ))}
@@ -334,7 +334,7 @@ function Taxonomy({ g }: { g: Governance }) {
         <ul className="space-y-1 text-sm text-ink/75">
           {g.changelog.map((c) => (
             <li key={c.version}>
-              <span className="font-mono text-xs">{c.version}</span> {c.change}
+              <span className="text-xs font-medium tabular-nums">{c.version}</span> {c.change}
             </li>
           ))}
         </ul>

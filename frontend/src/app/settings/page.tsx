@@ -92,14 +92,14 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
   return (
     <section id="profile" aria-labelledby="profile-title">
       <SectionTitle id="profile-title">{t("Profile", "Profil")}</SectionTitle>
-      <form onSubmit={save} className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-1.5">
+      <form onSubmit={save} className="grid max-w-2xl gap-x-6 gap-y-6 sm:grid-cols-2">
+        <div className="space-y-2">
           <Label htmlFor="nm">{t("Name", "Nama")}</Label>
           <Input id="nm" value={name} onChange={(e) => setName(e.target.value)} className="h-10" />
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="sem">Semester</Label>
-          <NativeSelect id="sem" value={semester} onChange={(e) => setSemester(Number(e.target.value))} className="max-w-[220px]">
+          <NativeSelect id="sem" value={semester} onChange={(e) => setSemester(Number(e.target.value))}>
             <option value={0}>{t("Not set", "Belum diisi")}</option>
             {Array.from({ length: 14 }, (_, i) => i + 1).map((n) => (
               <option key={n} value={n}>
@@ -108,11 +108,11 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
             ))}
           </NativeSelect>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="hrs">{t("Hours per week for your route", "Jam per minggu untuk rutemu")}</Label>
-          <Input id="hrs" type="number" min={1} max={40} value={hours} onChange={(e) => setHours(Number(e.target.value))} className="h-10 w-32" />
+          <Input id="hrs" type="number" min={1} max={40} value={hours} onChange={(e) => setHours(Number(e.target.value))} className="h-10" />
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="fmt">{t("Preferred material format", "Format materi favorit")}</Label>
           <NativeSelect id="fmt" value={format} onChange={(e) => setFormat(e.target.value)}>
             <option value="">{t("No preference", "Tidak ada preferensi")}</option>
@@ -122,14 +122,14 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
             <option value="latihan">{t("Practice", "Latihan")}</option>
           </NativeSelect>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="mlang">{t("Language of learning materials", "Bahasa materi belajar")}</Label>
           <NativeSelect id="mlang" value={language} onChange={(e) => setLanguage(e.target.value)}>
             <option value="id">{t("Prefer Indonesian", "Utamakan Bahasa Indonesia")}</option>
             <option value="en">{t("English is fine", "Bahasa Inggris tidak masalah")}</option>
           </NativeSelect>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <p className="text-sm font-medium text-ink">{t("Interface language", "Bahasa antarmuka")}</p>
           <LangSwitch />
           <p className="text-xs text-muted-foreground">

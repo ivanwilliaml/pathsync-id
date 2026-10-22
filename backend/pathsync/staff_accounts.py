@@ -69,7 +69,7 @@ def new_invite(acc: StaffAccount) -> str:
 
 
 # ------------------------------------------------------------------ read-only demo accounts
-DEMO_CLASS = "Kelas Demo · Sistem Informasi 2023"
+DEMO_CLASS = "Kelas Demo Sistem Informasi 2023"
 DEMO_CLASS_SIZE = 8
 # A spread of transcripts, so the class report has real gaps to show (k >= 5 anonymity needs at least five).
 _GRADES = ["A", "A", "B", "B", "B", "C", "C", "D"]

@@ -96,7 +96,7 @@ function Experts() {
             {!token || who.error ? (
               <StaffLogin role="expert" error={who.error} hint={t("Sign in with the account the PathSync team invited you to.", "Masuk dengan akun yang diundang tim PathSync.")} />
             ) : who.data?.role === "admin" ? (
-              <div className="space-y-1.5">
+              <div className="space-y-2">
                 <Label htmlFor="who">{t("Facilitating for", "Memfasilitasi untuk")}</Label>
                 <NativeSelect id="who" value={actingFor} onChange={(e) => setActingFor(e.target.value)}>
                   <option value="">{t("Select an expert…", "Pilih pakar…")}</option>
@@ -308,8 +308,8 @@ function SuggestDialog({ open, onOpenChange, onAdded }: { open: boolean; onOpenC
           <DialogTitle>{t("Suggest a Missing Link", "Usulkan Tautan yang Hilang")}</DialogTitle>
           <DialogDescription>{t("Links that would create a loop are rejected automatically.", "Tautan yang membentuk loop otomatis ditolak.")}</DialogDescription>
         </DialogHeader>
-        <form onSubmit={add} className="space-y-4">
-          <div className="space-y-1.5">
+        <form onSubmit={add} className="space-y-6">
+          <div className="space-y-2">
             <Label htmlFor="src">{t("Learn This First", "Pelajari Ini Dulu")}</Label>
             <NativeSelect id="src" value={src} onChange={(e) => setSrc(e.target.value)} required>
               <option value="">{t("Choose a skill…", "Pilih skill…")}</option>
@@ -320,7 +320,7 @@ function SuggestDialog({ open, onOpenChange, onAdded }: { open: boolean; onOpenC
               ))}
             </NativeSelect>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="dst">{t("Before This", "Sebelum Ini")}</Label>
             <NativeSelect id="dst" value={dst} onChange={(e) => setDst(e.target.value)} required>
               <option value="">{t("Choose a skill…", "Pilih skill…")}</option>
@@ -331,7 +331,7 @@ function SuggestDialog({ open, onOpenChange, onAdded }: { open: boolean; onOpenC
               ))}
             </NativeSelect>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="why">{t("Why?", "Kenapa?")}</Label>
             <Textarea id="why" value={why} onChange={(e) => setWhy(e.target.value)} placeholder={t("One sentence is enough…", "Satu kalimat sudah cukup…")} />
           </div>

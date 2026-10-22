@@ -484,12 +484,12 @@ function Projects({ sid, names, onSaved }: { sid: string; names: Record<string, 
       description={t("A report, notebook, SQL file, or requirements document. Each skill is rated from what the work actually shows, with a quote as proof.", "Laporan, notebook, file SQL, atau dokumen requirements. Setiap skill dinilai dari apa yang benar-benar ditunjukkan karyamu, dengan kutipan sebagai bukti.")}
     >
       <div className="space-y-4">
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="ptitle">{t("Project Title", "Judul Project")}</Label>
           <Input id="ptitle" name="project-title" autoComplete="off" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("e.g. Customer Churn Analysis…", "mis. Analisis Churn Pelanggan…")} className="h-10" />
         </div>
         {courses.data?.length ? (
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="pcourse">{t("From a course? (optional)", "Dari mata kuliah? (opsional)")}</Label>
             <NativeSelect id="pcourse" value={course} onChange={(e) => setCourse(e.target.value)}>
               <option value="">{t("Personal or other project", "Project pribadi atau lainnya")}</option>
@@ -517,7 +517,7 @@ function Projects({ sid, names, onSaved }: { sid: string; names: Record<string, 
                 <p className="flex flex-wrap items-center gap-2 text-sm font-semibold text-ink">
                   {names[r.skill_id] ?? r.skill_id} <Tag tone="indigo">{t(...RUBRIC[r.level])}</Tag>
                 </p>
-                <p className="mt-1 border-l-2 border-iris pl-3 font-mono text-xs text-ink/70">{r.quote}</p>
+                <p className="mt-1 border-l-2 border-iris pl-3 text-xs italic text-ink/70">{r.quote}</p>
               </li>
             ))}
           </ul>

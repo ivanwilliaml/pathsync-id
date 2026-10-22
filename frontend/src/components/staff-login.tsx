@@ -42,7 +42,7 @@ export function StaffLogin({ role, hint }: { role: StaffRole; hint?: string; err
   return (
     <div className="space-y-6">
       <form
-        className="space-y-3"
+        className="space-y-5"
         onSubmit={(e) => {
           e.preventDefault();
           if (email.trim() && password) run("login", () => staffLogin(email.trim(), password));
@@ -52,11 +52,11 @@ export function StaffLogin({ role, hint }: { role: StaffRole; hint?: string; err
           <LogIn className="size-4 text-indigo" aria-hidden="true" /> {t(...TITLE[role])}
         </h2>
         {hint ? <p className="text-sm text-ink/70">{hint}</p> : null}
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor={`email-${role}`}>Email</Label>
           <Input id={`email-${role}`} type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} className="h-10" />
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor={`pw-${role}`}>{t("Password", "Password")}</Label>
           <Input id={`pw-${role}`} type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} className="h-10" />
         </div>

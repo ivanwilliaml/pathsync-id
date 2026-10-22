@@ -328,9 +328,9 @@ function HoverCard({ c, x, y }: { c: Career; x: number; y: number }) {
     >
       <p className="font-semibold text-ink">{c.name}</p>
       <p className="mt-0.5 text-xs text-muted-foreground">
-        <span className="font-semibold text-ink">{c.n_measured ? pct(c.readiness) : t("Not measured", "Belum terukur")}</span> ·{" "}
-        {t(`${c.n_measured} of ${c.n_skills} skills measured · ${c.n_postings} postings`, `${c.n_measured} dari ${c.n_skills} skill terukur · ${c.n_postings} posting`)}
-        {c.limited_data ? " · Beta" : ""}
+        <span className="font-semibold text-ink">{c.n_measured ? pct(c.readiness) : t("Not measured", "Belum terukur")}</span>,{" "}
+        {t(`${c.n_measured} of ${c.n_skills} skills measured, ${c.n_postings} postings`, `${c.n_measured} dari ${c.n_skills} skill terukur, ${c.n_postings} posting`)}
+        {c.limited_data ? ", Beta" : ""}
       </p>
       <Radar a={c} b={null} size={220} />
       {c.top_gaps[0] ? (
@@ -381,7 +381,7 @@ function CareerWorkspace({ sid, c, all, onTargetChanged, bare }: { sid: string; 
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
           <p className="text-xs font-medium text-muted-foreground">
-            {c.is_target ? t("Your target", "Target-mu") : t(`Previewing · your target stays ${target?.name ?? "the same"}`, `Sedang dilihat · target-mu tetap ${target?.name ?? "sama"}`)}
+            {c.is_target ? t("Your target", "Target-mu") : t(`Previewing, your target stays ${target?.name ?? "the same"}`, `Sedang dilihat, target-mu tetap ${target?.name ?? "sama"}`)}
           </p>
           <h3 className="mt-0.5 text-xl font-bold text-ink">{c.name}</h3>
           <p className="mt-2 flex items-baseline gap-2">
@@ -389,8 +389,8 @@ function CareerWorkspace({ sid, c, all, onTargetChanged, bare }: { sid: string; 
             <span className="text-sm text-ink/75">{c.n_measured ? t("ready", "siap") : t("not measured yet", "belum terukur")}</span>
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            {t(`${c.n_measured} of ${c.n_skills} skills measured · ${c.n_postings} postings`, `${c.n_measured} dari ${c.n_skills} skill terukur · ${c.n_postings} posting`)}
-            {c.limited_data ? t(" · Beta: fewer than 30 postings, read with care", " · Beta: kurang dari 30 posting, baca dengan hati-hati") : ""}
+            {t(`${c.n_measured} of ${c.n_skills} skills measured, ${c.n_postings} postings`, `${c.n_measured} dari ${c.n_skills} skill terukur, ${c.n_postings} posting`)}
+            {c.limited_data ? t(", Beta: fewer than 30 postings, read with care", ", Beta: kurang dari 30 posting, baca dengan hati-hati") : ""}
           </p>
         </div>
         <div className="flex flex-col items-start gap-1 sm:items-end">
@@ -433,8 +433,8 @@ function CareerWorkspace({ sid, c, all, onTargetChanged, bare }: { sid: string; 
 
           {other ? (
             <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5"><span className="h-2 w-4 rounded-full bg-indigo" /> {c.name} · <b className="tabular text-ink">{c.n_measured ? pct(c.readiness) : "–"}</b></span>
-              <span className="flex items-center gap-1.5"><span className="h-2 w-4 rounded-full" style={{ background: "var(--ember-ink)" }} /> {other.name} · <b className="tabular text-ink">{other.n_measured ? pct(other.readiness) : "–"}</b></span>
+              <span className="flex items-center gap-1.5"><span className="h-2 w-4 rounded-full bg-indigo" /> {c.name}: <b className="tabular text-ink">{c.n_measured ? pct(c.readiness) : "–"}</b></span>
+              <span className="flex items-center gap-1.5"><span className="h-2 w-4 rounded-full" style={{ background: "var(--ember-ink)" }} /> {other.name}: <b className="tabular text-ink">{other.n_measured ? pct(other.readiness) : "–"}</b></span>
             </div>
           ) : null}
 
@@ -628,7 +628,7 @@ function CareerList({ careers, selected, onSelect, compact }: { careers: Career[
       <h3 id="career-list" className="sr-only">{t("Careers", "Karier")}</h3>
       {groups.filter(([, list]) => list.length).map(([label, list]) => (
       <div key={label}>
-      <p className="mb-1.5 px-4 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</p>
+      <p className="mb-1.5 px-4 text-sm font-semibold text-muted-foreground">{label}</p>
       <ul className="divide-y border-y">
         {list.map((c) => (
           <li key={c.id}>
@@ -645,7 +645,7 @@ function CareerList({ careers, selected, onSelect, compact }: { careers: Career[
                 <span className="block font-semibold text-ink">{c.name}</span>
                 <span className="mt-0.5 block text-xs text-muted-foreground">
                   {t(`${c.n_postings} postings`, `${c.n_postings} posting`)}
-                  {c.limited_data ? t(" · Beta", " · Beta") : ""}
+                  {c.limited_data ? t(", Beta", ", Beta") : ""}
                 </span>
               </span>
               <span className="flex items-center gap-3">

@@ -232,7 +232,7 @@ function Reply({ text }: { text: string }) {
       {blocks.map((lines, i) => {
         if (lines.every((l) => BULLET.test(l)))
           return (
-            <ul key={i} className="space-y-1.5">
+            <ul key={i} className="space-y-2">
               {lines.map((l, j) => {
                 // "Skill – detail": the name reads first, the detail sits quieter beneath it
                 const [head, ...rest] = l.replace(BULLET, "").replace(/\*/g, "").split(/\s+[–—-]\s+|:\s+/);
@@ -318,7 +318,7 @@ function Posting({ c }: { c: PostingCard }) {
         <p className="text-xs font-medium text-muted-foreground">{t("Job posting, original text", "Lowongan, teks asli")}</p>
         <h3 className="text-sm font-semibold text-ink">{c.title}</h3>
         <p className="text-xs text-muted-foreground">
-          {[c.company, c.location, SOURCE[c.source] ?? c.source, c.published_at ? fmtDate(c.published_at) : null].filter(Boolean).join(" · ")}
+          {[c.company, c.location, SOURCE[c.source] ?? c.source, c.published_at ? fmtDate(c.published_at) : null].filter(Boolean).join(", ")}
         </p>
       </div>
       <div className={cn("relative px-3.5 py-2.5", !full && "max-h-48 overflow-hidden")}>
@@ -355,8 +355,8 @@ function Match({ c }: { c: MatchCard }) {
       <div className="border-b px-3.5 py-2.5">
         <p className="text-xs font-medium text-muted-foreground">{t("Your fit, computed by PathSync", "Kecocokanmu, dihitung PathSync")}</p>
         <p className="text-sm text-ink">
-          <span className="font-semibold">{c.summary.met ?? 0}</span> {t("met", "terpenuhi")} ·{" "}
-          <span className="font-semibold">{(c.summary.close ?? 0) + (c.summary.gap ?? 0)}</span> {t("to work on", "perlu ditingkatkan")} ·{" "}
+          <span className="font-semibold">{c.summary.met ?? 0}</span> {t("met", "terpenuhi")},{" "}
+          <span className="font-semibold">{(c.summary.close ?? 0) + (c.summary.gap ?? 0)}</span> {t("to work on", "perlu ditingkatkan")},{" "}
           <span className="font-semibold">{c.summary.unproven ?? 0}</span> {t("no evidence yet", "belum ada bukti")}
         </p>
       </div>

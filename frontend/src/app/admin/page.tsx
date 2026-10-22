@@ -297,7 +297,7 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
         <h2 className="text-lg font-semibold text-ink">{t("Simulate a Market Change", "Simulasikan Perubahan Pasar")}</h2>
         <p className="mt-1 text-sm text-ink/70">{t("Test how student routes react when demand for a skill shifts. The simulated map stays labelled until you switch back.", "Uji bagaimana rute mahasiswa bereaksi saat demand sebuah skill bergeser. Peta simulasi tetap diberi label sampai kamu kembalikan.")}</p>
         <div className="mt-5 grid gap-4">
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="srole">Role</Label>
             <NativeSelect id="srole" value={role} onChange={(e) => setRole(e.target.value)}>
               {meta?.roles.map((r) => (
@@ -307,7 +307,7 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
               ))}
             </NativeSelect>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="sskill">Skill</Label>
             <NativeSelect id="sskill" value={skill} onChange={(e) => setSkill(e.target.value)}>
               {meta?.skills.map((s) => (
@@ -317,7 +317,7 @@ function MarketData({ meta, onChange }: { meta: Meta | null; onChange: () => voi
               ))}
             </NativeSelect>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="sdelta">{t("Demand Change", "Perubahan Demand")}</Label>
             <NativeSelect id="sdelta" value={delta} onChange={(e) => setDelta(e.target.value)}>
               {["0.4", "0.2", "0.1", "-0.1", "-0.2", "-0.4"].map((v) => (

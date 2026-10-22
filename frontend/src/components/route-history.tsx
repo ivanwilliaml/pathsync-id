@@ -65,7 +65,7 @@ export function RouteHistory({ sid, embedded }: { sid: string; embedded?: boolea
         </EmptyState>
       ) : (
         <div className={cn("grid gap-6", desktop && "lg:grid-cols-[280px_minmax(0,1fr)]")}>
-          <ol className="divide-y rounded-xl border bg-card" aria-label={tr("Route changes, newest first", "Perubahan rute, terbaru dulu")}>
+          <ol className="divide-y border-y" aria-label={tr("Route changes, newest first", "Perubahan rute, terbaru dulu")}>
             {rows.map((r) => {
               const tg = TRIGGER[r.trigger] ?? TRIGGER.manual;
               const Icon = tg.icon;
@@ -142,7 +142,7 @@ function EventDetail({ r, prev, roleName }: { r: HistoryRow; prev?: HistoryRow; 
         </ol>
       </div>
       {moved.length ? (
-        <details className="rounded-xl border px-3 py-2">
+        <details className="border-y py-2">
           <summary className="cursor-pointer text-sm font-medium text-ink">{tr(`Other careers that moved (${moved.length})`, `Karier lain yang bergerak (${moved.length})`)}</summary>
           <ChangeList items={moved.map((m) => ({ id: m.id, name: roleName[m.id] ?? titleCase(m.id.replace(/_/g, " ")), before: m.before, now: m.now }))} />
         </details>

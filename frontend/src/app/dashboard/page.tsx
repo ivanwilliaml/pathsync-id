@@ -153,7 +153,7 @@ function ActiveStep({ step }: { step: Dashboard["path"][number] }) {
           <h2 id="active-step" className="text-base font-semibold text-ink">{titleCase(step.name)}</h2>
         </div>
         <span className="tabular text-xs text-muted-foreground">
-          {t(`${step.materials.length - left.length} of ${step.materials.length} materials · about ${hours(step.hours)}`, `${step.materials.length - left.length} dari ${step.materials.length} materi · sekitar ${hours(step.hours)}`)}
+          {t(`${step.materials.length - left.length} of ${step.materials.length} materials, about ${hours(step.hours)}`, `${step.materials.length - left.length} dari ${step.materials.length} materi, sekitar ${hours(step.hours)}`)}
         </span>
       </div>
       {left.length ? (
@@ -164,7 +164,7 @@ function ActiveStep({ step }: { step: Dashboard["path"][number] }) {
                 <BookOpen className="mt-0.5 size-4 shrink-0 text-indigo" aria-hidden="true" />
                 <span className="min-w-0">
                   <span className="block font-medium text-ink">{m.title}</span>
-                  <span className="block text-xs text-muted-foreground">{m.provider} · {m.hours} {t("h", "jam")}</span>
+                  <span className="block text-xs text-muted-foreground">{m.provider}, {m.hours} {t("h", "jam")}</span>
                 </span>
                 <ExternalLink className="ml-auto mt-0.5 size-3 shrink-0 text-ink/40" aria-hidden="true" />
               </a>
@@ -398,15 +398,15 @@ function JourneyStrip({ d, hasEvidence }: { d: Dashboard; hasEvidence: boolean }
   const stages = [
     {
       href: hasEvidence ? "/skills" : "/evidence", title: t("Understand Your Skills", "Kenali Skill"), done: hasEvidence,
-      status: t(`${nEvidence} evidence · check ${d.diagnostic_done ? "done" : "not yet"}`, `${nEvidence} bukti · Cek ${d.diagnostic_done ? "selesai" : "belum"}`),
+      status: t(`${nEvidence} evidence, check ${d.diagnostic_done ? "done" : "not yet"}`, `${nEvidence} bukti, Cek ${d.diagnostic_done ? "selesai" : "belum"}`),
     },
     {
       href: "/careers", title: t("Choose a Career", "Pilih Karier"), done: hasEvidence,
-      status: hasEvidence ? t(`${d.role.name} · ${pct(d.coverage)} ready`, `${d.role.name} · siap ${pct(d.coverage)}`) : d.role.name,
+      status: hasEvidence ? t(`${d.role.name}, ${pct(d.coverage)} ready`, `${d.role.name}, siap ${pct(d.coverage)}`) : d.role.name,
     },
     {
       href: "/learn", title: t("Learn", "Belajar"), done: mats.length > 0 && matsDone === mats.length,
-      status: t(`${d.path.length} steps · ${matsDone}/${mats.length} materials`, `${d.path.length} langkah · ${matsDone}/${mats.length} materi`),
+      status: t(`${d.path.length} steps, ${matsDone}/${mats.length} materials`, `${d.path.length} langkah, ${matsDone}/${mats.length} materi`),
     },
   ];
   return (
@@ -421,7 +421,7 @@ function JourneyStrip({ d, hasEvidence }: { d: Dashboard; hasEvidence: boolean }
                 {s.done ? <Check className="size-3.5" /> : i + 1}
               </span>
               <span className="min-w-0 pt-0.5">
-                <span className="block text-sm font-semibold text-ink group-hover:text-indigo group-focus-visible:underline">{s.title}</span>
+                <span className="relative inline-block bg-background pr-3 text-sm font-semibold text-ink group-hover:text-indigo group-focus-visible:underline">{s.title}</span>
                 <span className="block text-xs text-muted-foreground">{s.status}</span>
               </span>
             </Link>

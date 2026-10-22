@@ -49,12 +49,12 @@ export function FeedbackButton({ className }: { className?: string }) {
           <DialogTitle>{t("Report a Problem or Idea", "Laporkan Masalah atau Ide")}</DialogTitle>
           <DialogDescription>{t("Tell us what went wrong or what would help. We attach the page you are on, but never your documents.", "Ceritakan apa yang salah atau apa yang akan membantu. Kami lampirkan halaman yang sedang kamu buka, tapi tidak pernah dokumenmu.")}</DialogDescription>
         </DialogHeader>
-        <form onSubmit={send} className="space-y-4">
-          <div className="space-y-1.5">
+        <form onSubmit={send} className="space-y-6">
+          <div className="space-y-2">
             <Label htmlFor="fb-msg">{t("What happened?", "Apa yang terjadi?")}</Label>
             <Textarea id="fb-msg" value={message} onChange={(e) => setMessage(e.target.value)} className="min-h-28" required minLength={3} />
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="fb-contact">{t("Email or WhatsApp (optional, if you want a reply)", "Email atau WhatsApp (opsional, kalau ingin dibalas)")}</Label>
             <Input id="fb-contact" value={contact} onChange={(e) => setContact(e.target.value)} className="h-10" autoComplete="off" />
           </div>
