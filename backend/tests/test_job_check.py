@@ -55,7 +55,7 @@ def test_repeated_skill_mentions_do_not_double_count_score():
 
     assert out["n_recognized_skills"] == 1
     assert len(out["skills"]) == 2
-    assert all(item["evidence_status"] == "academic" for item in out["skills"])
+    assert all(item["evidence_status"] == "indirect" for item in out["skills"])
 
 
 def test_free_phrase_is_shown_as_candidate_without_embedding_cache(monkeypatch):

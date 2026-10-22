@@ -16,14 +16,18 @@ import { MascotLoader } from "@/components/mascot-loader";
 // Job Check (docs/design/JOB_CHECK.md): one pasted posting against the student's existing evidence. The backend
 // (POST /students/{id}/check-job) never stores the text; offsets are UTF-16, the same unit as JS string slices.
 
-type Evidence = "direct" | "academic" | "none";
-interface CheckedSkill { text: string; start: number; end: number; skill_id: string; skill_name: string; level_needed: string; level_now: string; evidence_status: Evidence }
+type Evidence = "direct" | "indirect" | "none";
+// required: in this posting's required set; preferred: nice to have; alternative: an "A atau B" option not counted
+type Requirement = "required" | "preferred" | "alternative";
+interface CheckedSkill { text: string; start: number; end: number; skill_id: string; skill_name: string; requirement: Requirement; counted: boolean; level_needed: string; level_now: string; evidence_status: Evidence }
+interface ExcludedSkill { text: string; start: number; end: number; skill_id: string; skill_name: string; requirement: string; reason: string }
 interface ReviewTerm { text: string; start: number; end: number; status: string }
 interface JobCheck {
   extractor: string;
   n_recognized_skills: number;
   readiness: { score: number | null; n_with_evidence: number; meaning: string };
   skills: CheckedSkill[];
+  excluded: ExcludedSkill[];
   gaps: { skill_id: string; skill_name: string; level_needed: string; level_now: string; gap: number }[];
   next_step: { skill_id: string; skill_name: string; role_in_path: string; unlocks_requested: { skill_id: string; skill_name: string }[]; quick_check_url: string } | null;
   terms_to_review: ReviewTerm[];
@@ -141,9 +145,11 @@ function Result({ text, r, t }: { text: string; r: JobCheck; t: T }) {
       </div>
     );
   }
-  // one skill can appear several times; count each requested skill once
-  const bySkill = new Map(r.skills.map((s) => [s.skill_id, s]));
-  const counts = { direct: 0, academic: 0, none: 0 };
+  // one skill can appear several times; count each requested skill once, and only the ones the posting requires
+  const bySkill = new Map(r.skills.filter((s) => s.counted).map((s) => [s.skill_id, s]));
+  const optional = new Map(r.skills.filter((s) => !s.counted).map((s) => [s.skill_id, s]));
+  const excluded = new Map((r.excluded ?? []).map((s) => [s.skill_id, s]));
+  const counts = { direct: 0, indirect: 0, none: 0 };
   bySkill.forEach((s) => counts[s.evidence_status]++);
   const ready = r.readiness.score ?? 0;
 
@@ -154,11 +160,12 @@ function Result({ text, r, t }: { text: string; r: JobCheck; t: T }) {
           <h2 id="ready-title" className="text-sm font-medium text-muted-foreground">{t("Your readiness for this posting", "Kesiapanmu untuk lowongan ini")}</h2>
           <p className="tabular mt-1 text-[40px] font-bold leading-none text-ink">{pct(ready)}</p>
           <p className="mt-2 text-sm text-ink/75">
-            {t(`Of the ${bySkill.size} skills this posting asks for that PathSync recognises.`, `Dari ${bySkill.size} skill yang diminta lowongan ini dan dikenali PathSync.`)}
+            {t(`Of the ${bySkill.size} skills this posting requires that PathSync recognises. Nice-to-have skills and skills the posting says are not needed are not counted.`,
+               `Dari ${bySkill.size} skill yang diwajibkan lowongan ini dan dikenali PathSync. Skill nilai tambah dan skill yang dinyatakan tidak diperlukan tidak dihitung.`)}
           </p>
           <ul className="mt-4 space-y-1.5 text-sm">
-            <Count tone="mint" n={counts.direct} label={t("proven (skill check, project or certificate)", "sudah terbukti (cek kemampuan, project, atau sertifikat)")} />
-            <Count tone="ember" n={counts.academic} label={t("only a guess from grades", "baru dugaan dari nilai")} />
+            <Count tone="mint" n={counts.direct} label={t("proven (skill check, reviewed project or exam certificate)", "sudah terbukti (cek kemampuan, proyek yang dinilai, atau sertifikat ujian)")} />
+            <Count tone="ember" n={counts.indirect} label={t("indirect evidence only (grades or course certificate)", "baru bukti tidak langsung (nilai atau sertifikat kursus)")} />
             <Count tone="neutral" n={counts.none} label={t("no evidence yet", "belum ada bukti")} />
           </ul>
           <p className="mt-4 text-xs text-muted-foreground">
@@ -192,7 +199,7 @@ function Result({ text, r, t }: { text: string; r: JobCheck; t: T }) {
           <Panel className="flex flex-col justify-center border-mint/40 bg-[#e3f5ea]/40">
             <h2 className="text-[20px] font-semibold text-ink">{t("You already meet every recognised skill", "Kamu sudah memenuhi semua skill yang dikenali")}</h2>
             <p className="mt-2 text-sm text-ink/80">
-              {t("Make sure the ones from grades are proven before you apply.", "Pastikan yang masih dari nilai sudah dibuktikan sebelum melamar.")}
+              {t("Make sure the ones with indirect evidence only are proven before you apply.", "Pastikan yang baru punya bukti tidak langsung sudah dibuktikan sebelum melamar.")}
             </p>
           </Panel>
         )}
@@ -201,11 +208,12 @@ function Result({ text, r, t }: { text: string; r: JobCheck; t: T }) {
       <section aria-labelledby="text-title">
         <SectionTitle id="text-title">{t("What PathSync read", "Yang dibaca PathSync")}</SectionTitle>
         <Panel>
-          <Highlighted text={text} skills={r.skills} review={r.terms_to_review} lvl={lvl} t={t} />
+          <Highlighted text={text} skills={r.skills} excluded={r.excluded ?? []} review={r.terms_to_review} lvl={lvl} t={t} />
           <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-t pt-3 text-xs text-muted-foreground">
             <LegendSwatch className="bg-[#e3f5ea] ring-1 ring-mint/50" label={t("skill, proven", "skill, sudah terbukti")} />
-            <LegendSwatch className="bg-[#fff6d9] ring-1 ring-ember/50" label={t("skill, from grades only", "skill, baru dari nilai")} />
+            <LegendSwatch className="bg-[#fff6d9] ring-1 ring-ember/50" label={t("skill, indirect evidence only", "skill, baru bukti tidak langsung")} />
             <LegendSwatch className="bg-secondary ring-1 ring-indigo/40" label={t("skill, no evidence yet", "skill, belum ada bukti")} />
+            <LegendSwatch className="ring-1 ring-ink/20" label={t("named but not needed (struck through)", "disebut tetapi tidak diminta (dicoret)")} />
             <LegendSwatch className="border border-dashed border-ink/40" label={t("not recognised yet", "belum dikenali")} />
           </div>
           <p className="mt-2 text-xs text-muted-foreground">
@@ -239,6 +247,35 @@ function Result({ text, r, t }: { text: string; r: JobCheck; t: T }) {
           </ul>
         </Panel>
       </section>
+
+      {optional.size || excluded.size ? (
+        <section aria-labelledby="optional-title">
+          <SectionTitle id="optional-title">{t("Named, but not counted", "Disebut, tetapi tidak dihitung")}</SectionTitle>
+          <Panel className="p-0 sm:p-0">
+            <ul className="divide-y">
+              {[...optional.values()].map((s) => (
+                <li key={s.skill_id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 sm:px-6">
+                  <p className="font-medium text-ink [overflow-wrap:anywhere]">{s.skill_name}</p>
+                  <Tag>{s.requirement === "preferred" ? t("Nice to have", "Nilai tambah") : t("Other option", "Pilihan lain")}</Tag>
+                </li>
+              ))}
+              {[...excluded.values()].map((s) => (
+                <li key={s.skill_id} className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 sm:px-6">
+                  <div className="min-w-0">
+                    <p className="font-medium text-ink/70 line-through decoration-ink/40 [overflow-wrap:anywhere]">{s.skill_name}</p>
+                    <p className="text-xs text-muted-foreground">&ldquo;{s.text}&rdquo;: {s.reason}</p>
+                  </div>
+                  <Tag>{s.requirement === "excluded" ? t("Not needed", "Tidak diminta") : t("Not a requirement", "Bukan syarat")}</Tag>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+          <p className="mt-2 text-xs text-muted-foreground">
+            {t("A nice-to-have skill, or one of several options, is shown but stays out of the readiness score. A skill the posting says is not needed never becomes your next step.",
+               "Skill nilai tambah atau salah satu dari beberapa pilihan tetap ditampilkan, tetapi tidak masuk skor kesiapan. Skill yang dinyatakan tidak diperlukan tidak pernah menjadi langkah berikutnya.")}
+          </p>
+        </section>
+      ) : null}
 
       {r.terms_to_review.length ? (
         <section aria-labelledby="review-title">
@@ -277,7 +314,7 @@ function Count({ n, label, tone }: { n: number; label: string; tone: "mint" | "e
 
 function EvidenceTag({ status, t }: { status: Evidence; t: T }) {
   if (status === "direct") return <Tag tone="mint">{t("Proven", "Terbukti")}</Tag>;
-  if (status === "academic") return <Tag tone="ember">{t("From grades", "Dari nilai")}</Tag>;
+  if (status === "indirect") return <Tag tone="ember">{t("Indirect", "Tidak langsung")}</Tag>;
   return <Tag>{t("No evidence", "Belum ada bukti")}</Tag>;
 }
 
@@ -292,12 +329,12 @@ function LegendSwatch({ className, label }: { className: string; label: string }
 
 const MARK: Record<Evidence, string> = {
   direct: "bg-[#e3f5ea] ring-1 ring-mint/50",
-  academic: "bg-[#fff6d9] ring-1 ring-ember/50",
+  indirect: "bg-[#fff6d9] ring-1 ring-ember/50",
   none: "bg-secondary ring-1 ring-indigo/40",
 };
 
 /** The pasted text with each recognised skill marked by its evidence status, and unrecognised terms dashed. */
-function Highlighted({ text, skills, review, lvl, t }: { text: string; skills: CheckedSkill[]; review: ReviewTerm[]; lvl: (k: string) => string; t: T }) {
+function Highlighted({ text, skills, excluded, review, lvl, t }: { text: string; skills: CheckedSkill[]; excluded: ExcludedSkill[]; review: ReviewTerm[]; lvl: (k: string) => string; t: T }) {
   type Span = { start: number; end: number; node: (inner: string) => ReactNode };
   const spans: Span[] = [
     ...skills.map((s) => ({
@@ -311,6 +348,15 @@ function Highlighted({ text, skills, review, lvl, t }: { text: string; skills: C
           {inner}
           <span className="sr-only"> ({s.skill_name})</span>
         </mark>
+      ),
+    })),
+    ...excluded.map((x) => ({
+      start: x.start,
+      end: x.end,
+      node: (inner: string) => (
+        <span className="rounded px-0.5 line-through decoration-ink/50 ring-1 ring-ink/20" title={`${x.skill_name}: ${x.reason}`}>
+          {inner}
+        </span>
       ),
     })),
     ...review.map((x) => ({

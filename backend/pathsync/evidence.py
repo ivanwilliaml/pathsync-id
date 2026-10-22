@@ -2,7 +2,7 @@
 
 Evidence types are treated according to what they can show:
   academic    (transcript x syllabus mapping)   -> exposure,            weight 0.20
-  certificate (course completion)               -> completion,          weight 0.25
+  certificate (course completion or exam)       -> completion,          weight 0.25 (direct proof only for exams)
   project     (artifact rated with the rubric)  -> demonstrated skill,  weight 0.30
   assessment  (short diagnostic test)           -> measured mastery,    weight 0.50
 CV claims and self-ratings are never mastery evidence: they only drive confirmation
@@ -12,12 +12,27 @@ The competency state is derived deterministically by replaying a student's evide
   p0_s  = sum_k w_k e_sk / sum_k w_k              (eq. 2, over available evidence only)
   p_s   = BKT(p0_s, re-assessment answers ...)     (eq. 3, in chronological order)
 so every number on the dashboard can be traced back to the evidence that produced it.
+
+Two limits keep indirect evidence from reading as mastery (audit COMP-01/04): with only grades or completion
+certificates, p0 is capped at INDIRECT_CAP (stated as an initial policy, not a calibrated value), and p is kept inside
+(P_MIN, P_MAX) before every BKT update, so a wrong answer always lowers the estimate.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from .config import BKT_GUESS, BKT_SLIP, BKT_TRANSIT, EVIDENCE_WEIGHTS, LOW_CONFIDENCE, PRIOR_NO_EVIDENCE, RUBRIC_SCORES
+from .config import (
+    BKT_GUESS,
+    BKT_SLIP,
+    BKT_TRANSIT,
+    EVIDENCE_WEIGHTS,
+    INDIRECT_CAP,
+    LOW_CONFIDENCE,
+    P_MAX,
+    P_MIN,
+    PRIOR_NO_EVIDENCE,
+    RUBRIC_SCORES,
+)
 from .i18n import t
 
 # confidence contribution of one piece of evidence of each kind (scaled by mapping strength)
@@ -26,7 +41,9 @@ CONFIDENCE_STRENGTH = {"academic": 0.20, "certificate": 0.30, "project": 0.45}
 
 def bkt_update(p: float, correct: bool, slip: float = BKT_SLIP, guess: float = BKT_GUESS,
                transit: float = BKT_TRANSIT) -> float:
-    """Bayesian knowledge tracing, eq. (3) followed by the learning transition."""
+    """Bayesian knowledge tracing, eq. (3) followed by the learning transition. p is clamped first: at exactly 1 (or 0)
+    no answer could move it again."""
+    p = min(P_MAX, max(P_MIN, p))
     if correct:
         post = p * (1 - slip) / (p * (1 - slip) + (1 - p) * guess)
     else:
@@ -59,7 +76,7 @@ class SkillState:
     claimed: bool = False
     self_rating: int | None = None
     flags: list[str] = field(default_factory=list)
-    # mastery from direct proof only (Quick Check answers, reviewed projects, certificates): None when there is none.
+    # mastery from direct proof only (Quick Check answers, reviewed projects, exam certificates): None when there is none.
     # Grades and CV claims move p but never p_proven, so "strong" and "proven readiness" mean what they say (audit AI-7)
     p_proven: float | None = None
 
@@ -91,6 +108,7 @@ class EvidenceItem:
     strength: dict[str, float] = field(default_factory=dict)   # mapping strength per skill (for confidence)
     claims: list[str] = field(default_factory=list)            # cv only
     reliability: float = 1.0      # 0.5 while a flagged project rubric waits for human review
+    direct: dict[str, float] | None = None   # certificates: the part of `scores` backed by an exam (direct proof)
 
 
 @dataclass
@@ -101,7 +119,8 @@ class Response:
     guess: float = BKT_GUESS      # chance of a correct answer without the skill (higher for items with surface cues)
 
 
-DIRECT_KINDS = ("assessment", "project", "certificate")
+DIRECT_KINDS = ("assessment", "project")      # plus certificates backed by an exam, tracked separately
+INDIRECT_KINDS = ("academic", "certificate")
 
 
 def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list[Response],
@@ -114,6 +133,7 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
     w = weights or EVIDENCE_WEIGHTS
     states = {s: SkillState(s) for s in skill_ids}
     factor: dict[tuple[str, str], float] = {}
+    exam: dict[str, tuple[float, float]] = {}     # skill -> (exam certificate score, reliability)
     conf_terms: dict[str, list[float]] = {s: [] for s in skill_ids}
 
     for ev in evidence:
@@ -132,6 +152,8 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
                 st.components[ev.kind] = float(e)
                 factor[(s, ev.kind)] = ev.reliability
             st.sources.setdefault(ev.kind, []).append(ev.title)
+            if ev.direct and s in ev.direct and ev.direct[s] >= exam.get(s, (-1.0, 0.0))[0]:
+                exam[s] = (float(ev.direct[s]), ev.reliability)
             conf_terms[s].append(CONFIDENCE_STRENGTH.get(ev.kind, 0.2) * ev.strength.get(s, 1.0) * ev.reliability)
 
     diag: dict[str, list[bool]] = {}
@@ -156,11 +178,15 @@ def diagnose(skill_ids: list[str], evidence: list[EvidenceItem], responses: list
         if st.components:
             wk = {k: w[k] * factor.get((s, k), 1.0) for k in st.components}
             st.p0 = sum(wk[k] * v for k, v in st.components.items()) / sum(wk.values())
+            if set(st.components) <= set(INDIRECT_KINDS) and s not in exam:
+                st.p0 = min(st.p0, INDIRECT_CAP)      # grades or completion alone are exposure, not mastery
         st.p = st.p0
         st.bkt_trace = [st.p]
         direct = {k: v for k, v in st.components.items() if k in DIRECT_KINDS}
+        wd = {k: w[k] * factor.get((s, k), 1.0) for k in direct}
+        if s in exam:
+            direct["certificate"], wd["certificate"] = exam[s][0], w["certificate"] * exam[s][1]
         if direct:
-            wd = {k: w[k] * factor.get((s, k), 1.0) for k in direct}
             st.p_proven = sum(wd[k] * v for k, v in direct.items()) / sum(wd.values())
         for correct, guess in reassess.get(s, []):       # eq. (3) for every new answer
             st.p = bkt_update(st.p, correct, guess=guess)

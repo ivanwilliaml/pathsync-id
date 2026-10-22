@@ -84,7 +84,7 @@ def main():
     cache = json.loads(EXTRACTION_CACHE.read_text(encoding="utf-8")) if EXTRACTION_CACHE.exists() else {}
     print(f"[market] {len(rows)} postings with text, {len(dup)} near-duplicates")
 
-    stats = {"auto": 0, "review": 0, "new": 0, "rejected": 0}
+    stats = {"auto": 0, "review": 0, "new": 0, "rejected": 0, "excluded": 0}
     used: dict[str, int] = {}
     with get_session() as s:
         for i, r in enumerate(rows, 1):
@@ -96,7 +96,8 @@ def main():
             if ck not in cache:
                 res = extract_skills(r["description_text"], prefer=args.extractor)
                 cache[ck] = {"extractor": res.extractor,
-                             "mentions": [m.to_dict() for m in res.mentions + res.review + res.new_candidates + res.rejected]}
+                             "mentions": [m.to_dict() for m in res.mentions + res.review + res.new_candidates + res.rejected
+                                          + res.excluded]}
             entry = cache[ck]
             used[entry["extractor"]] = used.get(entry["extractor"], 0) + 1
             p = s.get(Posting, key) or Posting(id=key)

@@ -16,6 +16,7 @@ import re
 from ..taxonomy import Skill
 from ..text import is_boilerplate, split_segments, trim_quote
 from .base import Mention
+from .requirement import classify
 
 LEVEL_CUES = {
     "mahir": re.compile(r"\b(expert|expertise|advanced|mahir|sangat (?:menguasai|mahir|baik)|deep (?:knowledge|understanding|expertise)|"
@@ -138,6 +139,7 @@ class LexiconExtractor:
                 continue
             has_cue = bool(REQUIREMENT_CUE.search(s))
             covered: list[tuple[int, int]] = []
+            named: list[tuple[Mention, int, int]] = []     # skill names of this segment, for the requirement status
             strong_in_seg = False
             hits = []
             for m in self.alias_re.finditer(s):
@@ -147,10 +149,10 @@ class LexiconExtractor:
                     strong_in_seg = True
             if API_INTEGRATION.search(s) and "api_integration" in self.alias_owner.values():
                 am = API_INTEGRATION.search(s)
-                out.append(Mention(
+                named.append((Mention(
                     surface=am.group(0)[:40], quote=trim_quote(s, am.start(), am.end()), level=self._level(s, am.start()),
                     skill_id="api_integration", similarity=1.0, status="auto", method="lexicon",
-                ))
+                ), am.start(), am.end()))
             degree = bool(DEGREE.search(s))
             for m, alias in hits:
                 if degree and alias in FIELD_ALIASES:
@@ -161,10 +163,16 @@ class LexiconExtractor:
                 if alias in WEAK_ALIASES and not (has_cue or strong_in_seg):
                     continue
                 covered.append((m.start(), m.end()))
-                out.append(Mention(
+                named.append((Mention(
                     surface=m.group(1), quote=trim_quote(s, m.start(), m.end()), level=self._level(s, m.start()),
                     skill_id=self.alias_owner[alias], similarity=1.0, status="auto", method="lexicon",
-                ))
+                ), m.start(), m.end()))
+            # what the posting says about each name: required, preferred, one of several, or explicitly not needed
+            for (mention, _, _), (req, why, group) in zip(named, classify(s, [(a, b) for _, a, b in named]), strict=True):
+                mention.requirement, mention.group = req, group
+                if why:
+                    mention.reason = why
+                out.append(mention)
             # pattern pass: free-text items after cue words with no known alias inside
             for pm in PATTERN_CUE.finditer(s):
                 chunk_start = pm.start(1)

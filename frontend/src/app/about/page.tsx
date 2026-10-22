@@ -36,8 +36,9 @@ export default function AboutPage() {
             .
           </p>
           <p>
-            <strong>Status:</strong> beta tertutup. Saat ini mendukung 14 peran teknis dan bisnis, hanya keterampilan hard skill. Peran bisnis lain (keuangan, SDM, rantai pasok) menyusul;
-            daftarkan email Anda di beranda untuk diberi tahu.
+            <strong>Status:</strong> beta tertutup. Saat ini mendukung 20 peran teknis dan bisnis, hanya keterampilan hard skill. Kedalaman validasi berbeda per peran:
+            graf prasyarat dan sebagian soal baru ditinjau pakar untuk Business Analyst, sedangkan peran lain memakai data lowongan dan graf
+            yang belum ditinjau pakar.
           </p>
         </div>
         <h2 className="mt-10 text-xl font-bold text-ink">Kontak</h2>

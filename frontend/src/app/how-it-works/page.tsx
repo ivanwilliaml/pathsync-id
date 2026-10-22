@@ -16,7 +16,11 @@ interface ModelCard {
   embedding_model: { name: string; use: string };
   knowledge_tracing: { type: string; slip: number; guess: number; learn: number };
   llm_is_never_used_for: string[];
-  validation?: { real_experts: number; ranker_trained_on: string; status: string };
+  validation?: {
+    real_experts: number; ranker_trained_on: string | null; status: string; graph_experts?: number;
+    decision_study?: { experts: number; diagnosis_ratings: number; diagnosis_spearman: number; ranking_scenarios: number;
+                       ndcg5: Record<string, number>; ndcg5_diff_ci95: [number, number] | null } | null;
+  };
   planned?: string[];
 }
 interface Criterion {
@@ -142,7 +146,7 @@ export default function HowItWorksPage() {
         {weights.error ? <ErrorNote error={weights.error} /> : !weights.data ? <Loading /> : <Weights w={weights.data} />}
       </section>
       <section aria-labelledby="eval">
-        <SectionTitle id="eval">{t("How Well the Ranking Agrees With Experts", "Seberapa Sejalan Ranking dengan Pakar")}</SectionTitle>
+        <SectionTitle id="eval">{t("Ranking Feasibility Check (Simulation)", "Uji Kelayakan Ranking (Simulasi)")}</SectionTitle>
         {evals.error ? <ErrorNote error={evals.error} /> : !evals.data ? <Loading /> : <Evaluation e={evals.data} />}
       </section>
       <section aria-labelledby="data-sources">
@@ -167,8 +171,8 @@ function Engine() {
   const stages = [
     ["Evidence", t("Course grades, certificates, project artifacts (rubric with quotes) and skill checks. CV claims and self-ratings never count as mastery.", "Nilai mata kuliah, sertifikat, artefak project (rubrik dengan kutipan) dan Cek Kemampuan. Klaim CV dan penilaian diri tidak pernah dihitung sebagai mastery.")],
     ["Mastery p", t("Weighted average of the evidence that exists, then updated by every new answer with Bayesian knowledge tracing.", "Rata-rata berbobot dari evidence yang ada, lalu diperbarui setiap jawaban baru dengan Bayesian knowledge tracing.")],
-    [t("Seven features", "Tujuh fitur"), t("Gap, prerequisites ready, evidence confidence, market demand, demand trend, unlock value and downstream block.", "Gap, kesiapan prasyarat, keyakinan evidence, market demand, tren demand, nilai unlock, dan downstream block.")],
-    ["Ranking model", t("A linear learning-to-rank score f = Σ wᵢ log xᵢ, weights learned from expert rankings, every weight inspectable.", "Skor learning-to-rank linear f = Σ wᵢ log xᵢ, bobot dipelajari dari ranking pakar, setiap bobot bisa diperiksa.")],
+    [t("Seven features", "Tujuh fitur"), t("Gap, prerequisites ready, evidence confidence, market demand, demand trend, unlock value and downstream block. The active formula uses five of them (G, R, D, T, U); confidence and downstream block are shown but weigh 0.", "Gap, kesiapan prasyarat, keyakinan evidence, market demand, tren demand, nilai unlock, dan downstream block. Formula aktif memakai lima (G, R, D, T, U); keyakinan dan downstream block ditampilkan tetapi berbobot 0.")],
+    ["Ranking model", t("Formula (5) is active: score = G × D × T × U × R, every factor inspectable. A learning-to-rank model (eq. 4) exists in code but has not been trained on real expert rankings, so it is not used.", "Formula (5) aktif: skor = G × D × T × U × R, setiap faktor bisa diperiksa. Model learning-to-rank (pers. 4) sudah ada di kode tetapi belum dilatih dengan urutan pakar sungguhan, sehingga belum dipakai.")],
     [t("Route", "Rute"), t("Top 3 skills plus unmastered prerequisites in prerequisite order, each with what, why (with job-posting quotes), why now and next.", "3 skill teratas plus prasyarat yang belum dikuasai sesuai urutan prasyarat, masing-masing dengan apa, kenapa (dengan kutipan job posting), kenapa sekarang, dan selanjutnya.")],
   ];
   return (
@@ -215,8 +219,16 @@ function Models({ c }: { c: ModelCard }) {
         {c.validation ? (
           <p className="mt-2 inline-block rounded-md bg-ember/10 px-2 py-1 text-xs font-medium text-ember-ink">
             {t(
-              `Beta: validated with ${c.validation.real_experts} real experts so far; trained on ${c.validation.ranker_trained_on}.`,
-              `Beta: sejauh ini divalidasi dengan ${c.validation.real_experts} pakar nyata; dilatih dengan ${c.validation.ranker_trained_on}.`,
+              `Beta: ${c.validation.graph_experts ?? c.validation.real_experts} experts reviewed the Business Analyst prerequisite graph; ${c.validation.decision_study?.experts ?? 0} expert judged the priority order on ${c.validation.decision_study?.ranking_scenarios ?? 0} scenarios. ${c.validation.ranker_trained_on ? `Trained on ${c.validation.ranker_trained_on}.` : "No trained model is active."}`,
+              `Beta: ${c.validation.graph_experts ?? c.validation.real_experts} pakar menilai graf prasyarat Business Analyst; ${c.validation.decision_study?.experts ?? 0} pakar menilai urutan prioritas pada ${c.validation.decision_study?.ranking_scenarios ?? 0} skenario. ${c.validation.ranker_trained_on ? `Dilatih dengan ${c.validation.ranker_trained_on}.` : "Belum ada model terlatih yang aktif."}`,
+            )}
+          </p>
+        ) : null}
+        {c.validation?.decision_study?.ndcg5 ? (
+          <p className="mt-2 text-xs text-ink/70">
+            {t(
+              `Human check (1 Business Analyst expert, ${c.validation.decision_study.ranking_scenarios} scenarios, PathSync's answers hidden): NDCG@5 ${num(c.validation.decision_study.ndcg5.pathsync_formula5, 3)} for the formula, ${num(c.validation.decision_study.ndcg5.gap_x_demand, 3)} for gap × demand and ${num(c.validation.decision_study.ndcg5.biggest_gap, 3)} for biggest gap. Early agreement with one judge, not a general proof.`,
+              `Uji manusia (1 pakar Business Analyst, ${c.validation.decision_study.ranking_scenarios} skenario, jawaban PathSync disembunyikan): NDCG@5 ${num(c.validation.decision_study.ndcg5.pathsync_formula5, 3)} untuk formula, ${num(c.validation.decision_study.ndcg5.gap_x_demand, 3)} untuk gap × demand, dan ${num(c.validation.decision_study.ndcg5.biggest_gap, 3)} untuk gap terbesar. Ini kesesuaian awal dengan satu penilai, bukan bukti umum.`,
             )}
           </p>
         ) : null}
@@ -414,8 +426,8 @@ function Evaluation({ e }: { e: EvalReport }) {
     <Panel>
       <p className="mb-3 text-sm text-ink/70">
         {t(
-          `NDCG@5 against the expert reference order, grouped cross-validation over ${e.n_scenarios} scenarios, 95% bootstrap intervals. Feasibility simulation with simulated experts until the real panel has ranked.`,
-          `NDCG@5 terhadap urutan referensi pakar, grouped cross-validation atas ${e.n_scenarios} skenario, interval bootstrap 95%. Simulasi kelayakan dengan pakar simulasi sampai panel nyata selesai meranking.`,
+          `Simulation, not human judgement: NDCG@5 against rankings from simulated experts, grouped cross-validation over ${e.n_scenarios} synthetic scenarios, 95% bootstrap intervals. It checks that the training code works; it says nothing about real experts. The human result is in the Models section above.`,
+          `Simulasi, bukan penilaian manusia: NDCG@5 terhadap urutan dari pakar simulasi, grouped cross-validation atas ${e.n_scenarios} skenario sintetis, interval bootstrap 95%. Ini memeriksa bahwa kode pelatihan berjalan, bukan kinerja terhadap pakar sungguhan. Hasil penilaian manusia ada di bagian Model di atas.`,
         )}
       </p>
       <div className="overflow-x-auto">

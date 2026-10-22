@@ -39,24 +39,60 @@ def _spans(text: str, mentions: list[Mention]) -> list[tuple[Mention, int, int]]
     return sorted(out, key=lambda row: row[1])
 
 
+def _required_set(extracted: ExtractionResult, p: dict[str, float], ctx) -> tuple[dict[str, Mention], dict[str, str]]:
+    """Skills this posting needs (DATA-01). Preferred skills are not needed; of an "A atau B" group only the option
+    the student is closest to is needed. Returns the needed mentions and, for every other counted skill, why not."""
+    needed: dict[str, Mention] = {}
+    other: dict[str, str] = {}
+    groups: dict[str, list[str]] = {}
+    for sid, m in extracted.skills.items():
+        if sid not in ctx.skills:
+            continue
+        if m.requirement == "preferred":
+            other[sid] = "preferred"
+        elif m.requirement == "alternative" and m.group:
+            groups.setdefault(m.group, []).append(sid)
+        else:
+            needed[sid] = m
+    for options in groups.values():
+        options = [sid for sid in options if sid not in needed]
+        if not options:
+            continue
+        best = max(options, key=lambda sid: (p.get(sid, 0.0), sid))
+        needed[best] = extracted.skills[best]
+        other.update({sid: "alternative" for sid in options if sid != best})
+    return needed, other
+
+
 def analyze_job(text: str, extracted: ExtractionResult, states: dict, ctx) -> dict:
     """Pure response assembly; the caller owns authentication and input limits."""
-    required = {sid: POSTING_LEVELS[m.level] for sid, m in extracted.skills.items() if sid in ctx.skills}
-    demand = {sid: 1.0 for sid in required}  # one posting: each distinct requested skill gets one vote
     p = {sid: state.p for sid, state in states.items()}
+    needed, not_needed = _required_set(extracted, p, ctx)
+    required = {sid: POSTING_LEVELS[m.level] for sid, m in needed.items()}
+    demand = {sid: 1.0 for sid in required}  # one posting: each distinct requested skill gets one vote
 
     skills = []
     for mention, start, end in _spans(text, extracted.mentions):
-        if mention.skill_id not in required:
+        sid = mention.skill_id
+        if sid not in required and sid not in not_needed:
             continue
-        state = states[mention.skill_id]
+        state = states[sid]
         skills.append({
             "text": text[start:end], "start": _utf16_offset(text, start), "end": _utf16_offset(text, end),
-            "skill_id": mention.skill_id, "skill_name": ctx.names[mention.skill_id],
+            "skill_id": sid, "skill_name": ctx.names[sid],
+            # counted: the skill is in this posting's required set; otherwise it is a nice-to-have or an unused option
+            "requirement": "required" if sid in required else not_needed[sid], "counted": sid in required,
             "level_needed": mention.level, "level_now": level_label(state.p),
             "evidence_status": "direct" if state.p_proven is not None else
-                               "academic" if state.has_evidence else "none",
+                               "indirect" if state.has_evidence else "none",
         })
+
+    excluded = [
+        {"text": text[start:end], "start": _utf16_offset(text, start), "end": _utf16_offset(text, end),
+         "skill_id": mention.skill_id, "skill_name": ctx.names.get(mention.skill_id, mention.surface),
+         "requirement": mention.requirement, "reason": mention.reason}
+        for mention, start, end in _spans(text, extracted.excluded) if mention.skill_id in ctx.skills
+    ]
 
     terms_to_review = [
         {"text": text[start:end], "start": _utf16_offset(text, start), "end": _utf16_offset(text, end),
@@ -94,7 +130,7 @@ def analyze_job(text: str, extracted: ExtractionResult, states: dict, ctx) -> di
             "n_with_evidence": sum(states[sid].has_evidence for sid in required),
             "meaning": "coverage_of_recognized_skills_not_hiring_probability",
         },
-        "skills": skills, "gaps": gaps, "next_step": next_step,
+        "skills": skills, "excluded": excluded, "gaps": gaps, "next_step": next_step,
         "terms_to_review": terms_to_review,
         "terms_note": "Candidates found by the extractor, not a complete count of unknown terms.",
     }

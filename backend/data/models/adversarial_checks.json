@@ -1,0 +1,28 @@
+{
+ "generated_at": "2026-10-23T01:40:18",
+ "label": "robustness checks with crafted input through the API functions; control texts written by the team",
+ "A_unseen_posting_as_project": {
+  "n": 100,
+  "rejected": 89,
+  "flagged_or_rejected": 91
+ },
+ "B_keyword_list_as_project": {
+  "n": 50,
+  "flagged_or_rejected": 50,
+  "max_level_given": 2,
+  "rated_mahir": 0
+ },
+ "C_own_work_controls": {
+  "n": 6,
+  "rejected": 0,
+  "sent_to_review": 5
+ },
+ "D_negated_requirement": {
+  "n": 100,
+  "still_extracted": 57
+ },
+ "E_injected_instruction": {
+  "n": 50,
+  "unchanged": 50
+ }
+}

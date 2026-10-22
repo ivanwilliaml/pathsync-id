@@ -201,6 +201,18 @@ def clear_context_cache() -> None:
 REVIEW_RELIABILITY = {"auto": 1.0, "approved": 1.0, "pending": 0.5, "claimed": 0.5}
 
 
+def _exam_scores(ev) -> dict[str, float] | None:
+    """Skills a certificate proves through an exam (level 'ujian'); course completion is not direct proof."""
+    if ev.kind != "certificate":
+        return None
+    out: dict[str, float] = {}
+    for c in ev.details.get("certificates", []):
+        if c.get("level") == "ujian":
+            for k, v in (c.get("contribution") or {}).items():
+                out[k] = max(out.get(k, 0.0), float(v))
+    return out
+
+
 def evidence_items(student: Student) -> list[EvidenceItem]:
     items = []
     for ev in sorted(student.evidence, key=lambda e: (e.created_at, e.id)):
@@ -208,7 +220,7 @@ def evidence_items(student: Student) -> list[EvidenceItem]:
             items.append(EvidenceItem("cv", ev.title, {}, {}, claims=list(ev.details.get("claim_ids", []))))
         elif ev.review_status in REVIEW_RELIABILITY:     # rejected uploads never count
             items.append(EvidenceItem(ev.kind, ev.title, dict(ev.scores), dict(ev.details.get("strength", {})),
-                                      reliability=REVIEW_RELIABILITY[ev.review_status]))
+                                      reliability=REVIEW_RELIABILITY[ev.review_status], direct=_exam_scores(ev)))
     return items
 
 
@@ -334,7 +346,7 @@ def recommend(s: Session, student: Student, ctx: Context | None = None, features
 
     cf = counterfactuals(path, ranked, graph, p, ctx.names)
     cov = coverage(p, {k: v for k, v in ctx.req.items() if demand.get(k, 0) > 0}, demand)
-    # readiness from direct proof only (Quick Check, reviewed projects, certificates); grades never count here
+    # readiness from direct proof only (Quick Check, reviewed projects, exam certificates); grades never count here
     p_proven = {k: (st.p_proven or 0.0) for k, st in states.items()}
     cov_proven = coverage(p_proven, {k: v for k, v in ctx.req.items() if demand.get(k, 0) > 0}, demand)
     by_cluster = {}

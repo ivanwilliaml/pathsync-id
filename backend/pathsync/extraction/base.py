@@ -4,7 +4,8 @@ Every extractor - the LLM one and the offline lexicon one - returns `Mention`s w
 the skill, a verbatim evidence quote and the requested level. The same two gates are
 then applied to both:
 
-1. quote verification: a mention whose quote is not in the source text is rejected;
+1. quote verification: a mention whose quote is not in the source text is rejected, and a mention the posting
+   explicitly does not need (requirement.py) is set aside instead of counted;
 2. embedding normalisation: free-text skill names are mapped to the taxonomy by
    cosine similarity: >= 0.85 automatic, 0.70-0.85 manual review, < 0.70 new-skill
    candidate (logged separately).
@@ -15,6 +16,7 @@ from dataclasses import asdict, dataclass, field
 
 from ..config import EMBEDDING_AUTO, SIM_AUTO, SIM_REVIEW
 from ..text import verify_quote
+from .requirement import NOT_COUNTED
 
 LEVELS = ("dasar", "mandiri", "mahir")
 
@@ -29,6 +31,8 @@ class Mention:
     status: str = "auto"          # auto | review | new | rejected
     method: str = "lexicon"       # lexicon | pattern | llm
     reason: str = ""
+    requirement: str = "required"  # required | preferred | alternative | excluded | uncertain | mention_only
+    group: str = ""               # shared id of the options in one "A atau B" alternative
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -40,17 +44,26 @@ class ExtractionResult:
     rejected: list[Mention] = field(default_factory=list)
     new_candidates: list[Mention] = field(default_factory=list)
     review: list[Mention] = field(default_factory=list)
+    excluded: list[Mention] = field(default_factory=list)    # named but not needed (DATA-01): never demand
     extractor: str = "lexicon"
 
     @property
     def skills(self) -> dict[str, Mention]:
-        """One mention per skill (the most demanding level wins)."""
+        """One mention per skill: the strongest requirement wins (required > alternative > preferred), then the most
+        demanding level."""
         best: dict[str, Mention] = {}
         for m in self.mentions:
             cur = best.get(m.skill_id)
-            if cur is None or LEVELS.index(m.level) > LEVELS.index(cur.level):
+            if cur is None or _rank(m) > _rank(cur):
                 best[m.skill_id] = m
         return best
+
+
+_STRENGTH = {"preferred": 0, "alternative": 1, "required": 2}
+
+
+def _rank(m: Mention) -> tuple[int, int]:
+    return _STRENGTH.get(m.requirement, 2), LEVELS.index(m.level)
 
 
 def _trigrams(t: str) -> set[str]:
@@ -92,6 +105,10 @@ def apply_gates(raw: list[Mention], source_text: str, index, valid_ids: set[str]
         if not verify_quote(m.quote, source_text):
             m.status, m.reason = "rejected", "kutipan tidak ditemukan di teks asli"
             res.rejected.append(m)
+            continue
+        if m.requirement in NOT_COUNTED:
+            m.status = "excluded"
+            res.excluded.append(m)
             continue
         if m.skill_id in valid_ids and m.method != "pattern":
             res.mentions.append(m)          # extractor already constrained to the taxonomy

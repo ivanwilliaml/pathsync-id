@@ -66,6 +66,8 @@ GRADE_SCORES = {"A": 1.0, "A-": 0.92, "B+": 0.83, "B": 0.75, "B-": 0.67, "C+": 0
 RUBRIC_SCORES = {0: 0.0, 1: 0.40, 2: 0.70, 3: 1.0}   # tidak tampak, dasar, mandiri, mahir
 RUBRIC_LABELS = {0: "tidak tampak", 1: "dasar", 2: "mandiri", 3: "mahir"}
 PRIOR_NO_EVIDENCE = 0.10        # mastery prior when no evidence exists yet
+INDIRECT_CAP = 0.60             # p0 ceiling from grades / completion certificates alone (initial policy, audit COMP-01)
+P_MIN, P_MAX = 0.01, 0.99       # p never reaches 0 or 1, so every answer can still move it
 LOW_CONFIDENCE = 0.40           # K_s below this is flagged "keyakinan rendah" on the dashboard
 
 # Bayesian knowledge tracing [III.A.2, eq. 3] - initial values from the usual literature range

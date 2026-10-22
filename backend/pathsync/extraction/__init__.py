@@ -24,7 +24,7 @@ def cache_tag(extractor: str) -> str:
 
     files = [SEED_DIR / "taxonomy.json"]
     if extractor != "llm":                      # llm results are gated at import; the prompt is the taxonomy
-        files += [_HERE / "lexicon.py", _HERE / "base.py"]
+        files += [_HERE / "lexicon.py", _HERE / "base.py", _HERE / "requirement.py"]
     h = hashlib.sha256()
     for f in files:
         h.update(f.read_bytes().replace(b"\r\n", b"\n"))

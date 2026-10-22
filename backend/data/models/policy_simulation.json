@@ -1,0 +1,145 @@
+{
+ "generated_at": "2026-10-22T17:56:47",
+ "label": "simulation: synthetic students, BA demand and expert-approved edges; not evidence about real learners",
+ "n_students": 2000,
+ "sessions": 20,
+ "rate": 0.35,
+ "ready_threshold": 0.6,
+ "scenarios": [
+  {
+   "k_unready": 0.25,
+   "policies": {
+    "pathsync": {
+     "coverage_after": {
+      "5": 0.6221,
+      "10": 0.7438,
+      "20": 0.9099
+     },
+     "sessions_on_unready_skill": 0.0168,
+     "median_sessions_to_coverage_0_8": 13.0,
+     "reached_0_8_within_horizon": 0.9995
+    },
+    "biggest_gap": {
+     "coverage_after": {
+      "5": 0.5534,
+      "10": 0.6326,
+      "20": 0.7857
+     },
+     "sessions_on_unready_skill": 0.3863,
+     "median_sessions_to_coverage_0_8": 21.0,
+     "reached_0_8_within_horizon": 0.4345
+    },
+    "most_demanded": {
+     "coverage_after": {
+      "5": 0.5814,
+      "10": 0.6843,
+      "20": 0.7502
+     },
+     "sessions_on_unready_skill": 0.4593,
+     "median_sessions_to_coverage_0_8": 21.0,
+     "reached_0_8_within_horizon": 0.149
+    },
+    "random": {
+     "coverage_after": {
+      "5": 0.5184,
+      "10": 0.5976,
+      "20": 0.7401
+     },
+     "sessions_on_unready_skill": 0.2492,
+     "median_sessions_to_coverage_0_8": 21.0,
+     "reached_0_8_within_horizon": 0.195
+    }
+   }
+  },
+  {
+   "k_unready": 0.5,
+   "policies": {
+    "pathsync": {
+     "coverage_after": {
+      "5": 0.6221,
+      "10": 0.7457,
+      "20": 0.9119
+     },
+     "sessions_on_unready_skill": 0.0106,
+     "median_sessions_to_coverage_0_8": 13.0,
+     "reached_0_8_within_horizon": 0.9995
+    },
+    "biggest_gap": {
+     "coverage_after": {
+      "5": 0.5722,
+      "10": 0.6732,
+      "20": 0.8464
+     },
+     "sessions_on_unready_skill": 0.2361,
+     "median_sessions_to_coverage_0_8": 18.0,
+     "reached_0_8_within_horizon": 0.849
+    },
+    "most_demanded": {
+     "coverage_after": {
+      "5": 0.5814,
+      "10": 0.6868,
+      "20": 0.8239
+     },
+     "sessions_on_unready_skill": 0.2815,
+     "median_sessions_to_coverage_0_8": 19.0,
+     "reached_0_8_within_horizon": 0.7285
+    },
+    "random": {
+     "coverage_after": {
+      "5": 0.5254,
+      "10": 0.6107,
+      "20": 0.7654
+     },
+     "sessions_on_unready_skill": 0.2407,
+     "median_sessions_to_coverage_0_8": 21.0,
+     "reached_0_8_within_horizon": 0.2965
+    }
+   }
+  },
+  {
+   "k_unready": 1.0,
+   "policies": {
+    "pathsync": {
+     "coverage_after": {
+      "5": 0.6223,
+      "10": 0.7482,
+      "20": 0.9134
+     },
+     "sessions_on_unready_skill": 0.0083,
+     "median_sessions_to_coverage_0_8": 13.0,
+     "reached_0_8_within_horizon": 1.0
+    },
+    "biggest_gap": {
+     "coverage_after": {
+      "5": 0.5949,
+      "10": 0.7134,
+      "20": 0.8864
+     },
+     "sessions_on_unready_skill": 0.1471,
+     "median_sessions_to_coverage_0_8": 15.0,
+     "reached_0_8_within_horizon": 0.996
+    },
+    "most_demanded": {
+     "coverage_after": {
+      "5": 0.5814,
+      "10": 0.6913,
+      "20": 0.8662
+     },
+     "sessions_on_unready_skill": 0.1393,
+     "median_sessions_to_coverage_0_8": 16.0,
+     "reached_0_8_within_horizon": 0.982
+    },
+    "random": {
+     "coverage_after": {
+      "5": 0.5397,
+      "10": 0.6374,
+      "20": 0.8051
+     },
+     "sessions_on_unready_skill": 0.2122,
+     "median_sessions_to_coverage_0_8": 20.0,
+     "reached_0_8_within_horizon": 0.5625
+    }
+   }
+  }
+ ]
+}

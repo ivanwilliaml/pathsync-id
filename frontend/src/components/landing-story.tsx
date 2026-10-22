@@ -369,7 +369,7 @@ export function ProofStory({ postings, careers, skills, ndcg, onStart }: { posti
     { v: postings, label: t("unique job postings read", "lowongan unik dibaca"), note: t("Karirhub (Kemnaker) and company career sites", "Karirhub (Kemnaker) dan situs karier perusahaan") },
     { v: careers, label: t("careers mapped", "karier dipetakan"), note: t("from tech to finance and HR", "dari teknologi sampai keuangan dan SDM") },
     { v: skills, label: t("skills in the taxonomy", "skill dalam taksonomi"), note: t("built on ESCO, validated by experts", "berbasis ESCO, divalidasi pakar") },
-    { v: ndcg, decimals: 2, label: t("agreement with expert rankings", "kesesuaian dengan peringkat pakar"), note: t("NDCG@5, feasibility simulation", "NDCG@5, simulasi kelayakan") },
+    { v: ndcg, decimals: 2, label: t("ranking check on simulated experts", "uji ranking dengan pakar simulasi"), note: t("NDCG@5, simulation, not human judgement", "NDCG@5, simulasi, bukan penilaian manusia") },
   ];
   const rules: [ReactNode, string, string][] = [
     [<Briefcase key="a" className="size-5" />, t("Real job postings.", "Lowongan nyata."), t("Every claim about demand links back to the posting it came from.", "Setiap klaim permintaan bisa ditelusuri ke lowongan asalnya.")],

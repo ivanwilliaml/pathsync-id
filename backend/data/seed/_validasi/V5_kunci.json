@@ -1,0 +1,808 @@
+{
+ "generated": "2026-10-22",
+ "note": "PathSync answers for V5. Do not share with experts before they finish.",
+ "diagnosis": {
+  "P1-1": {
+   "skill_id": "testing_uat",
+   "p": 0.1111
+  },
+  "P1-2": {
+   "skill_id": "business_process_modeling",
+   "p": 0.2743
+  },
+  "P1-3": {
+   "skill_id": "system_modeling_uml",
+   "p": 0.64
+  },
+  "P1-4": {
+   "skill_id": "sql",
+   "p": 0.41
+  },
+  "P2-1": {
+   "skill_id": "requirements_documentation",
+   "p": 0.2969
+  },
+  "P2-2": {
+   "skill_id": "system_modeling_uml",
+   "p": 0.5542
+  },
+  "P2-3": {
+   "skill_id": "testing_uat",
+   "p": 0.83
+  },
+  "P2-4": {
+   "skill_id": "sql",
+   "p": 0.4245
+  },
+  "P3-1": {
+   "skill_id": "business_process_modeling",
+   "p": 0.1947
+  },
+  "P3-2": {
+   "skill_id": "requirements_elicitation",
+   "p": 0.46
+  },
+  "P3-3": {
+   "skill_id": "system_modeling_uml",
+   "p": 0.5081
+  },
+  "P3-4": {
+   "skill_id": "requirements_documentation",
+   "p": 0.5556
+  },
+  "P4-1": {
+   "skill_id": "business_process_modeling",
+   "p": 0.415
+  },
+  "P4-2": {
+   "skill_id": "system_modeling_uml",
+   "p": 0.6845
+  },
+  "P4-3": {
+   "skill_id": "requirements_elicitation",
+   "p": 0.489
+  },
+  "P4-4": {
+   "skill_id": "requirements_documentation",
+   "p": 0.1314
+  },
+  "P5-1": {
+   "skill_id": "requirements_documentation",
+   "p": 0.5833
+  },
+  "P5-2": {
+   "skill_id": "sql",
+   "p": 0.3817
+  },
+  "P5-3": {
+   "skill_id": "business_process_modeling",
+   "p": 0.46
+  },
+  "P5-4": {
+   "skill_id": "requirements_elicitation",
+   "p": 0.6021
+  },
+  "P6-1": {
+   "skill_id": "business_process_modeling",
+   "p": 0.4524
+  },
+  "P6-2": {
+   "skill_id": "requirements_elicitation",
+   "p": 0.5556
+  },
+  "P6-3": {
+   "skill_id": "system_modeling_uml",
+   "p": 0.7648
+  },
+  "P6-4": {
+   "skill_id": "sql",
+   "p": 0.7529
+  },
+  "P7-1": {
+   "skill_id": "business_process_modeling",
+   "p": 0.7778
+  },
+  "P7-2": {
+   "skill_id": "system_modeling_uml",
+   "p": 0.688
+  },
+  "P7-3": {
+   "skill_id": "requirements_documentation",
+   "p": 0.2969
+  },
+  "P7-4": {
+   "skill_id": "testing_uat",
+   "p": 0.7267
+  },
+  "P8-1": {
+   "skill_id": "requirements_documentation",
+   "p": 0.2143
+  },
+  "P8-2": {
+   "skill_id": "testing_uat",
+   "p": 0.5112
+  },
+  "P8-3": {
+   "skill_id": "requirements_elicitation",
+   "p": 0.6311
+  },
+  "P8-4": {
+   "skill_id": "system_modeling_uml",
+   "p": 0.5625
+  }
+ },
+ "ranking": {
+  "S01-base": {
+   "candidates": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "sql",
+    "sdlc",
+    "data_analysis",
+    "business_process_modeling",
+    "data_cleaning",
+    "dashboard_reporting"
+   ],
+   "pathsync_formula5": [
+    "requirements_elicitation",
+    "sql",
+    "requirements_documentation",
+    "business_process_modeling",
+    "sdlc",
+    "data_analysis",
+    "data_cleaning",
+    "dashboard_reporting"
+   ],
+   "biggest_gap": [
+    "data_analysis",
+    "sql",
+    "requirements_documentation",
+    "data_cleaning",
+    "requirements_elicitation",
+    "business_process_modeling",
+    "dashboard_reporting",
+    "sdlc"
+   ],
+   "gap_x_demand": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "sql",
+    "business_process_modeling",
+    "data_analysis",
+    "sdlc",
+    "data_cleaning",
+    "dashboard_reporting"
+   ]
+  },
+  "S01-comp": {
+   "candidates": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "sql",
+    "sdlc",
+    "data_analysis",
+    "business_process_modeling",
+    "data_cleaning",
+    "dashboard_reporting"
+   ],
+   "pathsync_formula5": [
+    "requirements_documentation",
+    "sql",
+    "business_process_modeling",
+    "sdlc",
+    "requirements_elicitation",
+    "data_analysis",
+    "data_cleaning",
+    "dashboard_reporting"
+   ],
+   "biggest_gap": [
+    "data_analysis",
+    "sql",
+    "requirements_documentation",
+    "data_cleaning",
+    "business_process_modeling",
+    "dashboard_reporting",
+    "sdlc",
+    "requirements_elicitation"
+   ],
+   "gap_x_demand": [
+    "requirements_documentation",
+    "sql",
+    "business_process_modeling",
+    "data_analysis",
+    "sdlc",
+    "requirements_elicitation",
+    "data_cleaning",
+    "dashboard_reporting"
+   ]
+  },
+  "S02-base": {
+   "candidates": [
+    "api_integration",
+    "business_process_modeling",
+    "testing_uat",
+    "requirements_elicitation",
+    "requirements_documentation",
+    "sdlc",
+    "rest_api_design",
+    "data_modeling"
+   ],
+   "pathsync_formula5": [
+    "api_integration",
+    "business_process_modeling",
+    "requirements_elicitation",
+    "sdlc",
+    "testing_uat",
+    "requirements_documentation",
+    "data_modeling",
+    "rest_api_design"
+   ],
+   "biggest_gap": [
+    "api_integration",
+    "business_process_modeling",
+    "testing_uat",
+    "data_modeling",
+    "rest_api_design",
+    "sdlc",
+    "requirements_elicitation",
+    "requirements_documentation"
+   ],
+   "gap_x_demand": [
+    "api_integration",
+    "business_process_modeling",
+    "testing_uat",
+    "sdlc",
+    "requirements_elicitation",
+    "data_modeling",
+    "requirements_documentation",
+    "rest_api_design"
+   ]
+  },
+  "S02-comp": {
+   "candidates": [
+    "api_integration",
+    "business_process_modeling",
+    "testing_uat",
+    "requirements_elicitation",
+    "requirements_documentation",
+    "sdlc",
+    "rest_api_design",
+    "data_modeling"
+   ],
+   "pathsync_formula5": [
+    "api_integration",
+    "business_process_modeling",
+    "sdlc",
+    "requirements_elicitation",
+    "testing_uat",
+    "requirements_documentation",
+    "data_modeling",
+    "rest_api_design"
+   ],
+   "biggest_gap": [
+    "api_integration",
+    "business_process_modeling",
+    "testing_uat",
+    "data_modeling",
+    "rest_api_design",
+    "sdlc",
+    "requirements_elicitation",
+    "requirements_documentation"
+   ],
+   "gap_x_demand": [
+    "api_integration",
+    "business_process_modeling",
+    "testing_uat",
+    "sdlc",
+    "requirements_elicitation",
+    "data_modeling",
+    "requirements_documentation",
+    "rest_api_design"
+   ]
+  },
+  "S03-base": {
+   "candidates": [
+    "requirements_elicitation",
+    "sdlc",
+    "business_process_modeling",
+    "requirements_documentation",
+    "dashboard_reporting",
+    "erp_crm",
+    "data_modeling",
+    "diagramming_tools"
+   ],
+   "pathsync_formula5": [
+    "requirements_elicitation",
+    "sdlc",
+    "business_process_modeling",
+    "requirements_documentation",
+    "erp_crm",
+    "diagramming_tools",
+    "data_modeling",
+    "dashboard_reporting"
+   ],
+   "biggest_gap": [
+    "sdlc",
+    "business_process_modeling",
+    "requirements_elicitation",
+    "requirements_documentation",
+    "diagramming_tools",
+    "erp_crm",
+    "data_modeling",
+    "dashboard_reporting"
+   ],
+   "gap_x_demand": [
+    "requirements_elicitation",
+    "sdlc",
+    "business_process_modeling",
+    "requirements_documentation",
+    "erp_crm",
+    "diagramming_tools",
+    "data_modeling",
+    "dashboard_reporting"
+   ]
+  },
+  "S03-comp": {
+   "candidates": [
+    "requirements_elicitation",
+    "sdlc",
+    "business_process_modeling",
+    "requirements_documentation",
+    "dashboard_reporting",
+    "erp_crm",
+    "data_modeling",
+    "diagramming_tools"
+   ],
+   "pathsync_formula5": [
+    "sdlc",
+    "requirements_documentation",
+    "business_process_modeling",
+    "requirements_elicitation",
+    "erp_crm",
+    "diagramming_tools",
+    "data_modeling",
+    "dashboard_reporting"
+   ],
+   "biggest_gap": [
+    "sdlc",
+    "business_process_modeling",
+    "requirements_documentation",
+    "diagramming_tools",
+    "erp_crm",
+    "data_modeling",
+    "dashboard_reporting",
+    "requirements_elicitation"
+   ],
+   "gap_x_demand": [
+    "sdlc",
+    "business_process_modeling",
+    "requirements_documentation",
+    "requirements_elicitation",
+    "erp_crm",
+    "diagramming_tools",
+    "data_modeling",
+    "dashboard_reporting"
+   ]
+  },
+  "S04-base": {
+   "candidates": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "business_process_modeling",
+    "sdlc",
+    "kpi_metrics",
+    "testing_uat",
+    "system_modeling_uml",
+    "excel"
+   ],
+   "pathsync_formula5": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "sdlc",
+    "requirements_documentation",
+    "testing_uat",
+    "excel",
+    "system_modeling_uml",
+    "kpi_metrics"
+   ],
+   "biggest_gap": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "system_modeling_uml",
+    "requirements_documentation",
+    "sdlc",
+    "testing_uat",
+    "kpi_metrics",
+    "excel"
+   ],
+   "gap_x_demand": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "business_process_modeling",
+    "sdlc",
+    "testing_uat",
+    "system_modeling_uml",
+    "excel",
+    "kpi_metrics"
+   ]
+  },
+  "S04-comp": {
+   "candidates": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "business_process_modeling",
+    "sdlc",
+    "kpi_metrics",
+    "testing_uat",
+    "system_modeling_uml",
+    "excel"
+   ],
+   "pathsync_formula5": [
+    "requirements_documentation",
+    "business_process_modeling",
+    "sdlc",
+    "requirements_elicitation",
+    "system_modeling_uml",
+    "testing_uat",
+    "excel",
+    "kpi_metrics"
+   ],
+   "biggest_gap": [
+    "business_process_modeling",
+    "system_modeling_uml",
+    "requirements_documentation",
+    "sdlc",
+    "testing_uat",
+    "kpi_metrics",
+    "excel",
+    "requirements_elicitation"
+   ],
+   "gap_x_demand": [
+    "requirements_documentation",
+    "business_process_modeling",
+    "sdlc",
+    "testing_uat",
+    "system_modeling_uml",
+    "requirements_elicitation",
+    "excel",
+    "kpi_metrics"
+   ]
+  },
+  "S05-base": {
+   "candidates": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "testing_uat",
+    "requirements_documentation",
+    "sdlc",
+    "data_analysis",
+    "excel",
+    "jira_confluence"
+   ],
+   "pathsync_formula5": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "jira_confluence",
+    "requirements_documentation",
+    "sdlc",
+    "testing_uat",
+    "excel",
+    "data_analysis"
+   ],
+   "biggest_gap": [
+    "business_process_modeling",
+    "requirements_elicitation",
+    "jira_confluence",
+    "testing_uat",
+    "requirements_documentation",
+    "data_analysis",
+    "sdlc",
+    "excel"
+   ],
+   "gap_x_demand": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "testing_uat",
+    "requirements_documentation",
+    "jira_confluence",
+    "sdlc",
+    "excel",
+    "data_analysis"
+   ]
+  },
+  "S05-comp": {
+   "candidates": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "testing_uat",
+    "requirements_documentation",
+    "sdlc",
+    "data_analysis",
+    "excel",
+    "jira_confluence"
+   ],
+   "pathsync_formula5": [
+    "business_process_modeling",
+    "requirements_documentation",
+    "jira_confluence",
+    "requirements_elicitation",
+    "sdlc",
+    "testing_uat",
+    "excel",
+    "data_analysis"
+   ],
+   "biggest_gap": [
+    "business_process_modeling",
+    "jira_confluence",
+    "testing_uat",
+    "requirements_documentation",
+    "data_analysis",
+    "sdlc",
+    "excel",
+    "requirements_elicitation"
+   ],
+   "gap_x_demand": [
+    "business_process_modeling",
+    "testing_uat",
+    "requirements_documentation",
+    "jira_confluence",
+    "sdlc",
+    "requirements_elicitation",
+    "excel",
+    "data_analysis"
+   ]
+  },
+  "S06-base": {
+   "candidates": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "sql",
+    "requirements_documentation",
+    "sdlc",
+    "dashboard_reporting",
+    "data_modeling",
+    "system_modeling_uml"
+   ],
+   "pathsync_formula5": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "sdlc",
+    "sql",
+    "requirements_documentation",
+    "data_modeling",
+    "system_modeling_uml",
+    "dashboard_reporting"
+   ],
+   "biggest_gap": [
+    "sql",
+    "business_process_modeling",
+    "data_modeling",
+    "sdlc",
+    "system_modeling_uml",
+    "requirements_elicitation",
+    "requirements_documentation",
+    "dashboard_reporting"
+   ],
+   "gap_x_demand": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "sql",
+    "sdlc",
+    "requirements_documentation",
+    "data_modeling",
+    "system_modeling_uml",
+    "dashboard_reporting"
+   ]
+  },
+  "S06-comp": {
+   "candidates": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "sql",
+    "requirements_documentation",
+    "sdlc",
+    "dashboard_reporting",
+    "data_modeling",
+    "system_modeling_uml"
+   ],
+   "pathsync_formula5": [
+    "business_process_modeling",
+    "sdlc",
+    "requirements_documentation",
+    "sql",
+    "requirements_elicitation",
+    "data_modeling",
+    "system_modeling_uml",
+    "dashboard_reporting"
+   ],
+   "biggest_gap": [
+    "sql",
+    "business_process_modeling",
+    "data_modeling",
+    "sdlc",
+    "system_modeling_uml",
+    "requirements_documentation",
+    "dashboard_reporting",
+    "requirements_elicitation"
+   ],
+   "gap_x_demand": [
+    "business_process_modeling",
+    "sql",
+    "sdlc",
+    "requirements_documentation",
+    "data_modeling",
+    "system_modeling_uml",
+    "requirements_elicitation",
+    "dashboard_reporting"
+   ]
+  },
+  "S07-base": {
+   "candidates": [
+    "requirements_elicitation",
+    "testing_uat",
+    "api_integration",
+    "requirements_documentation",
+    "data_cleaning",
+    "kpi_metrics",
+    "data_modeling",
+    "erp_crm"
+   ],
+   "pathsync_formula5": [
+    "requirements_elicitation",
+    "api_integration",
+    "testing_uat",
+    "requirements_documentation",
+    "data_modeling",
+    "erp_crm",
+    "data_cleaning",
+    "kpi_metrics"
+   ],
+   "biggest_gap": [
+    "api_integration",
+    "testing_uat",
+    "data_modeling",
+    "requirements_elicitation",
+    "requirements_documentation",
+    "erp_crm",
+    "data_cleaning",
+    "kpi_metrics"
+   ],
+   "gap_x_demand": [
+    "requirements_elicitation",
+    "testing_uat",
+    "api_integration",
+    "requirements_documentation",
+    "data_modeling",
+    "erp_crm",
+    "data_cleaning",
+    "kpi_metrics"
+   ]
+  },
+  "S07-comp": {
+   "candidates": [
+    "requirements_elicitation",
+    "testing_uat",
+    "api_integration",
+    "requirements_documentation",
+    "data_cleaning",
+    "kpi_metrics",
+    "data_modeling",
+    "erp_crm"
+   ],
+   "pathsync_formula5": [
+    "api_integration",
+    "requirements_documentation",
+    "testing_uat",
+    "requirements_elicitation",
+    "data_modeling",
+    "erp_crm",
+    "data_cleaning",
+    "kpi_metrics"
+   ],
+   "biggest_gap": [
+    "api_integration",
+    "testing_uat",
+    "data_modeling",
+    "requirements_documentation",
+    "erp_crm",
+    "data_cleaning",
+    "requirements_elicitation",
+    "kpi_metrics"
+   ],
+   "gap_x_demand": [
+    "testing_uat",
+    "api_integration",
+    "requirements_documentation",
+    "data_modeling",
+    "requirements_elicitation",
+    "erp_crm",
+    "data_cleaning",
+    "kpi_metrics"
+   ]
+  },
+  "S08-base": {
+   "candidates": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "business_process_modeling",
+    "sdlc",
+    "data_modeling",
+    "api_integration",
+    "jira_confluence",
+    "diagramming_tools"
+   ],
+   "pathsync_formula5": [
+    "requirements_elicitation",
+    "business_process_modeling",
+    "requirements_documentation",
+    "api_integration",
+    "data_modeling",
+    "diagramming_tools",
+    "jira_confluence",
+    "sdlc"
+   ],
+   "biggest_gap": [
+    "data_modeling",
+    "business_process_modeling",
+    "requirements_documentation",
+    "api_integration",
+    "diagramming_tools",
+    "requirements_elicitation",
+    "jira_confluence",
+    "sdlc"
+   ],
+   "gap_x_demand": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "business_process_modeling",
+    "api_integration",
+    "data_modeling",
+    "diagramming_tools",
+    "jira_confluence",
+    "sdlc"
+   ]
+  },
+  "S08-comp": {
+   "candidates": [
+    "requirements_elicitation",
+    "requirements_documentation",
+    "business_process_modeling",
+    "sdlc",
+    "data_modeling",
+    "api_integration",
+    "jira_confluence",
+    "diagramming_tools"
+   ],
+   "pathsync_formula5": [
+    "requirements_documentation",
+    "business_process_modeling",
+    "api_integration",
+    "data_modeling",
+    "requirements_elicitation",
+    "diagramming_tools",
+    "jira_confluence",
+    "sdlc"
+   ],
+   "biggest_gap": [
+    "data_modeling",
+    "business_process_modeling",
+    "requirements_documentation",
+    "api_integration",
+    "diagramming_tools",
+    "jira_confluence",
+    "sdlc",
+    "requirements_elicitation"
+   ],
+   "gap_x_demand": [
+    "requirements_documentation",
+    "business_process_modeling",
+    "api_integration",
+    "data_modeling",
+    "diagramming_tools",
+    "jira_confluence",
+    "requirements_elicitation",
+    "sdlc"
+   ]
+  }
+ }
+}

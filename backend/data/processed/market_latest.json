@@ -2,10 +2,11 @@
  "version": "2026-10-18-lexicon",
  "reference_date": "2026-10-18",
  "mention_status": {
-  "auto": 19961,
+  "auto": 19959,
   "review": 5120,
   "new": 2541,
-  "rejected": 2
+  "rejected": 2,
+  "excluded": 2
  },
  "roles": {
   "data_engineer": {
@@ -77,8 +78,8 @@
     "workable": 2,
     "smartrecruiters": 3,
     "lever": 2,
-    "kalibrr": 4,
-    "workday": 1
+    "workday": 1,
+    "kalibrr": 4
    },
    "top": [
     [
@@ -323,8 +324,8 @@
     "karirhub": 17,
     "workable": 7,
     "smartrecruiters": 1,
-    "kalibrr": 8,
-    "workday": 1
+    "workday": 1,
+    "kalibrr": 8
    },
    "top": [
     [
@@ -806,8 +807,8 @@
    "sources": {
     "karirhub": 8,
     "workable": 2,
-    "kalibrr": 5,
-    "workday": 2
+    "workday": 2,
+    "kalibrr": 5
    },
    "top": [
     [
@@ -907,8 +908,8 @@
     "karirhub": 27,
     "workable": 3,
     "lever": 3,
-    "kalibrr": 10,
-    "workday": 10
+    "workday": 10,
+    "kalibrr": 10
    },
    "top": [
     [
@@ -958,8 +959,8 @@
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 113,
-    "kalibrr": 17,
-    "workday": 8
+    "workday": 8,
+    "kalibrr": 17
    },
    "top": [
     [
@@ -1013,8 +1014,8 @@
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 44,
-    "kalibrr": 28,
-    "workday": 24
+    "workday": 24,
+    "kalibrr": 28
    },
    "top": [
     [
@@ -1072,8 +1073,8 @@
    "trend_status": "insufficient",
    "sources": {
     "karirhub": 28,
-    "kalibrr": 17,
-    "workday": 8
+    "workday": 8,
+    "kalibrr": 17
    },
    "top": [
     [
@@ -1192,7 +1193,7 @@
  },
  "provenance": {
   "taxonomy_version": "2026.10-v4",
-  "taxonomy_sha": "1326d0eec1dbd09f",
+  "taxonomy_sha": "c80fe074998d2521",
   "graph_sha": "96b2947f46f6651c",
   "esco_sha": "b027e6c19853f013",
   "postings": 1831,
@@ -1200,7 +1201,7 @@
    "lexicon": 1831
   },
   "cache_tags": {
-   "lexicon": "lexicon|2026.10-v4|95ebfd92940c"
+   "lexicon": "lexicon|2026.10-v4|0c2e2173bccc"
   },
   "gold_sha": {
    "gold_blind.json": "6109aca0cc2883c0",

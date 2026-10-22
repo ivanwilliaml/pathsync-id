@@ -1,0 +1,213 @@
+{
+ "n_total": 47,
+ "n_kept": 47,
+ "n_excluded_attention_or_consent": 0,
+ "hypothesis_confused_often": {
+  "k": 33,
+  "n": 47,
+  "share": 0.7021276595744681,
+  "ci95": [
+   0.5602205595363459,
+   0.8134891584898374
+  ],
+  "supported": true
+ },
+ "before_vs_after": {
+  "A": {
+   "n": 47,
+   "mean_before": 2.617021276595745,
+   "mean_after": 4.276595744680851,
+   "improved": 40,
+   "same": 6,
+   "worse": 1,
+   "n_nonzero": 41,
+   "W_plus": 854.0,
+   "W_minus": 7.0,
+   "p": 2.4965099321374303e-08,
+   "rank_biserial": 0.983739837398374
+  },
+  "B": {
+   "n": 47,
+   "mean_before": 2.702127659574468,
+   "mean_after": 4.468085106382978,
+   "improved": 37,
+   "same": 8,
+   "worse": 2,
+   "n_nonzero": 39,
+   "W_plus": 769.0,
+   "W_minus": 11.0,
+   "p": 9.015656620268074e-08,
+   "rank_biserial": 0.9717948717948718
+  },
+  "C": {
+   "n": 47,
+   "mean_before": 2.3404255319148937,
+   "mean_after": 4.340425531914893,
+   "improved": 40,
+   "same": 6,
+   "worse": 1,
+   "n_nonzero": 41,
+   "W_plus": 855.0,
+   "W_minus": 6.0,
+   "p": 2.8581874885689695e-08,
+   "rank_biserial": 0.9860627177700348
+  },
+  "D": {
+   "n": 47,
+   "mean_before": 2.595744680851064,
+   "mean_after": 4.25531914893617,
+   "improved": 39,
+   "same": 7,
+   "worse": 1,
+   "n_nonzero": 40,
+   "W_plus": 812.0,
+   "W_minus": 8.0,
+   "p": 4.5078737211684315e-08,
+   "rank_biserial": 0.9804878048780488
+  },
+  "E": {
+   "n": 47,
+   "mean_before": 2.382978723404255,
+   "mean_after": 4.446808510638298,
+   "improved": 42,
+   "same": 3,
+   "worse": 2,
+   "n_nonzero": 44,
+   "W_plus": 976.0,
+   "W_minus": 14.0,
+   "p": 1.5016859940423157e-08,
+   "rank_biserial": 0.9717171717171718
+  },
+  "F": {
+   "n": 47,
+   "mean_before": 2.276595744680851,
+   "mean_after": 4.276595744680851,
+   "improved": 43,
+   "same": 3,
+   "worse": 1,
+   "n_nonzero": 44,
+   "W_plus": 984.0,
+   "W_minus": 6.0,
+   "p": 7.641901463512036e-09,
+   "rank_biserial": 0.9878787878787879
+  }
+ },
+ "trust": {
+  "A": {
+   "n": 47,
+   "mean": 4.319148936170213,
+   "agree_4_5": 0.9361702127659575
+  },
+  "B": {
+   "n": 29,
+   "mean": 4.241379310344827,
+   "agree_4_5": 0.8620689655172413
+  },
+  "C": {
+   "n": 47,
+   "mean": 4.297872340425532,
+   "agree_4_5": 0.8723404255319149
+  },
+  "D": {
+   "n": 47,
+   "mean": 4.276595744680851,
+   "agree_4_5": 0.8723404255319149
+  },
+  "E": {
+   "n": 47,
+   "mean": 4.085106382978723,
+   "agree_4_5": 0.8297872340425532
+  },
+  "F": {
+   "n": 47,
+   "mean": 4.297872340425532,
+   "agree_4_5": 0.8723404255319149
+  }
+ },
+ "features": {
+  "Pilih Karier (skill yang paling diminta lowongan)": {
+   "tried": 47,
+   "useful_share": 0.9361702127659575
+  },
+  "Tambah Bukti (transkrip, CV, sertifikat, proyek)": {
+   "tried": 43,
+   "useful_share": 0.813953488372093
+  },
+  "Dashboard dan langkah berikutnya": {
+   "tried": 47,
+   "useful_share": 0.9361702127659575
+  },
+  "Alasan rekomendasi (\"Bagaimana ini diputuskan?\")": {
+   "tried": 46,
+   "useful_share": 0.8913043478260869
+  },
+  "Quick Check": {
+   "tried": 45,
+   "useful_share": 0.8
+  },
+  "Belajar: Pelajari, Latihan, Buktikan": {
+   "tried": 42,
+   "useful_share": 0.9285714285714286
+  },
+  "Cek Lowongan": {
+   "tried": 41,
+   "useful_share": 0.975609756097561
+  }
+ },
+ "most_helpful": {
+  "Tambah Bukti (transkrip, CV, sertifikat, proyek)": 6,
+  "Belajar: Pelajari, Latihan, Buktikan": 5,
+  "Dashboard dan langkah berikutnya": 9,
+  "Alasan rekomendasi (\"Bagaimana ini diputuskan?\")": 4,
+  "Cek Lowongan": 6,
+  "Pilih Karier (skill yang paling diminta lowongan)": 13,
+  "Quick Check": 4
+ },
+ "sus": {
+  "n": 47,
+  "mean": 81.91489361702128,
+  "sd": 13.169183044276286,
+  "ci95": [
+   78.14988498235762,
+   85.67990225168494
+  ]
+ },
+ "nps": 51.06382978723404,
+ "use_again": {
+  "Ya": 0.7659574468085106,
+  "Mungkin": 0.2127659574468085,
+  "Tidak": 0.02127659574468085
+ },
+ "plans": {
+  "Mulai belajar skill pertama yang disarankan minggu ini": 39,
+  "Mengerjakan Quick Check untuk skill lain": 28,
+  "Memakai Cek Lowongan saat melamar kerja": 18,
+  "Membagikan PathSync ke teman": 17,
+  "Belum ada rencana": 3
+ },
+ "by_status": {
+  "Mahasiswa aktif": 32,
+  "Sudah bekerja, ingin pindah bidang": 4,
+  "Fresh graduate (lulus kurang dari 1 tahun)": 6,
+  "Pencari kerja (lulus lebih dari 1 tahun)": 5
+ },
+ "problem_agree": {
+  "A": 0.7021276595744681,
+  "B": 0.723404255319149,
+  "C": 0.9148936170212766,
+  "D": 0.7659574468085106,
+  "E": 0.8085106382978723
+ },
+ "importance_mean": 4.680851063829787,
+ "very_disappointed": 0.3617021276595745,
+ "problems_helped": {
+  "Tahu posisi kemampuan saya dibanding yang diminta": 34,
+  "Tahu skill mana yang harus didahulukan": 35,
+  "Tahu kapan rencana belajar perlu diubah": 14,
+  "Tahu skill yang benar-benar diminta perusahaan": 35,
+  "Bisa membuktikan kemampuan": 13,
+  "bukan hanya dari nilai kuliah": 13,
+  "Tidak ada yang terbantu": 1
+ },
+ "plan_better": 0.9361702127659575
+}

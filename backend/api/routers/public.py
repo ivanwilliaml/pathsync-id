@@ -74,6 +74,19 @@ def ready(s: Session = Depends(db_session)):
     return body
 
 
+def _decision_study() -> dict | None:
+    """Second expert study (V5): diagnosis and priority order judged without seeing PathSync's answers."""
+    path = MODELS_DIR / "expert_v5_results.json"
+    if not path.exists():
+        return None
+    v5 = json.loads(path.read_text(encoding="utf-8"))
+    diag = next(iter((v5.get("diagnosis_current_engine") or v5.get("diagnosis") or {}).values()), {})
+    rank = v5.get("ranking", {})
+    return {"experts": v5.get("n_experts"), "diagnosis_ratings": diag.get("n"), "diagnosis_spearman": diag.get("spearman"),
+            "ranking_scenarios": rank.get("n_scenarios"), "ndcg5": rank.get("ndcg5"),
+            "ndcg5_diff_ci95": (v5.get("ranking_uncertainty") or {}).get("ci95_cluster_bootstrap")}
+
+
 def model_card(s: Session) -> dict:
     """Which AI does what (answers 'the LLM used was not named')."""
     ranker = s.scalars(select(RankerModel).where(RankerModel.active.is_(True))).first()
@@ -103,7 +116,12 @@ def model_card(s: Session) -> dict:
         "llm_is_never_used_for": ["choosing priorities", "estimating mastery", "ordering the path"],
         # what is validated today, so the UI can say "Beta" honestly (PM audit AI-6, AI-7)
         "validation": {"real_experts": s.scalar(select(func.count(Expert.id)).where(Expert.kind.not_in(NON_EXPERT_KINDS))) or 0,
-                       "ranker_trained_on": "simulated experts" if ranker and "simulated" in (ranker.name or "").lower() else "expert rankings",
+                       # the formula is not trained; only a learning-to-rank model has a training source
+                       "ranker_trained_on": (None if not ranker or ranker.source == "formula5" else
+                                             "simulated experts" if "simulated" in (ranker.name or "").lower() else "expert rankings"),
+                       # who assessed what (audit CLAIM-01): graph edges and the decision study are different panels
+                       "graph_experts": s.scalar(select(func.count(Expert.id)).where(Expert.kind.not_in(NON_EXPERT_KINDS))) or 0,
+                       "decision_study": _decision_study(),
                        "extractor_blind_eval": ({**blind, "n_postings": ev["blind"]["n_postings"], "annotators": 1} if blind else None),
                        "metrics_file": metrics.get("generated_at"),
                        "extractor_target_met_at_lower_ci": ((metrics.get("extraction") or {}).get("target_met") or {}).get("lower_ci_bound"),
@@ -140,7 +158,11 @@ def meta(s: Session = Depends(db_session)):
             "extractor": "llm" if llm_configured() else "lexicon",
             "market_versions": snaps, "model": {"name": ranker.name, "weights": ranker.weights} if ranker else None,
             "models": model_card(s),
-            "n_postings": s.scalar(select(func.count(Posting.id)).where(Posting.duplicate_of.is_(None))),
+            # postings inside each role's 12-month demand window: the number every market figure is computed from
+            # (the paper's 1.323); n_postings_stored also counts unique postings outside the window (audit TRACE-01)
+            "n_postings": sum(v["n_postings"] for v in summaries.values()),
+            "n_postings_stored": s.scalar(select(func.count(Posting.id)).where(Posting.duplicate_of.is_(None))),
+            "market_snapshot": next(iter(set(snaps.values()) - {None}), None) if len(set(snaps.values()) - {None}) == 1 else None,
             "n_items": len(item_bank())}
 
 
