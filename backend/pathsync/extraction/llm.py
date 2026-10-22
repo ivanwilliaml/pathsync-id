@@ -117,11 +117,12 @@ class GeminiClient:
         except httpx.HTTPError as e:
             raise LLMUnavailable("cannot reach the Gemini API") from e
         if r.status_code in (401, 403):
-            raise LLMUnavailable("Gemini credentials missing or invalid")
+            raise LLMUnavailable(f"Gemini credentials rejected ({r.status_code})")
         if r.status_code == 429:
             raise LLMUnavailable("rate limited by the Gemini API; retry later")
         if r.status_code >= 400:
-            raise LLMUnavailable(f"Gemini API error {r.status_code}")
+            msg = (r.json().get("error") or {}).get("message", "") if r.headers.get("content-type", "").startswith("application/json") else ""
+            raise LLMUnavailable(f"Gemini API error {r.status_code}: {msg[:200]}")
         cand = (r.json().get("candidates") or [{}])[0]
         if cand.get("finishReason") not in (None, "STOP"):
             raise LLMUnavailable(f"Gemini stopped early ({cand.get('finishReason')})")

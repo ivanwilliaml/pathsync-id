@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import io
 import json
+import logging
 import re
 import secrets
 from functools import lru_cache
@@ -449,7 +450,8 @@ def project_evidence(text: str, title: str, candidate_ids: list[str] | None = No
             if cands:
                 ratings = llm_extractor().rate_project(text, cands)
                 method = "llm"
-        except LLMUnavailable:
+        except LLMUnavailable as e:   # fall back to the rubric heuristic, but say why in the server log
+            logging.getLogger("pathsync").warning("project rubric LLM unavailable: %s", e)
             ratings = []
     if not ratings:
         ratings = _heuristic_rubric(text)
