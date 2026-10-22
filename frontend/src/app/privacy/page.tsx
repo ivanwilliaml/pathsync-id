@@ -44,7 +44,7 @@ export default function PrivacyPage() {
 
         <Section title="1. Data yang kami simpan">
           <ul className="list-disc space-y-1.5 pl-5">
-            <li>Profil: nama panggilan, program studi, semester, peran target. Tanpa email, tanpa kata sandi.</li>
+            <li>Profil: nama panggilan, email untuk masuk, program studi, semester, peran target. Kata sandi hanya disimpan dalam bentuk hash.</li>
             <li>Bukti belajar yang Anda tambahkan: nilai mata kuliah, nama dan tautan sertifikat, teks proyek atau tugas, teks CV.</li>
             <li>Jawaban Cek Kemampuan dan asesmen ulang, rencana mingguan, refleksi, dan jawaban singkat tentang kejelasan arah.</li>
             <li>Riwayat rute belajar Anda dan perubahannya.</li>
@@ -77,7 +77,7 @@ export default function PrivacyPage() {
 
         <Section title="4. Siapa yang dapat melihat data Anda">
           <ul className="list-disc space-y-1.5 pl-5">
-            <li>Anda sendiri, lewat kunci akses.</li>
+            <li>Anda sendiri, setelah masuk dengan email dan kata sandi.</li>
             <li>Tim PathSync yang berwenang (admin dan peninjau proyek), hanya untuk tujuan di atas. Akses staf dicatat.</li>
             <li>
               <strong>Dosen/pembimbing hanya melihat ringkasan kelas</strong> bila Anda sendiri bergabung ke kelas dengan kode kelas, dan hanya
@@ -96,7 +96,7 @@ export default function PrivacyPage() {
           <p className="mt-3">
             Asisten <strong>Sync</strong> memakai model bahasa yang dijalankan oleh Groq. Saat Anda bertanya ke Sync, yang dikirim ke Groq
             hanyalah pertanyaan Anda, data skill Anda (nama skill, level, target karier) dan teks lowongan kerja publik yang relevan; nama,
-            ID profil, dan kunci akses Anda tidak pernah dikirim. Sync hanya membaca data, tidak mengubah apa pun, dan percakapannya tidak
+            email, ID profil, dan kata sandi Anda tidak pernah dikirim. Sync hanya membaca data, tidak mengubah apa pun, dan percakapannya tidak
             kami simpan selain di tab peramban Anda.
           </p>
         </Section>
@@ -118,7 +118,7 @@ export default function PrivacyPage() {
           <ul className="list-disc space-y-1.5 pl-5">
             <li>Melihat dan mengunduh semua data Anda (Pengaturan → Unduh Data-ku).</li>
             <li>Menghapus profil dan seluruh data terkait (Pengaturan → Hapus Profilku).</li>
-            <li>Mencabut persetujuan penelitian, mengganti kunci akses, dan menanyakan cara data Anda diproses.</li>
+            <li>Mencabut persetujuan penelitian, mengganti kata sandi, dan menanyakan cara data Anda diproses.</li>
           </ul>
           <p>
             Pertanyaan atau permintaan: <a className="font-medium text-indigo underline" href={`mailto:${CONTACT}`}>{CONTACT}</a>. Kami berusaha
@@ -128,8 +128,8 @@ export default function PrivacyPage() {
 
         <Section title="8. Keamanan">
           <p>
-            Kunci akses Anda hanya disimpan dalam bentuk hash. Akses antar-perangkat memakai HTTPS. Kunci akses berfungsi seperti kata sandi: jangan
-            membagikannya. Bila hilang, kami tidak dapat memulihkannya karena kami memang tidak menyimpannya.
+            Kata sandi Anda hanya disimpan dalam bentuk hash (scrypt) sehingga tim PathSync pun tidak dapat membacanya. Akses antar-perangkat
+            memakai HTTPS. Jangan membagikan kata sandi Anda kepada siapa pun.
           </p>
         </Section>
 

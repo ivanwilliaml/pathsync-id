@@ -26,7 +26,7 @@ export default async function OpengraphImage() {
         <img src={wave} width={330} height={392} alt="" style={{ position: "absolute", right: 56, bottom: 36 }} />
         <div style={{ display: "flex", flexDirection: "column", gap: 20, maxWidth: 740 }}>
           <div style={{ fontSize: 62, fontWeight: 800, lineHeight: 1.08, letterSpacing: -1.5 }}>Tahu persis apa yang harus dipelajari berikutnya</div>
-          <div style={{ fontSize: 30, color: "#c9daf2" }}>Rute belajar dari lowongan kerja nyata Indonesia dan bukti kemampuanmu. Gratis, tanpa email.</div>
+          <div style={{ fontSize: 30, color: "#c9daf2" }}>Rute belajar dari lowongan kerja nyata Indonesia dan bukti kemampuanmu. Gratis.</div>
         </div>
         <div style={{ display: "flex", gap: 14, fontSize: 28 }}>
           {["14 careers", "Hard skills", "Real postings"].map((r) => (

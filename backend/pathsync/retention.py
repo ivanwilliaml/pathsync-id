@@ -49,6 +49,7 @@ def erase_students(s: Session, ids: list[str]) -> int:
         s.execute(delete(model).where(model.student_id.in_(ids)))
     s.execute(delete(ProductEvent).where(ProductEvent.student_id.in_(ids)))
     s.execute(update(Feedback).where(Feedback.student_id.in_(ids)).values(student_id=None))
+    s.execute(delete(ApiToken).where(ApiToken.role == "student", ApiToken.subject_id.in_(ids)))   # sign-in sessions
     return s.execute(delete(Student).where(Student.id.in_(ids))).rowcount or 0
 
 

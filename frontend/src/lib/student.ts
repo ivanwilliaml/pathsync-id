@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-// The student's profile id and bearer token. The token is returned once at sign-up; the server keeps only its hash.
+// The student's profile id and bearer token (from sign-up or email + password sign-in); the server keeps only its hash.
 const KEY = "pathsync.student";
 const EVENT = "pathsync-student";
 
@@ -36,18 +36,6 @@ export function setStudent(auth: StudentAuth | null) {
     else localStorage.removeItem(KEY);
     window.dispatchEvent(new Event(EVENT));
   } catch {}
-}
-
-/** One copyable string that restores the profile on another device: "<id>.<token>". */
-export function accessKey(auth: StudentAuth | null = read()): string | null {
-  return auth ? `${auth.id}.${auth.token}` : null;
-}
-
-export function parseAccessKey(key: string): StudentAuth | null {
-  const k = key.trim();
-  const dot = k.indexOf(".");
-  if (dot < 4 || dot === k.length - 1) return null;
-  return { id: k.slice(0, dot), token: k.slice(dot + 1) };
 }
 
 /** Current student id; `ready` is false until the first client render. */

@@ -4,6 +4,7 @@ Every route below /students/{sid} requires the student's bearer token (pathsync.
 """
 from __future__ import annotations
 
+import re
 from datetime import datetime, timedelta
 from typing import Annotated
 
@@ -44,7 +45,8 @@ from pathsync.intake import (
 )
 from pathsync.job_check import check_job
 from pathsync.retention import erase_students
-from pathsync.security import clip_text, db_session, hash_token, new_token, rate_limit, read_upload, student_access
+from pathsync.security import clip_text, db_session, hash_token, issue_token, new_token, rate_limit, read_upload, student_access
+from pathsync.staff_accounts import hash_password, normalise_email, verify_password
 from pathsync.taxonomy import load_skills
 
 from ..common import after_change, fast_json, has_history, recommend_for
@@ -56,12 +58,43 @@ DUPLICATE_THRESHOLD = 0.9
 CONSENT_VERSION = "2026-10b"
 
 
+EMAIL_RE = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
+MIN_STUDENT_PASSWORD = 8
+LOGIN_DAYS = 180
+
+
 class StudentIn(BaseModel):
     display_name: str = Field("Student", max_length=120)
+    email: str | None = Field(None, max_length=254)
+    password: str | None = Field(None, max_length=200)
     program: str = Field("", max_length=120)
     semester: int | None = Field(None, ge=1, le=14)
     target_role: str = "business_analyst"
     consent: bool = False
+
+
+class LoginIn(BaseModel):
+    email: str = Field(..., max_length=254)
+    password: str = Field(..., min_length=1, max_length=200)
+
+
+class AccountIn(BaseModel):
+    email: str | None = Field(None, max_length=254)
+    password: str = Field(..., max_length=200)
+    current_password: str | None = Field(None, max_length=200)
+
+
+def _check_credentials(s: Session, email: str, password: str, sid: str | None = None) -> str:
+    email = normalise_email(email)
+    if not EMAIL_RE.match(email):
+        raise HTTPException(400, tr("Enter a valid email address.", "Masukkan alamat email yang valid."))
+    if len(password) < MIN_STUDENT_PASSWORD:
+        raise HTTPException(400, tr(f"Use a password of at least {MIN_STUDENT_PASSWORD} characters.",
+                                    f"Gunakan password minimal {MIN_STUDENT_PASSWORD} karakter."))
+    owner = s.scalar(select(Student.id).where(Student.email == email))
+    if owner is not None and owner != sid:
+        raise HTTPException(409, tr("This email is already registered. Sign in instead.", "Email ini sudah terdaftar. Silakan masuk."))
+    return email
 
 
 class StudentPatch(BaseModel):
@@ -83,18 +116,45 @@ def create_student(body: StudentIn, s: Session = Depends(db_session)):
         raise HTTPException(400, tr("Please accept the data consent to continue.", "Setujui persetujuan data untuk melanjutkan."))
     if body.target_role not in ROLES:
         raise HTTPException(400, tr("Unknown target role.", "Target role tidak dikenal."))
+    email = _check_credentials(s, body.email or "", body.password or "") if (body.email or body.password) else None
     token = new_token()
     st = Student(display_name=body.display_name.strip() or "Student", program=body.program, semester=body.semester,
                  target_role=body.target_role, consent_at=utcnow(), consent_version=CONSENT_VERSION,
-                 token_hash=hash_token(token), preferences={"weekly_hours": 6, "language": "id"})
+                 token_hash=hash_token(token), preferences={"weekly_hours": 6, "language": "id"},
+                 email=email, password_hash=hash_password(body.password) if email else None)
     s.add(st)
     s.commit()
     # the token is shown once; the server keeps only its hash
     return {"id": st.id, "token": token}
 
 
+@router.post("/students/login", dependencies=[Depends(rate_limit("student_login", 10))])
+def login_student(body: LoginIn, s: Session = Depends(db_session)):
+    """Email + password sign-in. One message for every failure so it does not reveal which emails are registered.
+    Each sign-in gets its own session token, so other devices stay signed in."""
+    st = s.scalars(select(Student).where(Student.email == normalise_email(body.email))).first()
+    if st is None or not verify_password(body.password, st.password_hash):
+        raise HTTPException(401, tr("Wrong email or password.", "Email atau password salah."))
+    token = issue_token(s, "student", st.id, "login", utcnow() + timedelta(days=LOGIN_DAYS))
+    st.last_seen_at = utcnow()
+    s.commit()
+    return {"id": st.id, "token": token}
+
+
+@router.put("/students/{sid}/account")
+def set_account(body: AccountIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
+    """Add email + password to a profile made before accounts existed, or change the password (needs the current one)."""
+    st = s.merge(st)
+    if st.password_hash and not verify_password(body.current_password or "", st.password_hash):
+        raise HTTPException(403, tr("Your current password is not correct.", "Password lama tidak sesuai."))
+    st.email = _check_credentials(s, body.email or st.email or "", body.password, st.id)
+    st.password_hash = hash_password(body.password)
+    s.commit()
+    return {"email": st.email}
+
+
 def _student_out(s: Session, st: Student) -> dict:
-    return {"id": st.id, "display_name": st.display_name, "program": st.program, "semester": st.semester,
+    return {"id": st.id, "email": st.email, "display_name": st.display_name, "program": st.program, "semester": st.semester,
             "target_role": st.target_role, "preferences": st.preferences, "self_ratings": st.self_ratings,
             "cohort_id": st.cohort_id, "study_arm": st.study_arm if st.study_id else None,
             "consent_at": st.consent_at.isoformat() if st.consent_at else None, "consent_version": st.consent_version,

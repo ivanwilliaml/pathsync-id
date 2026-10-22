@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ClipboardCheck, ShieldCheck } from "lucide-react";
-import { requireKeySave } from "@/components/key-guard";
 import { track, trackOnce } from "@/lib/track";
 import { toast } from "sonner";
 import { api, type Meta } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
-import { parseAccessKey, setStudent, useStudentId } from "@/lib/student";
+import { setStudent, useStudentId } from "@/lib/student";
 import { Button } from "@/components/ui/button";
 import { Mascot } from "@/components/mascot";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -113,7 +112,7 @@ export default function Landing() {
           </button>
           <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink/70">
             <li className="flex items-center gap-2">
-              <ShieldCheck className="size-4 text-mint" aria-hidden="true" /> {t("Free, no email or password", "Gratis, tanpa email atau password")}
+              <ShieldCheck className="size-4 text-mint" aria-hidden="true" /> {t("Free to use", "Gratis dipakai")}
             </li>
             <li className="flex items-center gap-2">
               <ClipboardCheck className="size-4 text-mint" aria-hidden="true" /> {t("About 2 minutes to set up", "Sekitar 2 menit untuk mulai")}
@@ -210,6 +209,8 @@ function Waitlist() {
 function StartDialog({ role, onClose, roles, families }: { role: string | null; onClose: () => void; roles?: Meta["roles"]; families?: Record<string, string> }) {
   const router = useRouter();
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [program, setProgram] = useState(PROGRAMS[0][0]);
   const [target, setTarget] = useState("business_analyst");
   const [consent, setConsent] = useState(false);
@@ -231,9 +232,8 @@ function StartDialog({ role, onClose, roles, families }: { role: string | null; 
     setBusy(true);
     setErr(null);
     try {
-      const r = await api.post<{ id: string; token: string }>("/students", { display_name: name.trim() || "Student", program, target_role: target, consent });
+      const r = await api.post<{ id: string; token: string }>("/students", { display_name: name.trim() || "Student", email: email.trim(), password, program, target_role: target, consent });
       setStudent({ id: r.id, token: r.token });
-      requireKeySave();
       track("signup", { role: target });
       if (research) await api.put(`/students/${r.id}/research-consent`, { consent: true }).catch(() => {});
       router.push("/evidence");
@@ -249,12 +249,20 @@ function StartDialog({ role, onClose, roles, families }: { role: string | null; 
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-xl">{t("Create Your Profile", "Buat Profilmu")}</DialogTitle>
-          <DialogDescription>{t("No email or password. You\u2019ll get a private access key to come back later.", "Tanpa email atau password. Kamu akan mendapat access key pribadi untuk kembali nanti.")}</DialogDescription>
+          <DialogDescription>{t("Use your email and a password to sign in again later, from any device.", "Pakai email dan password untuk masuk lagi nanti, dari perangkat mana pun.")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={create} className="space-y-6">
           <div className="space-y-2">
             <Label htmlFor="name">{t("What should we call you?", "Kami panggil kamu siapa?")}</Label>
             <Input id="name" name="nickname" autoComplete="nickname" value={name} onChange={(e) => setName(e.target.value)} placeholder={t("e.g. Rani…", "mis. Rani…")} className="h-10" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input id="email" name="email" type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={t("you@example.com", "kamu@contoh.com")} className="h-10" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password">Password</Label>
+            <Input id="password" name="new-password" type="password" autoComplete="new-password" required minLength={8} value={password} onChange={(e) => setPassword(e.target.value)} placeholder={t("At least 8 characters", "Minimal 8 karakter")} className="h-10" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="program">{t("Study Program", "Program Studi")}</Label>
@@ -313,21 +321,24 @@ function StartDialog({ role, onClose, roles, families }: { role: string | null; 
 
 function ResumeDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o: boolean) => void }) {
   const router = useRouter();
-  const [value, setValue] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<unknown>(null);
   const t = useT();
-  async function resume(e: React.FormEvent) {
+  async function signIn(e: React.FormEvent) {
     e.preventDefault();
     setErr(null);
+    setBusy(true);
     try {
-      const auth = parseAccessKey(value);
-      if (!auth) throw new Error("bad key");
-      setStudent(auth);
-      await api.get(`/students/${auth.id}`);
+      const r = await api.post<{ id: string; token: string }>("/students/login", { email: email.trim(), password });
+      setStudent({ id: r.id, token: r.token });
+      track("login");
       router.push("/dashboard");
-    } catch {
-      setStudent(null);
-      setErr(new Error(t("That access key doesn't match a profile. Copy it again from Settings on your other device.", "Access key itu tidak cocok dengan profil mana pun. Salin lagi dari Pengaturan di perangkatmu yang lain.")));
+    } catch (e) {
+      setErr(e);
+    } finally {
+      setBusy(false);
     }
   }
   return (
@@ -335,16 +346,20 @@ function ResumeDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>{t("Sign In to Your Profile", "Masuk ke Profilmu")}</DialogTitle>
-          <DialogDescription>{t("Paste the access key from Settings. It works like a password, so keep it private.", "Tempel access key dari Pengaturan. Fungsinya seperti password, jadi jaga kerahasiaannya.")}</DialogDescription>
+          <DialogDescription>{t("Use the email and password you signed up with.", "Pakai email dan password yang kamu daftarkan.")}</DialogDescription>
         </DialogHeader>
-        <form onSubmit={resume} className="space-y-6">
+        <form onSubmit={signIn} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="pid">Access Key</Label>
-            <Input id="pid" name="access-key" type="password" autoComplete="off" spellCheck={false} value={value} onChange={(e) => setValue(e.target.value)} placeholder={t("e.g. ef99fb3e22b5.Xk3…", "mis. ef99fb3e22b5.Xk3…")} className="h-10 font-mono" />
+            <Label htmlFor="login-email">Email</Label>
+            <Input id="login-email" name="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className="h-10" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="login-password">Password</Label>
+            <Input id="login-password" name="password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} className="h-10" />
           </div>
           <ErrorNote error={err} />
-          <Button type="submit" size="lg" className="h-11 w-full" disabled={!value.trim()}>
-            {t("Sign in", "Masuk")}
+          <Button type="submit" size="lg" className="h-11 w-full" disabled={!email.trim() || !password || busy}>
+            {busy ? t("Signing in…", "Masuk…") : t("Sign in", "Masuk")}
           </Button>
         </form>
       </DialogContent>

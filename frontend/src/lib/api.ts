@@ -71,7 +71,7 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
       if (typeof j.detail === "string") msg = j.detail;
     } catch {}
     if ((res.status === 401 || res.status === 403) && path.startsWith("/students/")) {
-      // never sign out silently: the access-key dialog asks for the key again (PM audit P0-4)
+      // never sign out silently: the sign-in dialog asks for email and password again (PM audit P0-4)
       window.dispatchEvent(new CustomEvent("pathsync-reauth"));
     }
     throw new ApiError(res.status, rid && res.status >= 500 && !msg.includes("ref ") ? `${msg} (ref ${rid})` : msg, rid ?? undefined);

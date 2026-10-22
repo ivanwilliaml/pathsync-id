@@ -65,9 +65,16 @@ def student_access(sid: str, authorization: str | None = Header(default=None),
     token = _bearer(authorization)
     if token is None:
         raise HTTPException(401, tr("Sign in again: this request has no access token.", "Masuk lagi: permintaan ini tidak membawa access token."))
-    if st.token_hash is None or not hmac.compare_digest(st.token_hash, hash_token(token)):
+    if not (st.token_hash and hmac.compare_digest(st.token_hash, hash_token(token))) and not _student_session(s, st.id, token):
         raise HTTPException(403, tr("This access token does not belong to this profile.", "Access token ini bukan milik profil ini."))
     return st
+
+
+def _student_session(s: Session, sid: str, token: str) -> bool:
+    """A token issued by POST /students/login (one per device, so signing in on a phone keeps the laptop signed in)."""
+    row = s.scalars(select(ApiToken).where(ApiToken.token_hash == hash_token(token), ApiToken.role == "student",
+                                           ApiToken.subject_id == sid, ApiToken.revoked_at.is_(None))).first()
+    return row is not None and (row.expires_at is None or row.expires_at >= utcnow())
 
 
 # ---------------------------------------------------------------------- staff

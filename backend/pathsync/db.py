@@ -168,6 +168,9 @@ class Student(Base):
     __tablename__ = "students"
     id: Mapped[str] = mapped_column(String(40), primary_key=True, default=new_id)
     token_hash: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)   # bearer token (sha256)
+    # sign-in with email + password (scrypt, pathsync.staff_accounts.hash_password); demo profiles have neither
+    email: Mapped[str | None] = mapped_column(String(254), nullable=True, unique=True, index=True)
+    password_hash: Mapped[str | None] = mapped_column(String(200), nullable=True)
     display_name: Mapped[str] = mapped_column(String(120), default="Mahasiswa")
     program: Mapped[str] = mapped_column(String(120), default="")
     semester: Mapped[int | None] = mapped_column(Integer, nullable=True)
