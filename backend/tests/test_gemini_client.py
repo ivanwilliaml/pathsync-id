@@ -28,3 +28,22 @@ def test_postings_stay_on_lexicon_when_a_key_exists(monkeypatch):
     monkeypatch.setattr(extraction, "llm_extractor", lambda: called.append(1))
     res = extraction.extract_skills("Wajib menguasai SQL.")
     assert res.extractor == "lexicon" and not called
+
+
+def test_busy_model_falls_through_to_the_next(monkeypatch):
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    monkeypatch.setenv("PATHSYNC_GEMINI_FALLBACKS", "second-model")
+    client = llm.GeminiClient("first-model")
+    tried = []
+
+    def fake_call(model, *a):
+        tried.append(model)
+        if model == "first-model":
+            e = llm.LLMUnavailable("busy")
+            e.busy = True
+            raise e
+        return {"ok": True}
+
+    monkeypatch.setattr(client, "_call", fake_call)
+    monkeypatch.setattr("time.sleep", lambda *_: None)
+    assert client.json_call("s", "u", {}) == {"ok": True} and tried == ["first-model", "second-model"]

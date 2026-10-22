@@ -103,8 +103,25 @@ class GeminiClient:
         if not self.key:
             raise LLMUnavailable("GEMINI_API_KEY is not set")
         self.model = model or os.getenv("PATHSYNC_GEMINI_MODEL", "gemini-flash-latest")
+        # a busy model answers 503; the other Flash models usually still have room
+        extra = [m.strip() for m in os.getenv("PATHSYNC_GEMINI_FALLBACKS", "gemini-flash-lite-latest,gemini-2.5-flash").split(",")]
+        self.models = list(dict.fromkeys([self.model, *[m for m in extra if m]]))
 
     def json_call(self, system: str, user: str, schema: dict, effort: str = "low", max_tokens: int = 8000) -> dict:
+        import time
+
+        last: LLMUnavailable | None = None
+        for i, model in enumerate(self.models):
+            try:
+                return self._call(model, system, user, schema, max_tokens)
+            except LLMUnavailable as e:
+                last = e
+                if not getattr(e, "busy", False):
+                    raise
+                time.sleep(min(2.0, 0.5 * (i + 1)))
+        raise last or LLMUnavailable("Gemini unavailable")
+
+    def _call(self, model: str, system: str, user: str, schema: dict, max_tokens: int) -> dict:
         import httpx
 
         body = {"systemInstruction": {"parts": [{"text": system}]},
@@ -112,17 +129,17 @@ class GeminiClient:
                 "generationConfig": {"responseMimeType": "application/json", "responseSchema": _gemini_schema(schema),
                                      "maxOutputTokens": max_tokens, "temperature": 0}}
         try:   # the key travels in a header, never in the URL
-            r = httpx.post(self.URL.format(model=self.model), json=body, timeout=60,
+            r = httpx.post(self.URL.format(model=model), json=body, timeout=60,
                            headers={"x-goog-api-key": self.key})
         except httpx.HTTPError as e:
             raise LLMUnavailable("cannot reach the Gemini API") from e
         if r.status_code in (401, 403):
             raise LLMUnavailable(f"Gemini credentials rejected ({r.status_code})")
-        if r.status_code == 429:
-            raise LLMUnavailable("rate limited by the Gemini API; retry later")
         if r.status_code >= 400:
             msg = (r.json().get("error") or {}).get("message", "") if r.headers.get("content-type", "").startswith("application/json") else ""
-            raise LLMUnavailable(f"Gemini API error {r.status_code}: {msg[:200]}")
+            err = LLMUnavailable(f"Gemini API error {r.status_code} on {model}: {msg[:200]}")
+            err.busy = r.status_code in (429, 500, 502, 503, 504)
+            raise err
         cand = (r.json().get("candidates") or [{}])[0]
         if cand.get("finishReason") not in (None, "STOP"):
             raise LLMUnavailable(f"Gemini stopped early ({cand.get('finishReason')})")
