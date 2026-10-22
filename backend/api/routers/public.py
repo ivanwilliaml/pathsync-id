@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import func, select
@@ -37,7 +38,7 @@ from pathsync.db import (
 )
 from pathsync.embeddings import WARM
 from pathsync.engine import graph_from_db
-from pathsync.extraction.llm import llm_configured
+from pathsync.extraction.llm import llm_configured, llm_provider
 from pathsync.i18n import family_names, role_blurb, t, tr
 from pathsync.security import db_session, rate_limit
 from pathsync.taxonomy import cluster_names, display_rationale, display_skills, load_taxonomy
@@ -105,10 +106,15 @@ def model_card(s: Session) -> dict:
                               "when real experts' rankings show it is better (models trained on simulated experts never do)",
                               "setiap bobot harus bisa diperiksa dan dijelaskan; model terlatih baru menggantikan rumus bila "
                               "urutan pakar sungguhan menunjukkan ia lebih baik (model yang dilatih dari pakar simulasi tidak pernah)")},
-        "extraction_llm": {"runtime": LLM_MODEL if llm_configured() else None,
-                           "runtime_provider": "Anthropic Claude API (structured output, taxonomy-constrained)",
+        # the LLM reads CVs and rates projects; postings stay on the lexicon (it beat the LLM on the test half)
+        "extraction_llm": {"runtime": (None if not llm_configured() else
+                                       os.getenv("PATHSYNC_GEMINI_MODEL", "gemini-flash-latest") if llm_provider() == "gemini"
+                                       else LLM_MODEL),
+                           "runtime_provider": ("Google Gemini API (JSON schema output)" if llm_provider() == "gemini"
+                                                else "Anthropic Claude API (structured output, taxonomy-constrained)"),
+                           "used_for": "cv_and_project_rubric",
                            "offline_run": offline or "Qwen3-8B (Apache-2.0), Kaggle T4 x2",
-                           "active_for_market_map": "llm" if llm_configured() else "lexicon",
+                           "active_for_market_map": "llm" if os.getenv("PATHSYNC_EXTRACTOR", "").lower() == "llm" else "lexicon",
                            "gates": f"quote must exist verbatim in the posting; embedding normalisation {SIM_AUTO} / {SIM_REVIEW}"},
         "embedding_model": {"name": EMBEDDING_MODEL, "use": tr("map free-text skill phrases and course names to the taxonomy", "memetakan frasa skill dan nama mata kuliah bebas ke taksonomi")},
         "knowledge_tracing": {"type": "Bayesian knowledge tracing (eq. 3)", "slip": BKT_SLIP, "guess": BKT_GUESS, "learn": BKT_TRANSIT,
@@ -155,7 +161,7 @@ def meta(s: Session = Depends(db_session)):
             "taxonomy_version": tax["version"],
             "skills": [{"id": sk.id, "name": sk.name, "name_en": sk.name_en, "cluster": sk.cluster, "kind": sk.kind,
                         "description": sk.description, "learn_what": sk.learn_what} for sk in skills.values()],
-            "extractor": "llm" if llm_configured() else "lexicon",
+            "extractor": "llm" if os.getenv("PATHSYNC_EXTRACTOR", "").lower() == "llm" else "lexicon",
             "market_versions": snaps, "model": {"name": ranker.name, "weights": ranker.weights} if ranker else None,
             "models": model_card(s),
             # postings inside each role's 12-month demand window: the number every market figure is computed from

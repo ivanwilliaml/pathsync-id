@@ -89,9 +89,11 @@ export default function PrivacyPage() {
 
         <Section title="5. Penyedia layanan">
           <p>
-            Data disimpan di server PathSync. Bila fitur pembacaan dokumen berbasis model bahasa diaktifkan, potongan teks proyek dapat dikirim ke
-            penyedia model (Anthropic) hanya untuk memberi penilaian rubrik; teks tersebut tidak kami jual. Saat ini fitur itu{" "}
-            <strong>tidak aktif</strong> dan penilaian memakai aturan lokal di server kami.
+            Data disimpan di server PathSync. Teks CV dan teks proyek yang Anda tambahkan dikirim ke Google Gemini untuk dibaca dan dinilai
+            dengan rubrik; nama dan kunci akses Anda tidak ikut dikirim, dan teks tersebut tidak kami jual. PathSync memakai layanan Gemini
+            tingkat gratis, yang menurut ketentuan Google dapat memakai teks yang dikirim untuk meningkatkan produknya. Karena itu, hapus data
+            pribadi seperti alamat, nomor telepon, atau NIK dari CV sebelum mengunggah. Bila layanan Gemini tidak tersedia, penilaian memakai
+            aturan lokal di server kami.
           </p>
           <p className="mt-3">
             Asisten <strong>Sync</strong> memakai model bahasa yang dijalankan oleh Groq. Saat Anda bertanya ke Sync, yang dikirim ke Groq

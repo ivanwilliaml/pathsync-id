@@ -53,7 +53,8 @@ def extract_skills(text: str, prefer: str | None = None, kind: str = "posting") 
     kind:   "posting" or "cv" (changes only the LLM instructions).
     """
     skills = load_skills()
-    use_llm = prefer == "llm" or (prefer is None and llm_configured())
+    # auto mode reads CVs with the LLM but keeps postings on the lexicon, which beat the LLM on the test half
+    use_llm = prefer == "llm" or (prefer is None and llm_configured() and kind != "posting")
     raw: list[Mention]
     name = "lexicon"
     if use_llm:

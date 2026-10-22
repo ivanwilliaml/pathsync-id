@@ -242,9 +242,14 @@ function Models({ c }: { c: ModelCard }) {
           {c.extraction_llm.active_for_market_map === "llm"
             ? `${c.extraction_llm.runtime_provider}. Gates: ${c.extraction_llm.gates}.`
             : t(
-                `Today the market map is read by a transparent lexicon matcher. Gates: ${c.extraction_llm.gates}. LLM reading (Claude API) is planned, not active.`,
-                `Saat ini peta pasar dibaca oleh lexicon matcher yang transparan. Gates: ${c.extraction_llm.gates}. Pembacaan LLM (Claude API) direncanakan, belum aktif.`,
+                `The market map is read by a transparent lexicon matcher, which beat the LLM on the test postings. Gates: ${c.extraction_llm.gates}.`,
+                `Peta pasar dibaca oleh lexicon matcher yang transparan, yang lebih akurat daripada LLM pada lowongan uji. Gates: ${c.extraction_llm.gates}.`,
               )}
+          {" "}{c.extraction_llm.runtime
+            ? t(`CVs and project rubrics are read by ${c.extraction_llm.runtime} (${c.extraction_llm.runtime_provider}); every rating needs a verbatim quote and 20% are sampled for human review.`,
+                `CV dan rubrik proyek dibaca oleh ${c.extraction_llm.runtime} (${c.extraction_llm.runtime_provider}); setiap nilai wajib berkutipan dan 20% diambil acak untuk ditinjau manusia.`)
+            : t("CVs and project rubrics are read by keyword rules with verbatim quotes (no LLM active).",
+                "CV dan rubrik proyek dibaca dengan aturan kata kunci berkutipan (LLM tidak aktif).")}
           {" "}{t("Offline comparison run", "Uji perbandingan offline")}: {c.extraction_llm.offline_run}.
         </p>
       </Panel>

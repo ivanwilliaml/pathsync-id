@@ -6,6 +6,9 @@ Priority decisions are never made here - they come from the trained ranking mode
 
 Credentials are resolved by the Anthropic SDK (ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN
 or an `ant auth login` profile). Set PATHSYNC_EXTRACTOR=llm to force this backend.
+
+Gemini (GEMINI_API_KEY, model PATHSYNC_GEMINI_MODEL) is used instead when it is the only key present or when
+PATHSYNC_LLM_PROVIDER=gemini. Same prompts, same JSON contract, same quote gate afterwards.
 """
 from __future__ import annotations
 
@@ -25,7 +28,17 @@ def llm_configured() -> bool:
         return False
     if mode == "llm":
         return True
-    return bool(os.getenv("ANTHROPIC_API_KEY") or os.getenv("ANTHROPIC_AUTH_TOKEN"))
+    return bool(os.getenv("ANTHROPIC_API_KEY") or os.getenv("ANTHROPIC_AUTH_TOKEN") or os.getenv("GEMINI_API_KEY"))
+
+
+def llm_provider() -> str:
+    """'gemini' or 'anthropic': the explicit choice, else whichever key exists (Anthropic first)."""
+    chosen = os.getenv("PATHSYNC_LLM_PROVIDER", "").lower()
+    if chosen in ("gemini", "anthropic"):
+        return chosen
+    if os.getenv("ANTHROPIC_API_KEY") or os.getenv("ANTHROPIC_AUTH_TOKEN"):
+        return "anthropic"
+    return "gemini" if os.getenv("GEMINI_API_KEY") else "anthropic"
 
 
 class LLMUnavailable(RuntimeError):
@@ -68,6 +81,59 @@ class ClaudeClient:
             raise LLMUnavailable("response truncated (max_tokens)")
         text = next((b.text for b in resp.content if b.type == "text"), "")
         return json.loads(text)
+
+
+def _gemini_schema(schema: dict) -> dict:
+    """JSON Schema -> the OpenAPI subset Gemini accepts (no additionalProperties; enums only on strings)."""
+    out = {k: v for k, v in schema.items() if k != "additionalProperties"}
+    if out.get("type") != "string":
+        out.pop("enum", None)
+    if "properties" in out:
+        out["properties"] = {k: _gemini_schema(v) for k, v in out["properties"].items()}
+    if "items" in out:
+        out["items"] = _gemini_schema(out["items"])
+    return out
+
+
+class GeminiClient:
+    URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+
+    def __init__(self, model: str | None = None):
+        self.key = os.getenv("GEMINI_API_KEY")
+        if not self.key:
+            raise LLMUnavailable("GEMINI_API_KEY is not set")
+        self.model = model or os.getenv("PATHSYNC_GEMINI_MODEL", "gemini-flash-latest")
+
+    def json_call(self, system: str, user: str, schema: dict, effort: str = "low", max_tokens: int = 8000) -> dict:
+        import httpx
+
+        body = {"systemInstruction": {"parts": [{"text": system}]},
+                "contents": [{"role": "user", "parts": [{"text": user}]}],
+                "generationConfig": {"responseMimeType": "application/json", "responseSchema": _gemini_schema(schema),
+                                     "maxOutputTokens": max_tokens, "temperature": 0}}
+        try:   # the key travels in a header, never in the URL
+            r = httpx.post(self.URL.format(model=self.model), json=body, timeout=60,
+                           headers={"x-goog-api-key": self.key})
+        except httpx.HTTPError as e:
+            raise LLMUnavailable("cannot reach the Gemini API") from e
+        if r.status_code in (401, 403):
+            raise LLMUnavailable("Gemini credentials missing or invalid")
+        if r.status_code == 429:
+            raise LLMUnavailable("rate limited by the Gemini API; retry later")
+        if r.status_code >= 400:
+            raise LLMUnavailable(f"Gemini API error {r.status_code}")
+        cand = (r.json().get("candidates") or [{}])[0]
+        if cand.get("finishReason") not in (None, "STOP"):
+            raise LLMUnavailable(f"Gemini stopped early ({cand.get('finishReason')})")
+        text = "".join(p.get("text", "") for p in cand.get("content", {}).get("parts", []))
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError as e:
+            raise LLMUnavailable("Gemini returned invalid JSON") from e
+
+
+def make_client(model: str | None = None):
+    return GeminiClient() if llm_provider() == "gemini" else ClaudeClient(model)
 
 
 def _taxonomy_block(skills: dict[str, Skill]) -> str:
@@ -137,7 +203,7 @@ class ClaudeExtractor:
 
     def __init__(self, skills: dict[str, Skill], model: str | None = None):
         self.skills = skills
-        self.client = ClaudeClient(model)
+        self.client = make_client(model)
         tax = _taxonomy_block(skills)
         self.posting_system = POSTING_SYSTEM.format(taxonomy=tax)
         self.cv_system = CV_SYSTEM.format(taxonomy=tax)
