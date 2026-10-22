@@ -46,7 +46,7 @@ function SkillCheck({ sid, skill }: { sid: string; skill: string }) {
           {t(`You\u2019ve answered every question we have for ${name}. A project that shows this skill is the next best proof.`, `Kamu sudah menjawab semua soal yang kami punya untuk ${name}. Project yang menunjukkan skill ini adalah bukti terbaik berikutnya.`)}
         </EmptyState>
       ) : (
-        <Quiz sid={sid} sessionId={r.data.session_id} items={r.data.items} />
+        <Quiz sid={sid} sessionId={r.data.session_id} items={r.data.items} loopSkill={skill} />
       )}
     </div>
   );

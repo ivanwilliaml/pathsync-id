@@ -7,7 +7,7 @@ import { GraduationCap, LogOut, Menu, PanelLeftClose, Settings2, Users } from "l
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { LangSwitch, useT } from "@/lib/i18n";
+import { useT } from "@/lib/i18n";
 import { PRIMARY, UTILITY, activeNav, visible, type NavItem } from "@/lib/sections";
 import { setStudent, useStudentId } from "@/lib/student";
 import { staffSignOut, useStaffSession } from "@/lib/staff";
@@ -200,10 +200,6 @@ function SidebarNav({ onNavigate, collapsed = false, onToggle }: { onNavigate?: 
               {t("Staff: sign out", "Staf: keluar")} ({session.role})
             </button>
           ) : null}
-          <div className="flex items-center justify-between px-1">
-            <span className="text-xs font-medium text-muted-foreground">{t("Language", "Bahasa")}</span>
-            <LangSwitch />
-          </div>
           <ProfileChip onNavigate={onNavigate} />
         </>
       )}

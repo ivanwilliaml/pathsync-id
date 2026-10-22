@@ -1,0 +1,86 @@
+{
+ "generated_at": "2026-10-20T03:46:51",
+ "label": "simulation: synthetic students, verifies engine behaviour, not evidence about real learners",
+ "check_items": 3,
+ "proven_rates": [
+  {
+   "start": "no direct evidence",
+   "guess": "chance (0.25)",
+   "target": "mandiri",
+   "knower_called_proven": 0.729,
+   "guesser_called_proven": 0.016
+  },
+  {
+   "start": "no direct evidence",
+   "guess": "chance (0.25)",
+   "target": "mahir",
+   "knower_called_proven": 0.729,
+   "guesser_called_proven": 0.016
+  },
+  {
+   "start": "no direct evidence",
+   "guess": "items with surface cues (0.35)",
+   "target": "mandiri",
+   "knower_called_proven": 0.729,
+   "guesser_called_proven": 0.043
+  },
+  {
+   "start": "no direct evidence",
+   "guess": "items with surface cues (0.35)",
+   "target": "mahir",
+   "knower_called_proven": 0.0,
+   "guesser_called_proven": 0.0
+  },
+  {
+   "start": "some direct evidence (0.40)",
+   "guess": "chance (0.25)",
+   "target": "mandiri",
+   "knower_called_proven": 0.81,
+   "guesser_called_proven": 0.062
+  },
+  {
+   "start": "some direct evidence (0.40)",
+   "guess": "chance (0.25)",
+   "target": "mahir",
+   "knower_called_proven": 0.729,
+   "guesser_called_proven": 0.016
+  },
+  {
+   "start": "some direct evidence (0.40)",
+   "guess": "items with surface cues (0.35)",
+   "target": "mandiri",
+   "knower_called_proven": 0.729,
+   "guesser_called_proven": 0.043
+  },
+  {
+   "start": "some direct evidence (0.40)",
+   "guess": "items with surface cues (0.35)",
+   "target": "mahir",
+   "knower_called_proven": 0.729,
+   "guesser_called_proven": 0.043
+  }
+ ],
+ "loop": [
+  {
+   "profile": "knows already",
+   "n": 2000,
+   "finished": 1.0,
+   "median_steps": 6,
+   "mastered_without_knowing": 0.0
+  },
+  {
+   "profile": "learns with practice (rate 0.3)",
+   "n": 2000,
+   "finished": 1.0,
+   "median_steps": 9,
+   "mastered_without_knowing": 0.001
+  },
+  {
+   "profile": "never learns",
+   "n": 2000,
+   "finished": 0.043,
+   "median_steps": 31,
+   "mastered_without_knowing": 0.043
+  }
+ ]
+}

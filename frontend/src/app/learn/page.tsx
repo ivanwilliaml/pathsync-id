@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BookOpen, Check, ChevronDown, Crosshair, ExternalLink, GraduationCap, Lock } from "lucide-react";
 import { toast } from "sonner";
-import { api, type Dashboard, type Material, type PathStep } from "@/lib/api";
+import { api, type Dashboard, type LoopStatus, type Material, type PathStep } from "@/lib/api";
 import { DIFFICULTY, FORMAT, LEVEL, firstSentence, hours, titleCase, weeks } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { useT, type T } from "@/lib/i18n";
@@ -18,6 +18,8 @@ import { RouteHistory } from "@/components/route-history";
 import { HowRanked, WhyOrder } from "@/components/route-insights";
 import { Connections } from "@/components/skill-connections";
 import { useSkillSheet } from "@/components/skill-sheet";
+import { LoopDecision, LoopStages, LoopTarget, loopSummary } from "@/components/learning-loop";
+import { safeUrl } from "@/lib/safe-url";
 
 type Tab = "route" | "week" | "why";
 type RouteView = "list" | "map";
@@ -98,6 +100,10 @@ function Learn({ sid }: { sid: string }) {
   const [{ tab, view, focus }, go] = useLearnState();
   const desktop = useDesktop();
   const { open, sheet } = useSkillSheet(d.data);
+  // learning loop per route step (learn -> practice -> prove -> next), one request for every step
+  const loopPath = d.data?.path.length ? `/students/${sid}/loop?skills=${d.data.path.map((s) => s.skill_id).join(",")}` : null;
+  const loop = useApi<{ skills: LoopStatus[] }>(loopPath);
+  const loops: Record<string, LoopStatus> = Object.fromEntries((loop.data?.skills ?? []).map((x) => [x.skill_id, x]));
   // an old link to a section (history, courses) scrolls there once the page has its data and shows that tab
   const loaded = !!d.data;
   useEffect(() => {
@@ -150,6 +156,7 @@ function Learn({ sid }: { sid: string }) {
     try {
       await api.put(`/students/${sid}/materials/${m.id}`, { done: nextDone });
       if (nextDone) track("material_done", { skill });
+      loop.reload();
     } catch {
       setDone((x) => ({ ...x, [m.id]: !nextDone }));
       toast.error(t("Could not save. Try again.", "Gagal menyimpan. Coba lagi."));
@@ -242,8 +249,8 @@ function Learn({ sid }: { sid: string }) {
                         <span className="min-w-0">
                           <span className={cn("block text-sm leading-snug text-ink", on && "font-semibold")}>{titleCase(s.name)}</span>
                           <span className="block text-xs text-muted-foreground">
-                            {t(`${fin}/${s.materials.length} materials`, `${fin}/${s.materials.length} materi`)}
-                            {s.waiting_for.length ? t(", after a prerequisite", ", setelah prasyarat") : ""}
+                            {loopSummary(loops[s.skill_id], t) ?? t(`${fin}/${s.materials.length} materials`, `${fin}/${s.materials.length} materi`)}
+                            {s.waiting_for.length && !loops[s.skill_id] ? t(", after a prerequisite", ", setelah prasyarat") : ""}
                           </span>
                         </span>
                       </button>
@@ -254,7 +261,7 @@ function Learn({ sid }: { sid: string }) {
             </nav>
             {current ? (
               <div id={`step-${current.skill_id}`} className="scroll-mt-24 min-w-0">
-                <StepBody s={current} n={steps.indexOf(current) + 1} t={t} names={names} done={done} why={whyNow(current)} onToggle={(m) => toggle(m, current.skill_id)} onOpen={open} courses={coursesFor(current.skill_id)} heading />
+                <StepBody s={current} n={steps.indexOf(current) + 1} t={t} names={names} done={done} why={whyNow(current)} onToggle={(m) => toggle(m, current.skill_id)} onOpen={open} courses={coursesFor(current.skill_id)} loop={loops[current.skill_id]} heading />
               </div>
             ) : null}
           </div>
@@ -279,14 +286,14 @@ function Learn({ sid }: { sid: string }) {
                       <span className="min-w-0 flex-1">
                         <span className="block text-sm font-semibold leading-snug text-ink">{titleCase(s.name)}</span>
                         <span className="block text-xs text-muted-foreground">
-                          {t(`${fin} of ${s.materials.length} materials`, `${fin} dari ${s.materials.length} materi`)}
+                          {loopSummary(loops[s.skill_id], t) ?? t(`${fin} of ${s.materials.length} materials`, `${fin} dari ${s.materials.length} materi`)}
                         </span>
                       </span>
                       <ChevronDown className={cn("size-5 shrink-0 text-ink/60 transition-transform", o && "rotate-180")} aria-hidden="true" />
                     </button>
                     {o ? (
                       <div id={`step-body-${s.skill_id}`} className="px-4 pb-4">
-                        <StepBody s={s} n={i + 1} t={t} names={names} done={done} why={whyNow(s)} onToggle={(m) => toggle(m, s.skill_id)} onOpen={open} courses={coursesFor(s.skill_id)} />
+                        <StepBody s={s} n={i + 1} t={t} names={names} done={done} why={whyNow(s)} onToggle={(m) => toggle(m, s.skill_id)} onOpen={open} courses={coursesFor(s.skill_id)} loop={loops[s.skill_id]} />
                       </div>
                     ) : null}
                   </li>
@@ -313,9 +320,9 @@ function StepNumber({ n, complete, t, small }: { n: number; complete: boolean; t
 
 /** One route step: why now, what to focus on, the level against the target, the materials, and the way to prove it.
  * `heading` adds the skill name and tags (desktop detail); the phone accordion row already shows them. */
-function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, courses = [] }: {
+function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, courses = [], loop }: {
   s: PathStep; n: number; t: T; names: Record<string, string>; done: Record<string, boolean>; why?: string | null;
-  onToggle: (m: Material) => void; onOpen?: (skillId: string) => void; heading?: boolean; courses?: string[];
+  onToggle: (m: Material) => void; onOpen?: (skillId: string) => void; heading?: boolean; courses?: string[]; loop?: LoopStatus;
 }) {
   const prereq = s.role_in_path !== "prioritas";
   const finished = s.materials.filter((m) => done[m.id]).length;
@@ -373,6 +380,18 @@ function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, course
         </p>
       </div>
 
+      {loop ? (
+        <section aria-label={t("Learning loop", "Siklus belajar")} className="space-y-3">
+          <div>
+            <h3 className="text-sm font-semibold text-ink">{t("Learning loop", "Siklus belajar")}</h3>
+            {loop.objective ? <p className="mt-1 text-sm text-ink/75">{loop.objective}</p> : null}
+          </div>
+          <LoopTarget status={loop} />
+          <LoopStages status={loop} />
+          <LoopDecision status={loop} compact />
+        </section>
+      ) : null}
+
       <section aria-label={t("Materials", "Materi")}>
         <div className="mb-2 flex flex-wrap items-baseline justify-between gap-2">
           <h3 className="text-sm font-semibold text-ink">{t("Free materials", "Materi gratis")}</h3>
@@ -388,16 +407,21 @@ function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, course
                   aria-checked={!!done[m.id]}
                   aria-label={t(`Mark "${m.title}" as finished`, `Tandai "${m.title}" selesai`)}
                   onClick={() => onToggle(m)}
-                  className={cn(
-                    "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-md border-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                    done[m.id] ? "border-mint bg-mint text-white" : "border-input bg-card hover:border-indigo",
-                  )}
+                  className="group flex size-6 shrink-0 items-center justify-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
-                  {done[m.id] ? <Check className="size-3.5" aria-hidden="true" /> : null}
+                  {/* the button is 24 px (WCAG 2.2 minimum touch target); the drawn box stays 20 px */}
+                  <span
+                    className={cn(
+                      "flex size-5 items-center justify-center rounded-md border-2 transition-colors",
+                      done[m.id] ? "border-mint bg-mint text-white" : "border-input bg-card group-hover:border-indigo",
+                    )}
+                  >
+                    {done[m.id] ? <Check className="size-3.5" aria-hidden="true" /> : null}
+                  </span>
                 </button>
                 <div className="min-w-0 flex-1">
                   <a
-                    href={m.url}
+                    href={safeUrl(m.url)}
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => track("material_clicked", { skill: s.skill_id })}
@@ -420,11 +444,13 @@ function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, course
         )}
       </section>
 
-      <div className="flex flex-wrap items-center gap-3">
-        <LinkButton href={`/assessment/${s.skill_id}`} size="sm" variant={complete ? "default" : "outline"}>
-          {t("Prove This Skill", "Buktikan Skill Ini")}
-        </LinkButton>
-      </div>
+      {loop ? null : (
+        <div className="flex flex-wrap items-center gap-3">
+          <LinkButton href={`/assessment/${s.skill_id}`} size="sm" variant={complete ? "default" : "outline"}>
+            {t("Prove This Skill", "Buktikan Skill Ini")}
+          </LinkButton>
+        </div>
+      )}
     </div>
   );
 }

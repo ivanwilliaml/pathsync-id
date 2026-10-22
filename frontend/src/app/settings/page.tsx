@@ -24,7 +24,7 @@ import {
 import { RequireStudent } from "@/components/require-student";
 import { ErrorNote, Loading, NativeSelect, PageHeader, SectionTitle, Tag, Toc } from "@/components/kit";
 import { Mascot } from "@/components/mascot";
-import { LangSwitch, useT } from "@/lib/i18n";
+import { useT } from "@/lib/i18n";
 
 export default function SettingsPage() {
   return <RequireStudent>{(sid) => <Settings sid={sid} />}</RequireStudent>;
@@ -120,14 +120,6 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
             <option value="id">{t("Prefer Indonesian", "Utamakan Bahasa Indonesia")}</option>
             <option value="en">{t("English is fine", "Bahasa Inggris tidak masalah")}</option>
           </NativeSelect>
-        </div>
-        <div className="space-y-2">
-          <p className="text-sm font-medium text-ink">{t("Interface language", "Bahasa antarmuka")}</p>
-          <LangSwitch />
-          <p className="text-xs text-muted-foreground">
-            {t("The language of the app itself. Technical terms stay in English in both.",
-               "Bahasa aplikasi ini sendiri. Istilah teknis tetap dalam bahasa Inggris di keduanya.")}
-          </p>
         </div>
         <div className="sm:col-span-2">
           <Button type="submit">{t("Save Profile", "Simpan Profil")}</Button>

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Target } from "lucide-react";
+import { ClipboardCheck, Target } from "lucide-react";
 import { api } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
 import { useDesktop } from "@/lib/use-desktop";
@@ -276,9 +276,15 @@ export function CareerMap({ sid }: { sid: string }) {
             : undefined
         }
         actions={
-          desktop ? (
-            <Segmented label={t("View", "Tampilan")} value={mode} onChange={setMode} options={[["list", t("List", "Daftar")], ["matrix", t("Matrix", "Matriks")]]} />
-          ) : null
+          <>
+            <LinkButton href="/careers/check" variant="outline">
+              <ClipboardCheck aria-hidden="true" />
+              {t("Check a job posting", "Cek lowongan")}
+            </LinkButton>
+            {desktop ? (
+              <Segmented label={t("View", "Tampilan")} value={mode} onChange={setMode} options={[["list", t("List", "Daftar")], ["matrix", t("Matrix", "Matriks")]]} />
+            ) : null}
+          </>
         }
       />
       {changes.length ? (

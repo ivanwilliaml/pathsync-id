@@ -257,3 +257,53 @@ export const FEATURE_LABELS: Record<string, string> = {
   U: "Unlocks Other Skills",
   B: "Bottleneck",
 };
+
+// ------------------------------------------------------------------ learning loop (backend pathsync.learning_loop)
+export type LoopTier = "basic" | "applied" | "transfer";
+export type LoopCode = "mastered" | "transfer" | "prove" | "retry" | "practice_basic" | "review_basic" | "practice_applied" | "prerequisite";
+
+export interface LoopStatus {
+  skill_id: string;
+  name: string;
+  supported: boolean;
+  objective: string | null;
+  criteria: string[];
+  provenance: string | null;
+  target: number;
+  level_target: string;
+  p: number;
+  level_now: string;
+  p_proven: number | null;
+  confidence: number;
+  low_confidence: boolean;
+  stages: {
+    learn: { done: number; total: number };
+    practice: Partial<Record<LoopTier, { total: number; done: number; correct: number; passed: boolean }>>;
+    prove: { proven: boolean; last: { at: string; correct: number; total: number } | null };
+  };
+  decision: { code: LoopCode; title: string; reason: string; href: string; cta: string; prereqs: { skill_id: string; name: string }[] };
+}
+
+export interface LoopTask {
+  id: string;
+  tier: LoopTier;
+  type: "choice" | "order";
+  context: string | null;
+  stem: string;
+  options?: { idx: number; text: string }[];
+  steps?: { idx: number; text: string }[];
+  last: { correct: boolean; answer: number[] } | null;
+}
+
+export interface PracticeGrade {
+  task_id: string;
+  tier: LoopTier;
+  correct: boolean;
+  answer: number[];
+  feedback: string;
+  takeaway: string;
+  options?: { idx: number; text: string; correct: boolean; feedback: string }[];
+  steps?: string[];
+  first_wrong?: number | null;
+  status: LoopStatus;
+}

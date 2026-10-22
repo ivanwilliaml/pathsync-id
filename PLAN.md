@@ -9,7 +9,7 @@ Tenggat: **23 Okt** karya ilmiah lengkap dan demo, **27 Okt** TM luring, **28 Ok
 
 ---
 
-## 0. Status 18 Okt dan sisa pekerjaan
+## 0. Status 20 Okt dan sisa pekerjaan
 
 Semua pekerjaan (backend/AI/validasi Ivan, frontend Derik, taksonomi Jo) sudah di **`main`** lewat PR #3 (18 Okt). Mulai kerja
 baru dari `main` dengan branch sendiri, lalu PR. Rincian dan angka: `docs/plan/PLAN_BACKEND_DATA_AI.md` dan
@@ -18,14 +18,16 @@ cara deploy di `docs/ops/DEPLOY_GRATIS.md`.
 
 **Progres (18 Okt, keputusan tim):** backend, data, AI, asesmen, dan validasi manusia **dianggap selesai untuk MVP**. Dua target backend/data dilepas karena MVP tetap tercapai: profil demo ±10 dtk (tidak dipercepat lagi) dan lowongan BA 65 (tidak dikejar ke ≥ 100). Sisa: frontend (M2), deploy (Playwright, video, secret cadangan), dan proposal (M5). Keseluruhan ±88%.
 
+**Pembaruan 20 Okt:** siklus belajar (Pelajari → Latihan → Buktikan → langkah berikutnya) hidup untuk 5 skill teratas setiap role di 20 role (74 skill, 385 latihan, draf dibantu AI, belum ditinjau pakar; `docs/design/LEARNING_LOOP.md`). Cek Lowongan punya halaman. Antarmuka hanya bahasa Indonesia (keputusan tim). Petunjuk panjang opsi di soal BA inti dihapus. Uji otomatis Playwright untuk alur demo ada (`frontend/e2e`). Simulasi mesin (bukan bukti manusia) di `backend/data/models/loop_simulation.json`. Protokol studi dampak belajar siap dijalankan (`docs/plan/EVALUASI_DAMPAK_BELAJAR.md`).
+
 ### Status syarat MVP
 
 | ID | Status | Yang kurang |
 |---|---|---|
 | M1 | **Selesai** | Target presisi diturunkan tim dari 0,80 ke **0,75** pada 18 Okt, **setelah** hasil paruh uji diketahui (dicatat terbuka). Paruh uji: presisi 0,796 [0,7522-0,8334], recall 0,817, jadi titik tengah dan batas bawah selang ≥ 0,75. Gold = pra-anotasi LLM dua putaran yang diverifikasi dan dikoreksi manusia (Ivan), bukan 2 anotator independen dengan kappa. Taksonomi BA lolos 3/3 |
-| M2 | Sebagian | Backend sudah memberi `p_proven` dan `coverage_proven`; **frontend belum menampilkan "dari nilai" vs "dibuktikan"** |
-| M3 | Hampir | UI bahasa Indonesia + tombol ID/EN (frontend Derik), backend dan bank soal dua bahasa. Halaman staf tetap Inggris (sengaja) |
-| M4 | Sebagian | **Online penuh**: pathsync-id.vercel.app + Railway + Neon, HTTPS, alur demo dicek manual 18 Okt (profil demo ±10 dtk). Kurang: uji otomatis Playwright, video cadangan, secret cadangan Neon di GitHub |
+| M2 | Hampir | Halaman Belajar menampilkan target, level terbukti, dan "cukup yakin/belum yakin" per skill; Cek Lowongan memisahkan terbukti / dari nilai / belum ada bukti. Dashboard utama belum memakai label yang sama |
+| M3 | Selesai | Antarmuka hanya bahasa Indonesia sejak 20 Okt (tombol bahasa disembunyikan; teks Inggris tetap di kode) |
+| M4 | Sebagian | **Online penuh**: pathsync-id.vercel.app + Railway + Neon, HTTPS, alur demo dicek manual 18 Okt (profil demo ±10 dtk). Uji otomatis Playwright ada (`npm run e2e`). Kurang: video cadangan, secret cadangan Neon di GitHub |
 | M5 | Belum dicek | Proposal Bab I–III belum dicocokkan dengan `metrics.json` |
 | M6 | **Selesai** | Pilot 20 mahasiswa; 3 pakar BA independen (anonim atas permintaan, jawaban dirangkum tim). Aturan 2 dari 3: 12 prasyarat disetujui, 15 ditolak |
 | M7 | Hampir | `DATA_SOURCES.md` dan halaman About ada; izin Kalibrr belum (draf email `docs/ops/EMAIL_IZIN_KALIBRR.md`) |

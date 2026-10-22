@@ -19,6 +19,7 @@ from pathsync.db import (
     AssessmentResponse,
     CourseEnrollment,
     Evidence,
+    PracticeAttempt,
     Pulse,
     RecommendationHistory,
     Student,
@@ -30,6 +31,7 @@ from pathsync.engine import decision_trace, materials_by_skill, record_history
 from pathsync.i18n import tr
 from pathsync.intake import (
     DocumentRejected,
+    DocumentTooLarge,
     academic_evidence,
     artifact_signature,
     certificate_evidence,
@@ -40,6 +42,7 @@ from pathsync.intake import (
     signature_similarity,
     verification_link,
 )
+from pathsync.job_check import check_job
 from pathsync.retention import erase_students
 from pathsync.security import clip_text, db_session, hash_token, new_token, rate_limit, read_upload, student_access
 from pathsync.taxonomy import load_skills
@@ -68,6 +71,10 @@ class StudentPatch(BaseModel):
     target_role: str | None = None
     preferences: dict | None = None
     self_ratings: dict[str, Annotated[int, Field(ge=1, le=5)]] | None = None
+
+
+class JobCheckIn(BaseModel):
+    text: str = Field(min_length=30, max_length=12_000)
 
 
 @router.post("/students", dependencies=[Depends(rate_limit("signup", 20))])
@@ -182,7 +189,7 @@ def export_data(st: Student = Depends(student_access), s: Session = Depends(db_s
     return {"exported_at": utcnow().isoformat(), "profile": _student_out(s, st),
             "assessment_responses": rows(AssessmentResponse), "history": rows(RecommendationHistory),
             "courses": rows(CourseEnrollment), "weekly_plans": rows(WeeklyPlan), "pulses": rows(Pulse),
-            "study_plans": rows(StudyPlan)}
+            "study_plans": rows(StudyPlan), "practice_attempts": rows(PracticeAttempt)}
 
 
 @router.delete("/students/{sid}")
@@ -207,8 +214,10 @@ def _text_from(text: str, file: UploadFile | None) -> tuple[str, str | None]:
         data, name = read_upload(file)
         try:
             text = document_to_text(data, name)
-        except DocumentRejected as e:
+        except DocumentTooLarge as e:
             raise HTTPException(413, str(e)) from e
+        except DocumentRejected as e:
+            raise HTTPException(422, str(e)) from e
         except Exception as e:  # a damaged PDF/DOCX/notebook is the student's file problem, not a server error
             raise HTTPException(422, tr("We couldn't read this file. Try exporting it again as PDF, or paste the text instead.", "File ini tidak bisa kami baca. Coba ekspor ulang sebagai PDF, atau tempel teksnya.")) from e
         return clip_text(text), file.filename
@@ -320,6 +329,14 @@ def delete_evidence(eid: int, st: Student = Depends(student_access), s: Session 
 
 
 # ------------------------------------------------------------ dashboard
+@router.post("/students/{sid}/check-job", dependencies=[Depends(rate_limit("check_job", 10))])
+def check_pasted_job(body: JobCheckIn, st: Student = Depends(student_access), s: Session = Depends(db_session)):
+    """Analyze a pasted posting without writing its text or extracted skills to the database."""
+    if not body.text.strip():
+        raise HTTPException(422, tr("Paste the job requirements first.", "Tempel persyaratan lowongan dulu."))
+    return check_job(s, st, body.text)
+
+
 @router.get("/students/{sid}/dashboard")
 def dashboard(st: Student = Depends(student_access), s: Session = Depends(db_session)):
     """Read-only: history is written by the mutations and by market updates, never by a page view."""

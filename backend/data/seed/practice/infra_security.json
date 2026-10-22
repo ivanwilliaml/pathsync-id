@@ -1,0 +1,1093 @@
+{
+ "version": "2026-10-20",
+ "provenance": "Disusun tim PathSync (draf dibantu AI). Belum ditinjau pakar; latihan tidak mengubah tingkat penguasaan.",
+ "skills": {
+  "ci_cd_pipelines": {
+   "objective": "Membangun pipeline CI/CD: tahapan build-tes-deploy, caching dan artefak, pengelolaan secret, persetujuan environment, dan rollback.",
+   "criteria": [
+    "Menyusun tahapan pipeline yang gagal cepat",
+    "Mengelola secret dengan aman",
+    "Mempromosikan artefak yang sama antar-environment",
+    "Menyiapkan rollback"
+   ],
+   "tasks": [
+    {
+     "id": "cicd-b1",
+     "tier": "basic",
+     "type": "order",
+     "stem": "Urutkan tahapan pipeline CI/CD yang umum.",
+     "steps": [
+      "Checkout kode",
+      "Install dependensi dan build",
+      "Tes otomatis",
+      "Simpan artefak (image/paket)",
+      "Deploy ke staging",
+      "Deploy ke produksi dengan persetujuan"
+     ],
+     "feedback": "Tahap murah dan cepat gagal dijalankan lebih awal; artefak yang sudah lulus tes yang dipromosikan ke environment berikutnya.",
+     "takeaway": "Pipeline yang baik gagal secepat mungkin dan mendeploy artefak yang sama yang sudah diuji."
+    },
+    {
+     "id": "cicd-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Cara yang benar menyimpan password database untuk pipeline:",
+     "options": [
+      [
+       "Ditulis di file konfigurasi di repository",
+       false,
+       "Siapa pun yang bisa membaca repo bisa melihatnya."
+      ],
+      [
+       "Disimpan di fitur secret pipeline atau secret manager dan disuntikkan sebagai variabel saat berjalan",
+       true,
+       "Tepat. Secret tidak masuk riwayat kode dan aksesnya bisa dibatasi."
+      ],
+      [
+       "Ditulis di pesan commit",
+       false,
+       "Riwayat commit permanen dan mudah dibaca."
+      ],
+      [
+       "Dikirim lewat chat ke setiap developer",
+       false,
+       "Menyebar secret tanpa kontrol."
+      ]
+     ],
+     "takeaway": "Secret tidak pernah masuk repository; gunakan secret store pipeline."
+    },
+    {
+     "id": "cicd-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Pipeline membangun ulang image dari kode untuk setiap environment (dev, staging, prod). Bug yang tidak ada di staging muncul di produksi.",
+     "stem": "Perbaikan yang paling tepat:",
+     "options": [
+      [
+       "Menambah tes manual di produksi",
+       false,
+       "Tidak menyelesaikan perbedaan build."
+      ],
+      [
+       "Build sekali, beri tag versi, lalu promosikan image yang sama ke staging dan produksi",
+       true,
+       "Tepat. Yang diuji di staging persis yang dirilis."
+      ],
+      [
+       "Mematikan staging",
+       false,
+       "Kehilangan tempat pengujian."
+      ],
+      [
+       "Build ulang dengan cache dimatikan",
+       false,
+       "Tetap build berbeda."
+      ]
+     ],
+     "takeaway": "Build once, deploy many: artefak yang sama melewati semua environment."
+    },
+    {
+     "id": "cicd-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Rilis baru menaikkan error rate dari 0,1% ke 8% lima menit setelah deploy.",
+     "stem": "Langkah pertama yang paling tepat:",
+     "options": [
+      [
+       "Mencari bug sambil membiarkan rilis berjalan",
+       false,
+       "Pengguna terus terdampak selama investigasi."
+      ],
+      [
+       "Rollback ke versi sebelumnya, lalu investigasi dengan log dan metrik",
+       true,
+       "Tepat. Pulihkan layanan dulu, analisis kemudian."
+      ],
+      [
+       "Menghapus monitoring agar alert berhenti",
+       false,
+       "Menyembunyikan masalah."
+      ],
+      [
+       "Menunggu sampai pengguna melapor",
+       false,
+       "Data sudah menunjukkan masalah."
+      ]
+     ],
+     "takeaway": "Saat rilis bermasalah, pulihkan dengan rollback dulu, cari penyebab kemudian."
+    },
+    {
+     "id": "cicd-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: tim data science ingin model ML baru dirilis otomatis setiap kali dilatih ulang.",
+     "stem": "Penerapan prinsip CI/CD yang paling tepat:",
+     "options": [
+      [
+       "Langsung mengganti model di produksi setiap kali selesai dilatih",
+       false,
+       "Model yang lebih buruk bisa langsung terpakai."
+      ],
+      [
+       "Pipeline: latih → evaluasi otomatis terhadap ambang metrik → simpan model berversi → rilis bertahap dengan opsi rollback",
+       true,
+       "Tepat. Prinsip gerbang kualitas, artefak berversi, dan rollback yang sama."
+      ],
+      [
+       "Mengirim file model lewat email",
+       false,
+       "Tanpa versi dan kontrol."
+      ],
+      [
+       "Melatih ulang setahun sekali saja",
+       false,
+       "Tidak menjawab kebutuhan otomasi."
+      ]
+     ],
+     "takeaway": "Gerbang kualitas, artefak berversi, dan rollback berlaku juga untuk model ML."
+    }
+   ]
+  },
+  "cloud_aws": {
+   "objective": "Memakai layanan inti AWS: EC2 dan VPC, S3, IAM, RDS, Lambda, dan CloudWatch dengan aman dan hemat.",
+   "criteria": [
+    "Menerapkan IAM dengan hak akses minimum",
+    "Memilih layanan sesuai kebutuhan",
+    "Mengamankan S3 dan jaringan VPC",
+    "Memantau biaya dan performa"
+   ],
+   "tasks": [
+    {
+     "id": "aws-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Aplikasi di EC2 perlu membaca file dari satu bucket S3. Cara memberi akses yang paling aman:",
+     "options": [
+      [
+       "Menyimpan access key root di server",
+       false,
+       "Root key memberi akses penuh dan berbahaya bila bocor."
+      ],
+      [
+       "IAM role untuk instance dengan kebijakan baca hanya ke bucket itu",
+       true,
+       "Tepat. Kredensial sementara dan hak akses minimum."
+      ],
+      [
+       "Membuat bucket publik",
+       false,
+       "Siapa pun bisa membaca isinya."
+      ],
+      [
+       "Membagikan password konsol AWS ke tim",
+       false,
+       "Tidak ada kontrol dan jejak."
+      ]
+     ],
+     "takeaway": "Gunakan IAM role dengan hak akses minimum, bukan access key statis."
+    },
+    {
+     "id": "aws-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Layanan AWS yang paling tepat untuk menyimpan foto unggahan pengguna:",
+     "options": [
+      [
+       "EC2",
+       false,
+       "EC2 adalah server virtual, bukan penyimpanan objek."
+      ],
+      [
+       "S3",
+       true,
+       "Tepat. Penyimpanan objek yang tahan lama dan skalabel."
+      ],
+      [
+       "Lambda",
+       false,
+       "Lambda menjalankan kode, bukan menyimpan file."
+      ],
+      [
+       "CloudWatch",
+       false,
+       "Untuk pemantauan."
+      ]
+     ],
+     "takeaway": "File dan objek → S3; database relasional → RDS; komputasi → EC2/Lambda."
+    },
+    {
+     "id": "aws-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Database RDS untuk aplikasi produksi saat ini berada di subnet publik dan bisa diakses dari internet di port 5432.",
+     "stem": "Perbaikan yang paling tepat:",
+     "options": [
+      [
+       "Mengganti password database menjadi lebih panjang",
+       false,
+       "Membantu, tetapi database tetap terekspos."
+      ],
+      [
+       "Memindahkan RDS ke subnet privat dan membuka port hanya untuk security group aplikasi",
+       true,
+       "Tepat. Database tidak terjangkau langsung dari internet."
+      ],
+      [
+       "Mematikan enkripsi agar lebih cepat",
+       false,
+       "Mengurangi keamanan."
+      ],
+      [
+       "Mengubah port ke 5433",
+       false,
+       "Mengganti port bukan pengamanan."
+      ]
+     ],
+     "takeaway": "Database diletakkan di subnet privat dan hanya diakses lapisan aplikasi."
+    },
+    {
+     "id": "aws-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Tagihan AWS bulan ini naik tiga kali lipat tanpa ada peluncuran fitur baru.",
+     "stem": "Langkah pertama yang paling tepat:",
+     "options": [
+      [
+       "Mematikan semua layanan",
+       false,
+       "Aplikasi produksi ikut mati."
+      ],
+      [
+       "Melihat Cost Explorer per layanan dan tag, lalu mencari resource yang tidak dipakai atau lonjakan transfer data",
+       true,
+       "Tepat. Cari sumber biaya dengan data sebelum bertindak."
+      ],
+      [
+       "Pindah ke penyedia cloud lain",
+       false,
+       "Tidak menyelesaikan penyebab."
+      ],
+      [
+       "Menunggu bulan depan",
+       false,
+       "Biaya terus berjalan."
+      ]
+     ],
+     "takeaway": "Gunakan tag dan cost explorer untuk melacak biaya; pasang budget alert."
+    },
+    {
+     "id": "aws-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: tim memakai Google Cloud dan seorang intern diberi peran Owner pada seluruh project agar tidak repot.",
+     "stem": "Penilaian yang paling tepat:",
+     "options": [
+      [
+       "Aman karena intern bisa dipercaya",
+       false,
+       "Kepercayaan bukan kontrol akses."
+      ],
+      [
+       "Melanggar prinsip hak akses minimum; beri peran spesifik sesuai tugas, misalnya viewer atau editor di resource tertentu",
+       true,
+       "Tepat. Prinsip IAM yang sama berlaku di semua cloud."
+      ],
+      [
+       "Owner perlu agar belajar lebih cepat",
+       false,
+       "Risikonya terlalu besar."
+      ],
+      [
+       "Tidak relevan karena bukan AWS",
+       false,
+       "Prinsipnya sama di semua penyedia."
+      ]
+     ],
+     "takeaway": "Hak akses minimum berlaku di AWS, GCP, maupun Azure."
+    }
+   ]
+  },
+  "docker_containers": {
+   "objective": "Memakai Docker: image dan layer, Dockerfile yang efisien, volume dan network, Compose, serta pengerasan image.",
+   "criteria": [
+    "Menulis Dockerfile dengan urutan layer yang efisien",
+    "Menyimpan data persisten dengan volume",
+    "Menjalankan beberapa layanan dengan Compose",
+    "Membuat image yang kecil dan aman"
+   ],
+   "tasks": [
+    {
+     "id": "dkr-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Mengapa COPY requirements.txt dan install dependensi diletakkan sebelum COPY seluruh kode?",
+     "options": [
+      [
+       "Agar image lebih berwarna",
+       false,
+       "Tidak berkaitan."
+      ],
+      [
+       "Agar layer dependensi di-cache dan tidak diinstal ulang setiap kali kode berubah",
+       true,
+       "Tepat. Build menjadi jauh lebih cepat."
+      ],
+      [
+       "Docker mewajibkan urutan itu",
+       false,
+       "Tidak wajib, tetapi urutan memengaruhi cache."
+      ],
+      [
+       "Agar ukuran image lebih besar",
+       false,
+       "Bukan tujuannya."
+      ]
+     ],
+     "takeaway": "Letakkan bagian yang jarang berubah lebih awal agar cache layer termanfaatkan."
+    },
+    {
+     "id": "dkr-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Data database di container hilang setiap kali container dihapus. Solusinya:",
+     "options": [
+      [
+       "Tidak pernah menghapus container",
+       false,
+       "Tidak realistis."
+      ],
+      [
+       "Memakai volume untuk direktori data database",
+       true,
+       "Tepat. Volume menyimpan data di luar siklus hidup container."
+      ],
+      [
+       "Menyalin data ke image setiap hari",
+       false,
+       "Image bukan tempat data yang berubah."
+      ],
+      [
+       "Memperbesar ukuran container",
+       false,
+       "Tidak berhubungan."
+      ]
+     ],
+     "takeaway": "Container sementara; data persisten disimpan di volume."
+    },
+    {
+     "id": "dkr-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Image aplikasi Python berukuran 1,8 GB karena berisi compiler dan file build.",
+     "stem": "Cara memperkecil image yang paling tepat:",
+     "options": [
+      [
+       "Mengompres image dengan zip",
+       false,
+       "Bukan cara kerja image."
+      ],
+      [
+       "Multi-stage build: build di stage pertama, salin hasil saja ke base image slim di stage akhir",
+       true,
+       "Tepat. Alat build tidak ikut ke image produksi."
+      ],
+      [
+       "Menghapus file di layer terakhir",
+       false,
+       "Layer sebelumnya tetap menyimpan file itu."
+      ],
+      [
+       "Memakai image Ubuntu penuh",
+       false,
+       "Malah lebih besar."
+      ]
+     ],
+     "takeaway": "Multi-stage build memisahkan alat build dari image yang dijalankan."
+    },
+    {
+     "id": "dkr-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Container aplikasi berjalan sebagai root dan image memakai tag latest.",
+     "stem": "Pengerasan yang paling tepat:",
+     "options": [
+      [
+       "Tidak perlu diubah karena berjalan normal",
+       false,
+       "Risiko keamanan dan reproduksibilitas tetap ada."
+      ],
+      [
+       "Jalankan sebagai user non-root dan pakai tag versi yang dikunci (atau digest)",
+       true,
+       "Tepat. Mengurangi dampak bila container dibobol dan membuat build bisa direproduksi."
+      ],
+      [
+       "Memberi container akses --privileged",
+       false,
+       "Memperbesar risiko."
+      ],
+      [
+       "Mematikan logging",
+       false,
+       "Mempersulit investigasi."
+      ]
+     ],
+     "takeaway": "Non-root dan versi yang dikunci adalah dasar keamanan image."
+    },
+    {
+     "id": "dkr-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: dosen ingin semua mahasiswa menjalankan praktikum dengan versi Python dan library yang persis sama.",
+     "stem": "Pendekatan yang paling tepat:",
+     "options": [
+      [
+       "Meminta mahasiswa menginstal sendiri mengikuti petunjuk",
+       false,
+       "Versi sering berbeda antar-laptop."
+      ],
+      [
+       "Menyediakan Dockerfile atau image dengan versi terkunci, plus Compose bila butuh database",
+       true,
+       "Tepat. Container menjamin lingkungan yang sama di mana pun."
+      ],
+      [
+       "Memakai komputer lab saja",
+       false,
+       "Tidak bisa dipakai dari rumah."
+      ],
+      [
+       "Menyalin folder Python ke flashdisk",
+       false,
+       "Tidak portabel antar-sistem operasi."
+      ]
+     ],
+     "takeaway": "Container berguna setiap kali lingkungan harus sama di banyak mesin."
+    }
+   ]
+  },
+  "kubernetes": {
+   "objective": "Mengoperasikan aplikasi di Kubernetes: pod, deployment, service, config dan secret, probe, penskalaan, dan rollout.",
+   "criteria": [
+    "Memakai deployment dan service dengan benar",
+    "Mengatur readiness dan liveness probe",
+    "Mengelola konfigurasi dan secret",
+    "Melakukan rolling update dan rollback"
+   ],
+   "tasks": [
+    {
+     "id": "k8s-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Objek Kubernetes yang memberi alamat stabil untuk sekumpulan pod yang berganti-ganti:",
+     "options": [
+      [
+       "ConfigMap",
+       false,
+       "Untuk konfigurasi."
+      ],
+      [
+       "Service",
+       true,
+       "Tepat. Service memilih pod dengan label dan memberi alamat tetap."
+      ],
+      [
+       "Namespace",
+       false,
+       "Untuk pemisahan logis."
+      ],
+      [
+       "Secret",
+       false,
+       "Untuk data sensitif."
+      ]
+     ],
+     "takeaway": "Deployment menjaga jumlah pod; Service memberi alamat stabil ke pod-pod itu."
+    },
+    {
+     "id": "k8s-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Fungsi readiness probe:",
+     "options": [
+      [
+       "Me-restart pod yang macet",
+       false,
+       "Itu fungsi liveness probe."
+      ],
+      [
+       "Menahan trafik ke pod sampai aplikasi siap melayani",
+       true,
+       "Tepat. Pod yang belum siap tidak menerima request."
+      ],
+      [
+       "Menambah jumlah pod otomatis",
+       false,
+       "Itu fungsi autoscaler."
+      ],
+      [
+       "Menyimpan log",
+       false,
+       "Tidak berhubungan."
+      ]
+     ],
+     "takeaway": "Readiness = siap menerima trafik; liveness = masih hidup atau perlu di-restart."
+    },
+    {
+     "id": "k8s-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Pod berstatus CrashLoopBackOff setelah deploy versi baru.",
+     "stem": "Langkah diagnosis yang paling tepat:",
+     "options": [
+      [
+       "Menghapus cluster dan membuat ulang",
+       false,
+       "Berlebihan dan menghapus bukti."
+      ],
+      [
+       "kubectl describe pod dan kubectl logs --previous untuk melihat event dan pesan error sebelum crash",
+       true,
+       "Tepat. Event dan log menunjukkan penyebab, misalnya konfigurasi hilang."
+      ],
+      [
+       "Menambah replika menjadi 10",
+       false,
+       "Semua replika akan crash dengan cara yang sama."
+      ],
+      [
+       "Menunggu sampai berhenti sendiri",
+       false,
+       "Tidak akan pulih tanpa perbaikan."
+      ]
+     ],
+     "takeaway": "Diagnosis pod: describe untuk event, logs --previous untuk crash sebelumnya."
+    },
+    {
+     "id": "k8s-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Password database ditulis langsung di file deployment YAML yang disimpan di Git.",
+     "stem": "Perbaikan yang paling tepat:",
+     "options": [
+      [
+       "Mengenkode password dengan base64 di YAML",
+       false,
+       "Base64 bukan enkripsi."
+      ],
+      [
+       "Memakai Secret yang dikelola dari secret manager (misalnya External Secrets/Sealed Secrets) dan dirujuk dari deployment",
+       true,
+       "Tepat. Nilai sensitif tidak tersimpan polos di Git."
+      ],
+      [
+       "Menyimpan di ConfigMap",
+       false,
+       "ConfigMap tidak untuk data sensitif."
+      ],
+      [
+       "Menghapus repository Git",
+       false,
+       "Riwayat dan kolaborasi hilang."
+      ]
+     ],
+     "takeaway": "Secret tidak disimpan polos di manifest; gunakan mekanisme secret yang dienkripsi."
+    },
+    {
+     "id": "k8s-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: aplikasi pendaftaran event mengalami lonjakan pengguna setiap pukul 12.00 saat tiket dibuka.",
+     "stem": "Konfigurasi yang paling tepat:",
+     "options": [
+      [
+       "Menjalankan 1 pod besar terus-menerus",
+       false,
+       "Satu pod adalah titik gagal dan tidak elastis."
+      ],
+      [
+       "Horizontal Pod Autoscaler berdasarkan CPU/request, minimum replika yang cukup sebelum jam 12, dan readiness probe",
+       true,
+       "Tepat. Penskalaan otomatis dengan persiapan untuk lonjakan yang bisa diprediksi."
+      ],
+      [
+       "Mematikan probe agar pod cepat aktif",
+       false,
+       "Pod yang belum siap akan menerima trafik."
+      ],
+      [
+       "Menolak pengguna di atas 100 orang",
+       false,
+       "Pengalaman buruk dan penjualan hilang."
+      ]
+     ],
+     "takeaway": "Autoscaling plus kapasitas minimum mengantisipasi lonjakan yang terjadwal."
+    }
+   ]
+  },
+  "networking_fundamentals": {
+   "objective": "Memahami dasar jaringan: model TCP/IP, IP dan subnet, DNS, port, routing, serta TLS untuk diagnosis masalah koneksi.",
+   "criteria": [
+    "Membaca alamat IP dan subnet",
+    "Menjelaskan peran DNS",
+    "Memetakan layanan ke port dan protokol",
+    "Mendiagnosis masalah koneksi lapis demi lapis"
+   ],
+   "tasks": [
+    {
+     "id": "net-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Jaringan 192.168.10.0/24 memiliki berapa alamat host yang bisa dipakai?",
+     "options": [
+      [
+       "256",
+       false,
+       "Alamat jaringan dan broadcast tidak bisa dipakai host."
+      ],
+      [
+       "254",
+       true,
+       "Tepat. 2^8 − 2 = 254."
+      ],
+      [
+       "24",
+       false,
+       "/24 adalah panjang prefix, bukan jumlah host."
+      ],
+      [
+       "1.024",
+       false,
+       "Itu untuk /22."
+      ]
+     ],
+     "takeaway": "Jumlah host = 2^(32 − prefix) − 2."
+    },
+    {
+     "id": "net-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Pengguna bisa membuka situs dengan alamat IP, tetapi tidak dengan nama domain. Masalah paling mungkin:",
+     "options": [
+      [
+       "Kabel jaringan putus",
+       false,
+       "Akses lewat IP masih berhasil."
+      ],
+      [
+       "DNS (resolusi nama)",
+       true,
+       "Tepat. Nama domain gagal diterjemahkan menjadi IP."
+      ],
+      [
+       "Server web mati",
+       false,
+       "Akses lewat IP berhasil, jadi server hidup."
+      ],
+      [
+       "Browser rusak",
+       false,
+       "Lebih mungkin masalah DNS."
+      ]
+     ],
+     "takeaway": "Berhasil lewat IP tetapi gagal lewat nama → periksa DNS."
+    },
+    {
+     "id": "net-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Aplikasi web tidak bisa terhubung ke database di server lain. ping ke server database berhasil.",
+     "stem": "Langkah diagnosis berikutnya yang paling tepat:",
+     "options": [
+      [
+       "Menyimpulkan database pasti sehat karena ping berhasil",
+       false,
+       "Ping (ICMP) tidak membuktikan port database terbuka."
+      ],
+      [
+       "Mengecek apakah port database (misalnya 5432) terbuka dari server aplikasi dengan nc/telnet, lalu firewall dan konfigurasi listen database",
+       true,
+       "Tepat. Diagnosis naik dari jaringan ke port dan layanan."
+      ],
+      [
+       "Me-restart router kantor",
+       false,
+       "Tidak terarah."
+      ],
+      [
+       "Mengganti kabel",
+       false,
+       "Konektivitas dasar sudah terbukti."
+      ]
+     ],
+     "takeaway": "Diagnosis lapis demi lapis: jangkauan IP → port → layanan → aplikasi."
+    },
+    {
+     "id": "net-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Browser menampilkan peringatan sertifikat untuk situs internal setelah domain diganti.",
+     "stem": "Penyebab yang paling mungkin:",
+     "options": [
+      [
+       "Server terlalu lambat",
+       false,
+       "Kecepatan tidak memicu peringatan sertifikat."
+      ],
+      [
+       "Sertifikat TLS masih untuk domain lama sehingga nama tidak cocok",
+       true,
+       "Tepat. Sertifikat harus memuat nama domain yang dipakai."
+      ],
+      [
+       "DNS terlalu cepat",
+       false,
+       "Tidak masuk akal."
+      ],
+      [
+       "Port 80 tertutup",
+       false,
+       "Peringatan sertifikat berkaitan dengan HTTPS dan nama domain."
+      ]
+     ],
+     "takeaway": "Sertifikat TLS harus cocok dengan nama domain yang diakses."
+    },
+    {
+     "id": "net-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: di rumah, laptop terhubung ke wifi tetapi tidak bisa membuka situs apa pun; ponsel di wifi yang sama bisa.",
+     "stem": "Langkah pemeriksaan yang paling masuk akal:",
+     "options": [
+      [
+       "Mengganti provider internet",
+       false,
+       "Ponsel di wifi yang sama bisa, jadi internet tersedia."
+      ],
+      [
+       "Memeriksa IP dan DNS laptop (misalnya IP 169.254.x.x atau DNS manual yang salah), lalu ping gateway",
+       true,
+       "Tepat. Logika diagnosis lapis demi lapis yang sama."
+      ],
+      [
+       "Membeli router baru",
+       false,
+       "Router berfungsi untuk ponsel."
+      ],
+      [
+       "Menginstal ulang sistem operasi",
+       false,
+       "Terlalu drastis sebelum pemeriksaan dasar."
+      ]
+     ],
+     "takeaway": "Bandingkan perangkat yang berhasil dan gagal, lalu periksa per lapisan."
+    }
+   ]
+  },
+  "incident_response_forensics": {
+   "objective": "Menangani insiden keamanan: identifikasi, pembatasan dampak, pemberantasan, pemulihan, pengumpulan bukti, dan laporan pascainsiden.",
+   "criteria": [
+    "Mengikuti tahapan respons insiden",
+    "Membatasi dampak tanpa menghapus bukti",
+    "Menjaga rantai bukti (chain of custody)",
+    "Menyusun pelajaran pascainsiden"
+   ],
+   "tasks": [
+    {
+     "id": "ir-b1",
+     "tier": "basic",
+     "type": "order",
+     "stem": "Urutkan tahapan respons insiden (model NIST).",
+     "steps": [
+      "Persiapan",
+      "Deteksi dan analisis",
+      "Pembatasan (containment)",
+      "Pemberantasan (eradication)",
+      "Pemulihan",
+      "Pelajaran pascainsiden"
+     ],
+     "feedback": "Batasi dampak dulu sebelum membersihkan, pulihkan setelah ancaman hilang, lalu pelajari agar tidak terulang.",
+     "takeaway": "Respons insiden berjalan berurutan dan selalu ditutup dengan pembelajaran."
+    },
+    {
+     "id": "ir-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Laptop karyawan terinfeksi ransomware. Langkah pembatasan pertama yang paling tepat:",
+     "options": [
+      [
+       "Mematikan dan memformat laptop",
+       false,
+       "Bukti forensik dan informasi penyebaran hilang."
+      ],
+      [
+       "Memutus laptop dari jaringan tanpa mematikannya, lalu melaporkan ke tim keamanan",
+       true,
+       "Tepat. Penyebaran dihentikan sambil menjaga bukti di memori."
+      ],
+      [
+       "Membayar tebusan",
+       false,
+       "Tidak menjamin pemulihan dan mendanai pelaku."
+      ],
+      [
+       "Melanjutkan bekerja dan menunggu",
+       false,
+       "Ransomware bisa menyebar ke share jaringan."
+      ]
+     ],
+     "takeaway": "Isolasi dulu, jaga bukti, laporkan."
+    },
+    {
+     "id": "ir-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Analis menemukan login admin dari negara asing pukul 02.00 diikuti pembuatan akun baru.",
+     "stem": "Langkah yang paling tepat:",
+     "options": [
+      [
+       "Menghapus log agar tidak menakutkan manajemen",
+       false,
+       "Menghancurkan bukti."
+      ],
+      [
+       "Menonaktifkan akun admin yang dicurigai dan akun baru, mencabut sesi, mengamankan log, lalu menelusuri aktivitas lain dari akun itu",
+       true,
+       "Tepat. Batasi akses penyerang dan jaga bukti untuk investigasi."
+      ],
+      [
+       "Mengirim email ke pelaku",
+       false,
+       "Tidak relevan."
+      ],
+      [
+       "Menunggu login berikutnya untuk memastikan",
+       false,
+       "Penyerang punya waktu memperluas akses."
+      ]
+     ],
+     "takeaway": "Akses yang dicurigai dibatasi segera sambil bukti diamankan."
+    },
+    {
+     "id": "ir-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Image disk dari server yang dibobol akan dipakai sebagai bukti.",
+     "stem": "Praktik forensik yang benar:",
+     "options": [
+      [
+       "Menganalisis langsung di disk asli",
+       false,
+       "Bisa mengubah bukti."
+      ],
+      [
+       "Membuat salinan bit-per-bit, menghitung hash, menganalisis salinannya, dan mencatat chain of custody",
+       true,
+       "Tepat. Hash membuktikan bukti tidak berubah."
+      ],
+      [
+       "Menyalin file yang terlihat penting saja",
+       false,
+       "Data terhapus dan metadata hilang."
+      ],
+      [
+       "Mengompres disk agar hemat tempat",
+       false,
+       "Bukti harus utuh dan terverifikasi."
+      ]
+     ],
+     "takeaway": "Analisis dilakukan pada salinan terverifikasi hash dengan catatan rantai bukti."
+    },
+    {
+     "id": "ir-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: akun Instagram resmi kampus diretas dan mulai memposting tautan penipuan.",
+     "stem": "Respons yang paling tepat:",
+     "options": [
+      [
+       "Membuat akun baru dan melupakan yang lama",
+       false,
+       "Akun lama tetap menipu pengikut."
+      ],
+      [
+       "Amankan akses (pemulihan akun, ganti kata sandi, cabut sesi, aktifkan 2FA), hapus posting, umumkan lewat kanal resmi, lalu evaluasi penyebab",
+       true,
+       "Tepat. Tahapan respons insiden yang sama dalam skala kecil."
+      ],
+      [
+       "Diam saja agar tidak memalukan",
+       false,
+       "Pengikut bisa tertipu."
+      ],
+      [
+       "Melaporkan ke polisi saja tanpa tindakan lain",
+       false,
+       "Pelaporan boleh, tetapi akun harus diamankan segera."
+      ]
+     ],
+     "takeaway": "Batasi, bersihkan, pulihkan, komunikasikan, dan pelajari, berlaku untuk insiden apa pun."
+    }
+   ]
+  },
+  "network_security": {
+   "objective": "Mengamankan jaringan: aturan firewall, segmentasi, prinsip zero trust, IDS/IPS, dan akses jarak jauh yang aman.",
+   "criteria": [
+    "Menulis aturan firewall dengan prinsip deny by default",
+    "Merancang segmentasi jaringan",
+    "Membaca peringatan IDS/IPS",
+    "Mengamankan akses jarak jauh"
+   ],
+   "tasks": [
+    {
+     "id": "ns-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Prinsip aturan firewall yang paling aman:",
+     "options": [
+      [
+       "Izinkan semua, blokir yang terbukti berbahaya",
+       false,
+       "Ancaman baru lolos sampai diketahui."
+      ],
+      [
+       "Tolak semua secara default, izinkan hanya yang dibutuhkan",
+       true,
+       "Tepat. Permukaan serangan minimal."
+      ],
+      [
+       "Matikan firewall agar aplikasi lancar",
+       false,
+       "Jaringan terbuka."
+      ],
+      [
+       "Blokir semua termasuk layanan bisnis",
+       false,
+       "Operasional berhenti."
+      ]
+     ],
+     "takeaway": "Deny by default, allow by exception."
+    },
+    {
+     "id": "ns-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Manfaat utama segmentasi jaringan:",
+     "options": [
+      [
+       "Internet menjadi lebih cepat",
+       false,
+       "Bukan tujuan utama."
+      ],
+      [
+       "Membatasi penyebaran serangan antarbagian jaringan",
+       true,
+       "Tepat. Bila satu segmen dibobol, segmen lain tetap terlindungi."
+      ],
+      [
+       "Menghapus kebutuhan kata sandi",
+       false,
+       "Tidak berhubungan."
+      ],
+      [
+       "Mengurangi jumlah komputer",
+       false,
+       "Tidak berhubungan."
+      ]
+     ],
+     "takeaway": "Segmentasi membatasi pergerakan lateral penyerang."
+    },
+    {
+     "id": "ns-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Server database, printer kantor, dan wifi tamu berada di satu jaringan yang sama.",
+     "stem": "Perbaikan yang paling tepat:",
+     "options": [
+      [
+       "Memberi kata sandi wifi tamu yang lebih panjang",
+       false,
+       "Tamu tetap satu jaringan dengan database."
+      ],
+      [
+       "Memisahkan VLAN untuk server, perangkat kantor, dan tamu, dengan aturan firewall antar-VLAN yang ketat",
+       true,
+       "Tepat. Tamu tidak bisa menjangkau server."
+      ],
+      [
+       "Mematikan wifi tamu selamanya",
+       false,
+       "Mengorbankan layanan tanpa perlu."
+      ],
+      [
+       "Memindahkan printer ke luar gedung",
+       false,
+       "Tidak relevan."
+      ]
+     ],
+     "takeaway": "Pisahkan jaringan tamu, perangkat, dan server, lalu batasi lalu lintas antarsegmen."
+    },
+    {
+     "id": "ns-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Karyawan remote mengakses server internal lewat port RDP yang dibuka langsung ke internet.",
+     "stem": "Perbaikan yang paling tepat:",
+     "options": [
+      [
+       "Mengganti port RDP ke angka acak",
+       false,
+       "Port scanner tetap menemukannya."
+      ],
+      [
+       "Menutup RDP dari internet; akses lewat VPN atau gateway zero trust dengan MFA",
+       true,
+       "Tepat. Layanan internal tidak terekspos langsung."
+      ],
+      [
+       "Membiarkan karena sudah memakai kata sandi",
+       false,
+       "RDP terbuka sering menjadi target brute force."
+      ],
+      [
+       "Menonaktifkan log RDP",
+       false,
+       "Mengurangi visibilitas."
+      ]
+     ],
+     "takeaway": "Jangan ekspos layanan administrasi ke internet; gunakan VPN atau zero trust dengan MFA."
+    },
+    {
+     "id": "ns-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: pabrik menghubungkan mesin produksi (OT) ke jaringan kantor agar data produksi bisa dipantau.",
+     "stem": "Desain yang paling aman:",
+     "options": [
+      [
+       "Menyatukan jaringan OT dan kantor sepenuhnya",
+       false,
+       "Malware kantor bisa menjangkau mesin produksi."
+      ],
+      [
+       "Zona terpisah dengan DMZ di antaranya; data mengalir satu arah dari OT ke kantor melalui server perantara",
+       true,
+       "Tepat. Prinsip segmentasi dan aliran minimum yang sama."
+      ],
+      [
+       "Memberi akses internet langsung ke semua mesin",
+       false,
+       "Permukaan serangan sangat besar."
+      ],
+      [
+       "Tidak memantau produksi sama sekali",
+       false,
+       "Kehilangan manfaat bisnis."
+      ]
+     ],
+     "takeaway": "Segmentasi dan aliran data minimum melindungi sistem kritis."
+    }
+   ]
+  }
+ }
+}

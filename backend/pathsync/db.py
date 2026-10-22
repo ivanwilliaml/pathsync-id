@@ -331,6 +331,20 @@ class WeeklyPlan(Base):
     reflected_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
 
+class PracticeAttempt(Base):
+    """One answer in the learning loop's practice stage. Practice is for learning: it never changes mastery (only
+    evidence and skill checks do); it decides which practice tier or next step the loop suggests."""
+    __tablename__ = "practice_attempts"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    student_id: Mapped[str] = mapped_column(ForeignKey("students.id"), index=True)
+    skill_id: Mapped[str] = mapped_column(String(60), index=True)
+    task_id: Mapped[str] = mapped_column(String(40))
+    tier: Mapped[str] = mapped_column(String(12))                     # basic | applied | transfer
+    correct: Mapped[bool] = mapped_column(Boolean)
+    answer: Mapped[list] = mapped_column(JSON, default=list)         # chosen option index, or the submitted order
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+
+
 class Pulse(Base):
     """Short in-product survey answers (e.g. direction clarity, paper H1) for the learning-experience metric."""
     __tablename__ = "pulses"
@@ -458,6 +472,15 @@ def cache_epoch(s: Session) -> str:
 
 def get_session() -> Session:
     return SessionLocal()
+
+
+def active_snapshot_summaries(s: Session) -> dict[str, dict]:
+    """{role: {"id", "version", "n_postings"}} of every active snapshot in ONE small query (no skill JSON loaded).
+    Callers that look at all roles (landing page, career map) used to run one active_snapshot() query per role."""
+    rows = s.execute(select(MarketSnapshot.role, MarketSnapshot.id, MarketSnapshot.version,
+                            MarketSnapshot.data["n_postings"].as_integer())
+                     .where(MarketSnapshot.active.is_(True)).order_by(MarketSnapshot.id)).all()
+    return {role: {"id": sid, "version": version, "n_postings": n or 0} for role, sid, version, n in rows}   # highest id wins
 
 
 def active_snapshot(s: Session, role: str) -> MarketSnapshot | None:

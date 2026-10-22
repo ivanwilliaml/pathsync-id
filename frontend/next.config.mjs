@@ -35,6 +35,23 @@ const nextConfig = {
     ];
   },
 
+  // Security headers for every page (audit 21 Oct: only the API answered with them). The CSP only restricts framing,
+  // plugins, <base> and form targets: a script-src policy needs per-request nonces and is left to a later change.
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          { key: "Content-Security-Policy", value: "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'" },
+        ],
+      },
+    ];
+  },
+
   async rewrites() {
     const api = process.env.PATHSYNC_API || "http://127.0.0.1:8000";
     return [{ source: "/api/:path*", destination: `${api}/api/:path*` }];

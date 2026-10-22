@@ -256,10 +256,10 @@
   "note": "dev and heldout were used to tune aliases and must not be quoted as performance; blind (14 original roles) and blind_bisnis (6 business roles, never tuned on) are the reportable sets; all single-annotator"
  },
  "assessment_items": {
-  "generated": "2026-10-18",
+  "generated": "2026-10-20",
   "n_items": 705,
   "language": "en",
-  "answer_pattern_accuracy": 0.34,
+  "answer_pattern_accuracy": 0.337,
   "accuracy_sd": 0.005,
   "seeds": [
    0,
@@ -269,13 +269,13 @@
    4
   ],
   "chance": 0.25,
-  "random_p95": 0.265,
+  "random_p95": 0.264,
   "indonesian": {
-   "generated": "2026-10-18",
+   "generated": "2026-10-20",
    "n_items": 705,
    "language": "id",
-   "answer_pattern_accuracy": 0.333,
-   "accuracy_sd": 0.008,
+   "answer_pattern_accuracy": 0.332,
+   "accuracy_sd": 0.007,
    "seeds": [
     0,
     1,
@@ -284,7 +284,7 @@
     4
    ],
    "chance": 0.25,
-   "random_p95": 0.263
+   "random_p95": 0.264
   },
   "note": "accuracy of a model that sees only option surface features; at or below random_p95 means no usable cue. The Indonesian bank (plan A7) is audited separately because translation changes option lengths."
  },

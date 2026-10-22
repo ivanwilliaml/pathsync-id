@@ -10,6 +10,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { ErrorNote, Loading, Panel } from "./kit";
 import { useT } from "@/lib/i18n";
+import { safeUrl } from "@/lib/safe-url";
 
 interface MarketRow {
   skill_id: string;
@@ -142,7 +143,7 @@ export function MarketSkills({ role }: { role: string }) {
                 {ev.data.evidence.map((e) => (
                   <li key={e.posting_id}>
                     <a
-                      href={e.url}
+                      href={safeUrl(e.url)}
                       target="_blank"
                       rel="noreferrer"
                       className="block rounded-xl border bg-card p-4 transition-colors hover:border-indigo/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -198,7 +199,7 @@ function PostingList({ posts, total, snapshot }: { posts: PostingRow[]; total: n
           {shown.map((p) => (
             <li key={p.id}>
               <a
-                href={p.url}
+                href={safeUrl(p.url)}
                 target="_blank"
                 rel="noreferrer"
                 className="grid grid-cols-[minmax(0,1fr)_16px] items-center gap-x-3 gap-y-0.5 px-4 py-2.5 transition-colors hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring md:grid-cols-[minmax(0,1fr)_120px_110px_16px]"

@@ -35,12 +35,12 @@ Diff: 30 berkas, 525 baris (satu baris per soal yang berubah).
 
 | | Sebelum audit (pagi 18 Okt) | Setelah audit | Batas acak p95 |
 |---|---|---|---|
-| Inggris | ±0,30 | **0,340** | 0,265 |
-| Indonesia | ±0,31 | **0,333** | 0,263 |
+| Inggris | ±0,30 | **±0,34** | ±0,27 |
+| Indonesia | ±0,31 | **±0,33** | ±0,26 |
 
 **Catatan jujur: angka ini naik, bukan turun.** Frasa pengisi lama sengaja ditempel untuk mengacak peringkat panjang kunci;
 setelah dibuang demi kualitas bahasa, petunjuk panjang alami penulis kembali muncul. Setelah ±340 set opsi diseimbangkan
-ulang, akurasi sempat naik ke sekitar 0,38/0,35 lalu turun ke 0,340/0,333: di bawah gerbang tes 0,35, tetapi masih di atas batas acak dan di atas
+ulang, akurasi sempat naik ke sekitar 0,38/0,35 lalu turun ke ±0,34/±0,33: di bawah gerbang tes 0,35, tetapi masih di atas batas acak dan di atas
 angka sebelum audit. Sisa petunjuk terbesar:
 
 - **kata absolut lebih sering di pengecoh** (Inggris 9% vs kunci 3%; Indonesia 13% vs 6%). Sebagian memang alasan opsi itu
@@ -57,3 +57,18 @@ penulisan ulang pengecoh dengan kata absolut secara terarah.
 - Tinjauan isi manual untuk ±80 skill non-BA (hanya pemeriksaan otomatis).
 - Penilaian tingkat kesulitan aktual (butuh data jawaban).
 - Tinjauan oleh pakar materi per bidang.
+
+## Pembaruan 20 Okt: petunjuk panjang di soal BA inti
+
+Pada 34 soal lima skill BA inti (elisitasi, dokumentasi kebutuhan, pemodelan proses, UML, SQL), kunci versi Indonesia
+adalah opsi terpendek di 50% soal (acak: 25%), versi Inggris 38%. 20 opsi kunci dan 2 pengecoh ditulis ulang tanpa
+mengubah makna (`git log -p backend/data/seed/items`). Hasil, dihitung `pathsync.item_audit`:
+
+| Soal BA inti | Kunci terpendek | Kunci terpanjang | Rata-rata peluang tebak dari bentuk opsi |
+|---|---|---|---|
+| Indonesia, sebelum → sesudah | 50% → 18% | 12% → 12% | ±0,29 → ±0,26 |
+| Inggris, sebelum → sesudah | 38% → 15% | 18% → 18% | ±0,27 → ±0,26 |
+
+Seluruh bank (705 soal) sesudahnya: Inggris **0,337**, Indonesia **0,332**, batas acak p95 0,264. Soal di luar lima skill
+inti belum ditinjau ulang.
+

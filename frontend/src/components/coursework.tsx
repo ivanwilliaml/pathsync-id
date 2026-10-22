@@ -14,6 +14,7 @@ import { Textarea } from "./ui/textarea";
 import { EmptyState, ErrorNote, LinkButton, Loading, MasteryBar, Tag } from "./kit";
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "./ui/sheet";
 import { ScrollArea } from "./ui/scroll-area";
+import { safeUrl } from "@/lib/safe-url";
 
 // Coursework companion and the weekly plan -> reflection cycle (backend: pathsync/classroom.py): two views of Learn.
 
@@ -218,7 +219,7 @@ function WeekPlan({ sid, data, onChange }: { sid: string; data: Classroom; onCha
                   <p className="text-xs text-ink/70">
                     {g.course ? t(`Together with ${g.course}. `, `Bersama ${g.course}. `) : t("Self-study. ", "Belajar mandiri. ")}
                     {g.material ? (
-                      <a href={g.material.url} target="_blank" rel="noreferrer" className="text-indigo hover:underline">
+                      <a href={safeUrl(g.material.url)} target="_blank" rel="noreferrer" className="text-indigo hover:underline">
                         {g.material.title}
                       </a>
                     ) : null}

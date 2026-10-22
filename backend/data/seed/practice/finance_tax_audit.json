@@ -1,0 +1,1757 @@
+{
+ "version": "2026-10-20",
+ "provenance": "Disusun tim PathSync (draf dibantu AI). Belum ditinjau pakar; latihan tidak mengubah tingkat penguasaan.",
+ "skills": {
+  "accounting_fundamentals": {
+   "objective": "Mencatat transaksi dengan benar: persamaan akuntansi, jurnal debit-kredit, jurnal penyesuaian, dan neraca saldo.",
+   "criteria": [
+    "Menjaga persamaan aset = liabilitas + ekuitas",
+    "Menentukan akun yang didebit dan dikredit",
+    "Membuat jurnal penyesuaian akhir periode",
+    "Membaca neraca saldo untuk menemukan kesalahan"
+   ],
+   "tasks": [
+    {
+     "id": "acf-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Perusahaan membeli peralatan Rp10 juta secara tunai. Jurnal yang benar:",
+     "options": [
+      [
+       "Debit Peralatan, kredit Kas",
+       true,
+       "Tepat. Aset peralatan bertambah (debit) dan aset kas berkurang (kredit)."
+      ],
+      [
+       "Debit Kas, kredit Peralatan",
+       false,
+       "Arahnya terbalik: kas justru keluar, jadi kas dikredit."
+      ],
+      [
+       "Debit Beban Peralatan, kredit Kas",
+       false,
+       "Peralatan yang dipakai bertahun-tahun dicatat sebagai aset, bukan beban."
+      ],
+      [
+       "Debit Peralatan, kredit Utang Usaha",
+       false,
+       "Utang dipakai bila membeli secara kredit; soal menyebut tunai."
+      ]
+     ],
+     "takeaway": "Tanyakan dua hal: akun apa yang bertambah atau berkurang, dan apakah akun itu bersaldo normal debit atau kredit."
+    },
+    {
+     "id": "acf-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Transaksi mana yang mengubah total aset dan ekuitas sekaligus?",
+     "options": [
+      [
+       "Membayar utang usaha dengan kas",
+       false,
+       "Aset dan liabilitas sama-sama turun; ekuitas tidak berubah."
+      ],
+      [
+       "Menerima pendapatan jasa secara tunai",
+       true,
+       "Tepat. Kas (aset) naik dan pendapatan menaikkan ekuitas melalui laba."
+      ],
+      [
+       "Membeli perlengkapan secara kredit",
+       false,
+       "Aset dan liabilitas naik; ekuitas tetap."
+      ],
+      [
+       "Menagih piutang dari pelanggan",
+       false,
+       "Hanya pertukaran antar-aset: kas naik, piutang turun."
+      ]
+     ],
+     "takeaway": "Pendapatan dan beban mengalir ke ekuitas; pertukaran antar-aset atau pelunasan utang tidak."
+    },
+    {
+     "id": "acf-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Sewa kantor Rp12 juta untuk 12 bulan dibayar di muka pada 1 Oktober dan dicatat sebagai Sewa Dibayar di Muka. Laporan disusun 31 Desember.",
+     "stem": "Jurnal penyesuaian yang benar pada 31 Desember:",
+     "options": [
+      [
+       "Debit Beban Sewa Rp3 juta, kredit Sewa Dibayar di Muka Rp3 juta",
+       true,
+       "Tepat. Tiga bulan sudah terpakai, jadi Rp3 juta dipindahkan dari aset ke beban."
+      ],
+      [
+       "Debit Beban Sewa Rp12 juta, kredit Kas Rp12 juta",
+       false,
+       "Kas sudah dibayar pada Oktober; penyesuaian tidak melibatkan kas lagi."
+      ],
+      [
+       "Debit Sewa Dibayar di Muka Rp9 juta, kredit Beban Sewa Rp9 juta",
+       false,
+       "Ini membalik arah; sisa sembilan bulan memang tetap aset, tidak perlu dijurnal ulang."
+      ],
+      [
+       "Tidak perlu penyesuaian karena sewa sudah dibayar",
+       false,
+       "Tanpa penyesuaian, beban terlalu kecil dan aset terlalu besar."
+      ]
+     ],
+     "takeaway": "Biaya dibayar di muka diakui sebagai beban sesuai bagian yang sudah terpakai pada periode itu."
+    },
+    {
+     "id": "acf-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Neraca saldo tidak seimbang: total debit lebih besar Rp900.000 dari total kredit.",
+     "stem": "Penyebab yang paling mungkin dan langkah pertamanya:",
+     "options": [
+      [
+       "Ada jurnal yang dicatat dua kali; cari transaksi Rp900.000 yang ganda",
+       false,
+       "Jurnal ganda yang seimbang tetap membuat debit sama dengan kredit."
+      ],
+      [
+       "Angka tertukar (misalnya 7.400 ditulis 4.700); selisih yang habis dibagi 9 mengarah ke kesalahan transposisi",
+       true,
+       "Tepat. Selisih kelipatan 9 adalah ciri khas angka tertukar; telusuri posting yang menyimpang."
+      ],
+      [
+       "Transaksi tidak dicatat sama sekali",
+       false,
+       "Transaksi yang hilang di kedua sisi tidak membuat neraca saldo timpang."
+      ],
+      [
+       "Akun yang salah dipakai di sisi yang benar",
+       false,
+       "Salah akun di sisi yang sama tidak mengubah total debit dan kredit."
+      ]
+     ],
+     "takeaway": "Selisih yang habis dibagi 9 biasanya transposisi; selisih tepat sebesar satu transaksi biasanya posting satu sisi."
+    },
+    {
+     "id": "acf-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: sebuah koperasi menerima uang muka Rp5 juta dari anggota untuk pesanan pupuk yang dikirim bulan depan.",
+     "stem": "Pencatatan yang tepat saat uang diterima:",
+     "options": [
+      [
+       "Debit Kas, kredit Pendapatan Penjualan",
+       false,
+       "Barang belum dikirim, jadi pendapatan belum boleh diakui."
+      ],
+      [
+       "Debit Kas, kredit Pendapatan Diterima di Muka (liabilitas)",
+       true,
+       "Tepat. Koperasi berutang barang; pendapatan diakui saat pupuk dikirim."
+      ],
+      [
+       "Debit Piutang, kredit Kas",
+       false,
+       "Kas masuk, bukan keluar, dan anggota tidak berutang."
+      ],
+      [
+       "Tidak dicatat sampai pupuk dikirim",
+       false,
+       "Kas sudah diterima; mengabaikannya membuat kas tidak cocok dengan rekening."
+      ]
+     ],
+     "takeaway": "Prinsip yang sama berlaku di mana pun: kas diterima sebelum kewajiban dipenuhi menjadi liabilitas, bukan pendapatan."
+    }
+   ]
+  },
+  "ap_ar_reconciliation": {
+   "objective": "Mengelola utang dan piutang: three-way matching, laporan umur piutang, dan rekonsiliasi bank.",
+   "criteria": [
+    "Mencocokkan PO, penerimaan barang, dan faktur",
+    "Membaca laporan umur piutang",
+    "Menyusun rekonsiliasi bank",
+    "Menjelaskan selisih dan tindak lanjutnya"
+   ],
+   "tasks": [
+    {
+     "id": "apar-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Three-way matching sebelum membayar pemasok mencocokkan:",
+     "options": [
+      [
+       "Purchase order, bukti penerimaan barang, dan faktur pemasok",
+       true,
+       "Tepat. Ketiganya memastikan yang dibayar memang dipesan dan diterima."
+      ],
+      [
+       "Faktur, kuitansi, dan rekening koran",
+       false,
+       "Rekening koran dipakai untuk rekonsiliasi bank, bukan persetujuan pembayaran."
+      ],
+      [
+       "Anggaran, faktur, dan laporan laba rugi",
+       false,
+       "Anggaran membantu pengendalian, tetapi bukan bagian three-way matching."
+      ],
+      [
+       "Kontrak, faktur pajak, dan slip transfer",
+       false,
+       "Slip transfer muncul setelah membayar; matching dilakukan sebelumnya."
+      ]
+     ],
+     "takeaway": "Bayar hanya bila dipesan (PO), diterima (GRN), dan ditagih sesuai (faktur)."
+    },
+    {
+     "id": "apar-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Dalam rekonsiliasi bank, setoran yang sudah dicatat perusahaan tetapi belum muncul di rekening koran disebut:",
+     "options": [
+      [
+       "Cek yang belum dicairkan",
+       false,
+       "Itu pembayaran yang belum diuangkan penerima, bukan setoran."
+      ],
+      [
+       "Biaya administrasi bank",
+       false,
+       "Biaya bank tercatat di rekening koran lebih dulu, lalu dijurnal perusahaan."
+      ],
+      [
+       "Setoran dalam perjalanan (deposit in transit)",
+       true,
+       "Tepat. Ia menambah saldo menurut bank dalam rekonsiliasi."
+      ],
+      [
+       "Bunga jasa giro",
+       false,
+       "Bunga muncul dari bank dan perlu dijurnal oleh perusahaan."
+      ]
+     ],
+     "takeaway": "Setoran dalam perjalanan dan cek beredar menyesuaikan sisi bank; biaya dan bunga bank menyesuaikan sisi buku."
+    },
+    {
+     "id": "apar-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Laporan umur piutang: 0–30 hari Rp400 juta, 31–60 hari Rp120 juta, 61–90 hari Rp60 juta, >90 hari Rp45 juta. Kebijakan: >90 hari dicadangkan 50%.",
+     "stem": "Langkah yang paling tepat:",
+     "options": [
+      [
+       "Menghapus seluruh piutang >60 hari",
+       false,
+       "Penghapusan butuh bukti tidak tertagih; umur saja tidak cukup."
+      ],
+      [
+       "Mencadangkan Rp22,5 juta untuk piutang >90 hari dan memprioritaskan penagihan kelompok 61–90 hari",
+       true,
+       "Tepat. Cadangan sesuai kebijakan, dan penagihan difokuskan sebelum piutang menua."
+      ],
+      [
+       "Tidak melakukan apa-apa karena mayoritas piutang masih lancar",
+       false,
+       "Piutang yang menua tetap perlu dicadangkan dan ditagih."
+      ],
+      [
+       "Mencadangkan 50% dari seluruh piutang",
+       false,
+       "Kebijakan hanya untuk kelompok >90 hari; mencadangkan semua melebihkan beban."
+      ]
+     ],
+     "takeaway": "Laporan umur dipakai untuk dua hal: menghitung cadangan dan memprioritaskan penagihan."
+    },
+    {
+     "id": "apar-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Saldo kas buku Rp50 juta; rekening koran Rp47 juta. Ada cek beredar Rp5 juta, setoran dalam perjalanan Rp7 juta, dan biaya bank Rp1 juta yang belum dicatat.",
+     "stem": "Saldo kas yang benar setelah rekonsiliasi:",
+     "options": [
+      [
+       "Rp50 juta",
+       false,
+       "Biaya bank Rp1 juta belum dikurangkan dari buku."
+      ],
+      [
+       "Rp47 juta",
+       false,
+       "Saldo bank masih perlu ditambah setoran dalam perjalanan dan dikurangi cek beredar."
+      ],
+      [
+       "Rp49 juta",
+       true,
+       "Tepat. Bank: 47 + 7 − 5 = 49; buku: 50 − 1 = 49. Kedua sisi cocok."
+      ],
+      [
+       "Rp52 juta",
+       false,
+       "Ini menambah setoran tetapi lupa mengurangi cek beredar."
+      ]
+     ],
+     "takeaway": "Rekonsiliasi selesai bila saldo bank yang disesuaikan sama dengan saldo buku yang disesuaikan."
+    },
+    {
+     "id": "apar-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: toko online menerima pembayaran lewat payment gateway yang mencairkan dana H+2 setelah dipotong fee 2%.",
+     "stem": "Cara rekonsiliasi yang paling tepat setiap minggu:",
+     "options": [
+      [
+       "Mencocokkan total penjualan dengan total transfer masuk ke bank",
+       false,
+       "Fee dan selisih waktu pencairan membuat total tidak pernah sama."
+      ],
+      [
+       "Mencocokkan per transaksi: penjualan → laporan settlement gateway (dikurangi fee) → mutasi bank",
+       true,
+       "Tepat. Ini three-way matching versi pembayaran digital: setiap selisih bisa ditelusuri."
+      ],
+      [
+       "Mengandalkan dashboard gateway saja",
+       false,
+       "Dashboard gateway belum tentu sama dengan dana yang benar-benar masuk."
+      ],
+      [
+       "Mencatat fee hanya di akhir tahun",
+       false,
+       "Fee adalah beban periode berjalan; menundanya membuat laba bulanan salah."
+      ]
+     ],
+     "takeaway": "Rekonsiliasi selalu mencocokkan sumber transaksi, perantara, dan bank, apa pun salurannya."
+    }
+   ]
+  },
+  "audit_internal_control": {
+   "objective": "Menilai pengendalian internal: pemisahan tugas, pengujian kontrol, sampling, dan kertas kerja.",
+   "criteria": [
+    "Mengenali kelemahan pemisahan tugas",
+    "Memilih uji kontrol yang sesuai",
+    "Menentukan sampel yang wajar",
+    "Mendokumentasikan bukti di kertas kerja"
+   ],
+   "tasks": [
+    {
+     "id": "aic-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Mana yang menunjukkan kelemahan pemisahan tugas?",
+     "options": [
+      [
+       "Staf yang membuat PO juga menyetujui dan mencatat penerimaan barang",
+       true,
+       "Tepat. Satu orang menguasai seluruh siklus sehingga kecurangan sulit terdeteksi."
+      ],
+      [
+       "Kasir menerima uang, akuntan mencatat, manajer menyetujui",
+       false,
+       "Ini justru contoh pemisahan tugas yang baik."
+      ],
+      [
+       "Rekonsiliasi bank dikerjakan staf yang tidak memegang kas",
+       false,
+       "Pemisahan ini mengurangi risiko penyalahgunaan kas."
+      ],
+      [
+       "Pembayaran di atas Rp50 juta butuh dua tanda tangan",
+       false,
+       "Ini kontrol otorisasi tambahan, bukan kelemahan."
+      ]
+     ],
+     "takeaway": "Pisahkan otorisasi, pencatatan, dan penguasaan aset ke orang yang berbeda."
+    },
+    {
+     "id": "aic-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Komponen COSO yang mencakup sikap manajemen terhadap integritas dan etika:",
+     "options": [
+      [
+       "Aktivitas pengendalian",
+       false,
+       "Aktivitas pengendalian adalah prosedurnya, misalnya otorisasi dan rekonsiliasi."
+      ],
+      [
+       "Pemantauan",
+       false,
+       "Pemantauan menilai apakah kontrol tetap berjalan dari waktu ke waktu."
+      ],
+      [
+       "Informasi dan komunikasi",
+       false,
+       "Ini tentang aliran informasi yang relevan, bukan budaya etika."
+      ],
+      [
+       "Lingkungan pengendalian",
+       true,
+       "Tepat. Ia menjadi fondasi seluruh komponen lain."
+      ]
+     ],
+     "takeaway": "Lingkungan pengendalian (tone at the top) adalah dasar; kontrol yang baik gagal bila budayanya lemah."
+    },
+    {
+     "id": "aic-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Kontrol: setiap pembayaran pemasok di atas Rp20 juta harus disetujui manajer keuangan di sistem sebelum ditransfer. Ada 1.200 pembayaran setahun.",
+     "stem": "Uji kontrol yang paling tepat:",
+     "options": [
+      [
+       "Mewawancarai manajer keuangan apakah ia selalu menyetujui",
+       false,
+       "Wawancara saja bukti yang lemah; perlu pemeriksaan dokumen."
+      ],
+      [
+       "Mengambil sampel pembayaran di atas Rp20 juta dan memeriksa bukti persetujuan sebelum tanggal transfer",
+       true,
+       "Tepat. Uji ini memeriksa apakah kontrol berjalan konsisten sepanjang periode."
+      ],
+      [
+       "Memeriksa seluruh pembayaran di bawah Rp20 juta",
+       false,
+       "Populasi itu tidak terkena kontrol yang diuji."
+      ],
+      [
+       "Membaca SOP persetujuan pembayaran",
+       false,
+       "SOP menunjukkan desain kontrol, bukan bahwa kontrol benar-benar dijalankan."
+      ]
+     ],
+     "takeaway": "Uji efektivitas kontrol = bukti bahwa kontrol dijalankan, pada sampel dari populasi yang relevan."
+    },
+    {
+     "id": "aic-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Dari 40 sampel pembayaran, 3 ditransfer sebelum disetujui; ketiganya terjadi saat manajer cuti.",
+     "stem": "Kesimpulan dan rekomendasi yang paling tepat:",
+     "options": [
+      [
+       "Kontrol efektif karena 37 dari 40 sesuai",
+       false,
+       "Penyimpangan berpola menunjukkan celah nyata, bukan kebetulan."
+      ],
+      [
+       "Kontrol tidak berjalan saat penyetuju cuti; rekomendasikan delegasi wewenang resmi di sistem",
+       true,
+       "Tepat. Akar masalahnya tidak ada penyetuju pengganti, dan rekomendasinya menyasar sebab itu."
+      ],
+      [
+       "Tiga staf keuangan perlu diberi sanksi",
+       false,
+       "Masalahnya desain proses saat cuti, bukan semata kesalahan individu."
+      ],
+      [
+       "Batas persetujuan dinaikkan menjadi Rp50 juta",
+       false,
+       "Menaikkan batas justru melemahkan kontrol dan tidak menutup celah cuti."
+      ]
+     ],
+     "takeaway": "Cari pola di balik penyimpangan; rekomendasi yang baik menutup penyebabnya."
+    },
+    {
+     "id": "aic-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: sebuah sekolah swasta menerima SPP tunai. Bendahara menerima uang, menulis kuitansi, dan menyetor ke bank seminggu sekali.",
+     "stem": "Perbaikan kontrol yang paling efektif dengan biaya kecil:",
+     "options": [
+      [
+       "Memasang CCTV di ruang bendahara",
+       false,
+       "Membantu, tetapi tidak memastikan uang yang diterima sama dengan yang disetor."
+      ],
+      [
+       "Kuitansi bernomor urut, setoran harian, dan rekonsiliasi oleh staf lain",
+       true,
+       "Tepat. Pemisahan tugas dan bukti bernomor membuat selisih cepat terlihat."
+      ],
+      [
+       "Bendahara menandatangani surat pernyataan jujur",
+       false,
+       "Pernyataan tidak mencegah atau mendeteksi selisih."
+      ],
+      [
+       "Mengganti bendahara setiap tahun",
+       false,
+       "Rotasi membantu, tetapi kontrol harian tetap lemah."
+      ]
+     ],
+     "takeaway": "Prinsip kontrol yang sama berlaku di organisasi kecil: bukti bernomor, penyetoran cepat, dan pemeriksaan oleh orang lain."
+    }
+   ]
+  },
+  "audit_reporting_followup": {
+   "objective": "Menulis temuan audit yang lengkap (kondisi, kriteria, sebab, akibat), rekomendasi yang dapat dijalankan, dan memantau tindak lanjutnya.",
+   "criteria": [
+    "Menyusun temuan dengan empat unsur",
+    "Menulis rekomendasi yang menyasar sebab",
+    "Menilai tanggapan manajemen",
+    "Memantau tindak lanjut sampai selesai"
+   ],
+   "tasks": [
+    {
+     "id": "arf-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Dalam temuan audit, \"SOP mewajibkan stok opname bulanan\" adalah unsur:",
+     "options": [
+      [
+       "Kondisi",
+       false,
+       "Kondisi adalah apa yang ditemukan, misalnya opname hanya dilakukan dua kali setahun."
+      ],
+      [
+       "Kriteria",
+       true,
+       "Tepat. Kriteria adalah standar yang seharusnya dipenuhi."
+      ],
+      [
+       "Sebab",
+       false,
+       "Sebab menjelaskan mengapa kondisi menyimpang dari kriteria."
+      ],
+      [
+       "Akibat",
+       false,
+       "Akibat adalah dampak atau risiko dari penyimpangan."
+      ]
+     ],
+     "takeaway": "Kondisi (yang terjadi), kriteria (yang seharusnya), sebab (mengapa), akibat (dampaknya)."
+    },
+    {
+     "id": "arf-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Rekomendasi audit yang paling baik:",
+     "options": [
+      [
+       "Manajemen agar lebih memperhatikan pengendalian persediaan",
+       false,
+       "Terlalu umum; tidak jelas apa yang harus dilakukan dan kapan."
+      ],
+      [
+       "Kepala gudang menjadwalkan stok opname bulanan dengan pengawas dari keuangan mulai November 2026",
+       true,
+       "Tepat. Jelas siapa, apa, dan kapan, serta menyasar sebab."
+      ],
+      [
+       "Staf gudang yang lalai diberi sanksi",
+       false,
+       "Sanksi tidak memperbaiki proses yang menyebabkan masalah."
+      ],
+      [
+       "Persediaan sebaiknya dikurangi",
+       false,
+       "Tidak berhubungan langsung dengan temuan stok opname."
+      ]
+     ],
+     "takeaway": "Rekomendasi yang dapat dijalankan menyebut pelaksana, tindakan, dan tenggat."
+    },
+    {
+     "id": "arf-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Temuan: 18% faktur penjualan dibuat tanpa PO pelanggan karena tim sales mengejar target akhir bulan; akibatnya retur naik dan piutang sulit ditagih.",
+     "stem": "Rekomendasi yang paling menyasar sebab:",
+     "options": [
+      [
+       "Mengingatkan tim sales lewat email agar mematuhi SOP",
+       false,
+       "Pengingat tidak mengubah tekanan target yang menjadi sebab."
+      ],
+      [
+       "Sistem menolak pembuatan faktur tanpa nomor PO, dan target sales dihitung dari penjualan yang tidak diretur",
+       true,
+       "Tepat. Kontrol sistem mencegah penyimpangan dan insentif tidak lagi mendorongnya."
+      ],
+      [
+       "Menambah staf penagihan",
+       false,
+       "Mengatasi gejala (penagihan), bukan sebabnya."
+      ],
+      [
+       "Menghapus target bulanan sales",
+       false,
+       "Terlalu ekstrem dan di luar ruang lingkup temuan."
+      ]
+     ],
+     "takeaway": "Bila sebabnya insentif, rekomendasi perlu mengubah insentif atau kontrol, bukan hanya mengingatkan."
+    },
+    {
+     "id": "arf-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Tanggapan manajemen atas temuan: \"Setuju, akan diperbaiki.\" Tanpa nama penanggung jawab atau tanggal.",
+     "stem": "Tindakan auditor yang tepat:",
+     "options": [
+      [
+       "Menerima tanggapan dan menutup temuan",
+       false,
+       "Temuan ditutup setelah perbaikan diverifikasi, bukan setelah janji."
+      ],
+      [
+       "Meminta rencana tindakan dengan penanggung jawab dan tenggat, lalu menjadwalkan verifikasi",
+       true,
+       "Tepat. Tanpa pemilik dan tanggal, tindak lanjut tidak bisa dipantau."
+      ],
+      [
+       "Menaikkan temuan ke dewan karena manajemen tidak serius",
+       false,
+       "Eskalasi terlalu dini; minta rencana yang lengkap dulu."
+      ],
+      [
+       "Menulis rencana tindakan sendiri atas nama manajemen",
+       false,
+       "Auditor menjaga independensi; rencana adalah tanggung jawab manajemen."
+      ]
+     ],
+     "takeaway": "Tanggapan manajemen harus memuat tindakan, pemilik, dan tenggat agar bisa dipantau."
+    },
+    {
+     "id": "arf-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: evaluasi program beasiswa kampus menemukan 12 penerima tidak memenuhi syarat IPK karena data nilai diambil dari semester lama.",
+     "stem": "Susunan temuan yang paling lengkap:",
+     "options": [
+      [
+       "Ada 12 penerima beasiswa yang salah",
+       false,
+       "Hanya kondisi; kriteria, sebab, dan akibat hilang."
+      ],
+      [
+       "Kondisi: 12 penerima di bawah IPK 3,0; kriteria: syarat IPK 3,0 semester terakhir; sebab: data nilai diambil dari semester lama; akibat: dana Rp X tidak tepat sasaran",
+       true,
+       "Tepat. Empat unsur lengkap membuat temuan bisa dipahami dan ditindaklanjuti."
+      ],
+      [
+       "Bagian kemahasiswaan lalai memeriksa nilai",
+       false,
+       "Ini menyalahkan tanpa menjelaskan kriteria dan dampaknya."
+      ],
+      [
+       "Program beasiswa sebaiknya dievaluasi ulang",
+       false,
+       "Ini rekomendasi umum, bukan temuan."
+      ]
+     ],
+     "takeaway": "Empat unsur temuan berlaku untuk audit apa pun, termasuk audit program dan kinerja."
+    }
+   ]
+  },
+  "budgeting_forecasting": {
+   "objective": "Menyusun anggaran dan forecast berbasis driver, lalu menganalisis selisih anggaran dan realisasi.",
+   "criteria": [
+    "Membangun forecast dari driver bisnis",
+    "Menghitung dan menjelaskan selisih",
+    "Membedakan selisih volume dan harga",
+    "Memperbarui forecast secara bergulir"
+   ],
+   "tasks": [
+    {
+     "id": "bud-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Forecast pendapatan berbasis driver untuk kafe paling baik dibangun dari:",
+     "options": [
+      [
+       "Pendapatan tahun lalu ditambah 10%",
+       false,
+       "Ini pendekatan inkremental; tidak menjelaskan apa yang menggerakkan pendapatan."
+      ],
+      [
+       "Jumlah pengunjung × rata-rata transaksi × hari buka",
+       true,
+       "Tepat. Setiap driver bisa diubah dan diuji, sehingga forecast mudah diperbarui."
+      ],
+      [
+       "Target yang diminta pemilik",
+       false,
+       "Target adalah keinginan, bukan perkiraan berbasis data."
+      ],
+      [
+       "Rata-rata pendapatan pesaing",
+       false,
+       "Kondisi pesaing berbeda; tidak mencerminkan operasi sendiri."
+      ]
+     ],
+     "takeaway": "Forecast berbasis driver memecah angka menjadi faktor yang bisa diukur dan dikelola."
+    },
+    {
+     "id": "bud-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Anggaran biaya listrik Rp20 juta, realisasi Rp24 juta. Selisihnya:",
+     "options": [
+      [
+       "Rp4 juta menguntungkan (favourable)",
+       false,
+       "Biaya lebih besar dari rencana berarti tidak menguntungkan."
+      ],
+      [
+       "Rp4 juta tidak menguntungkan (unfavourable)",
+       true,
+       "Tepat. Biaya melebihi anggaran sebesar 20%."
+      ],
+      [
+       "Rp24 juta tidak menguntungkan",
+       false,
+       "Selisih adalah perbedaan, bukan total realisasi."
+      ],
+      [
+       "Tidak bisa dinilai tanpa data pendapatan",
+       false,
+       "Untuk biaya tetap seperti ini, selisih bisa langsung dinilai."
+      ]
+     ],
+     "takeaway": "Untuk biaya, realisasi di atas anggaran = unfavourable; untuk pendapatan, sebaliknya."
+    },
+    {
+     "id": "bud-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Anggaran: 1.000 unit × Rp50.000 = Rp50 juta. Realisasi: 1.200 unit × Rp45.000 = Rp54 juta.",
+     "stem": "Analisis selisih yang benar:",
+     "options": [
+      [
+       "Selisih volume +Rp10 juta, selisih harga −Rp6 juta, total +Rp4 juta",
+       true,
+       "Tepat. Volume: 200 × 50.000; harga: 1.200 × (−5.000)."
+      ],
+      [
+       "Pendapatan naik Rp4 juta, jadi semuanya sesuai rencana",
+       false,
+       "Total naik menyembunyikan harga yang turun; manajemen perlu tahu keduanya."
+      ],
+      [
+       "Selisih volume +Rp4 juta, selisih harga 0",
+       false,
+       "Harga per unit jelas turun Rp5.000."
+      ],
+      [
+       "Selisih harga −Rp5 juta, selisih volume +Rp9 juta",
+       false,
+       "Perhitungannya memakai basis yang salah; cek lagi rumus volume dan harga."
+      ]
+     ],
+     "takeaway": "Pisahkan selisih volume dan harga; total yang membaik bisa menyembunyikan masalah harga."
+    },
+    {
+     "id": "bud-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Di bulan Juli, penjualan semester I 25% di bawah anggaran karena satu pelanggan besar berhenti.",
+     "stem": "Langkah forecast yang paling tepat:",
+     "options": [
+      [
+       "Mempertahankan forecast awal karena anggaran sudah disetujui",
+       false,
+       "Anggaran tetap jadi pembanding, tetapi forecast harus mencerminkan kondisi terbaru."
+      ],
+      [
+       "Membuat rolling forecast tanpa pelanggan tersebut dan menghitung dampaknya ke arus kas",
+       true,
+       "Tepat. Forecast diperbarui dari driver yang berubah, termasuk dampak kas."
+      ],
+      [
+       "Memotong semua anggaran biaya 25%",
+       false,
+       "Pemotongan merata mengabaikan biaya yang memang dibutuhkan."
+      ],
+      [
+       "Menunggu akhir tahun untuk menilai",
+       false,
+       "Menunggu menghilangkan waktu untuk bertindak."
+      ]
+     ],
+     "takeaway": "Anggaran adalah rencana; forecast adalah perkiraan terbaik saat ini dan perlu diperbarui."
+    },
+    {
+     "id": "bud-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: panitia acara kampus membuat anggaran. Pemasukan dari tiket bergantung jumlah peserta yang belum pasti.",
+     "stem": "Pendekatan anggaran yang paling tepat:",
+     "options": [
+      [
+       "Satu angka peserta optimistis agar acara terlihat layak",
+       false,
+       "Angka tunggal optimistis berisiko defisit."
+      ],
+      [
+       "Tiga skenario peserta (rendah, sedang, tinggi) dengan biaya tetap dan variabel dipisah",
+       true,
+       "Tepat. Panitia tahu titik impas dan biaya mana yang bisa dikurangi."
+      ],
+      [
+       "Menunda anggaran sampai jumlah peserta pasti",
+       false,
+       "Keputusan sewa tempat butuh anggaran sebelum peserta pasti."
+      ],
+      [
+       "Menyamakan anggaran dengan acara tahun lalu",
+       false,
+       "Kondisi tahun ini bisa berbeda; driver-nya perlu dihitung ulang."
+      ]
+     ],
+     "takeaway": "Driver yang tidak pasti ditangani dengan skenario dan pemisahan biaya tetap dan variabel."
+    }
+   ]
+  },
+  "cost_accounting": {
+   "objective": "Menghitung biaya produk dan persediaan: klasifikasi biaya, metode FIFO dan rata-rata, HPP, dan titik impas.",
+   "criteria": [
+    "Membedakan biaya tetap dan variabel",
+    "Menilai persediaan dengan FIFO dan rata-rata",
+    "Menghitung HPP",
+    "Menghitung titik impas"
+   ],
+   "tasks": [
+    {
+     "id": "cst-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Untuk pabrik roti, mana yang termasuk biaya variabel?",
+     "options": [
+      [
+       "Sewa gedung pabrik",
+       false,
+       "Sewa tetap sama berapa pun jumlah roti yang dibuat."
+      ],
+      [
+       "Gaji manajer produksi",
+       false,
+       "Gaji bulanan manajer tidak berubah dengan volume."
+      ],
+      [
+       "Tepung untuk setiap adonan",
+       true,
+       "Tepat. Semakin banyak roti, semakin banyak tepung."
+      ],
+      [
+       "Penyusutan oven",
+       false,
+       "Penyusutan garis lurus dibebankan sama setiap periode."
+      ]
+     ],
+     "takeaway": "Biaya variabel berubah total sesuai volume; biaya tetap tidak, dalam rentang kapasitas tertentu."
+    },
+    {
+     "id": "cst-b2",
+     "tier": "basic",
+     "type": "choice",
+     "context": "Persediaan awal 100 unit @Rp10.000; pembelian 100 unit @Rp12.000; terjual 120 unit.",
+     "stem": "HPP dengan metode FIFO:",
+     "options": [
+      [
+       "Rp1.320.000",
+       false,
+       "Ini memakai 120 unit dengan harga terbaru dulu (cara LIFO)."
+      ],
+      [
+       "Rp1.200.000",
+       false,
+       "Ini mengalikan 120 unit dengan Rp10.000 saja."
+      ],
+      [
+       "Rp1.240.000",
+       true,
+       "Tepat. 100 × 10.000 + 20 × 12.000 = 1.240.000."
+      ],
+      [
+       "Rp1.100.000",
+       false,
+       "Ini seperti menjual 110 unit; jumlah terjual 120 unit."
+      ]
+     ],
+     "takeaway": "FIFO: unit yang masuk lebih dulu dianggap keluar lebih dulu."
+    },
+    {
+     "id": "cst-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Harga jual Rp25.000 per unit, biaya variabel Rp15.000 per unit, biaya tetap Rp20 juta per bulan.",
+     "stem": "Titik impas per bulan:",
+     "options": [
+      [
+       "800 unit",
+       false,
+       "Ini membagi biaya tetap dengan harga jual, bukan margin kontribusi."
+      ],
+      [
+       "2.000 unit",
+       true,
+       "Tepat. Margin kontribusi Rp10.000; 20.000.000 / 10.000 = 2.000 unit."
+      ],
+      [
+       "1.333 unit",
+       false,
+       "Ini membagi dengan biaya variabel per unit."
+      ],
+      [
+       "4.000 unit",
+       false,
+       "Periksa margin kontribusinya; ia Rp10.000, bukan Rp5.000."
+      ]
+     ],
+     "takeaway": "Titik impas = biaya tetap / (harga jual − biaya variabel per unit)."
+    },
+    {
+     "id": "cst-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Pabrik menerima pesanan khusus 1.000 unit dengan harga Rp18.000 (di bawah harga normal Rp25.000). Biaya variabel Rp15.000; kapasitas masih menganggur; biaya tetap tidak berubah.",
+     "stem": "Keputusan yang paling tepat secara biaya:",
+     "options": [
+      [
+       "Tolak, karena harga di bawah biaya penuh per unit",
+       false,
+       "Biaya tetap tidak bertambah, jadi tidak relevan untuk pesanan ini."
+      ],
+      [
+       "Terima, karena setiap unit menambah margin kontribusi Rp3.000 tanpa menambah biaya tetap",
+       true,
+       "Tepat. Laba naik Rp3 juta selama kapasitas menganggur dan pasar normal tidak terganggu."
+      ],
+      [
+       "Terima hanya bila harga naik menjadi Rp25.000",
+       false,
+       "Syarat ini mengabaikan analisis biaya relevan."
+      ],
+      [
+       "Tolak, karena pesanan khusus selalu merugikan",
+       false,
+       "Tidak selalu; tergantung kapasitas dan biaya relevan."
+      ]
+     ],
+     "takeaway": "Dalam keputusan jangka pendek, hanya biaya yang berubah karena keputusan itu yang relevan."
+    },
+    {
+     "id": "cst-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: jasa laundry kiloan menghitung harga. Biaya deterjen dan listrik per kg Rp2.000; sewa dan gaji Rp6 juta per bulan; harga Rp7.000 per kg.",
+     "stem": "Berapa kg per bulan agar laundry tidak rugi?",
+     "options": [
+      [
+       "857 kg",
+       false,
+       "Ini membagi biaya tetap dengan harga, bukan dengan margin per kg."
+      ],
+      [
+       "3.000 kg",
+       false,
+       "Margin per kg Rp5.000, bukan Rp2.000."
+      ],
+      [
+       "1.200 kg",
+       true,
+       "Tepat. 6.000.000 / (7.000 − 2.000) = 1.200 kg."
+      ],
+      [
+       "6.000 kg",
+       false,
+       "Periksa pembaginya; yang dipakai adalah margin per kg."
+      ]
+     ],
+     "takeaway": "Konsep titik impas sama untuk produk maupun jasa: biaya tetap dibagi margin per unit."
+    }
+   ]
+  },
+  "enterprise_risk_management": {
+   "objective": "Mengelola risiko perusahaan: identifikasi, penilaian kemungkinan dan dampak, selera risiko, dan pilihan penanganan.",
+   "criteria": [
+    "Merumuskan risiko dengan sebab dan dampak",
+    "Menilai kemungkinan dan dampak",
+    "Memilih penanganan sesuai selera risiko",
+    "Menyusun dan memantau register risiko"
+   ],
+   "tasks": [
+    {
+     "id": "erm-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Pernyataan risiko yang paling baik:",
+     "options": [
+      [
+       "Risiko IT",
+       false,
+       "Terlalu umum; tidak jelas apa yang bisa terjadi dan dampaknya."
+      ],
+      [
+       "Server down",
+       false,
+       "Ini kejadian tanpa sebab dan dampak bisnis."
+      ],
+      [
+       "Karena server tunggal tanpa cadangan, gangguan server dapat menghentikan transaksi penjualan online",
+       true,
+       "Tepat. Ada sebab, kejadian, dan dampak sehingga penanganannya jelas."
+      ],
+      [
+       "Tim IT kurang kompeten",
+       false,
+       "Ini dugaan sebab, bukan pernyataan risiko yang lengkap."
+      ]
+     ],
+     "takeaway": "Rumuskan risiko sebagai: karena (sebab), dapat terjadi (kejadian), yang berakibat (dampak)."
+    },
+    {
+     "id": "erm-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Membeli asuransi kebakaran gudang adalah contoh penanganan risiko berupa:",
+     "options": [
+      [
+       "Menghindari (avoid)",
+       false,
+       "Menghindari berarti menghentikan aktivitasnya, misalnya tidak memakai gudang."
+      ],
+      [
+       "Mengalihkan (transfer)",
+       true,
+       "Tepat. Dampak keuangan dialihkan ke perusahaan asuransi."
+      ],
+      [
+       "Mengurangi (reduce)",
+       false,
+       "Mengurangi misalnya memasang sprinkler untuk menurunkan kemungkinan atau dampak."
+      ],
+      [
+       "Menerima (accept)",
+       false,
+       "Menerima berarti tidak melakukan tindakan tambahan."
+      ]
+     ],
+     "takeaway": "Empat pilihan penanganan: hindari, kurangi, alihkan, terima."
+    },
+    {
+     "id": "erm-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Register risiko: (A) kemungkinan tinggi, dampak rendah; (B) kemungkinan rendah, dampak sangat tinggi; (C) kemungkinan sedang, dampak sedang. Selera risiko perusahaan rendah untuk dampak yang mengancam kelangsungan usaha.",
+     "stem": "Prioritas penanganan yang paling tepat:",
+     "options": [
+      [
+       "A dulu karena paling sering terjadi",
+       false,
+       "Frekuensi tinggi dengan dampak rendah biasanya masih dalam toleransi."
+      ],
+      [
+       "B mendapat rencana penanganan dan rencana kesinambungan bisnis, walau jarang terjadi",
+       true,
+       "Tepat. Dampak yang mengancam kelangsungan usaha melampaui selera risiko meski kemungkinannya rendah."
+      ],
+      [
+       "Ketiganya ditangani sama",
+       false,
+       "Sumber daya terbatas; prioritas mengikuti penilaian dan selera risiko."
+      ],
+      [
+       "C dulu karena berada di tengah matriks",
+       false,
+       "Posisi tengah tidak otomatis menjadi prioritas."
+      ]
+     ],
+     "takeaway": "Prioritas mengikuti kombinasi kemungkinan, dampak, dan selera risiko, bukan frekuensi saja."
+    },
+    {
+     "id": "erm-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Risiko keterlambatan pasokan bahan baku dari satu pemasok utama dinilai tinggi.",
+     "stem": "Penanganan yang paling tepat untuk menurunkan risiko:",
+     "options": [
+      [
+       "Menambah klausul denda di kontrak pemasok",
+       false,
+       "Denda memberi kompensasi, tetapi produksi tetap berhenti saat pasokan telat."
+      ],
+      [
+       "Menyiapkan pemasok kedua dan stok pengaman untuk bahan kritis",
+       true,
+       "Tepat. Kemungkinan dan dampak gangguan sama-sama turun."
+      ],
+      [
+       "Menerima risiko karena pemasok sudah lama bekerja sama",
+       false,
+       "Hubungan lama tidak menghilangkan risiko konsentrasi."
+      ],
+      [
+       "Menunggu sampai keterlambatan terjadi lalu mencari solusi",
+       false,
+       "Itu respons insiden, bukan manajemen risiko."
+      ]
+     ],
+     "takeaway": "Risiko konsentrasi ditangani dengan diversifikasi dan cadangan."
+    },
+    {
+     "id": "erm-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: organisasi mahasiswa mengadakan konser di lapangan terbuka saat musim hujan.",
+     "stem": "Rencana risiko yang paling lengkap:",
+     "options": [
+      [
+       "Berdoa agar tidak hujan",
+       false,
+       "Itu menerima risiko tanpa rencana."
+      ],
+      [
+       "Tenda dan penutup peralatan (kurangi), asuransi acara (alihkan), dan rencana pindah ke aula bila curah hujan tinggi (kesinambungan)",
+       true,
+       "Tepat. Beberapa penanganan dipadukan sesuai dampak dan kemungkinan."
+      ],
+      [
+       "Membatalkan acara",
+       false,
+       "Menghindari sepenuhnya mungkin berlebihan bila risiko bisa ditangani."
+      ],
+      [
+       "Meminta penonton membawa payung",
+       false,
+       "Hanya menangani sebagian kecil dampak."
+      ]
+     ],
+     "takeaway": "Kerangka risiko yang sama dipakai di perusahaan dan acara kecil: nilai, tangani, siapkan rencana cadangan."
+    }
+   ]
+  },
+  "financial_analysis": {
+   "objective": "Menganalisis kinerja keuangan dengan rasio likuiditas, profitabilitas, dan solvabilitas, lalu menarik kesimpulan bisnis.",
+   "criteria": [
+    "Menghitung rasio utama dengan benar",
+    "Membandingkan rasio antarperiode atau pesaing",
+    "Menghubungkan rasio dengan penyebab bisnis",
+    "Menyimpulkan risiko dan rekomendasi"
+   ],
+   "tasks": [
+    {
+     "id": "fna-b1",
+     "tier": "basic",
+     "type": "choice",
+     "context": "Aset lancar Rp300 juta, persediaan Rp120 juta, liabilitas lancar Rp200 juta.",
+     "stem": "Quick ratio perusahaan:",
+     "options": [
+      [
+       "1,5",
+       false,
+       "Ini current ratio (300/200); quick ratio mengeluarkan persediaan."
+      ],
+      [
+       "0,9",
+       true,
+       "Tepat. (300 − 120) / 200 = 0,9."
+      ],
+      [
+       "0,6",
+       false,
+       "Ini persediaan dibagi liabilitas lancar."
+      ],
+      [
+       "2,5",
+       false,
+       "Periksa urutan pembagian; liabilitas lancar menjadi pembagi."
+      ]
+     ],
+     "takeaway": "Quick ratio menguji kemampuan bayar jangka pendek tanpa mengandalkan penjualan persediaan."
+    },
+    {
+     "id": "fna-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Margin laba bersih naik dari 8% ke 12%, sementara pendapatan tetap. Artinya:",
+     "options": [
+      [
+       "Penjualan meningkat",
+       false,
+       "Pendapatan disebut tetap."
+      ],
+      [
+       "Beban relatif terhadap pendapatan turun atau ada pendapatan lain",
+       true,
+       "Tepat. Laba per rupiah penjualan naik, jadi lihat struktur biaya atau pos non-operasional."
+      ],
+      [
+       "Perusahaan menambah utang",
+       false,
+       "Utang tidak langsung menaikkan margin; bisa malah menambah beban bunga."
+      ],
+      [
+       "Harga pokok penjualan naik",
+       false,
+       "HPP naik akan menurunkan margin."
+      ]
+     ],
+     "takeaway": "Margin yang berubah saat pendapatan tetap menunjuk ke biaya atau pos di luar operasi."
+    },
+    {
+     "id": "fna-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Perusahaan A: laba naik 20%, tetapi arus kas operasi negatif dua tahun berturut-turut; piutang naik 60%.",
+     "stem": "Kesimpulan analisis yang paling tepat:",
+     "options": [
+      [
+       "Perusahaan sehat karena laba tumbuh",
+       false,
+       "Laba tanpa kas bisa menandakan penjualan yang belum tertagih."
+      ],
+      [
+       "Kualitas laba patut dipertanyakan; penjualan mungkin didorong kredit longgar, periksa umur piutang dan kebijakan kredit",
+       true,
+       "Tepat. Selisih laba dan kas operasi adalah tanda peringatan."
+      ],
+      [
+       "Arus kas negatif wajar untuk semua perusahaan yang tumbuh",
+       false,
+       "Bisa wajar sementara, tetapi dua tahun dengan piutang melonjak perlu ditelusuri."
+      ],
+      [
+       "Perusahaan harus segera membagikan dividen",
+       false,
+       "Kas operasi negatif justru membatasi kemampuan membayar dividen."
+      ]
+     ],
+     "takeaway": "Bandingkan laba dengan arus kas operasi untuk menilai kualitas laba."
+    },
+    {
+     "id": "fna-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Debt to equity naik dari 0,8 ke 2,1 dalam setahun untuk membiayai ekspansi; interest coverage turun dari 6x ke 1,4x.",
+     "stem": "Risiko utama yang perlu dilaporkan:",
+     "options": [
+      [
+       "Profitabilitas pasti naik karena ekspansi",
+       false,
+       "Ekspansi belum tentu menghasilkan; risiko pembiayaan sudah nyata."
+      ],
+      [
+       "Kemampuan membayar bunga menipis; penurunan laba sedikit saja bisa membuat perusahaan gagal bayar",
+       true,
+       "Tepat. Coverage 1,4x berarti bantalan laba terhadap beban bunga sangat tipis."
+      ],
+      [
+       "Likuiditas jangka pendek pasti aman",
+       false,
+       "Rasio ini tidak menunjukkan likuiditas jangka pendek."
+      ],
+      [
+       "Tidak ada risiko karena aset bertambah",
+       false,
+       "Aset yang dibiayai utang tetap membawa kewajiban bunga."
+      ]
+     ],
+     "takeaway": "Leverage tinggi dengan interest coverage rendah adalah kombinasi risiko solvabilitas."
+    },
+    {
+     "id": "fna-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: dua warung kopi. Warung X omzet Rp100 juta, laba Rp15 juta. Warung Y omzet Rp60 juta, laba Rp12 juta.",
+     "stem": "Pernyataan yang paling tepat:",
+     "options": [
+      [
+       "X lebih baik karena omzetnya lebih besar",
+       false,
+       "Omzet besar tidak berarti lebih efisien."
+      ],
+      [
+       "Y lebih efisien: margin laba 20% dibanding 15%",
+       true,
+       "Tepat. Rasio membuat dua usaha berukuran berbeda bisa dibandingkan."
+      ],
+      [
+       "Keduanya sama karena sama-sama untung",
+       false,
+       "Tingkat keuntungan relatifnya berbeda."
+      ],
+      [
+       "Tidak bisa dibandingkan sama sekali",
+       false,
+       "Rasio margin justru dibuat untuk perbandingan seperti ini."
+      ]
+     ],
+     "takeaway": "Gunakan rasio untuk membandingkan entitas dengan skala berbeda."
+    }
+   ]
+  },
+  "financial_statements": {
+   "objective": "Menyusun dan membaca laporan keuangan: laba rugi, neraca, arus kas, serta hubungan di antara ketiganya.",
+   "criteria": [
+    "Menempatkan pos di laporan yang benar",
+    "Menghubungkan laba bersih dengan arus kas",
+    "Mengklasifikasikan arus kas operasi, investasi, pendanaan",
+    "Menjalankan penutupan akhir bulan"
+   ],
+   "tasks": [
+    {
+     "id": "fst-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Pembelian mesin produksi secara tunai masuk ke arus kas kelompok:",
+     "options": [
+      [
+       "Operasi",
+       false,
+       "Operasi untuk kegiatan utama sehari-hari seperti penjualan dan pembayaran beban."
+      ],
+      [
+       "Investasi",
+       true,
+       "Tepat. Perolehan aset jangka panjang termasuk aktivitas investasi."
+      ],
+      [
+       "Pendanaan",
+       false,
+       "Pendanaan untuk pinjaman, setoran modal, dan dividen."
+      ],
+      [
+       "Tidak masuk laporan arus kas",
+       false,
+       "Semua pergerakan kas masuk ke salah satu kelompok."
+      ]
+     ],
+     "takeaway": "Operasi = kegiatan utama; investasi = aset jangka panjang; pendanaan = utang dan modal."
+    },
+    {
+     "id": "fst-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Pos mana yang muncul di neraca, bukan di laporan laba rugi?",
+     "options": [
+      [
+       "Beban gaji",
+       false,
+       "Beban masuk laporan laba rugi."
+      ],
+      [
+       "Pendapatan jasa",
+       false,
+       "Pendapatan masuk laporan laba rugi."
+      ],
+      [
+       "Utang usaha",
+       true,
+       "Tepat. Utang adalah liabilitas pada tanggal neraca."
+      ],
+      [
+       "Beban penyusutan",
+       false,
+       "Penyusutan adalah beban periode; akumulasinya baru muncul di neraca."
+      ]
+     ],
+     "takeaway": "Neraca = posisi pada satu tanggal; laba rugi = kinerja selama satu periode."
+    },
+    {
+     "id": "fst-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Laba bersih Rp100 juta. Penyusutan Rp20 juta, piutang naik Rp40 juta, utang usaha naik Rp10 juta.",
+     "stem": "Arus kas operasi dengan metode tidak langsung:",
+     "options": [
+      [
+       "Rp100 juta",
+       false,
+       "Ini sama dengan laba bersih; penyesuaian non-kas dan modal kerja belum dihitung."
+      ],
+      [
+       "Rp90 juta",
+       true,
+       "Tepat. 100 + 20 (penyusutan) − 40 (piutang naik) + 10 (utang naik) = 90."
+      ],
+      [
+       "Rp170 juta",
+       false,
+       "Kenaikan piutang mengurangi kas, bukan menambah."
+      ],
+      [
+       "Rp130 juta",
+       false,
+       "Kenaikan utang usaha menambah kas; periksa tanda setiap penyesuaian."
+      ]
+     ],
+     "takeaway": "Kenaikan aset lancar mengurangi kas operasi; kenaikan liabilitas lancar menambahnya."
+    },
+    {
+     "id": "fst-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Saat penutupan bulan, jasa konsultan untuk bulan ini sudah diterima tetapi fakturnya baru datang bulan depan.",
+     "stem": "Perlakuan yang benar di laporan bulan ini:",
+     "options": [
+      [
+       "Tidak dicatat sampai faktur datang",
+       false,
+       "Beban terjadi bulan ini; menundanya membuat laba bulan ini terlalu tinggi."
+      ],
+      [
+       "Dicatat beban akrual: debit Beban Jasa, kredit Beban yang Masih Harus Dibayar",
+       true,
+       "Tepat. Prinsip akrual mencatat beban saat terjadi, bukan saat faktur atau kas."
+      ],
+      [
+       "Dicatat sebagai pembayaran di muka",
+       false,
+       "Jasa sudah diterima, jadi bukan aset dibayar di muka."
+      ],
+      [
+       "Dicatat langsung mengurangi kas",
+       false,
+       "Kas belum dibayar."
+      ]
+     ],
+     "takeaway": "Penutupan bulan memastikan semua pendapatan dan beban periode itu tercatat, termasuk yang belum ditagih."
+    },
+    {
+     "id": "fst-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: UMKM katering untung di laporan laba rugi, tetapi pemiliknya selalu kekurangan uang untuk membeli bahan.",
+     "stem": "Laporan yang paling membantu menjelaskan masalah ini:",
+     "options": [
+      [
+       "Laporan laba rugi saja",
+       false,
+       "Laba sudah positif; masalahnya ada di waktu masuk dan keluarnya kas."
+      ],
+      [
+       "Laporan arus kas, terutama perubahan piutang dari pelanggan korporat",
+       true,
+       "Tepat. Laba bisa tinggi sementara kas tertahan di piutang."
+      ],
+      [
+       "Laporan perubahan ekuitas",
+       false,
+       "Ini menunjukkan perubahan modal, bukan siklus kas."
+      ],
+      [
+       "Daftar aset tetap",
+       false,
+       "Tidak menjelaskan kekurangan kas harian."
+      ]
+     ],
+     "takeaway": "Laba tidak sama dengan kas; laporan arus kas menunjukkan di mana uang tertahan."
+    }
+   ]
+  },
+  "tax_compliance_id": {
+   "objective": "Menjalankan kepatuhan pajak Indonesia: pemotongan PPh 21 dan 23, PPN, serta pelaporan SPT dan tenggatnya.",
+   "criteria": [
+    "Menentukan jenis pajak yang dipotong",
+    "Menghitung pemotongan dengan dasar yang benar",
+    "Memahami tenggat setor dan lapor",
+    "Menyusun rekonsiliasi fiskal sederhana"
+   ],
+   "tasks": [
+    {
+     "id": "tax-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Perusahaan membayar jasa konsultan (badan usaha) Rp10 juta. Pajak yang dipotong perusahaan:",
+     "options": [
+      [
+       "PPh 21",
+       false,
+       "PPh 21 untuk penghasilan orang pribadi seperti pegawai dan bukan pegawai."
+      ],
+      [
+       "PPh 23 sebesar 2% dari jumlah bruto",
+       true,
+       "Tepat. Jasa yang diterima wajib pajak badan dipotong PPh 23 sebesar 2%."
+      ],
+      [
+       "PPh 4 ayat (2) final 10%",
+       false,
+       "Final 10% berlaku untuk objek tertentu seperti sewa tanah dan bangunan."
+      ],
+      [
+       "Tidak ada pemotongan",
+       false,
+       "Jasa konsultan adalah objek PPh 23."
+      ]
+     ],
+     "takeaway": "Kenali penerima (orang pribadi atau badan) dan jenis penghasilan untuk menentukan pasal PPh."
+    },
+    {
+     "id": "tax-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Selisih antara laba komersial dan laba fiskal karena beban jamuan tanpa daftar nominatif disebut:",
+     "options": [
+      [
+       "Beda waktu",
+       false,
+       "Beda waktu terjadi karena pengakuan di periode berbeda, misalnya penyusutan."
+      ],
+      [
+       "Beda tetap (koreksi fiskal positif)",
+       true,
+       "Tepat. Beban ini tidak boleh dikurangkan secara fiskal, sehingga laba fiskal naik."
+      ],
+      [
+       "Koreksi fiskal negatif",
+       false,
+       "Koreksi negatif menurunkan laba fiskal, misalnya penghasilan yang sudah dikenai PPh final."
+      ],
+      [
+       "Tidak ada koreksi",
+       false,
+       "Beban tanpa daftar nominatif tidak dapat dibebankan secara fiskal."
+      ]
+     ],
+     "takeaway": "Rekonsiliasi fiskal menyesuaikan laba komersial menjadi laba kena pajak menurut aturan pajak."
+    },
+    {
+     "id": "tax-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Perusahaan membayar royalti Rp50 juta kepada badan dalam negeri yang memiliki NPWP pada 20 Maret.",
+     "stem": "Pemotongan dan tenggat setor yang benar:",
+     "options": [
+      [
+       "PPh 23 15% = Rp7,5 juta, disetor paling lambat tanggal 15 April",
+       true,
+       "Tepat. Royalti dipotong PPh 23 15%; setoran paling lambat tanggal 15 bulan berikutnya."
+      ],
+      [
+       "PPh 23 2% = Rp1 juta, disetor 31 Maret",
+       false,
+       "Tarif 2% untuk jasa, bukan royalti; tenggat juga bukan akhir bulan yang sama."
+      ],
+      [
+       "PPh 21 5% = Rp2,5 juta",
+       false,
+       "Penerimanya badan, jadi bukan PPh 21."
+      ],
+      [
+       "Tidak dipotong karena penerima punya NPWP",
+       false,
+       "NPWP memengaruhi tarif (tanpa NPWP lebih tinggi), bukan menghapus kewajiban potong."
+      ]
+     ],
+     "takeaway": "PPh 23: 15% untuk dividen, bunga, royalti; 2% untuk sewa dan jasa tertentu."
+    },
+    {
+     "id": "tax-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Saat rekonsiliasi akhir bulan, total PPh 23 di buku besar Rp4,2 juta, tetapi bukti potong yang diterbitkan totalnya Rp3,8 juta.",
+     "stem": "Langkah yang paling tepat:",
+     "options": [
+      [
+       "Menyesuaikan buku besar menjadi Rp3,8 juta",
+       false,
+       "Mengubah buku tanpa menelusuri selisih bisa menyembunyikan kesalahan pemotongan."
+      ],
+      [
+       "Menelusuri per transaksi apakah ada pemotongan tanpa bukti potong atau salah akun, lalu membetulkan sebelum SPT masa dilaporkan",
+       true,
+       "Tepat. Selisih harus dijelaskan sebelum pelaporan agar SPT dan pembukuan konsisten."
+      ],
+      [
+       "Melaporkan SPT sebesar Rp4,2 juta tanpa bukti potong tambahan",
+       false,
+       "SPT harus didukung bukti potong yang diterbitkan."
+      ],
+      [
+       "Mengabaikan karena selisihnya kecil",
+       false,
+       "Selisih kecil tetap bisa menimbulkan sanksi dan masalah saat pemeriksaan."
+      ]
+     ],
+     "takeaway": "Cocokkan buku besar pajak dengan bukti potong sebelum melapor."
+    },
+    {
+     "id": "tax-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: sebuah startup membayar freelancer desainer (orang pribadi, bukan pegawai) Rp6 juta untuk satu proyek.",
+     "stem": "Pajak yang relevan dipotong startup:",
+     "options": [
+      [
+       "PPh 23 2%",
+       false,
+       "PPh 23 untuk jasa yang diterima badan; freelancer adalah orang pribadi."
+      ],
+      [
+       "PPh 21 untuk bukan pegawai",
+       true,
+       "Tepat. Imbalan jasa kepada orang pribadi bukan pegawai dipotong PPh 21."
+      ],
+      [
+       "PPN 11%",
+       false,
+       "PPN dipungut oleh pengusaha kena pajak yang menyerahkan jasa, bukan dipotong pembeli."
+      ],
+      [
+       "Tidak ada pajak karena bukan pegawai tetap",
+       false,
+       "Bukan pegawai tetap pun dikenai PPh 21."
+      ]
+     ],
+     "takeaway": "Penerima orang pribadi → PPh 21 (pegawai maupun bukan); penerima badan → PPh 23."
+    }
+   ]
+  },
+  "vat_ppn_mechanics": {
+   "objective": "Memahami mekanisme PPN: status PKP, pajak keluaran dan masukan, pengkreditan, faktur pajak, dan retur.",
+   "criteria": [
+    "Menentukan kewajiban menjadi PKP",
+    "Menghitung PPN kurang atau lebih bayar",
+    "Menilai faktur pajak yang dapat dikreditkan",
+    "Menangani retur dan pembetulan"
+   ],
+   "tasks": [
+    {
+     "id": "vat-b1",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Dalam satu masa, pajak keluaran Rp30 juta dan pajak masukan yang dapat dikreditkan Rp22 juta. Hasilnya:",
+     "options": [
+      [
+       "Lebih bayar Rp8 juta",
+       false,
+       "Keluaran lebih besar dari masukan berarti kurang bayar."
+      ],
+      [
+       "Kurang bayar Rp8 juta yang harus disetor",
+       true,
+       "Tepat. PPN terutang = keluaran − masukan = Rp8 juta."
+      ],
+      [
+       "Kurang bayar Rp52 juta",
+       false,
+       "Masukan dikurangkan, bukan dijumlahkan."
+      ],
+      [
+       "Nihil karena keduanya PPN",
+       false,
+       "Selisihnya tetap harus dihitung dan disetor."
+      ]
+     ],
+     "takeaway": "PPN terutang dalam satu masa = pajak keluaran − pajak masukan yang dapat dikreditkan."
+    },
+    {
+     "id": "vat-b2",
+     "tier": "basic",
+     "type": "choice",
+     "stem": "Pengusaha wajib dikukuhkan sebagai PKP bila:",
+     "options": [
+      [
+       "Memiliki karyawan lebih dari 10 orang",
+       false,
+       "Jumlah karyawan tidak menentukan status PKP."
+      ],
+      [
+       "Peredaran bruto melebihi Rp4,8 miliar setahun",
+       true,
+       "Tepat. Di bawah batas itu, pengusaha kecil boleh memilih dikukuhkan."
+      ],
+      [
+       "Sudah memiliki NPWP",
+       false,
+       "NPWP saja tidak menjadikan pengusaha PKP."
+      ],
+      [
+       "Menjual secara online",
+       false,
+       "Saluran penjualan tidak menentukan status PKP."
+      ]
+     ],
+     "takeaway": "Batas pengusaha kecil adalah peredaran bruto Rp4,8 miliar per tahun."
+    },
+    {
+     "id": "vat-a1",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Faktur pajak pembelian bahan baku diterima dengan nama dan NPWP perusahaan yang salah ketik.",
+     "stem": "Langkah yang paling tepat sebelum mengkreditkan PPN:",
+     "options": [
+      [
+       "Langsung dikreditkan karena transaksinya nyata",
+       false,
+       "Faktur yang tidak lengkap atau salah identitas berisiko tidak dapat dikreditkan."
+      ],
+      [
+       "Meminta pemasok menerbitkan faktur pengganti dengan data yang benar, lalu mengkreditkannya",
+       true,
+       "Tepat. Faktur pengganti membuat pajak masukan sah untuk dikreditkan."
+      ],
+      [
+       "Membetulkan sendiri data di faktur",
+       false,
+       "Pembeli tidak boleh mengubah faktur pajak yang diterbitkan penjual."
+      ],
+      [
+       "Mencatat PPN sebagai beban tanpa konfirmasi",
+       false,
+       "Ini kehilangan hak kredit yang masih bisa diperoleh."
+      ]
+     ],
+     "takeaway": "Hanya faktur pajak yang lengkap dan benar yang dapat dikreditkan; kesalahan dibetulkan lewat faktur pengganti."
+    },
+    {
+     "id": "vat-a2",
+     "tier": "applied",
+     "type": "choice",
+     "context": "Pelanggan mengembalikan barang yang sudah difaktur pajak bulan lalu.",
+     "stem": "Perlakuan PPN yang tepat:",
+     "options": [
+      [
+       "Mengabaikan karena faktur sudah dilaporkan",
+       false,
+       "Retur mengurangi pajak keluaran dan harus didokumentasikan."
+      ],
+      [
+       "Pembeli membuat nota retur; penjual mengurangi pajak keluaran pada masa retur diterima",
+       true,
+       "Tepat. Nota retur menjadi dasar pengurangan PPN kedua pihak."
+      ],
+      [
+       "Penjual membuat faktur pajak baru bernilai negatif",
+       false,
+       "Mekanismenya memakai nota retur, bukan faktur negatif."
+      ],
+      [
+       "Membetulkan SPT bulan lalu tanpa dokumen",
+       false,
+       "Perlu nota retur sebagai dasar."
+      ]
+     ],
+     "takeaway": "Retur barang kena pajak didokumentasikan dengan nota retur dan mengurangi PPN pada masa retur."
+    },
+    {
+     "id": "vat-t1",
+     "tier": "transfer",
+     "type": "choice",
+     "context": "Kasus berbeda: toko bangunan PKP selalu lebih bayar PPN setiap bulan karena banyak membeli stok besar sebelum musim proyek.",
+     "stem": "Pilihan yang paling masuk akal:",
+     "options": [
+      [
+       "Berhenti meminta faktur pajak dari pemasok",
+       false,
+       "Ini menghilangkan hak kredit pajak masukan."
+      ],
+      [
+       "Mengompensasikan lebih bayar ke masa berikutnya, atau mengajukan restitusi bila memenuhi syarat",
+       true,
+       "Tepat. Lebih bayar tidak hangus; ada mekanisme kompensasi dan restitusi."
+      ],
+      [
+       "Menaikkan harga jual agar pajak keluaran besar",
+       false,
+       "Ini keputusan harga, bukan solusi administrasi PPN."
+      ],
+      [
+       "Mencabut status PKP",
+       false,
+       "Tidak relevan dan malah menghilangkan hak kredit."
+      ]
+     ],
+     "takeaway": "PPN lebih bayar dapat dikompensasikan atau dimintakan restitusi."
+    }
+   ]
+  }
+ }
+}

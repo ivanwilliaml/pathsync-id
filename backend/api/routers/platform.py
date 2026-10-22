@@ -118,9 +118,13 @@ def demo_staff(body: DemoStaff, response: Response, s: Session = Depends(db_sess
 
 
 @router.get("/staff/session")
-def staff_me(request: Request, s: Session = Depends(db_session)):
+def staff_me(request: Request, probe: bool = False, s: Session = Depends(db_session)):
+    """The signed-in staff session. `?probe=1` is for the web app's silent check on every page: an anonymous visitor
+    gets 200 {"role": null} instead of 401, so ordinary students do not fill their browser console with errors."""
     row = staff_token_row(s, request.cookies.get(STAFF_COOKIE))
     if row is None:
+        if probe:
+            return {"role": None}
         raise HTTPException(401, "Not signed in.")
     # the account behind the session (if it came from one), so the app can show who is signed in
     acc = None
