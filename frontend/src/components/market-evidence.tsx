@@ -124,7 +124,7 @@ export function MarketSkills({ role }: { role: string }) {
         ) : null}
       </div>
       <p className="text-xs text-muted-foreground">
-        {t("Sources", "Sumber")}: {sources.map(([k, v]) => `${SOURCE[k] ?? k} ${v}`).join(" · ")} · {t("collected up to", "dikumpulkan sampai")} {fmtDate(m.data.reference_date)}
+        {t("Sources", "Sumber")}: {sources.map(([k, v]) => `${SOURCE[k] ?? k} ${v}`).join(", ")}, {t("collected up to", "dikumpulkan sampai")} {fmtDate(m.data.reference_date)}
       </p>
 
       <Sheet open={skill !== null} onOpenChange={(o) => !o && setSkill(null)}>
@@ -186,7 +186,7 @@ function PostingList({ posts, total, snapshot }: { posts: PostingRow[]; total: n
   return (
     <div>
       <p className="mb-3 text-sm text-ink/70">
-        {t(`${shown.length} of ${sorted.length}, newest first · collected up to ${fmtDate(snapshot)}, some may be closed`, `${shown.length} dari ${sorted.length}, terbaru dulu · data sampai ${fmtDate(snapshot)}, sebagian mungkin sudah tutup`)}
+        {t(`${shown.length} of ${sorted.length}, newest first, collected up to ${fmtDate(snapshot)}, some may be closed`, `${shown.length} dari ${sorted.length}, terbaru dulu, data sampai ${fmtDate(snapshot)}, sebagian mungkin sudah tutup`)}
       </p>
       <div className="rounded-xl border bg-card">
         <div className="hidden grid-cols-[minmax(0,1fr)_120px_110px_16px] gap-3 border-b bg-muted/50 px-4 py-2 text-xs font-medium text-ink/60 md:grid" aria-hidden="true">
@@ -208,7 +208,7 @@ function PostingList({ posts, total, snapshot }: { posts: PostingRow[]; total: n
                   <span className="block text-sm font-semibold text-ink">{p.title}</span>
                   <span className="block truncate text-xs text-muted-foreground">
                     {p.company}
-                    <span className="md:hidden"> · {SOURCE[p.source] ?? p.source}{p.published_at ? ` · ${fmtDate(p.published_at)}` : ""}</span>
+                    <span className="md:hidden">, {SOURCE[p.source] ?? p.source}{p.published_at ? `, ${fmtDate(p.published_at)}` : ""}</span>
                   </span>
                 </span>
                 <span className="hidden text-sm text-ink/75 md:block">{SOURCE[p.source] ?? p.source}</span>

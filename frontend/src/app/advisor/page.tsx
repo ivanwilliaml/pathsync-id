@@ -155,7 +155,7 @@ function CohortReport({ r }: { r: Report }) {
             {r.courses.map((c) => (
               <li key={c.course}>
                 <Tag>
-                  {c.course} · {c.students}
+                  {c.course}, {c.students}
                 </Tag>
               </li>
             ))}

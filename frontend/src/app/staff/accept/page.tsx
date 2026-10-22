@@ -48,7 +48,7 @@ export default function AcceptInvitePage() {
           <Loading />
         ) : (
           <form
-            className="space-y-4"
+            className="space-y-6"
             onSubmit={(e) => {
               e.preventDefault();
               if (!ok || !token) return;
@@ -68,12 +68,12 @@ export default function AcceptInvitePage() {
                 {t(`Your ${ROLE[invite.role][0]} account: ${invite.email}`, `Akun ${ROLE[invite.role][1]}-mu: ${invite.email}`)}
               </p>
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="pw">{t("New password", "Password baru")}</Label>
               <Input id="pw" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} className="h-10" aria-invalid={short} />
               <p className={short ? "text-xs text-destructive" : "text-xs text-muted-foreground"}>{t(`At least ${MIN} characters.`, `Minimal ${MIN} karakter.`)}</p>
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="pw2">{t("Repeat password", "Ulangi password")}</Label>
               <Input id="pw2" type="password" autoComplete="new-password" value={again} onChange={(e) => setAgain(e.target.value)} className="h-10" aria-invalid={mismatch} />
               {mismatch ? <p className="text-xs text-destructive">{t("The passwords do not match.", "Password tidak sama.")}</p> : null}

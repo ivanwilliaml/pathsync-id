@@ -116,7 +116,7 @@ export function SkillCollection({ d, onOpen }: { d: Dashboard; onOpen?: (skillId
       {mode === "status" ? (
         <>
           {list.length ? (
-            <div className="rounded-xl border bg-card">
+            <div className="border-y">
               <RowHeader />
               <ul className="divide-y">
                 {shown.map((r) => (
@@ -125,7 +125,7 @@ export function SkillCollection({ d, onOpen }: { d: Dashboard; onOpen?: (skillId
               </ul>
             </div>
           ) : (
-            <p className="rounded-xl border bg-card px-4 py-4 text-sm text-ink/70">{t(...sec.empty)}</p>
+            <p className="py-4 text-sm text-ink/70">{t(...sec.empty)}</p>
           )}
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             {list.length > FIRST ? (
@@ -205,7 +205,7 @@ function SkillRow({ r, onOpen }: { r: Row; onOpen?: (skillId: string) => void })
         <MasteryBar value={c.p} target={c.required} tone={r.status === "strong" ? "mint" : "indigo"} label={name} />
         <p className="tabular mt-1 text-xs text-ink/65">
           {r.status === "unproven" ? t("no evidence yet", "belum ada bukti") : `${now} ${num(c.p)}${c.required != null ? ` → ${num(c.required)}` : ""}`}
-          <span className="md:hidden"> · {t(`asked in ${pct(c.demand)}`, `diminta ${pct(c.demand)}`)}</span>
+          <span className="md:hidden">, {t(`asked in ${pct(c.demand)}`, `diminta ${pct(c.demand)}`)}</span>
         </p>
       </div>
       <span className="tabular hidden text-right text-sm text-ink/80 md:block">{pct(c.demand)}</span>

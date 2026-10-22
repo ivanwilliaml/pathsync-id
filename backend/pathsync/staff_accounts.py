@@ -69,7 +69,9 @@ def new_invite(acc: StaffAccount) -> str:
 
 
 # ------------------------------------------------------------------ read-only demo accounts
-DEMO_CLASS = "Kelas Demo · Sistem Informasi 2023"
+DEMO_CLASS = "Sistem Informasi 2023 Kelas B"
+_OLD_CLASS_NAMES = ("Kelas Demo · Sistem Informasi 2023", "Kelas Demo Sistem Informasi 2023")
+_NAMES = ["Alya Putri", "Bima Saputra", "Citra Lestari", "Dimas Pratama", "Eka Wulandari", "Fajar Nugroho", "Gita Maharani", "Hafiz Ramadhan"]
 DEMO_CLASS_SIZE = 8
 # A spread of transcripts, so the class report has real gaps to show (k >= 5 anonymity needs at least five).
 _GRADES = ["A", "A", "B", "B", "B", "C", "C", "D"]
@@ -81,15 +83,17 @@ def _demo_class(s: Session) -> Cohort:
     from .intake import academic_evidence
     from .study import join_code
 
-    c = s.scalars(select(Cohort).where(Cohort.name == DEMO_CLASS)).first()
+    c = s.scalars(select(Cohort).where(Cohort.name.in_((DEMO_CLASS, *_OLD_CLASS_NAMES)))).first()
+    if c is not None:
+        c.name, c.institution = DEMO_CLASS, "PathSync"
     if c is None:
-        c = Cohort(name=DEMO_CLASS, institution="PathSync (demo)", join_code=join_code())
+        c = Cohort(name=DEMO_CLASS, institution="PathSync", join_code=join_code())
         s.add(c)
         s.flush()
     have = s.scalar(select(func.count(Student.id)).where(Student.cohort_id == c.id)) or 0
     for i in range(have, DEMO_CLASS_SIZE):
         # demo students are deleted by the retention job like any demo profile; the class is refilled on demand
-        st = Student(display_name=f"Mahasiswa demo {i + 1}", program="Information Systems", semester=5,
+        st = Student(display_name=_NAMES[i % len(_NAMES)], program="Information Systems", semester=5,
                      target_role="business_analyst", consent_at=utcnow(), consent_version="demo", cohort_id=c.id,
                      preferences={"weekly_hours": 6, "language": "id", "demo": True})
         s.add(st)
@@ -97,7 +101,7 @@ def _demo_class(s: Session) -> Cohort:
         rot = i % len(_GRADES)
         courses = [{"name": n, "grade": _GRADES[(rot + k) % len(_GRADES)]} for k, n in enumerate(_DEMO_COURSES)]
         item, detail = academic_evidence(courses)
-        s.add(Evidence(student_id=st.id, kind="academic", title="Transcript (demo)", scores=item.scores,
+        s.add(Evidence(student_id=st.id, kind="academic", title="Transkrip", scores=item.scores,
                        details={"strength": item.strength, "courses": detail}))
     return c
 
@@ -108,20 +112,22 @@ def demo_account(s: Session, role: str) -> StaffAccount:
     acc = s.scalars(select(StaffAccount).where(StaffAccount.email == email)).first()
     if role == "advisor":
         subject = _demo_class(s).id
-        name = "Dosen Demo"
+        name = "Dr. Sari Wulandari"
     else:
         e = s.scalars(select(Expert).where(Expert.kind == "demo")).first()
         if e is None:
-            e = Expert(name="Pakar Demo", affiliation="PathSync (demo)", kind="demo", validates_graph=False)
+            e = Expert(name="Budi Hartono", affiliation="Business Analyst, PathSync", kind="demo", validates_graph=False)
             s.add(e)
             s.flush()
         subject = e.id
-        name = "Pakar Demo"
+        name = "Budi Hartono"
+        e.name, e.affiliation = name, "Business Analyst, PathSync"
     if acc is None:
         acc = StaffAccount(email=email, name=name, role=role, subject_id=subject, demo=True)
         s.add(acc)
         s.flush()
-    elif acc.subject_id != subject:
+    acc.name = name
+    if acc.subject_id != subject:
         acc.subject_id = subject
         if acc.token_id:
             tok = s.get(ApiToken, acc.token_id)

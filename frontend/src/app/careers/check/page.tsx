@@ -226,7 +226,7 @@ function Result({ text, r, t }: { text: string; r: JobCheck; t: T }) {
                   <div className="min-w-0">
                     <p className="font-medium text-ink [overflow-wrap:anywhere]">{s.skill_name}</p>
                     <p className="text-xs text-muted-foreground">
-                      {t("Needed", "Dibutuhkan")}: {lvl(s.level_needed)} · {t("You now", "Kamu sekarang")}: {lvl(s.level_now)}
+                      {t("Needed", "Dibutuhkan")}: {lvl(s.level_needed)}, {t("You now", "Kamu sekarang")}: {lvl(s.level_now)}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -306,7 +306,7 @@ function Highlighted({ text, skills, review, lvl, t }: { text: string; skills: C
       node: (inner: string) => (
         <mark
           className={cn("rounded px-0.5 text-ink", MARK[s.evidence_status])}
-          title={`${s.skill_name} · ${t("needed", "dibutuhkan")} ${lvl(s.level_needed)} · ${t("you", "kamu")} ${lvl(s.level_now)}`}
+          title={`${s.skill_name}, ${t("needed", "dibutuhkan")} ${lvl(s.level_needed)}, ${t("you", "kamu")} ${lvl(s.level_now)}`}
         >
           {inner}
           <span className="sr-only"> ({s.skill_name})</span>

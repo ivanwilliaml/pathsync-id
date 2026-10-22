@@ -2,7 +2,7 @@
 
 // Small app-level building blocks on top of shadcn/ui.
 import Link from "next/link";
-import { useRef, type ComponentProps, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ComponentProps, type KeyboardEvent, type ReactNode } from "react";
 import type { VariantProps } from "class-variance-authority";
 import { AlertCircle } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -296,5 +296,44 @@ export function TabPanel<V extends string>({ id, value, first, children, classNa
     >
       {children}
     </div>
+  );
+}
+
+/** A page's table of contents beside the article: a small heading, one vertical rule, and the section being read
+ * marked on that rule. On phones it is a single row of links above the article. */
+export function Toc({ label, items }: { label: string; items: [string, string][] }) {
+  const [active, setActive] = useState(items[0]?.[0] ?? "");
+  useEffect(() => {
+    const els = items.map(([id]) => document.getElementById(id)).filter((e): e is HTMLElement => !!e);
+    const io = new IntersectionObserver(
+      (es) => {
+        const seen = es.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+        if (seen) setActive(seen.target.id);
+      },
+      { rootMargin: "-15% 0px -70% 0px" },
+    );
+    els.forEach((e) => io.observe(e));
+    return () => io.disconnect();
+  }, [items]);
+  return (
+    <nav aria-label={label} className="lg:sticky lg:top-8 lg:self-start">
+      <p className="mb-3 hidden text-xs font-semibold text-muted-foreground lg:block">{label}</p>
+      <ol className="flex flex-wrap gap-x-4 gap-y-1 border-b pb-3 text-sm lg:flex-col lg:gap-0 lg:border-b-0 lg:border-l lg:pb-0">
+        {items.map(([id, text]) => (
+          <li key={id}>
+            <a
+              href={`#${id}`}
+              aria-current={active === id ? "location" : undefined}
+              className={cn(
+                "block transition-colors lg:-ml-px lg:border-l-2 lg:py-1.5 lg:pl-4",
+                active === id ? "font-medium text-indigo lg:border-indigo" : "text-ink/65 hover:text-ink lg:border-transparent",
+              )}
+            >
+              {text}
+            </a>
+          </li>
+        ))}
+      </ol>
+    </nav>
   );
 }

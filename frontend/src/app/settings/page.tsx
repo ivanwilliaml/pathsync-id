@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { RequireStudent } from "@/components/require-student";
-import { ErrorNote, Loading, NativeSelect, PageHeader, SectionTitle, Tag } from "@/components/kit";
+import { ErrorNote, Loading, NativeSelect, PageHeader, SectionTitle, Tag, Toc } from "@/components/kit";
 import { Mascot } from "@/components/mascot";
 import { useT } from "@/lib/i18n";
 
@@ -50,17 +50,9 @@ function Settings({ sid }: { sid: string }) {
     <div>
       <PageHeader className="mb-6" title={t("Settings & Data", "Pengaturan & Data")} description={t("Your profile, your access key, classes and studies you join, and control over your personal data.", "Profilmu, access key-mu, kelas dan studi yang kamu ikuti, dan kendali atas data pribadimu.")} />
       {/* categories beside one form column; groups are split by dividers, not five cards of different heights */}
-      <div className="grid gap-8 lg:grid-cols-[180px_minmax(0,720px)]">
-        <nav aria-label={t("Settings sections", "Bagian pengaturan")} className="lg:sticky lg:top-6 lg:self-start">
-          <ol className="flex flex-wrap gap-x-4 gap-y-1 text-sm lg:flex-col lg:gap-1 lg:border-l lg:pl-3">
-            {SECTIONS.map(([id, label]) => (
-              <li key={id}>
-                <a href={`#${id}`} className="text-ink/70 underline-offset-4 hover:text-ink hover:underline">{t(...label)}</a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-        <div className="min-w-0 divide-y [&>section]:scroll-mt-24 [&>section]:py-6 [&>section:first-child]:pt-0">
+      <div className="grid gap-8 lg:grid-cols-[200px_minmax(0,720px)] lg:gap-12">
+        <Toc label={t("Settings sections", "Bagian pengaturan")} items={SECTIONS.map(([id, label]) => [id, t(...label)] as [string, string])} />
+        <div className="min-w-0 divide-y [&>section]:scroll-mt-24 [&>section]:py-10 [&>section:first-child]:pt-0">
           <Profile sid={sid} s={s} onSaved={st.reload} />
           <AccessKey />
           <Research sid={sid} on={!!(s as { research_consent_at?: string | null }).research_consent_at} onChange={st.reload} />
@@ -92,14 +84,14 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
   return (
     <section id="profile" aria-labelledby="profile-title">
       <SectionTitle id="profile-title">{t("Profile", "Profil")}</SectionTitle>
-      <form onSubmit={save} className="grid gap-4 sm:grid-cols-2">
-        <div className="space-y-1.5">
+      <form onSubmit={save} className="grid max-w-2xl gap-x-6 gap-y-6 sm:grid-cols-2">
+        <div className="space-y-2">
           <Label htmlFor="nm">{t("Name", "Nama")}</Label>
           <Input id="nm" value={name} onChange={(e) => setName(e.target.value)} className="h-10" />
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="sem">Semester</Label>
-          <NativeSelect id="sem" value={semester} onChange={(e) => setSemester(Number(e.target.value))} className="max-w-[220px]">
+          <NativeSelect id="sem" value={semester} onChange={(e) => setSemester(Number(e.target.value))}>
             <option value={0}>{t("Not set", "Belum diisi")}</option>
             {Array.from({ length: 14 }, (_, i) => i + 1).map((n) => (
               <option key={n} value={n}>
@@ -108,11 +100,11 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
             ))}
           </NativeSelect>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="hrs">{t("Hours per week for your route", "Jam per minggu untuk rutemu")}</Label>
-          <Input id="hrs" type="number" min={1} max={40} value={hours} onChange={(e) => setHours(Number(e.target.value))} className="h-10 w-32" />
+          <Input id="hrs" type="number" min={1} max={40} value={hours} onChange={(e) => setHours(Number(e.target.value))} className="h-10" />
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="fmt">{t("Preferred material format", "Format materi favorit")}</Label>
           <NativeSelect id="fmt" value={format} onChange={(e) => setFormat(e.target.value)}>
             <option value="">{t("No preference", "Tidak ada preferensi")}</option>
@@ -122,7 +114,7 @@ function Profile({ sid, s, onSaved }: { sid: string; s: Student & { semester: nu
             <option value="latihan">{t("Practice", "Latihan")}</option>
           </NativeSelect>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor="mlang">{t("Language of learning materials", "Bahasa materi belajar")}</Label>
           <NativeSelect id="mlang" value={language} onChange={(e) => setLanguage(e.target.value)}>
             <option value="id">{t("Prefer Indonesian", "Utamakan Bahasa Indonesia")}</option>

@@ -32,7 +32,7 @@ export function loopSummary(s: LoopStatus | undefined, t: T): string | null {
   if (!s) return null;
   const c = s.decision.code;
   if (c === "mastered") return t("Mastered", "Dikuasai");
-  if (c === "transfer") return t("Proven · one more case", "Terbukti · satu kasus lagi");
+  if (c === "transfer") return t("Proven, one more case", "Terbukti, satu kasus lagi");
   if (c === "prove") return s.supported ? t("Ready to prove", "Siap dibuktikan") : null;
   if (c === "retry") return t("Check again after practice", "Latihan lalu cek lagi");
   if (c === "prerequisite") return t("After a prerequisite", "Setelah prasyarat");
@@ -53,7 +53,7 @@ export function LoopStages({ status, className }: { status: LoopStatus; classNam
     ? [
         pr.basic ? t(`basic ${pr.basic.correct}/${pr.basic.total}`, `dasar ${pr.basic.correct}/${pr.basic.total}`) : null,
         pr.applied ? t(`applied ${pr.applied.correct}/${pr.applied.total}`, `terapan ${pr.applied.correct}/${pr.applied.total}`) : null,
-      ].filter(Boolean).join(" · ")
+      ].filter(Boolean).join(", ")
     : t("No practice set for this skill yet", "Belum ada latihan untuk skill ini");
   const stages: { key: keyof typeof st; icon: ReactNode; title: string; detail: string }[] = [
     { key: "learn", icon: <BookOpen aria-hidden="true" />, title: t("Learn", "Pelajari"), detail: t(`${status.stages.learn.done}/${status.stages.learn.total} materials`, `${status.stages.learn.done}/${status.stages.learn.total} materi`) },

@@ -117,7 +117,7 @@ export function LangSync() {
     const hit = TITLES.find(([p]) => path === p || path.startsWith(p + "/"));
     // after Next has applied the route's own metadata title
     const raf = requestAnimationFrame(() => {
-      document.title = path === "/" ? pick(HOME) : hit ? `${pick(hit[1])} · PathSync` : document.title;
+      document.title = path === "/" ? pick(HOME) : hit ? `${pick(hit[1])} – PathSync` : document.title;
     });
     return () => cancelAnimationFrame(raf);
   }, [lang, path]);

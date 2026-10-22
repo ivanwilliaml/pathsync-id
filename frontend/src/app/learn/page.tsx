@@ -1,10 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { BookOpen, Check, ChevronDown, Crosshair, ExternalLink, GraduationCap, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { api, type Dashboard, type LoopStatus, type Material, type PathStep } from "@/lib/api";
-import { DIFFICULTY, FORMAT, LEVEL, firstSentence, hours, titleCase } from "@/lib/format";
+import { DIFFICULTY, FORMAT, LEVEL, firstSentence, hours, titleCase, weeks } from "@/lib/format";
 import { useApi } from "@/lib/hooks";
 import { useT, type T } from "@/lib/i18n";
 import { useStudentId } from "@/lib/student";
@@ -174,8 +175,15 @@ function Learn({ sid }: { sid: string }) {
         title={t("Learn", "Belajar")}
         stats={[
           [t("Target", "Target"), data.role.name],
-          [t("Study time", "Waktu belajar"), t(`${weekly} h / week`, `${weekly} jam / minggu`)],
-          [t("Whole route", "Seluruh rute"), t(`about ${hours(data.path_hours)}`, `sekitar ${hours(data.path_hours)}`)],
+          // the bootcamp question: how long until I'm ready, at the pace I set
+          [t("Ready in", "Perkiraan siap"), data.path_hours > 0 ? weeks(data.path_weeks ?? data.path_hours / weekly) : t("Route done", "Rute selesai")],
+          [t("Whole route", "Seluruh rute"), (
+            <span key="pace">
+              {t(`about ${hours(data.path_hours)}`, `sekitar ${hours(data.path_hours)}`)}
+              <span className="font-normal text-muted-foreground">, {t(`${weekly} h/week`, `${weekly} jam/minggu`)} </span>
+              <Link href="/settings" className="font-normal text-indigo hover:underline">{t("change", "ubah")}</Link>
+            </span>
+          )],
           [t("Materials", "Materi"), t(`${finished} of ${all.length} done`, `${finished} dari ${all.length} selesai`)],
         ]}
         actions={<LinkButton href="/careers" variant="outline" size="sm">{t("Change target", "Ganti target")}</LinkButton>}
@@ -242,7 +250,7 @@ function Learn({ sid }: { sid: string }) {
                           <span className={cn("block text-sm leading-snug text-ink", on && "font-semibold")}>{titleCase(s.name)}</span>
                           <span className="block text-xs text-muted-foreground">
                             {loopSummary(loops[s.skill_id], t) ?? t(`${fin}/${s.materials.length} materials`, `${fin}/${s.materials.length} materi`)}
-                            {s.waiting_for.length && !loops[s.skill_id] ? t(" · after a prerequisite", " · setelah prasyarat") : ""}
+                            {s.waiting_for.length && !loops[s.skill_id] ? t(", after a prerequisite", ", setelah prasyarat") : ""}
                           </span>
                         </span>
                       </button>
@@ -368,7 +376,7 @@ function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, course
         <p className="text-xs font-medium text-ink/60">{t("Skill level vs target", "Kemampuan vs target")}</p>
         <MasteryBar value={s.p} target={s.target} className="mt-1.5" label={t(`${name}: level vs target`, `${name}: level vs target`)} />
         <p className="mt-1.5 text-xs text-muted-foreground">
-          {lvl(s.level_now)} → {lvl(s.level_target)} · {t(`about ${hours(s.hours)} of study`, `sekitar ${hours(s.hours)} belajar`)}
+          {lvl(s.level_now)} → {lvl(s.level_target)}, {t(`about ${hours(s.hours)} of study`, `sekitar ${hours(s.hours)} belajar`)}
         </p>
       </div>
 
@@ -390,7 +398,7 @@ function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, course
           <span className="tabular text-xs text-muted-foreground">{t(`${finished} of ${s.materials.length} finished`, `${finished} dari ${s.materials.length} selesai`)}</span>
         </div>
         {s.materials.length ? (
-          <ul className="divide-y rounded-xl border bg-card">
+          <ul className="divide-y border-y">
             {s.materials.map((m) => (
               <li key={m.id} className="flex items-start gap-3 p-3">
                 <button
@@ -424,8 +432,8 @@ function StepBody({ s, n, t, names, done, why, onToggle, onOpen, heading, course
                     <ExternalLink className="mt-0.5 size-3 shrink-0 text-ink/40" aria-hidden="true" />
                   </a>
                   <p className="mt-0.5 pl-[22px] text-xs text-muted-foreground">
-                    {m.provider} · {FORMAT[m.format] ? t(...FORMAT[m.format]) : m.format} · {DIFFICULTY[m.difficulty] ? t(...DIFFICULTY[m.difficulty]) : m.difficulty} · {t(`${m.hours} h long`, `durasi ${m.hours} jam`)}
-                    {m.language === "id" ? t(" · in Indonesian", " · berbahasa Indonesia") : ""}
+                    {m.provider}, {FORMAT[m.format] ? t(...FORMAT[m.format]) : m.format}, {DIFFICULTY[m.difficulty] ? t(...DIFFICULTY[m.difficulty]) : m.difficulty}, {t(`${m.hours} h long`, `durasi ${m.hours} jam`)}
+                    {m.language === "id" ? t(", in Indonesian", ", berbahasa Indonesia") : ""}
                   </p>
                 </div>
               </li>

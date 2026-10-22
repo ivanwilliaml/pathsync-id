@@ -18,12 +18,12 @@ export function DemoBanner() {
       <span className="flex items-center gap-2">
         <Eye className="size-4" aria-hidden="true" />
         <span>
-          <span className="font-semibold">{t("Demo mode · view only.", "Mode demo · hanya lihat.")}</span>{" "}
+          <span className="font-semibold">{t("View only.", "Hanya lihat.")}</span>{" "}
           {t("Buttons that would change data are turned off.", "Tombol yang mengubah data dinonaktifkan.")}
         </span>
       </span>
       <button type="button" onClick={() => void staffSignOut()} className="font-medium underline-offset-4 hover:underline">
-        {t("Leave the demo", "Keluar dari demo")}
+        {t("Sign out", "Keluar")}
       </button>
     </div>
   );

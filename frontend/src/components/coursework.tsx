@@ -141,7 +141,7 @@ function CourseDetail({ co }: { co: CourseCard }) {
       {co.skills.length === 0 ? (
         <p className="mt-3 text-sm text-ink/70">{t("We could not link this course to tracked skills.", "Kami belum bisa menghubungkan mata kuliah ini ke skill yang dilacak.")}</p>
       ) : (
-        <ul className="mt-3 divide-y rounded-xl border">
+        <ul className="mt-3 divide-y border-y">
           {co.skills.map((s) => {
             const canProve = s.on_path || (s.rank && s.rank <= 6);
             return (
@@ -209,7 +209,7 @@ function WeekPlan({ sid, data, onChange }: { sid: string; data: Classroom; onCha
       ) : (
         <>
           <p className="mb-3 mt-1 text-sm text-muted-foreground">{data.plan ? t("Saved", "Tersimpan") : t("Suggested from your route", "Saran dari rutemu")}</p>
-          <ul className="divide-y rounded-xl border bg-card">
+          <ul className="divide-y border-y">
             {goals.map((g, i) => (
               <li key={g.skill_id + i} className="grid gap-3 px-3 py-2.5 sm:grid-cols-[1fr_auto] sm:items-center">
                 <div className="min-w-0">
@@ -302,7 +302,7 @@ function Reflection({ sid, plan, onDone, onCancel }: { sid: string; plan: Plan; 
       </button>
       <h2 id={`reflect-${plan.id}`} className="text-base font-semibold text-ink">{t(`Reflect on the week of ${fmtDate(plan.week_start)}`, `Refleksi minggu ${fmtDate(plan.week_start)}`)}</h2>
       <p className="mt-1 text-sm text-ink/70">{t("Two minutes: what you finished, how long it took, what got in the way. It shapes your next plan.", "Dua menit: apa yang selesai, berapa lama, apa yang menghambat. Ini membentuk rencana berikutnya.")}</p>
-      <form onSubmit={submit} className="mt-4 space-y-4">
+      <form onSubmit={submit} className="mt-5 space-y-6">
         <fieldset>
           <legend className="mb-2 text-sm font-medium">{t("Which goals did you finish?", "Target mana yang sudah selesai?")}</legend>
           {plan.goals.map((g, i) => (
@@ -313,20 +313,20 @@ function Reflection({ sid, plan, onDone, onCancel }: { sid: string; plan: Plan; 
           ))}
         </fieldset>
         <div className="grid gap-5 sm:grid-cols-2">
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor={`min-${plan.id}`}>{t("Minutes actually spent", "Menit yang benar-benar dipakai")}</Label>
             <Input id={`min-${plan.id}`} type="number" min={0} value={minutes} onChange={(e) => setMinutes(Number(e.target.value))} className="h-9 w-32" />
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <span className="text-sm font-medium">{t("How confident do you feel now? (1-5)", "Seberapa yakin kamu sekarang? (1-5)")}</span>
             {scale(confidence, setConfidence, t("Confidence", "Keyakinan"))}
           </div>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <span className="text-sm font-medium">{t("“I know which skill to learn next and why.” (1 disagree, 5 agree)", "“Aku tahu skill mana yang harus dipelajari berikutnya dan kenapa.” (1 tidak setuju, 5 setuju)")}</span>
           {scale(clarity, setClarity, t("Direction clarity", "Kejelasan arah"))}
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <Label htmlFor={`obs-${plan.id}`}>{t("What got in the way? (optional)", "Apa yang menghambat? (opsional)")}</Label>
           <Textarea id={`obs-${plan.id}`} value={obstacle} onChange={(e) => setObstacle(e.target.value)} maxLength={300} rows={2} />
         </div>

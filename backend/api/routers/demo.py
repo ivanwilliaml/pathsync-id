@@ -170,7 +170,7 @@ def _clone(s: Session, tpl: Student, token_hash: str) -> Student:
 
 
 def _build(s: Session) -> Student:
-    st = Student(display_name="Rani (demo)", program="Information Systems", semester=6, target_role="business_analyst",
+    st = Student(display_name="Rani", program="Information Systems", semester=6, target_role="business_analyst",
                  consent_at=utcnow() - timedelta(days=16), consent_version=TEMPLATE_CONSENT, token_hash=None,
                  preferences={"weekly_hours": 6, "language": "id", "format": "kursus", "demo": True, "template": True})
     s.add(st)
@@ -181,7 +181,7 @@ def _build(s: Session) -> Student:
 
     # 1. transcript (16 days ago): the first route
     item, detail = academic_evidence(DEMO_COURSES)
-    s.add(Evidence(student_id=st.id, kind="academic", title="Transcript (demo)", scores=item.scores,
+    s.add(Evidence(student_id=st.id, kind="academic", title="Transkrip", scores=item.scores,
                    details={"strength": item.strength, "courses": detail}, created_at=utcnow() - timedelta(days=16)))
     s.commit()
     after_change(s, st, "evidence", "demo transcript")

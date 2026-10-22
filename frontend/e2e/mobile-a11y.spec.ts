@@ -58,7 +58,7 @@ test("public pages are phone friendly", async ({ page }) => {
 
 test("pages with a profile are phone friendly", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: /profil mahasiswa demo/i }).click();
+  await page.getByRole("button", { name: /contoh mahasiswa/i }).click();
   await expect(page).toHaveURL(/\/dashboard/, { timeout: 150_000 });
   for (const path of WITH_PROFILE) await expectPhoneFriendly(page, path);
 });

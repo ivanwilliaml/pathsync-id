@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { GraduationCap, LogOut, Menu, PanelLeftClose, Settings2, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -16,6 +16,7 @@ import { KeyGuard } from "./key-guard";
 import { SyncAgent } from "./sync-agent";
 import { LinkButton } from "./kit";
 import { Logo } from "./logo";
+import { PublicShell } from "./public-shell";
 
 // label: [English, Indonesian]
 type TeamItem = { href: string; label: [string, string]; icon: typeof Users };
@@ -45,13 +46,27 @@ function useCollapsed() {
   return [collapsed, toggle] as const;
 }
 
+// pages a visitor without a profile may open; they get the landing page's header, not the app sidebar
+const PUBLIC = ["/careers", "/how-it-works", "/staff", "/admin", "/advisor", "/experts"];
+
 export function AppShell({ children }: { children: ReactNode }) {
   const path = usePathname();
+  const router = useRouter();
   const t = useT();
   const [collapsed, toggle] = useCollapsed();
-  if (path === "/") return <>{children}</>;
-  const bare = path === "/privacy" || path === "/about";
-  if (bare) return <>{children}</>;
+  const student = useStudentId();
+  const staff = useStaffSession();
+  const known = student.ready && staff.ready;
+  const signedIn = !!student.id || !!staff.session;
+  const landing = path === "/" || path === "/privacy" || path === "/about";
+  const isPublic = PUBLIC.some((p) => path === p || path.startsWith(`${p}/`));
+  // the app itself (Home, Skills, Careers with a profile, Learn...) opens only with a profile: visitors go to the landing
+  useEffect(() => {
+    if (known && !signedIn && !landing && !isPublic) router.replace("/");
+  }, [known, signedIn, landing, isPublic, router]);
+  if (landing) return <>{children}</>;
+  if (!known) return null;
+  if (!signedIn) return isPublic ? <PublicShell>{children}</PublicShell> : null;
   return (
     <div
       className={cn(
@@ -167,7 +182,7 @@ function SidebarNav({ onNavigate, collapsed = false, onToggle }: { onNavigate?: 
               <p className="px-3 pb-1 text-xs font-medium text-muted-foreground">
                 {t("Team Workspace", "Ruang Kerja Tim")}
                 {/* who is signed in: the account name, or "demo" for the read-only demo accounts */}
-                {session.name ? <span className="block truncate font-normal text-ink/70">{session.name}{session.demo ? t(" · demo", " · demo") : ""}</span> : null}
+                {session.name ? <span className="block truncate font-normal text-ink/70">{session.name}</span> : null}
               </p>
             )}
             {TEAM.filter((x) => session.role === "admin" || x.href === (session.role === "expert" ? "/experts" : "/advisor")).map(({ href, label, icon }) => (
@@ -227,7 +242,7 @@ function ProfileChip({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="rounded-xl bg-muted p-3">
       <p className="text-xs text-muted-foreground">{t("Profile ID", "ID Profil")}</p>
-      <p className="font-mono text-sm" translate="no">
+      <p className="text-sm tabular-nums tracking-wide" translate="no">
         {id}
       </p>
       <button

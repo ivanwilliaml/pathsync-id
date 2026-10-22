@@ -155,7 +155,7 @@ def _staff(s: Session, request: Request, authorization: str | None, roles: tuple
         raise HTTPException(403, "Your role cannot use this page.")
     # demo accounts (staff_accounts.DEMO_LABEL in the label) let visitors look around but never change anything
     if "demo:" in row.label and request.method not in ("GET", "HEAD", "OPTIONS"):
-        raise HTTPException(403, "Demo accounts can only look. Sign in with your own account to make changes.")
+        raise HTTPException(403, tr("This account can only look. Sign in with your own account to make changes.", "Akun ini hanya bisa melihat. Masuk dengan akunmu sendiri untuk mengubah data."))
     return row
 
 

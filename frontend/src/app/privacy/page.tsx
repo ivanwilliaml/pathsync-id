@@ -36,7 +36,7 @@ export default function PrivacyPage() {
           <Mascot name="shield" size={88} priority />
           <h1 className="text-[32px] font-extrabold leading-tight text-ink">Kebijakan Privasi</h1>
         </div>
-        <p className="mt-2 text-sm text-muted-foreground">Diperbarui {UPDATED} · versi persetujuan 2026-10b</p>
+        <p className="mt-2 text-sm text-muted-foreground">Diperbarui {UPDATED}, versi persetujuan 2026-10b</p>
         <p className="mt-6 text-[15px] leading-relaxed text-ink/80">
           PathSync membantu Anda menentukan keterampilan apa yang perlu dipelajari berikutnya. Untuk itu kami memproses data Anda. Halaman ini
           menjelaskan dengan jelas apa yang kami simpan dan untuk apa, sesuai Undang-Undang No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP).

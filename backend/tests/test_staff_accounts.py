@@ -85,6 +85,6 @@ def test_demo_accounts_can_look_but_not_change(client):
         assert client.post(f"/api/expert/edges/{eid}/vote", json={"vote": "approve"}, headers=CSRF).status_code == 403
     assert client.post("/api/staff/demo", json={"role": "admin"}).status_code == 422     # no admin demo
     # the demo expert never counts as an expert
-    assert all(e["name"] != "Pakar Demo" for e in client.get("/api/admin/experts", headers=ADMIN).json())
+    assert all(e["name"] != "Budi Hartono" for e in client.get("/api/admin/experts", headers=ADMIN).json())
     # a demo account cannot be signed into with a password
     assert client.post("/api/staff/login", json={"email": "demo-expert@pathsync.local", "password": "x" * 12}).status_code == 401

@@ -73,7 +73,7 @@ export function ProjectReviews({ names, onChange }: { names: Record<string, stri
             <div>
               <h3 className="font-semibold text-ink">{row.title}</h3>
               <p className="text-xs text-muted-foreground">
-                {fmtDateTime(row.created_at)} · {t("rated by", "dinilai oleh")} {row.method === "llm" ? "LLM" : t("heuristic rubric", "rubrik heuristik")} · {row.reason || t("sample", "sampel")}
+                {fmtDateTime(row.created_at)}, {t("rated by", "dinilai oleh")} {row.method === "llm" ? "LLM" : t("heuristic rubric", "rubrik heuristik")}, {row.reason || t("sample", "sampel")}
               </p>
             </div>
             <div className="flex gap-1">
@@ -209,17 +209,17 @@ function StaffAccounts({ cohorts }: { cohorts: CohortRow[] | null | undefined })
     <Panel>
       <SectionTitle>{t("Staff Accounts", "Akun Staf")}</SectionTitle>
       <div className="grid gap-8 lg:grid-cols-[320px_minmax(0,1fr)]">
-        <form onSubmit={invite} className="space-y-3">
+        <form onSubmit={invite} className="space-y-5">
           <p className="text-sm font-medium text-ink">{t("Invite someone", "Undang seseorang")}</p>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="acc-email">Email</Label>
             <Input id="acc-email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required className="h-9" />
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="acc-name">{t("Full name", "Nama lengkap")}</Label>
             <Input id="acc-name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="h-9" />
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-2">
             <Label htmlFor="acc-role">{t("Role", "Peran")}</Label>
             <NativeSelect id="acc-role" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value as AccountRow["role"] })}>
               <option value="expert">{t("Expert (validates the map, ranks students)", "Pakar (memvalidasi peta, meranking mahasiswa)")}</option>
@@ -228,7 +228,7 @@ function StaffAccounts({ cohorts }: { cohorts: CohortRow[] | null | undefined })
             </NativeSelect>
           </div>
           {form.role === "advisor" ? (
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="acc-class">{t("Class", "Kelas")}</Label>
               <NativeSelect id="acc-class" value={form.cohort_id} onChange={(e) => setForm({ ...form, cohort_id: e.target.value })}>
                 <option value="">{t("Pick a class…", "Pilih kelas…")}</option>
@@ -239,7 +239,7 @@ function StaffAccounts({ cohorts }: { cohorts: CohortRow[] | null | undefined })
               {cohorts && !cohorts.length ? <p className="text-xs text-muted-foreground">{t("Create a class below first.", "Buat kelas dulu di bawah.")}</p> : null}
             </div>
           ) : form.role === "expert" ? (
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="acc-aff">{t("Institution or company", "Institusi atau perusahaan")}</Label>
               <Input id="acc-aff" value={form.affiliation} onChange={(e) => setForm({ ...form, affiliation: e.target.value })} className="h-9" />
             </div>
@@ -264,11 +264,11 @@ function StaffAccounts({ cohorts }: { cohorts: CohortRow[] | null | undefined })
                 <li key={a.id} className="flex flex-wrap items-center justify-between gap-3 py-2.5">
                   <div className="min-w-0">
                     <p className="font-medium text-ink">
-                      {a.name} <span className="font-normal text-muted-foreground">· {t(...ROLE_LABEL[a.role])}</span>
+                      {a.name} <span className="font-normal text-muted-foreground">– {t(...ROLE_LABEL[a.role])}</span>
                     </p>
                     <p className="truncate text-xs text-muted-foreground">
                       {a.email}
-                      {a.last_login_at ? t(` · last sign-in ${fmtDateTime(a.last_login_at)}`, ` · terakhir masuk ${fmtDateTime(a.last_login_at)}`) : ""}
+                      {a.last_login_at ? t(`, last sign-in ${fmtDateTime(a.last_login_at)}`, `, terakhir masuk ${fmtDateTime(a.last_login_at)}`) : ""}
                     </p>
                   </div>
                   <div className="flex items-center gap-2">
@@ -343,12 +343,12 @@ export function TeamAndClasses() {
             {t("People sign in with accounts above. Keys are for scripts and the first admin sign-in.", "Orang masuk dengan akun di atas. Key untuk skrip dan masuk admin pertama kali.")}
           </p>
           <p className="mt-4 text-sm font-medium text-ink">{t("Expert key", "Key pakar")}</p>
-          <form onSubmit={addExpert} className="space-y-3">
-            <div className="space-y-1.5">
+          <form onSubmit={addExpert} className="space-y-5">
+            <div className="space-y-2">
               <Label htmlFor="ex-name">{t("Full name", "Nama lengkap")}</Label>
               <Input id="ex-name" value={expert.name} onChange={(e) => setExpert({ ...expert, name: e.target.value })} required className="h-10" />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="ex-aff">{t("Institution or company", "Institusi atau perusahaan")}</Label>
               <Input id="ex-aff" value={expert.affiliation} onChange={(e) => setExpert({ ...expert, affiliation: e.target.value })} className="h-10" />
             </div>
@@ -385,12 +385,12 @@ export function TeamAndClasses() {
         </details>
         <Panel>
           <SectionTitle>{t("Create a Class", "Buat Kelas")}</SectionTitle>
-          <form onSubmit={addCohort} className="space-y-3">
-            <div className="space-y-1.5">
+          <form onSubmit={addCohort} className="space-y-5">
+            <div className="space-y-2">
               <Label htmlFor="co-name">{t("Class or advising group", "Kelas atau kelompok bimbingan")}</Label>
               <Input id="co-name" value={cohort.name} onChange={(e) => setCohort({ ...cohort, name: e.target.value })} required className="h-10" placeholder={t("e.g. Sistem Informasi 2023 - Kelas A…", "mis. Sistem Informasi 2023 - Kelas A…")} />
             </div>
-            <div className="space-y-1.5">
+            <div className="space-y-2">
               <Label htmlFor="co-inst">{t("Institution", "Institusi")}</Label>
               <Input id="co-inst" value={cohort.institution} onChange={(e) => setCohort({ ...cohort, institution: e.target.value })} className="h-10" />
             </div>
@@ -403,7 +403,7 @@ export function TeamAndClasses() {
               {cohorts.data.map((c) => (
                 <li key={c.id} className="flex items-center justify-between py-2">
                   <span>
-                    {c.name} <span className="text-muted-foreground">· {c.n_students} {t("students", "mahasiswa")}</span>
+                    {c.name} <span className="text-muted-foreground">– {c.n_students} {t("students", "mahasiswa")}</span>
                   </span>
                   <code className="font-mono text-indigo" translate="no">
                     {c.join_code}
@@ -460,8 +460,8 @@ export function Studies() {
         <SectionTitle>{t("Controlled User Study (Four Arms)", "User Study Terkontrol (Empat Lengan)")}</SectionTitle>
         <p className="mb-3 text-sm text-ink/70">
           {t(
-            "A: skill list from postings · B: generic AI-style plan · C: PathSync without adaptivity · D: full PathSync. Students join with the study code in Settings and are assigned by stratified minimisation. Protocol: docs/ops/STUDY_PROTOCOL.md.",
-            "A: daftar skill dari posting · B: rencana gaya AI umum · C: PathSync tanpa adaptivitas · D: PathSync penuh. Mahasiswa bergabung dengan kode studi di Pengaturan dan ditempatkan dengan stratified minimisation. Protokol: docs/ops/STUDY_PROTOCOL.md.",
+            "A: skill list from postings, B: generic AI-style plan, C: PathSync without adaptivity, D: full PathSync. Students join with the study code in Settings and are assigned by stratified minimisation. Protocol: docs/ops/STUDY_PROTOCOL.md.",
+            "A: daftar skill dari posting, B: rencana gaya AI umum, C: PathSync tanpa adaptivitas, D: PathSync penuh. Mahasiswa bergabung dengan kode studi di Pengaturan dan ditempatkan dengan stratified minimisation. Protokol: docs/ops/STUDY_PROTOCOL.md.",
           )}
         </p>
         <form onSubmit={create} className="flex flex-wrap gap-2">
@@ -483,7 +483,7 @@ export function Studies() {
             </span>
           </div>
           <p className="mt-1 text-sm text-ink/70">
-            {st.arms.map((a) => `${a.id} ${st.participants[a.id] ?? 0}`).join(" · ")} {t("participants", "peserta")}
+            {st.arms.map((a) => `${a.id} ${st.participants[a.id] ?? 0}`).join(", ")} {t("participants", "peserta")}
           </p>
           <Button variant="outline" className="mt-3" onClick={() => setSel(sel === st.id ? null : st.id)}>
             {sel === st.id ? t("Hide Results", "Sembunyikan Hasil") : t("Show Results", "Tampilkan Hasil")}
@@ -552,7 +552,7 @@ export function LaunchMetrics() {
           </NativeSelect>
         </div>
         <p className="text-[32px] font-extrabold leading-none text-ink tabular">{Math.round(d.north_star.value * 100)}%</p>
-        <p className="mt-1 text-sm text-ink/70">{d.north_star.definition}. {t(`${d.new_students} new students in this window`, `${d.new_students} mahasiswa baru di rentang ini`)} · {t("D7 return", "Kembali di D7")} {Math.round(d.d7_retention * 100)}%.</p>
+        <p className="mt-1 text-sm text-ink/70">{d.north_star.definition}. {t(`${d.new_students} new students in this window`, `${d.new_students} mahasiswa baru di rentang ini`)}, {t("D7 return", "Kembali di D7")} {Math.round(d.d7_retention * 100)}%.</p>
       </Panel>
       <Panel>
         <SectionTitle>Funnel</SectionTitle>
@@ -563,7 +563,7 @@ export function LaunchMetrics() {
               <span className="h-2.5 overflow-hidden rounded-full bg-muted">
                 <span className="block h-full rounded-full bg-indigo" style={{ width: `${Math.round(f.share * 100)}%` }} />
               </span>
-              <span className="tabular text-ink/75">{f.students} · {Math.round(f.share * 100)}%</span>
+              <span className="tabular text-ink/75">{f.students}, {Math.round(f.share * 100)}%</span>
             </li>
           ))}
         </ol>
@@ -611,7 +611,7 @@ export function Activity() {
               <li key={r.id} className="flex flex-wrap items-start justify-between gap-3 py-3 text-sm">
                 <div className="min-w-0">
                   <p className="text-ink">{r.message}</p>
-                  <p className="mt-0.5 text-xs text-ink/60">{fmtDateTime(r.at)} · {r.page}{r.request_id ? ` · ref ${r.request_id}` : ""}{r.contact ? ` · ${r.contact}` : ""}</p>
+                  <p className="mt-0.5 text-xs text-ink/60">{fmtDateTime(r.at)}, {r.page}{r.request_id ? `, ref ${r.request_id}` : ""}{r.contact ? `, ${r.contact}` : ""}</p>
                 </div>
                 {r.resolved ? <Tag tone="mint">{t("Resolved", "Selesai")}</Tag> : (
                   <Button size="sm" variant="outline" onClick={() => api.post(`/admin/feedback/${r.id}/resolve`).then(fb.reload)}>{t("Mark Resolved", "Tandai Selesai")}</Button>
@@ -627,8 +627,8 @@ export function Activity() {
           <ul className="max-h-96 divide-y overflow-y-auto text-sm">
             {log.data.map((r) => (
               <li key={r.id} className="flex flex-wrap justify-between gap-2 py-2">
-                <span className="text-ink">{r.action}{r.target ? ` · ${r.target}` : ""}</span>
-                <span className="text-xs text-ink/60">{r.actor} · {fmtDateTime(r.at)}</span>
+                <span className="text-ink">{r.action}{r.target ? `, ${r.target}` : ""}</span>
+                <span className="text-xs text-ink/60">{r.actor}, {fmtDateTime(r.at)}</span>
               </li>
             ))}
           </ul>

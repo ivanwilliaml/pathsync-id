@@ -50,6 +50,11 @@ export const num = (x: number | null | undefined, digits = 2) =>
 export const int = (x: number | null | undefined) => (x == null ? "–" : nf0.format(x));
 export const hours = (h: number) =>
   `${new Intl.NumberFormat(tNow("en-US", "id-ID"), { maximumFractionDigits: 1 }).format(h)} ${tNow("h", "jam")}`;
+/** Weeks until the route is done at the student's pace, rounded up: an estimate, so never "0" or a decimal. */
+export const weeks = (w: number) => {
+  const n = Math.max(1, Math.ceil(w));
+  return tNow(`about ${n} week${n === 1 ? "" : "s"}`, `± ${n} minggu`);
+};
 
 const dateFmt = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", year: "numeric" });
 const dateTimeFmt = new Intl.DateTimeFormat("id-ID", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
