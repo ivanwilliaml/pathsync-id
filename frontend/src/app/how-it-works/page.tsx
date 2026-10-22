@@ -7,7 +7,7 @@ import { num, pct, titleCase } from "@/lib/format";
 import type { Meta } from "@/lib/api";
 import { useApi } from "@/lib/hooks";
 import { BpsContext } from "@/components/market-evidence";
-import { ErrorNote, Loading, PageHeader, Panel, SectionTitle, Tag } from "@/components/kit";
+import { ErrorNote, Loading, PageHeader, Panel, SectionTitle, Tag, Toc } from "@/components/kit";
 import { useT } from "@/lib/i18n";
 
 interface ModelCard {
@@ -103,17 +103,9 @@ export default function HowItWorksPage() {
         )}
       />
       {/* a local table of contents beside the article; every detail stays reachable, the long lists open on request */}
-      <div className="grid gap-8 lg:grid-cols-[190px_minmax(0,1fr)]">
-        <nav aria-label={t("On this page", "Di halaman ini")} className="lg:sticky lg:top-6 lg:self-start">
-          <ol className="flex flex-wrap gap-x-4 gap-y-1 text-sm lg:flex-col lg:gap-1 lg:border-l lg:pl-3">
-            {toc.map(([id, label]) => (
-              <li key={id}>
-                <a href={`#${id}`} className="text-ink/70 underline-offset-4 hover:text-ink hover:underline">{label}</a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-      <div className="min-w-0 space-y-12 [&_section]:scroll-mt-24">
+      <div className="grid gap-8 lg:grid-cols-[200px_minmax(0,1fr)] lg:gap-12">
+        <Toc label={t("On this page", "Di halaman ini")} items={toc} />
+      <div className="min-w-0 divide-y [&>section]:scroll-mt-24 [&>section]:py-12 [&>section:first-child]:pt-0">
       <Engine />
       <section aria-labelledby="models">
         <SectionTitle id="models">

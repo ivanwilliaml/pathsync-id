@@ -55,7 +55,6 @@ function DashboardView({ sid }: { sid: string }) {
               {t("Change", "Ganti")}
             </Link>
           </p>
-          {d.student.preferences.demo ? <DemoGuide topId={top?.skill_id} topName={top ? titleCase(top.name) : undefined} /> : null}
         </div>
       </header>
 
@@ -200,39 +199,6 @@ function LatestChange({ sid }: { sid: string }) {
         {t("Every change and why →", "Semua perubahan dan alasannya →")}
       </Link>
     </section>
-  );
-}
-
-/** Shown only on one-click demo profiles: one line, with the three things to try folded under it. */
-function DemoGuide({ topId, topName }: { topId?: string; topName?: string }) {
-  const t = useT();
-  return (
-    <details className="mt-2 text-sm">
-      <summary className="cursor-pointer text-muted-foreground">
-        {t("Demo profile, deleted after 2 days, never used in research. ", "Profil demo, dihapus setelah 2 hari, tidak dipakai untuk riset. ")}
-        <span className="font-medium text-indigo">{t("What to try", "Yang bisa dicoba")}</span>
-      </summary>
-      <ol className="mt-2 list-decimal space-y-1 pb-1 pl-5 text-sm text-ink/80">
-        <li>{t("Open the first priority and read why it comes first: the job-ad quotes, what it unlocks, and what would change the order.", "Buka prioritas pertama dan baca kenapa ia didahulukan: kutipan lowongan, apa yang dibukanya, dan apa yang bisa mengubah urutannya.")}</li>
-        <li>
-          {topId ? (
-            <Link href={`/assessment/${topId}`} className="font-medium text-indigo underline-offset-4 hover:underline">
-              {t(`Take the short check for ${topName}`, `Ikuti cek singkat untuk ${topName}`)}
-            </Link>
-          ) : (
-            t("Take a short skill check", "Ikuti cek singkat")
-          )}{" "}
-          {t("and watch the route reorder from the new evidence.", "dan lihat rutenya tersusun ulang dari bukti baru.")}
-        </li>
-        <li>
-          {t("Open", "Buka")}{" "}
-          <Link href="/learn?tab=history" className="font-medium text-indigo underline-offset-4 hover:underline">
-            {t("Change History in Learn", "Riwayat di Belajar")}
-          </Link>{" "}
-          {t("to see every change and the reason for it.", "untuk melihat setiap perubahan dan alasannya.")}
-        </li>
-      </ol>
-    </details>
   );
 }
 

@@ -17,11 +17,11 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ErrorNote, LinkButton, NativeSelect } from "@/components/kit";
-import { Logo } from "@/components/logo";
 import { SkillMapHero } from "@/components/skill-map-hero";
+import { PublicHeader } from "@/components/public-shell";
 import { CycleStory, ProblemStory, ProofStory } from "@/components/landing-story";
 import { RoleWheel } from "@/components/role-wheel";
-import { LangSwitch, useT } from "@/lib/i18n";
+import { useT } from "@/lib/i18n";
 
 // value sent to the API stays English; the label follows the interface language
 const PROGRAMS: [string, string][] = [
@@ -60,7 +60,7 @@ export default function Landing() {
       track("demo_started");
       router.push("/dashboard");
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : t("Couldn't start the demo. Try again in a moment.", "Demo gagal dimulai. Coba lagi sebentar."));
+      toast.error(e instanceof Error ? e.message : t("Couldn't open the sample. Try again in a moment.", "Contoh belum bisa dibuka. Coba lagi sebentar."));
       setDemoBusy(false);
     }
   };
@@ -75,26 +75,18 @@ export default function Landing() {
     label: meta.data?.roles.find((r) => r.id === id)?.name ?? id.replace(/_/g, " "),
   }));
   useEffect(() => trackOnce("page_view", "landing"), []);
+  // public pages link here with ?resume=1 (Resume Profile) or ?start=1 (Start)
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    if (q.get("resume")) setResumeOpen(true);
+    else if (q.get("start")) setStartRole("business_analyst");
+  }, []);
   return (
     <div className="min-h-screen bg-background">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5 sm:px-6">
-        <Logo />
-        <nav aria-label={t("Site", "Situs")} className="flex items-center gap-1 sm:gap-2">
-          <Link href="/careers" className="hidden rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:text-ink sm:inline-block">
-            Job Market
-          </Link>
-          <Link href="/how-it-works" className="hidden rounded-lg px-3 py-2 text-sm font-medium text-ink/75 hover:text-ink sm:inline-block">
-            {t("How It Works", "Cara Kerja")}
-          </Link>
-          <LangSwitch />
-          <Button variant="outline" size="lg" onClick={() => setResumeOpen(true)}>
-            {t("Resume Profile", "Lanjutkan Profil")}
-          </Button>
-        </nav>
-      </header>
+      <PublicHeader onSignIn={() => setResumeOpen(true)} onStart={() => setStartRole("business_analyst")} />
 
       {/* Hero */}
-      <section className="mx-auto grid max-w-[1240px] items-center gap-10 px-4 pb-16 pt-6 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:pb-24 lg:pt-10">
+      <section className="mx-auto grid max-w-7xl items-center gap-10 px-5 pb-16 pt-6 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:pb-24 lg:pt-10">
         <div>
           <h1 className="text-[40px] font-extrabold leading-[1.08] text-ink sm:text-[54px]">{t("Know Exactly What to Learn Next", "Tahu Persis Apa yang Harus Dipelajari Berikutnya")}</h1>
           <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink/75">
@@ -117,7 +109,7 @@ export default function Landing() {
             disabled={demoBusy}
             className="mt-4 text-sm font-medium text-indigo underline-offset-4 hover:underline disabled:opacity-60"
           >
-            {demoBusy ? t("Preparing a demo profile…", "Menyiapkan profil demo…") : t("Or look around first with a demo student profile →", "Atau lihat-lihat dulu dengan profil mahasiswa demo →")}
+            {demoBusy ? t("Opening a sample student…", "Membuka contoh mahasiswa…") : t("Or look around first as a sample student →", "Atau lihat-lihat dulu sebagai contoh mahasiswa →")}
           </button>
           <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-ink/70">
             <li className="flex items-center gap-2">
@@ -140,7 +132,7 @@ export default function Landing() {
 
       {/* Roles */}
       <section className="border-y bg-card" id="roles">
-        <div className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+        <div className="mx-auto max-w-7xl px-5 py-24 sm:px-8">
           <p className="text-[15px] font-semibold text-indigo">
             {t(`Choose your target from ${meta.data?.roles.length ?? ""} careers built on real postings`, `Pilih targetmu dari ${meta.data?.roles.length ?? ""} karier berbasis lowongan nyata`)}
           </p>
@@ -158,7 +150,7 @@ export default function Landing() {
 
       <Waitlist />
       <footer className="border-t">
-        <div className="mx-auto flex max-w-6xl flex-wrap justify-between gap-3 px-4 py-6 text-xs text-muted-foreground sm:px-6">
+        <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3 px-5 py-6 text-xs text-muted-foreground sm:px-8">
           <span className="flex flex-wrap gap-x-4 gap-y-1">
             <span>&copy; 2026 PathSync, {t("closed beta", "beta tertutup")}</span>
             <Link href="/about" className="hover:text-ink">{t("About & Contact", "Tentang & Kontak")}</Link>
@@ -197,7 +189,7 @@ function Waitlist() {
   }
   return (
     <section className="border-t bg-card">
-      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+      <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8">
         <h2 className="text-[24px] font-bold text-ink">{t("Your Role Isn\u2019t Here Yet?", "Role-mu Belum Ada?")}</h2>
         <p className="mt-1 max-w-2xl text-ink/70">{t("We add roles as soon as there are enough real job postings. Leave your email and the role you need. We only write when it launches.", "Kami menambah role begitu job posting nyatanya cukup. Tinggalkan email dan role yang kamu butuhkan. Kami hanya mengirim kabar saat role itu rilis.")}</p>
         {done ? (
@@ -342,7 +334,7 @@ function ResumeDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>{t("Resume Your Profile", "Lanjutkan Profilmu")}</DialogTitle>
+          <DialogTitle>{t("Sign In to Your Profile", "Masuk ke Profilmu")}</DialogTitle>
           <DialogDescription>{t("Paste the access key from Settings. It works like a password, so keep it private.", "Tempel access key dari Pengaturan. Fungsinya seperti password, jadi jaga kerahasiaannya.")}</DialogDescription>
         </DialogHeader>
         <form onSubmit={resume} className="space-y-6">
@@ -352,7 +344,7 @@ function ResumeDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (o:
           </div>
           <ErrorNote error={err} />
           <Button type="submit" size="lg" className="h-11 w-full" disabled={!value.trim()}>
-            {t("Continue", "Lanjut")}
+            {t("Sign in", "Masuk")}
           </Button>
         </form>
       </DialogContent>

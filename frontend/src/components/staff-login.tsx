@@ -76,13 +76,13 @@ export function StaffLogin({ role, hint }: { role: StaffRole; hint?: string; err
           <h3 id="demo-staff" className="flex items-center gap-2 text-sm font-semibold text-ink">
             <Eye className="size-4 text-indigo" aria-hidden="true" /> {t("Just looking?", "Sekadar melihat?")}
           </h3>
-          <p className="text-xs text-muted-foreground">{t("A read-only demo account: nothing you do changes real data.", "Akun demo hanya-lihat: apa pun yang kamu lakukan tidak mengubah data nyata.")}</p>
+          <p className="text-xs text-muted-foreground">{t("View only: nothing you do changes real data.", "Hanya lihat: apa pun yang kamu lakukan tidak mengubah data nyata.")}</p>
           <div className="flex flex-wrap gap-2">
             <Button variant="outline" size="sm" disabled={busy !== null} onClick={() => run("advisor", () => staffDemo("advisor"), true)}>
-              {busy === "advisor" ? t("Opening…", "Membuka…") : t("View as demo lecturer", "Lihat sebagai dosen demo")}
+              {busy === "advisor" ? t("Opening…", "Membuka…") : t("View as a lecturer", "Lihat sebagai dosen")}
             </Button>
             <Button variant="outline" size="sm" disabled={busy !== null} onClick={() => run("expert", () => staffDemo("expert"), true)}>
-              {busy === "expert" ? t("Opening…", "Membuka…") : t("View as demo expert", "Lihat sebagai pakar demo")}
+              {busy === "expert" ? t("Opening…", "Membuka…") : t("View as an expert", "Lihat sebagai pakar")}
             </Button>
           </div>
         </section>

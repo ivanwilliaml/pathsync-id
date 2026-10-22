@@ -104,7 +104,7 @@ def demo_profile(s: Session = Depends(db_session)):
     if os.getenv("PATHSYNC_DEMO", "1") == "0":
         raise HTTPException(404, tr("The demo profile is turned off on this server.", "Profil demo dimatikan di server ini."))
     token = new_token()
-    st = Student(display_name="Rani (demo)", program="Information Systems", semester=6, target_role="business_analyst",
+    st = Student(display_name="Rani", program="Information Systems", semester=6, target_role="business_analyst",
                  consent_at=utcnow() - timedelta(days=16), consent_version="demo", token_hash=hash_token(token),
                  preferences={"weekly_hours": 6, "language": "id", "format": "kursus", "demo": True})
     s.add(st)
@@ -115,7 +115,7 @@ def demo_profile(s: Session = Depends(db_session)):
 
     # 1. transcript (16 days ago): the first route
     item, detail = academic_evidence(DEMO_COURSES)
-    s.add(Evidence(student_id=st.id, kind="academic", title="Transcript (demo)", scores=item.scores,
+    s.add(Evidence(student_id=st.id, kind="academic", title="Transkrip", scores=item.scores,
                    details={"strength": item.strength, "courses": detail}, created_at=utcnow() - timedelta(days=16)))
     s.commit()
     after_change(s, st, "evidence", "demo transcript")

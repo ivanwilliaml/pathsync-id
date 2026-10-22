@@ -41,8 +41,7 @@ function PublicCareers() {
   return (
     <div className="space-y-8">
       <PageHeader
-        mascot="job-board"
-        title={t("Choose a Career", "Pilih Karier")}
+        title="Job Market"
         description={t(
           `What Indonesian employers ask for in ${meta.data?.n_postings ?? "real"} job postings, career by career. Create a free profile to see which careers your own skills are close to.`,
           `Apa yang diminta employer Indonesia di ${meta.data?.n_postings ?? ""} job posting nyata, per karier. Buat profil gratis untuk melihat karier mana yang dekat dengan skill-mu sendiri.`,

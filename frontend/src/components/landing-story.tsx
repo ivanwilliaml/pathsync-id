@@ -201,7 +201,7 @@ export function CycleStory() {
 
   return (
     <section className="bg-background py-24 sm:py-32" id="how">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <Reveal>
           <p className="text-[15px] font-semibold text-indigo">{t("How it works", "Cara kerja")}</p>
           <h2 className="mt-2 max-w-2xl text-[32px] font-extrabold leading-tight text-ink sm:text-[40px]">
@@ -377,7 +377,7 @@ export function ProofStory({ postings, careers, skills, ndcg, onStart }: { posti
     [<RouteIcon key="c" className="size-5" />, t("The right order.", "Urutan yang tepat."), t("Skills that unlock others come first, and every step says why.", "Skill yang membuka skill lain didahulukan, dan tiap langkah ada alasannya.")],
   ];
   return (
-    <section className="mx-auto max-w-6xl px-4 py-24 sm:px-6">
+    <section className="mx-auto max-w-7xl px-5 py-24 sm:px-8">
       <Reveal>
         <h2 className="max-w-2xl text-[32px] font-extrabold leading-tight text-ink sm:text-[40px]">
           {t("Built on data you can check.", "Dibangun dari data yang bisa dicek.")}

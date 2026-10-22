@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { RequireStudent } from "@/components/require-student";
-import { ErrorNote, Loading, NativeSelect, PageHeader, SectionTitle, Tag } from "@/components/kit";
+import { ErrorNote, Loading, NativeSelect, PageHeader, SectionTitle, Tag, Toc } from "@/components/kit";
 import { Mascot } from "@/components/mascot";
 import { LangSwitch, useT } from "@/lib/i18n";
 
@@ -50,17 +50,9 @@ function Settings({ sid }: { sid: string }) {
     <div>
       <PageHeader className="mb-6" title={t("Settings & Data", "Pengaturan & Data")} description={t("Your profile, your access key, classes and studies you join, and control over your personal data.", "Profilmu, access key-mu, kelas dan studi yang kamu ikuti, dan kendali atas data pribadimu.")} />
       {/* categories beside one form column; groups are split by dividers, not five cards of different heights */}
-      <div className="grid gap-8 lg:grid-cols-[180px_minmax(0,720px)]">
-        <nav aria-label={t("Settings sections", "Bagian pengaturan")} className="lg:sticky lg:top-6 lg:self-start">
-          <ol className="flex flex-wrap gap-x-4 gap-y-1 text-sm lg:flex-col lg:gap-1 lg:border-l lg:pl-3">
-            {SECTIONS.map(([id, label]) => (
-              <li key={id}>
-                <a href={`#${id}`} className="text-ink/70 underline-offset-4 hover:text-ink hover:underline">{t(...label)}</a>
-              </li>
-            ))}
-          </ol>
-        </nav>
-        <div className="min-w-0 divide-y [&>section]:scroll-mt-24 [&>section]:py-6 [&>section:first-child]:pt-0">
+      <div className="grid gap-8 lg:grid-cols-[200px_minmax(0,720px)] lg:gap-12">
+        <Toc label={t("Settings sections", "Bagian pengaturan")} items={SECTIONS.map(([id, label]) => [id, t(...label)] as [string, string])} />
+        <div className="min-w-0 divide-y [&>section]:scroll-mt-24 [&>section]:py-10 [&>section:first-child]:pt-0">
           <Profile sid={sid} s={s} onSaved={st.reload} />
           <AccessKey />
           <Research sid={sid} on={!!(s as { research_consent_at?: string | null }).research_consent_at} onChange={st.reload} />
