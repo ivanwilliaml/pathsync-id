@@ -4,19 +4,11 @@ Purwarupa kerja dari metodologi paper semifinal *PathSync: Navigator Belajar Ada
 
 **Cakupan sekarang:** 20 role (Business Analyst sebagai role yang divalidasi penuh, 19 role lain berlabel Beta), 138 hard skill di 20 klaster, 161 prasyarat, 690 soal Cek Cepat, dan 9 soft skill berbasis pengalaman (tanpa kuis, tidak masuk ranking).
 
-**Mulai dari sini:**
-- Rencana produk dan prioritas: **[PLAN.md](PLAN.md)**
-- Audit terbaru (AI engineer, investor, pengguna, product manager): [docs/audit/AUDIT_2026-10-16.md](docs/audit/AUDIT_2026-10-16.md)
-- Rencana backend dan data/AI: [docs/plan/PLAN_BACKEND_DATA_AI.md](docs/plan/PLAN_BACKEND_DATA_AI.md)
-- Rencana frontend dan UI/UX: [docs/plan/PLAN_FRONTEND_UIUX.md](docs/plan/PLAN_FRONTEND_UIUX.md)
-- Semua dokumen: [docs/README.md](docs/README.md)
-
 Semua angka kinerja ada di satu berkas, `backend/data/models/metrics.json`, yang dihasilkan oleh `python -m pipeline.report`.
 
 ## Struktur
 
 ```
-PLAN.md                  rencana master
 docker-compose.yml       produksi: Caddy, frontend, backend, PostgreSQL, Redis, backup, refresh pasar bulanan
 backend/
   pathsync/              inti: taksonomi dan graf, ekstraksi (leksikon dan LLM) dengan verifikasi kutipan dan
@@ -36,12 +28,6 @@ backend/
 frontend/                Next.js 16, React 19, Tailwind 4, shadcn/ui
 deploy/                  Caddyfile, backup.sh, loadtest.py, explain_queries.py
 .github/workflows/       CI (backend SQLite dan PostgreSQL, frontend) dan scraping bulanan
-docs/
-  audit/                 audit dan tanggapan
-  plan/                  rencana per bidang dan roadmap
-  ops/                   runbook deploy, protokol studi, panduan anotasi
-  design/                desain mesin keputusan
-  archive/               dokumen lama dan berkas yang tidak dipakai sistem
 ```
 
 ## Menjalankan backend
@@ -90,6 +76,6 @@ Tanpa keduanya, sistem memakai ekstraktor leksikon offline dengan kontrak keluar
 
 ## Deploy
 
-`cp .env.example .env` (isi rahasia), lalu `docker compose up -d --build`. Caddy (HTTPS), Next.js, FastAPI, PostgreSQL, Redis, cadangan harian, dan refresh pasar bulanan. Langkah rinci, latihan pemulihan, dan bug deploy yang sudah ditemukan: [docs/ops/RUNBOOK.md](docs/ops/RUNBOOK.md). Uji beban: `python deploy/loadtest.py http://127.0.0.1:8000 200 40`.
+`cp .env.example .env` (isi rahasia), lalu `docker compose up -d --build`. Caddy (HTTPS), Next.js, FastAPI, PostgreSQL, Redis, cadangan harian, dan refresh pasar bulanan. Uji beban: `python deploy/loadtest.py http://127.0.0.1:8000 200 40`.
 
 Login staf memakai cookie sesi HttpOnly (`POST /api/staff/session`); skrip boleh memakai `Authorization: Bearer`.
