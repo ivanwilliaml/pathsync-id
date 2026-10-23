@@ -1,4 +1,4 @@
-# Railway (512 MB, no PyTorch). Same image as deploy/render/Dockerfile; Railway root directory = backend/.
+# Railway (512 MB, no PyTorch); Railway root directory = backend/.
 # Stage 1 builds the embedding model (int8 token table, float32 transformer); see scripts/quantize_onnx.py.
 FROM python:3.12-slim AS model
 ENV HF_HOME=/hf PIP_NO_CACHE_DIR=1

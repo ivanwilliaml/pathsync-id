@@ -8,7 +8,7 @@ Railway; langkah Render di bawah tetap berlaku sebagai cadangan.
 | Bagian | Layanan | Alamat / pengaturan |
 |---|---|---|
 | Frontend | Vercel Hobby, project `pathsync-icc2026` (akun Ivan) | **https://pathsync-id.vercel.app**. Deploy dari CLI, bukan dari git: `cd frontend && vercel link` (project `pathsync-icc2026`) lalu `vercel deploy --prod`. Env: `PATHSYNC_API` = URL Railway, `PATHSYNC_PROXY_SECRET`. Deployment Protection: hanya preview |
-| Backend | Railway trial ($5 ≈ 30 hari), service `pathsync-icc2026` | https://pathsync-icc2026-production.up.railway.app. Auto-deploy dari branch **`main`**, Root Directory `/backend`, `RAILWAY_DOCKERFILE_PATH=Dockerfile.railway` (salinan `deploy/render/Dockerfile`), healthcheck `/api/health`, port 8080. Env: `PATHSYNC_DATABASE_URL`, `PATHSYNC_PROXY_SECRET`, `PATHSYNC_ADMIN_TOKEN`, `PATHSYNC_CORS_ORIGINS=https://pathsync-id.vercel.app`, `PATHSYNC_REF_DATE=2026-10-18`, `PATHSYNC_WARMUP=1` |
+| Backend | Railway trial ($5 ≈ 30 hari), service `pathsync-icc2026` | https://pathsync-icc2026-production.up.railway.app. Auto-deploy dari branch **`main`**, Root Directory `/backend`, `RAILWAY_DOCKERFILE_PATH=Dockerfile.railway`, healthcheck `/api/health`, port 8080. Env: `PATHSYNC_DATABASE_URL`, `PATHSYNC_PROXY_SECRET`, `PATHSYNC_ADMIN_TOKEN`, `PATHSYNC_CORS_ORIGINS=https://pathsync-id.vercel.app`, `PATHSYNC_REF_DATE=2026-10-18`, `PATHSYNC_WARMUP=1` |
 | Database | Neon Free | Project `pathsync` (Singapura) |
 
 Rahasia tidak ada di repo; minta ke Ivan. Push ke `main` = backend ter-deploy ulang otomatis; frontend perlu
@@ -26,7 +26,7 @@ dengan 402).
 ## Kenapa backend muat di 512 MB
 
 Versi biasa (`backend/Dockerfile`) memakai PyTorch untuk model embedding dan butuh ±1 GB. Versi Render
-(`deploy/render/Dockerfile`) memakai model yang sama lewat onnxruntime (`PATHSYNC_EMBED_BACKEND=onnx`):
+(`backend/Dockerfile.railway`) memakai model yang sama lewat onnxruntime (`PATHSYNC_EMBED_BACKEND=onnx`):
 
 | Perubahan | Hemat | Dampak, diukur |
 |---|---|---|
@@ -43,13 +43,14 @@ Peta pasar di Neon dibangun dari laptop dengan PyTorch (`pipeline.build_market`)
 ## Langkah (sekali saja)
 
 1. **Neon** sudah dibuat (project `pathsync`). Connection string: dashboard Neon → Connect.
-2. **Render**: login di render.com pakai GitHub → New → **Blueprint** → pilih repo `ivanwilliaml/pathsync-icc2026`
-   (izinkan akses Render ke repo privat ini) → Render membaca `render.yaml`. Isi:
+2. **Railway**: New Project → Deploy from GitHub repo `ivanwilliaml/pathsync-icc2026` → Root Directory `/backend`
+   (`backend/railway.json` memilih `Dockerfile.railway`). Isi variabel:
    - `PATHSYNC_DATABASE_URL` = connection string Neon
    - `PATHSYNC_PROXY_SECRET` = string acak panjang (`python -c "import secrets;print(secrets.token_urlsafe(32))"`)
-   Build pertama ±10 menit. Cek `https://pathsync-api.onrender.com/api/health`.
+   - `GEMINI_API_KEY` = kunci dari aistudio.google.com (untuk membaca CV dan rubrik proyek)
+   Cek `<url-railway>/api/health`.
 3. **Vercel**: Add New Project → repo yang sama → Root Directory `frontend` → Environment Variables:
-   `PATHSYNC_API` = URL Render, `PATHSYNC_PROXY_SECRET` = sama dengan di Render. Deploy.
+   `PATHSYNC_API` = URL Railway, `PATHSYNC_PROXY_SECRET` = sama dengan di Railway. Deploy.
 4. Bila URL Vercel bukan `pathsync-id.vercel.app`, ubah `PATHSYNC_CORS_ORIGINS` di backend.
 
 ## Kenapa ada PATHSYNC_PROXY_SECRET

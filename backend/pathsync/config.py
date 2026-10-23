@@ -34,7 +34,7 @@ for _p in ("postgres://", "postgresql://"):
 EMBEDDING_MODEL = os.getenv("PATHSYNC_EMBEDDING_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 # "torch" (sentence-transformers) or "onnx" (onnxruntime, int8 file below; for small hosts, see docs/ops/DEPLOY_GRATIS.md)
 EMBED_BACKEND = os.getenv("PATHSYNC_EMBED_BACKEND", "torch")
-# a local path (built by deploy/render/quantize.py) or a file in the model repo
+# a local path (built by backend/scripts/quantize_onnx.py) or a file in the model repo
 ONNX_FILE = os.getenv("PATHSYNC_ONNX_FILE", "onnx/model.onnx")
 
 # ----------------------------------------------------- extraction / normalisation [III.A.1]
