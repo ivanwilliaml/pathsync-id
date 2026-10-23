@@ -43,7 +43,7 @@ Peta pasar di Neon dibangun dari laptop dengan PyTorch (`pipeline.build_market`)
 ## Langkah (sekali saja)
 
 1. **Neon** sudah dibuat (project `pathsync`). Connection string: dashboard Neon → Connect.
-2. **Railway**: New Project → Deploy from GitHub repo `ivanwilliaml/pathsync-icc2026` → Root Directory `/backend`
+2. **Railway**: New Project → Deploy from GitHub repo `ivanwilliaml/pathsync-id` → Root Directory `/backend`
    (`backend/railway.json` memilih `Dockerfile.railway`). Isi variabel:
    - `PATHSYNC_DATABASE_URL` = connection string Neon
    - `PATHSYNC_PROXY_SECRET` = string acak panjang (`python -c "import secrets;print(secrets.token_urlsafe(32))"`)
