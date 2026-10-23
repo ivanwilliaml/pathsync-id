@@ -29,7 +29,6 @@ backend/offline_llm/jobs/
 backend/data/admin_token.txt
 backend/data/local_admin_account.txt
 backend/data/local_student_account.txt
-.claude/
 !.env.example
 backups/
 backend/data/processed/embedding_cache.sqlite-shm
