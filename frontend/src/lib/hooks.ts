@@ -8,6 +8,8 @@ import { useLang } from "./i18n";
 const SHARED_PATHS = new Set(["/meta", "/catalog", "/model-card"]);
 const SHARED_TTL_MS = 5 * 60_000;
 const shared = new Map<string, { at: number; promise: Promise<unknown> }>();
+// a career's market snapshot changes monthly and several parts of one page read it: one request serves them all
+const isShared = (path: string) => SHARED_PATHS.has(path) || /^\/market\/[a-z_]+$/.test(path);
 
 function fetchShared<T>(path: string, force: boolean, lang: string): Promise<T> {
   const key = `${lang}:${path}`;     // display texts differ per language
@@ -34,7 +36,7 @@ export function useApi<T>(path: string | null) {
     let alive = true;
     setLoading(true);
     setError(null);
-    (SHARED_PATHS.has(path) ? fetchShared<T>(path, tick > 0, lang) : api.get<T>(path))
+    (isShared(path) ? fetchShared<T>(path, tick > 0, lang) : api.get<T>(path))
       .then((d) => alive && setData(d))
       .catch((e) => alive && setError(e))
       .finally(() => alive && setLoading(false));

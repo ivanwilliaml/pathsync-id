@@ -162,7 +162,7 @@ function TaskCard({ sid, skill, task, result, onGraded, onNext, t }: {
         </p>
       ) : null}
       {task.context ? <p className="rounded-xl bg-muted/60 px-4 py-3 text-sm leading-relaxed text-ink/85 [overflow-wrap:anywhere]">{task.context}</p> : null}
-      <h2 className="text-[17px] font-semibold leading-snug text-ink">{task.stem}</h2>
+      <h2 className="text-[19px] font-bold leading-snug tracking-[-0.02em] text-ink">{task.stem}</h2>
 
       {task.type === "choice" ? (
         <div role="radiogroup" aria-label={task.stem} className="space-y-2">
@@ -178,15 +178,15 @@ function TaskCard({ sid, skill, task, result, onGraded, onNext, t }: {
                   disabled={!!result}
                   onClick={() => setChoice(o.idx)}
                   className={cn(
-                    "flex w-full items-start gap-3 rounded-xl border px-4 py-3 text-left text-sm transition-colors [overflow-wrap:anywhere]",
-                    !result && (chosen ? "border-indigo bg-secondary/60" : "hover:bg-muted/60"),
-                    graded?.correct && "border-mint bg-[#e3f5ea]/60",
-                    result && chosen && !graded?.correct && "border-destructive/50 bg-destructive/5",
+                    "opt-card flex w-full items-start gap-3 rounded-[18px] px-4 py-3.5 text-left text-[15px] [overflow-wrap:anywhere]",
+                    !result && chosen && "opt-on",
+                    graded?.correct && "opt-right",
+                    result && chosen && !graded?.correct && "opt-wrong",
                   )}
                 >
                   <span className="mt-0.5 size-4 shrink-0">
                     {graded?.correct ? <Check className="size-4 text-mint" aria-label={t("Correct answer", "Jawaban benar")} /> : result && chosen ? <X className="size-4 text-destructive" aria-label={t("Your answer", "Jawabanmu")} /> : (
-                      <span className={cn("block size-4 rounded-full border-2", chosen ? "border-indigo bg-indigo" : "border-input")} aria-hidden="true" />
+                      <span className={cn("block size-4 rounded-full border-2 transition-[border-color,box-shadow] duration-300", chosen ? "border-indigo shadow-[inset_0_0_0_3px_var(--card),inset_0_0_0_8px_var(--indigo)]" : "border-input")} aria-hidden="true" />
                     )}
                   </span>
                   <span className="text-ink">{o.text}</span>

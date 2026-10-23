@@ -2,7 +2,7 @@
 
 // Small app-level building blocks on top of shadcn/ui.
 import Link from "next/link";
-import { useEffect, useRef, useState, type ComponentProps, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ComponentProps, type KeyboardEvent, type ReactNode } from "react";
 import type { VariantProps } from "class-variance-authority";
 import { AlertCircle } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
@@ -42,25 +42,25 @@ export function PageHeader({ title, description, actions, className, tabs, stats
   stats?: [string, ReactNode][];
 }) {
   return (
-    <header className={cn("mb-6", className)}>
-      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+    <header className={cn("mb-8", className)}>
+      <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
         <div className="min-w-0 max-w-4xl">
-          <h1 className="text-[26px] font-bold leading-tight text-ink sm:text-[28px]">{title}</h1>
-          {description ? <p className="mt-1 text-sm text-muted-foreground">{description}</p> : null}
+          <h1 className="hero-rise text-balance text-[32px] font-extrabold leading-[1.06] tracking-[-0.035em] text-ink sm:text-[40px]" style={{ ["--d" as string]: "0ms" }}>{title}</h1>
+          {description ? <p className="hero-rise mt-2.5 max-w-2xl text-pretty text-[15.5px] leading-relaxed text-ink/60" style={{ ["--d" as string]: "70ms" }}>{description}</p> : null}
           {stats?.length ? (
-            <dl className="mt-3 flex flex-wrap gap-x-8 gap-y-3">
+            <dl className="hero-rise mt-5 flex flex-wrap gap-x-10 gap-y-4" style={{ ["--d" as string]: "120ms" }}>
               {stats.map(([label, value]) => (
                 <div key={label} className="min-w-0">
-                  <dt className="text-xs text-muted-foreground">{label}</dt>
-                  <dd className="tabular mt-0.5 text-[15px] font-semibold text-ink">{value}</dd>
+                  <dt className="text-[11.5px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{label}</dt>
+                  <dd className="tabular mt-1 text-[17px] font-bold tracking-[-0.02em] text-ink">{value}</dd>
                 </div>
               ))}
             </dl>
           ) : null}
         </div>
-        {actions ? <div className="flex flex-wrap items-center gap-2">{actions}</div> : null}
+        {actions ? <div className="hero-rise flex flex-wrap items-center gap-2.5" style={{ ["--d" as string]: "160ms" }}>{actions}</div> : null}
       </div>
-      {tabs ? <div className="mt-4">{tabs}</div> : null}
+      {tabs ? <div className="hero-rise mt-6" style={{ ["--d" as string]: "200ms" }}>{tabs}</div> : null}
     </header>
   );
 }
@@ -68,7 +68,7 @@ export function PageHeader({ title, description, actions, className, tabs, stats
 export function SectionTitle({ children, action, id }: { children: ReactNode; action?: ReactNode; id?: string }) {
   return (
     <div className="mb-4 flex items-center justify-between gap-3">
-      <h2 id={id} className="scroll-mt-24 text-[20px] font-semibold text-ink">
+      <h2 id={id} className="scroll-mt-24 text-[22px] font-bold tracking-[-0.025em] text-ink">
         {children}
       </h2>
       {action}
@@ -78,7 +78,7 @@ export function SectionTitle({ children, action, id }: { children: ReactNode; ac
 
 export function Panel({ children, className, ...props }: ComponentProps<"section">) {
   return (
-    <section className={cn("rounded-2xl border bg-card p-5 sm:p-6", className)} {...props}>
+    <section className={cn("p-card rounded-[24px] p-5 sm:p-7", className)} {...props}>
       {children}
     </section>
   );
@@ -146,7 +146,7 @@ export function MasteryBar({ value, target, className, tone = "indigo", label }:
       aria-valuetext={t != null ? `${Math.round(v * 100)} / ${Math.round(t * 100)}` : undefined}
     >
       {t != null && !met ? <div className="absolute inset-y-0 left-0 rounded-full bg-indigo/20" style={{ width: `${t * 100}%` }} aria-hidden="true" /> : null}
-      <div className={cn("absolute inset-y-0 left-0 rounded-full transition-[width] duration-300", fill)} style={{ width: `${v * 100}%` }} />
+      <div className={cn("absolute inset-y-0 left-0 rounded-full transition-[width] duration-700 ease-[cubic-bezier(.32,.72,0,1)]", fill)} style={{ width: `${v * 100}%` }} />
     </div>
   );
 }
@@ -159,11 +159,32 @@ export function Tag({ children, tone = "neutral", className }: { children: React
     mint: "bg-[#e3f5ea] text-mint-ink",
     red: "bg-destructive/10 text-destructive",
   }[tone];
-  return <span className={cn("inline-flex items-center gap-1 whitespace-nowrap rounded-md px-1.5 py-0.5 text-xs font-medium", t, className)}>{children}</span>;
+  return <span className={cn("inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-semibold", t, className)}>{children}</span>;
 }
 
 export const fieldCls =
-  "h-10 w-full rounded-lg border border-input bg-card px-3 text-sm text-ink outline-none transition-[border-color,box-shadow] placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/30 disabled:opacity-50";
+  "h-10 w-full rounded-xl border border-input bg-card px-3.5 text-sm text-ink outline-none transition-[border-color,box-shadow] duration-300 placeholder:text-muted-foreground focus-visible:border-indigo focus-visible:ring-4 focus-visible:ring-indigo/15 disabled:opacity-50";
+
+/** Where the active option of a row of pills is, so a white thumb can glide to it instead of jumping. */
+function useThumb(value: string, count: number) {
+  const wrap = useRef<HTMLDivElement>(null);
+  const [thumb, setThumb] = useState<{ left: number; width: number } | null>(null);
+  useLayoutEffect(() => {
+    const place = () => {
+      const b = wrap.current?.querySelector<HTMLElement>(`[data-v="${CSS.escape(value)}"]`);
+      if (b) setThumb({ left: b.offsetLeft, width: b.offsetWidth });
+    };
+    place();
+    const ro = new ResizeObserver(place);
+    if (wrap.current) ro.observe(wrap.current);
+    return () => ro.disconnect();
+  }, [value, count]);
+  return [wrap, thumb] as const;
+}
+
+function Thumb({ at }: { at: { left: number; width: number } | null }) {
+  return at ? <span className="smh-thumb" aria-hidden="true" style={{ left: at.left, width: at.width, top: 3, bottom: 3 }} /> : null;
+}
 
 /** Native select styled like the inputs (reliable on mobile, explicit colours for Windows dark mode). */
 export function NativeSelect({ className, children, ...props }: ComponentProps<"select">) {
@@ -178,17 +199,20 @@ export function NativeSelect({ className, children, ...props }: ComponentProps<"
 export function Segmented<V extends string>({ label, value, onChange, options, showLabel }: {
   label: string; value: V; onChange: (v: V) => void; options: [V, string][]; showLabel?: boolean;
 }) {
+  const [wrap, thumb] = useThumb(value, options.length);
   const group = (
-    <div role="group" aria-label={label} className="inline-flex rounded-lg border bg-muted/60 p-0.5">
+    <div ref={wrap} role="group" aria-label={label} className="relative inline-flex rounded-full bg-muted/70 p-[3px] ring-1 ring-inset ring-black/[0.04]">
+      <Thumb at={thumb} />
       {options.map(([v, text]) => (
         <button
           key={v}
           type="button"
+          data-v={v}
           aria-pressed={value === v}
           onClick={() => onChange(v)}
           className={cn(
-            "whitespace-nowrap rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-3",
-            value === v ? "bg-card font-semibold text-ink ring-1 ring-border" : "text-ink/65 hover:text-ink",
+            "relative z-[1] whitespace-nowrap rounded-full px-3 py-1.5 text-[13.5px] font-semibold tracking-[-0.01em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:px-3.5",
+            value === v ? "text-ink" : "text-ink/55 hover:text-ink",
           )}
         >
           {text}
@@ -210,18 +234,21 @@ export function Segmented<V extends string>({ label, value, onChange, options, s
 export function PageTabs<V extends string>({ label, value, onChange, options }: {
   label: string; value: V; onChange: (v: V) => void; options: [V, string][];
 }) {
+  const [wrap, thumb] = useThumb(value, options.length);
   return (
-    <div role="tablist" aria-label={label} className="flex gap-1 border-b">
+    <div ref={wrap} role="tablist" aria-label={label} className="relative inline-flex rounded-full bg-muted/70 p-[3px] ring-1 ring-inset ring-black/[0.04]">
+      <Thumb at={thumb} />
       {options.map(([v, text]) => (
         <button
           key={v}
           type="button"
           role="tab"
+          data-v={v}
           aria-selected={value === v}
           onClick={() => onChange(v)}
           className={cn(
-            "-mb-px whitespace-nowrap border-b-2 px-3 py-2 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-            value === v ? "border-indigo text-ink" : "border-transparent text-ink/60 hover:text-ink",
+            "relative z-[1] whitespace-nowrap rounded-full px-4 py-1.5 text-[13.5px] font-semibold tracking-[-0.01em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+            value === v ? "text-ink" : "text-ink/55 hover:text-ink",
           )}
         >
           {text}
@@ -247,11 +274,13 @@ export function FolderTabs<V extends string>({ label, value, onChange, options, 
     onChange(next);
     refs.current[next]?.focus();
   };
+  const [wrap, thumb] = useThumb(value, options.length);
   return (
     // `extra` (a view switch for the active tab) sits at the right end of the same row, so it costs no line of its own
-    <div className="flex items-end justify-between gap-3">
+    <div className="mb-4 flex items-center justify-between gap-3">
     <div className="-mx-5 min-w-0 overflow-x-auto px-5 [scrollbar-width:none] sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden">
-      <div role="tablist" aria-label={label} onKeyDown={onKey} className="relative z-10 -mb-px flex min-w-max gap-1">
+      <div ref={wrap} role="tablist" aria-label={label} onKeyDown={onKey} className="relative flex min-w-max rounded-full bg-muted/70 p-[3px] ring-1 ring-inset ring-black/[0.04]">
+        <Thumb at={thumb} />
         {options.map(([v, text]) => {
           const on = value === v;
           return (
@@ -262,14 +291,15 @@ export function FolderTabs<V extends string>({ label, value, onChange, options, 
               }}
               type="button"
               role="tab"
+              data-v={v}
               id={`${panelId}-tab-${v}`}
               aria-selected={on}
               aria-controls={panelId}
               tabIndex={on ? 0 : -1}
               onClick={() => onChange(v)}
               className={cn(
-                "whitespace-nowrap rounded-t-xl border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
-                on ? "border-b-card bg-card text-ink" : "border-transparent text-ink/60 hover:bg-muted/70 hover:text-ink",
+                "relative z-[1] whitespace-nowrap rounded-full px-4 py-1.5 text-[13.5px] font-semibold tracking-[-0.01em] transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+                on ? "text-ink" : "text-ink/55 hover:text-ink",
               )}
             >
               {text}
@@ -278,7 +308,7 @@ export function FolderTabs<V extends string>({ label, value, onChange, options, 
         })}
       </div>
     </div>
-    {extra ? <div className="shrink-0 pb-1.5">{extra}</div> : null}
+    {extra ? <div className="shrink-0">{extra}</div> : null}
     </div>
   );
 }
@@ -292,9 +322,10 @@ export function TabPanel<V extends string>({ id, value, first, children, classNa
       id={id}
       role="tabpanel"
       aria-labelledby={`${id}-tab-${value}`}
-      className={cn("min-w-0 rounded-2xl border bg-card p-4 sm:p-6", first && "rounded-tl-none", className)}
+      className={cn("p-card min-w-0 rounded-[24px] p-4 sm:p-7", className)}
     >
-      {children}
+      {/* each tab's content eases in instead of snapping */}
+      <div key={value} className="smh-swap">{children}</div>
     </div>
   );
 }
@@ -303,30 +334,53 @@ export function TabPanel<V extends string>({ id, value, first, children, classNa
  * marked on that rule. On phones it is a single row of links above the article. */
 export function Toc({ label, items }: { label: string; items: [string, string][] }) {
   const [active, setActive] = useState(items[0]?.[0] ?? "");
+  // the section being read is the last heading above the upper third of the screen, read from the scroll position so a
+  // long jump lands on the right item too
   useEffect(() => {
-    const els = items.map(([id]) => document.getElementById(id)).filter((e): e is HTMLElement => !!e);
-    const io = new IntersectionObserver(
-      (es) => {
-        const seen = es.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
-        if (seen) setActive(seen.target.id);
-      },
-      { rootMargin: "-15% 0px -70% 0px" },
-    );
-    els.forEach((e) => io.observe(e));
-    return () => io.disconnect();
+    let raf = 0;
+    const read = () => {
+      raf = 0;
+      const line = window.innerHeight * 0.33;
+      let cur = items[0]?.[0] ?? "";
+      for (const [id] of items) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= line) cur = id;
+      }
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) cur = items[items.length - 1]?.[0] ?? cur;
+      setActive(cur);
+    };
+    const on = () => (raf ||= requestAnimationFrame(read));
+    read();
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on);
+    return () => (window.removeEventListener("scroll", on), window.removeEventListener("resize", on), cancelAnimationFrame(raf));
   }, [items]);
+  const list = useRef<HTMLOListElement>(null);
+  const [bar, setBar] = useState<{ top: number; height: number } | null>(null);
+  useLayoutEffect(() => {
+    const a = list.current?.querySelector<HTMLElement>(`[data-id="${CSS.escape(active)}"]`);
+    if (a) setBar({ top: a.offsetTop, height: a.offsetHeight });
+  }, [active]);
   return (
     <nav aria-label={label} className="lg:sticky lg:top-8 lg:self-start">
-      <p className="mb-3 hidden text-xs font-semibold text-muted-foreground lg:block">{label}</p>
-      <ol className="flex flex-wrap gap-x-4 gap-y-1 border-b pb-3 text-sm lg:flex-col lg:gap-0 lg:border-b-0 lg:border-l lg:pb-0">
+      <p className="mb-4 hidden text-[11.5px] font-semibold uppercase tracking-[0.07em] text-muted-foreground lg:block">{label}</p>
+      <ol ref={list} className="relative flex flex-wrap gap-x-4 gap-y-1 border-b pb-3 text-sm lg:flex-col lg:gap-0 lg:border-b-0 lg:border-l lg:border-black/[0.07] lg:pb-0">
+        {/* on wide screens a bar glides to the section being read */}
+        {bar ? <span className="side-bar absolute -left-px hidden w-[2px] rounded-full bg-indigo lg:block" style={{ top: bar.top, height: bar.height }} aria-hidden="true" /> : null}
         {items.map(([id, text]) => (
-          <li key={id}>
+          <li key={id} data-id={id}>
             <a
               href={`#${id}`}
+              onClick={(e) => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                e.preventDefault();
+                el.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+              }}
               aria-current={active === id ? "location" : undefined}
               className={cn(
-                "block transition-colors lg:-ml-px lg:border-l-2 lg:py-1.5 lg:pl-4",
-                active === id ? "font-medium text-indigo lg:border-indigo" : "text-ink/65 hover:text-ink lg:border-transparent",
+                "block py-1.5 tracking-[-0.01em] transition-colors duration-300 lg:py-2 lg:pl-4",
+                active === id ? "font-semibold text-ink" : "text-ink/55 hover:text-ink",
               )}
             >
               {text}

@@ -28,31 +28,31 @@ function Assessment({ sid }: { sid: string }) {
         <Link href="/skills" className="text-sm font-medium text-indigo underline-offset-4 hover:underline">
           ← {t("Understand Your Skills", "Kenali Skill")}
         </Link>
-        <div className="mt-3 flex items-start justify-between gap-6">
+        <div className="dash-hero hero-rise relative mt-5 flex items-start justify-between gap-6 overflow-hidden rounded-[30px] p-7 sm:p-10">
         <div className="min-w-0">
-          <h1 className="text-[26px] font-bold leading-tight text-ink sm:text-[30px]">{t("Skill Check", "Cek Kemampuan")}</h1>
-          <p className="mt-2 max-w-lg text-ink/75">
+          <h1 className="text-[34px] font-extrabold leading-[1.05] tracking-[-0.035em] text-ink sm:text-[42px]">{t("Skill", "Cek")} <span className="hero-grad">{t("Check", "Kemampuan")}</span></h1>
+          <p className="mt-3 max-w-lg text-[16px] leading-relaxed text-ink/65">
             {t("A short set of questions on the skills employers ask for most, picked where we know the least about you.", "Serangkaian soal singkat tentang skill yang paling banyak diminta employer, dipilih di bagian yang paling sedikit kami ketahui tentangmu.")}
           </p>
-          <ul className="mt-6 space-y-3">
-            <li className="flex gap-3">
-              <Clock className="mt-0.5 size-5 shrink-0 text-indigo" aria-hidden="true" />
+          <ul className="mt-7 space-y-3.5">
+            <li className="flex items-center gap-3.5">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-[11px] bg-card text-indigo ring-1 ring-black/[0.05]"><Clock className="size-[18px]" aria-hidden="true" /></span>
               <span className="text-ink/80">{t("About 24 questions and 20 minutes. There is no time limit.", "Sekitar 24 soal dan 20 menit. Tidak ada batas waktu.")}</span>
             </li>
-            <li className="flex gap-3">
-              <Scale className="mt-0.5 size-5 shrink-0 text-indigo" aria-hidden="true" />
+            <li className="flex items-center gap-3.5">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-[11px] bg-card text-indigo ring-1 ring-black/[0.05]"><Scale className="size-[18px]" aria-hidden="true" /></span>
               <span className="text-ink/80">{t("Your answers count more than grades or certificates, so answer honestly.", "Jawabanmu dihitung lebih berat daripada nilai atau sertifikat, jadi jawab dengan jujur.")}</span>
             </li>
-            <li className="flex gap-3">
-              <CircleCheck className="mt-0.5 size-5 shrink-0 text-indigo" aria-hidden="true" />
+            <li className="flex items-center gap-3.5">
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-[11px] bg-card text-indigo ring-1 ring-black/[0.05]"><CircleCheck className="size-[18px]" aria-hidden="true" /></span>
               <span className="text-ink/80">{t("You\u2019ll see the right answers and an updated route as soon as you finish.", "Kamu langsung melihat jawaban yang benar dan rute terbaru begitu selesai.")}</span>
             </li>
           </ul>
-          <Button size="lg" className="mt-6" onClick={() => setStarted(true)}>
+          <Button size="lg" className="mt-8 h-12 px-7" onClick={() => setStarted(true)}>
             {t("Start the Check", "Mulai Cek Kemampuan")}
           </Button>
         </div>
-        <Mascot name="stopwatch" size={120} priority className="hidden shrink-0 sm:block" />
+        <Mascot name="stopwatch" size={140} priority className="problem-float hidden shrink-0 self-center sm:block" />
         </div>
       </div>
     );

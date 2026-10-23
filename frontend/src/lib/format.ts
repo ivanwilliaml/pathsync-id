@@ -32,7 +32,7 @@ export const FORMAT: Record<string, [string, string]> = { teks: ["Article", "Art
 export const EDGE_STATUS: Record<string, [string, string]> = { draft: ["Draft", "Draf"], approved: ["Approved", "Disetujui"], rejected: ["Rejected", "Ditolak"] };
 export const SOURCE: Record<string, string> = {
   karirhub: "Karirhub (Kemnaker)", workable: "Workable", workday: "Workday", lever: "Lever", greenhouse: "Greenhouse",
-  smartrecruiters: "SmartRecruiters", ashby: "Ashby", recruitee: "Recruitee",
+  smartrecruiters: "SmartRecruiters", ashby: "Ashby", recruitee: "Recruitee", kalibrr: "Kalibrr",
 };
 // every taxonomy cluster must be listed here, or its skills never show under "Skills by Area" or on the Skill Map
 // (backend test test_frontend_cluster_order_covers_taxonomy keeps the two in sync)
@@ -44,9 +44,9 @@ export const CLUSTER_ORDER = [
 
 const nf0 = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
 export const pct = (x: number | null | undefined, digits = 0) =>
-  x == null ? "–" : new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: digits }).format(x);
+  x == null ? "–" : new Intl.NumberFormat(tNow("en-US", "id-ID"), { style: "percent", maximumFractionDigits: digits }).format(x);
 export const num = (x: number | null | undefined, digits = 2) =>
-  x == null ? "–" : new Intl.NumberFormat("en-US", { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(x);
+  x == null ? "–" : new Intl.NumberFormat(tNow("en-US", "id-ID"), { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(x);
 export const int = (x: number | null | undefined) => (x == null ? "–" : nf0.format(x));
 export const hours = (h: number) =>
   `${new Intl.NumberFormat(tNow("en-US", "id-ID"), { maximumFractionDigits: 1 }).format(h)} ${tNow("h", "jam")}`;

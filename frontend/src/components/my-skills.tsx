@@ -116,9 +116,9 @@ export function SkillCollection({ d, onOpen }: { d: Dashboard; onOpen?: (skillId
       {mode === "status" ? (
         <>
           {list.length ? (
-            <div className="border-y">
+            <div>
               <RowHeader />
-              <ul className="divide-y">
+              <ul className="space-y-0.5">
                 {shown.map((r) => (
                   <SkillRow key={r.c.skill_id} r={r} onOpen={onOpen} />
                 ))}
@@ -129,7 +129,7 @@ export function SkillCollection({ d, onOpen }: { d: Dashboard; onOpen?: (skillId
           )}
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             {list.length > FIRST ? (
-              <button type="button" onClick={() => setExpanded(!expanded)} className="text-sm font-medium text-indigo underline-offset-4 hover:underline">
+              <button type="button" onClick={() => setExpanded(!expanded)} className="hero-ghost rounded-full px-5 py-2 text-[13.5px] font-semibold text-ink">
                 {expanded ? t("Show fewer", "Tampilkan lebih sedikit") : t(`Show all ${list.length}`, `Lihat semua ${list.length}`)}
               </button>
             ) : <span />}
@@ -152,12 +152,12 @@ function Chip({ on, onClick, count, hint, children }: { on: boolean; onClick: ()
       onClick={onClick}
       title={hint}
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-        on ? "bg-secondary font-semibold text-secondary-foreground" : "text-ink/70 hover:bg-muted hover:text-ink",
+        "inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-[13.5px] font-semibold tracking-[-0.01em] transition-[background-color,color,box-shadow] duration-300 ease-[cubic-bezier(.32,.72,0,1)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        on ? "bg-ink text-white shadow-[0_6px_14px_-8px_rgb(15_36_66/0.6)]" : "text-ink/60 hover:bg-ink/[0.05] hover:text-ink",
       )}
     >
       {children}
-      {count != null ? <span className={cn("tabular text-xs", on ? "text-secondary-foreground/80" : "text-muted-foreground")}>{count}</span> : null}
+      {count != null ? <span className={cn("tabular rounded-full px-1.5 text-[11.5px] font-bold", on ? "bg-white/20 text-white" : "bg-ink/[0.06] text-ink/55")}>{count}</span> : null}
     </button>
   );
 }
@@ -168,7 +168,7 @@ const COLS = "grid-cols-[28px_minmax(0,1fr)] md:grid-cols-[28px_minmax(0,1fr)_17
 function RowHeader() {
   const t = useT();
   return (
-    <div className={cn("hidden gap-4 border-b bg-muted/50 px-4 py-2 text-xs font-medium text-ink/60 md:grid", COLS)} aria-hidden="true">
+    <div className={cn("hidden gap-4 border-b border-black/[0.06] px-4 pb-3 text-[11.5px] font-semibold uppercase tracking-[0.06em] text-muted-foreground md:grid", COLS)} aria-hidden="true">
       <span>#</span>
       <span>Skill</span>
       <span>{t("Now → role needs", "Sekarang → role butuh")}</span>
@@ -186,13 +186,19 @@ function SkillRow({ r, onOpen }: { r: Row; onOpen?: (skillId: string) => void })
   const name = titleCase(c.name);
   const now = LEVEL[c.level] ? t(...LEVEL[c.level]) : c.level;
   return (
-    <li className={cn("grid gap-x-4 gap-y-2 px-4 py-3.5 md:items-center", COLS)}>
-      <span className="tabular row-span-3 pt-0.5 text-sm font-semibold text-indigo md:row-span-1 md:pt-0" aria-label={r.rank ? t(`Priority ${r.rank}`, `Prioritas ${r.rank}`) : undefined}>
-        {r.rank ?? ""}
+    <li className={cn("p-row grid gap-x-4 gap-y-2 rounded-2xl px-4 py-4 md:items-center", COLS)}>
+      <span className="row-span-3 md:row-span-1" aria-label={r.rank ? t(`Priority ${r.rank}`, `Prioritas ${r.rank}`) : undefined}>
+        {r.rank ? (
+          <span className={cn("tabular flex size-7 items-center justify-center rounded-full text-[12.5px] font-bold",
+            r.rank <= 3 ? "text-white shadow-[0_6px_12px_-6px_var(--indigo)]" : "bg-ink/[0.05] text-ink/55")}
+            style={r.rank <= 3 ? { background: ["var(--indigo)", "color-mix(in oklab, var(--indigo) 60%, var(--iris))", "var(--iris)"][r.rank - 1] } : undefined}>
+            {r.rank}
+          </span>
+        ) : null}
       </span>
       <div className="min-w-0">
         {onOpen ? (
-          <button type="button" onClick={() => onOpen(c.skill_id)} className="text-left font-semibold leading-snug text-ink underline-offset-4 hover:underline focus-visible:outline-none focus-visible:underline">
+          <button type="button" onClick={() => onOpen(c.skill_id)} className="text-left text-[15.5px] font-semibold leading-snug tracking-[-0.01em] text-ink transition-colors duration-300 hover:text-indigo focus-visible:outline-none focus-visible:underline">
             {name}
           </button>
         ) : (
@@ -208,7 +214,7 @@ function SkillRow({ r, onOpen }: { r: Row; onOpen?: (skillId: string) => void })
           <span className="md:hidden">, {t(`asked in ${pct(c.demand)}`, `diminta ${pct(c.demand)}`)}</span>
         </p>
       </div>
-      <span className="tabular hidden text-right text-sm text-ink/80 md:block">{pct(c.demand)}</span>
+      <span className="tabular hidden text-right text-[15px] font-bold tracking-[-0.02em] text-ink md:block">{pct(c.demand)}</span>
       <div className="col-start-2 flex md:col-start-auto md:justify-end">
         {r.status === "strong" ? (
           <span className="text-sm font-medium text-mint-ink">
@@ -217,7 +223,7 @@ function SkillRow({ r, onOpen }: { r: Row; onOpen?: (skillId: string) => void })
         ) : (
           <Link
             href={r.inRoute ? `/learn#step-${c.skill_id}` : `/assessment/${c.skill_id}`}
-            className="whitespace-nowrap text-sm font-medium text-indigo underline-offset-4 hover:underline"
+            className="group whitespace-nowrap rounded-full bg-secondary px-3.5 py-1.5 text-[13px] font-semibold text-secondary-foreground transition-colors duration-300 hover:bg-indigo hover:text-white"
           >
             {r.inRoute ? t("Open in Learn →", "Buka di Belajar →") : t("Prove it →", "Buktikan →")}
           </Link>

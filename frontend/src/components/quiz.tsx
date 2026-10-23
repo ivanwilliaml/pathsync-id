@@ -138,13 +138,13 @@ export function Quiz({ sid, sessionId, items, loopSkill }: { sid: string; sessio
           <span className="text-ink/60">{t(`${answered} answered`, `${answered} terjawab`)}</span>
         </div>
         <div className="h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuemin={0} aria-valuemax={items.length} aria-valuenow={idx + 1} aria-label={t("Progress", "Progres")}>
-          <div className="h-2 rounded-full bg-indigo transition-[width] duration-300" style={{ width: `${((idx + 1) / items.length) * 100}%` }} />
+          <div className="h-2 rounded-full bg-[linear-gradient(90deg,var(--indigo),var(--iris))] transition-[width] duration-500 ease-[cubic-bezier(.32,.72,0,1)]" style={{ width: `${((idx + 1) / items.length) * 100}%` }} />
         </div>
       </div>
 
       <Panel className="p-6 sm:p-8">
         <Tag tone="indigo">{titleCase(it.skill_name)}</Tag>
-        <h2 className="mt-4 text-[20px] font-semibold leading-snug text-ink sm:text-[19px]">{it.stem}</h2>
+        <h2 key={it.id} className="smh-swap mt-4 text-[21px] font-bold leading-snug tracking-[-0.02em] text-ink">{it.stem}</h2>
         <div role="radiogroup" aria-label={t("Answer options", "Pilihan jawaban")} className="mt-6 space-y-3">
           {it.options.map((o, k) => {
             const sel = answers[it.id] === k;
@@ -156,14 +156,14 @@ export function Quiz({ sid, sessionId, items, loopSkill }: { sid: string; sessio
                 aria-checked={sel}
                 onClick={() => setAnswers({ ...answers, [it.id]: k })}
                 className={cn(
-                  "flex w-full items-start gap-4 rounded-xl border-2 p-4 text-left text-[15px] transition-[color,background-color,border-color,transform] duration-100 active:scale-[0.985] active:bg-secondary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                  sel ? "border-indigo bg-secondary/60 text-ink" : "border-border bg-card text-ink/85 hover:border-indigo/30 hover:bg-muted/50",
+                  "opt-card flex w-full items-start gap-4 rounded-[18px] p-4 text-left text-[15px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                  sel ? "opt-on text-ink" : "text-ink/85",
                 )}
               >
                 <span
                   className={cn(
-                    "flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold",
-                    sel ? "bg-indigo text-white" : "bg-muted text-ink/70",
+                    "flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-[background-color,color,transform] duration-300",
+                    sel ? "scale-105 bg-indigo text-white" : "bg-ink/[0.05] text-ink/60",
                   )}
                   aria-hidden="true"
                 >

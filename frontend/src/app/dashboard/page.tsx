@@ -48,8 +48,10 @@ function DashboardView({ sid }: { sid: string }) {
     <div className="space-y-10">
       <header className="flex flex-wrap items-end justify-between gap-3">
         <div className="min-w-0">
-          <h1 className="text-[26px] font-bold leading-tight text-ink sm:text-[30px]">Hi, {d.student.display_name}</h1>
-          <p className="mt-1 text-sm text-ink/70">
+          <h1 className="hero-rise text-[34px] font-extrabold leading-[1.06] tracking-[-0.035em] text-ink sm:text-[42px]" style={{ ["--d" as string]: "0ms" }}>
+            Hi, <span className="hero-grad">{d.student.display_name}</span>
+          </h1>
+          <p className="hero-rise mt-2.5 text-[15.5px] text-ink/60" style={{ ["--d" as string]: "70ms" }}>
             {t("Your route to", "Rutemu menuju")} <span className="font-semibold text-ink">{d.role.name}</span>
             {t(`, from ${d.role.n_postings} real job postings. `, `, dari ${d.role.n_postings} job posting nyata. `)}
             <Link href="/careers" className="font-medium text-indigo underline-offset-4 hover:underline">
@@ -64,26 +66,26 @@ function DashboardView({ sid }: { sid: string }) {
       {/* main: what to do now and what to study; side: where you stand and what changed */}
       <div className="grid items-start gap-10 lg:grid-cols-12">
         <div className="min-w-0 space-y-10 lg:col-span-8">
-          <section aria-labelledby="primary-action" className="relative rounded-2xl bg-route-soft p-5 sm:p-6 sm:pr-36">
+          <section aria-labelledby="primary-action" className="dash-hero hero-rise relative overflow-hidden rounded-[28px] p-6 sm:p-8 sm:pr-44" style={{ ["--d" as string]: "160ms" }}>
             {stage === "evidence" ? (
               <>
-                <Mascot name="checklist" size={104} className="absolute right-4 bottom-3 hidden sm:block" />
-                <p className="text-sm font-medium text-indigo">{t("Start here", "Mulai dari sini")}</p>
-                <h2 id="primary-action" className="mt-1 text-[19px] font-bold leading-snug text-ink">{t("Show what you can already do", "Tunjukkan apa yang sudah bisa kamu lakukan")}</h2>
-                <p className="mt-1.5 text-sm text-ink/70">{t("A transcript, a project or the skill check is enough to start.", "Transkrip, project, atau Cek Kemampuan sudah cukup untuk mulai.")}</p>
-                <div className="mt-4 flex flex-wrap gap-2">
-                  <LinkButton href="/evidence" size="lg" className="h-10">{t("Add Evidence", "Tambah Bukti")}</LinkButton>
-                  <LinkButton href="/assessment" variant="outline" size="lg" className="h-10">{t("Take the Skill Check", "Ikuti Cek Kemampuan")}</LinkButton>
+                <Mascot name="checklist" size={124} className="problem-float absolute right-6 bottom-4 hidden sm:block" />
+                <p className="text-[13px] font-semibold uppercase tracking-[0.06em] text-indigo">{t("Start here", "Mulai dari sini")}</p>
+                <h2 id="primary-action" className="mt-2 text-[26px] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink">{t("Show what you can already do", "Tunjukkan apa yang sudah bisa kamu lakukan")}</h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-ink/65">{t("A transcript, a project or the skill check is enough to start.", "Transkrip, project, atau Cek Kemampuan sudah cukup untuk mulai.")}</p>
+                <div className="mt-6 flex flex-wrap gap-2.5">
+                  <LinkButton href="/evidence" size="lg" className="h-11 px-6">{t("Add Evidence", "Tambah Bukti")}</LinkButton>
+                  <LinkButton href="/assessment" variant="outline" size="lg" className="h-11 px-6">{t("Take the Skill Check", "Ikuti Cek Kemampuan")}</LinkButton>
                 </div>
               </>
             ) : stage === "check" ? (
               <>
-                <Mascot name="stopwatch" size={104} className="absolute right-4 bottom-3 hidden sm:block" />
-                <p className="text-sm font-medium text-indigo">{t("Sharpen your route", "Perkuat pemetaan")}</p>
-                <h2 id="primary-action" className="mt-1 text-[19px] font-bold leading-snug text-ink">{t("Take the Skill Check", "Ikuti Cek Kemampuan")}</h2>
-                <p className="mt-1.5 text-sm text-ink/70">{t("About 20 minutes. Makes your route much sharper.", "Sekitar 20 menit. Membuat rutemu jauh lebih tepat.")}</p>
-                <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <LinkButton href="/assessment" size="lg" className="h-10">{t("Start the Check", "Mulai Cek")}</LinkButton>
+                <Mascot name="stopwatch" size={124} className="problem-float absolute right-6 bottom-4 hidden sm:block" />
+                <p className="text-[13px] font-semibold uppercase tracking-[0.06em] text-indigo">{t("Sharpen your route", "Perkuat pemetaan")}</p>
+                <h2 id="primary-action" className="mt-2 text-[26px] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink">{t("Take the Skill Check", "Ikuti Cek Kemampuan")}</h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-ink/65">{t("About 20 minutes. Makes your route much sharper.", "Sekitar 20 menit. Membuat rutemu jauh lebih tepat.")}</p>
+                <div className="mt-6 flex flex-wrap items-center gap-4">
+                  <LinkButton href="/assessment" size="lg" className="h-11 px-6">{t("Start the Check", "Mulai Cek")}</LinkButton>
                   {nextStep ? (
                     <Link href={`/learn#step-${nextStep.skill_id}`} className="text-sm font-medium text-indigo underline-offset-4 hover:underline">
                       {t("or start learning now", "atau mulai belajar sekarang")}
@@ -93,12 +95,12 @@ function DashboardView({ sid }: { sid: string }) {
               </>
             ) : stage === "learn" && top ? (
               <>
-                <Mascot name="compass" size={104} className="absolute right-4 bottom-3 hidden sm:block" />
-                <p className="text-sm font-medium text-indigo">{t("Start learning", "Mulai belajar")}</p>
-                <h2 id="primary-action" className="mt-1 text-[19px] font-bold leading-snug text-ink">{titleCase(top.name)}</h2>
-                <p className="mt-1.5 text-sm text-ink/75">{top.explanation ? firstSentence(top.explanation.why_now) : null}</p>
-                <div className="mt-4 flex flex-wrap items-center gap-3">
-                  <LinkButton href={`/learn#step-${top.skill_id}`} size="lg" className="h-10">{t("Open the Materials", "Buka Materinya")}</LinkButton>
+                <Mascot name="compass" size={124} className="problem-float absolute right-6 bottom-4 hidden sm:block" />
+                <p className="text-[13px] font-semibold uppercase tracking-[0.06em] text-indigo">{t("Start learning", "Mulai belajar")}</p>
+                <h2 id="primary-action" className="mt-2 text-[26px] font-extrabold leading-[1.12] tracking-[-0.03em] text-ink">{titleCase(top.name)}</h2>
+                <p className="mt-2 text-[15px] leading-relaxed text-ink/65">{top.explanation ? firstSentence(top.explanation.why_now) : null}</p>
+                <div className="mt-6 flex flex-wrap items-center gap-4">
+                  <LinkButton href={`/learn#step-${top.skill_id}`} size="lg" className="h-11 px-6">{t("Open the Materials", "Buka Materinya")}</LinkButton>
                   <button type="button" className="text-sm font-medium text-indigo underline-offset-4 hover:underline" onClick={() => open(top.skill_id)}>
                     {t("See why", "Lihat alasannya")}
                   </button>
@@ -116,21 +118,23 @@ function DashboardView({ sid }: { sid: string }) {
           {d.study_arm ? <StudyPlanCard sid={sid} /> : null}
         </div>
 
-        <aside className="min-w-0 space-y-8 lg:col-span-4 lg:border-l lg:pl-8">
-          <Link href="/skills" className="group block">
-            <span className="block text-sm font-semibold text-ink">{t("Role readiness", "Readiness role")}</span>
-            {f.evidence ? <span className="tabular mt-0.5 block text-[28px] font-bold leading-tight text-ink">{hasEvidence ? pct(d.coverage) : "–"}</span> : null}
-            <span className="mt-1 block text-sm font-medium text-indigo group-hover:underline">{t("See my skills →", "Lihat skill-ku →")}</span>
-          </Link>
-          {hasEvidence && d.path_hours > 0 ? (
-            <Link href="/learn" className="group block">
-              <span className="block text-sm font-semibold text-ink">{t("Ready in", "Perkiraan siap")}</span>
-              <span className="tabular mt-0.5 block text-[22px] font-bold leading-tight text-ink">{weeks(d.path_weeks)}</span>
-              <span className="mt-1 block text-xs text-muted-foreground">
-                {t(`${hours(d.path_hours)} left at your weekly pace`, `sisa ${hours(d.path_hours)} dengan ritme mingguanmu`)}
-              </span>
+        <aside className="hero-rise min-w-0 space-y-6 lg:col-span-4" style={{ ["--d" as string]: "220ms" }}>
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-1 xl:grid-cols-2">
+            <Link href="/skills" className="dash-tile group block rounded-[22px] p-5">
+              <span className="block text-[11.5px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{t("Role readiness", "Readiness role")}</span>
+              {f.evidence ? <span className="stat-num tabular mt-2 block text-[38px] font-bold leading-none tracking-[-0.045em]">{hasEvidence ? pct(d.coverage) : "–"}</span> : null}
+              <span className="mt-3 block text-[13px] font-semibold text-indigo">{t("See my skills", "Lihat skill-ku")} <span className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">→</span></span>
             </Link>
-          ) : null}
+            {hasEvidence && d.path_hours > 0 ? (
+              <Link href="/learn" className="dash-tile group block rounded-[22px] p-5">
+                <span className="block text-[11.5px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{t("Ready in", "Perkiraan siap")}</span>
+                <span className="tabular mt-2 block whitespace-nowrap text-[26px] font-bold leading-none tracking-[-0.04em] text-ink">{weeks(d.path_weeks)}</span>
+                <span className="mt-3 block text-[12.5px] leading-snug text-muted-foreground">
+                  {t(`${hours(d.path_hours)} left at your weekly pace`, `sisa ${hours(d.path_hours)} dengan ritme mingguanmu`)}
+                </span>
+              </Link>
+            ) : null}
+          </div>
           {hasEvidence ? <AlsoClose sid={sid} /> : null}
           <LatestChange sid={sid} />
           {pulseReady ? <ClarityPulse sid={sid} /> : null}
@@ -146,33 +150,35 @@ function ActiveStep({ step }: { step: Dashboard["path"][number] }) {
   const t = useT();
   const left = step.materials.filter((m) => !m.done);
   return (
-    <section aria-labelledby="active-step">
+    <section aria-labelledby="active-step" className="p-card hero-rise rounded-[24px] p-6 sm:p-7" style={{ ["--d" as string]: "260ms" }}>
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <div className="min-w-0">
-          <p className="text-xs font-medium text-indigo">{t("Learning now", "Sedang dipelajari")}</p>
-          <h2 id="active-step" className="text-base font-semibold text-ink">{titleCase(step.name)}</h2>
+          <p className="text-[11.5px] font-semibold uppercase tracking-[0.06em] text-indigo">{t("Learning now", "Sedang dipelajari")}</p>
+          <h2 id="active-step" className="mt-1 text-[20px] font-bold tracking-[-0.02em] text-ink">{titleCase(step.name)}</h2>
         </div>
-        <span className="tabular text-xs text-muted-foreground">
+        <span className="tabular rounded-full bg-muted/80 px-3 py-1 text-[12px] font-medium text-ink/65">
           {t(`${step.materials.length - left.length} of ${step.materials.length} materials, about ${hours(step.hours)}`, `${step.materials.length - left.length} dari ${step.materials.length} materi, sekitar ${hours(step.hours)}`)}
         </span>
       </div>
       {left.length ? (
-        <ul className="mt-3 divide-y border-y">
+        <ul className="-mx-3 mt-4 space-y-1">
           {left.slice(0, 2).map((m) => (
             <li key={m.id}>
-              <a href={safeUrl(m.url)} target="_blank" rel="noreferrer" className="flex items-start gap-2.5 py-3 text-sm hover:text-indigo">
-                <BookOpen className="mt-0.5 size-4 shrink-0 text-indigo" aria-hidden="true" />
-                <span className="min-w-0">
-                  <span className="block font-medium text-ink">{m.title}</span>
-                  <span className="block text-xs text-muted-foreground">{m.provider}, {m.hours} {t("h", "jam")}</span>
+              <a href={safeUrl(m.url)} target="_blank" rel="noreferrer" className="p-row group flex items-center gap-3.5 rounded-2xl px-3 py-3 text-sm">
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-[12px] bg-secondary text-indigo">
+                  <BookOpen className="size-[18px]" aria-hidden="true" />
                 </span>
-                <ExternalLink className="ml-auto mt-0.5 size-3 shrink-0 text-ink/40" aria-hidden="true" />
+                <span className="min-w-0">
+                  <span className="block truncate text-[15px] font-semibold tracking-[-0.01em] text-ink">{m.title}</span>
+                  <span className="block text-[13px] text-muted-foreground">{m.provider}, {m.hours} {t("h", "jam")}</span>
+                </span>
+                <ExternalLink className="ml-auto size-3.5 shrink-0 text-ink/30 transition-colors group-hover:text-indigo" aria-hidden="true" />
               </a>
             </li>
           ))}
         </ul>
       ) : null}
-      <Link href={`/learn#step-${step.skill_id}`} className="mt-3 inline-block text-sm font-medium text-indigo underline-offset-4 hover:underline">
+      <Link href={`/learn#step-${step.skill_id}`} className="group mt-4 inline-block text-[14px] font-semibold text-indigo">
         {t("Open this step in Learn →", "Buka langkah ini di Belajar →")}
       </Link>
     </section>
@@ -259,13 +265,13 @@ function ClarityPulse({ sid }: { sid: string }) {
     setDone(true);
   }
   return (
-    <section aria-label={t("Quick question", "Pertanyaan singkat")} className="flex flex-wrap items-center justify-between gap-3">
+    <section aria-label={t("Quick question", "Pertanyaan singkat")} className="p-card flex flex-col gap-4 rounded-[22px] p-5">
       <p className="text-sm text-ink/85">
         <span className="font-medium text-ink">{t("Quick question:", "Pertanyaan singkat:")}</span> {t("\u201cI know which skill to learn next and why.\u201d", "\u201cAku tahu skill mana yang harus dipelajari berikutnya dan kenapa.\u201d")}
       </p>
-      <div role="group" aria-label={t("1 strongly disagree, 5 strongly agree", "1 sangat tidak setuju, 5 sangat setuju")} className="flex gap-1">
+      <div role="group" aria-label={t("1 strongly disagree, 5 strongly agree", "1 sangat tidak setuju, 5 sangat setuju")} className="flex gap-2">
         {[1, 2, 3, 4, 5].map((v) => (
-          <button key={v} type="button" onClick={() => answer(v)} className="size-9 rounded-lg border text-sm font-medium hover:border-indigo hover:bg-secondary">
+          <button key={v} type="button" onClick={() => answer(v)} className="dash-pulse size-10 rounded-full bg-card text-sm font-semibold text-ink">
             {v}
           </button>
         ))}
@@ -377,18 +383,18 @@ function JourneyStrip({ d, hasEvidence }: { d: Dashboard; hasEvidence: boolean }
     },
   ];
   return (
-    <nav aria-label={t("Your journey", "Perjalananmu")}>
+    <nav aria-label={t("Your journey", "Perjalananmu")} className="hero-rise" style={{ ["--d" as string]: "110ms" }}>
       <ol className="grid gap-4 sm:grid-cols-3 sm:gap-0">
         {stages.map((s, i) => (
           <li key={s.href} className="relative min-w-0 sm:pr-6">
             {/* the line that joins this step to the next one */}
-            {i < stages.length - 1 ? <span className="absolute left-3 right-0 top-3 hidden h-px bg-border sm:block" aria-hidden="true" /> : null}
+            {i < stages.length - 1 ? <span className={`absolute left-3 right-0 top-3.5 hidden h-[2px] rounded-full sm:block ${s.done ? "bg-mint/40" : "bg-ink/[0.07]"}`} aria-hidden="true" /> : null}
             <Link href={s.href} className="group relative flex items-start gap-3 focus-visible:outline-none">
-              <span className={`relative flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ring-4 ring-background ${s.done ? "bg-mint" : "bg-indigo"}`} aria-hidden="true">
+              <span className={`relative flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ring-[5px] ring-background ${s.done ? "bg-mint shadow-[0_6px_14px_-6px_var(--mint)]" : "bg-indigo shadow-[0_6px_14px_-6px_var(--indigo)]"}`} aria-hidden="true">
                 {s.done ? <Check className="size-3.5" /> : i + 1}
               </span>
               <span className="min-w-0 pt-0.5">
-                <span className="relative inline-block bg-background pr-3 text-sm font-semibold text-ink group-hover:text-indigo group-focus-visible:underline">{s.title}</span>
+                <span className="relative inline-block bg-background pr-3 text-[15px] font-bold tracking-[-0.01em] text-ink transition-colors duration-300 group-hover:text-indigo group-focus-visible:underline">{s.title}</span>
                 <span className="block text-xs text-muted-foreground">{s.status}</span>
               </span>
             </Link>

@@ -77,16 +77,17 @@ export function AppShell({ children }: { children: ReactNode }) {
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-card focus:px-3 focus:py-2">
         {t("Skip to content", "Langsung ke konten")}
       </a>
-      <aside className="sticky top-0 hidden h-screen flex-col border-r bg-sidebar lg:flex">
+      <aside className="app-side sticky top-0 hidden h-screen flex-col lg:flex">
         <SidebarNav collapsed={collapsed} onToggle={toggle} />
       </aside>
       {/* below lg the bottom bar is fixed over the page: keep room for it and the phone's home indicator */}
       <div className="flex min-h-screen min-w-0 flex-col pb-[calc(4.5rem+env(safe-area-inset-bottom))] lg:pb-0">
         <MobileBar />
-        <main id="main" className="mx-auto w-full max-w-[1360px] flex-1 px-5 py-6 sm:px-6 lg:px-8 lg:py-8">
-          {children}
+        <main id="main" className="mx-auto w-full max-w-[1360px] flex-1 px-5 py-6 sm:px-6 lg:px-10 lg:py-10">
+          {/* every page eases in when you move between them */}
+          <div key={path} className="page-enter">{children}</div>
         </main>
-        <footer className="mx-auto flex w-full max-w-[1360px] flex-wrap items-center justify-between gap-2 border-t px-5 py-4 text-xs text-muted-foreground sm:px-6 lg:px-8">
+        <footer className="site-foot mx-auto flex w-full max-w-[1360px] flex-wrap items-center justify-between gap-2 px-5 py-5 text-[12.5px] text-muted-foreground sm:px-6 lg:px-10">
           <span className="flex gap-4">
             <Link href="/privacy" className="hover:text-ink">{t("Privacy", "Privasi")}</Link>
             <Link href="/about" className="hover:text-ink">{t("About & Contact", "Tentang & Kontak")}</Link>
@@ -112,12 +113,12 @@ function NavLink({ href, label, icon: Icon, active, collapsed, onNavigate }: {
       aria-label={collapsed ? label : undefined}
       title={collapsed ? label : undefined}
       className={cn(
-        "flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "app-nav flex items-center gap-3 rounded-xl py-2.5 text-[14px] font-semibold tracking-[-0.01em] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         collapsed ? "justify-center px-0" : "px-3",
-        active ? "bg-secondary text-secondary-foreground" : "text-ink/75 hover:bg-muted hover:text-ink",
+        active ? "app-nav-on text-ink" : "text-ink/60 hover:bg-ink/[0.04] hover:text-ink",
       )}
     >
-      <Icon className="size-[18px] shrink-0" aria-hidden="true" />
+      <Icon className={cn("size-[18px] shrink-0 transition-colors duration-300", active && "text-indigo")} aria-hidden="true" />
       {collapsed ? null : <span className="truncate">{label}</span>}
     </Link>
   );
@@ -167,11 +168,11 @@ function SidebarNav({ onNavigate, collapsed = false, onToggle }: { onNavigate?: 
       <nav aria-label={t("Main", "Utama")} className="flex flex-1 flex-col gap-1 overflow-y-auto overflow-x-hidden">
         {/* a thin line separates Home from the three stages */}
         {visible(PRIMARY, !!id).map((i, n, all) => (
-          <div key={i.href} className={cn(all[n - 1]?.href === "/dashboard" && "mt-1 border-t pt-2")}>
+          <div key={i.href} className={cn(all[n - 1]?.href === "/dashboard" && "mt-2 border-t border-black/[0.06] pt-3")}>
             <NavLink href={i.href} label={t(...i.label)} icon={i.icon} active={current === i.href} collapsed={collapsed} onNavigate={onNavigate} />
           </div>
         ))}
-        <div className="mt-auto space-y-1 border-t pt-4">
+        <div className="mt-auto space-y-1 border-t border-black/[0.06] pt-4">
           {visible(UTILITY, !!id).map((i) => (
             <NavLink key={i.href} href={i.href} label={t(...i.label)} icon={i.icon} active={current === i.href} collapsed={collapsed} onNavigate={onNavigate} />
           ))}
@@ -240,9 +241,9 @@ function ProfileChip({ onNavigate }: { onNavigate?: () => void }) {
     );
   }
   return (
-    <div className="rounded-xl bg-muted p-3">
-      <p className="text-xs text-muted-foreground">{t("Profile ID", "ID Profil")}</p>
-      <p className="text-sm tabular-nums tracking-wide" translate="no">
+    <div className="p-card rounded-[18px] p-3.5">
+      <p className="text-[11px] font-semibold uppercase tracking-[0.06em] text-muted-foreground">{t("Profile ID", "ID Profil")}</p>
+      <p className="mt-0.5 font-mono text-[13px] tracking-wide text-ink" translate="no">
         {id}
       </p>
       <button
@@ -264,7 +265,7 @@ function MobileBar() {
   const [open, setOpen] = useState(false);
   const t = useT();
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-background/90 px-4 py-3 backdrop-blur lg:hidden">
+    <header className="app-glass sticky top-0 z-30 flex items-center justify-between px-4 py-3 lg:hidden">
       <Link href="/">
         <Logo />
       </Link>
@@ -291,7 +292,7 @@ function BottomNav() {
   return (
     <nav
       aria-label={t("Main", "Utama")}
-      className="fixed inset-x-0 bottom-0 z-30 border-t bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden"
+      className="app-glass app-glass-bottom fixed inset-x-0 bottom-0 z-30 pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       <ul className="mx-auto flex max-w-lg">
         {items.map(({ href, short, icon: Icon }) => {
@@ -302,7 +303,7 @@ function BottomNav() {
                 href={href}
                 aria-current={on ? "page" : undefined}
                 className={cn(
-                  "flex h-16 flex-col items-center justify-center gap-1 text-xs font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
+                  "flex h-16 flex-col items-center justify-center gap-1 text-[11px] font-semibold transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring",
                   on ? "text-indigo" : "text-ink/60 hover:text-ink",
                 )}
               >

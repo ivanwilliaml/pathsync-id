@@ -386,15 +386,15 @@ function CareerWorkspace({ sid, c, all, onTargetChanged, bare }: { sid: string; 
     <Panel className={cn("space-y-7 p-6 sm:p-8 xl:px-10", bare && "rounded-none border-0 pt-12 sm:p-8 sm:pt-12")}>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-xs font-medium text-muted-foreground">
+          <p className="text-[11.5px] font-semibold uppercase tracking-[0.07em] text-muted-foreground">
             {c.is_target ? t("Your target", "Target-mu") : t(`Previewing, your target stays ${target?.name ?? "the same"}`, `Sedang dilihat, target-mu tetap ${target?.name ?? "sama"}`)}
           </p>
-          <h3 className="mt-0.5 text-xl font-bold text-ink">{c.name}</h3>
-          <p className="mt-2 flex items-baseline gap-2">
-            <span className="tabular text-[28px] font-bold leading-none text-ink">{c.n_measured ? pct(c.readiness) : "–"}</span>
-            <span className="text-sm text-ink/75">{c.n_measured ? t("ready", "siap") : t("not measured yet", "belum terukur")}</span>
+          <h3 key={c.id} className="smh-swap mt-1 text-[26px] font-extrabold tracking-[-0.03em] text-ink">{c.name}</h3>
+          <p className="mt-3 flex items-baseline gap-2">
+            <span key={c.id} className="stat-num smh-swap tabular text-[48px] font-bold leading-none tracking-[-0.05em]">{c.n_measured ? pct(c.readiness) : "–"}</span>
+            <span className="text-[15px] font-medium text-ink/60">{c.n_measured ? t("ready", "siap") : t("not measured yet", "belum terukur")}</span>
           </p>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="mt-2 text-[13px] text-muted-foreground">
             {t(`${c.n_measured} of ${c.n_skills} skills measured, ${c.n_postings} postings`, `${c.n_measured} dari ${c.n_skills} skill terukur, ${c.n_postings} posting`)}
             {c.limited_data ? t(", Beta: fewer than 30 postings, read with care", ", Beta: kurang dari 30 posting, baca dengan hati-hati") : ""}
           </p>
@@ -523,22 +523,22 @@ function AreaBars({ c, other }: { c: Career; other: Career | null }) {
     : <span className="font-normal text-muted-foreground">{t("not measured", "belum terukur")}</span>;
   const bar = (x: Cell, color: string, h: string) => (
     <div className={cn("overflow-hidden rounded-full bg-muted", h)} aria-hidden="true">
-      {x?.measured ? <div className="h-full rounded-full" style={{ width: `${Math.max(2, x.coverage * 100)}%`, background: color }} /> : null}
+      {x?.measured ? <div className="career-bar h-full rounded-full" style={{ width: `${Math.max(2, x.coverage * 100)}%`, background: color }} /> : null}
     </div>
   );
   return (
     <ul className="space-y-4" aria-label={t("Readiness by area", "Readiness per area")}>
       {areaRows(c, other).map((r) => (
         <li key={r.id}>
-          <div className="flex items-baseline justify-between gap-3 text-sm">
-            <span className="min-w-0 text-ink">{r.label}</span>
+          <div className="flex items-baseline justify-between gap-3 text-[14.5px]">
+            <span className="min-w-0 font-medium text-ink">{r.label}</span>
             <span className="tabular flex shrink-0 gap-3">
               {value(r.a, true)}
               {other ? <span style={{ color: "var(--ember-ink)" }}>{value(r.b, false)}</span> : null}
             </span>
           </div>
           <div className="mt-1 space-y-1">
-            {bar(r.a, "var(--indigo)", "h-1.5")}
+            {bar(r.a, "linear-gradient(90deg, var(--indigo), color-mix(in oklab, var(--indigo) 55%, var(--iris)))", "h-1.5")}
             {other ? bar(r.b, "var(--ember-ink)", "h-1") : null}
           </div>
         </li>
@@ -634,35 +634,38 @@ function CareerList({ careers, selected, onSelect, compact }: { careers: Career[
       <h3 id="career-list" className="sr-only">{t("Careers", "Karier")}</h3>
       {groups.filter(([, list]) => list.length).map(([label, list]) => (
       <div key={label}>
-      <p className="mb-1.5 px-4 text-sm font-semibold text-muted-foreground">{label}</p>
-      <ul className="divide-y border-y">
-        {list.map((c) => (
+      <p className="mb-2 px-4 text-[11.5px] font-semibold uppercase tracking-[0.07em] text-muted-foreground">{label}</p>
+      <ul className="space-y-1">
+        {list.map((c) => {
+          const on = selected === c.id;
+          return (
           <li key={c.id}>
             <button
               type="button"
               onClick={() => onSelect(c.id)}
-              aria-pressed={selected === c.id}
+              aria-pressed={on}
               className={cn(
-                "grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-3 text-left transition-colors duration-100 hover:bg-muted/60 active:bg-secondary/60",
-                selected === c.id && "bg-secondary/50",
+                "career-row grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 rounded-2xl px-4 py-3.5 text-left",
+                on ? "career-row-on" : "hover:bg-ink/[0.035]",
               )}
             >
               <span className="min-w-0">
-                <span className="block font-semibold text-ink">{c.name}</span>
-                <span className="mt-0.5 block text-xs text-muted-foreground">
+                <span className="block truncate text-[15px] font-semibold tracking-[-0.01em] text-ink">{c.name}</span>
+                <span className="mt-0.5 flex items-center gap-1.5 text-[12.5px] text-muted-foreground">
                   {t(`${c.n_postings} postings`, `${c.n_postings} posting`)}
-                  {c.limited_data ? t(", Beta", ", Beta") : ""}
+                  {c.limited_data ? <span className="rounded-full bg-[#fff6d9] px-1.5 text-[10.5px] font-semibold text-ember-ink">Beta</span> : null}
+                </span>
+                {/* readiness at a glance, under the name in the narrow picker too */}
+                <span className="mt-2 block h-1 overflow-hidden rounded-full bg-ink/[0.06]" aria-hidden="true">
+                  <span className="career-bar block h-full rounded-full"
+                    style={{ width: `${Math.max(2, (c.n_measured ? c.readiness : 0) * 100)}%`, background: on ? "linear-gradient(90deg, var(--indigo), var(--iris))" : "color-mix(in oklab, var(--indigo) 55%, transparent)" }} />
                 </span>
               </span>
-              <span className="flex items-center gap-3">
-                <span className={cn("hidden h-2 w-28 overflow-hidden rounded-full bg-muted", !compact && "sm:block")} aria-hidden="true">
-                  <span className="block h-full rounded-full" style={{ width: `${Math.max(2, c.readiness * 100)}%`, background: "var(--indigo)" }} />
-                </span>
-                <span className="tabular w-12 text-right font-semibold text-ink">{c.n_measured ? pct(c.readiness) : "–"}</span>
-              </span>
+              <span className={cn("tabular w-12 text-right text-[16px] font-bold tracking-[-0.02em]", on ? "text-indigo" : "text-ink")}>{c.n_measured ? pct(c.readiness) : "–"}</span>
             </button>
           </li>
-        ))}
+          );
+        })}
       </ul>
       </div>
       ))}

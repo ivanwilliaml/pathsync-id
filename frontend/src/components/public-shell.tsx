@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useT } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "./ui/button";
@@ -28,14 +28,25 @@ export function PublicHeader({ onSignIn, onStart }: { onSignIn?: () => void; onS
       </Link>
     );
   };
-  const action = (label: string, variant: "outline" | "default", onClick: (() => void) | undefined, href: string) =>
-    onClick ? (
-      <button type="button" onClick={onClick} className={buttonVariants({ variant })}>{label}</button>
+  const action = (label: string, variant: "outline" | "default", onClick: (() => void) | undefined, href: string) => {
+    const cls = cn(buttonVariants({ variant }), "h-9 rounded-full px-4 text-[13.5px] font-semibold", variant === "default" ? "hero-cta" : "hero-ghost");
+    return onClick ? (
+      <button type="button" onClick={onClick} className={cls}>{label}</button>
     ) : (
-      <Link href={href} className={buttonVariants({ variant })}>{label}</Link>
+      <Link href={href} className={cls}>{label}</Link>
     );
+  };
+  // frosted once the page moves under it, clear at the top
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 8);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
   return (
-    <header className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-5 sm:px-8">
+    <div className="site-head sticky top-0 z-40" data-scrolled={scrolled}>
+    <header className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
       <Link href="/" aria-label={t("PathSync home", "Beranda PathSync")}>
         <Logo />
       </Link>
@@ -48,6 +59,7 @@ export function PublicHeader({ onSignIn, onStart }: { onSignIn?: () => void; onS
         {action(t("Start", "Mulai"), "default", onStart, "/?start=1")}
       </nav>
     </header>
+    </div>
   );
 }
 
@@ -61,14 +73,14 @@ export function PublicShell({ children }: { children: ReactNode }) {
       <main id="main" className="mx-auto w-full max-w-7xl px-5 pb-20 pt-4 sm:px-8">
         {children}
       </main>
-      <footer className="border-t">
-        <div className="mx-auto flex max-w-7xl flex-wrap justify-between gap-3 px-5 py-6 text-xs text-muted-foreground sm:px-8">
+      <footer className="site-foot">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-8 text-[12.5px] text-muted-foreground sm:px-8">
           <span className="flex flex-wrap gap-x-4 gap-y-1">
             <span>&copy; 2026 PathSync</span>
             <Link href="/about" className="hover:text-ink">{t("About & Contact", "Tentang & Kontak")}</Link>
             <Link href="/privacy" className="hover:text-ink">{t("Privacy Policy", "Kebijakan Privasi")}</Link>
           </span>
-          <Link href="/" className="font-medium text-indigo hover:underline">{t("Start your path", "Mulai Path-mu")} →</Link>
+          <Link href="/" className="group inline-flex items-center gap-1 font-semibold text-indigo">{t("Start your path", "Mulai Path-mu")} <span className="transition-transform duration-300 group-hover:translate-x-0.5">→</span></Link>
         </div>
       </footer>
     </div>
