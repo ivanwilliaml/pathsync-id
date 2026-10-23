@@ -1,5 +1,5 @@
 {
- "note": "Blind gold set for the six business roles (plan A3): 18 postings (3 per role) never used in any other gold set or split, annotated from the first 1100 characters before the extractor was run on them. Single annotator (Claude), so the result is indicative until the two-annotator consensus (V1) covers business skills.",
+ "note": "Blind gold set for the six business roles (plan A3): 18 postings (3 per role) never used in any other gold set or split, annotated from the first 1100 characters before the extractor was run on them. Single annotator (manual, team member), so the result is indicative until the two-annotator consensus (V1) covers business skills.",
  "max_chars": 1100,
  "postings": {
   "karirhub:01a0deea-5f17-71b4-9e38-61caf880eadb": {

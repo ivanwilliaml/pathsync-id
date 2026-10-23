@@ -1,5 +1,5 @@
 {
- "note": "Blind gold set C: 26 postings annotated from the first 1200 chars before the extractor was run on them, single annotator (Claude); never used to tune aliases. Reported as the held-out number.",
+ "note": "Blind gold set C: 26 postings annotated from the first 1200 chars before the extractor was run on them, single annotator (manual, team member); never used to tune aliases. Reported as the held-out number.",
  "max_chars": 1200,
  "postings": {
   "kalibrr:271962": {

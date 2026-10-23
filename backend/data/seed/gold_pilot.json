@@ -1,5 +1,5 @@
 {
- "note": "Pilot gold set v2: 24 postings, hard-skill requirements, single annotator (Claude). v1 labelled only the clearest skills; v2 adds the skills the posting explicitly names that v1 omitted (adjudicated after reading each false positive; 58 added) and keeps 29 detections as errors. Adjudication happened after seeing extractor output, so v2 is a development set; see gold_heldout.json for the blind set.",
+ "note": "Pilot gold set v2: 24 postings, hard-skill requirements, single annotator (manual, team member). v1 labelled only the clearest skills; v2 adds the skills the posting explicitly names that v1 omitted (adjudicated after reading each false positive; 58 added) and keeps 29 detections as errors. Adjudication happened after seeing extractor output, so v2 is a development set; see gold_heldout.json for the blind set.",
  "postings": {
   "karirhub:b9b79d78-cabb-4a55-8549-e71f049c9f37": {
    "role": "accountant",

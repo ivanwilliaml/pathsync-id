@@ -1,5 +1,5 @@
 {
- "note": "Held-out gold set: 26 postings annotated blind (before running the extractor) by a single annotator (Claude) from the first 1500 chars of each posting, explicit hard-skill mentions only. Not used to tune aliases.",
+ "note": "Held-out gold set: 26 postings annotated blind (before running the extractor) by a single annotator (manual, team member) from the first 1500 chars of each posting, explicit hard-skill mentions only. Not used to tune aliases.",
  "postings": {
   "karirhub:01a05bda-267e-70bb-b8e2-4399254e329f": {
    "role": "accountant",
