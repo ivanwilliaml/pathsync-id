@@ -18,7 +18,7 @@ import { MarketPostings, MarketSkills } from "./market-evidence";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { useT, type T } from "@/lib/i18n";
 
-// Career Map (docs/design/CAREER_VIZ_DISCOVERY.md): the 14 roles as a constellation. Families are clusters, lines join roles whose
+// Career Map: the 14 roles as a constellation. Families are clusters, lines join roles whose
 // postings ask for many of the same skills, node size is how many postings back the role, and brightness is how much of
 // what employers ask the student can already show. Brightness is continuous on purpose: there is no fake "unlocked" moment.
 
@@ -41,7 +41,7 @@ export interface CareersData { careers: Career[]; any_evidence: boolean }
 
 const shortName = (n: string) => n.replace(" / ML Engineer", "").replace(" Engineer", " Eng.").replace(" Developer", " Dev.");
 
-// Opportunity matrix (docs/design/CAREER_VIZ_DISCOVERY.md, option B): every career is a dot. Right = how much of what its
+// Opportunity matrix: every career is a dot. Right = how much of what its
 // postings ask for the student can already show; up = how many postings back it. The top-right zone answers "which careers
 // am I close to that employers also ask for a lot". Careers under 30 postings sit in the Beta band at the bottom.
 const VW = 920;

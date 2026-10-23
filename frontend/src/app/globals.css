@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * PathSync design system (docs/audit/UI_AUDIT.md), theme "Langit pagi" (morning sky, chosen 16 Oct 2026 to sit with the green chameleon mascot)
+ * PathSync design system, theme "Langit pagi" (morning sky, chosen 16 Oct 2026 to sit with the green chameleon mascot)
  *   Ink #0F2442 · Primary blue #1D6FD8 · Leaf green #4AA548 · Sun yellow #F5C542 · Success #2BA66A · Paper #F0F6FF
  * Token names are historical (indigo = primary, iris = middle accent, ember = warm accent).
  * The "route" gradient (blue → green → yellow) is the one signature element: it is reserved for the
@@ -238,7 +238,7 @@
   .sync-run-color { display: none; }
 }
 
-/* Large headings: tighter tracking and leading as size grows (docs/audit/APPLE_DESIGN_AUDIT.md) */
+/* Large headings: tighter tracking and leading as size grows */
 @layer base {
   h1 { letter-spacing: -0.02em; }
   h2 { letter-spacing: -0.01em; }

@@ -13,7 +13,7 @@ import { RequireStudent } from "@/components/require-student";
 import { EmptyState, ErrorNote, LinkButton, Panel, SectionTitle, Tag } from "@/components/kit";
 import { MascotLoader } from "@/components/mascot-loader";
 
-// Job Check (docs/design/JOB_CHECK.md): one pasted posting against the student's existing evidence. The backend
+// Job Check: one pasted posting against the student's existing evidence. The backend
 // (POST /students/{id}/check-job) never stores the text; offsets are UTF-16, the same unit as JS string slices.
 
 type Evidence = "direct" | "indirect" | "none";

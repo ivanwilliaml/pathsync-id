@@ -178,7 +178,7 @@ def research_consent(body: ResearchConsent, st: Student = Depends(student_access
 EVENTS = {"signup", "evidence_saved", "check_started", "check_completed", "next_step_viewed", "why_opened",
           "material_clicked", "reassess_started", "reassess_passed", "key_saved", "key_restored", "page_view",
           "plan_saved", "reflection_saved", "trace_opened", "demo_started", "pilot_survey"}
-# pilot targets from PLAN.md section 4; a miss is a finding to report, not a launch blocker
+# pilot targets set before the sessions; a miss is a finding to report, not a launch blocker
 PILOT_TARGETS = {"quick_check_completion": 0.60, "median_minutes_to_next_step": 5.0, "survey_q1_mean": 4.0}
 
 

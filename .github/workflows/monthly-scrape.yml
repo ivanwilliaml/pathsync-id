@@ -1,7 +1,7 @@
 # Monthly scrape check (paper III.A.6, trigger 2). Production scrapes on the server itself (compose service
 # `market-refresh`, pipeline.scheduled_refresh); this workflow only proves the scrapers still work and keeps the
 # snapshot as a build artifact for 90 days. It no longer commits raw postings to git: the history would grow every
-# month and the raw text is third-party content whose reuse terms are still under review (docs/ops/DATA_SOURCES.md).
+# month and the raw text is third-party content whose reuse terms are still under review.
 name: Scraping bulanan
 
 on:

@@ -2,7 +2,7 @@
 
     python -m pipeline.pilot_analysis        # -> data/models/pilot_eval.json
 
-Input: the observer sheet in data/seed/_validasi/V3_pilot.xlsx (template from docs/validasi). Provenance as stated by
+Input: the observer sheet in data/seed/_validasi/V3_pilot.xlsx. Provenance as stated by
 the team on 18 Oct 2026: responses collected in Google Sheets and entered into the template by the team; the raw
 Sheets export is not in the repository. The analysis is descriptive with paired Wilcoxon tests; it is a usability pilot,
 not an effectiveness study.

@@ -99,7 +99,7 @@ def test_extractor_meets_precision_target_on_blind_gold():
 
 def test_extractor_meets_target_on_the_verified_test_half():
     """Verified gold (LLM pre-annotation checked by one team member), test half of the locked split. Target 0.75 (lowered
-    from 0.80 on 18 Oct, after this half measured 0.796; PLAN.md M1); also guards the current level against regressions."""
+    from 0.80 on 18 Oct, after this half measured 0.796); also guards the current level against regressions."""
     from pathsync.gold import CONSENSUS_FILE
     from pipeline.eval_extractor import evaluate
 

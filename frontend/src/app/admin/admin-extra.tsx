@@ -460,8 +460,8 @@ export function Studies() {
         <SectionTitle>{t("Controlled User Study (Four Arms)", "User Study Terkontrol (Empat Lengan)")}</SectionTitle>
         <p className="mb-3 text-sm text-ink/70">
           {t(
-            "A: skill list from postings, B: generic AI-style plan, C: PathSync without adaptivity, D: full PathSync. Students join with the study code in Settings and are assigned by stratified minimisation. Protocol: docs/ops/STUDY_PROTOCOL.md.",
-            "A: daftar skill dari posting, B: rencana gaya AI umum, C: PathSync tanpa adaptivitas, D: PathSync penuh. Mahasiswa bergabung dengan kode studi di Pengaturan dan ditempatkan dengan stratified minimisation. Protokol: docs/ops/STUDY_PROTOCOL.md.",
+            "A: skill list from postings, B: generic AI-style plan, C: PathSync without adaptivity, D: full PathSync. Students join with the study code in Settings and are assigned by stratified minimisation.",
+            "A: daftar skill dari posting, B: rencana gaya AI umum, C: PathSync tanpa adaptivitas, D: PathSync penuh. Mahasiswa bergabung dengan kode studi di Pengaturan dan ditempatkan dengan stratified minimisation.",
           )}
         </p>
         <form onSubmit={create} className="flex flex-wrap gap-2">

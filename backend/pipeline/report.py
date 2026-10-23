@@ -38,7 +38,7 @@ from pathsync.db import (
 
 OUT = MODELS_DIR / "metrics.json"
 CRLF, LF = bytes([13, 10]), bytes([10])     # hashes ignore line endings (Windows checkouts vs CI)
-# 0.80 until 18 Oct 2026; the team lowered it to 0.75 after the test-half result (0.796) was known (PLAN.md M1)
+# 0.80 until 18 Oct 2026; the team lowered it to 0.75 after the test-half result (0.796) was known
 TARGET_PRECISION = 0.75
 GOLD_FILES = ("gold_pilot.json", "gold_heldout.json", "gold_blind.json", "gold_blind_bisnis.json", "gold_split.json",
               "gold_split_bisnis.json",

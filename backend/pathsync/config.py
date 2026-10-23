@@ -20,7 +20,7 @@ for _d in (RAW_DIR, SEED_DIR, PROCESSED_DIR, MODELS_DIR):
 # language switch), which display code reads through lang() / tr(). Matching and extraction never depend on it.
 LANG = os.getenv("PATHSYNC_LANG", "en")
 # posting sources left out of the market map, comma-separated (e.g. "kalibrr" while permission is pending; see
-# docs/ops/DATA_SOURCES.md). Raw files stay on disk; only the market build ignores them.
+# data source notes). Raw files stay on disk; only the market build ignores them.
 EXCLUDED_SOURCES = frozenset(x.strip() for x in os.getenv("PATHSYNC_EXCLUDED_SOURCES", "").split(",") if x.strip())
 
 DATABASE_URL = os.getenv("PATHSYNC_DATABASE_URL", f"sqlite:///{(DATA_DIR / 'pathsync.db').as_posix()}")
@@ -32,7 +32,7 @@ for _p in ("postgres://", "postgresql://"):
 # ---------------------------------------------------------------- embeddings
 # Open-source multilingual sentence embedding model that handles mixed ID/EN terms [III.B]
 EMBEDDING_MODEL = os.getenv("PATHSYNC_EMBEDDING_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
-# "torch" (sentence-transformers) or "onnx" (onnxruntime, int8 file below; for small hosts, see docs/ops/DEPLOY_GRATIS.md)
+# "torch" (sentence-transformers) or "onnx" (onnxruntime, int8 file below; for small hosts)
 EMBED_BACKEND = os.getenv("PATHSYNC_EMBED_BACKEND", "torch")
 # a local path (built by backend/scripts/quantize_onnx.py) or a file in the model repo
 ONNX_FILE = os.getenv("PATHSYNC_ONNX_FILE", "onnx/model.onnx")

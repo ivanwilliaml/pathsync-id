@@ -1,4 +1,4 @@
-"""Learning loop: learn -> practice -> prove -> adapt, per route skill (docs/design/LEARNING_LOOP.md).
+"""Learning loop: learn -> practice -> prove -> adapt, per route skill.
 
 The route says *what* to learn; the loop helps the student master it and shows the proof:
 

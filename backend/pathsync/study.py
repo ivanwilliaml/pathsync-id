@@ -11,7 +11,7 @@ Four arms instead of "PathSync vs a skill list", so each component's contributio
 Assignment uses stratified minimisation (by study programme) so arms stay balanced in small samples.
 Outcomes are logged in-product: direction-clarity pulse (H1), plan quality rated blind by experts (H2),
 minutes to finish the plan (H3), rank changes after new evidence (H4). Analysis: Kruskal-Wallis across
-arms, then Mann-Whitney U pairs with Holm correction (pre-registered in docs/ops/STUDY_PROTOCOL.md).
+arms, then Mann-Whitney U pairs with Holm correction (pre-registered).
 """
 from __future__ import annotations
 

@@ -41,7 +41,7 @@ def once(fn):
 
 class _OnnxModel:
     """Same model through onnxruntime, for hosts with 512 MB RAM (PyTorch needs ~1 GB). Two memory choices, both
-    checked against the PyTorch model in docs/ops/DEPLOY_GRATIS.md:
+    checked against the PyTorch model:
     * only the token-embedding table is int8 and pruned to Latin-script pieces (scripts/quantize_onnx.py); the
       transformer stays float32, because the fully int8 export moved the nearest skill for 18% of the labelled phrases;
     * SentencePiece instead of tokenizer.json (the `tokenizers` vocabulary took ~285 MB), with XLM-R's id offset;
