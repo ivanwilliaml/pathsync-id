@@ -59,13 +59,13 @@ def scenario_prompt(s: dict, names: dict[str, str], role_name: str = "Business A
 
 
 def llm_orders(scenarios, names, role_name: str = "Business Analyst") -> tuple[dict[str, list[str]] | None, str]:
-    """Generic-LLM orders: live from Claude when configured, else imported from an offline GPU run."""
+    """Generic-LLM orders: live from the LLM when configured, else imported from an offline GPU run."""
     if llm_configured():
         from pathsync.extraction import llm_extractor
 
         try:
             return {s["id"]: llm_extractor().generic_ranking(scenario_prompt(s, names, role_name), s["candidates"])
-                    for s in scenarios}, "dijalankan (Claude)"
+                    for s in scenarios}, "dijalankan (Gemini)"
         except LLMUnavailable:
             pass
     from pipeline.llm_jobs import LLM_ORDERS, _scenario_fingerprint
@@ -76,7 +76,7 @@ def llm_orders(scenarios, names, role_name: str = "Business Analyst") -> tuple[d
         if all(s["id"] in orders and fps.get(s["id"]) == _scenario_fingerprint(s) for s in scenarios):
             return {s["id"]: orders[s["id"]] for s in scenarios}, f"dijalankan ({data.get('model')}, luring)"
         return None, "tidak dijalankan (urutan LLM luring tidak lengkap/kedaluwarsa; ekspor ulang skenario)"
-    return None, "tidak dijalankan (butuh kredensial Anthropic API atau hasil LLM luring)"
+    return None, "tidak dijalankan (butuh kunci Gemini API atau hasil LLM luring)"
 
 
 def main(role: str = "business_analyst"):

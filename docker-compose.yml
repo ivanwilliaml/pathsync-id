@@ -42,7 +42,7 @@ services:
       PATHSYNC_WARMUP: sync          # load the embedding model before taking traffic (cold uploads took minutes)
       PATHSYNC_ENV: production
       SENTRY_DSN: ${SENTRY_DSN:-}
-      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
     volumes: [hf:/app/.hf]
     depends_on:
       db: {condition: service_healthy}

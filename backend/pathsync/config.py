@@ -45,7 +45,6 @@ SIM_REVIEW = 0.70      # 0.70-0.85 -> manual review queue ; < 0.70 -> new-skill 
 # threshold reaches it (data/models/normalisation_eval.json), so these phrases go to the review queue and never count
 # in the market map. Turn back on only when a re-run of pipeline.normalisation eval chooses a threshold.
 EMBEDDING_AUTO = os.getenv("PATHSYNC_EMBEDDING_AUTO", "0") == "1"
-LLM_MODEL = os.getenv("PATHSYNC_LLM_MODEL", "claude-opus-5-5")
 
 # ------------------------------------------------------------ demand map [III.A.1, eq. 1]
 DEMAND_HALF_LIFE_MONTHS = 6.0   # w_j = 0.5 ** (a_j / 6)

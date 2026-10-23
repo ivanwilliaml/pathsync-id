@@ -3,7 +3,7 @@
 # Runs an open-weight instruction model (Qwen3, Apache-2.0, attached as a Kaggle Model, no internet
 # needed) on a PathSync job file: skill extraction from job postings, or the "generic LLM" ranking
 # baseline for the expert scenarios. Prompts and the output schema come from the job file, which is
-# exported from the backend so they are identical to the Claude path. The output is raw model JSON;
+# exported from the backend so they are identical to the API path. The output is raw model JSON;
 # quote verification and taxonomy normalisation happen back in the backend (pipeline/llm_jobs.py).
 import base64
 import glob

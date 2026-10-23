@@ -1,25 +1,19 @@
-"""Claude-backed components. The LLM is used only where language understanding is
+"""LLM-backed components (Google Gemini). The LLM is used only where language understanding is
 needed (paper III.B): reading job postings, reading CVs, rating project artifacts
 against the rubric, and the "generic LLM" ranking baseline used in evaluation.
 
-Priority decisions are never made here - they come from the trained ranking model.
+Priority decisions are never made here - they come from the ranking formula.
 
-Credentials are resolved by the Anthropic SDK (ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN
-or an `ant auth login` profile). Set PATHSYNC_EXTRACTOR=llm to force this backend.
-
-Gemini (GEMINI_API_KEY, model PATHSYNC_GEMINI_MODEL) is used instead when it is the only key present or when
-PATHSYNC_LLM_PROVIDER=gemini. Same prompts, same JSON contract, same quote gate afterwards.
+Needs GEMINI_API_KEY (model PATHSYNC_GEMINI_MODEL). Set PATHSYNC_EXTRACTOR=llm to force this backend.
+Same prompts, same JSON contract, same quote gate afterwards.
 """
 from __future__ import annotations
 
 import json
 import os
 
-from ..config import LLM_MODEL
 from ..taxonomy import Skill
 from .base import Mention
-
-FALLBACK_BETA = "server-side-fallback-2026-07-01"
 
 
 def llm_configured() -> bool:
@@ -28,59 +22,11 @@ def llm_configured() -> bool:
         return False
     if mode == "llm":
         return True
-    return bool(os.getenv("ANTHROPIC_API_KEY") or os.getenv("ANTHROPIC_AUTH_TOKEN") or os.getenv("GEMINI_API_KEY"))
-
-
-def llm_provider() -> str:
-    """'gemini' or 'anthropic': the explicit choice, else whichever key exists (Anthropic first)."""
-    chosen = os.getenv("PATHSYNC_LLM_PROVIDER", "").lower()
-    if chosen in ("gemini", "anthropic"):
-        return chosen
-    if os.getenv("ANTHROPIC_API_KEY") or os.getenv("ANTHROPIC_AUTH_TOKEN"):
-        return "anthropic"
-    return "gemini" if os.getenv("GEMINI_API_KEY") else "anthropic"
+    return bool(os.getenv("GEMINI_API_KEY"))
 
 
 class LLMUnavailable(RuntimeError):
     pass
-
-
-class ClaudeClient:
-    def __init__(self, model: str | None = None):
-        try:
-            import anthropic
-        except ImportError as e:  # pragma: no cover
-            raise LLMUnavailable("anthropic SDK not installed") from e
-        self._anthropic = anthropic
-        self.client = anthropic.Anthropic()
-        self.model = model or LLM_MODEL
-
-    def json_call(self, system: str, user: str, schema: dict, effort: str = "low", max_tokens: int = 8000) -> dict:
-        a = self._anthropic
-        try:
-            resp = self.client.beta.messages.create(
-                model=self.model,
-                max_tokens=max_tokens,
-                betas=[FALLBACK_BETA],
-                fallbacks="default",
-                system=[{"type": "text", "text": system, "cache_control": {"type": "ephemeral"}}],
-                messages=[{"role": "user", "content": user}],
-                output_config={"effort": effort, "format": {"type": "json_schema", "schema": schema}},
-            )
-        except a.AuthenticationError as e:
-            raise LLMUnavailable("Anthropic credentials missing or invalid") from e
-        except a.RateLimitError as e:
-            raise LLMUnavailable("rate limited by the Anthropic API; retry later") from e
-        except a.APIStatusError as e:
-            raise LLMUnavailable(f"Anthropic API error {e.status_code}: {e.message}") from e
-        except a.APIConnectionError as e:
-            raise LLMUnavailable("cannot reach the Anthropic API") from e
-        if resp.stop_reason == "refusal":
-            raise LLMUnavailable("request declined by the model")
-        if resp.stop_reason == "max_tokens":
-            raise LLMUnavailable("response truncated (max_tokens)")
-        text = next((b.text for b in resp.content if b.type == "text"), "")
-        return json.loads(text)
 
 
 def _gemini_schema(schema: dict) -> dict:
@@ -151,7 +97,7 @@ class GeminiClient:
 
 
 def make_client(model: str | None = None):
-    return GeminiClient() if llm_provider() == "gemini" else ClaudeClient(model)
+    return GeminiClient(model)
 
 
 def _taxonomy_block(skills: dict[str, Skill]) -> str:
@@ -216,7 +162,7 @@ def _mention_schema(skill_ids: list[str]) -> dict:
     }
 
 
-class ClaudeExtractor:
+class LLMExtractor:
     name = "llm"
 
     def __init__(self, skills: dict[str, Skill], model: str | None = None):

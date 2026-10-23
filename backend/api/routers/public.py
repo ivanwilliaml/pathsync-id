@@ -16,7 +16,6 @@ from pathsync.config import (
     BKT_TRANSIT,
     EMBEDDING_MODEL,
     GRADE_SCORES,
-    LLM_MODEL,
     MODELS_DIR,
     ROLES,
     SIM_AUTO,
@@ -38,7 +37,7 @@ from pathsync.db import (
 )
 from pathsync.embeddings import WARM
 from pathsync.engine import graph_from_db
-from pathsync.extraction.llm import llm_configured, llm_provider
+from pathsync.extraction.llm import llm_configured
 from pathsync.i18n import family_names, role_blurb, t, tr
 from pathsync.security import db_session, rate_limit
 from pathsync.taxonomy import cluster_names, display_rationale, display_skills, load_taxonomy
@@ -108,10 +107,8 @@ def model_card(s: Session) -> dict:
                               "urutan pakar sungguhan menunjukkan ia lebih baik (model yang dilatih dari pakar simulasi tidak pernah)")},
         # the LLM reads CVs and rates projects; postings stay on the lexicon (it beat the LLM on the test half)
         "extraction_llm": {"runtime": (None if not llm_configured() else
-                                       os.getenv("PATHSYNC_GEMINI_MODEL", "gemini-flash-latest") if llm_provider() == "gemini"
-                                       else LLM_MODEL),
-                           "runtime_provider": ("Google Gemini API (JSON schema output)" if llm_provider() == "gemini"
-                                                else "Anthropic Claude API (structured output, taxonomy-constrained)"),
+                                       os.getenv("PATHSYNC_GEMINI_MODEL", "gemini-flash-latest")),
+                           "runtime_provider": "Google Gemini API (JSON schema output)",
                            "used_for": "cv_and_project_rubric",
                            "offline_run": offline or "Qwen3-8B (Apache-2.0), Kaggle T4 x2",
                            "active_for_market_map": "llm" if os.getenv("PATHSYNC_EXTRACTOR", "").lower() == "llm" else "lexicon",
@@ -132,7 +129,7 @@ def model_card(s: Session) -> dict:
                        "metrics_file": metrics.get("generated_at"),
                        "extractor_target_met_at_lower_ci": ((metrics.get("extraction") or {}).get("target_met") or {}).get("lower_ci_bound"),
                        "status": "beta"},
-        "planned": [tr("LLM-based reading of postings (Claude API) once the gold annotation set is complete", "pembacaan lowongan berbasis LLM (Claude API) setelah set label manusia lengkap"),
+        "planned": [tr("LLM-based reading of postings (Gemini API) once the gold annotation set is complete", "pembacaan lowongan berbasis LLM (Gemini API) setelah set label manusia lengkap"),
                     tr("Ranker re-trained on a real expert panel", "Ranker dilatih ulang dengan panel pakar sungguhan")],
     }
 

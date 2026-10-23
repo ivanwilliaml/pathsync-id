@@ -1,6 +1,6 @@
-"""Offline LLM runs on a GPU notebook (Kaggle) for when no Anthropic credentials are available.
+"""Offline LLM runs on a GPU notebook (Kaggle) for when no Gemini API key is available.
 
-The prompts, taxonomy block and output schema are exactly the ones used by the Claude path in
+The prompts, taxonomy block and output schema are exactly the ones used by the API path in
 pathsync/extraction/llm.py; only the model differs (an open-weight instruction model). Results are
 brought back through the same gates as any other extractor (quote verification + embedding
 normalisation), so nothing unverified enters the market map.
@@ -13,7 +13,7 @@ normalisation), so nothing unverified enters the market map.
   python -m pipeline.llm_jobs compare                    -> data/models/extractor_comparison.json
 
 After import-postings, `python -m pipeline.build_market --extractor llm` reads the cache and never
-calls the Anthropic API; after import-scenarios, `python -m pipeline.expert_study` adds the
+calls the Gemini API; after import-scenarios, `python -m pipeline.expert_study` adds the
 "generic LLM" baseline to the evaluation.
 """
 from __future__ import annotations
@@ -146,7 +146,7 @@ def import_postings(path: str):
     missing = set(texts) - set(res["results"])
     if missing or bad:
         print(f"[llm_jobs] PERHATIAN: {len(missing)} lowongan belum punya hasil; build_market --extractor llm "
-              "akan mencoba Claude API untuk lowongan tersebut")
+              "akan mencoba Gemini API untuk lowongan tersebut")
 
 
 def import_scenarios(path: str):
@@ -170,7 +170,7 @@ def import_scenarios(path: str):
             bad += 1
             continue
         seen = []
-        for c in order + cands:                     # same completion rule as ClaudeExtractor.generic_ranking
+        for c in order + cands:                     # same completion rule as LLMExtractor.generic_ranking
             if c not in seen:
                 seen.append(c)
         orders[sid] = seen

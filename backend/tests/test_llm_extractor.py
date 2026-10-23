@@ -1,12 +1,11 @@
-"""The Claude extraction path with a fake client (no network): structured output becomes mentions,
+"""The LLM extraction path with a fake client (no network): structured output becomes mentions,
 the quote gate still rejects invented quotes, failures fall back to the lexicon, and the generic
 ranking baseline always returns every candidate once (plan C5)."""
 from __future__ import annotations
 
 import pytest
 
-from pathsync.extraction import llm as llm_mod
-from pathsync.extraction.llm import ClaudeClient, ClaudeExtractor, LLMUnavailable, llm_configured
+from pathsync.extraction.llm import GeminiClient, LLMExtractor, LLMUnavailable, llm_configured
 
 POSTING = ("Kualifikasi:\n- Mampu menulis query SQL untuk analisis data penjualan.\n"
            "- Berpengalaman menyusun BRD bersama stakeholder.\n- Menguasai Microsoft Excel.")
@@ -30,12 +29,12 @@ def fake(monkeypatch):
     def init(self, model=None):
         self.model = model or "fake"
 
-    monkeypatch.setattr(ClaudeClient, "__init__", init)
+    monkeypatch.setattr(GeminiClient, "__init__", init)
 
     def make(reply=None, fail=False):
         from pathsync.taxonomy import load_skills
 
-        ex = ClaudeExtractor(load_skills())
+        ex = LLMExtractor(load_skills())
         ex.client = FakeClient(reply, fail)
         holder["ex"] = ex
         return ex
@@ -83,12 +82,10 @@ def test_generic_ranking_and_project_rating(fake):
 
 
 def test_llm_configured_modes(monkeypatch):
-    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
-    monkeypatch.delenv("ANTHROPIC_AUTH_TOKEN", raising=False)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
     monkeypatch.setenv("PATHSYNC_EXTRACTOR", "auto")
     assert llm_configured() is False
-    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key-not-real")
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key-not-real")
     assert llm_configured() is True
     monkeypatch.setenv("PATHSYNC_EXTRACTOR", "lexicon")
     assert llm_configured() is False
-    assert llm_mod.FALLBACK_BETA

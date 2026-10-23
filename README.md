@@ -58,7 +58,7 @@ Untuk pengembangan lokal pakai `npm run dev`. Jika repo berada di path yang meng
 
 ## Ekstraksi LLM (opsional)
 
-Dengan Claude: set `ANTHROPIC_API_KEY` (atau `PATHSYNC_EXTRACTOR=llm`), lalu `python -m pipeline.build_market --extractor llm`.
+Dengan Gemini: set `GEMINI_API_KEY` (atau `PATHSYNC_EXTRACTOR=llm`), lalu `python -m pipeline.build_market --extractor llm`.
 
 Tanpa kunci API, jalankan model open-weight di GPU Kaggle dengan prompt, taksonomi, dan skema yang sama; hasilnya melewati gerbang verifikasi kutipan dan normalisasi embedding yang sama:
 

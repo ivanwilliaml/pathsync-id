@@ -9,7 +9,7 @@ from ..embeddings import SkillIndex, once
 from ..taxonomy import load_skills
 from .base import ExtractionResult, Mention, apply_gates
 from .lexicon import LexiconExtractor
-from .llm import ClaudeExtractor, LLMUnavailable, llm_configured
+from .llm import LLMExtractor, LLMUnavailable, llm_configured
 
 _HERE = Path(__file__).resolve().parent
 
@@ -42,8 +42,8 @@ def lexicon_extractor() -> LexiconExtractor:
 
 
 @lru_cache(maxsize=1)
-def llm_extractor() -> ClaudeExtractor:
-    return ClaudeExtractor(load_skills())
+def llm_extractor() -> LLMExtractor:
+    return LLMExtractor(load_skills())
 
 
 def extract_skills(text: str, prefer: str | None = None, kind: str = "posting") -> ExtractionResult:

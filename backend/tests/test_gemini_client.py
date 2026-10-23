@@ -1,4 +1,4 @@
-"""Gemini adapter: schema conversion, provider choice, postings stay on the lexicon."""
+"""Gemini adapter: schema conversion, key check, postings stay on the lexicon."""
 from __future__ import annotations
 
 from pathsync.extraction import llm
@@ -12,11 +12,11 @@ def test_schema_drops_unsupported_keys():
     assert "enum" not in out["properties"]["level"] and out["properties"]["skill_id"]["enum"] == ["sql"]
 
 
-def test_provider_follows_the_key(monkeypatch):
-    for k in ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "PATHSYNC_LLM_PROVIDER", "PATHSYNC_EXTRACTOR"):
+def test_configured_follows_the_key(monkeypatch):
+    for k in ("PATHSYNC_EXTRACTOR",):
         monkeypatch.delenv(k, raising=False)
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
-    assert llm.llm_configured() and llm.llm_provider() == "gemini"
+    assert llm.llm_configured()
 
 
 def test_postings_stay_on_lexicon_when_a_key_exists(monkeypatch):
